@@ -36,6 +36,8 @@ class _SplashState extends ConsumerState<Splash> {
         );
       } else if (provider.token.loading) {
         return const CupertinoActivityIndicator();
+      } else if (provider.token.newUser) {
+        return const Text("new user!");
       } else {
         return Text(
           "home: ${provider.token.accessToken}",
