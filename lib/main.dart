@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter_mobile_client/constants/general.dart';
-import 'package:flutter_mobile_client/screens/splash.dart';
+import 'package:flutter_mobile_client/screens/root.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
       builder: DevicePreview.appBuilder,
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
-      home: const Splash(),
+      home: const Root(),
       // ADD THEME HERE SO I CAN SWITCH IT NICELY (save to user preferences too?)
     );
   }
