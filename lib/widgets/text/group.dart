@@ -22,13 +22,13 @@ class GroupText extends StatelessWidget {
         children: [
           Text(
             header,
-            style: kHeader,
+            style: kHeader.copyWith(color: Theme.of(context).colorScheme.primary),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 5),
           Text(
             body,
-            style: kBody,
+            style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
             textAlign: TextAlign.center,
           ),
         ],

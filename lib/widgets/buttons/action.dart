@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_client/constants/colors.dart';
 import 'package:flutter_mobile_client/constants/typography.dart';
 import 'package:flutter_mobile_client/widgets/buttons/touchableopacity.dart';
 
@@ -14,8 +13,12 @@ class ActionButton extends StatelessWidget {
     return TouchableOpacity(
       onTap: onPress,
       child: Container(
-        decoration: const BoxDecoration(
-            color: kPrimary, borderRadius: BorderRadius.all(Radius.circular(10))),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.primary,
+          borderRadius: const BorderRadius.all(
+            Radius.circular(10),
+          ),
+        ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 7),
           child: Row(
@@ -23,9 +26,9 @@ class ActionButton extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(
+              Icon(
                 Icons.refresh,
-                color: kWhite,
+                color: Theme.of(context).colorScheme.onPrimary,
                 size: 16,
               ),
               const SizedBox(width: 10),
@@ -33,7 +36,7 @@ class ActionButton extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 2),
                 child: Text(
                   text,
-                  style: kBody.copyWith(color: kWhite),
+                  style: kBody.copyWith(color: Theme.of(context).colorScheme.onPrimary),
                 ),
               ),
             ],

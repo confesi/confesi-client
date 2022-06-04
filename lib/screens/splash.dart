@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_client/constants/colors.dart';
 import 'package:flutter_mobile_client/constants/typography.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -9,23 +8,34 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: kWhite,
+      backgroundColor: Theme.of(context).colorScheme.background,
+      appBar: AppBar(
+        toolbarHeight: 0,
+        backgroundColor: Theme.of(context).colorScheme.background,
+        shadowColor: Colors.transparent,
+      ),
       body: SafeArea(
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Image.asset(
-                "assets/images/logo.jpg",
-                width: width * 2 / 3,
-                fit: BoxFit.contain,
-              ),
-              Text(
-                "Confessi | Matthew",
-                style: kTitle,
-                textAlign: TextAlign.center,
-              ),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.all(15),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Hero(
+                  tag: "logo",
+                  child: Image.asset(
+                    "assets/images/logo.jpg",
+                    width: width * 2 / 3,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+                Text(
+                  "Confessi | Matthew",
+                  style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
           ),
         ),
       ),

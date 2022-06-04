@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobile_client/screens/auth/open.dart';
 import 'package:flutter_mobile_client/screens/error.dart';
 import 'package:flutter_mobile_client/screens/splash.dart';
 import 'package:flutter_mobile_client/state/user_slice.dart';
@@ -24,44 +25,37 @@ class _RootState extends ConsumerState<Root> {
   Widget build(BuildContext context) {
     Widget screen = ref.watch(userProvider.select((provider) {
       // return SplashScreen();
+      // return ErrorScreen();
+      // return OpenScreen();
       if (provider.token.error) {
         return const ErrorScreen();
       } else if (provider.token.loading) {
         return const SplashScreen();
       } else if (provider.token.newUser) {
-        return const Text("new user!");
+        return const OpenScreen();
       } else {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "access token: ${provider.token.accessToken}",
-            ),
-            TextButton(
-                onPressed: () {
-                  getThemeManager(context).toggleDarkLightTheme();
-                },
-                child: const Text("change theme"))
-          ],
-        );
+        return const OpenScreen();
+        // return Column(
+        //   mainAxisAlignment: MainAxisAlignment.center,
+        //   children: [
+        //     Text(
+        //       "access token: ${provider.token.accessToken}",
+        //     ),
+        //     TextButton(
+        //         onPressed: () {
+        //           getThemeManager(context).toggleDarkLightTheme();
+        //         },
+        //         child: const Text("change theme"))
+        //   ],
+        // );
       }
     }));
     // TODO: Add some kind of "hero widget" animation (at least between the two logos? [splash screen & open screen])
-    // TODO: Remove this scaffold later so I don't have stacked scaffolds when I've implemented all the different screen states
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.secondary,
-      appBar: AppBar(
-        toolbarHeight: 0,
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        shadowColor: Colors.transparent,
-      ),
-      body: SafeArea(
-        child: Center(
-          child: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 600),
-            child: screen,
-          ),
-        ),
+    // TODO: Remove this scaffold later so I don't have stacked scaffolds when I've implemented all the different screen states? (will this affect theme?)
+    return Center(
+      child: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 600),
+        child: screen,
       ),
     );
   }

@@ -3,7 +3,7 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobile_client/constants/general.dart';
 import 'package:flutter_mobile_client/screens/root.dart';
-import 'package:flutter_mobile_client/themes.dart';
+import 'package:flutter_mobile_client/constants/themes.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stacked_themes/stacked_themes.dart';
 

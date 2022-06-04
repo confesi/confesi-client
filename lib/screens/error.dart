@@ -10,6 +10,12 @@ class ErrorScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
+      appBar: AppBar(
+        toolbarHeight: 0,
+        backgroundColor: Theme.of(context).colorScheme.background,
+        shadowColor: Colors.transparent,
+      ),
       body: SafeArea(
         child: Center(
           child: Padding(

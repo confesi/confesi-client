@@ -5,22 +5,21 @@ import 'package:flutter/material.dart';
 // Light theme (index 0), dark theme (index 1)
 List<ThemeData> themesList = [
   ThemeData(
-    backgroundColor: Colors.blue,
     colorScheme: const ColorScheme(
-        brightness: Brightness.light,
-        primary: Colors.pink,
-        onPrimary: Colors.green,
-        secondary: Colors.red,
-        onSecondary: Colors.amber,
-        error: Colors.lightBlue,
-        onError: Colors.purple,
-        background: Colors.deepPurple,
-        onBackground: Colors.pink,
-        surface: Colors.cyan,
-        onSurface: Colors.orange),
+      brightness: Brightness.light,
+      primary: Color(0xff333333),
+      onPrimary: Colors.white,
+      secondary: Color(0xffF6C0F6),
+      onSecondary: Color(0xff333333),
+      error: Color(0xffEB5353),
+      onError: Colors.white,
+      background: Colors.white,
+      onBackground: Color(0xff595959),
+      surface: Color(0xffEBEBEB),
+      onSurface: Color(0xff595959),
+    ),
   ),
   ThemeData(
-    backgroundColor: Colors.pink,
     colorScheme: const ColorScheme(
         brightness: Brightness.dark,
         primary: Colors.yellow,
