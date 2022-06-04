@@ -4,6 +4,7 @@ import 'package:flutter_mobile_client/screens/error.dart';
 import 'package:flutter_mobile_client/screens/splash.dart';
 import 'package:flutter_mobile_client/state/user_slice.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:stacked_themes/stacked_themes.dart';
 
 class Root extends ConsumerStatefulWidget {
   const Root({Key? key}) : super(key: key);
@@ -30,18 +31,36 @@ class _RootState extends ConsumerState<Root> {
       } else if (provider.token.newUser) {
         return const Text("new user!");
       } else {
-        return Text(
-          "home: ${provider.token.accessToken}",
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "access token: ${provider.token.accessToken}",
+            ),
+            TextButton(
+                onPressed: () {
+                  getThemeManager(context).toggleDarkLightTheme();
+                },
+                child: const Text("change theme"))
+          ],
         );
       }
     }));
-    // TODO: Add some kind of "hero widget" animation
+    // TODO: Add some kind of "hero widget" animation (at least between the two logos? [splash screen & open screen])
     // TODO: Remove this scaffold later so I don't have stacked scaffolds when I've implemented all the different screen states
     return Scaffold(
-      body: Center(
-        child: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 600),
-          child: screen,
+      backgroundColor: Theme.of(context).colorScheme.secondary,
+      appBar: AppBar(
+        toolbarHeight: 0,
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        shadowColor: Colors.transparent,
+      ),
+      body: SafeArea(
+        child: Center(
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 600),
+            child: screen,
+          ),
         ),
       ),
     );
