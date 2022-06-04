@@ -31,7 +31,10 @@ class UserNotifier extends StateNotifier<UserState> {
   // looks in device storage, if refresh token exists, makes call and gets
   // a corresponding access token from server and sets it into state
   setAccessToken() async {
-    await Future.delayed(const Duration(seconds: 5));
+    // reset state (because user can click "try again" and retry the loading call)
+    state = state.copyWith(newToken: const Token(error: false, accessToken: "", loading: true));
+    // quick delay so there isn't any unnecessary "screen jank" from a fast transition
+    await Future.delayed(const Duration(milliseconds: 400));
     try {
       const storage = FlutterSecureStorage();
       final refreshToken = await storage.read(key: "refreshToken");

@@ -20,12 +20,19 @@ class _SplashState extends ConsumerState<Splash> {
 
   @override
   Widget build(BuildContext context) {
-    final token = ref.watch(userProvider);
     Widget screen = ref.watch(userProvider.select((provider) {
       if (provider.token.error) {
-        return const Text(
-          "Error",
-          key: ValueKey("1"),
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              "Error",
+              key: ValueKey("1"),
+            ),
+            TextButton(
+                onPressed: () => ref.read(userProvider.notifier).setAccessToken(),
+                child: const Text("try again"))
+          ],
         );
       } else if (provider.token.loading) {
         return const CupertinoActivityIndicator();
