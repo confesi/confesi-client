@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobile_client/constants/general.dart';
+import 'package:flutter_mobile_client/screens/auth/open.dart';
+import 'package:flutter_mobile_client/screens/bottom_nav.dart';
+import 'package:flutter_mobile_client/screens/error.dart';
 import 'package:flutter_mobile_client/screens/root.dart';
 import 'package:flutter_mobile_client/constants/themes.dart';
+import 'package:flutter_mobile_client/screens/splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stacked_themes/stacked_themes.dart';
 
@@ -41,7 +45,15 @@ class MyApp extends StatelessWidget {
         useInheritedMediaQuery: true,
         locale: DevicePreview.locale(context),
         builder: DevicePreview.appBuilder,
-        home: const Root(),
+        initialRoute: "/",
+        routes: {
+          "/": (context) => const Root(),
+          "/error": (context) => const ErrorScreen(),
+          "/splash": (context) => const SplashScreen(),
+          "/open": (context) => const OpenScreen(),
+          "/bottomNav": (context) =>
+              const BottomNav(), // the bottom tab bar that wraps the "home screen" of the app
+        },
       ),
     );
   }

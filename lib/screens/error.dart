@@ -31,7 +31,10 @@ class ErrorScreen extends ConsumerWidget {
                 const SizedBox(height: 25),
                 ActionButton(
                   text: "try again",
-                  onPress: () => ref.read(userProvider.notifier).setAccessToken(),
+                  onPress: () {
+                    ref.read(userProvider.notifier).setAccessToken();
+                    Navigator.pop(context);
+                  },
                 ),
               ],
             ),

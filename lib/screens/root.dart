@@ -18,45 +18,26 @@ class _RootState extends ConsumerState<Root> {
   @override
   void initState() {
     super.initState();
+    print("INIT IS CALLED!!!!");
     ref.read(userProvider.notifier).setAccessToken();
   }
 
   @override
   Widget build(BuildContext context) {
-    Widget screen = ref.watch(userProvider.select((provider) {
+    ref.watch(userProvider.select((provider) {
       // return SplashScreen();
       // return ErrorScreen();
       // return OpenScreen();
       if (provider.token.error) {
-        return const ErrorScreen();
-      } else if (provider.token.loading) {
-        return const SplashScreen();
+        Navigator.pushNamed(context, '/error');
       } else if (provider.token.newUser) {
-        return const OpenScreen();
-      } else {
-        return const OpenScreen();
-        // return Column(
-        //   mainAxisAlignment: MainAxisAlignment.center,
-        //   children: [
-        //     Text(
-        //       "access token: ${provider.token.accessToken}",
-        //     ),
-        //     TextButton(
-        //         onPressed: () {
-        //           getThemeManager(context).toggleDarkLightTheme();
-        //         },
-        //         child: const Text("change theme"))
-        //   ],
-        // );
+        Navigator.pushReplacementNamed(context, '/open');
+      } else if (!provider.token.loading) {
+        //  && provider.token.loading == false
+        Navigator.pushNamed(context, '/open'); // /bottomNav
       }
     }));
-    // TODO: Add some kind of "hero widget" animation (at least between the two logos? [splash screen & open screen])
-    // TODO: Remove this scaffold later so I don't have stacked scaffolds when I've implemented all the different screen states? (will this affect theme?)
-    return Center(
-      child: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 600),
-        child: screen,
-      ),
-    );
+    // Add hero animation?
+    return const SplashScreen();
   }
 }

@@ -38,7 +38,7 @@ class UserNotifier extends StateNotifier<UserState> {
     state = state.copyWith(
         newToken: const Token(error: false, accessToken: "", loading: true, newUser: false));
     // quick delay so there isn't any unnecessary "screen jank" from a fast transition
-    await Future.delayed(const Duration(milliseconds: 3000)); // normally 800
+    await Future.delayed(const Duration(milliseconds: 1500)); // normally 800
     try {
       const storage = FlutterSecureStorage();
       // UNCOMMENT LINE BELOW TO RE-ADD VALID REFRESH TOKEN TO DEVICE STORAGE
@@ -80,9 +80,10 @@ class UserNotifier extends StateNotifier<UserState> {
     }
   }
 
-  // remove access token from state, refresh token from storage, and refresh token from DB
+  //TODO: remove access token from state, refresh token from storage, and refresh token from DB
   logout() {
-    // TODO: add here
+    state = state.copyWith(
+        newToken: const Token(error: false, accessToken: "", loading: true, newUser: false));
   }
 }
 
