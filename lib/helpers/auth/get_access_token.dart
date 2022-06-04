@@ -1,11 +1,9 @@
 import 'dart:convert';
 import 'package:flutter_mobile_client/constants/general.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter/material.dart';
 
-Future getAccessToken() async {
+Future<String> getAccessToken() async {
   try {
     // get token
     const storage = FlutterSecureStorage();
@@ -15,7 +13,7 @@ Future getAccessToken() async {
         value:
             "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9uZ29PYmplY3RJRCI6IjYyOTE5ZmIwYzg0YTFkNjc0ZGFjNzg4MyIsImlhdCI6MTY1Mzk4Mjk1OSwiZXhwIjoxNjg1NTQwNTU5fQ.ViRB_PQX_Jdp75rrJP2p1BNyBYHB8H8csnnD2PY4OZs");
     var refreshToken = await storage.read(key: "refreshToken");
-    if (refreshToken == null) return null;
+    if (refreshToken == null) return "";
     final response = await http
         .post(
           Uri.parse('$kDomain/api/user/token'),
@@ -28,13 +26,13 @@ Future getAccessToken() async {
         )
         .timeout(const Duration(seconds: 10));
     if (response.statusCode != 200) {
-      return null;
+      return "";
     } else {
       final accessToken = json.decode(response.body)["accessToken"];
       return accessToken;
     }
   } catch (error) {
     print("catch occured");
-    return null;
+    return "";
   }
 }

@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter_mobile_client/constants/general.dart';
-import 'package:flutter_mobile_client/screens/root.dart';
+import 'package:flutter_mobile_client/screens/splash.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-void main() => runApp(
-      DevicePreview(
-        enabled: !kProductionBuild, // set to relase mode constant
-        builder: (context) => const MyApp(),
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(
+    DevicePreview(
+      enabled: !kProductionBuild, // set to relase mode constant
+      builder: (context) => const ProviderScope(
+        child: MyApp(),
       ),
-    );
+    ),
+  );
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -21,7 +27,8 @@ class MyApp extends StatelessWidget {
       builder: DevicePreview.appBuilder,
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
-      home: const Root(),
+      home: const Splash(),
+      // ADD THEME HERE SO I CAN SWITCH IT NICELY (save to user preferences too?)
     );
   }
 }
