@@ -9,29 +9,32 @@ class BottomNav extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     UserState provider = ref.watch(userProvider);
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "access token: ${provider.token.accessToken}",
-            ),
-            TextButton(
-              onPressed: () {
-                getThemeManager(context).toggleDarkLightTheme();
-              },
-              child: const Text("change theme"),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                ref.read(userProvider.notifier).logout();
-                // ref.read(userProvider.notifier).setAccessToken();
-              },
-              child: const Text("logout"),
-            ),
-          ],
+    return WillPopScope(
+      onWillPop: () async => false, // disables back button
+      child: Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "access token: ${provider.token.accessToken}",
+              ),
+              TextButton(
+                onPressed: () {
+                  getThemeManager(context).toggleDarkLightTheme();
+                },
+                child: const Text("change theme"),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  ref.read(userProvider.notifier).logout();
+                  // ref.read(userProvider.notifier).setAccessToken();
+                },
+                child: const Text("logout"),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -31,10 +31,10 @@ class _RootState extends ConsumerState<Root> {
       if (provider.token.error) {
         Navigator.pushNamed(context, '/error');
       } else if (provider.token.newUser) {
-        Navigator.pushReplacementNamed(context, '/open');
+        Navigator.pushNamed(context, '/open');
       } else if (!provider.token.loading) {
         //  && provider.token.loading == false
-        Navigator.pushNamed(context, '/open'); // /bottomNav
+        Navigator.pushNamed(context, '/bottomNav'); // /bottomNav
       }
     }));
     // Add hero animation?

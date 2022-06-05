@@ -10,6 +10,7 @@ import 'package:flutter_mobile_client/constants/themes.dart';
 import 'package:flutter_mobile_client/screens/splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stacked_themes/stacked_themes.dart';
+import 'package:page_transition/page_transition.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,13 +47,56 @@ class MyApp extends StatelessWidget {
         locale: DevicePreview.locale(context),
         builder: DevicePreview.appBuilder,
         initialRoute: "/",
-        routes: {
-          "/": (context) => const Root(),
-          "/error": (context) => const ErrorScreen(),
-          "/splash": (context) => const SplashScreen(),
-          "/open": (context) => const OpenScreen(),
-          "/bottomNav": (context) =>
-              const BottomNav(), // the bottom tab bar that wraps the "home screen" of the app
+        // routes: {
+        //   "/": (context) => const Root(),
+        //   "/error": (context) => const ErrorScreen(),
+        //   "/splash": (context) => const SplashScreen(),
+        //   "/open": (context) => const OpenScreen(),
+        //   "/bottomNav": (context) =>
+        //       const BottomNav(), // the bottom tab bar that wraps the "home screen" of the app
+        // },
+        onGenerateRoute: (settings) {
+          if (settings.name == "/") {
+            return PageTransition(
+              child: const Root(),
+              type: PageTransitionType.rightToLeftWithFade,
+              duration: const Duration(milliseconds: 500),
+              reverseDuration: const Duration(milliseconds: 500),
+              curve: Curves.easeOut,
+            );
+          } else if (settings.name == "/splash") {
+            return PageTransition(
+              child: const SplashScreen(),
+              type: PageTransitionType.rightToLeftWithFade,
+              duration: const Duration(milliseconds: 500),
+              reverseDuration: const Duration(milliseconds: 500),
+              curve: Curves.easeOut,
+            );
+          } else if (settings.name == "/open") {
+            return PageTransition(
+              child: const OpenScreen(),
+              type: PageTransitionType.rightToLeftWithFade,
+              duration: const Duration(milliseconds: 500),
+              reverseDuration: const Duration(milliseconds: 500),
+              curve: Curves.easeOut,
+            );
+          } else if (settings.name == "/bottomNav") {
+            return PageTransition(
+              child: const BottomNav(),
+              type: PageTransitionType.rightToLeftWithFade,
+              duration: const Duration(milliseconds: 500),
+              reverseDuration: const Duration(milliseconds: 500),
+              curve: Curves.easeOut,
+            );
+          } else {
+            return PageTransition(
+              child: const ErrorScreen(),
+              type: PageTransitionType.rightToLeftWithFade,
+              duration: const Duration(milliseconds: 500),
+              reverseDuration: const Duration(milliseconds: 500),
+              curve: Curves.easeOut,
+            );
+          }
         },
       ),
     );
