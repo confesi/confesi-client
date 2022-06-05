@@ -34,7 +34,6 @@ class ErrorScreen extends ConsumerWidget {
                   onPress: () {
                     print("Action pressed!!!!!!!!!!!!!!!!!!!!!!!");
                     ref.read(userProvider.notifier).setAccessToken();
-                    Navigator.pop(context);
                   },
                 ),
               ],

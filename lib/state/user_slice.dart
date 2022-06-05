@@ -46,7 +46,7 @@ class UserNotifier extends StateNotifier<UserState> {
       await storage.write(
           key: "refreshToken",
           value:
-              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9uZ29PYmplY3RJRCI6IjYyOTg2ZDBhYWQyZDI3MjI1ZjFhZGI2NSIsImlhdCI6MTY1NDQwMDAwNSwiZXhwIjoxNjg1OTU3NjA1fQ.DYDbhStqsvTzZIKPfwzuNI3XpxtMiIUBfajgxptMTr4");
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9uZ29PYmplY3RJRCI6IjYyOTg2ZDBhYWQyZDI3MjI1ZjFhZGI2NSIsImlhdCI6MTY1NDQwMjUzNiwiZXhwIjoxNjg1OTYwMTM2fQ.-krqZhhaffuEo7D1a1cIBVKmb1Gw6-8QDXptj7sN0gI");
 
       final refreshToken = await storage.read(key: "refreshToken");
       if (refreshToken == null) {
@@ -84,16 +84,21 @@ class UserNotifier extends StateNotifier<UserState> {
   }
 
   //TODO: remove access token from state, refresh token from storage, and refresh token from DB
-  logout() async {
-    print("Logout attempted");
-    state = state.copyWith(
-        newToken: const Token(error: false, accessToken: "", loading: true, newUser: false));
-    // my implementation
-    const storage = FlutterSecureStorage();
-    final refreshToken = await storage.read(key: "refreshToken");
-    print("RT value: $refreshToken");
-
+  Future<String> logout() async {
     try {
+      // DO I NEED THIS?
+      // state = state.copyWith(
+      //     newToken: const Token(error: false, accessToken: "", loading: true, newUser: false));
+      // DO I NEED THIS?
+      const storage = FlutterSecureStorage();
+      final refreshToken = await storage.read(key: "refreshToken");
+      // User must have somehow cleared the securestorage - nothing we can do to delete corresponding token in DB now, so we say "success"
+      // and consider them a new user
+      if (refreshToken == null) {
+        state.copyWith(
+            newToken: const Token(error: true, accessToken: "", loading: false, newUser: true));
+        return "success";
+      }
       final response = await http
           .delete(
             Uri.parse('$kDomain/api/user/logout'),
@@ -104,22 +109,29 @@ class UserNotifier extends StateNotifier<UserState> {
               "token": refreshToken.toString(),
             }),
           )
-          .timeout(const Duration(seconds: 2));
+          .timeout(const Duration(seconds: 5));
       if (response.statusCode == 200) {
         state = state.copyWith(
             newToken: const Token(error: false, accessToken: "", loading: false, newUser: true));
-        state = state.copyWith(
-            newToken: const Token(error: false, accessToken: "", loading: true, newUser: false));
         await storage.write(key: "refreshToken", value: null);
-        if (refreshToken == null) {
-          return state = state.copyWith(
-              newToken: const Token(error: true, accessToken: "", loading: false, newUser: false));
-        }
         print("succesfully logged out");
-        return;
+        return "success";
+      } else {
+        // ERROR LOGGING OUT
+        state = state.copyWith(
+            newToken: Token(
+                error: false,
+                accessToken: state.token.accessToken,
+                loading: false,
+                newUser: false));
+        return "fail";
       }
     } catch (e) {
-      print("Error Logging out!!!! so sorry!!! Contact admin: $e");
+      // ERROR LOGGING OUT
+      state = state.copyWith(
+          newToken: Token(
+              error: false, accessToken: state.token.accessToken, loading: false, newUser: false));
+      return "fail";
       // direct to logout all route? suspicous activity? contact admin?
     }
   }

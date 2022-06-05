@@ -26,9 +26,14 @@ class BottomNav extends ConsumerWidget {
                 child: const Text("change theme"),
               ),
               TextButton(
-                onPressed: () {
-                  ref.read(userProvider.notifier).logout();
-                  Navigator.pushNamed(context, '/open');
+                onPressed: () async {
+                  var x = await ref.read(userProvider.notifier).logout();
+                  if (x == "success") {
+                    print("Success (view)");
+                  } else {
+                    print("Fail (view)");
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("error!!")));
+                  }
                 },
                 child: const Text("logout"),
               ),

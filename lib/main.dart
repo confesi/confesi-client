@@ -59,9 +59,9 @@ class MyApp extends StatelessWidget {
           } else if (settings.name == "/splash") {
             return PageTransition(
               child: const SplashScreen(),
-              type: PageTransitionType.rightToLeftWithFade,
-              duration: const Duration(milliseconds: 300),
-              reverseDuration: const Duration(milliseconds: 300),
+              type: PageTransitionType.fade,
+              duration: const Duration(milliseconds: 500),
+              reverseDuration: const Duration(milliseconds: 500),
               curve: Curves.easeOut,
             );
           } else if (settings.name == "/open") {

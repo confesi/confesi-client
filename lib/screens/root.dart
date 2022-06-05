@@ -24,20 +24,35 @@ class _RootState extends ConsumerState<Root> {
 
   @override
   Widget build(BuildContext context) {
-    ref.watch(userProvider.select((provider) {
-      // return SplashScreen();
-      // return ErrorScreen();
-      // return OpenScreen();
-      if (provider.token.error) {
+    // ref.watch(userProvider.select((provider) {
+    //   // return SplashScreen();
+    //   // return ErrorScreen();
+    //   // return OpenScreen();
+    //   print("WATCH");
+    //   if (provider.token.error) {
+    //     Navigator.pushNamed(context, '/error');
+    //   } else if (provider.token.newUser) {
+    //     Navigator.pushNamed(context, '/open');
+    //   } else if (!provider.token.loading) {
+    //     //  && provider.token.loading == false
+    //     Navigator.pushNamed(context, '/bottomNav'); // /bottomNav
+    //   }
+    // }));
+    ref.listen<UserState>(userProvider, (UserState? prevState, UserState newState) {
+      print("WATCH");
+      print(
+          "${newState.token.error.toString()}, ${newState.token.newUser.toString()}, ${newState.token.loading.toString()}");
+      if (newState.token.error) {
         Navigator.pushNamed(context, '/error');
-      } else if (provider.token.newUser) {
+      } else if (newState.token.newUser) {
         Navigator.pushNamed(context, '/open');
-      } else if (!provider.token.loading) {
+      } else if (!newState.token.loading) {
         //  && provider.token.loading == false
         Navigator.pushNamed(context, '/bottomNav'); // /bottomNav
+      } else {
+        Navigator.pushNamed(context, "/splash");
       }
-    }));
-    // Add hero animation?
+    });
     return const SplashScreen();
   }
 }
