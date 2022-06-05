@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobile_client/widgets/buttons/long.dart';
 import 'package:flutter_mobile_client/widgets/text/group.dart';
+import 'package:stacked_themes/stacked_themes.dart';
 
 class OpenScreen extends StatelessWidget {
   const OpenScreen({Key? key}) : super(key: key);
@@ -58,7 +59,7 @@ class OpenScreen extends StatelessWidget {
                           const SizedBox(height: 10),
                           LongButton(
                             text: "Login",
-                            onPress: () => print("Login tapped"),
+                            onPress: () => getThemeManager(context).toggleDarkLightTheme(),
                             textColor: Theme.of(context).colorScheme.primary,
                             backgroundColor: Theme.of(context).colorScheme.secondary,
                           ),

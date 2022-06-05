@@ -28,6 +28,7 @@ class _TouchableOpacityState extends State<TouchableOpacity> {
       onTapUp: (_) => setState(() => isDown = false),
       onTapCancel: () => setState(() => isDown = false),
       onTap: () => widget.onTap(),
+      onLongPress: () => widget.onTap(),
       child: AnimatedOpacity(
         duration: widget.duration,
         opacity: isDown ? widget.opacity : 1,

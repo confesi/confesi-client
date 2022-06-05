@@ -18,23 +18,13 @@ class SplashScreen extends StatelessWidget {
         child: Center(
           child: Padding(
             padding: const EdgeInsets.all(15),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Hero(
-                  tag: "logo",
-                  child: Image.asset(
-                    "assets/images/logo.jpg",
-                    width: width > 250 ? 250 : width * 2 / 3,
-                    fit: BoxFit.contain,
-                  ),
-                ),
-                Text(
-                  "Confessi | Matthew",
-                  style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
-                  textAlign: TextAlign.center,
-                ),
-              ],
+            child: Hero(
+              tag: "logo",
+              child: Image.asset(
+                "assets/images/logo.jpg",
+                width: width > 250 ? 250 : width * 2 / 3,
+                fit: BoxFit.contain,
+              ),
             ),
           ),
         ),

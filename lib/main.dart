@@ -47,35 +47,27 @@ class MyApp extends StatelessWidget {
         locale: DevicePreview.locale(context),
         builder: DevicePreview.appBuilder,
         initialRoute: "/",
-        // routes: {
-        //   "/": (context) => const Root(),
-        //   "/error": (context) => const ErrorScreen(),
-        //   "/splash": (context) => const SplashScreen(),
-        //   "/open": (context) => const OpenScreen(),
-        //   "/bottomNav": (context) =>
-        //       const BottomNav(), // the bottom tab bar that wraps the "home screen" of the app
-        // },
         onGenerateRoute: (settings) {
           if (settings.name == "/") {
             return PageTransition(
               child: const Root(),
               type: PageTransitionType.rightToLeftWithFade,
-              duration: const Duration(milliseconds: 500),
-              reverseDuration: const Duration(milliseconds: 500),
+              duration: const Duration(milliseconds: 300),
+              reverseDuration: const Duration(milliseconds: 300),
               curve: Curves.easeOut,
             );
           } else if (settings.name == "/splash") {
             return PageTransition(
               child: const SplashScreen(),
               type: PageTransitionType.rightToLeftWithFade,
-              duration: const Duration(milliseconds: 500),
-              reverseDuration: const Duration(milliseconds: 500),
+              duration: const Duration(milliseconds: 300),
+              reverseDuration: const Duration(milliseconds: 300),
               curve: Curves.easeOut,
             );
           } else if (settings.name == "/open") {
             return PageTransition(
               child: const OpenScreen(),
-              type: PageTransitionType.rightToLeftWithFade,
+              type: PageTransitionType.fade,
               duration: const Duration(milliseconds: 500),
               reverseDuration: const Duration(milliseconds: 500),
               curve: Curves.easeOut,
@@ -83,15 +75,16 @@ class MyApp extends StatelessWidget {
           } else if (settings.name == "/bottomNav") {
             return PageTransition(
               child: const BottomNav(),
-              type: PageTransitionType.rightToLeftWithFade,
+              type: PageTransitionType.fade,
               duration: const Duration(milliseconds: 500),
               reverseDuration: const Duration(milliseconds: 500),
               curve: Curves.easeOut,
             );
           } else {
+            // error page with "try again" button
             return PageTransition(
               child: const ErrorScreen(),
-              type: PageTransitionType.rightToLeftWithFade,
+              type: PageTransitionType.fade,
               duration: const Duration(milliseconds: 500),
               reverseDuration: const Duration(milliseconds: 500),
               curve: Curves.easeOut,

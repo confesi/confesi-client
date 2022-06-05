@@ -27,9 +27,8 @@ class BottomNav extends ConsumerWidget {
               ),
               TextButton(
                 onPressed: () {
-                  Navigator.pop(context);
                   ref.read(userProvider.notifier).logout();
-                  // ref.read(userProvider.notifier).setAccessToken();
+                  Navigator.pushNamed(context, '/open');
                 },
                 child: const Text("logout"),
               ),

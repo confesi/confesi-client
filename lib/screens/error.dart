@@ -32,6 +32,7 @@ class ErrorScreen extends ConsumerWidget {
                 ActionButton(
                   text: "try again",
                   onPress: () {
+                    print("Action pressed!!!!!!!!!!!!!!!!!!!!!!!");
                     ref.read(userProvider.notifier).setAccessToken();
                     Navigator.pop(context);
                   },

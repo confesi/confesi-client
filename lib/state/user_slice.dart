@@ -34,11 +34,12 @@ class UserNotifier extends StateNotifier<UserState> {
   // looks in device storage, if refresh token exists, makes call and gets
   // a corresponding access token from server and sets it into state
   setAccessToken() async {
+    print("CHECKING!");
     // reset state (because user can click "try again" and retry the loading call)
     state = state.copyWith(
         newToken: const Token(error: false, accessToken: "", loading: true, newUser: false));
     // quick delay so there isn't any unnecessary "screen jank" from a fast transition
-    await Future.delayed(const Duration(milliseconds: 800));
+    await Future.delayed(const Duration(milliseconds: 400));
     try {
       const storage = FlutterSecureStorage();
       // UNCOMMENT LINE BELOW TO RE-ADD VALID REFRESH TOKEN TO DEVICE STORAGE
@@ -47,7 +48,10 @@ class UserNotifier extends StateNotifier<UserState> {
       //     value:
       //         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9uZ29PYmplY3RJRCI6IjYyOTg2ZDBhYWQyZDI3MjI1ZjFhZGI2NSIsImlhdCI6MTY1NDM4MDQyMSwiZXhwIjoxNjg1OTM4MDIxfQ.H2qEak03KgSMeuItVDajEpPsBeGCB7y4ZdmzAtZg0ko");
       final refreshToken = await storage.read(key: "refreshToken");
+      print("TOKEN: $refreshToken");
       if (refreshToken == null) {
+        print("CHECK 1");
+
         return state = state.copyWith(
             newToken: const Token(error: false, accessToken: "", loading: false, newUser: true));
       }
@@ -66,15 +70,18 @@ class UserNotifier extends StateNotifier<UserState> {
           .timeout(const Duration(seconds: 2));
       if (response.statusCode != 200) {
         // in this case, redirect to OPEN (new user)
+        print("CHECK 2");
         return state = state.copyWith(
             newToken: const Token(error: false, accessToken: "", loading: false, newUser: true));
       } else {
+        print("CHECK 3");
         final String accessToken = json.decode(response.body)["accessToken"];
         state = state.copyWith(
             newToken:
                 Token(error: false, accessToken: accessToken, loading: false, newUser: false));
       }
     } catch (e) {
+      print("CHECK 4: $e");
       return state = state.copyWith(
           newToken: const Token(error: true, accessToken: "", loading: false, newUser: false));
     }
