@@ -34,7 +34,7 @@ class UserNotifier extends StateNotifier<UserState> {
   // looks in device storage, if refresh token exists, makes call and gets
   // a corresponding access token from server and sets it into state
   setAccessToken() async {
-    print("CHECKING!");
+    print("chek!!");
     // reset state (because user can click "try again" and retry the loading call)
     state = state.copyWith(
         newToken: const Token(error: false, accessToken: "", loading: true, newUser: false));
@@ -43,15 +43,13 @@ class UserNotifier extends StateNotifier<UserState> {
     try {
       const storage = FlutterSecureStorage();
       // UNCOMMENT LINE BELOW TO RE-ADD VALID REFRESH TOKEN TO DEVICE STORAGE
-      // await storage.write(
-      //     key: "refreshTOken",
-      //     value:
-      //         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9uZ29PYmplY3RJRCI6IjYyOTg2ZDBhYWQyZDI3MjI1ZjFhZGI2NSIsImlhdCI6MTY1NDM4MDQyMSwiZXhwIjoxNjg1OTM4MDIxfQ.H2qEak03KgSMeuItVDajEpPsBeGCB7y4ZdmzAtZg0ko");
-      final refreshToken = await storage.read(key: "refreshToken");
-      print("TOKEN: $refreshToken");
-      if (refreshToken == null) {
-        print("CHECK 1");
+      await storage.write(
+          key: "refreshToken",
+          value:
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9uZ29PYmplY3RJRCI6IjYyOTg2ZDBhYWQyZDI3MjI1ZjFhZGI2NSIsImlhdCI6MTY1NDQwMDAwNSwiZXhwIjoxNjg1OTU3NjA1fQ.DYDbhStqsvTzZIKPfwzuNI3XpxtMiIUBfajgxptMTr4");
 
+      final refreshToken = await storage.read(key: "refreshToken");
+      if (refreshToken == null) {
         return state = state.copyWith(
             newToken: const Token(error: false, accessToken: "", loading: false, newUser: true));
       }
@@ -70,27 +68,60 @@ class UserNotifier extends StateNotifier<UserState> {
           .timeout(const Duration(seconds: 2));
       if (response.statusCode != 200) {
         // in this case, redirect to OPEN (new user)
-        print("CHECK 2");
         return state = state.copyWith(
             newToken: const Token(error: false, accessToken: "", loading: false, newUser: true));
       } else {
-        print("CHECK 3");
         final String accessToken = json.decode(response.body)["accessToken"];
         state = state.copyWith(
             newToken:
                 Token(error: false, accessToken: accessToken, loading: false, newUser: false));
       }
     } catch (e) {
-      print("CHECK 4: $e");
+      print("ERROR CAUGHT: $e");
       return state = state.copyWith(
           newToken: const Token(error: true, accessToken: "", loading: false, newUser: false));
     }
   }
 
   //TODO: remove access token from state, refresh token from storage, and refresh token from DB
-  logout() {
+  logout() async {
+    print("Logout attempted");
     state = state.copyWith(
         newToken: const Token(error: false, accessToken: "", loading: true, newUser: false));
+    // my implementation
+    const storage = FlutterSecureStorage();
+    final refreshToken = await storage.read(key: "refreshToken");
+    print("RT value: $refreshToken");
+
+    try {
+      final response = await http
+          .delete(
+            Uri.parse('$kDomain/api/user/logout'),
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+            },
+            body: jsonEncode(<String, String>{
+              "token": refreshToken.toString(),
+            }),
+          )
+          .timeout(const Duration(seconds: 2));
+      if (response.statusCode == 200) {
+        state = state.copyWith(
+            newToken: const Token(error: false, accessToken: "", loading: false, newUser: true));
+        state = state.copyWith(
+            newToken: const Token(error: false, accessToken: "", loading: true, newUser: false));
+        await storage.write(key: "refreshToken", value: null);
+        if (refreshToken == null) {
+          return state = state.copyWith(
+              newToken: const Token(error: true, accessToken: "", loading: false, newUser: false));
+        }
+        print("succesfully logged out");
+        return;
+      }
+    } catch (e) {
+      print("Error Logging out!!!! so sorry!!! Contact admin: $e");
+      // direct to logout all route? suspicous activity? contact admin?
+    }
   }
 }
 
