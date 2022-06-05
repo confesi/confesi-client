@@ -1,114 +1,149 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_mobile_client/constants/typography.dart';
-import 'package:flutter_mobile_client/state/user_slice.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:stacked_themes/stacked_themes.dart';
-import 'package:flutter/cupertino.dart';
+// This file implements a bottom navigation bar used to swipe between different pages - all pages from the set of home pages stem from here
 
-class BottomNav extends ConsumerWidget {
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+class BottomNav extends StatelessWidget {
   const BottomNav({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    UserState provider = ref.watch(userProvider);
-    return WillPopScope(
-      onWillPop: () async => false, // disables back button
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: 5,
       child: Scaffold(
-        body: Builder(
-          builder: (context) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "access token: ${provider.token.accessToken}",
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      getThemeManager(context).toggleDarkLightTheme();
-                    },
-                    child: const Text("change theme"),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      ref.read(userProvider.notifier).logout().then((value) {
-                        print("SUCCESS? = ${ref.watch(userProvider).logoutSuccess}");
-                        if (ref.watch(userProvider).logoutSuccess == false) {
-                          Navigator.of(context).restorablePush(_modalBuilder);
-                          // showModalBottomSheet<void>(
-                          //   context: context,
-                          //   builder: (BuildContext context) {
-                          //     return Container(
-                          //       height: 200,
-                          //       color: Colors.amber,
-                          //       child: Center(
-                          //         child: Column(
-                          //           mainAxisAlignment: MainAxisAlignment.center,
-                          //           mainAxisSize: MainAxisSize.min,
-                          //           children: <Widget>[
-                          //             const Text('Modal BottomSheet'),
-                          //             ElevatedButton(
-                          //               child: const Text('Close BottomSheet'),
-                          //               onPressed: () => Navigator.pop(context),
-                          //             )
-                          //           ],
-                          //         ),
-                          //       ),
-                          //     );
-                          //   },
-                          // );
-                          // ScaffoldMessenger.of(context).showSnackBar(
-                          //   SnackBar(
-                          //     // animation: Animation(),
-                          //     duration: const Duration(seconds: 5),
-                          //     backgroundColor: Theme.of(context).colorScheme.error,
-                          //     content: Column(
-                          //       mainAxisSize: MainAxisSize.min,
-                          //       children: [
-                          //         Text(
-                          //           "Logging out requires a connection",
-                          //           style: kTitle.copyWith(
-                          //               color: Theme.of(context).colorScheme.onPrimary),
-                          //           textAlign: TextAlign.center,
-                          //         ),
-                          //         const SizedBox(height: 15),
-                          //         Text(
-                          //           "Internet is required to give your account extra security.",
-                          //           style: kBody.copyWith(
-                          //               color: Theme.of(context).colorScheme.onPrimary),
-                          //           textAlign: TextAlign.center,
-                          //         ),
-                          //       ],
-                          //     ),
-                          //   ),
-                          // );
-                        }
-                      });
-                    },
-                    child: const Text("logout"),
-                  ),
-                ],
+        resizeToAvoidBottomInset: false,
+        body: SafeArea(
+          top:
+              false, // false so on the explore page we can have the main content behind the status bar, but then we use another SafeArea to ensure the actual buttons/interactable content isn't stuck behind the status bar
+          child: TabBarView(
+            physics: const ClampingScrollPhysics(),
+            children: [
+              Container(
+                color: Colors.orangeAccent,
               ),
-            );
-          },
+              Container(
+                color: Colors.lightBlueAccent,
+              ),
+              Container(
+                color: Colors.lightGreen,
+              ),
+              Container(
+                color: Colors.amber,
+              ),
+              Container(
+                color: Colors.red,
+              ),
+            ],
+          ),
         ),
+        bottomNavigationBar: Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.background,
+            // border: Border(
+            //   top: BorderSide(color: Theme.of(context).colorScheme.surface, width: 1),
+            // ),
+          ),
+          child: TabBar(
+            tabs: const [
+              Tab(
+                icon: Icon(CupertinoIcons.compass),
+              ),
+              Tab(
+                icon: Icon(CupertinoIcons.wand_stars_inverse),
+              ),
+              Tab(
+                icon: Icon(CupertinoIcons.add),
+              ),
+              Tab(
+                icon: Icon(CupertinoIcons.search),
+              ),
+              Tab(
+                icon: Icon(CupertinoIcons.profile_circled),
+              )
+            ],
+            enableFeedback: true,
+            onTap: (t) => HapticFeedback.vibrate(),
+            labelColor: Theme.of(context).colorScheme.primary,
+            unselectedLabelColor: Theme.of(context).colorScheme.surface,
+            indicatorSize: TabBarIndicatorSize.tab,
+            indicatorColor: Colors.transparent,
+          ),
+        ),
+        backgroundColor: Theme.of(context).colorScheme.background,
       ),
     );
   }
-
-  static Route<void> _modalBuilder(BuildContext context, Object? arguments) {
-    return CupertinoModalPopupRoute<void>(
-      builder: (BuildContext context) {
-        return CupertinoActionSheet(
-          title: Padding(
-            padding: const EdgeInsets.only(bottom: 2),
-            child: Text(
-              "Logging out requires an internet connection",
-              style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
-            ),
-          ),
-        );
-      },
-    );
-  }
 }
+
+
+
+
+
+
+// import 'package:flutter/material.dart';
+// import 'package:flutter_mobile_client/constants/typography.dart';
+// import 'package:flutter_mobile_client/state/user_slice.dart';
+// import 'package:flutter_riverpod/flutter_riverpod.dart';
+// import 'package:stacked_themes/stacked_themes.dart';
+// import 'package:flutter/cupertino.dart';
+
+// class BottomNav extends ConsumerWidget {
+//   const BottomNav({Key? key}) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//     UserState provider = ref.watch(userProvider);
+//     return WillPopScope(
+//       onWillPop: () async => false, // disables back button
+//       child: Scaffold(
+//         body: Builder(
+//           builder: (context) {
+//             return Center(
+//               child: Column(
+//                 mainAxisAlignment: MainAxisAlignment.center,
+//                 children: [
+//                   Text(
+//                     "access token: ${provider.token.accessToken}",
+//                   ),
+//                   TextButton(
+//                     onPressed: () {
+//                       getThemeManager(context).toggleDarkLightTheme();
+//                     },
+//                     child: const Text("change theme"),
+//                   ),
+//                   TextButton(
+//                     onPressed: () {
+//                       ref.read(userProvider.notifier).logout().then((value) {
+//                         if (ref.read(userProvider).logoutSuccess == false) {
+//                           Navigator.of(context).restorablePush(_modalBuilder);
+//                         }
+//                       });
+//                     },
+//                     child: const Text("logout"),
+//                   ),
+//                 ],
+//               ),
+//             );
+//           },
+//         ),
+//       ),
+//     );
+//   }
+
+//   static Route<void> _modalBuilder(BuildContext context, Object? arguments) {
+//     return CupertinoModalPopupRoute<void>(
+//       builder: (BuildContext context) {
+//         return CupertinoActionSheet(
+//           title: Padding(
+//             padding: const EdgeInsets.only(bottom: 2),
+//             child: Text(
+//               "Logging out requires an internet connection",
+//               style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
+//             ),
+//           ),
+//         );
+//       },
+//     );
+//   }
+// }

@@ -36,7 +36,6 @@ class UserNotifier extends StateNotifier<UserState> {
   // looks in device storage, if refresh token exists, makes call and gets
   // a corresponding access token from server and sets it into state
   setAccessToken() async {
-    print("chek!!");
     // reset state (because user can click "try again" and retry the loading call)
     state = state.copyWith(
         newToken: const Token(error: false, accessToken: "", loading: true, newUser: false));
@@ -48,10 +47,11 @@ class UserNotifier extends StateNotifier<UserState> {
       await storage.write(
           key: "refreshToken",
           value:
-              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9uZ29PYmplY3RJRCI6IjYyOTg2ZDBhYWQyZDI3MjI1ZjFhZGI2NSIsImlhdCI6MTY1NDQxMDM2MiwiZXhwIjoxNjg1OTY3OTYyfQ.or9kAkmBzCwSPpIPZjuPoGK4Tbai9wydWjxjM832SFI");
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9uZ29PYmplY3RJRCI6IjYyOTg2ZDBhYWQyZDI3MjI1ZjFhZGI2NSIsImlhdCI6MTY1NDQyMjcwOSwiZXhwIjoxNjg1OTgwMzA5fQ.DxatKlU9oL6i05yNcqvjkoJ9MZhGLtZaYaai6V4tmJE");
 
       final refreshToken = await storage.read(key: "refreshToken");
       if (refreshToken == null) {
+        print("token null");
         return state = state.copyWith(
             newToken: const Token(error: false, accessToken: "", loading: false, newUser: true));
       }
@@ -70,23 +70,25 @@ class UserNotifier extends StateNotifier<UserState> {
           .timeout(const Duration(seconds: 2));
       if (response.statusCode != 200) {
         // in this case, redirect to OPEN (new user)
+        print("error code != 200");
         return state = state.copyWith(
             newToken: const Token(error: false, accessToken: "", loading: false, newUser: true));
       } else {
+        print("error code == 200");
         final String accessToken = json.decode(response.body)["accessToken"];
         state = state.copyWith(
             newToken:
                 Token(error: false, accessToken: accessToken, loading: false, newUser: false));
       }
     } catch (e) {
-      print("ERROR CAUGHT: $e");
+      print("error caught: $e");
       return state = state.copyWith(
           newToken: const Token(error: true, accessToken: "", loading: false, newUser: false));
     }
   }
 
   // Removes access token from state, refresh token from storage, and refresh token from DB
-  Future<String> logout() async {
+  Future<dynamic> logout() async {
     // reset attempt success (changing it to "false" if it fails so I can show error message snackbar in UI)
     state = state.copyWith(logoutSucceeded: true);
     try {
@@ -97,7 +99,7 @@ class UserNotifier extends StateNotifier<UserState> {
       if (refreshToken == null) {
         state.copyWith(
             newToken: const Token(error: true, accessToken: "", loading: false, newUser: true));
-        return "success";
+        return;
       }
       final response = await http
           .delete(
@@ -114,25 +116,19 @@ class UserNotifier extends StateNotifier<UserState> {
         state = state.copyWith(
             newToken: const Token(error: false, accessToken: "", loading: false, newUser: true));
         await storage.write(key: "refreshToken", value: null);
-        print("succesfully logged out");
-        return "success";
       } else {
         // ERROR LOGGING OUT
         state = state.copyWith(
             newToken: Token(
                 error: false, accessToken: state.token.accessToken, loading: false, newUser: false),
             logoutSucceeded: false);
-        return "fail";
       }
     } catch (e) {
-      print("Caught error (from logout)");
       // ERROR LOGGING OUT
       state = state.copyWith(
           newToken: Token(
               error: false, accessToken: state.token.accessToken, loading: false, newUser: false),
           logoutSucceeded: false);
-      print("set to false");
-      return "fail";
     }
   }
 }

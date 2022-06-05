@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobile_client/screens/auth/open.dart';
+import 'package:flutter_mobile_client/screens/bottom_nav.dart';
 import 'package:flutter_mobile_client/screens/error.dart';
 import 'package:flutter_mobile_client/screens/splash.dart';
 import 'package:flutter_mobile_client/state/user_slice.dart';
@@ -24,30 +25,13 @@ class _RootState extends ConsumerState<Root> {
 
   @override
   Widget build(BuildContext context) {
-    // ref.watch(userProvider.select((provider) {
-    //   // return SplashScreen();
-    //   // return ErrorScreen();
-    //   // return OpenScreen();
-    //   print("WATCH");
-    //   if (provider.token.error) {
-    //     Navigator.pushNamed(context, '/error');
-    //   } else if (provider.token.newUser) {
-    //     Navigator.pushNamed(context, '/open');
-    //   } else if (!provider.token.loading) {
-    //     //  && provider.token.loading == false
-    //     Navigator.pushNamed(context, '/bottomNav'); // /bottomNav
-    //   }
-    // }));
+    return BottomNav(); // TODO: Remove this line; just for TESTING (goes directly to "tabs-home" screen)
     ref.listen<UserState>(userProvider, (UserState? prevState, UserState newState) {
-      print("WATCH");
-      print(
-          "${newState.token.error.toString()}, ${newState.token.newUser.toString()}, ${newState.token.loading.toString()}");
       if (newState.token.error) {
         Navigator.pushNamed(context, '/error');
       } else if (newState.token.newUser) {
         Navigator.pushNamed(context, '/open');
       } else if (!newState.token.loading) {
-        //  && provider.token.loading == false
         Navigator.pushNamed(context, '/bottomNav'); // /bottomNav
       } else {
         Navigator.pushNamed(context, "/splash");
