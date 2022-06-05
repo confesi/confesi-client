@@ -26,14 +26,14 @@ class BottomNav extends ConsumerWidget {
                 child: const Text("change theme"),
               ),
               TextButton(
-                onPressed: () async {
-                  var x = await ref.read(userProvider.notifier).logout();
-                  if (x == "success") {
-                    print("Success (view)");
-                  } else {
-                    print("Fail (view)");
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("error!!")));
-                  }
+                onPressed: () {
+                  ref.read(userProvider.notifier).logout().then((value) {
+                    print("SUCCESS? = ${ref.watch(userProvider).logoutSuccess}");
+                    if (ref.watch(userProvider).logoutSuccess == false) {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text("Please connect to the internet to logout.")));
+                    }
+                  });
                 },
                 child: const Text("logout"),
               ),

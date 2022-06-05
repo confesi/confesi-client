@@ -19,12 +19,14 @@ class Token {
 @immutable
 class UserState {
   const UserState(
-      {this.token = const Token(error: false, accessToken: "", loading: true, newUser: false)});
+      {this.logoutSuccess = true,
+      this.token = const Token(error: false, accessToken: "", loading: true, newUser: false)});
 
   final Token token;
+  final bool logoutSuccess;
 
-  UserState copyWith({Token? newToken}) {
-    return UserState(token: newToken ?? token);
+  UserState copyWith({Token? newToken, bool? logoutSucceeded}) {
+    return UserState(token: newToken ?? token, logoutSuccess: logoutSucceeded ?? logoutSuccess);
   }
 }
 
@@ -46,7 +48,7 @@ class UserNotifier extends StateNotifier<UserState> {
       await storage.write(
           key: "refreshToken",
           value:
-              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9uZ29PYmplY3RJRCI6IjYyOTg2ZDBhYWQyZDI3MjI1ZjFhZGI2NSIsImlhdCI6MTY1NDQwMjUzNiwiZXhwIjoxNjg1OTYwMTM2fQ.-krqZhhaffuEo7D1a1cIBVKmb1Gw6-8QDXptj7sN0gI");
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9uZ29PYmplY3RJRCI6IjYyOTg2ZDBhYWQyZDI3MjI1ZjFhZGI2NSIsImlhdCI6MTY1NDQwNjY4NiwiZXhwIjoxNjg1OTY0Mjg2fQ.JIzyhYC3OhVY9vMrG0X6lxB5cnlFRROZhbXtfbFGJZw");
 
       final refreshToken = await storage.read(key: "refreshToken");
       if (refreshToken == null) {
@@ -83,13 +85,11 @@ class UserNotifier extends StateNotifier<UserState> {
     }
   }
 
-  //TODO: remove access token from state, refresh token from storage, and refresh token from DB
+  // Removes access token from state, refresh token from storage, and refresh token from DB
   Future<String> logout() async {
+    // reset attempt success (changing it to "false" if it fails so I can show error message snackbar in UI)
+    state = state.copyWith(logoutSucceeded: true);
     try {
-      // DO I NEED THIS?
-      // state = state.copyWith(
-      //     newToken: const Token(error: false, accessToken: "", loading: true, newUser: false));
-      // DO I NEED THIS?
       const storage = FlutterSecureStorage();
       final refreshToken = await storage.read(key: "refreshToken");
       // User must have somehow cleared the securestorage - nothing we can do to delete corresponding token in DB now, so we say "success"
@@ -109,7 +109,7 @@ class UserNotifier extends StateNotifier<UserState> {
               "token": refreshToken.toString(),
             }),
           )
-          .timeout(const Duration(seconds: 5));
+          .timeout(const Duration(seconds: 2));
       if (response.statusCode == 200) {
         state = state.copyWith(
             newToken: const Token(error: false, accessToken: "", loading: false, newUser: true));
@@ -120,19 +120,19 @@ class UserNotifier extends StateNotifier<UserState> {
         // ERROR LOGGING OUT
         state = state.copyWith(
             newToken: Token(
-                error: false,
-                accessToken: state.token.accessToken,
-                loading: false,
-                newUser: false));
+                error: false, accessToken: state.token.accessToken, loading: false, newUser: false),
+            logoutSucceeded: false);
         return "fail";
       }
     } catch (e) {
+      print("Caught error (from logout)");
       // ERROR LOGGING OUT
       state = state.copyWith(
           newToken: Token(
-              error: false, accessToken: state.token.accessToken, loading: false, newUser: false));
+              error: false, accessToken: state.token.accessToken, loading: false, newUser: false),
+          logoutSucceeded: false);
+      print("set to false");
       return "fail";
-      // direct to logout all route? suspicous activity? contact admin?
     }
   }
 }
