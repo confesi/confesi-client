@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-// TODO: Add my colors from "constants/colors.dart" into here
-
 // Light theme (index 0), dark theme (index 1)
 List<ThemeData> themesList = [
   ThemeData(

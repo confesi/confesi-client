@@ -48,7 +48,7 @@ class UserNotifier extends StateNotifier<UserState> {
       await storage.write(
           key: "refreshToken",
           value:
-              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9uZ29PYmplY3RJRCI6IjYyOTg2ZDBhYWQyZDI3MjI1ZjFhZGI2NSIsImlhdCI6MTY1NDQwNjY4NiwiZXhwIjoxNjg1OTY0Mjg2fQ.JIzyhYC3OhVY9vMrG0X6lxB5cnlFRROZhbXtfbFGJZw");
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9uZ29PYmplY3RJRCI6IjYyOTg2ZDBhYWQyZDI3MjI1ZjFhZGI2NSIsImlhdCI6MTY1NDQxMDM2MiwiZXhwIjoxNjg1OTY3OTYyfQ.or9kAkmBzCwSPpIPZjuPoGK4Tbai9wydWjxjM832SFI");
 
       final refreshToken = await storage.read(key: "refreshToken");
       if (refreshToken == null) {
