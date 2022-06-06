@@ -35,7 +35,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ThemeBuilder(
       // statusBarColorBuilder: (theme) => theme?.backgroundColor,
-      defaultThemeMode: ThemeMode.light, // change to "ThemeMode.system" to get default system theme
+      defaultThemeMode:
+          ThemeMode.system, // change to "ThemeMode.light/dark" to default to one or the other
       lightTheme: themesList[0],
       darkTheme: themesList[1],
       builder: (context, regularTheme, darkTheme, themeMode) => MaterialApp(

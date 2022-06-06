@@ -12,12 +12,10 @@ class BottomNav extends StatelessWidget {
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 5,
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: SafeArea(
-          top:
-              false, // false so on the explore page we can have the main content behind the status bar, but then we use another SafeArea to ensure the actual buttons/interactable content isn't stuck behind the status bar
-          child: TabBarView(
+      child: SafeArea(
+        top: false,
+        child: Scaffold(
+          body: TabBarView(
             physics: const ClampingScrollPhysics(),
             children: [
               Container(
@@ -35,41 +33,41 @@ class BottomNav extends StatelessWidget {
               ),
             ],
           ),
-        ),
-        bottomNavigationBar: Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.background,
-            // border: Border(
-            //   top: BorderSide(color: Theme.of(context).colorScheme.surface, width: 1),
-            // ),
+          bottomNavigationBar: Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.background,
+              // border: Border(
+              //   top: BorderSide(color: Theme.of(context).colorScheme.surface, width: 1),
+              // ),
+            ),
+            child: TabBar(
+              tabs: const [
+                Tab(
+                  icon: Icon(CupertinoIcons.compass),
+                ),
+                Tab(
+                  icon: Icon(CupertinoIcons.wand_stars_inverse),
+                ),
+                Tab(
+                  icon: Icon(CupertinoIcons.add),
+                ),
+                Tab(
+                  icon: Icon(CupertinoIcons.search),
+                ),
+                Tab(
+                  icon: Icon(CupertinoIcons.profile_circled),
+                )
+              ],
+              enableFeedback: true,
+              onTap: (t) => HapticFeedback.lightImpact(),
+              labelColor: Theme.of(context).colorScheme.primary,
+              unselectedLabelColor: Theme.of(context).colorScheme.surface,
+              indicatorSize: TabBarIndicatorSize.tab,
+              indicatorColor: Colors.transparent,
+            ),
           ),
-          child: TabBar(
-            tabs: const [
-              Tab(
-                icon: Icon(CupertinoIcons.compass),
-              ),
-              Tab(
-                icon: Icon(CupertinoIcons.wand_stars_inverse),
-              ),
-              Tab(
-                icon: Icon(CupertinoIcons.add),
-              ),
-              Tab(
-                icon: Icon(CupertinoIcons.search),
-              ),
-              Tab(
-                icon: Icon(CupertinoIcons.profile_circled),
-              )
-            ],
-            enableFeedback: true,
-            onTap: (t) => HapticFeedback.vibrate(),
-            labelColor: Theme.of(context).colorScheme.primary,
-            unselectedLabelColor: Theme.of(context).colorScheme.surface,
-            indicatorSize: TabBarIndicatorSize.tab,
-            indicatorColor: Colors.transparent,
-          ),
+          backgroundColor: Theme.of(context).colorScheme.background,
         ),
-        backgroundColor: Theme.of(context).colorScheme.background,
       ),
     );
   }
