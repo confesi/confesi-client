@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 // Light theme (index 0), dark theme (index 1)
 List<ThemeData> themesList = [
   ThemeData(
+    // pageTransitionsTheme: const PageTransitionsTheme(builders: {
+    //   TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+    //   TargetPlatform.iOS: CupertinoPageTransitionsBuilder()
+    // }),
     colorScheme: const ColorScheme(
       brightness: Brightness.light,
       primary: Color(0xff333333),
