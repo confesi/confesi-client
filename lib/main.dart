@@ -5,6 +5,7 @@ import 'package:flutter_mobile_client/constants/general.dart';
 import 'package:flutter_mobile_client/screens/auth/open.dart';
 import 'package:flutter_mobile_client/screens/bottom_nav.dart';
 import 'package:flutter_mobile_client/screens/error.dart';
+import 'package:flutter_mobile_client/screens/post/post_home.dart';
 import 'package:flutter_mobile_client/screens/root.dart';
 import 'package:flutter_mobile_client/constants/themes.dart';
 import 'package:flutter_mobile_client/screens/splash.dart';
@@ -76,6 +77,15 @@ class MyApp extends StatelessWidget {
             return PageTransition(
               child: const BottomNav(),
               type: PageTransitionType.fade,
+              duration: const Duration(milliseconds: 500),
+              reverseDuration: const Duration(milliseconds: 500),
+              curve: Curves.easeOut,
+            );
+            // home tabs
+          } else if (settings.name == "/post") {
+            return PageTransition(
+              child: const PostHome(),
+              type: PageTransitionType.rightToLeftWithFade,
               duration: const Duration(milliseconds: 500),
               reverseDuration: const Duration(milliseconds: 500),
               curve: Curves.easeOut,

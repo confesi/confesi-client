@@ -5,7 +5,7 @@ class TouchableOpacity extends StatefulWidget {
 
   final Widget child;
   final Function onTap;
-  final Duration duration = const Duration(milliseconds: 130);
+  final Duration duration = const Duration(milliseconds: 100);
   final double opacity = 0.2;
 
   @override

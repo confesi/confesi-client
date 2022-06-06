@@ -1,6 +1,3 @@
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_mobile_client/constants/typography.dart';
 
@@ -18,6 +15,7 @@ class GroupText extends StatelessWidget {
     return SizedBox(
       width: widthFactor * widthMultiplier,
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(

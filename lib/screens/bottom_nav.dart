@@ -3,6 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_mobile_client/screens/post/post_home.dart';
 
 class BottomNav extends StatelessWidget {
   const BottomNav({Key? key}) : super(key: key);
@@ -23,11 +24,9 @@ class BottomNav extends StatelessWidget {
                 color: Colors.orangeAccent,
               ),
               Container(
-                color: Colors.lightBlueAccent,
-              ),
-              Container(
                 color: Colors.lightGreen,
               ),
+              const PostHome(),
               Container(
                 color: Colors.amber,
               ),

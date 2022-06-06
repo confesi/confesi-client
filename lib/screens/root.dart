@@ -25,7 +25,7 @@ class _RootState extends ConsumerState<Root> {
 
   @override
   Widget build(BuildContext context) {
-    return BottomNav(); // TODO: Remove this line; just for TESTING (goes directly to "tabs-home" screen)
+    // return BottomNav(); // TODO: Remove this line; just for TESTING (goes directly to "tabs-home" screen)
     ref.listen<UserState>(userProvider, (UserState? prevState, UserState newState) {
       if (newState.token.error) {
         Navigator.pushNamed(context, '/error');

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobile_client/state/user_slice.dart';
 import 'package:flutter_mobile_client/widgets/buttons/action.dart';
@@ -32,9 +33,12 @@ class ErrorScreen extends ConsumerWidget {
                 ActionButton(
                   text: "try again",
                   onPress: () {
-                    print("Action pressed!!!!!!!!!!!!!!!!!!!!!!!");
                     ref.read(userProvider.notifier).setAccessToken();
                   },
+                  icon: CupertinoIcons.refresh,
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  iconColor: Theme.of(context).colorScheme.onPrimary,
+                  textColor: Theme.of(context).colorScheme.onPrimary,
                 ),
               ],
             ),
