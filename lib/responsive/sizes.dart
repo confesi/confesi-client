@@ -7,7 +7,8 @@ class Responsive extends StatelessWidget {
   late Widget tablet;
   late Widget desktop;
 
-  Responsive(this.mobile, Widget? tablet, Widget? desktop, {Key? key}) : super(key: key) {
+  Responsive(this.mobile, Widget? tablet, Widget? desktop, {Key? key})
+      : super(key: key) {
     if (tablet == null) {
       this.tablet = mobile;
     } else {
@@ -29,7 +30,7 @@ class Responsive extends StatelessWidget {
 
 // This size work fine on my design, maybe you need some customization depends on your design
 
-  // This isMobile, isTablet, isDesktop helep us later
+  // This isMobile, isTablet, isDesktop helps us later
   static bool isMobile(BuildContext context) =>
       MediaQuery.of(context).size.width < kTabletBreakpoint;
 

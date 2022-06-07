@@ -3,6 +3,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_mobile_client/constants/typography.dart';
+import 'package:flutter_mobile_client/responsive/sizes.dart';
 import 'package:flutter_mobile_client/screens/post/post_home.dart';
 
 class BottomNav extends StatefulWidget {
@@ -57,21 +59,43 @@ class _BottomNavState extends State<BottomNav> with TickerProviderStateMixin {
                 // ),
               ),
               child: TabBar(
-                tabs: const [
+                labelStyle: kBody.copyWith(
+                    color: Theme.of(context).colorScheme.primary),
+                tabs: [
                   Tab(
-                    icon: Icon(CupertinoIcons.compass),
+                    text: Responsive.isTablet(context) ||
+                            Responsive.isDesktop(context)
+                        ? "Explore"
+                        : null,
+                    icon: const Icon(CupertinoIcons.compass),
                   ),
                   Tab(
-                    icon: Icon(CupertinoIcons.wand_stars_inverse),
+                    text: Responsive.isTablet(context) ||
+                            Responsive.isDesktop(context)
+                        ? "Hot"
+                        : null,
+                    icon: const Icon(CupertinoIcons.wand_stars_inverse),
                   ),
                   Tab(
-                    icon: Icon(CupertinoIcons.add),
+                    text: Responsive.isTablet(context) ||
+                            Responsive.isDesktop(context)
+                        ? "Post"
+                        : null,
+                    icon: const Icon(CupertinoIcons.add),
                   ),
                   Tab(
-                    icon: Icon(CupertinoIcons.search),
+                    text: Responsive.isTablet(context) ||
+                            Responsive.isDesktop(context)
+                        ? "Search"
+                        : null,
+                    icon: const Icon(CupertinoIcons.search),
                   ),
                   Tab(
-                    icon: Icon(CupertinoIcons.profile_circled),
+                    text: Responsive.isTablet(context) ||
+                            Responsive.isDesktop(context)
+                        ? "Profile"
+                        : null,
+                    icon: const Icon(CupertinoIcons.profile_circled),
                   )
                 ],
                 enableFeedback: true,
