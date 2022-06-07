@@ -63,38 +63,23 @@ class _BottomNavState extends State<BottomNav> with TickerProviderStateMixin {
                     color: Theme.of(context).colorScheme.primary),
                 tabs: [
                   Tab(
-                    text: Responsive.isTablet(context) ||
-                            Responsive.isDesktop(context)
-                        ? "Explore"
-                        : null,
+                    text: Responsive.isTablet(context) ? "Explore" : null,
                     icon: const Icon(CupertinoIcons.compass),
                   ),
                   Tab(
-                    text: Responsive.isTablet(context) ||
-                            Responsive.isDesktop(context)
-                        ? "Hot"
-                        : null,
+                    text: Responsive.isTablet(context) ? "Hot" : null,
                     icon: const Icon(CupertinoIcons.wand_stars_inverse),
                   ),
                   Tab(
-                    text: Responsive.isTablet(context) ||
-                            Responsive.isDesktop(context)
-                        ? "Post"
-                        : null,
+                    text: Responsive.isTablet(context) ? "Post" : null,
                     icon: const Icon(CupertinoIcons.add),
                   ),
                   Tab(
-                    text: Responsive.isTablet(context) ||
-                            Responsive.isDesktop(context)
-                        ? "Search"
-                        : null,
+                    text: Responsive.isTablet(context) ? "Search" : null,
                     icon: const Icon(CupertinoIcons.search),
                   ),
                   Tab(
-                    text: Responsive.isTablet(context) ||
-                            Responsive.isDesktop(context)
-                        ? "Profile"
-                        : null,
+                    text: Responsive.isTablet(context) ? "Profile" : null,
                     icon: const Icon(CupertinoIcons.profile_circled),
                   )
                 ],

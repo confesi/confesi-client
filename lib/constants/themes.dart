@@ -3,10 +3,6 @@ import 'package:flutter/material.dart';
 // Light theme (index 0), dark theme (index 1)
 List<ThemeData> themesList = [
   ThemeData(
-    // pageTransitionsTheme: const PageTransitionsTheme(builders: {
-    //   TargetPlatform.android: CupertinoPageTransitionsBuilder(),
-    //   TargetPlatform.iOS: CupertinoPageTransitionsBuilder()
-    // }),
     colorScheme: const ColorScheme(
       brightness: Brightness.light,
       primary: Color(0xff333333),
@@ -23,16 +19,17 @@ List<ThemeData> themesList = [
   ),
   ThemeData(
     colorScheme: const ColorScheme(
-        brightness: Brightness.dark,
-        primary: Colors.yellow,
-        onPrimary: Colors.orange,
-        secondary: Colors.blue,
-        onSecondary: Colors.green,
-        error: Colors.pink,
-        onError: Colors.white,
-        background: Colors.indigo,
-        onBackground: Colors.black,
-        surface: Colors.orange,
-        onSurface: Colors.cyanAccent),
+      brightness: Brightness.dark,
+      primary: Color(0xffe6f5fc),
+      onPrimary: Color(0xff333333),
+      secondary: Color(0xffe6dcf5),
+      onSecondary: Color(0xff333333),
+      error: Color(0xffEB5353),
+      onError: Colors.white,
+      background: Color(0xff2a2a2a),
+      onBackground: Color(0xff7d7d7d),
+      surface: Color(0xffDFDFDE),
+      onSurface: Color(0xff7d7d7d),
+    ),
   )
 ];
