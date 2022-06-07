@@ -25,7 +25,8 @@ class PostHome extends StatelessWidget {
               children: [
                 const GroupText(
                   widthMultiplier: 80,
-                  body: "Please be civil, but have fun. Posts are never linked to your account.",
+                  body:
+                      "Please be civil, but have fun. Posts are never linked to your account.",
                   header: "Create Confession",
                 ),
                 const SizedBox(height: 15),

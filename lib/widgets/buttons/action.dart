@@ -43,8 +43,9 @@ class ActionButton extends StatelessWidget {
             children: [
               AnimatedSwitcher(
                 duration: const Duration(milliseconds: 200),
-                transitionBuilder: (Widget child, Animation<double> animation) =>
-                    ScaleTransition(scale: animation, child: child),
+                transitionBuilder:
+                    (Widget child, Animation<double> animation) =>
+                        ScaleTransition(scale: animation, child: child),
                 child: loading
                     ? CupertinoActivityIndicator(
                         radius: 8,
