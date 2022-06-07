@@ -44,10 +44,10 @@ class _PostHomeState extends State<PostHome> {
           shadowColor: Colors.transparent,
         ),
         body: SafeArea(
-          child: Responsive(
-            Padding(
-              padding: const EdgeInsets.only(top: 15, left: 15, right: 15),
-              child: Align(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 15, left: 15, right: 15),
+            child: Responsive(
+              Align(
                 alignment: Alignment.topCenter,
                 child: Column(
                   children: [
@@ -77,8 +77,8 @@ class _PostHomeState extends State<PostHome> {
                           icon: CupertinoIcons.up_arrow,
                           backgroundColor:
                               Theme.of(context).colorScheme.secondary,
-                          iconColor: Theme.of(context).colorScheme.primary,
-                          textColor: Theme.of(context).colorScheme.primary,
+                          iconColor: Theme.of(context).colorScheme.onSecondary,
+                          textColor: Theme.of(context).colorScheme.onSecondary,
                         ),
                       ],
                     ),
@@ -107,8 +107,91 @@ class _PostHomeState extends State<PostHome> {
                   ],
                 ),
               ),
+              // TABLET LAYOUT
+              Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        border: Border(
+                          right: BorderSide(
+                              width: 1,
+                              color: Theme.of(context).colorScheme.surface),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 15),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const GroupText(
+                              leftAlign: true,
+                              widthMultiplier: 80,
+                              body:
+                                  "Please be civil, but have fun. Posts are never linked to your account.",
+                              header: "Create Confession",
+                            ),
+                            const SizedBox(height: 15),
+                            ActionButton(
+                              large: true,
+                              onPress: () => {print("tap C")},
+                              text: "publish post",
+                              icon: CupertinoIcons.up_arrow,
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.secondary,
+                              iconColor:
+                                  Theme.of(context).colorScheme.onSecondary,
+                              textColor:
+                                  Theme.of(context).colorScheme.onSecondary,
+                            ),
+                            const SizedBox(height: 15),
+                            ActionButton(
+                              large: true,
+                              onPress: () => {print("tap L")},
+                              text: "add details",
+                              icon: CupertinoIcons.pen,
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.primary,
+                              iconColor:
+                                  Theme.of(context).colorScheme.onPrimary,
+                              textColor:
+                                  Theme.of(context).colorScheme.onPrimary,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 15),
+                  Expanded(
+                    flex: 4,
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: SingleChildScrollView(
+                        controller: controller,
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 15),
+                          child: TextField(
+                            textCapitalization: TextCapitalization.sentences,
+                            keyboardType: TextInputType.multiline,
+                            maxLines: null,
+                            style: kBody.copyWith(
+                                color: Theme.of(context).colorScheme.primary),
+                            decoration: InputDecoration.collapsed(
+                              hintText: "spill your guts...",
+                              hintStyle: kDetail.copyWith(
+                                  color: Theme.of(context).colorScheme.surface),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-            const Text("tablet"),
           ),
         ),
       ),

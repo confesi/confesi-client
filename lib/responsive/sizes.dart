@@ -18,7 +18,7 @@ class Responsive extends StatelessWidget {
       MediaQuery.of(context).size.width < kTabletBreakpoint;
 
   static bool isTablet(BuildContext context) =>
-      MediaQuery.of(context).size.width < kTabletBreakpoint;
+      MediaQuery.of(context).size.width >= kTabletBreakpoint;
 
   @override
   Widget build(BuildContext context) {

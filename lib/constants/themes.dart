@@ -28,7 +28,7 @@ List<ThemeData> themesList = [
       onError: Colors.white,
       background: Color(0xff2a2a2a),
       onBackground: Color(0xff7d7d7d),
-      surface: Color(0xffDFDFDE),
+      surface: Color(0xff7d7d7d),
       onSurface: Color(0xff7d7d7d),
     ),
   )

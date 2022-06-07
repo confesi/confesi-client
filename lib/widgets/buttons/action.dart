@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_mobile_client/constants/typography.dart';
 import 'package:flutter_mobile_client/widgets/buttons/touchableopacity.dart';
 
@@ -12,6 +11,7 @@ class ActionButton extends StatelessWidget {
       required this.iconColor,
       required this.textColor,
       this.loading = false,
+      this.large = false,
       Key? key})
       : super(key: key);
 
@@ -22,6 +22,7 @@ class ActionButton extends StatelessWidget {
   final Color backgroundColor;
   final Color iconColor;
   final Color textColor;
+  final bool large;
 
   @override
   Widget build(BuildContext context) {
@@ -35,11 +36,12 @@ class ActionButton extends StatelessWidget {
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 7),
+          padding: EdgeInsets.symmetric(
+              horizontal: large ? 15 : 11, vertical: large ? 12 : 7),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
+            mainAxisSize: large ? MainAxisSize.max : MainAxisSize.min,
             children: [
               AnimatedSwitcher(
                 duration: const Duration(milliseconds: 200),
