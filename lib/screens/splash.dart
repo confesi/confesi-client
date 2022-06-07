@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobile_client/constants/typography.dart';
 
@@ -18,13 +19,21 @@ class SplashScreen extends StatelessWidget {
         child: Center(
           child: Padding(
             padding: const EdgeInsets.all(15),
-            child: Hero(
-              tag: "logo",
-              child: Image.asset(
-                "assets/images/logo.jpg",
-                width: width > 250 ? 250 : width * 2 / 3,
-                fit: BoxFit.contain,
-              ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Hero(
+                  tag: "logo",
+                  child: Image.asset(
+                    "assets/images/logo.jpg",
+                    width: width > 250 ? 250 : width * 2 / 3,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+                const SizedBox(height: 30),
+                const CupertinoActivityIndicator(),
+                const SizedBox(height: 30),
+              ],
             ),
           ),
         ),
