@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_mobile_client/screens/auth/open.dart';
 import 'package:flutter_mobile_client/screens/bottom_nav.dart';
 import 'package:flutter_mobile_client/screens/error.dart';
@@ -19,14 +20,15 @@ class _RootState extends ConsumerState<Root> {
   @override
   void initState() {
     super.initState();
-    print("INIT IS CALLED!!!!");
     ref.read(userProvider.notifier).setAccessToken();
   }
 
   @override
   Widget build(BuildContext context) {
     // return BottomNav(); // TODO: Remove this line; just for TESTING (goes directly to "tabs-home" screen)
-    ref.listen<UserState>(userProvider, (UserState? prevState, UserState newState) {
+    // return SplashScreen();
+    ref.listen<UserState>(userProvider,
+        (UserState? prevState, UserState newState) {
       if (newState.token.error) {
         Navigator.pushNamed(context, '/error');
       } else if (newState.token.newUser) {

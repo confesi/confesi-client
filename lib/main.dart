@@ -19,9 +19,14 @@ void main() async {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent, // status bar color
   ));
+  final double screenWidth =
+      MediaQueryData.fromWindow(WidgetsBinding.instance.window).size.width;
+  if (screenWidth < kTabletBreakpoint) {
+    await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  }
   runApp(
     DevicePreview(
-      enabled: !kProductionBuild, // set to relase mode constant
+      enabled: !kProductionBuild, // set to release mode constant
       builder: (context) => const ProviderScope(
         child: MyApp(),
       ),
@@ -35,8 +40,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ThemeBuilder(
       // statusBarColorBuilder: (theme) => theme?.backgroundColor,
-      defaultThemeMode:
-          ThemeMode.system, // change to "ThemeMode.light/dark" to default to one or the other
+      defaultThemeMode: ThemeMode
+          .system, // change to "ThemeMode.light/dark" to default to one or the other
       lightTheme: themesList[0],
       darkTheme: themesList[1],
       builder: (context, regularTheme, darkTheme, themeMode) => MaterialApp(

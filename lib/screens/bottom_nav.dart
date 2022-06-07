@@ -5,8 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobile_client/screens/post/post_home.dart';
 
-class BottomNav extends StatelessWidget {
+class BottomNav extends StatefulWidget {
   const BottomNav({Key? key}) : super(key: key);
+
+  @override
+  State<BottomNav> createState() => _BottomNavState();
+}
+
+class _BottomNavState extends State<BottomNav> with TickerProviderStateMixin {
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,59 +24,66 @@ class BottomNav extends StatelessWidget {
       length: 5,
       child: SafeArea(
         top: false,
-        child: Scaffold(
-          body: TabBarView(
-            physics: const ClampingScrollPhysics(),
-            children: [
-              Container(
-                color: Colors.orangeAccent,
-              ),
-              Container(
-                color: Colors.lightGreen,
-              ),
-              const PostHome(),
-              Container(
-                color: Colors.amber,
-              ),
-              Container(
-                color: Colors.red,
-              ),
-            ],
-          ),
-          bottomNavigationBar: Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.background,
-              // border: Border(
-              //   top: BorderSide(color: Theme.of(context).colorScheme.surface, width: 1),
-              // ),
-            ),
-            child: TabBar(
-              tabs: const [
-                Tab(
-                  icon: Icon(CupertinoIcons.compass),
+        child: GestureDetector(
+          onTap: () {
+            print("Tap");
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
+          child: Scaffold(
+            body: TabBarView(
+              // physics: const ClampingScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
+              children: [
+                Container(
+                  color: Colors.orangeAccent,
                 ),
-                Tab(
-                  icon: Icon(CupertinoIcons.wand_stars_inverse),
+                Container(
+                  color: Colors.lightGreen,
                 ),
-                Tab(
-                  icon: Icon(CupertinoIcons.add),
+                const PostHome(),
+                Container(
+                  color: Colors.amber,
                 ),
-                Tab(
-                  icon: Icon(CupertinoIcons.search),
+                Container(
+                  color: Colors.red,
                 ),
-                Tab(
-                  icon: Icon(CupertinoIcons.profile_circled),
-                )
               ],
-              enableFeedback: true,
-              onTap: (t) => HapticFeedback.lightImpact(),
-              labelColor: Theme.of(context).colorScheme.primary,
-              unselectedLabelColor: Theme.of(context).colorScheme.surface,
-              indicatorSize: TabBarIndicatorSize.tab,
-              indicatorColor: Colors.transparent,
             ),
+            bottomNavigationBar: Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.background,
+                // border: Border(
+                //   top: BorderSide(color: Theme.of(context).colorScheme.surface, width: 1),
+                // ),
+              ),
+              child: TabBar(
+                tabs: const [
+                  Tab(
+                    icon: Icon(CupertinoIcons.compass),
+                  ),
+                  Tab(
+                    icon: Icon(CupertinoIcons.wand_stars_inverse),
+                  ),
+                  Tab(
+                    icon: Icon(CupertinoIcons.add),
+                  ),
+                  Tab(
+                    icon: Icon(CupertinoIcons.search),
+                  ),
+                  Tab(
+                    icon: Icon(CupertinoIcons.profile_circled),
+                  )
+                ],
+                enableFeedback: true,
+                onTap: (t) => HapticFeedback.lightImpact(),
+                labelColor: Theme.of(context).colorScheme.primary,
+                unselectedLabelColor: Theme.of(context).colorScheme.surface,
+                indicatorSize: TabBarIndicatorSize.tab,
+                indicatorColor: Colors.transparent,
+              ),
+            ),
+            backgroundColor: Theme.of(context).colorScheme.background,
           ),
-          backgroundColor: Theme.of(context).colorScheme.background,
         ),
       ),
     );
