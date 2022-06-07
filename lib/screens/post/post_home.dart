@@ -133,7 +133,7 @@ class _PostHomeState extends State<PostHome> {
                                   "Please be civil, but have fun. Posts are never linked to your account.",
                               header: "Create Confession",
                             ),
-                            const SizedBox(height: 15),
+                            const SizedBox(height: 30),
                             ActionButton(
                               large: true,
                               onPress: () => {print("tap C")},
