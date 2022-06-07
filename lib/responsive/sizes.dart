@@ -1,16 +1,30 @@
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class Responsive extends StatelessWidget {
-  final Widget mobile;
-  final Widget tablet;
-  final Widget desktop;
+  late Widget mobile;
+  late Widget tablet;
+  late Widget desktop;
 
-  const Responsive({
-    Key? key,
-    required this.mobile,
-    required this.tablet,
-    required this.desktop,
-  }) : super(key: key);
+  Responsive(this.mobile, Widget? tablet, Widget? desktop, {Key? key}) : super(key: key) {
+    if (tablet == null) {
+      this.tablet = mobile;
+    } else {
+      this.tablet = tablet;
+    }
+    if (desktop == null) {
+      this.desktop = mobile;
+    } else {
+      this.desktop = desktop;
+    }
+  }
+
+  // const Responsive({
+  //   Key? key,
+  //   required this.mobile,
+  //   required this.tablet,
+  //   required this.desktop,
+  // }) : super(key: key);
 
 // This size work fine on my design, maybe you need some customization depends on your design
 
