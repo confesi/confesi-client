@@ -1,45 +1,48 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobile_client/constants/typography.dart';
+import 'package:flutter_mobile_client/widgets/buttons/touchableopacity.dart';
 
 class DetailsButton extends StatelessWidget {
-  const DetailsButton({Key? key}) : super(key: key);
+  const DetailsButton({required this.header, required this.body, Key? key})
+      : super(key: key);
+
+  final String header;
+  final String body;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: double.infinity,
-      decoration: BoxDecoration(
-        border: Border(
-          top: BorderSide(
-              color: Theme.of(context).colorScheme.onSurface, width: 0.5),
-          bottom: BorderSide(
-              color: Theme.of(context).colorScheme.onSurface, width: 0.5),
-        ),
-      ),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+        child: TouchableOpacity(
+          onTap: () => print("tap"),
+          child: Container(
+            color: Colors.transparent,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  "University",
-                  style: kTitle.copyWith(
-                      color: Theme.of(context).colorScheme.primary),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      header,
+                      style: kTitle.copyWith(
+                          color: Theme.of(context).colorScheme.primary),
+                    ),
+                    Text(
+                      body,
+                      style: kBody.copyWith(
+                          color: Theme.of(context).colorScheme.onSurface),
+                    ),
+                  ],
                 ),
-                Text(
-                  "university of victoria",
-                  style: kBody.copyWith(
-                      color: Theme.of(context).colorScheme.onSurface),
-                ),
+                Icon(CupertinoIcons.chevron_forward,
+                    color: Theme.of(context).colorScheme.onSurface),
               ],
             ),
-            Icon(CupertinoIcons.chevron_forward,
-                color: Theme.of(context).colorScheme.onSurface),
-          ],
+          ),
         ),
       ),
     );

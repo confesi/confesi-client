@@ -7,6 +7,7 @@ import 'package:flutter_mobile_client/widgets/buttons/action.dart';
 import 'package:flutter_mobile_client/widgets/layouts/line.dart';
 import 'package:flutter_mobile_client/widgets/text/group.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:page_transition/page_transition.dart';
 
 class PostHome extends StatefulWidget {
   const PostHome({Key? key}) : super(key: key);
@@ -63,24 +64,27 @@ class _PostHomeState extends State<PostHome> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        ActionButton(
-                          onPress: () {
-                            //showModalBottomSheet
-                            // JUST CREATE AN ENTIRE SCREEN FOR THE OPTIONS; WHO NEEDS MODALS (THEY'RE TOO SMALL AND GROSS TO WORK WITH)
-                            showCupertinoModalBottomSheet(
-                              enableDrag: false,
-                              backgroundColor: Colors.transparent,
-                              context: context,
-                              builder: (context) => const PostDetails(),
-                            );
-                            ;
-                          },
-                          text: "add details",
-                          icon: CupertinoIcons.pen,
-                          backgroundColor:
-                              Theme.of(context).colorScheme.primary,
-                          iconColor: Theme.of(context).colorScheme.onPrimary,
-                          textColor: Theme.of(context).colorScheme.onPrimary,
+                        Hero(
+                          tag: "details-button",
+                          child: Material(
+                            child: ActionButton(
+                              onPress: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const PostDetails()));
+                              },
+                              text: "add details",
+                              icon: CupertinoIcons.pen,
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.primary,
+                              iconColor:
+                                  Theme.of(context).colorScheme.onPrimary,
+                              textColor:
+                                  Theme.of(context).colorScheme.onPrimary,
+                            ),
+                          ),
                         ),
                         const SizedBox(width: 15),
                         ActionButton(
