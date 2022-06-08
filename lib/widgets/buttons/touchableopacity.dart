@@ -33,8 +33,8 @@ class _TouchableOpacityState extends State<TouchableOpacity>
 
   @override
   void dispose() {
-    super.dispose();
     animController.dispose();
+    super.dispose();
   }
 
   void startAnim() async {
