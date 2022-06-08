@@ -4,7 +4,7 @@ import 'package:flutter_mobile_client/constants/typography.dart';
 import 'package:flutter_mobile_client/widgets/buttons/details.dart';
 import 'package:flutter_mobile_client/widgets/buttons/long.dart';
 import 'package:flutter_mobile_client/widgets/buttons/touchableopacity.dart';
-import 'package:flutter_mobile_client/widgets/layouts/scrollbar.dart';
+import 'package:flutter_mobile_client/widgets/text/animated_load.dart';
 
 class PostDetails extends StatelessWidget {
   const PostDetails({Key? key}) : super(key: key);
@@ -20,9 +20,7 @@ class PostDetails extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                 border: Border(
-                  bottom: BorderSide(
-                      color: Theme.of(context).colorScheme.onSurface,
-                      width: 0.5),
+                  bottom: BorderSide(color: Theme.of(context).colorScheme.onSurface, width: 0.5),
                 ),
               ),
               child: Padding(
@@ -42,13 +40,11 @@ class PostDetails extends StatelessWidget {
                     ),
                     Text(
                       "Post details",
-                      style: kTitle.copyWith(
-                          color: Theme.of(context).colorScheme.primary),
+                      style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
                     ),
                     const Padding(
                       padding: EdgeInsets.all(10),
-                      child: Icon(CupertinoIcons.chevron_back,
-                          color: Colors.transparent),
+                      child: Icon(CupertinoIcons.chevron_back, color: Colors.transparent),
                     ),
                   ],
                 ),
@@ -86,13 +82,8 @@ class PostDetails extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 15),
                           child: Column(
                             children: [
-                              Text(
-                                "✨ details saved automatically ✨",
-                                style: kBody.copyWith(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSurface),
-                                textAlign: TextAlign.center,
+                              const AnimatedLoadText(
+                                text: "✨ details saved automatically ✨",
                               ),
                               const SizedBox(height: 15),
                               Hero(
@@ -101,10 +92,8 @@ class PostDetails extends StatelessWidget {
                                   child: LongButton(
                                     text: "Done",
                                     onPress: () => Navigator.of(context).pop(),
-                                    textColor:
-                                        Theme.of(context).colorScheme.onPrimary,
-                                    backgroundColor:
-                                        Theme.of(context).colorScheme.primary,
+                                    textColor: Theme.of(context).colorScheme.onPrimary,
+                                    backgroundColor: Theme.of(context).colorScheme.primary,
                                   ),
                                 ),
                               ),

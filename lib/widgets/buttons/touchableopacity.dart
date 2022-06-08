@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
 class TouchableOpacity extends StatefulWidget {
-  const TouchableOpacity({required this.child, required this.onTap, Key? key})
-      : super(key: key);
+  const TouchableOpacity({required this.child, required this.onTap, Key? key}) : super(key: key);
 
   final Widget child;
   final Function onTap;
@@ -13,8 +12,7 @@ class TouchableOpacity extends StatefulWidget {
   State<TouchableOpacity> createState() => _TouchableOpacityState();
 }
 
-class _TouchableOpacityState extends State<TouchableOpacity>
-    with SingleTickerProviderStateMixin {
+class _TouchableOpacityState extends State<TouchableOpacity> with SingleTickerProviderStateMixin {
   late AnimationController animController;
   late Animation anim;
 
@@ -25,10 +23,8 @@ class _TouchableOpacityState extends State<TouchableOpacity>
         vsync: this,
         duration: const Duration(milliseconds: 0),
         reverseDuration: const Duration(milliseconds: 400));
-    anim = CurvedAnimation(
-        parent: animController,
-        curve: Curves.linear,
-        reverseCurve: Curves.linear);
+    anim =
+        CurvedAnimation(parent: animController, curve: Curves.linear, reverseCurve: Curves.linear);
   }
 
   @override
@@ -39,7 +35,6 @@ class _TouchableOpacityState extends State<TouchableOpacity>
 
   void startAnim() async {
     animController.forward().then((value) async {
-      await Future.delayed(const Duration(milliseconds: 0));
       animController.reverse();
     });
     animController.addListener(() {

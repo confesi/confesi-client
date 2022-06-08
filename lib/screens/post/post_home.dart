@@ -6,8 +6,6 @@ import 'package:flutter_mobile_client/screens/post/post_details.dart';
 import 'package:flutter_mobile_client/widgets/buttons/action.dart';
 import 'package:flutter_mobile_client/widgets/layouts/line.dart';
 import 'package:flutter_mobile_client/widgets/text/group.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:page_transition/page_transition.dart';
 
 class PostHome extends StatefulWidget {
   const PostHome({Key? key}) : super(key: key);
