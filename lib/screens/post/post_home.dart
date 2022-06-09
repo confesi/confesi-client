@@ -17,6 +17,8 @@ class PostHome extends StatefulWidget {
 class _PostHomeState extends State<PostHome> {
   final ScrollController controller = ScrollController();
 
+  bool pressed = false;
+
   @override
   void initState() {
     super.initState();
@@ -67,30 +69,28 @@ class _PostHomeState extends State<PostHome> {
                           child: Material(
                             child: ActionButton(
                               onPress: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const PostDetails()));
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) => const PostDetails()));
                               },
                               text: "add details",
                               icon: CupertinoIcons.pen,
-                              backgroundColor:
-                                  Theme.of(context).colorScheme.primary,
-                              iconColor:
-                                  Theme.of(context).colorScheme.onPrimary,
-                              textColor:
-                                  Theme.of(context).colorScheme.onPrimary,
+                              backgroundColor: Theme.of(context).colorScheme.primary,
+                              iconColor: Theme.of(context).colorScheme.onPrimary,
+                              textColor: Theme.of(context).colorScheme.onPrimary,
                             ),
                           ),
                         ),
                         const SizedBox(width: 15),
                         ActionButton(
-                          onPress: () => {print("tap R")},
+                          loading: pressed,
+                          onPress: () {
+                            setState(() {
+                              pressed = !pressed;
+                            });
+                          },
                           text: "publish post",
                           icon: CupertinoIcons.up_arrow,
-                          backgroundColor:
-                              Theme.of(context).colorScheme.secondary,
+                          backgroundColor: Theme.of(context).colorScheme.secondary,
                           iconColor: Theme.of(context).colorScheme.onSecondary,
                           textColor: Theme.of(context).colorScheme.onSecondary,
                         ),
@@ -107,12 +107,11 @@ class _PostHomeState extends State<PostHome> {
                             textCapitalization: TextCapitalization.sentences,
                             keyboardType: TextInputType.multiline,
                             maxLines: null,
-                            style: kBody.copyWith(
-                                color: Theme.of(context).colorScheme.primary),
+                            style: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
                             decoration: InputDecoration.collapsed(
                               hintText: "spill your guts...",
-                              hintStyle: kDetail.copyWith(
-                                  color: Theme.of(context).colorScheme.surface),
+                              hintStyle:
+                                  kDetail.copyWith(color: Theme.of(context).colorScheme.surface),
                             ),
                           ),
                         ),
