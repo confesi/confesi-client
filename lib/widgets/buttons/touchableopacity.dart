@@ -5,8 +5,6 @@ class TouchableOpacity extends StatefulWidget {
 
   final Widget child;
   final Function onTap;
-  final Duration duration = const Duration(milliseconds: 50);
-  final double opacity = 0.3;
 
   @override
   State<TouchableOpacity> createState() => _TouchableOpacityState();
