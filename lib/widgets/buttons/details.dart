@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_mobile_client/behaviors/overscroll.dart';
 import 'package:flutter_mobile_client/constants/typography.dart';
 import 'package:flutter_mobile_client/widgets/buttons/touchableopacity.dart';
@@ -18,11 +19,16 @@ class DetailsButton extends StatefulWidget {
 
 class _DetailsButtonState extends State<DetailsButton> {
   final items = [
+    "business",
     "computer science",
-    "visual arts",
-    "engineering",
-    "history",
     "education",
+    "engineering",
+    "fine arts",
+    "human and social development",
+    "humanities",
+    "law",
+    "science",
+    "social sciences",
   ];
 
   int index = 0;
@@ -46,8 +52,10 @@ class _DetailsButtonState extends State<DetailsButton> {
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 5),
-                const AnimatedLoadText(
-                  text: "Selections save automatically.",
+                Text(
+                  "Change your category",
+                  style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                  textAlign: TextAlign.center,
                 ),
                 Expanded(
                   child: Padding(
@@ -58,26 +66,27 @@ class _DetailsButtonState extends State<DetailsButton> {
                         scrollController: FixedExtentScrollController(initialItem: index),
                         selectionOverlay: Container(
                           decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.surface.withOpacity(0.2),
+                            color: Theme.of(context).colorScheme.surface.withOpacity(0.4),
                             borderRadius: const BorderRadius.all(
-                              Radius.circular(5),
+                              Radius.circular(10),
                             ),
                           ),
                         ),
                         backgroundColor: Colors.transparent,
                         looping: false,
-                        itemExtent: 35,
+                        itemExtent: 40,
                         onSelectedItemChanged: (newIndex) {
+                          HapticFeedback.lightImpact();
                           setState(() {
                             index = newIndex;
                           });
                         },
                         children: items
-                            .map((i) => Padding(
+                            .map((item) => Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 15),
                                   child: Center(
                                     child: Text(
-                                      i,
+                                      item,
                                       style: kBody.copyWith(
                                         color: Theme.of(context).colorScheme.primary,
                                       ),
@@ -100,7 +109,6 @@ class _DetailsButtonState extends State<DetailsButton> {
       child: Container(
         // transparent makes it a big hitbox
         color: Colors.transparent,
-        width: double.infinity,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
           child: Container(
@@ -108,18 +116,21 @@ class _DetailsButtonState extends State<DetailsButton> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.header,
-                      style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
-                    ),
-                    Text(
-                      items[index],
-                      style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
-                    ),
-                  ],
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.header,
+                        style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
+                      ),
+                      Text(
+                        items[index],
+                        style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
                 ),
                 Icon(CupertinoIcons.chevron_forward,
                     color: Theme.of(context).colorScheme.onSurface),
