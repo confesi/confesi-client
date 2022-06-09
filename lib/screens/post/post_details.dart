@@ -39,7 +39,7 @@ class PostDetails extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "Post details",
+                      "Details",
                       style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
                     ),
                     const Padding(
@@ -57,47 +57,39 @@ class PostDetails extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 30),
                     child: Column(
                       children: [
-                        const DetailsButton(
+                        DetailsButton(
                           header: "University",
                           body: "university of victoria",
                         ),
-                        const DetailsButton(
+                        DetailsButton(
                           header: "Genre",
                           body: "relationships",
                         ),
-                        const DetailsButton(
+                        DetailsButton(
                           header: "Student year",
                           body: "year 2",
                         ),
-                        const DetailsButton(
+                        DetailsButton(
                           header: "Faculty",
                           body: "visual arts",
                         ),
-                        const DetailsButton(
+                        DetailsButton(
                           header: "Link a friend",
                           body: "@thatguy69",
                         ),
                         const SizedBox(height: 30),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 15),
-                          child: Column(
-                            children: [
-                              const AnimatedLoadText(
-                                text: "✨ details saved automatically ✨",
+                          child: Hero(
+                            tag: "details-button",
+                            child: Material(
+                              child: LongButton(
+                                text: "Done",
+                                onPress: () => Navigator.of(context).pop(),
+                                textColor: Theme.of(context).colorScheme.onPrimary,
+                                backgroundColor: Theme.of(context).colorScheme.primary,
                               ),
-                              const SizedBox(height: 15),
-                              Hero(
-                                tag: "details-button",
-                                child: Material(
-                                  child: LongButton(
-                                    text: "Done",
-                                    onPress: () => Navigator.of(context).pop(),
-                                    textColor: Theme.of(context).colorScheme.onPrimary,
-                                    backgroundColor: Theme.of(context).colorScheme.primary,
-                                  ),
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
                         ),
                       ],
