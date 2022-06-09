@@ -52,49 +52,51 @@ class PostDetails extends StatelessWidget {
             ),
             Expanded(
               child: SingleChildScrollView(
-                  primary: true,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 30),
-                    child: Column(
-                      children: [
-                        DetailsButton(
-                          header: "University",
-                          body: "university of victoria",
-                        ),
-                        DetailsButton(
-                          header: "Genre",
-                          body: "relationships",
-                        ),
-                        DetailsButton(
-                          header: "Student year",
-                          body: "year 2",
-                        ),
-                        DetailsButton(
-                          header: "Faculty",
-                          body: "visual arts",
-                        ),
-                        DetailsButton(
-                          header: "Link a friend",
-                          body: "@thatguy69",
-                        ),
-                        const SizedBox(height: 30),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15),
-                          child: Hero(
-                            tag: "details-button",
-                            child: Material(
-                              child: LongButton(
-                                text: "Done",
-                                onPress: () => Navigator.of(context).pop(),
-                                textColor: Theme.of(context).colorScheme.onPrimary,
-                                backgroundColor: Theme.of(context).colorScheme.primary,
-                              ),
+                primary: true,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 30),
+                  child: Column(
+                    children: [
+                      const DetailsButton(
+                        header: "University",
+                        body: "university of victoria",
+                      ),
+                      const DetailsButton(
+                        header: "Genre",
+                        body: "relationships",
+                      ),
+                      const DetailsButton(
+                        header: "Student year",
+                        body: "year 2",
+                      ),
+                      const DetailsButton(
+                        header: "Faculty",
+                        body: "visual arts",
+                      ),
+                      const DetailsButton(
+                        header: "Link a friend",
+                        body: "@thatguy69",
+                      ),
+                      const SizedBox(height: 30),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        child: Hero(
+                          tag: "details-button",
+                          child: Material(
+                            child: LongButton(
+                              text: "Done",
+                              onPress: () => Navigator.of(context).pop(),
+                              textColor: Theme.of(context).colorScheme.onPrimary,
+                              backgroundColor: Theme.of(context).colorScheme.primary,
                             ),
                           ),
                         ),
-                      ],
-                    ),
-                  )),
+                      ),
+                      const SizedBox(height: 30),
+                    ],
+                  ),
+                ),
+              ),
             ),
           ],
         ),

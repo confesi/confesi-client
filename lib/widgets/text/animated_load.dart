@@ -3,7 +3,7 @@ import 'package:flutter_mobile_client/constants/typography.dart';
 
 class AnimatedLoadText extends StatefulWidget {
   const AnimatedLoadText(
-      {required this.text, this.duration = const Duration(milliseconds: 800), Key? key})
+      {required this.text, this.duration = const Duration(milliseconds: 600), Key? key})
       : super(key: key);
 
   final String text;
