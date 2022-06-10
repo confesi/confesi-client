@@ -56,8 +56,7 @@ class _PostHomeState extends State<PostHome> {
                   children: [
                     const GroupText(
                       widthMultiplier: 80,
-                      body:
-                          "Please be civil, but have fun. Posts are never linked to your account.",
+                      body: "Please be civil, but have fun. All posts are completely anonymous.",
                       header: "Create Confession",
                     ),
                     const SizedBox(height: 15),
@@ -74,7 +73,7 @@ class _PostHomeState extends State<PostHome> {
                               },
                               text: "add details",
                               icon: CupertinoIcons.pen,
-                              backgroundColor: Theme.of(context).colorScheme.secondary,
+                              backgroundColor: Theme.of(context).colorScheme.primary,
                               iconColor: Theme.of(context).colorScheme.onPrimary,
                               textColor: Theme.of(context).colorScheme.onPrimary,
                             ),
@@ -91,7 +90,7 @@ class _PostHomeState extends State<PostHome> {
                           },
                           text: "publish post",
                           icon: CupertinoIcons.arrow_turn_left_up,
-                          backgroundColor: Theme.of(context).colorScheme.primary,
+                          backgroundColor: Theme.of(context).colorScheme.secondary,
                           iconColor: Theme.of(context).colorScheme.onPrimary,
                           textColor: Theme.of(context).colorScheme.onPrimary,
                         ),

@@ -44,7 +44,7 @@ class _LongTextFieldState extends State<LongTextField> {
                 Icon(
                   CupertinoIcons.search,
                   size: 18,
-                  color: Theme.of(context).colorScheme.primary,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
                 const SizedBox(width: 15),
                 Expanded(

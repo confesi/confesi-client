@@ -25,63 +25,52 @@ class ProfileHome extends StatelessWidget {
         shadowColor: Colors.transparent,
       ),
       body: SafeArea(
-          child: LayoutBuilder(
-        builder: (context, constraints) => Column(
+        child: Column(
           mainAxisSize: MainAxisSize.max,
           children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: SizedBox(
-                  height: constraints.maxHeight,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Flexible(
-                        flex: 1,
-                        child: Container(),
-                      ),
-                      const Expanded(
-                        flex: 2,
-                        child: GroupText(body: "@stardust", header: "Matthew Trent"),
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: Padding(
-                          padding: const EdgeInsets.all(15),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              ActionButton(
-                                onPress: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const ProfileEdit(),
-                                  ),
-                                ),
-                                text: "edit profile",
-                                icon: CupertinoIcons.pen,
-                                backgroundColor: Theme.of(context).colorScheme.surface,
-                                iconColor: Theme.of(context).colorScheme.onSurface,
-                                textColor: Theme.of(context).colorScheme.onSurface,
+            SingleChildScrollView(
+              child: Container(
+                height: MediaQuery.of(context).size.height * .25,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    const Spacer(),
+                    const GroupText(body: "@stardust", header: "Matthew Trent"),
+                    const Spacer(),
+                    Padding(
+                      padding: const EdgeInsets.all(15),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          ActionButton(
+                            onPress: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ProfileEdit(),
                               ),
-                              EmblemButton(
-                                onPress: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const ProfileSettings(),
-                                  ),
-                                ),
-                                icon: CupertinoIcons.gear,
-                                backgroundColor: Theme.of(context).colorScheme.surface,
-                                iconColor: Theme.of(context).colorScheme.onSurface,
-                              ),
-                            ],
+                            ),
+                            text: "edit profile",
+                            icon: CupertinoIcons.pen,
+                            backgroundColor: Theme.of(context).colorScheme.surface,
+                            iconColor: Theme.of(context).colorScheme.onSurface,
+                            textColor: Theme.of(context).colorScheme.onSurface,
                           ),
-                        ),
-                      )
-                    ],
-                  ),
+                          EmblemButton(
+                            onPress: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ProfileSettings(),
+                              ),
+                            ),
+                            icon: CupertinoIcons.gear,
+                            backgroundColor: Theme.of(context).colorScheme.surface,
+                            iconColor: Theme.of(context).colorScheme.onSurface,
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
                 ),
               ),
             ),
@@ -157,7 +146,7 @@ class ProfileHome extends StatelessWidget {
             ),
           ],
         ),
-      )),
+      ),
     );
   }
 }

@@ -128,7 +128,7 @@ class _DetailsButtonState extends State<DetailsButton> {
                       ),
                       Text(
                         items[index],
-                        style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                        style: kDetail.copyWith(color: Theme.of(context).colorScheme.onSurface),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ],

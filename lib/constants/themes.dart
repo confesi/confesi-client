@@ -7,14 +7,14 @@ List<ThemeData> themesList = [
       brightness: Brightness.light,
       primary: Color(0xff333333),
       onPrimary: Colors.white,
-      secondary: Color(0xffF6C0F6), // 0xffFFA8A8
+      secondary: Color(0xffFFA8A8), // 0xffF6C0F6
       onSecondary: Color(0xff333333),
       error: Color(0xffEB5353),
       onError: Colors.white,
       background: Colors.white,
       onBackground: Color(0xffefefef),
       surface: Color.fromARGB(255, 246, 246, 246),
-      onSurface: Color(0xff595959),
+      onSurface: Color.fromARGB(255, 147, 147, 147),
     ),
   ),
   ThemeData(

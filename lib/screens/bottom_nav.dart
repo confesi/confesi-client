@@ -54,7 +54,7 @@ class _BottomNavState extends State<BottomNav> with TickerProviderStateMixin {
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.background,
                 border: Border(
-                  top: BorderSide(color: Theme.of(context).colorScheme.surface, width: 0.5),
+                  top: BorderSide(color: Theme.of(context).colorScheme.onBackground, width: 0.5),
                 ),
               ),
               child: TabBar(

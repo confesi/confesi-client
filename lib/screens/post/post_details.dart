@@ -40,50 +40,16 @@ class PostDetails extends StatelessWidget {
                         header: "Link a friend",
                         body: "@thatguy69",
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                        child: Hero(
-                          tag: "details-button",
-                          child: Material(
-                            child: LongButton(
-                              text: "Done",
-                              onPress: () => Navigator.of(context).pop(),
-                              textColor: Theme.of(context).colorScheme.onPrimary,
-                              backgroundColor: Theme.of(context).colorScheme.secondary,
-                            ),
-                          ),
-                        ),
-                      ),
+                      const SizedBox(height: 15),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 15, top: 15),
-                          child: Row(
-                            children: [
-                              Text(
-                                "Details from profile",
-                                style:
-                                    kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
-                                textAlign: TextAlign.left,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              const SizedBox(width: 5),
-                              TouchableOpacity(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const ProfileEdit(),
-                                    ),
-                                  );
-                                },
-                                child: Icon(
-                                  CupertinoIcons.chevron_right,
-                                  size: 20,
-                                  color: Theme.of(context).colorScheme.primary,
-                                ),
-                              ),
-                            ],
+                          padding: const EdgeInsets.only(left: 15),
+                          child: Text(
+                            "Details from profile",
+                            style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
+                            textAlign: TextAlign.left,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ),
@@ -99,6 +65,20 @@ class PostDetails extends StatelessWidget {
                             RowText(leftText: "Faculty", rightText: "computer science"),
                             RowText(leftText: "Year", rightText: "two"),
                           ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                        child: Hero(
+                          tag: "details-button",
+                          child: Material(
+                            child: LongButton(
+                              text: "Done",
+                              onPress: () => Navigator.of(context).pop(),
+                              textColor: Theme.of(context).colorScheme.onPrimary,
+                              backgroundColor: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
                         ),
                       ),
                     ],

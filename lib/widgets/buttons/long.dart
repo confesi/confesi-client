@@ -25,7 +25,7 @@ class LongButton extends StatelessWidget {
         decoration: BoxDecoration(
           color: backgroundColor,
           borderRadius: const BorderRadius.all(
-            Radius.circular(5),
+            Radius.circular(10),
           ),
         ),
         child: Padding(
