@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobile_client/constants/typography.dart';
 import 'package:flutter_mobile_client/screens/profile/profile_home.dart';
-import 'package:flutter_mobile_client/widgets/buttons/touchableopacity.dart';
+import 'package:flutter_mobile_client/widgets/buttons/touchable_opacity.dart';
 
 class AppbarLayout extends StatelessWidget {
   const AppbarLayout({required this.text, Key? key}) : super(key: key);

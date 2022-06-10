@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobile_client/behaviors/overscroll.dart';
 import 'package:flutter_mobile_client/constants/typography.dart';
-import 'package:flutter_mobile_client/widgets/buttons/touchableopacity.dart';
+import 'package:flutter_mobile_client/widgets/buttons/touchable_opacity.dart';
 import 'package:flutter_mobile_client/widgets/layouts/scrollbar.dart';
 import 'package:flutter_mobile_client/widgets/text/animated_load.dart';
 
@@ -135,7 +135,7 @@ class _DetailsButtonState extends State<DetailsButton> {
                   ),
                 ),
                 Icon(CupertinoIcons.chevron_forward,
-                    color: Theme.of(context).colorScheme.onSurface),
+                    color: Theme.of(context).colorScheme.onBackground),
               ],
             ),
           ),

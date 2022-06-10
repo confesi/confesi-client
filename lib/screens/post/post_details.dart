@@ -4,7 +4,7 @@ import 'package:flutter_mobile_client/constants/typography.dart';
 import 'package:flutter_mobile_client/screens/profile/profile_edit.dart';
 import 'package:flutter_mobile_client/widgets/buttons/details.dart';
 import 'package:flutter_mobile_client/widgets/buttons/long.dart';
-import 'package:flutter_mobile_client/widgets/buttons/touchableopacity.dart';
+import 'package:flutter_mobile_client/widgets/buttons/touchable_opacity.dart';
 import 'package:flutter_mobile_client/widgets/layouts/appbar.dart';
 import 'package:flutter_mobile_client/widgets/layouts/line.dart';
 import 'package:flutter_mobile_client/widgets/text/animated_load.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_mobile_client/widgets/buttons/touchableopacity.dart';
+import 'package:flutter_mobile_client/widgets/buttons/touchable_opacity.dart';
 
 class EmblemButton extends StatelessWidget {
   const EmblemButton(

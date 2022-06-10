@@ -1,10 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobile_client/constants/typography.dart';
-import 'package:flutter_mobile_client/widgets/buttons/touchableopacity.dart';
+import 'package:flutter_mobile_client/widgets/buttons/touchable_opacity.dart';
 
 class LongTextField extends StatefulWidget {
-  const LongTextField({Key? key}) : super(key: key);
+  const LongTextField(
+      {this.bottomPadding = 0.0, this.topPadding = 0.0, this.horizontalPadding = 0.0, Key? key})
+      : super(key: key);
+
+  final double bottomPadding;
+  final double topPadding;
+  final double horizontalPadding;
 
   @override
   State<LongTextField> createState() => _LongTextFieldState();
@@ -24,10 +30,14 @@ class _LongTextFieldState extends State<LongTextField> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => focusNode.requestFocus(),
-      child: Padding(
-        padding: const EdgeInsets.all(10),
+    return Padding(
+      padding: EdgeInsets.only(
+          left: widget.horizontalPadding,
+          right: widget.horizontalPadding,
+          top: widget.topPadding,
+          bottom: widget.bottomPadding),
+      child: GestureDetector(
+        onTap: () => focusNode.requestFocus(),
         child: Container(
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surface,
@@ -36,7 +46,7 @@ class _LongTextFieldState extends State<LongTextField> {
             ),
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 9),
             child: Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -56,35 +66,15 @@ class _LongTextFieldState extends State<LongTextField> {
                         text = newValue;
                       });
                     },
-                    style: kDetail.copyWith(
+                    style: kBody.copyWith(
                         color: Theme.of(context).colorScheme.primary, fontWeight: FontWeight.w100),
                     decoration: InputDecoration.collapsed(
                       hintText: "Search",
-                      hintStyle: kDetail.copyWith(
+                      hintStyle: kBody.copyWith(
                           color: Theme.of(context).colorScheme.onSurface,
                           fontWeight: FontWeight.w100),
                     ),
                   ),
-                ),
-                AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 200),
-                  transitionBuilder: (Widget child, Animation<double> animation) =>
-                      ScaleTransition(scale: animation, child: child),
-                  child: text.isNotEmpty
-                      ? TouchableOpacity(
-                          onTap: () {
-                            setState(() {
-                              text = "";
-                              controller.clear();
-                            });
-                          },
-                          child: Icon(
-                            CupertinoIcons.xmark_circle,
-                            size: 18,
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                        )
-                      : Container(),
                 ),
               ],
             ),
