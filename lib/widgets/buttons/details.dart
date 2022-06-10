@@ -40,6 +40,8 @@ class _DetailsButtonState extends State<DetailsButton> {
         backgroundColor: Colors.transparent,
         context: context,
         builder: (context) => ClipRRect(
+          borderRadius:
+              const BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
           child: Scaffold(
             backgroundColor: Theme.of(context).colorScheme.onPrimary,
             body: Column(

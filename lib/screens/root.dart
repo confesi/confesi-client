@@ -39,9 +39,11 @@ class _RootState extends ConsumerState<Root> {
                 alignment: Alignment.bottomCenter,
                 child: const ErrorScreen()));
       } else if (newState.token.newUser) {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => const OpenScreen()));
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => const OpenScreen()));
       } else if (!newState.token.loading) {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => const BottomNav()));
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => const BottomNav()));
       } else {
         Navigator.push(
             context,

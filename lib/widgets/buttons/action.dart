@@ -36,8 +36,7 @@ class ActionButton extends StatelessWidget {
           ),
         ),
         child: Padding(
-          padding: EdgeInsets.symmetric(
-              horizontal: large ? 15 : 11, vertical: large ? 12 : 7),
+          padding: EdgeInsets.symmetric(horizontal: large ? 15 : 11, vertical: large ? 12 : 7),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -45,20 +44,21 @@ class ActionButton extends StatelessWidget {
             children: [
               AnimatedSwitcher(
                 duration: const Duration(milliseconds: 200),
-                transitionBuilder:
-                    (Widget child, Animation<double> animation) =>
-                        ScaleTransition(scale: animation, child: child),
+                transitionBuilder: (Widget child, Animation<double> animation) =>
+                    ScaleTransition(scale: animation, child: child),
                 child: loading
-                    ? CupertinoActivityIndicator(
-                        radius: 8,
-                        color: iconColor,
+                    ? Padding(
+                        padding: const EdgeInsets.all(2),
+                        child: CupertinoActivityIndicator(
+                          radius: 8,
+                          color: iconColor,
+                        ),
                       )
                     : Icon(
                         icon,
                         color: iconColor,
-                        size: 16,
+                        size: 20,
                       ),
-                // switch to scale animation later (once we know it's working)
               ),
               const SizedBox(width: 10),
               Padding(

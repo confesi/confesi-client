@@ -1,16 +1,32 @@
 import 'package:flutter/material.dart';
 
 class LineLayout extends StatelessWidget {
-  const LineLayout({required this.color, Key? key}) : super(key: key);
+  const LineLayout(
+      {this.horizontalPadding = 0.0,
+      this.topPadding = 0.0,
+      this.bottomPadding = 0.0,
+      required this.color,
+      Key? key})
+      : super(key: key);
 
   final Color color;
+  final double horizontalPadding;
+  final double topPadding;
+  final double bottomPadding;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 0.5,
-      width: double.infinity,
-      color: color,
+    return Padding(
+      padding: EdgeInsets.only(
+          left: horizontalPadding,
+          right: horizontalPadding,
+          top: topPadding,
+          bottom: bottomPadding),
+      child: Container(
+        height: 0.5,
+        width: double.infinity,
+        color: color,
+      ),
     );
   }
 }

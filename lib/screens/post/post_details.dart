@@ -23,7 +23,7 @@ class PostDetails extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                 border: Border(
-                  bottom: BorderSide(color: Theme.of(context).colorScheme.onSurface, width: 0.5),
+                  bottom: BorderSide(color: Theme.of(context).colorScheme.surface, width: 0.5),
                 ),
               ),
               child: Row(
@@ -95,7 +95,7 @@ class PostDetails extends StatelessWidget {
                             LinkText(
                               text: "These details are auto-populated from your account. ",
                               linkText: "Change them here.",
-                              widthMultiplier: 67,
+                              widthMultiplier: 80,
                               onPress: () {
                                 print("TAP!");
                               },

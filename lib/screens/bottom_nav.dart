@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_mobile_client/constants/typography.dart';
 import 'package:flutter_mobile_client/responsive/sizes.dart';
 import 'package:flutter_mobile_client/screens/post/post_home.dart';
+import 'package:flutter_mobile_client/screens/profile/profile_home.dart';
 
 class BottomNav extends StatefulWidget {
   const BottomNav({Key? key}) : super(key: key);
@@ -46,21 +47,18 @@ class _BottomNavState extends State<BottomNav> with TickerProviderStateMixin {
                 Container(
                   color: Colors.amber,
                 ),
-                Container(
-                  color: Colors.red,
-                ),
+                const ProfileHome(),
               ],
             ),
             bottomNavigationBar: Container(
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.background,
-                // border: Border(
-                //   top: BorderSide(color: Theme.of(context).colorScheme.surface, width: 1),
-                // ),
+                border: Border(
+                  top: BorderSide(color: Theme.of(context).colorScheme.surface, width: 0.5),
+                ),
               ),
               child: TabBar(
-                labelStyle: kBody.copyWith(
-                    color: Theme.of(context).colorScheme.primary),
+                labelStyle: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
                 tabs: [
                   Tab(
                     text: Responsive.isTablet(context) ? "Explore" : null,

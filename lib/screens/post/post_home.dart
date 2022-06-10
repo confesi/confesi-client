@@ -89,10 +89,10 @@ class _PostHomeState extends State<PostHome> {
                             });
                           },
                           text: "publish post",
-                          icon: CupertinoIcons.up_arrow,
+                          icon: CupertinoIcons.arrow_turn_left_up,
                           backgroundColor: Theme.of(context).colorScheme.primary,
-                          iconColor: Theme.of(context).colorScheme.onSecondary,
-                          textColor: Theme.of(context).colorScheme.onSecondary,
+                          iconColor: Theme.of(context).colorScheme.onPrimary,
+                          textColor: Theme.of(context).colorScheme.onPrimary,
                         ),
                       ],
                     ),
