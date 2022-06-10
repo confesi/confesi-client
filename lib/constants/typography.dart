@@ -13,7 +13,7 @@ var kTitle = GoogleFonts.inter(
 
 // normal text
 var kBody = GoogleFonts.inter(
-  textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
+  textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
 );
 
 // detailed or small text

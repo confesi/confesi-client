@@ -4,9 +4,10 @@ import 'package:flutter_mobile_client/constants/typography.dart';
 import 'package:flutter_mobile_client/widgets/buttons/touchableopacity.dart';
 
 class AppbarLayout extends StatelessWidget {
-  const AppbarLayout({required this.text, Key? key}) : super(key: key);
+  const AppbarLayout({this.focusNode = "none", required this.text, Key? key}) : super(key: key);
 
   final String text;
+  final focusNode;
 
   @override
   Widget build(BuildContext context) {
@@ -17,14 +18,19 @@ class AppbarLayout extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             border: Border(
-              bottom: BorderSide(color: Theme.of(context).colorScheme.onBackground, width: 0.5),
+              bottom: BorderSide(color: Theme.of(context).colorScheme.onBackground, width: 1),
             ),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               TouchableOpacity(
-                onTap: () => Navigator.of(context).pop(),
+                onTap: () async {
+                  if (focusNode != "none") {
+                    await focusNode.unfocus();
+                    Navigator.of(context).pop();
+                  }
+                },
                 child: Container(
                   color: Colors.transparent,
                   child: const Padding(

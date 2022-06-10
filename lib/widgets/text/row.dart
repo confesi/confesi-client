@@ -16,8 +16,8 @@ class RowText extends StatelessWidget {
           border: Border(
         top: BorderSide(
             color: topLine ? Theme.of(context).colorScheme.onBackground : Colors.transparent,
-            width: topLine ? 0.5 : 0),
-        bottom: BorderSide(color: Theme.of(context).colorScheme.onBackground, width: 0.5),
+            width: topLine ? 1 : 0),
+        bottom: BorderSide(color: Theme.of(context).colorScheme.onBackground, width: 1),
       )),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),

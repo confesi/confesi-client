@@ -66,7 +66,7 @@ class _BottomNavState extends State<BottomNav> with TickerProviderStateMixin {
                   ),
                   Tab(
                     text: Responsive.isTablet(context) ? "Hot" : null,
-                    icon: const Icon(CupertinoIcons.wand_stars_inverse),
+                    icon: const Icon(CupertinoIcons.flame),
                   ),
                   Tab(
                     text: Responsive.isTablet(context) ? "Post" : null,
