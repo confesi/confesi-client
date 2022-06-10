@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobile_client/constants/typography.dart';
+import 'package:flutter_mobile_client/screens/profile/profile_edit.dart';
 import 'package:flutter_mobile_client/widgets/buttons/details.dart';
 import 'package:flutter_mobile_client/widgets/buttons/long.dart';
 import 'package:flutter_mobile_client/widgets/buttons/touchableopacity.dart';
+import 'package:flutter_mobile_client/widgets/layouts/appbar.dart';
 import 'package:flutter_mobile_client/widgets/layouts/line.dart';
 import 'package:flutter_mobile_client/widgets/text/animated_load.dart';
 import 'package:flutter_mobile_client/widgets/text/link.dart';
@@ -20,35 +22,8 @@ class PostDetails extends StatelessWidget {
         bottom: false,
         child: Column(
           children: [
-            Container(
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(color: Theme.of(context).colorScheme.surface, width: 0.5),
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TouchableOpacity(
-                    onTap: () => Navigator.of(context).pop(),
-                    child: Container(
-                      color: Colors.transparent,
-                      child: const Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Icon(CupertinoIcons.chevron_back),
-                      ),
-                    ),
-                  ),
-                  Text(
-                    "Post details",
-                    style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Icon(CupertinoIcons.chevron_back, color: Colors.transparent),
-                  ),
-                ],
-              ),
+            const AppbarLayout(
+              text: "Post details",
             ),
             Expanded(
               child: SingleChildScrollView(
@@ -79,10 +54,21 @@ class PostDetails extends StatelessWidget {
                           ),
                         ),
                       ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 15, top: 15),
+                          child: Text(
+                            "Account settings",
+                            style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
+                            textAlign: TextAlign.left,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
                       Padding(
                         padding: const EdgeInsets.only(left: 15, right: 15, top: 15),
                         child: Column(
-                          mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             const RowText(
@@ -91,14 +77,17 @@ class PostDetails extends StatelessWidget {
                                 topLine: true),
                             const RowText(leftText: "Faculty", rightText: "computer science"),
                             const RowText(leftText: "Year", rightText: "two"),
-                            const SizedBox(height: 26),
+                            const SizedBox(height: 15),
                             LinkText(
-                              text: "These details are auto-populated from your account. ",
+                              text: "These details are auto-populated from your profile. ",
                               linkText: "Change them here.",
-                              widthMultiplier: 80,
-                              onPress: () {
-                                print("TAP!");
-                              },
+                              widthMultiplier: 100,
+                              onPress: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const ProfileEdit(),
+                                ),
+                              ),
                             ),
                           ],
                         ),

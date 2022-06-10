@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobile_client/constants/typography.dart';
+import 'package:flutter_mobile_client/screens/profile/profile_edit.dart';
+import 'package:flutter_mobile_client/screens/profile/profile_settings.dart';
 import 'package:flutter_mobile_client/widgets/buttons/action.dart';
 import 'package:flutter_mobile_client/widgets/buttons/emblem.dart';
 import 'package:flutter_mobile_client/widgets/layouts/line.dart';
@@ -15,7 +17,7 @@ class ProfileHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: false,
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         toolbarHeight: 0,
@@ -44,19 +46,25 @@ class ProfileHome extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         ActionButton(
-                          onPress: () {
-                            print("left TAP");
-                          },
-                          text: "add details",
+                          onPress: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const ProfileEdit(),
+                            ),
+                          ),
+                          text: "edit profile",
                           icon: CupertinoIcons.pen,
                           backgroundColor: Theme.of(context).colorScheme.surface,
                           iconColor: Theme.of(context).colorScheme.onSurface,
                           textColor: Theme.of(context).colorScheme.onSurface,
                         ),
                         EmblemButton(
-                          onPress: () {
-                            print("MY TAP BRO");
-                          },
+                          onPress: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const ProfileSettings(),
+                            ),
+                          ),
                           icon: CupertinoIcons.gear,
                           backgroundColor: Theme.of(context).colorScheme.surface,
                           iconColor: Theme.of(context).colorScheme.onSurface,
@@ -69,7 +77,7 @@ class ProfileHome extends StatelessWidget {
             ),
           ),
           LineLayout(
-            color: Theme.of(context).colorScheme.surface,
+            color: Theme.of(context).colorScheme.onBackground,
             horizontalPadding: 15,
           ),
           Expanded(
@@ -92,6 +100,7 @@ class ProfileHome extends StatelessWidget {
                     ),
                     const SizedBox(height: 15),
                     SingleChildScrollView(
+                      physics: const BouncingScrollPhysics(),
                       scrollDirection: Axis.horizontal,
                       child: Padding(
                         padding: const EdgeInsets.only(left: 15),

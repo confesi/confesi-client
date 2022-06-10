@@ -97,7 +97,7 @@ class _PostHomeState extends State<PostHome> {
                       ],
                     ),
                     const SizedBox(height: 15),
-                    LineLayout(color: Theme.of(context).colorScheme.surface),
+                    LineLayout(color: Theme.of(context).colorScheme.onBackground),
                     Expanded(
                       child: SingleChildScrollView(
                         controller: controller,
@@ -111,7 +111,7 @@ class _PostHomeState extends State<PostHome> {
                             decoration: InputDecoration.collapsed(
                               hintText: "spill your guts...",
                               hintStyle:
-                                  kDetail.copyWith(color: Theme.of(context).colorScheme.surface),
+                                  kDetail.copyWith(color: Theme.of(context).colorScheme.onSurface),
                             ),
                           ),
                         ),

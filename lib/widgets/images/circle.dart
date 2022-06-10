@@ -8,14 +8,14 @@ class CircleImage extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(right: 15),
       child: Container(
-        width: 100,
-        height: 100,
+        width: 76,
+        height: 76,
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.primary,
           shape: BoxShape.circle,
         ),
         child: Padding(
-          padding: const EdgeInsets.all(4),
+          padding: const EdgeInsets.all(3),
           child: Container(
             decoration: BoxDecoration(
               shape: BoxShape.circle,

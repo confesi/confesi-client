@@ -17,13 +17,13 @@ class StatTile extends StatelessWidget {
           ),
           boxShadow: [
             BoxShadow(
-                color: Theme.of(context).colorScheme.surface,
-                offset: const Offset(2, 1),
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
+                offset: const Offset(1, 1),
                 blurRadius: 8),
           ],
         ),
         child: Padding(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
