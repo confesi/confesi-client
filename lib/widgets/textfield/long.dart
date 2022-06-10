@@ -4,9 +4,7 @@ import 'package:flutter_mobile_client/constants/typography.dart';
 import 'package:flutter_mobile_client/widgets/buttons/touchableopacity.dart';
 
 class LongTextField extends StatefulWidget {
-  LongTextField({required this.focusNode, Key? key}) : super(key: key);
-
-  final FocusNode focusNode;
+  const LongTextField({Key? key}) : super(key: key);
 
   @override
   State<LongTextField> createState() => _LongTextFieldState();
@@ -16,11 +14,18 @@ String text = "";
 
 class _LongTextFieldState extends State<LongTextField> {
   final TextEditingController controller = TextEditingController();
+  FocusNode focusNode = FocusNode();
+
+  @override
+  void dispose() {
+    focusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => widget.focusNode.requestFocus(),
+      onTap: () => focusNode.requestFocus(),
       child: Padding(
         padding: const EdgeInsets.all(10),
         child: Container(
@@ -44,7 +49,7 @@ class _LongTextFieldState extends State<LongTextField> {
                 const SizedBox(width: 15),
                 Expanded(
                   child: TextField(
-                    focusNode: widget.focusNode,
+                    focusNode: focusNode,
                     controller: controller,
                     onChanged: (newValue) {
                       setState(() {

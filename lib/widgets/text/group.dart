@@ -37,7 +37,9 @@ class GroupText extends StatelessWidget {
           const SizedBox(height: 5),
           Text(
             body,
-            style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
+            style: small
+                ? kDetail.copyWith(color: Theme.of(context).colorScheme.onSurface)
+                : kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
             textAlign: leftAlign ? TextAlign.start : TextAlign.center,
           ),
         ],

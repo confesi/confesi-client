@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobile_client/constants/typography.dart';
+import 'package:flutter_mobile_client/screens/profile/profile_home.dart';
 import 'package:flutter_mobile_client/widgets/buttons/touchableopacity.dart';
 
 class AppbarLayout extends StatelessWidget {
-  const AppbarLayout({this.focusNode = "none", required this.text, Key? key}) : super(key: key);
+  const AppbarLayout({required this.text, Key? key}) : super(key: key);
 
   final String text;
-  final focusNode;
 
   @override
   Widget build(BuildContext context) {
@@ -25,11 +25,16 @@ class AppbarLayout extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               TouchableOpacity(
-                onTap: () async {
-                  if (focusNode != "none") {
-                    await focusNode.unfocus();
-                    Navigator.of(context).pop();
-                  }
+                onTap: () {
+                  // FocusScope.of(context).unfocus();
+                  // Navigator.of(context).pop(
+                  //   MaterialPageRoute(builder: (_) {
+                  //     return Builder(builder: (context) {
+                  //       return const ProfileHome();
+                  //     });
+                  //   }),
+                  // );
+                  Navigator.of(context).pop();
                 },
                 child: Container(
                   color: Colors.transparent,

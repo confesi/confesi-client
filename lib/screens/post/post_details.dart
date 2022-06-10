@@ -58,11 +58,32 @@ class PostDetails extends StatelessWidget {
                         alignment: Alignment.centerLeft,
                         child: Padding(
                           padding: const EdgeInsets.only(left: 15, top: 15),
-                          child: Text(
-                            "Account settings",
-                            style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
-                            textAlign: TextAlign.left,
-                            overflow: TextOverflow.ellipsis,
+                          child: Row(
+                            children: [
+                              Text(
+                                "Details from profile",
+                                style:
+                                    kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
+                                textAlign: TextAlign.left,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              const SizedBox(width: 5),
+                              TouchableOpacity(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const ProfileEdit(),
+                                    ),
+                                  );
+                                },
+                                child: Icon(
+                                  CupertinoIcons.chevron_right,
+                                  size: 20,
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
@@ -70,25 +91,13 @@ class PostDetails extends StatelessWidget {
                         padding: const EdgeInsets.only(left: 15, right: 15, top: 15),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            const RowText(
+                          children: const [
+                            RowText(
                                 leftText: "University",
                                 rightText: "university of victoria",
                                 topLine: true),
-                            const RowText(leftText: "Faculty", rightText: "computer science"),
-                            const RowText(leftText: "Year", rightText: "two"),
-                            const SizedBox(height: 15),
-                            LinkText(
-                              text: "These details are auto-populated from your profile. ",
-                              linkText: "Change them here.",
-                              widthMultiplier: 100,
-                              onPress: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const ProfileEdit(),
-                                ),
-                              ),
-                            ),
+                            RowText(leftText: "Faculty", rightText: "computer science"),
+                            RowText(leftText: "Year", rightText: "two"),
                           ],
                         ),
                       ),

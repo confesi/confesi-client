@@ -86,6 +86,7 @@ class _PostHomeState extends State<PostHome> {
                           onPress: () {
                             setState(() {
                               pressed = !pressed;
+                              FocusScope.of(context).unfocus();
                             });
                           },
                           text: "publish post",

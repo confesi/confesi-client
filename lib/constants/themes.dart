@@ -7,7 +7,7 @@ List<ThemeData> themesList = [
       brightness: Brightness.light,
       primary: Color(0xff333333),
       onPrimary: Colors.white,
-      secondary: Color(0xffFFA8A8), // 0xffF6C0F6
+      secondary: Color(0xffF6C0F6), // 0xffFFA8A8
       onSecondary: Color(0xff333333),
       error: Color(0xffEB5353),
       onError: Colors.white,
