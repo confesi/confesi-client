@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_mobile_client/constants/general.dart';
 import 'package:flutter_mobile_client/screens/auth/open.dart';
 import 'package:flutter_mobile_client/screens/bottom_nav.dart';
-import 'package:flutter_mobile_client/screens/cupertino_nav.dart';
 import 'package:flutter_mobile_client/screens/error.dart';
 import 'package:flutter_mobile_client/screens/post/post_home.dart';
 import 'package:flutter_mobile_client/screens/root.dart';

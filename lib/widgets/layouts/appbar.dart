@@ -5,9 +5,12 @@ import 'package:flutter_mobile_client/screens/profile/profile_home.dart';
 import 'package:flutter_mobile_client/widgets/buttons/touchable_opacity.dart';
 
 class AppbarLayout extends StatelessWidget {
-  const AppbarLayout({required this.text, Key? key}) : super(key: key);
+  const AppbarLayout({this.bottomBorder = true, this.backNav = true, required this.text, Key? key})
+      : super(key: key);
 
   final String text;
+  final bool backNav;
+  final bool bottomBorder;
 
   @override
   Widget build(BuildContext context) {
@@ -18,35 +21,36 @@ class AppbarLayout extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             border: Border(
-              bottom: BorderSide(color: Theme.of(context).colorScheme.onBackground, width: 1),
+              bottom: BorderSide(
+                  color: bottomBorder
+                      ? Theme.of(context).colorScheme.onBackground
+                      : Colors.transparent,
+                  width: 1),
             ),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              TouchableOpacity(
-                onTap: () {
-                  // FocusScope.of(context).unfocus();
-                  // Navigator.of(context).pop(
-                  //   MaterialPageRoute(builder: (_) {
-                  //     return Builder(builder: (context) {
-                  //       return const ProfileHome();
-                  //     });
-                  //   }),
-                  // );
-                  Navigator.of(context).pop();
-                },
-                child: Container(
-                  color: Colors.transparent,
-                  child: const Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Icon(CupertinoIcons.chevron_back),
-                  ),
-                ),
-              ),
+              backNav
+                  ? TouchableOpacity(
+                      onTap: () => Navigator.of(context).pop(),
+                      child: Container(
+                        color: Colors.transparent,
+                        child: const Padding(
+                          padding: EdgeInsets.all(10),
+                          child: Icon(CupertinoIcons.chevron_back),
+                        ),
+                      ),
+                    )
+                  : const Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Icon(CupertinoIcons.chevron_back, color: Colors.transparent),
+                    ),
               Text(
                 text,
                 style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
               ),
               const Padding(
                 padding: EdgeInsets.all(10),

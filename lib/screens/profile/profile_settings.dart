@@ -40,7 +40,10 @@ class ProfileSettings extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 15),
-                  const TouchableTextButton(),
+                  TouchableTextButton(
+                    text: "Logout",
+                    onTap: () => print("TAP"),
+                  ),
                 ],
               ),
             ),

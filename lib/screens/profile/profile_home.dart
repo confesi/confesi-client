@@ -29,7 +29,7 @@ class ProfileHome extends StatelessWidget {
           mainAxisSize: MainAxisSize.max,
           children: [
             SingleChildScrollView(
-              child: Container(
+              child: SizedBox(
                 height: MediaQuery.of(context).size.height * .25,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,

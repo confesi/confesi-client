@@ -25,7 +25,6 @@ class ErrorScreen extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const GroupText(
-                  widthMultiplier: 80,
                   header: "Uh oh!",
                   body: "We couldn't connect you to Confessi. Perhaps you have no connection?",
                 ),

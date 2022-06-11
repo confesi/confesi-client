@@ -55,7 +55,6 @@ class _PostHomeState extends State<PostHome> {
                 child: Column(
                   children: [
                     const GroupText(
-                      widthMultiplier: 80,
                       body: "Please be civil, but have fun. All posts are completely anonymous.",
                       header: "Create Confession",
                     ),

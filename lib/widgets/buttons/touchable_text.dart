@@ -4,12 +4,15 @@ import 'package:flutter_mobile_client/widgets/buttons/touchable_opacity.dart';
 import '../../constants/typography.dart';
 
 class TouchableTextButton extends StatelessWidget {
-  const TouchableTextButton({Key? key}) : super(key: key);
+  const TouchableTextButton({required this.onTap, required this.text, Key? key}) : super(key: key);
+
+  final String text;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     return TouchableOpacity(
-      onTap: () => print("TAP"),
+      onTap: () => onTap(),
       child: Container(
         width: double.infinity,
         // transparent hitbox trick
@@ -17,7 +20,7 @@ class TouchableTextButton extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 15),
           child: Text(
-            "Logout",
+            text,
             style: kBody.copyWith(color: Theme.of(context).colorScheme.error),
             textAlign: TextAlign.left,
           ),

@@ -68,7 +68,7 @@ class PostDetails extends StatelessWidget {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 30),
                         child: Hero(
                           tag: "details-button",
                           child: Material(

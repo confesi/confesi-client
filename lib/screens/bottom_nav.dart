@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobile_client/constants/typography.dart';
 import 'package:flutter_mobile_client/responsive/sizes.dart';
+import 'package:flutter_mobile_client/screens/explore/explore_home.dart';
 import 'package:flutter_mobile_client/screens/post/post_home.dart';
 import 'package:flutter_mobile_client/screens/profile/profile_home.dart';
 
@@ -37,9 +38,7 @@ class _BottomNavState extends State<BottomNav> with TickerProviderStateMixin {
               // physics: const ClampingScrollPhysics(),
               physics: const NeverScrollableScrollPhysics(),
               children: [
-                Container(
-                  color: Colors.orangeAccent,
-                ),
+                const ExploreHome(),
                 Container(
                   color: Colors.lightGreen,
                 ),
