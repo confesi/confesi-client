@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobile_client/constants/typography.dart';
+import 'package:flutter_mobile_client/screens/explore/explore_post.dart';
 import 'package:flutter_mobile_client/widgets/buttons/comment.dart';
 import 'package:flutter_mobile_client/widgets/buttons/option.dart';
 import 'package:flutter_mobile_client/widgets/buttons/reaction.dart';
@@ -11,127 +12,157 @@ import 'package:flutter_mobile_client/widgets/text/group.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class PostTile extends StatelessWidget {
-  const PostTile({this.topLine = false, Key? key}) : super(key: key);
+  const PostTile(
+      {required this.date,
+      required this.icon,
+      required this.faculty,
+      required this.genre,
+      required this.body,
+      required this.likes,
+      required this.dislikes,
+      required this.comments,
+      this.topLine = false,
+      Key? key})
+      : super(key: key);
 
+  final IconData icon;
   final bool topLine;
+  final String date;
+  final String faculty;
+  final String genre;
+  final String body;
+  final int likes;
+  final int dislikes;
+  final int comments;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        border: Border(
-          top: BorderSide(
-              color: topLine ? Theme.of(context).colorScheme.onBackground : Colors.transparent,
-              width: topLine ? 1 : 0),
-          bottom: BorderSide(color: Theme.of(context).colorScheme.onBackground, width: 1),
+    return TouchableOpacity(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const ExplorePost(),
         ),
       ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 30),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Row(
-              children: [
-                const CircleSymbol(radius: 25),
-                const Expanded(
-                  child: GroupText(
-                    leftAlign: true,
-                    body: "Dec 14, 9:04am ∙ engineering",
-                    header: "Political",
-                    small: true,
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          border: Border(
+            top: BorderSide(
+                color: topLine ? Theme.of(context).colorScheme.surface : Colors.transparent,
+                width: topLine ? 1 : 0),
+            bottom: BorderSide(color: Theme.of(context).colorScheme.surface, width: 1),
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 30),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Row(
+                children: [
+                  CircleSymbol(
+                    radius: 25,
+                    icon: icon,
                   ),
-                ),
-                TouchableOpacity(
-                  onTap: () => showMaterialModalBottomSheet(
-                    expand: false,
-                    backgroundColor: Colors.transparent,
-                    context: context,
-                    builder: (context) => ClipRRect(
-                      borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(20), topRight: Radius.circular(20)),
-                      child: Container(
-                        color: Theme.of(context).colorScheme.background,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const ScrollbarLayout(),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 15, bottom: 30),
-                              child: Wrap(
-                                spacing: 15,
-                                runSpacing: 15,
-                                children: const [
-                                  OptionButton(
-                                    text: "Share",
-                                    icon: CupertinoIcons.share,
-                                  ),
-                                  OptionButton(
-                                    text: "Reply",
-                                    icon: CupertinoIcons.paperplane,
-                                  ),
-                                  OptionButton(
-                                    text: "Report",
-                                    icon: CupertinoIcons.nosign,
-                                  ),
-                                ],
+                  Expanded(
+                    child: GroupText(
+                      leftAlign: true,
+                      body: "$date ∙ $faculty",
+                      header: genre,
+                      small: true,
+                    ),
+                  ),
+                  TouchableOpacity(
+                    onTap: () => showMaterialModalBottomSheet(
+                      expand: false,
+                      backgroundColor: Colors.transparent,
+                      context: context,
+                      builder: (context) => ClipRRect(
+                        borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+                        child: Container(
+                          color: Theme.of(context).colorScheme.background,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const ScrollbarLayout(),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 15, bottom: 30),
+                                child: Wrap(
+                                  spacing: 15,
+                                  runSpacing: 15,
+                                  children: const [
+                                    OptionButton(
+                                      text: "Report",
+                                      icon: CupertinoIcons.nosign,
+                                    ),
+                                    OptionButton(
+                                      text: "Share",
+                                      icon: CupertinoIcons.share,
+                                    ),
+                                    OptionButton(
+                                      text: "Repost",
+                                      icon: CupertinoIcons.paperplane,
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: Container(
-                      constraints: const BoxConstraints(maxWidth: 40),
-                      // transparent hitbox trick
-                      color: Colors.transparent,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: Align(
-                          alignment: Alignment.centerRight,
-                          child: Icon(
-                            CupertinoIcons.ellipsis_vertical,
-                            color: Theme.of(context).colorScheme.onSurface,
-                            size: 22,
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: Container(
+                        constraints: const BoxConstraints(maxWidth: 40),
+                        // transparent hitbox trick
+                        color: Colors.transparent,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            child: Icon(
+                              CupertinoIcons.ellipsis_vertical,
+                              color: Theme.of(context).colorScheme.onSurface,
+                              size: 22,
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 30),
-            Text(
-              "Gotta be honest. Sometimes I swipe by girls and guys on Tinder or Bumble and I wish there was a super dislike button. Like bro, I don't know what your parents were thinking having you.",
-              style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
-              textAlign: TextAlign.justify,
-            ),
-            const SizedBox(height: 30),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Wrap(
-                runSpacing: 10,
-                alignment: WrapAlignment.start,
-                crossAxisAlignment: WrapCrossAlignment.start,
-                children: const [
-                  ReactionButton(
-                    icon: CupertinoIcons.hand_thumbsup_fill,
-                    count: 18,
-                  ),
-                  ReactionButton(
-                    icon: CupertinoIcons.hand_thumbsdown_fill,
-                    count: 6,
-                  ),
-                  CommentButton(count: 12),
                 ],
               ),
-            ),
-          ],
+              const SizedBox(height: 30),
+              Text(
+                body,
+                style: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
+                textAlign: TextAlign.justify,
+              ),
+              const SizedBox(height: 30),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Wrap(
+                  runSpacing: 10,
+                  alignment: WrapAlignment.start,
+                  crossAxisAlignment: WrapCrossAlignment.start,
+                  children: [
+                    ReactionButton(
+                      icon: CupertinoIcons.hand_thumbsup_fill,
+                      count: likes,
+                    ),
+                    ReactionButton(
+                      icon: CupertinoIcons.hand_thumbsdown_fill,
+                      count: dislikes,
+                    ),
+                    CommentButton(count: comments),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

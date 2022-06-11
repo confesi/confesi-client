@@ -5,10 +5,17 @@ import 'package:flutter_mobile_client/widgets/buttons/touchable_opacity.dart';
 
 class LongTextField extends StatefulWidget {
   const LongTextField(
-      {this.bottomPadding = 0.0, this.topPadding = 0.0, this.horizontalPadding = 0.0, Key? key})
+      {this.hintText = "Search",
+      this.icon = CupertinoIcons.search,
+      this.bottomPadding = 0.0,
+      this.topPadding = 0.0,
+      this.horizontalPadding = 0.0,
+      Key? key})
       : super(key: key);
 
+  final IconData icon;
   final double bottomPadding;
+  final String hintText;
   final double topPadding;
   final double horizontalPadding;
 
@@ -52,7 +59,7 @@ class _LongTextFieldState extends State<LongTextField> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Icon(
-                  CupertinoIcons.search,
+                  widget.icon,
                   size: 18,
                   color: Theme.of(context).colorScheme.onSurface,
                 ),
@@ -69,7 +76,7 @@ class _LongTextFieldState extends State<LongTextField> {
                     style: kBody.copyWith(
                         color: Theme.of(context).colorScheme.primary, fontWeight: FontWeight.w100),
                     decoration: InputDecoration.collapsed(
-                      hintText: "Search",
+                      hintText: widget.hintText,
                       hintStyle: kBody.copyWith(
                           color: Theme.of(context).colorScheme.onSurface,
                           fontWeight: FontWeight.w100),

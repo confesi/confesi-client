@@ -15,9 +15,9 @@ class RowText extends StatelessWidget {
       decoration: BoxDecoration(
           border: Border(
         top: BorderSide(
-            color: topLine ? Theme.of(context).colorScheme.onBackground : Colors.transparent,
+            color: topLine ? Theme.of(context).colorScheme.surface : Colors.transparent,
             width: topLine ? 1 : 0),
-        bottom: BorderSide(color: Theme.of(context).colorScheme.onBackground, width: 1),
+        bottom: BorderSide(color: Theme.of(context).colorScheme.surface, width: 1),
       )),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobile_client/constants/typography.dart';
 import 'package:flutter_mobile_client/widgets/buttons/touchable_opacity.dart';
@@ -14,6 +13,7 @@ class OptionButton extends StatelessWidget {
     return TouchableOpacity(
       onTap: () => null,
       child: Container(
+        width: MediaQuery.of(context).size.width / 4,
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surface,
           borderRadius: const BorderRadius.all(
@@ -21,7 +21,7 @@ class OptionButton extends StatelessWidget {
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+          padding: const EdgeInsets.symmetric(vertical: 15),
           child: Column(
             children: [
               Icon(
@@ -33,6 +33,8 @@ class OptionButton extends StatelessWidget {
               Text(
                 text,
                 style: kDetail.copyWith(color: Theme.of(context).colorScheme.primary),
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.ellipsis,
               ),
             ],
           ),
