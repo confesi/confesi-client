@@ -7,6 +7,7 @@ import 'package:flutter_mobile_client/widgets/buttons/option.dart';
 import 'package:flutter_mobile_client/widgets/buttons/reaction.dart';
 import 'package:flutter_mobile_client/widgets/buttons/touchable_opacity.dart';
 import 'package:flutter_mobile_client/widgets/layouts/scrollbar.dart';
+import 'package:flutter_mobile_client/widgets/sheets/button.dart';
 import 'package:flutter_mobile_client/widgets/symbols/circle.dart';
 import 'package:flutter_mobile_client/widgets/text/group.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -74,45 +75,7 @@ class PostTile extends StatelessWidget {
                     ),
                   ),
                   TouchableOpacity(
-                    onTap: () => showMaterialModalBottomSheet(
-                      expand: false,
-                      backgroundColor: Colors.transparent,
-                      context: context,
-                      builder: (context) => ClipRRect(
-                        borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(20), topRight: Radius.circular(20)),
-                        child: Container(
-                          color: Theme.of(context).colorScheme.background,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const ScrollbarLayout(),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 15, bottom: 30),
-                                child: Wrap(
-                                  spacing: 15,
-                                  runSpacing: 15,
-                                  children: const [
-                                    OptionButton(
-                                      text: "Report",
-                                      icon: CupertinoIcons.nosign,
-                                    ),
-                                    OptionButton(
-                                      text: "Share",
-                                      icon: CupertinoIcons.share,
-                                    ),
-                                    OptionButton(
-                                      text: "Repost",
-                                      icon: CupertinoIcons.paperplane,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
+                    onTap: () => showButtonSheet(context),
                     child: Align(
                       alignment: Alignment.centerRight,
                       child: Container(

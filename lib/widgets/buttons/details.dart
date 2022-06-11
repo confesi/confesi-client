@@ -7,6 +7,8 @@ import 'package:flutter_mobile_client/widgets/buttons/touchable_opacity.dart';
 import 'package:flutter_mobile_client/widgets/layouts/scrollbar.dart';
 import 'package:flutter_mobile_client/widgets/text/animated_load.dart';
 
+import '../sheets/picker.dart';
+
 class DetailsButton extends StatefulWidget {
   const DetailsButton({required this.header, required this.body, Key? key}) : super(key: key);
 
@@ -33,81 +35,16 @@ class _DetailsButtonState extends State<DetailsButton> {
 
   int index = 0;
 
+  void updateState(int newIndex) {
+    setState(() {
+      index = newIndex;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return TouchableOpacity(
-      onTap: () => showModalBottomSheet(
-        backgroundColor: Colors.transparent,
-        context: context,
-        builder: (context) => ClipRRect(
-          borderRadius:
-              const BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
-          child: Scaffold(
-            backgroundColor: Theme.of(context).colorScheme.onPrimary,
-            body: Column(
-              children: [
-                const ScrollbarLayout(),
-                const SizedBox(height: 15),
-                Text(
-                  widget.header,
-                  style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 5),
-                Text(
-                  "Change your category",
-                  style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
-                  textAlign: TextAlign.center,
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: ScrollConfiguration(
-                      behavior: NoOverScrollSplash(),
-                      child: CupertinoPicker(
-                        scrollController: FixedExtentScrollController(initialItem: index),
-                        selectionOverlay: Container(
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.surface.withOpacity(0.4),
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(10),
-                            ),
-                          ),
-                        ),
-                        backgroundColor: Colors.transparent,
-                        looping: false,
-                        itemExtent: 40,
-                        onSelectedItemChanged: (newIndex) {
-                          HapticFeedback.lightImpact();
-                          setState(() {
-                            index = newIndex;
-                          });
-                        },
-                        children: items
-                            .map((item) => Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                                  child: Center(
-                                    child: Text(
-                                      item,
-                                      style: kBody.copyWith(
-                                        color: Theme.of(context).colorScheme.primary,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                      overflow: TextOverflow.ellipsis,
-                                      textScaleFactor: 1,
-                                    ),
-                                  ),
-                                ))
-                            .toList(),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
+      onTap: () => showPickerSheet(context, items, index, widget.header, updateState),
       child: Container(
         // transparent makes it a big hitbox
         color: Colors.transparent,
