@@ -2,10 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobile_client/constants/typography.dart';
 import 'package:flutter_mobile_client/widgets/buttons/comment.dart';
+import 'package:flutter_mobile_client/widgets/buttons/option.dart';
 import 'package:flutter_mobile_client/widgets/buttons/reaction.dart';
 import 'package:flutter_mobile_client/widgets/buttons/touchable_opacity.dart';
+import 'package:flutter_mobile_client/widgets/layouts/scrollbar.dart';
 import 'package:flutter_mobile_client/widgets/symbols/circle.dart';
 import 'package:flutter_mobile_client/widgets/text/group.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class PostTile extends StatelessWidget {
   const PostTile({this.topLine = false, Key? key}) : super(key: key);
@@ -41,7 +44,45 @@ class PostTile extends StatelessWidget {
                   ),
                 ),
                 TouchableOpacity(
-                  onTap: () => print("TOUCHABLE OPACITY TAPPED"),
+                  onTap: () => showMaterialModalBottomSheet(
+                    expand: false,
+                    backgroundColor: Colors.transparent,
+                    context: context,
+                    builder: (context) => ClipRRect(
+                      borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+                      child: Container(
+                        color: Theme.of(context).colorScheme.background,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const ScrollbarLayout(),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 15, bottom: 30),
+                              child: Wrap(
+                                spacing: 15,
+                                runSpacing: 15,
+                                children: const [
+                                  OptionButton(
+                                    text: "Share",
+                                    icon: CupertinoIcons.share,
+                                  ),
+                                  OptionButton(
+                                    text: "Reply",
+                                    icon: CupertinoIcons.paperplane,
+                                  ),
+                                  OptionButton(
+                                    text: "Report",
+                                    icon: CupertinoIcons.nosign,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
                   child: Align(
                     alignment: Alignment.centerRight,
                     child: Container(
