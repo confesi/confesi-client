@@ -26,69 +26,76 @@ class _BottomNavState extends State<BottomNav> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 5,
-      child: SafeArea(
-        top: false,
-        child: GestureDetector(
-          onTap: () {
-            print("Tap");
-            FocusScope.of(context).requestFocus(FocusNode());
-          },
-          child: Scaffold(
-            body: TabBarView(
-              // physics: const ClampingScrollPhysics(),
-              physics: const NeverScrollableScrollPhysics(),
-              children: [
-                const ExploreHome(),
-                Container(
-                  color: Colors.lightGreen,
-                ),
-                const PostHome(),
-                Container(
-                  color: Colors.amber,
-                ),
-                const ProfileHome(),
-              ],
-            ),
-            bottomNavigationBar: Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.background,
-                border: Border(
-                  top: BorderSide(color: Theme.of(context).colorScheme.onBackground, width: 0.5),
-                ),
-              ),
-              child: TabBar(
-                labelStyle: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
-                tabs: [
-                  Tab(
-                    text: Responsive.isTablet(context) ? "Explore" : null,
-                    icon: const Icon(CupertinoIcons.compass),
+      child: Container(
+        color: Theme.of(context).colorScheme.background,
+        child: SafeArea(
+          top: false,
+          child: GestureDetector(
+            onTap: () {
+              print("Tap");
+              FocusScope.of(context).requestFocus(FocusNode());
+            },
+            child: Scaffold(
+              body: TabBarView(
+                // physics: const ClampingScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
+                children: [
+                  const ExploreHome(),
+                  Container(
+                    color: Colors.lightGreen,
                   ),
-                  Tab(
-                    text: Responsive.isTablet(context) ? "Hot" : null,
-                    icon: const Icon(CupertinoIcons.flame),
+                  const PostHome(),
+                  Container(
+                    color: Colors.amber,
                   ),
-                  Tab(
-                    text: Responsive.isTablet(context) ? "Post" : null,
-                    icon: const Icon(CupertinoIcons.add),
-                  ),
-                  Tab(
-                    text: Responsive.isTablet(context) ? "Search" : null,
-                    icon: const Icon(CupertinoIcons.search),
-                  ),
-                  Tab(
-                    text: Responsive.isTablet(context) ? "Profile" : null,
-                    icon: const Icon(CupertinoIcons.profile_circled),
-                  )
+                  const ProfileHome(),
                 ],
-                enableFeedback: true,
-                onTap: (t) => HapticFeedback.lightImpact(),
-                unselectedLabelColor: Theme.of(context).colorScheme.onBackground,
-                labelColor: Theme.of(context).colorScheme.primary,
-                indicatorSize: TabBarIndicatorSize.tab,
-                indicatorColor: Colors.transparent,
               ),
+              bottomNavigationBar: Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.background,
+                  border: Border(
+                    top: BorderSide(
+                        color: Theme.of(context).colorScheme.onBackground,
+                        width: 0.5),
+                  ),
+                ),
+                child: TabBar(
+                  labelStyle: kBody.copyWith(
+                      color: Theme.of(context).colorScheme.primary),
+                  tabs: [
+                    Tab(
+                      text: Responsive.isTablet(context) ? "Explore" : null,
+                      icon: const Icon(CupertinoIcons.compass),
+                    ),
+                    Tab(
+                      text: Responsive.isTablet(context) ? "Hot" : null,
+                      icon: const Icon(CupertinoIcons.flame),
+                    ),
+                    Tab(
+                      text: Responsive.isTablet(context) ? "Post" : null,
+                      icon: const Icon(CupertinoIcons.add),
+                    ),
+                    Tab(
+                      text: Responsive.isTablet(context) ? "Search" : null,
+                      icon: const Icon(CupertinoIcons.search),
+                    ),
+                    Tab(
+                      text: Responsive.isTablet(context) ? "Profile" : null,
+                      icon: const Icon(CupertinoIcons.profile_circled),
+                    )
+                  ],
+                  enableFeedback: true,
+                  onTap: (t) => HapticFeedback.lightImpact(),
+                  unselectedLabelColor:
+                      Theme.of(context).colorScheme.onBackground,
+                  labelColor: Theme.of(context).colorScheme.primary,
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  indicatorColor: Colors.transparent,
+                ),
+              ),
+              backgroundColor: Theme.of(context).colorScheme.background,
             ),
-            backgroundColor: Theme.of(context).colorScheme.background,
           ),
         ),
       ),

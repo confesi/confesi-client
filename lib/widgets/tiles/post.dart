@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobile_client/constants/typography.dart';
 import 'package:flutter_mobile_client/widgets/buttons/reaction.dart';
+import 'package:flutter_mobile_client/widgets/buttons/touchable_opacity.dart';
 import 'package:flutter_mobile_client/widgets/symbols/circle.dart';
 import 'package:flutter_mobile_client/widgets/text/group.dart';
 
@@ -17,9 +18,12 @@ class PostTile extends StatelessWidget {
       decoration: BoxDecoration(
         border: Border(
           top: BorderSide(
-              color: topLine ? Theme.of(context).colorScheme.onBackground : Colors.transparent,
+              color: topLine
+                  ? Theme.of(context).colorScheme.onBackground
+                  : Colors.transparent,
               width: topLine ? 1 : 0),
-          bottom: BorderSide(color: Theme.of(context).colorScheme.onBackground, width: 1),
+          bottom: BorderSide(
+              color: Theme.of(context).colorScheme.onBackground, width: 1),
         ),
       ),
       child: Padding(
@@ -47,7 +51,8 @@ class PostTile extends StatelessWidget {
             const SizedBox(height: 30),
             Text(
               "Gotta be honest. Sometimes I swipe by girls and guys on Tinder or Bumble and I wish there was a super dislike button. Like bro, I don't know what your parents were thinking having you.",
-              style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
+              style: kBody.copyWith(
+                  color: Theme.of(context).colorScheme.onSurface),
               textAlign: TextAlign.justify,
             ),
             const SizedBox(height: 30),

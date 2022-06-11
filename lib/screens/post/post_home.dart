@@ -55,7 +55,8 @@ class _PostHomeState extends State<PostHome> {
                 child: Column(
                   children: [
                     const GroupText(
-                      body: "Please be civil, but have fun. All posts are completely anonymous.",
+                      body:
+                          "Please be civil, but have fun. All posts are completely anonymous.",
                       header: "Create Confession",
                     ),
                     const SizedBox(height: 15),
@@ -67,14 +68,20 @@ class _PostHomeState extends State<PostHome> {
                           child: Material(
                             child: ActionButton(
                               onPress: () {
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) => const PostDetails()));
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const PostDetails()));
                               },
                               text: "add details",
                               icon: CupertinoIcons.pen,
-                              backgroundColor: Theme.of(context).colorScheme.primary,
-                              iconColor: Theme.of(context).colorScheme.onPrimary,
-                              textColor: Theme.of(context).colorScheme.onPrimary,
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.primary,
+                              iconColor:
+                                  Theme.of(context).colorScheme.onPrimary,
+                              textColor:
+                                  Theme.of(context).colorScheme.onPrimary,
                             ),
                           ),
                         ),
@@ -89,14 +96,16 @@ class _PostHomeState extends State<PostHome> {
                           },
                           text: "publish post",
                           icon: CupertinoIcons.arrow_turn_left_up,
-                          backgroundColor: Theme.of(context).colorScheme.secondary,
+                          backgroundColor:
+                              Theme.of(context).colorScheme.secondary,
                           iconColor: Theme.of(context).colorScheme.onPrimary,
                           textColor: Theme.of(context).colorScheme.onPrimary,
                         ),
                       ],
                     ),
                     const SizedBox(height: 15),
-                    LineLayout(color: Theme.of(context).colorScheme.onBackground),
+                    LineLayout(
+                        color: Theme.of(context).colorScheme.onBackground),
                     Expanded(
                       child: SingleChildScrollView(
                         controller: controller,
@@ -106,11 +115,13 @@ class _PostHomeState extends State<PostHome> {
                             textCapitalization: TextCapitalization.sentences,
                             keyboardType: TextInputType.multiline,
                             maxLines: null,
-                            style: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
+                            style: kBody.copyWith(
+                                color: Theme.of(context).colorScheme.primary),
                             decoration: InputDecoration.collapsed(
                               hintText: "spill your guts...",
-                              hintStyle:
-                                  kDetail.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                              hintStyle: kDetail.copyWith(
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface),
                             ),
                           ),
                         ),
