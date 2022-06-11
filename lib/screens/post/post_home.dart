@@ -6,8 +6,6 @@ import 'package:flutter_mobile_client/screens/post/post_details.dart';
 import 'package:flutter_mobile_client/widgets/buttons/action.dart';
 import 'package:flutter_mobile_client/widgets/layouts/line.dart';
 import 'package:flutter_mobile_client/widgets/text/group.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:page_transition/page_transition.dart';
 
 class PostHome extends StatefulWidget {
   const PostHome({Key? key}) : super(key: key);
@@ -18,6 +16,8 @@ class PostHome extends StatefulWidget {
 
 class _PostHomeState extends State<PostHome> {
   final ScrollController controller = ScrollController();
+
+  bool pressed = false;
 
   @override
   void initState() {
@@ -55,9 +55,7 @@ class _PostHomeState extends State<PostHome> {
                 child: Column(
                   children: [
                     const GroupText(
-                      widthMultiplier: 80,
-                      body:
-                          "Please be civil, but have fun. Posts are never linked to your account.",
+                      body: "Please be civil, but have fun. All posts are completely anonymous.",
                       header: "Create Confession",
                     ),
                     const SizedBox(height: 15),
@@ -69,37 +67,36 @@ class _PostHomeState extends State<PostHome> {
                           child: Material(
                             child: ActionButton(
                               onPress: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const PostDetails()));
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) => const PostDetails()));
                               },
                               text: "add details",
                               icon: CupertinoIcons.pen,
-                              backgroundColor:
-                                  Theme.of(context).colorScheme.primary,
-                              iconColor:
-                                  Theme.of(context).colorScheme.onPrimary,
-                              textColor:
-                                  Theme.of(context).colorScheme.onPrimary,
+                              backgroundColor: Theme.of(context).colorScheme.primary,
+                              iconColor: Theme.of(context).colorScheme.onPrimary,
+                              textColor: Theme.of(context).colorScheme.onPrimary,
                             ),
                           ),
                         ),
                         const SizedBox(width: 15),
                         ActionButton(
-                          onPress: () => {print("tap R")},
+                          loading: pressed,
+                          onPress: () {
+                            setState(() {
+                              pressed = !pressed;
+                              FocusScope.of(context).unfocus();
+                            });
+                          },
                           text: "publish post",
-                          icon: CupertinoIcons.up_arrow,
-                          backgroundColor:
-                              Theme.of(context).colorScheme.secondary,
-                          iconColor: Theme.of(context).colorScheme.onSecondary,
-                          textColor: Theme.of(context).colorScheme.onSecondary,
+                          icon: CupertinoIcons.arrow_turn_left_up,
+                          backgroundColor: Theme.of(context).colorScheme.secondary,
+                          iconColor: Theme.of(context).colorScheme.onPrimary,
+                          textColor: Theme.of(context).colorScheme.onPrimary,
                         ),
                       ],
                     ),
                     const SizedBox(height: 15),
-                    LineLayout(color: Theme.of(context).colorScheme.surface),
+                    LineLayout(color: Theme.of(context).colorScheme.onBackground),
                     Expanded(
                       child: SingleChildScrollView(
                         controller: controller,
@@ -109,12 +106,11 @@ class _PostHomeState extends State<PostHome> {
                             textCapitalization: TextCapitalization.sentences,
                             keyboardType: TextInputType.multiline,
                             maxLines: null,
-                            style: kBody.copyWith(
-                                color: Theme.of(context).colorScheme.primary),
+                            style: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
                             decoration: InputDecoration.collapsed(
                               hintText: "spill your guts...",
-                              hintStyle: kDetail.copyWith(
-                                  color: Theme.of(context).colorScheme.surface),
+                              hintStyle:
+                                  kDetail.copyWith(color: Theme.of(context).colorScheme.onSurface),
                             ),
                           ),
                         ),

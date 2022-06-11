@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobile_client/constants/typography.dart';
-import 'package:flutter_mobile_client/widgets/buttons/touchableopacity.dart';
+import 'package:flutter_mobile_client/widgets/buttons/touchable_opacity.dart';
 
 class LongButton extends StatelessWidget {
   const LongButton(
@@ -25,7 +25,7 @@ class LongButton extends StatelessWidget {
         decoration: BoxDecoration(
           color: backgroundColor,
           borderRadius: const BorderRadius.all(
-            Radius.circular(5),
+            Radius.circular(10),
           ),
         ),
         child: Padding(
