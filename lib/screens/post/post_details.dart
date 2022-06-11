@@ -5,6 +5,7 @@ import 'package:flutter_mobile_client/widgets/buttons/details.dart';
 import 'package:flutter_mobile_client/widgets/buttons/long.dart';
 import 'package:flutter_mobile_client/widgets/buttons/touchableopacity.dart';
 import 'package:flutter_mobile_client/widgets/layouts/scrollbar.dart';
+import 'package:flutter_mobile_client/widgets/text/animated_load.dart';
 
 class PostDetails extends StatelessWidget {
   const PostDetails({Key? key}) : super(key: key);
@@ -86,13 +87,8 @@ class PostDetails extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 15),
                           child: Column(
                             children: [
-                              Text(
-                                "✨ details saved automatically ✨",
-                                style: kBody.copyWith(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSurface),
-                                textAlign: TextAlign.center,
+                              const AnimatedLoadText(
+                                text: "✨ details saved automatically ✨",
                               ),
                               const SizedBox(height: 15),
                               Hero(
