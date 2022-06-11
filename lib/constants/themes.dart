@@ -12,7 +12,7 @@ List<ThemeData> themesList = [
       error: Color(0xffEB5353),
       onError: Colors.white,
       background: Colors.white,
-      onBackground: Color.fromARGB(255, 208, 208, 208),
+      onBackground: Color.fromARGB(255, 214, 214, 214),
       surface: Color.fromARGB(255, 246, 246, 246),
       onSurface: Color.fromARGB(255, 147, 147, 147),
     ),

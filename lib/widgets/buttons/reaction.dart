@@ -3,12 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobile_client/constants/typography.dart';
 
 class ReactionButton extends StatelessWidget {
-  const ReactionButton({Key? key}) : super(key: key);
+  const ReactionButton({required this.icon, required this.count, Key? key}) : super(key: key);
+
+  final IconData icon;
+  final int count;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(right: 15),
+      padding: const EdgeInsets.only(right: 10),
       child: Container(
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surface,
@@ -20,15 +23,16 @@ class ReactionButton extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
             children: [
               Icon(
-                CupertinoIcons.heart_fill,
+                icon,
                 size: 16,
                 color: Theme.of(context).colorScheme.secondary,
               ),
               const SizedBox(width: 5),
               Text(
-                "17",
+                count.toString(),
                 style: kDetail.copyWith(color: Theme.of(context).colorScheme.onSurface),
                 textAlign: TextAlign.left,
               ),
