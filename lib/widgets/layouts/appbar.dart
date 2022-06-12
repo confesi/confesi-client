@@ -5,12 +5,22 @@ import 'package:flutter_mobile_client/screens/profile/profile_home.dart';
 import 'package:flutter_mobile_client/widgets/buttons/touchable_opacity.dart';
 
 class AppbarLayout extends StatelessWidget {
-  const AppbarLayout({this.bottomBorder = true, this.backNav = true, required this.text, Key? key})
+  const AppbarLayout(
+      {this.iconTap,
+      this.textTap,
+      this.icon,
+      this.bottomBorder = true,
+      this.showIcon = true,
+      required this.text,
+      Key? key})
       : super(key: key);
 
   final String text;
-  final bool backNav;
+  final bool showIcon;
   final bool bottomBorder;
+  final IconData? icon;
+  final Function? iconTap;
+  final Function? textTap;
 
   @override
   Widget build(BuildContext context) {
@@ -31,26 +41,47 @@ class AppbarLayout extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              backNav
+              showIcon
                   ? TouchableOpacity(
-                      onTap: () => Navigator.of(context).pop(),
+                      onTap: () {
+                        if (iconTap != null) {
+                          iconTap!();
+                        } else {
+                          Navigator.pop(context);
+                        }
+                      },
                       child: Container(
                         color: Colors.transparent,
-                        child: const Padding(
-                          padding: EdgeInsets.all(10),
-                          child: Icon(CupertinoIcons.chevron_back),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Icon(icon ?? CupertinoIcons.chevron_back),
                         ),
                       ),
                     )
-                  : const Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Icon(CupertinoIcons.chevron_back, color: Colors.transparent),
+                  : Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Icon(icon ?? CupertinoIcons.chevron_back, color: Colors.transparent),
                     ),
-              Text(
-                text,
-                style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.center,
+              Expanded(
+                child: textTap != null
+                    ? FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: TouchableOpacity(
+                          onTap: () => textTap!(),
+                          child: Text(
+                            text,
+                            style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      )
+                    : Text(
+                        text,
+                        style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                      ),
               ),
               const Padding(
                 padding: EdgeInsets.all(10),

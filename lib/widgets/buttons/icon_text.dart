@@ -4,12 +4,12 @@ import 'package:flutter_mobile_client/constants/typography.dart';
 import 'package:flutter_mobile_client/widgets/buttons/touchable_opacity.dart';
 
 class IconTextButton extends StatelessWidget {
-  const IconTextButton({required this.text, required this.icon, this.atBottom = false, Key? key})
+  const IconTextButton({this.bottomPadding = 15, required this.text, required this.icon, Key? key})
       : super(key: key);
 
-  final bool atBottom;
   final String text;
   final IconData icon;
+  final double bottomPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class IconTextButton extends StatelessWidget {
         // transparent color trick to increase hitbox size
         color: Colors.transparent,
         child: Padding(
-          padding: EdgeInsets.only(bottom: atBottom ? 15 : 30),
+          padding: EdgeInsets.only(bottom: bottomPadding),
           child: Row(
             children: [
               Icon(

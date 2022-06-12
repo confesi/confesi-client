@@ -38,93 +38,100 @@ class PostTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TouchableOpacity(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const ExplorePost(),
-        ),
-      ),
-      child: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-          border: Border(
-            top: BorderSide(
-                color: topLine ? Theme.of(context).colorScheme.surface : Colors.transparent,
-                width: topLine ? 1 : 0),
-            bottom: BorderSide(color: Theme.of(context).colorScheme.surface, width: 1),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 15),
+      child: TouchableOpacity(
+        onLongTap: () => showButtonSheet(context),
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const ExplorePost(),
           ),
         ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 30),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Row(
-                children: [
-                  CircleSymbol(
-                    radius: 25,
-                    icon: icon,
-                  ),
-                  Expanded(
-                    child: GroupText(
-                      leftAlign: true,
-                      body: "$date ∙ $faculty",
-                      header: genre,
-                      small: true,
-                    ),
-                  ),
-                  TouchableOpacity(
-                    onTap: () => showButtonSheet(context),
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: Container(
-                        constraints: const BoxConstraints(maxWidth: 40),
-                        // transparent hitbox trick
-                        color: Colors.transparent,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: Align(
-                            alignment: Alignment.centerRight,
-                            child: Icon(
-                              CupertinoIcons.ellipsis_vertical,
-                              color: Theme.of(context).colorScheme.onSurface,
-                              size: 22,
+        child: Container(
+          width: double.infinity,
+          decoration: BoxDecoration(color: Theme.of(context).colorScheme.background),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 30),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 15),
+                  child: Row(
+                    children: [
+                      CircleSymbol(
+                        radius: 25,
+                        icon: icon,
+                      ),
+                      Expanded(
+                        child: GroupText(
+                          leftAlign: true,
+                          body: "$date ∙ $faculty",
+                          header: genre,
+                          small: true,
+                        ),
+                      ),
+                      TouchableOpacity(
+                        onLongTap: () => showButtonSheet(context),
+                        onTap: () => showButtonSheet(context),
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: Container(
+                            constraints: const BoxConstraints(maxWidth: 40),
+                            // transparent hitbox trick
+                            color: Colors.transparent,
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 10, bottom: 10, right: 7),
+                              child: Align(
+                                alignment: Alignment.centerRight,
+                                child: Icon(
+                                  CupertinoIcons.ellipsis_vertical,
+                                  color: Theme.of(context).colorScheme.onBackground,
+                                  size: 22,
+                                ),
+                              ),
                             ),
                           ),
                         ),
                       ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 30),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Text(
+                    body,
+                    style: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
+                    textAlign: TextAlign.justify,
+                  ),
+                ),
+                const SizedBox(height: 30),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Wrap(
+                      runSpacing: 10,
+                      alignment: WrapAlignment.start,
+                      crossAxisAlignment: WrapCrossAlignment.start,
+                      children: [
+                        ReactionButton(
+                          icon: CupertinoIcons.hand_thumbsup_fill,
+                          count: likes,
+                        ),
+                        ReactionButton(
+                          icon: CupertinoIcons.hand_thumbsdown_fill,
+                          count: dislikes,
+                        ),
+                        CommentButton(count: comments),
+                      ],
                     ),
                   ),
-                ],
-              ),
-              const SizedBox(height: 30),
-              Text(
-                body,
-                style: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
-                textAlign: TextAlign.justify,
-              ),
-              const SizedBox(height: 30),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Wrap(
-                  runSpacing: 10,
-                  alignment: WrapAlignment.start,
-                  crossAxisAlignment: WrapCrossAlignment.start,
-                  children: [
-                    ReactionButton(
-                      icon: CupertinoIcons.hand_thumbsup_fill,
-                      count: likes,
-                    ),
-                    ReactionButton(
-                      icon: CupertinoIcons.hand_thumbsdown_fill,
-                      count: dislikes,
-                    ),
-                    CommentButton(count: comments),
-                  ],
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

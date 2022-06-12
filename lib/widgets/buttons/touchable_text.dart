@@ -4,10 +4,13 @@ import 'package:flutter_mobile_client/widgets/buttons/touchable_opacity.dart';
 import '../../constants/typography.dart';
 
 class TouchableTextButton extends StatelessWidget {
-  const TouchableTextButton({required this.onTap, required this.text, Key? key}) : super(key: key);
+  const TouchableTextButton(
+      {this.textAlignCenter = false, required this.onTap, required this.text, Key? key})
+      : super(key: key);
 
   final String text;
   final VoidCallback onTap;
+  final bool textAlignCenter;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +25,7 @@ class TouchableTextButton extends StatelessWidget {
           child: Text(
             text,
             style: kBody.copyWith(color: Theme.of(context).colorScheme.error),
-            textAlign: TextAlign.left,
+            textAlign: textAlignCenter ? TextAlign.center : TextAlign.left,
           ),
         ),
       ),

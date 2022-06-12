@@ -35,22 +35,22 @@ class ProfileSettings extends StatelessWidget {
                   children: [
                     const LongTextField(bottomPadding: 15, topPadding: 15),
                     const IconTextButton(
-                        text: "Security", icon: CupertinoIcons.lock),
+                        text: "Security", icon: CupertinoIcons.lock, bottomPadding: 30),
                     const IconTextButton(
-                        text: "Notifications", icon: CupertinoIcons.bell),
+                        text: "Notifications", icon: CupertinoIcons.bell, bottomPadding: 30),
                     const IconTextButton(
-                        text: "Theme", icon: CupertinoIcons.color_filter),
+                        text: "Theme", icon: CupertinoIcons.color_filter, bottomPadding: 30),
                     const IconTextButton(
-                        text: "About",
-                        icon: CupertinoIcons.info,
-                        atBottom: true),
-                    LineLayout(
-                        color: Theme.of(context).colorScheme.onBackground),
+                        text: "Watched universities",
+                        icon: CupertinoIcons.rocket,
+                        bottomPadding: 30),
+                    const IconTextButton(
+                        text: "About", icon: CupertinoIcons.info, bottomPadding: 15),
+                    LineLayout(color: Theme.of(context).colorScheme.onBackground),
                     const SizedBox(height: 15),
                     Text(
                       "Quick settings",
-                      style: kTitle.copyWith(
-                          color: Theme.of(context).colorScheme.primary),
+                      style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
                       textAlign: TextAlign.left,
                       overflow: TextOverflow.ellipsis,
                     ),

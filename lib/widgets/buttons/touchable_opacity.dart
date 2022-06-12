@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
 class TouchableOpacity extends StatefulWidget {
-  const TouchableOpacity({required this.child, required this.onTap, Key? key}) : super(key: key);
+  const TouchableOpacity({this.onLongTap, required this.child, required this.onTap, Key? key})
+      : super(key: key);
 
   final Widget child;
   final Function onTap;
+  final Function? onLongTap;
 
   @override
   State<TouchableOpacity> createState() => _TouchableOpacityState();
@@ -50,6 +52,11 @@ class _TouchableOpacityState extends State<TouchableOpacity> with SingleTickerPr
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onLongPress: () {
+        if (widget.onLongTap != null) {
+          widget.onLongTap!();
+        }
+      },
       onTapDown: (_) => setState(() {
         animController.forward();
         animController.addListener(() {
