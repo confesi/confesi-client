@@ -21,30 +21,35 @@ class _RootState extends ConsumerState<Root> {
   @override
   void initState() {
     super.initState();
-    ref.read(userProvider.notifier).setAccessToken();
+    ref.read(userProvider.notifier).getAndSetAccessToken();
   }
 
   @override
   Widget build(BuildContext context) {
-    // return BottomNav(); // TODO: Remove this line; just for TESTING (goes directly to "tabs-home" screen)
-    // return SplashScreen();
     ref.listen<UserState>(userProvider, (UserState? prevState, UserState newState) {
-      if (newState.token.error) {
+      // Show ERROR screen.
+      print("THIS STUPID LISTENER WAS CALLED SOMEHOW");
+      if (newState.loading && newState.error) {
         Navigator.push(
-            context,
-            PageTransition(
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.easeOutBack,
-                type: PageTransitionType.fade,
-                alignment: Alignment.bottomCenter,
-                child: const ErrorScreen()));
-      } else if (newState.token.newUser) {
+          context,
+          PageTransition(
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOutBack,
+            type: PageTransitionType.fade,
+            alignment: Alignment.bottomCenter,
+            child: const ErrorScreen(),
+          ),
+        );
+        // Show OPEN screen.
+      } else if (!newState.loading && newState.error) {
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => const OpenScreen()));
-      } else if (!newState.token.loading) {
+        // Show BOTTOM_NAV (home) screen.
+      } else if (!newState.error && !newState.loading) {
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => const BottomNav()));
-      } else {
+        // Show SPLASH screen.
+      } else if (newState.loading && !newState.error) {
         Navigator.push(
             context,
             PageTransition(

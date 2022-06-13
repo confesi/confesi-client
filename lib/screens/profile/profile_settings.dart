@@ -1,18 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobile_client/constants/typography.dart';
+import 'package:flutter_mobile_client/state/user_slice.dart';
 import 'package:flutter_mobile_client/widgets/buttons/icon_text.dart';
 import 'package:flutter_mobile_client/widgets/buttons/touchable_opacity.dart';
 import 'package:flutter_mobile_client/widgets/buttons/touchable_text.dart';
 import 'package:flutter_mobile_client/widgets/layouts/appbar.dart';
 import 'package:flutter_mobile_client/widgets/layouts/line.dart';
 import 'package:flutter_mobile_client/widgets/textfield/long.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ProfileSettings extends StatelessWidget {
+class ProfileSettings extends ConsumerWidget {
   const ProfileSettings({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    String x = ref.watch(userProvider).accessToken;
+
     return GestureDetector(
       onVerticalDragUpdate: (details) {
         // print(details.delta.direction);
@@ -21,6 +25,12 @@ class ProfileSettings extends StatelessWidget {
         }
       },
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            print(
+                "Token: ${ref.read(userProvider).accessToken}, Loading: ${ref.read(userProvider).loading}, Error: ${ref.read(userProvider).error}, Logged in: ${ref.read(userProvider).loggedIn}");
+          },
+        ),
         resizeToAvoidBottomInset: false,
         backgroundColor: Theme.of(context).colorScheme.background,
         body: SafeArea(
@@ -56,8 +66,10 @@ class ProfileSettings extends StatelessWidget {
                     ),
                     const SizedBox(height: 15),
                     TouchableTextButton(
-                      text: "Logout",
-                      onTap: () => print("TAP"),
+                      text: "Logout $x",
+                      onTap: () {
+                        ref.read(userProvider.notifier).logout();
+                      },
                     ),
                   ],
                 ),

@@ -5,25 +5,44 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobile_client/constants/typography.dart';
 import 'package:flutter_mobile_client/responsive/sizes.dart';
+import 'package:flutter_mobile_client/screens/error.dart';
 import 'package:flutter_mobile_client/screens/explore/explore_home.dart';
 import 'package:flutter_mobile_client/screens/post/post_home.dart';
 import 'package:flutter_mobile_client/screens/profile/profile_home.dart';
+import 'package:flutter_mobile_client/screens/splash.dart';
+import 'package:flutter_mobile_client/state/user_slice.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:page_transition/page_transition.dart';
 
-class BottomNav extends StatefulWidget {
+import 'auth/open.dart';
+
+class BottomNav extends ConsumerStatefulWidget {
   const BottomNav({Key? key}) : super(key: key);
 
   @override
-  State<BottomNav> createState() => _BottomNavState();
+  ConsumerState<BottomNav> createState() => _BottomNavState();
 }
 
-class _BottomNavState extends State<BottomNav> with TickerProviderStateMixin {
+class _BottomNavState extends ConsumerState<BottomNav> with TickerProviderStateMixin {
   @override
   void initState() {
+    ref.read(userProvider.notifier).startAutoRefreshingAccessTokens();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    ref.listen<UserState>(userProvider, (UserState? prevState, UserState newState) {
+      // Navigate to OPEN screen (succesfull logout). Also checks if it wasn't already on the OPEN screen.
+      if ((!newState.loading && newState.error) &&
+          (prevState?.loading == true || prevState?.error == false)) {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => const OpenScreen()));
+        // If error logout flag is toggled, show error snack bar!
+      } else if (prevState?.logoutFailureMessageToggle != newState.logoutFailureMessageToggle) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("ERROR!!!")));
+      }
+    });
     return DefaultTabController(
       length: 5,
       child: Container(
@@ -55,14 +74,11 @@ class _BottomNavState extends State<BottomNav> with TickerProviderStateMixin {
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.background,
                   border: Border(
-                    top: BorderSide(
-                        color: Theme.of(context).colorScheme.onBackground,
-                        width: 0.5),
+                    top: BorderSide(color: Theme.of(context).colorScheme.onBackground, width: 0.5),
                   ),
                 ),
                 child: TabBar(
-                  labelStyle: kBody.copyWith(
-                      color: Theme.of(context).colorScheme.primary),
+                  labelStyle: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
                   tabs: [
                     Tab(
                       text: Responsive.isTablet(context) ? "Explore" : null,
@@ -87,8 +103,7 @@ class _BottomNavState extends State<BottomNav> with TickerProviderStateMixin {
                   ],
                   enableFeedback: true,
                   onTap: (t) => HapticFeedback.lightImpact(),
-                  unselectedLabelColor:
-                      Theme.of(context).colorScheme.onBackground,
+                  unselectedLabelColor: Theme.of(context).colorScheme.onBackground,
                   labelColor: Theme.of(context).colorScheme.primary,
                   indicatorSize: TabBarIndicatorSize.tab,
                   indicatorColor: Colors.transparent,

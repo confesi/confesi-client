@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobile_client/state/user_slice.dart';
 import 'package:flutter_mobile_client/widgets/buttons/long.dart';
 import 'package:flutter_mobile_client/widgets/text/group.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stacked_themes/stacked_themes.dart';
 
-class OpenScreen extends StatelessWidget {
+class OpenScreen extends ConsumerWidget {
   const OpenScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    String x = ref.watch(userProvider).accessToken;
     final width = MediaQuery.of(context).size.width;
     return WillPopScope(
       onWillPop: () async => false, // disables back button
@@ -44,15 +47,16 @@ class OpenScreen extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          const GroupText(
-                            header: "Welcome to Confessi",
+                          GroupText(
+                            small: true,
+                            header: "Welcome to Confessi ACCESS TOKEN: $x",
                             body:
                                 "Join your classmates who use Confessi to share anonymous confessions across campus.",
                           ),
                           const SizedBox(height: 15),
                           LongButton(
                             text: "Register",
-                            onPress: () => print("Register tapped"),
+                            onPress: () => print("click register"),
                             textColor: Theme.of(context).colorScheme.onPrimary,
                             backgroundColor: Theme.of(context).colorScheme.primary,
                           ),

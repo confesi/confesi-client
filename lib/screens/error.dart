@@ -5,11 +5,18 @@ import 'package:flutter_mobile_client/widgets/buttons/action.dart';
 import 'package:flutter_mobile_client/widgets/text/group.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ErrorScreen extends ConsumerWidget {
+class ErrorScreen extends ConsumerStatefulWidget {
   const ErrorScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ErrorScreen> createState() => _ErrorScreenState();
+}
+
+class _ErrorScreenState extends ConsumerState<ErrorScreen> {
+  bool isLoading = false;
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
@@ -30,9 +37,14 @@ class ErrorScreen extends ConsumerWidget {
                 ),
                 const SizedBox(height: 25),
                 ActionButton(
+                  loading: isLoading,
                   text: "try again",
-                  onPress: () {
-                    ref.read(userProvider.notifier).setAccessToken();
+                  onPress: () async {
+                    setState(() {
+                      isLoading = true;
+                    });
+                    await Future.delayed(const Duration(milliseconds: 400));
+                    ref.read(userProvider.notifier).getAndSetAccessToken();
                   },
                   icon: CupertinoIcons.refresh,
                   backgroundColor: Theme.of(context).colorScheme.primary,

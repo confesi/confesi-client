@@ -22,11 +22,7 @@ class AppbarLayout extends StatelessWidget {
   final Function? iconTap;
   final Function? textTap;
 
-  @override
-  Widget build(BuildContext context) {
-    return Hero(
-      tag: "appbar",
-      child: Material(
+  Widget children(BuildContext context) => Material(
         color: Theme.of(context).colorScheme.background,
         child: Container(
           decoration: BoxDecoration(
@@ -90,7 +86,12 @@ class AppbarLayout extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
+      );
+
+  @override
+  Widget build(BuildContext context) {
+    return Theme.of(context).platform == TargetPlatform.iOS
+        ? Hero(tag: "appbar", child: children(context))
+        : children(context);
   }
 }
