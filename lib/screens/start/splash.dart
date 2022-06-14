@@ -17,23 +17,12 @@ class SplashScreen extends StatelessWidget {
       ),
       body: SafeArea(
         child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(15),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Hero(
-                  tag: "logo",
-                  child: Image.asset(
-                    "assets/images/logo.jpg",
-                    width: width > 250 ? 250 : width * 2 / 3,
-                    fit: BoxFit.contain,
-                  ),
-                ),
-                const SizedBox(height: 30),
-                const CupertinoActivityIndicator(),
-                const SizedBox(height: 30),
-              ],
+          child: Hero(
+            tag: "logo",
+            child: Image.asset(
+              "assets/images/logo.jpg",
+              width: width > 250 ? 250 : width * 2 / 3,
+              fit: BoxFit.contain,
             ),
           ),
         ),

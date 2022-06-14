@@ -1,9 +1,14 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobile_client/screens/auth/showcase.dart';
 import 'package:flutter_mobile_client/state/token_slice.dart';
 import 'package:flutter_mobile_client/widgets/buttons/long.dart';
 import 'package:flutter_mobile_client/widgets/text/group.dart';
+import 'package:flutter_mobile_client/widgets/text/header_group.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stacked_themes/stacked_themes.dart';
+
+import '../../widgets/buttons/pop.dart';
 
 class OpenScreen extends ConsumerWidget {
   const OpenScreen({Key? key}) : super(key: key);
@@ -22,12 +27,11 @@ class OpenScreen extends ConsumerWidget {
         ),
         body: SafeArea(
           child: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(15),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
+            child: Column(
+              children: [
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.center,
                     child: Container(
                       color: Colors.transparent,
                       child: Hero(
@@ -40,39 +44,44 @@ class OpenScreen extends ConsumerWidget {
                       ),
                     ),
                   ),
-                  Expanded(
-                    child: Container(
-                      color: Colors.transparent,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          const GroupText(
-                            header: "Welcome to Confessi",
-                            body:
-                                "Join your classmates who use Confessi to share anonymous confessions across campus.",
-                          ),
-                          const SizedBox(height: 15),
-                          LongButton(
-                            text: "Register",
-                            onPress: () {
-                              print("Access token: ${ref.watch(tokenProvider).accessToken}");
-                            },
-                            textColor: Theme.of(context).colorScheme.onPrimary,
-                            backgroundColor: Theme.of(context).colorScheme.primary,
-                          ),
-                          const SizedBox(height: 10),
-                          LongButton(
-                            text: "Login",
-                            onPress: () => getThemeManager(context).toggleDarkLightTheme(),
-                            textColor: Theme.of(context).colorScheme.primary,
-                            backgroundColor: Theme.of(context).colorScheme.secondary,
-                          ),
-                        ],
-                      ),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        const HeaderGroupText(
+                          header: "Welcome to Confessi",
+                          body: "Use Confessi to share anonymous confessions campus-wide.",
+                        ),
+                        const SizedBox(height: 30),
+                        Column(
+                          children: [
+                            PopButton(
+                              onPress: () => Navigator.pushReplacement(context,
+                                  MaterialPageRoute(builder: (context) => const ShowcaseScreen())),
+                              icon: CupertinoIcons.chevron_right,
+                              backgroundColor: Theme.of(context).colorScheme.secondary,
+                              textColor: Theme.of(context).colorScheme.primary,
+                              text: "Create new account",
+                              bottomPadding: 20,
+                            ),
+                            PopButton(
+                              onPress: () => print("TAPPPPPP"),
+                              icon: CupertinoIcons.chevron_right,
+                              backgroundColor: Theme.of(context).colorScheme.primary,
+                              textColor: Theme.of(context).colorScheme.background,
+                              text: "Existing user login",
+                              bottomPadding: 30,
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),

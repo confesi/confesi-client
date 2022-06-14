@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+// largest - meant for BOLD DISPLAY!
+var kDisplay = GoogleFonts.dmSerifDisplay(
+  textStyle: const TextStyle(fontSize: 24, fontWeight: FontWeight.normal),
+);
+
 // very big
 var kHeader = GoogleFonts.inter(
   textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
