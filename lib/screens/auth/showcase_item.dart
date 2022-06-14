@@ -27,24 +27,31 @@ class ShowcaseItem extends StatelessWidget {
           child: Column(
             children: [
               Expanded(
-                flex: 3,
-                child: Center(
-                  child: Image.asset(
-                    imgPath,
-                    width: width > 250 ? 250 : width * 2 / 3,
-                    fit: BoxFit.contain,
+                flex: 4,
+                child: Container(
+                  color: Colors.transparent,
+                  child: Center(
+                    child: Image.asset(
+                      imgPath,
+                      width: width > 400 ? 400 : width * 4 / 5,
+                      fit: BoxFit.fitWidth,
+                    ),
                   ),
                 ),
               ),
               Expanded(
                 flex: 2,
-                child: Center(
-                  child: SingleChildScrollView(
-                    physics: const BouncingScrollPhysics(),
-                    child: HeaderGroupText(
-                      dark: true,
-                      body: body,
-                      header: header,
+                child: Container(
+                  color: Colors.transparent,
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: SingleChildScrollView(
+                      physics: const BouncingScrollPhysics(),
+                      child: HeaderGroupText(
+                        dark: true,
+                        body: body,
+                        header: header,
+                      ),
                     ),
                   ),
                 ),

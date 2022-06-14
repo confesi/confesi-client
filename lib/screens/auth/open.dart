@@ -52,8 +52,9 @@ class OpenScreen extends ConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         const HeaderGroupText(
-                          header: "Welcome to Confessi",
-                          body: "Use Confessi to share anonymous confessions campus-wide.",
+                          header: "Confessi",
+                          body:
+                              "Make sure you're in-the-know with the newest campus gossip. Fully anonymous.",
                         ),
                         const SizedBox(height: 30),
                         Column(

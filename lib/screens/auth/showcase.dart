@@ -25,24 +25,24 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
     pages = [
       ShowcaseItem(
         pageIndex: pageIndex,
-        imgPath: "assets/images/drone.png",
-        header: "Use shapes to decorate",
+        imgPath: "assets/images/showcase/binoculars.png",
+        header: "Homemade",
         body:
-            "Decorate your design products with relevant shapes. Use basic geometric shapes like squares, circles, or more complex shapes such as hearts, stars, or bubbles.",
+            "Confessi was built by a University of Victoria student over a period of four months. I hope you all enjoy it! As the app is new, all feedback will be seriously considered and possibly added. Let's make Confessi better together!",
       ),
       ShowcaseItem(
         pageIndex: pageIndex,
-        imgPath: "assets/images/drone.png",
-        header: "Use shapes to decorate",
+        imgPath: "assets/images/showcase/darkhole.png",
+        header: "Privacy",
         body:
-            "Decorate your design products with relevant shapes. Use basic geometric shapes like squares, circles, or more complex shapes such as hearts, stars, or bubbles.",
+            "Anonymity is key to honest confessions. Thus, the posts you make will never be linked back to your account.",
       ),
       ShowcaseItem(
         pageIndex: pageIndex,
-        imgPath: "assets/images/drone.png",
-        header: "Use shapes to decorate",
+        imgPath: "assets/images/showcase/lamp.png",
+        header: "Darkmode",
         body:
-            "Decorate your design products with relevant shapes. Use basic geometric shapes like squares, circles, or more complex shapes such as hearts, stars, or bubbles.",
+            "I asked my friends the top 3 things they valued in an app. They were security, privacy, and darkmode. This blew me away! Hence, darkmode was born.",
       ),
     ];
     super.initState();
@@ -79,7 +79,7 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
                 child: Column(
                   children: [
                     ScrollDotsLayout(
-                      verticalPadding: 20,
+                      verticalPadding: 40,
                       pageIndex: pageIndex,
                       pageLength: pages.length,
                     ),
@@ -114,6 +114,7 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
                         ),
                       ],
                     ),
+                    const SizedBox(height: 20),
                   ],
                 ),
               ),
