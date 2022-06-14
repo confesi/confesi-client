@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobile_client/screens/auth/open.dart';
+import 'package:flutter_mobile_client/screens/start/bottom_nav.dart';
+import 'package:flutter_mobile_client/state/token_slice.dart';
 import 'package:flutter_mobile_client/state/user_slice.dart';
 import 'package:flutter_mobile_client/widgets/buttons/action.dart';
 import 'package:flutter_mobile_client/widgets/text/group.dart';
@@ -17,6 +20,20 @@ class _ErrorScreenState extends ConsumerState<ErrorScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ref.listen<TokenState>(tokenProvider, (TokenState? prevState, TokenState newState) {
+      print("THIS LISTENER IS CALLED 2");
+      switch (newState.screen) {
+        case ScreenState.open:
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => const OpenScreen()));
+          break;
+        case ScreenState.home:
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => const BottomNav()));
+          break;
+        default:
+      }
+    });
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
@@ -44,7 +61,10 @@ class _ErrorScreenState extends ConsumerState<ErrorScreen> {
                       isLoading = true;
                     });
                     await Future.delayed(const Duration(milliseconds: 400));
-                    ref.read(userProvider.notifier).getAndSetAccessToken();
+                    await ref.read(tokenProvider.notifier).getAndSetAccessToken();
+                    setState(() {
+                      isLoading = false;
+                    });
                   },
                   icon: CupertinoIcons.refresh,
                   backgroundColor: Theme.of(context).colorScheme.primary,

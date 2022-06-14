@@ -5,16 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobile_client/constants/typography.dart';
 import 'package:flutter_mobile_client/responsive/sizes.dart';
-import 'package:flutter_mobile_client/screens/error.dart';
 import 'package:flutter_mobile_client/screens/explore/explore_home.dart';
 import 'package:flutter_mobile_client/screens/post/post_home.dart';
 import 'package:flutter_mobile_client/screens/profile/profile_home.dart';
-import 'package:flutter_mobile_client/screens/splash.dart';
+import 'package:flutter_mobile_client/screens/start/error.dart';
+import 'package:flutter_mobile_client/state/token_slice.dart';
 import 'package:flutter_mobile_client/state/user_slice.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:page_transition/page_transition.dart';
-
-import 'auth/open.dart';
+import '../auth/open.dart';
 
 class BottomNav extends ConsumerStatefulWidget {
   const BottomNav({Key? key}) : super(key: key);
@@ -26,21 +24,17 @@ class BottomNav extends ConsumerStatefulWidget {
 class _BottomNavState extends ConsumerState<BottomNav> with TickerProviderStateMixin {
   @override
   void initState() {
-    ref.read(userProvider.notifier).startAutoRefreshingAccessTokens();
+    ref.read(tokenProvider.notifier).startAutoRefreshingAccessTokens();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<UserState>(userProvider, (UserState? prevState, UserState newState) {
-      // Navigate to OPEN screen (succesfull logout). Also checks if it wasn't already on the OPEN screen.
-      if ((!newState.loading && newState.error) &&
-          (prevState?.loading == true || prevState?.error == false)) {
+    ref.listen<TokenState>(tokenProvider, (TokenState? prevState, TokenState newState) {
+      print("bottom_nav LISTENER CALLED");
+      if (newState.screen == ScreenState.open) {
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => const OpenScreen()));
-        // If error logout flag is toggled, show error snack bar!
-      } else if (prevState?.logoutFailureMessageToggle != newState.logoutFailureMessageToggle) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("ERROR!!!")));
       }
     });
     return DefaultTabController(

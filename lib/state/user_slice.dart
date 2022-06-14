@@ -56,21 +56,21 @@ class UserNotifier extends StateNotifier<UserState> {
     Timer.periodic(const Duration(seconds: 2), (timer) {
       if (state.loggedIn) {
         print("REFRESHING TOKEN");
-        refreshTokenCall();
+        getAndSetAccessToken();
       } else {
         timer.cancel();
       }
     });
   }
 
-  void refreshTokenCall() async {
-    await Future.delayed(const Duration(seconds: 5));
-    const storage = FlutterSecureStorage();
-    final refreshToken = await storage.read(key: "refreshToken");
-  }
+  // void refreshTokenCall() async {
+  //   await Future.delayed(const Duration(seconds: 5));
+  //   const storage = FlutterSecureStorage();
+  //   final refreshToken = await storage.read(key: "refreshToken");
+  // }
 
   void getAndSetAccessToken() async {
-    await Future.delayed(const Duration(seconds: 5));
+    // await Future.delayed(const Duration(seconds: 5));
     const storage = FlutterSecureStorage();
     // NEXT LINE JUST FOR TESTING; REMOVE LATER
     await storage.write(

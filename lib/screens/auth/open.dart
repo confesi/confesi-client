@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_client/state/user_slice.dart';
 import 'package:flutter_mobile_client/widgets/buttons/long.dart';
 import 'package:flutter_mobile_client/widgets/text/group.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,7 +9,6 @@ class OpenScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    String x = ref.watch(userProvider).accessToken;
     final width = MediaQuery.of(context).size.width;
     return WillPopScope(
       onWillPop: () async => false, // disables back button
@@ -47,9 +45,8 @@ class OpenScreen extends ConsumerWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          GroupText(
-                            small: true,
-                            header: "Welcome to Confessi ACCESS TOKEN: $x",
+                          const GroupText(
+                            header: "Welcome to Confessi",
                             body:
                                 "Join your classmates who use Confessi to share anonymous confessions across campus.",
                           ),

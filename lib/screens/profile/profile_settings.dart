@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobile_client/constants/typography.dart';
+import 'package:flutter_mobile_client/state/token_slice.dart';
 import 'package:flutter_mobile_client/state/user_slice.dart';
 import 'package:flutter_mobile_client/widgets/buttons/icon_text.dart';
 import 'package:flutter_mobile_client/widgets/buttons/touchable_opacity.dart';
@@ -15,7 +16,7 @@ class ProfileSettings extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    String x = ref.watch(userProvider).accessToken;
+    String x = ref.watch(tokenProvider).accessToken;
 
     return GestureDetector(
       onVerticalDragUpdate: (details) {
@@ -26,10 +27,8 @@ class ProfileSettings extends ConsumerWidget {
       },
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            print(
-                "Token: ${ref.read(userProvider).accessToken}, Loading: ${ref.read(userProvider).loading}, Error: ${ref.read(userProvider).error}, Logged in: ${ref.read(userProvider).loggedIn}");
-          },
+          onPressed: () {},
+          child: Text("Token: $x"),
         ),
         resizeToAvoidBottomInset: false,
         backgroundColor: Theme.of(context).colorScheme.background,
@@ -68,7 +67,7 @@ class ProfileSettings extends ConsumerWidget {
                     TouchableTextButton(
                       text: "Logout $x",
                       onTap: () {
-                        ref.read(userProvider.notifier).logout();
+                        ref.read(tokenProvider.notifier).logout();
                       },
                     ),
                   ],
