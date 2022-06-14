@@ -16,7 +16,7 @@ class ProfileSettings extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    String x = ref.watch(tokenProvider).accessToken;
+    dynamic x = ref.watch(tokenProvider);
 
     return GestureDetector(
       onVerticalDragUpdate: (details) {
@@ -27,8 +27,10 @@ class ProfileSettings extends ConsumerWidget {
       },
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          child: Text("Token: $x"),
+          onPressed: () {
+            print(x.screen.toString());
+          },
+          child: Text("Token: ${x.accessToken}"),
         ),
         resizeToAvoidBottomInset: false,
         backgroundColor: Theme.of(context).colorScheme.background,
@@ -65,7 +67,7 @@ class ProfileSettings extends ConsumerWidget {
                     ),
                     const SizedBox(height: 15),
                     TouchableTextButton(
-                      text: "Logout $x",
+                      text: "Logout ${x.accessToken}",
                       onTap: () {
                         ref.read(tokenProvider.notifier).logout();
                       },

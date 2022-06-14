@@ -52,11 +52,11 @@ class _TouchableOpacityState extends State<TouchableOpacity> with SingleTickerPr
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onLongPress: () {
-        if (widget.onLongTap != null) {
-          widget.onLongTap!();
-        }
-      },
+      // onLongPress: () {
+      //   if (widget.onLongTap != null) {
+      //     widget.onLongTap!();
+      //   }
+      // },
       onTapDown: (_) => setState(() {
         animController.forward();
         animController.addListener(() {

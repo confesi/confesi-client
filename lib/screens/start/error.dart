@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobile_client/constants/error_messages.dart';
 import 'package:flutter_mobile_client/screens/auth/open.dart';
 import 'package:flutter_mobile_client/screens/start/bottom_nav.dart';
 import 'package:flutter_mobile_client/state/token_slice.dart';
@@ -9,7 +10,9 @@ import 'package:flutter_mobile_client/widgets/text/group.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ErrorScreen extends ConsumerStatefulWidget {
-  const ErrorScreen({Key? key}) : super(key: key);
+  const ErrorScreen({required this.message, Key? key}) : super(key: key);
+
+  final String message;
 
   @override
   ConsumerState<ErrorScreen> createState() => _ErrorScreenState();
@@ -17,11 +20,18 @@ class ErrorScreen extends ConsumerStatefulWidget {
 
 class _ErrorScreenState extends ConsumerState<ErrorScreen> {
   bool isLoading = false;
+  late String updatableMessage;
+
+  @override
+  void initState() {
+    updatableMessage = widget.message;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     ref.listen<TokenState>(tokenProvider, (TokenState? prevState, TokenState newState) {
-      print("THIS LISTENER IS CALLED 2");
+      print("error LISTENER CALLED, prev: ${prevState!.screen}, new: ${newState.screen}");
       switch (newState.screen) {
         case ScreenState.open:
           Navigator.pushReplacement(
@@ -30,6 +40,16 @@ class _ErrorScreenState extends ConsumerState<ErrorScreen> {
         case ScreenState.home:
           Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (context) => const BottomNav()));
+          break;
+        case ScreenState.connectionError:
+          setState(() {
+            updatableMessage = kConnectionError;
+          });
+          break;
+        case ScreenState.serverError:
+          setState(() {
+            updatableMessage = kServerError;
+          });
           break;
         default:
       }
@@ -48,15 +68,16 @@ class _ErrorScreenState extends ConsumerState<ErrorScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const GroupText(
+                GroupText(
                   header: "Uh oh!",
-                  body: "We couldn't connect you to Confessi. Perhaps you have no connection?",
+                  body: updatableMessage,
                 ),
                 const SizedBox(height: 25),
                 ActionButton(
                   loading: isLoading,
                   text: "try again",
                   onPress: () async {
+                    print("Value: ${ref.read(tokenProvider).screen.toString()}");
                     setState(() {
                       isLoading = true;
                     });

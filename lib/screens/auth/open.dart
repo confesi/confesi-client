@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobile_client/state/token_slice.dart';
 import 'package:flutter_mobile_client/widgets/buttons/long.dart';
 import 'package:flutter_mobile_client/widgets/text/group.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -53,7 +54,9 @@ class OpenScreen extends ConsumerWidget {
                           const SizedBox(height: 15),
                           LongButton(
                             text: "Register",
-                            onPress: () => print("click register"),
+                            onPress: () {
+                              print("Access token: ${ref.watch(tokenProvider).accessToken}");
+                            },
                             textColor: Theme.of(context).colorScheme.onPrimary,
                             backgroundColor: Theme.of(context).colorScheme.primary,
                           ),

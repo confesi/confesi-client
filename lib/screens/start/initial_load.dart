@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobile_client/constants/error_messages.dart';
 import 'package:flutter_mobile_client/screens/auth/open.dart';
 import 'package:flutter_mobile_client/screens/start/bottom_nav.dart';
 import 'package:flutter_mobile_client/screens/start/error.dart';
 import 'package:flutter_mobile_client/screens/start/splash.dart';
 import 'package:flutter_mobile_client/state/token_slice.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:page_transition/page_transition.dart';
 
 class InitialLoad extends ConsumerStatefulWidget {
   const InitialLoad({Key? key}) : super(key: key);
@@ -34,10 +34,22 @@ class _InitialLoadState extends ConsumerState<InitialLoad> {
           Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (context) => const BottomNav()));
           break;
-        case ScreenState.error:
+        case ScreenState.serverError:
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const ErrorScreen(
+                        message: kServerError,
+                      )));
+          break;
+        case ScreenState.connectionError:
         default:
           Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => const ErrorScreen()));
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const ErrorScreen(
+                        message: kConnectionError,
+                      )));
           break;
       }
     });

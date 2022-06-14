@@ -32,6 +32,22 @@ class _BottomNavState extends ConsumerState<BottomNav> with TickerProviderStateM
   Widget build(BuildContext context) {
     ref.listen<TokenState>(tokenProvider, (TokenState? prevState, TokenState newState) {
       print("bottom_nav LISTENER CALLED");
+      // Popup logic from FLAGS.
+      if (prevState?.connectionErrorFLAG != newState.connectionErrorFLAG) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Connection Error"),
+          ),
+        );
+      }
+      if (prevState?.serverErrorFLAG != newState.serverErrorFLAG) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Server Error"),
+          ),
+        );
+      }
+      // Screen switching logic.
       if (newState.screen == ScreenState.open) {
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => const OpenScreen()));
