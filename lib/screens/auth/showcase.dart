@@ -87,27 +87,20 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         SingleTextButton(
-                          backgroundColor: Colors.transparent,
-                          textColor: Theme.of(context).colorScheme.primary,
-                          text: "Skip",
-                          onPress: () => Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const BottomNav(),
-                            ),
-                          ),
-                        ),
+                            backgroundColor: Colors.transparent,
+                            textColor: Theme.of(context).colorScheme.primary,
+                            text: "Skip",
+                            onPress: () => Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(builder: (context) => const BottomNav()),
+                                (Route<dynamic> route) => false)),
                         SingleTextButton(
                           backgroundColor: Theme.of(context).colorScheme.background,
                           textColor: Theme.of(context).colorScheme.primary,
                           text: pageIndex + 1 == pages.length ? "Done" : "Next",
                           onPress: () => pageIndex + 1 == pages.length
-                              ? Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const BottomNav(),
-                                  ),
-                                )
+                              ? Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(builder: (context) => const BottomNav()),
+                                  (Route<dynamic> route) => false)
                               : controller.animateToPage(pageIndex + 1,
                                   duration: const Duration(milliseconds: 400),
                                   curve: Curves.easeInOutSine),

@@ -67,10 +67,10 @@ class OpenScreen extends ConsumerWidget {
                               Column(
                                 children: [
                                   PopButton(
-                                    onPress: () => Navigator.pushReplacement(
-                                        context,
+                                    onPress: () => Navigator.of(context).pushAndRemoveUntil(
                                         MaterialPageRoute(
-                                            builder: (context) => const ShowcaseScreen())),
+                                            builder: (context) => const ShowcaseScreen()),
+                                        (Route<dynamic> route) => false),
                                     icon: CupertinoIcons.chevron_right,
                                     backgroundColor: Theme.of(context).colorScheme.secondary,
                                     textColor: Theme.of(context).colorScheme.primary,

@@ -27,29 +27,31 @@ class _InitialLoadState extends ConsumerState<InitialLoad> {
       print("initial_load LISTENER CALLED");
       switch (newState.screen) {
         case ScreenState.open:
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => const OpenScreen()));
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => const OpenScreen()),
+              (Route<dynamic> route) => false);
           break;
         case ScreenState.home:
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => const BottomNav()));
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => const BottomNav()),
+              (Route<dynamic> route) => false);
           break;
         case ScreenState.serverError:
-          Navigator.pushReplacement(
-              context,
+          Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
                   builder: (context) => const ErrorScreen(
                         message: kServerError,
-                      )));
+                      )),
+              (Route<dynamic> route) => false);
           break;
         case ScreenState.connectionError:
         default:
-          Navigator.pushReplacement(
-              context,
+          Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
                   builder: (context) => const ErrorScreen(
                         message: kConnectionError,
-                      )));
+                      )),
+              (Route<dynamic> route) => false);
           break;
       }
     });

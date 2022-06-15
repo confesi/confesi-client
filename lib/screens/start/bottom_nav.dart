@@ -49,8 +49,10 @@ class _BottomNavState extends ConsumerState<BottomNav> with TickerProviderStateM
       }
       // Screen switching logic.
       if (newState.screen == ScreenState.open) {
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => const OpenScreen()));
+        print("THIS PUSH HAPPENED RIGHT HERE");
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => const OpenScreen()),
+            (Route<dynamic> route) => false);
       }
     });
     return DefaultTabController(

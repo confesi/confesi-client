@@ -34,12 +34,14 @@ class _ErrorScreenState extends ConsumerState<ErrorScreen> {
       print("error LISTENER CALLED, prev: ${prevState!.screen}, new: ${newState.screen}");
       switch (newState.screen) {
         case ScreenState.open:
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => const OpenScreen()));
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => const OpenScreen()),
+              (Route<dynamic> route) => false);
           break;
         case ScreenState.home:
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => const BottomNav()));
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => const BottomNav()),
+              (Route<dynamic> route) => false);
           break;
         case ScreenState.connectionError:
           setState(() {
@@ -77,7 +79,7 @@ class _ErrorScreenState extends ConsumerState<ErrorScreen> {
                   loading: isLoading,
                   text: "try again",
                   onPress: () async {
-                    print("Value: ${ref.read(tokenProvider).screen.toString()}");
+                    print("Current screen: ${ref.read(tokenProvider).screen.toString()}");
                     setState(() {
                       isLoading = true;
                     });

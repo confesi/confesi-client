@@ -71,10 +71,10 @@ class TokenNotifier extends StateNotifier<TokenState> {
     }
     const storage = FlutterSecureStorage();
     // NEXT LINE JUST FOR TESTING; REMOVE LATER
-    await storage.write(
-        key: "refreshToken",
-        value:
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9uZ29PYmplY3RJRCI6IjYyOTg2ZDBhYWQyZDI3MjI1ZjFhZGI2NSIsImlhdCI6MTY1NTE5NDc0MiwiZXhwIjoxNjg2NzUyMzQyfQ.37aVtQeBVeC-25bDtjyi77JjdrbJVm-FIroHmaIWAMY");
+    // await storage.write(
+    //     key: "refreshToken",
+    //     value:
+    //         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9uZ29PYmplY3RJRCI6IjYyOTg2ZDBhYWQyZDI3MjI1ZjFhZGI2NSIsImlhdCI6MTY1NTE5NDc0MiwiZXhwIjoxNjg2NzUyMzQyfQ.37aVtQeBVeC-25bDtjyi77JjdrbJVm-FIroHmaIWAMY");
     final refreshToken = await storage.read(key: "refreshToken");
     if (refreshToken == null) {
       // Token doesn't exist. Set screen state to OPEN.
@@ -162,6 +162,44 @@ class TokenNotifier extends StateNotifier<TokenState> {
       // Error occured signing out (server error). Set a flag.
       state = state.copyWith(newServerErrorFLAG: !state.serverErrorFLAG);
       return;
+    }
+  }
+
+  dynamic login(String usernameOrEmail, String password) async {
+    // initially, just do usernames (transform /login route to handle both); also transform /register route to make email a primary key
+    try {
+      final response = await http
+          .post(
+            Uri.parse('$kDomain/api/user/login'),
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+            },
+            body: jsonEncode(<String, String>{
+              "username": usernameOrEmail,
+              "password": password,
+            }),
+          )
+          .timeout(const Duration(seconds: 2));
+      if (response.statusCode == 200) {
+        print("Success!");
+        final String accessToken = json.decode(response.body)["accessToken"];
+        final String refreshToken = json.decode(response.body)["refreshToken"];
+        const storage = FlutterSecureStorage();
+        await storage.write(key: "refreshToken", value: refreshToken);
+        return state = state.copyWith(newScreen: ScreenState.home, newAccessToken: accessToken);
+      } else if (response.statusCode == 500) {
+        print("Internal server error");
+      } else {
+        print("Incorrect details (specify email/username or password is wrong)");
+      }
+    } on TimeoutException {
+      // timeout error
+      print("Timeout exception");
+    } on SocketException {
+      // no connection error
+      print("Socket exception");
+    } catch (error) {
+      print("Error: $error");
     }
   }
 }

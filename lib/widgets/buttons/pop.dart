@@ -59,7 +59,7 @@ class PopButton extends StatelessWidget {
                     child: Align(
                       alignment: justText ? Alignment.center : Alignment.centerLeft,
                       child: AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 200),
+                        duration: const Duration(milliseconds: 100),
                         transitionBuilder: (Widget child, Animation<double> animation) =>
                             ScaleTransition(scale: animation, child: child),
                         child: loading
