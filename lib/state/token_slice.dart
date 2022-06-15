@@ -49,7 +49,8 @@ class TokenNotifier extends StateNotifier<TokenState> {
   TokenNotifier() : super(const TokenState());
 
   void startAutoRefreshingAccessTokens() {
-    Timer.periodic(const Duration(seconds: 3), (timer) {
+    // Refreshes 500 milliseconds before the access token is set to expire
+    Timer.periodic(const Duration(milliseconds: kAccessTokenLifetime - 500), (timer) {
       print("SCREEN STATE: ${state.screen.toString()}");
       // Basically checking if we're either logged in (home) or no internet or server error - in that case, keep checking.
       if (state.screen == ScreenState.home ||
@@ -166,7 +167,9 @@ class TokenNotifier extends StateNotifier<TokenState> {
   }
 
   dynamic login(String usernameOrEmail, String password) async {
-    // initially, just do usernames (transform /login route to handle both); also transform /register route to make email a primary key
+    // Wait x time as not to create a jank
+    await Future.delayed(const Duration(milliseconds: 400));
+    print(usernameOrEmail + password);
     try {
       final response = await http
           .post(
@@ -175,7 +178,7 @@ class TokenNotifier extends StateNotifier<TokenState> {
               'Content-Type': 'application/json; charset=UTF-8',
             },
             body: jsonEncode(<String, String>{
-              "username": usernameOrEmail,
+              "usernameOrEmail": usernameOrEmail,
               "password": password,
             }),
           )
