@@ -13,9 +13,11 @@ class PopButton extends StatelessWidget {
       this.horizontalPadding = 0.0,
       required this.onPress,
       required this.icon,
+      this.justText = false,
       Key? key})
       : super(key: key);
 
+  final bool justText;
   final IconData icon;
   final Color textColor;
   final Color backgroundColor;
@@ -46,23 +48,32 @@ class PopButton extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(20),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment:
+                  justText ? MainAxisAlignment.center : MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
-                  child: Text(
-                    text,
-                    style: kTitle.copyWith(
-                      color: textColor,
+                  child: SizedBox(
+                    height: 24,
+                    child: Align(
+                      alignment: justText ? Alignment.center : Alignment.centerLeft,
+                      child: Text(
+                        text,
+                        style: kTitle.copyWith(
+                          color: textColor,
+                        ),
+                        textAlign: justText ? TextAlign.center : TextAlign.left,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
-                    textAlign: TextAlign.left,
-                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                const SizedBox(width: 5),
-                Icon(
-                  icon,
-                  color: textColor,
-                ),
+                justText ? Container() : const SizedBox(width: 5),
+                justText
+                    ? Container()
+                    : Icon(
+                        icon,
+                        color: textColor,
+                      ),
               ],
             ),
           ),

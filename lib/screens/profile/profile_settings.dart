@@ -7,6 +7,7 @@ import 'package:flutter_mobile_client/widgets/buttons/icon_text.dart';
 import 'package:flutter_mobile_client/widgets/buttons/touchable_opacity.dart';
 import 'package:flutter_mobile_client/widgets/buttons/touchable_text.dart';
 import 'package:flutter_mobile_client/widgets/layouts/appbar.dart';
+import 'package:flutter_mobile_client/widgets/layouts/keyboard_dismiss.dart';
 import 'package:flutter_mobile_client/widgets/layouts/line.dart';
 import 'package:flutter_mobile_client/widgets/textfield/long.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,13 +19,7 @@ class ProfileSettings extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     dynamic x = ref.watch(tokenProvider);
 
-    return GestureDetector(
-      onVerticalDragUpdate: (details) {
-        // print(details.delta.direction);
-        if (details.delta.direction > 0 && details.delta.distance > 20) {
-          FocusScope.of(context).unfocus();
-        }
-      },
+    return KeyboardDismissLayout(
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
           onPressed: () {
