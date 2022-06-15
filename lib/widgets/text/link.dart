@@ -24,19 +24,26 @@ class LinkText extends StatelessWidget {
       width: widthFactor * widthMultiplier,
       child: TouchableOpacity(
         onTap: () => onPress(),
-        child: RichText(
-          textAlign: TextAlign.center,
-          text: TextSpan(
-            style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
-            children: <TextSpan>[
-              TextSpan(
-                  text: text,
-                  style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface)),
-              TextSpan(
-                text: linkText,
-                style: kBody.copyWith(color: Theme.of(context).colorScheme.secondary),
+        child: Container(
+          // transparent hitbox trick
+          color: Colors.transparent,
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: RichText(
+              textAlign: TextAlign.center,
+              text: TextSpan(
+                style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                children: <TextSpan>[
+                  TextSpan(
+                      text: text,
+                      style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface)),
+                  TextSpan(
+                    text: linkText,
+                    style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),

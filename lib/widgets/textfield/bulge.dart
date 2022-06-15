@@ -5,31 +5,39 @@ import 'package:flutter_mobile_client/constants/typography.dart';
 class BulgeTextField extends StatefulWidget {
   const BulgeTextField(
       {this.hintText = "Search",
+      required this.controller,
       this.icon = CupertinoIcons.search,
       this.bottomPadding = 0.0,
       this.topPadding = 0.0,
       this.horizontalPadding = 0.0,
+      this.password = false,
       Key? key})
       : super(key: key);
 
+  final bool password;
   final IconData icon;
   final double bottomPadding;
   final String hintText;
   final double topPadding;
   final double horizontalPadding;
+  final TextEditingController controller;
 
   @override
   State<BulgeTextField> createState() => _BulgeTextFieldState();
 }
 
-String text = "";
-
 class _BulgeTextFieldState extends State<BulgeTextField> {
-  final TextEditingController controller = TextEditingController();
   FocusNode focusNode = FocusNode();
 
   @override
+  void initState() {
+    widget.controller.clear();
+    super.initState();
+  }
+
+  @override
   void dispose() {
+    widget.controller.dispose();
     focusNode.dispose();
     super.dispose();
   }
@@ -57,13 +65,10 @@ class _BulgeTextFieldState extends State<BulgeTextField> {
               height: 24,
               child: Center(
                 child: TextField(
+                  obscureText: widget.password,
+                  // scrollPadding: const EdgeInsets.all(0),
                   focusNode: focusNode,
-                  controller: controller,
-                  onChanged: (newValue) {
-                    setState(() {
-                      text = newValue;
-                    });
-                  },
+                  controller: widget.controller,
                   style: kBody.copyWith(
                       color: Theme.of(context).colorScheme.primary, fontWeight: FontWeight.w100),
                   decoration: InputDecoration.collapsed(

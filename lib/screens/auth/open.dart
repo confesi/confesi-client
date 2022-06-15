@@ -30,6 +30,7 @@ class OpenScreen extends ConsumerWidget {
         body: SafeArea(
           child: Center(
             child: CustomScrollView(
+              physics: const NeverScrollableScrollPhysics(),
               slivers: [
                 SliverFillRemaining(
                   hasScrollBody: false,

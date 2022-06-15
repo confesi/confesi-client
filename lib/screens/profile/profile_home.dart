@@ -29,6 +29,7 @@ class ProfileHome extends StatelessWidget {
           mainAxisSize: MainAxisSize.max,
           children: [
             SingleChildScrollView(
+              // This line seems weird, added for testing and not removed?
               child: SizedBox(
                 height: MediaQuery.of(context).size.height * .25,
                 child: Column(

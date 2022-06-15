@@ -14,9 +14,11 @@ class PopButton extends StatelessWidget {
       required this.onPress,
       required this.icon,
       this.justText = false,
+      this.loading = false,
       Key? key})
       : super(key: key);
 
+  final bool loading;
   final bool justText;
   final IconData icon;
   final Color textColor;
@@ -56,13 +58,26 @@ class PopButton extends StatelessWidget {
                     height: 24,
                     child: Align(
                       alignment: justText ? Alignment.center : Alignment.centerLeft,
-                      child: Text(
-                        text,
-                        style: kTitle.copyWith(
-                          color: textColor,
-                        ),
-                        textAlign: justText ? TextAlign.center : TextAlign.left,
-                        overflow: TextOverflow.ellipsis,
+                      child: AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 200),
+                        transitionBuilder: (Widget child, Animation<double> animation) =>
+                            ScaleTransition(scale: animation, child: child),
+                        child: loading
+                            ? Padding(
+                                padding: const EdgeInsets.only(top: 2),
+                                child: CupertinoActivityIndicator(
+                                  radius: 10,
+                                  color: textColor,
+                                ),
+                              )
+                            : Text(
+                                text,
+                                style: kTitle.copyWith(
+                                  color: textColor,
+                                ),
+                                textAlign: justText ? TextAlign.center : TextAlign.left,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                       ),
                     ),
                   ),
