@@ -15,6 +15,17 @@ enum ScreenState {
   serverError,
 }
 
+enum LoginResponse {
+  connectionError,
+  serverError,
+  detailsIncorrect,
+  accountDoesNotExist,
+  fieldsCannotBeBlank,
+  passwordTooShort,
+  usernameOrEmailTooShort,
+  success,
+}
+
 @immutable
 class TokenState {
   const TokenState(
@@ -71,11 +82,6 @@ class TokenNotifier extends StateNotifier<TokenState> {
       await Future.delayed(const Duration(milliseconds: 400));
     }
     const storage = FlutterSecureStorage();
-    // NEXT LINE JUST FOR TESTING; REMOVE LATER
-    // await storage.write(
-    //     key: "refreshToken",
-    //     value:
-    //         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9uZ29PYmplY3RJRCI6IjYyOTg2ZDBhYWQyZDI3MjI1ZjFhZGI2NSIsImlhdCI6MTY1NTE5NDc0MiwiZXhwIjoxNjg2NzUyMzQyfQ.37aVtQeBVeC-25bDtjyi77JjdrbJVm-FIroHmaIWAMY");
     final refreshToken = await storage.read(key: "refreshToken");
     if (refreshToken == null) {
       // Token doesn't exist. Set screen state to OPEN.
@@ -103,7 +109,6 @@ class TokenNotifier extends StateNotifier<TokenState> {
           return state = state.copyWith(newAccessToken: accessToken, newScreen: ScreenState.home);
         }
       } else {
-        print("Status code: ${response.statusCode.toString()}, refresh token: $refreshToken");
         // Access token not received successfully. Server responds with non-200 error code. Set screen state to OPEN.
         return state = state.copyWith(newScreen: ScreenState.open);
       }
@@ -139,7 +144,6 @@ class TokenNotifier extends StateNotifier<TokenState> {
             }),
           )
           .timeout(const Duration(seconds: 2));
-      print("LOGOUT CALL");
       if (response.statusCode == 200) {
         // Succesfully logged out.
         state = state.copyWith(newAccessToken: "", newScreen: ScreenState.open);
@@ -166,10 +170,9 @@ class TokenNotifier extends StateNotifier<TokenState> {
     }
   }
 
-  dynamic login(String usernameOrEmail, String password) async {
+  Future<LoginResponse> login(String usernameOrEmail, String password) async {
     // Wait x time as not to create a jank
     await Future.delayed(const Duration(milliseconds: 400));
-    print(usernameOrEmail + password);
     try {
       final response = await http
           .post(
@@ -189,20 +192,32 @@ class TokenNotifier extends StateNotifier<TokenState> {
         final String refreshToken = json.decode(response.body)["refreshToken"];
         const storage = FlutterSecureStorage();
         await storage.write(key: "refreshToken", value: refreshToken);
-        return state = state.copyWith(newScreen: ScreenState.home, newAccessToken: accessToken);
+        state = state.copyWith(newScreen: ScreenState.home, newAccessToken: accessToken);
+        return LoginResponse.success;
       } else if (response.statusCode == 500) {
         print("Internal server error");
+        return LoginResponse.serverError;
+      } else if (response.statusCode == 400) {
+        switch (json.decode(response.body)["error"]) {
+          case "account doesn't exist":
+            return LoginResponse.accountDoesNotExist;
+          case "password incorrect":
+            return LoginResponse.detailsIncorrect;
+          case "fields cannot be blank":
+            return LoginResponse.fieldsCannotBeBlank;
+          default:
+            return LoginResponse.serverError;
+        }
       } else {
         print("Incorrect details (specify email/username or password is wrong)");
+        return LoginResponse.detailsIncorrect;
       }
     } on TimeoutException {
-      // timeout error
-      print("Timeout exception");
+      return LoginResponse.connectionError;
     } on SocketException {
-      // no connection error
-      print("Socket exception");
+      return LoginResponse.connectionError;
     } catch (error) {
-      print("Error: $error");
+      return LoginResponse.serverError;
     }
   }
 }

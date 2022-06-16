@@ -73,7 +73,6 @@ class PostTile extends StatelessWidget {
                         ),
                       ),
                       TouchableOpacity(
-                        onLongTap: () => showButtonSheet(context),
                         onTap: () => showButtonSheet(context),
                         child: Align(
                           alignment: Alignment.centerRight,

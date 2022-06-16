@@ -4,7 +4,6 @@ import 'package:flutter_mobile_client/constants/error_messages.dart';
 import 'package:flutter_mobile_client/screens/auth/open.dart';
 import 'package:flutter_mobile_client/screens/start/bottom_nav.dart';
 import 'package:flutter_mobile_client/state/token_slice.dart';
-import 'package:flutter_mobile_client/state/user_slice.dart';
 import 'package:flutter_mobile_client/widgets/buttons/action.dart';
 import 'package:flutter_mobile_client/widgets/text/group.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

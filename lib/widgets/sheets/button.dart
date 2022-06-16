@@ -36,6 +36,10 @@ Future<dynamic> showButtonSheet(BuildContext context) {
                     text: "Repost",
                     icon: CupertinoIcons.paperplane,
                   ),
+                  OptionButton(
+                    text: "Save",
+                    icon: CupertinoIcons.bookmark,
+                  ),
                 ],
               ),
             ),

@@ -10,7 +10,6 @@ import 'package:flutter_mobile_client/screens/post/post_home.dart';
 import 'package:flutter_mobile_client/screens/profile/profile_home.dart';
 import 'package:flutter_mobile_client/screens/start/error.dart';
 import 'package:flutter_mobile_client/state/token_slice.dart';
-import 'package:flutter_mobile_client/state/user_slice.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../auth/open.dart';
 

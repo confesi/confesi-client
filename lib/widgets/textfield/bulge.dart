@@ -50,38 +50,52 @@ class _BulgeTextFieldState extends State<BulgeTextField> {
           right: widget.horizontalPadding,
           top: widget.topPadding,
           bottom: widget.bottomPadding),
-      child: GestureDetector(
-        onTap: () => focusNode.requestFocus(),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surface,
-            borderRadius: const BorderRadius.all(
-              Radius.circular(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            widget.hintText,
+            style: kBody.copyWith(
+              color: Theme.of(context).colorScheme.onSurface,
             ),
+            textAlign: TextAlign.left,
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: SizedBox(
-              height: 24,
-              child: Center(
-                child: TextField(
-                  obscureText: widget.password,
-                  // scrollPadding: const EdgeInsets.all(0),
-                  focusNode: focusNode,
-                  controller: widget.controller,
-                  style: kBody.copyWith(
-                      color: Theme.of(context).colorScheme.primary, fontWeight: FontWeight.w100),
-                  decoration: InputDecoration.collapsed(
-                    hintText: widget.hintText,
-                    hintStyle: kBody.copyWith(
-                        color: Theme.of(context).colorScheme.onSurface,
-                        fontWeight: FontWeight.w100),
+          const SizedBox(height: 10),
+          GestureDetector(
+            onTap: () => focusNode.requestFocus(),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(20),
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: SizedBox(
+                  height: 24,
+                  child: Center(
+                    child: TextField(
+                      obscureText: widget.password,
+                      // scrollPadding: const EdgeInsets.all(0),
+                      focusNode: focusNode,
+                      controller: widget.controller,
+                      style: kBody.copyWith(
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      decoration: InputDecoration.collapsed(
+                        hintText: "...",
+                        hintStyle: kBody.copyWith(
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }

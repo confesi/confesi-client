@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobile_client/behaviors/overscroll.dart';
@@ -14,8 +13,10 @@ import 'package:flutter_mobile_client/utils/auth/email_or_username.dart';
 import 'package:flutter_mobile_client/widgets/buttons/pop.dart';
 import 'package:flutter_mobile_client/widgets/layouts/keyboard_dismiss.dart';
 import 'package:flutter_mobile_client/widgets/layouts/minimal_appbar.dart';
+import 'package:flutter_mobile_client/widgets/text/fade_size.dart';
 import 'package:flutter_mobile_client/widgets/text/link.dart';
 import 'package:flutter_mobile_client/widgets/textfield/bulge.dart';
+import 'package:flutter_mobile_client/widgets/textfield/long.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 
@@ -26,10 +27,73 @@ class LoginScreen extends ConsumerStatefulWidget {
   ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends ConsumerState<LoginScreen> {
+class _LoginScreenState extends ConsumerState<LoginScreen> with SingleTickerProviderStateMixin {
+  late AnimationController errorAnimController;
   TextEditingController usernameEmailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  // To show spinner on button.
   bool isLoading = false;
+  // What to show as error message.
+  String errorText = "";
+
+  @override
+  void initState() {
+    errorAnimController =
+        AnimationController(vsync: this, duration: const Duration(milliseconds: 200));
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    errorAnimController.dispose();
+    super.dispose();
+  }
+
+  void showErrorMessage(String textToDisplay) {
+    errorAnimController.reverse().then((value) async {
+      errorText = textToDisplay;
+      errorAnimController.forward();
+    });
+    errorAnimController.addListener(() {
+      setState(() {});
+    });
+  }
+
+  void hideErrorMessage() {
+    errorAnimController.reverse();
+    errorText = "";
+    errorAnimController.addListener(() {
+      setState(() {});
+    });
+  }
+
+  void setError(LoginResponse response) {
+    switch (response) {
+      case LoginResponse.detailsIncorrect:
+        showErrorMessage("Password incorrect.");
+        break;
+      case LoginResponse.serverError:
+        showErrorMessage("Internal server error. Please try again later.");
+        break;
+      case LoginResponse.accountDoesNotExist:
+        showErrorMessage("An account with these credentials doesn't exist.");
+        break;
+      case LoginResponse.fieldsCannotBeBlank:
+        showErrorMessage("Fields cannot be blank.");
+        break;
+      case LoginResponse.usernameOrEmailTooShort:
+        showErrorMessage("Email/username must be at least 3 characters.");
+        break;
+      case LoginResponse.passwordTooShort:
+        print("SHOWING PW MESSAGE");
+        showErrorMessage("Password must be at least 6 characters.");
+        break;
+      case LoginResponse.connectionError:
+      default:
+        showErrorMessage("Connection error.");
+        break;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,31 +150,49 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           children: [
                             BulgeTextField(
                               controller: usernameEmailController,
-                              hintText: "email or username",
+                              hintText: "Email or username",
                               bottomPadding: 10,
                             ),
                             BulgeTextField(
                               controller: passwordController,
                               password: true,
-                              hintText: "password",
+                              hintText: "Password",
                             ),
                           ],
                         ),
-                        const SizedBox(height: 10),
+                        FadeSizeText(
+                          text: errorText,
+                          childController: errorAnimController,
+                        ),
                         PopButton(
                           loading: isLoading,
                           justText: true,
                           onPress: () async {
                             FocusScope.of(context).unfocus();
-                            setState(() {
-                              isLoading = true;
-                            });
-                            await ref
-                                .read(tokenProvider.notifier)
-                                .login(usernameEmailController.text, passwordController.text);
-                            setState(() {
-                              isLoading = false;
-                            });
+                            if (usernameEmailController.text.isEmpty ||
+                                passwordController.text.isEmpty) {
+                              print("not empty");
+                              setError(LoginResponse.fieldsCannotBeBlank);
+                            } else if (usernameEmailController.text.length < 3) {
+                              print("cred too short");
+                              setError(LoginResponse.usernameOrEmailTooShort);
+                            } else if (passwordController.text.length < 6) {
+                              print("pw too short");
+                              setError(LoginResponse.passwordTooShort);
+                            } else {
+                              hideErrorMessage();
+                              print("RUN");
+                              setState(() {
+                                isLoading = true;
+                              });
+                              LoginResponse response = await ref
+                                  .read(tokenProvider.notifier)
+                                  .login(usernameEmailController.text, passwordController.text);
+                              setError(response);
+                              setState(() {
+                                isLoading = false;
+                              });
+                            }
                           },
                           icon: CupertinoIcons.chevron_right,
                           backgroundColor: Theme.of(context).colorScheme.primary,
