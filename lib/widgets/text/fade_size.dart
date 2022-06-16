@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobile_client/widgets/textfield/long.dart';
 
 import '../../constants/typography.dart';
 
@@ -25,19 +26,29 @@ class _FadeSizeTextState extends State<FadeSizeText> with SingleTickerProviderSt
     anim = CurvedAnimation(parent: widget.childController, curve: Curves.linear);
   }
 
-  void testFunction() {}
-
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding:
-          EdgeInsets.symmetric(vertical: anim.value == 0 ? 0 : anim.value * widget.verticalPadding),
-      child: Text(
-        anim.value == 0.0 ? "" : widget.text,
-        style: kBody.copyWith(
-          color: Theme.of(context).colorScheme.error.withOpacity(anim.value ?? 0),
+    return Center(
+      child: AnimatedSize(
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        duration: const Duration(milliseconds: 400),
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: widget.verticalPadding),
+          child: Container(
+            height: widget.text == "" ? 0 : null,
+            color: Colors.transparent,
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                widget.text,
+                style: kBody.copyWith(
+                  color: Theme.of(context).colorScheme.error.withOpacity(anim.value ?? 0),
+                ),
+                textAlign: TextAlign.left,
+              ),
+            ),
+          ),
         ),
-        textAlign: TextAlign.left,
       ),
     );
   }

@@ -39,7 +39,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> with SingleTickerProv
   @override
   void initState() {
     errorAnimController =
-        AnimationController(vsync: this, duration: const Duration(milliseconds: 200));
+        AnimationController(vsync: this, duration: const Duration(milliseconds: 400));
     super.initState();
   }
 
@@ -49,8 +49,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> with SingleTickerProv
     super.dispose();
   }
 
-  void showErrorMessage(String textToDisplay) {
+  void showErrorMessage(String textToDisplay) async {
     errorAnimController.reverse().then((value) async {
+      // await Future.delayed(const Duration(milliseconds: 200));
       errorText = textToDisplay;
       errorAnimController.forward();
     });
@@ -82,11 +83,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> with SingleTickerProv
         showErrorMessage("Fields cannot be blank.");
         break;
       case LoginResponse.usernameOrEmailTooShort:
-        showErrorMessage("Email/username must be at least 3 characters.");
+        showErrorMessage("Email/username must be at least 3 characters long.");
         break;
       case LoginResponse.passwordTooShort:
         print("SHOWING PW MESSAGE");
-        showErrorMessage("Password must be at least 6 characters.");
+        showErrorMessage("Password must be at least 6 characters long.");
         break;
       case LoginResponse.connectionError:
       default:
@@ -171,17 +172,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> with SingleTickerProv
                             FocusScope.of(context).unfocus();
                             if (usernameEmailController.text.isEmpty ||
                                 passwordController.text.isEmpty) {
-                              print("not empty");
                               setError(LoginResponse.fieldsCannotBeBlank);
                             } else if (usernameEmailController.text.length < 3) {
-                              print("cred too short");
                               setError(LoginResponse.usernameOrEmailTooShort);
                             } else if (passwordController.text.length < 6) {
-                              print("pw too short");
                               setError(LoginResponse.passwordTooShort);
                             } else {
                               hideErrorMessage();
-                              print("RUN");
                               setState(() {
                                 isLoading = true;
                               });

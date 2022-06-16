@@ -37,59 +37,62 @@ class PopButton extends StatelessWidget {
           right: horizontalPadding,
           top: topPadding,
           bottom: bottomPadding),
-      child: TouchableOpacity(
-        onTap: () => onPress(),
-        child: Container(
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: backgroundColor,
-            borderRadius: const BorderRadius.all(
-              Radius.circular(20),
+      child: IgnorePointer(
+        ignoring: loading ? true : false,
+        child: TouchableOpacity(
+          onTap: () => onPress(),
+          child: Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: backgroundColor,
+              borderRadius: const BorderRadius.all(
+                Radius.circular(20),
+              ),
             ),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Row(
-              mainAxisAlignment:
-                  justText ? MainAxisAlignment.center : MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: SizedBox(
-                    height: 24,
-                    child: Align(
-                      alignment: justText ? Alignment.center : Alignment.centerLeft,
-                      child: AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 400),
-                        transitionBuilder: (Widget child, Animation<double> animation) =>
-                            FadeTransition(opacity: animation, child: child),
-                        child: loading
-                            ? Padding(
-                                padding: const EdgeInsets.only(top: 2),
-                                child: CupertinoActivityIndicator(
-                                  radius: 10,
-                                  color: textColor,
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Row(
+                mainAxisAlignment:
+                    justText ? MainAxisAlignment.center : MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: SizedBox(
+                      height: 24,
+                      child: Align(
+                        alignment: justText ? Alignment.center : Alignment.centerLeft,
+                        child: AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 200),
+                          transitionBuilder: (Widget child, Animation<double> animation) =>
+                              FadeTransition(opacity: animation, child: child),
+                          child: loading
+                              ? Padding(
+                                  padding: const EdgeInsets.only(top: 2),
+                                  child: CupertinoActivityIndicator(
+                                    radius: 10,
+                                    color: textColor,
+                                  ),
+                                )
+                              : Text(
+                                  text,
+                                  style: kTitle.copyWith(
+                                    color: textColor,
+                                  ),
+                                  textAlign: justText ? TextAlign.center : TextAlign.left,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
-                              )
-                            : Text(
-                                text,
-                                style: kTitle.copyWith(
-                                  color: textColor,
-                                ),
-                                textAlign: justText ? TextAlign.center : TextAlign.left,
-                                overflow: TextOverflow.ellipsis,
-                              ),
+                        ),
                       ),
                     ),
                   ),
-                ),
-                justText ? Container() : const SizedBox(width: 5),
-                justText
-                    ? Container()
-                    : Icon(
-                        icon,
-                        color: textColor,
-                      ),
-              ],
+                  justText ? Container() : const SizedBox(width: 5),
+                  justText
+                      ? Container()
+                      : Icon(
+                          icon,
+                          color: textColor,
+                        ),
+                ],
+              ),
             ),
           ),
         ),
