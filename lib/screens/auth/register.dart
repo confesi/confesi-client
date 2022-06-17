@@ -80,7 +80,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen>
   Widget build(BuildContext context) {
     ref.listen<TokenState>(tokenProvider, (TokenState? prevState, TokenState newState) {
       // Screen switching logic.
-      // TODO: Change to onboarding state? Also have it refresh for this new state too in the token_state_slice
       if (newState.screen == ScreenState.onboarding) {
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => const ShowcaseScreen()),

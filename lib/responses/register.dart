@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_mobile_client/constants/general.dart';
 import 'package:flutter_mobile_client/constants/messages/register.dart';
 
@@ -8,18 +7,22 @@ enum RegisterResponse {
   usernameTaken,
   emailTaken,
   invalidEmail,
-  invalidUsername, // say "usernames can only contain..."
+  invalidUsername,
   usernameAndEmailTaken,
   tokenError,
-  joyError, // Change/specify later
-  fieldsCannotBeBlank, // local
-  emailTooShort, // local
-  emailTooLong, // local
-  usernameTooShort, // local
-  usernameTooLong, // local
-  passwordTooShort, // local
-  passwordTooLong, // local
+  fieldsCannotBeBlank,
+  emailTooShort,
+  emailTooLong,
+  usernameTooShort,
+  usernameTooLong,
+  passwordTooShort,
+  passwordTooLong,
   success,
+}
+
+bool validateEmail(String email) {
+  RegExp re = RegExp(r'/^[^\s@]+@[^\s@]+\.[^\s@]+$/');
+  return re.hasMatch(email);
 }
 
 // Checking locally for errors before sending values to server. If there is an error, it converts it to a RegisterReponse enum value.
@@ -27,9 +30,6 @@ RegisterResponse localResponses(String email, String username, String password) 
   email = email.replaceAll(' ', '');
   username = username.replaceAll(' ', '');
   password = password.replaceAll(' ', '');
-  // emailController.dispose();
-  // usernameController.dispose();
-  // passwordController.dispose();
   if (email.isEmpty || username.isEmpty || password.isEmpty) {
     return RegisterResponse.fieldsCannotBeBlank;
   } else if (email.length < kEmailMinLength) {
@@ -50,7 +50,7 @@ RegisterResponse localResponses(String email, String username, String password) 
 }
 
 // Converting the error message strings we recieve from server to RegisterResponse enum values.
-RegisterResponse serverErrorConversion(dynamic response) {
+RegisterResponse registerServerErrorConversion(dynamic response) {
   switch (response["error"]) {
     case "fields cannot be blank":
       return RegisterResponse.fieldsCannotBeBlank;

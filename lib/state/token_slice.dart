@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_mobile_client/constants/general.dart';
+import 'package:flutter_mobile_client/responses/login.dart';
 import 'package:flutter_mobile_client/responses/register.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
@@ -15,17 +16,6 @@ enum ScreenState {
   connectionError, // connection error - happens on the ONBOARDING scren or HOME screen when attempting to refresh access token and fails. Possibly authenticated.
   serverError, // server error - happens on the ONBOARDING scren or HOME screen when attempting to refresh access token and fails. Possibly authenticated.
   onboarding, // in this state while authenticated, transitions to HOME after new token automatically refreshes. Authenticated.
-}
-
-enum LoginResponse {
-  connectionError,
-  serverError,
-  detailsIncorrect,
-  accountDoesNotExist,
-  fieldsCannotBeBlank,
-  passwordTooShort,
-  usernameOrEmailTooShort,
-  success,
 }
 
 @immutable
@@ -199,7 +189,7 @@ class TokenNotifier extends StateNotifier<TokenState> {
       } else if (response.statusCode == 500) {
         return RegisterResponse.serverError;
       } else if (response.statusCode == 400) {
-        return serverErrorConversion(json.decode(response.body));
+        return registerServerErrorConversion(json.decode(response.body));
       } else {
         print("here");
         return RegisterResponse.serverError;
