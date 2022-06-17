@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobile_client/screens/auth/login.dart';
+import 'package:flutter_mobile_client/screens/auth/register.dart';
 import 'package:flutter_mobile_client/screens/auth/showcase.dart';
 import 'package:flutter_mobile_client/state/token_slice.dart';
 import 'package:flutter_mobile_client/widgets/buttons/long.dart';
@@ -67,10 +68,10 @@ class OpenScreen extends ConsumerWidget {
                               Column(
                                 children: [
                                   PopButton(
-                                    onPress: () => Navigator.of(context).pushAndRemoveUntil(
+                                    onPress: () => Navigator.push(
+                                        context,
                                         MaterialPageRoute(
-                                            builder: (context) => const ShowcaseScreen()),
-                                        (Route<dynamic> route) => false),
+                                            builder: (context) => const RegisterScreen())),
                                     icon: CupertinoIcons.chevron_right,
                                     backgroundColor: Theme.of(context).colorScheme.secondary,
                                     textColor: Theme.of(context).colorScheme.primary,

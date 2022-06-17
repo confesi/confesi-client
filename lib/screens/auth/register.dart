@@ -6,6 +6,8 @@ import 'package:flutter_mobile_client/constants/general.dart';
 import 'package:flutter_mobile_client/constants/typography.dart';
 import 'package:flutter_mobile_client/models/auth/email_login.dart';
 import 'package:flutter_mobile_client/models/auth/username_login.dart';
+import 'package:flutter_mobile_client/responses/register.dart';
+import 'package:flutter_mobile_client/screens/auth/login.dart';
 import 'package:flutter_mobile_client/screens/auth/open.dart';
 import 'package:flutter_mobile_client/screens/start/bottom_nav.dart';
 import 'package:flutter_mobile_client/state/token_slice.dart';
@@ -20,17 +22,19 @@ import 'package:flutter_mobile_client/widgets/textfield/long.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 
-class LoginScreen extends ConsumerStatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class RegisterScreen extends ConsumerStatefulWidget {
+  const RegisterScreen({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends ConsumerState<LoginScreen> with SingleTickerProviderStateMixin {
+class _RegisterScreenState extends ConsumerState<RegisterScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController errorAnimController;
-  TextEditingController usernameEmailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  static TextEditingController usernameController = TextEditingController();
+  static TextEditingController emailController = TextEditingController();
+  static TextEditingController passwordController = TextEditingController();
   // To show spinner on button.
   bool isLoading = false;
   // What to show as error message.
@@ -45,7 +49,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> with SingleTickerProv
 
   @override
   void dispose() {
+    print("DISPOSE CALLED");
     errorAnimController.dispose();
+    usernameController.dispose();
+    passwordController.dispose();
+    emailController.dispose();
     super.dispose();
   }
 
@@ -68,38 +76,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> with SingleTickerProv
     });
   }
 
-  void setError(LoginResponse response) {
-    switch (response) {
-      case LoginResponse.detailsIncorrect:
-        showErrorMessage("Password incorrect.");
-        break;
-      case LoginResponse.serverError:
-        showErrorMessage("Internal server error. Please try again later.");
-        break;
-      case LoginResponse.accountDoesNotExist:
-        showErrorMessage("An account with these credentials doesn't exist.");
-        break;
-      case LoginResponse.fieldsCannotBeBlank:
-        showErrorMessage("Fields cannot be blank.");
-        break;
-      case LoginResponse.usernameOrEmailTooShort:
-        showErrorMessage("Email/username must be at least 3 characters long.");
-        break;
-      case LoginResponse.passwordTooShort:
-        print("SHOWING PW MESSAGE");
-        showErrorMessage("Password must be at least 6 characters long.");
-        break;
-      case LoginResponse.connectionError:
-      default:
-        showErrorMessage("Connection error.");
-        break;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     ref.listen<TokenState>(tokenProvider, (TokenState? prevState, TokenState newState) {
       // Screen switching logic.
+      // TODO: Change to onboarding state? Also have it refresh for this new state too in the token_state_slice
       if (newState.screen == ScreenState.home) {
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => const BottomNav()),
@@ -127,7 +108,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> with SingleTickerProv
                         children: [
                           const SizedBox(height: 15),
                           Text(
-                            "Let's log you in.",
+                            "Let's get you started.",
                             style: kDisplay.copyWith(color: Theme.of(context).colorScheme.primary),
                             textAlign: TextAlign.left,
                           ),
@@ -135,8 +116,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> with SingleTickerProv
                           Column(
                             children: [
                               BulgeTextField(
-                                controller: usernameEmailController,
-                                hintText: "Email or username",
+                                controller: emailController,
+                                hintText: "Email",
+                                bottomPadding: 10,
+                              ),
+                              BulgeTextField(
+                                controller: usernameController,
+                                hintText: "Username",
                                 bottomPadding: 10,
                               ),
                               BulgeTextField(
@@ -155,35 +141,40 @@ class _LoginScreenState extends ConsumerState<LoginScreen> with SingleTickerProv
                             justText: true,
                             onPress: () async {
                               FocusScope.of(context).unfocus();
-                              if (usernameEmailController.text.isEmpty ||
-                                  passwordController.text.isEmpty) {
-                                setError(LoginResponse.fieldsCannotBeBlank);
-                              } else if (usernameEmailController.text.length < 3) {
-                                setError(LoginResponse.usernameOrEmailTooShort);
-                              } else if (passwordController.text.length < 6) {
-                                setError(LoginResponse.passwordTooShort);
-                              } else {
+                              RegisterResponse response = localResponses(emailController.text,
+                                  usernameController.text, passwordController.text);
+                              if (response == RegisterResponse.success) {
+                                // now we're doing a server call (passes all local tests)
                                 hideErrorMessage();
                                 setState(() {
                                   isLoading = true;
                                 });
-                                LoginResponse response = await ref
-                                    .read(tokenProvider.notifier)
-                                    .login(usernameEmailController.text, passwordController.text);
-                                setError(response);
+                                response = await ref.read(tokenProvider.notifier).register(
+                                    emailController.text,
+                                    usernameController.text,
+                                    passwordController.text);
+                                showErrorMessage(errorMessagesToShow(response));
                                 setState(() {
                                   isLoading = false;
                                 });
+                              } else {
+                                // deal with local error
+                                showErrorMessage(errorMessagesToShow(response));
                               }
                             },
                             icon: CupertinoIcons.chevron_right,
-                            backgroundColor: Theme.of(context).colorScheme.primary,
-                            textColor: Theme.of(context).colorScheme.background,
-                            text: "Login",
+                            backgroundColor: Theme.of(context).colorScheme.secondary,
+                            textColor: Theme.of(context).colorScheme.primary,
+                            text: "Register",
                           ),
                           Center(
                             child: LinkText(
-                                onPress: () {}, linkText: "Tap here.", text: "Forgot password? "),
+                                onPress: () {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) => const LoginScreen()));
+                                },
+                                linkText: "Tap here.",
+                                text: "Already a user? "),
                           ),
                           const SizedBox(height: 10),
                         ],

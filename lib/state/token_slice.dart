@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_mobile_client/constants/general.dart';
+import 'package:flutter_mobile_client/responses/register.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -167,6 +168,48 @@ class TokenNotifier extends StateNotifier<TokenState> {
       // Error occured signing out (server error). Set a flag.
       state = state.copyWith(newServerErrorFLAG: !state.serverErrorFLAG);
       return;
+    }
+  }
+
+  Future<RegisterResponse> register(String email, String username, String password) async {
+    await Future.delayed(const Duration(milliseconds: 400));
+    try {
+      final response = await http
+          .post(
+            Uri.parse('$kDomain/api/user/register'),
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+            },
+            body: jsonEncode(<String, String>{
+              "email": email,
+              "username": username,
+              "password": password,
+            }),
+          )
+          .timeout(const Duration(seconds: 2));
+      if (response.statusCode == 201) {
+        print("Success!");
+        final String accessToken = json.decode(response.body)["accessToken"];
+        final String refreshToken = json.decode(response.body)["refreshToken"];
+        const storage = FlutterSecureStorage();
+        await storage.write(key: "refreshToken", value: refreshToken);
+        state = state.copyWith(newScreen: ScreenState.home, newAccessToken: accessToken);
+        return RegisterResponse.success;
+      } else if (response.statusCode == 500) {
+        return RegisterResponse.serverError;
+      } else if (response.statusCode == 400) {
+        return serverErrorConversion(json.decode(response.body));
+      } else {
+        print("here");
+        return RegisterResponse.serverError;
+      }
+    } on TimeoutException {
+      return RegisterResponse.connectionError;
+    } on SocketException {
+      return RegisterResponse.connectionError;
+    } catch (error) {
+      print("here2: $error");
+      return RegisterResponse.serverError;
     }
   }
 

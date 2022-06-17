@@ -37,7 +37,6 @@ class _BulgeTextFieldState extends State<BulgeTextField> {
 
   @override
   void dispose() {
-    widget.controller.dispose();
     focusNode.dispose();
     super.dispose();
   }

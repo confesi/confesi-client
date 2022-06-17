@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_client/constants/error_messages.dart';
+import 'package:flutter_mobile_client/constants/messages/open.dart';
 import 'package:flutter_mobile_client/screens/auth/open.dart';
 import 'package:flutter_mobile_client/screens/start/bottom_nav.dart';
 import 'package:flutter_mobile_client/screens/start/error.dart';
@@ -40,7 +40,7 @@ class _InitialLoadState extends ConsumerState<InitialLoad> {
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
                   builder: (context) => const ErrorScreen(
-                        message: kServerError,
+                        message: kOpenServerError,
                       )),
               (Route<dynamic> route) => false);
           break;
@@ -49,7 +49,7 @@ class _InitialLoadState extends ConsumerState<InitialLoad> {
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
                   builder: (context) => const ErrorScreen(
-                        message: kConnectionError,
+                        message: kOpenConnectionError,
                       )),
               (Route<dynamic> route) => false);
           break;

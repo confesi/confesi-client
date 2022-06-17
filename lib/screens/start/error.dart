@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_client/constants/error_messages.dart';
+import 'package:flutter_mobile_client/constants/messages/open.dart';
 import 'package:flutter_mobile_client/screens/auth/open.dart';
 import 'package:flutter_mobile_client/screens/start/bottom_nav.dart';
 import 'package:flutter_mobile_client/state/token_slice.dart';
@@ -44,12 +44,12 @@ class _ErrorScreenState extends ConsumerState<ErrorScreen> {
           break;
         case ScreenState.connectionError:
           setState(() {
-            updatableMessage = kConnectionError;
+            updatableMessage = kOpenConnectionError;
           });
           break;
         case ScreenState.serverError:
           setState(() {
-            updatableMessage = kServerError;
+            updatableMessage = kOpenServerError;
           });
           break;
         default:

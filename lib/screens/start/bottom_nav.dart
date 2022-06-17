@@ -3,7 +3,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_mobile_client/constants/error_messages.dart';
+import 'package:flutter_mobile_client/constants/messages/open.dart';
+import 'package:flutter_mobile_client/constants/messages/snackbars.dart';
 import 'package:flutter_mobile_client/constants/typography.dart';
 import 'package:flutter_mobile_client/responsive/sizes.dart';
 import 'package:flutter_mobile_client/screens/explore/explore_home.dart';
@@ -41,10 +42,10 @@ class _BottomNavState extends ConsumerState<BottomNav> with TickerProviderStateM
       }
       // Popup logic from FLAGS.
       if (prevState?.connectionErrorFLAG != newState.connectionErrorFLAG) {
-        showErrorSnackbar(context, kConnectionErrorSnackbar);
+        showErrorSnackbar(context, kSnackbarConnectionError);
       }
       if (prevState?.serverErrorFLAG != newState.serverErrorFLAG) {
-        showErrorSnackbar(context, kServerErrorSnackbar);
+        showErrorSnackbar(context, kSnackbarServerError);
       }
     });
     return DefaultTabController(
