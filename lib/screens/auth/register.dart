@@ -9,6 +9,7 @@ import 'package:flutter_mobile_client/models/auth/username_login.dart';
 import 'package:flutter_mobile_client/responses/register.dart';
 import 'package:flutter_mobile_client/screens/auth/login.dart';
 import 'package:flutter_mobile_client/screens/auth/open.dart';
+import 'package:flutter_mobile_client/screens/auth/showcase.dart';
 import 'package:flutter_mobile_client/screens/start/bottom_nav.dart';
 import 'package:flutter_mobile_client/state/token_slice.dart';
 import 'package:flutter_mobile_client/utils/auth/email_or_username.dart';
@@ -32,9 +33,9 @@ class RegisterScreen extends ConsumerStatefulWidget {
 class _RegisterScreenState extends ConsumerState<RegisterScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController errorAnimController;
-  static TextEditingController usernameController = TextEditingController();
-  static TextEditingController emailController = TextEditingController();
-  static TextEditingController passwordController = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
   // To show spinner on button.
   bool isLoading = false;
   // What to show as error message.
@@ -49,7 +50,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen>
 
   @override
   void dispose() {
-    print("DISPOSE CALLED");
     errorAnimController.dispose();
     usernameController.dispose();
     passwordController.dispose();
@@ -81,9 +81,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen>
     ref.listen<TokenState>(tokenProvider, (TokenState? prevState, TokenState newState) {
       // Screen switching logic.
       // TODO: Change to onboarding state? Also have it refresh for this new state too in the token_state_slice
-      if (newState.screen == ScreenState.home) {
+      if (newState.screen == ScreenState.onboarding) {
         Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => const BottomNav()),
+            MaterialPageRoute(builder: (context) => const ShowcaseScreen()),
             (Route<dynamic> route) => false);
       }
     });

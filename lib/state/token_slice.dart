@@ -9,11 +9,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 enum ScreenState {
-  home,
-  open,
-  load,
-  connectionError,
-  serverError,
+  home, // screen you will be on most of the time (home/bottom_nav screen). Authenticated.
+  open, // open screen (screen with LOGIN or REGISTER options). Not authenticated.
+  load, // is the state when user opens app to start; used as a note to "if on LOAD, then user must be opening app, so wait x time before doing token refresh to avoid jank". Screen not authenticated.
+  connectionError, // connection error - happens on the ONBOARDING scren or HOME screen when attempting to refresh access token and fails. Possibly authenticated.
+  serverError, // server error - happens on the ONBOARDING scren or HOME screen when attempting to refresh access token and fails. Possibly authenticated.
+  onboarding, // in this state while authenticated, transitions to HOME after new token automatically refreshes. Authenticated.
 }
 
 enum LoginResponse {
@@ -67,6 +68,7 @@ class TokenNotifier extends StateNotifier<TokenState> {
       // Basically checking if we're either logged in (home) or no internet or server error - in that case, keep checking.
       if (state.screen == ScreenState.home ||
           state.screen == ScreenState.connectionError ||
+          state.screen == ScreenState.onboarding ||
           state.screen == ScreenState.serverError) {
         getAndSetAccessToken();
       } else {
@@ -188,12 +190,11 @@ class TokenNotifier extends StateNotifier<TokenState> {
           )
           .timeout(const Duration(seconds: 2));
       if (response.statusCode == 201) {
-        print("Success!");
         final String accessToken = json.decode(response.body)["accessToken"];
         final String refreshToken = json.decode(response.body)["refreshToken"];
         const storage = FlutterSecureStorage();
         await storage.write(key: "refreshToken", value: refreshToken);
-        state = state.copyWith(newScreen: ScreenState.home, newAccessToken: accessToken);
+        state = state.copyWith(newScreen: ScreenState.onboarding, newAccessToken: accessToken);
         return RegisterResponse.success;
       } else if (response.statusCode == 500) {
         return RegisterResponse.serverError;
