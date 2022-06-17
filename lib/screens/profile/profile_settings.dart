@@ -20,12 +20,6 @@ class ProfileSettings extends ConsumerWidget {
 
     return KeyboardDismissLayout(
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            print(x.screen.toString());
-          },
-          child: Text("Token: ${x.accessToken}"),
-        ),
         resizeToAvoidBottomInset: false,
         backgroundColor: Theme.of(context).colorScheme.background,
         body: SafeArea(
@@ -61,7 +55,7 @@ class ProfileSettings extends ConsumerWidget {
                     ),
                     const SizedBox(height: 15),
                     TouchableTextButton(
-                      text: "Logout ${x.accessToken}",
+                      text: "Logout, TOKEN: ${x.accessToken}",
                       onTap: () {
                         ref.read(tokenProvider.notifier).logout();
                       },

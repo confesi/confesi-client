@@ -3,6 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_mobile_client/constants/error_messages.dart';
 import 'package:flutter_mobile_client/constants/typography.dart';
 import 'package:flutter_mobile_client/responsive/sizes.dart';
 import 'package:flutter_mobile_client/screens/explore/explore_home.dart';
@@ -10,6 +11,7 @@ import 'package:flutter_mobile_client/screens/post/post_home.dart';
 import 'package:flutter_mobile_client/screens/profile/profile_home.dart';
 import 'package:flutter_mobile_client/screens/start/error.dart';
 import 'package:flutter_mobile_client/state/token_slice.dart';
+import 'package:flutter_mobile_client/widgets/sheets/error_snackbar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../auth/open.dart';
 
@@ -31,27 +33,18 @@ class _BottomNavState extends ConsumerState<BottomNav> with TickerProviderStateM
   Widget build(BuildContext context) {
     ref.listen<TokenState>(tokenProvider, (TokenState? prevState, TokenState newState) {
       print("bottom_nav LISTENER CALLED");
-      // Popup logic from FLAGS.
-      if (prevState?.connectionErrorFLAG != newState.connectionErrorFLAG) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Connection Error"),
-          ),
-        );
-      }
-      if (prevState?.serverErrorFLAG != newState.serverErrorFLAG) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Server Error"),
-          ),
-        );
-      }
       // Screen switching logic.
       if (newState.screen == ScreenState.open) {
-        print("THIS PUSH HAPPENED RIGHT HERE");
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => const OpenScreen()),
             (Route<dynamic> route) => false);
+      }
+      // Popup logic from FLAGS.
+      if (prevState?.connectionErrorFLAG != newState.connectionErrorFLAG) {
+        showErrorSnackbar(context, kConnectionErrorSnackbar);
+      }
+      if (prevState?.serverErrorFLAG != newState.serverErrorFLAG) {
+        showErrorSnackbar(context, kServerErrorSnackbar);
       }
     });
     return DefaultTabController(
