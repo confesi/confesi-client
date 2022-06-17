@@ -47,7 +47,7 @@ class StatTile extends StatelessWidget {
                     padding: const EdgeInsets.all(10),
                     child: Text(
                       "15k",
-                      style: kBody.copyWith(color: Theme.of(context).colorScheme.background),
+                      style: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
                     ),
                   ),
                 ),

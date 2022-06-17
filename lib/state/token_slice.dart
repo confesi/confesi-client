@@ -117,13 +117,12 @@ class TokenNotifier extends StateNotifier<TokenState> {
     }
   }
 
-  void logout() async {
+  dynamic logout() async {
     const storage = FlutterSecureStorage();
     final refreshToken = await storage.read(key: "refreshToken");
     // If user doesn't have an access token stored, there's nothing we can do but log them out pseudo succesfully. Redirect to OPEN screen.
     if (refreshToken == null) {
-      state = state.copyWith(newAccessToken: "", newScreen: ScreenState.open);
-      return;
+      return state = state.copyWith(newAccessToken: "", newScreen: ScreenState.open);
     }
     try {
       final response = await http
@@ -139,27 +138,22 @@ class TokenNotifier extends StateNotifier<TokenState> {
           .timeout(const Duration(seconds: 2));
       if (response.statusCode == 200) {
         // Succesfully logged out.
-        state = state.copyWith(newAccessToken: "", newScreen: ScreenState.open);
         await storage.write(key: "refreshToken", value: null);
-        return;
+        return state = state.copyWith(newAccessToken: "", newScreen: ScreenState.open);
       } else {
         // Server didn't send us a 200 status code. Something went wrong.
         // Error occured signing out (server error). Set a flag.
-        state = state.copyWith(newServerErrorFLAG: !state.serverErrorFLAG);
-        return;
+        return state = state.copyWith(newServerErrorFLAG: !state.serverErrorFLAG);
       }
     } on TimeoutException {
       // Error occured signing out (connection error). Set a flag.
-      state = state.copyWith(newConnectionErrorFLAG: !state.connectionErrorFLAG);
-      return;
+      return state = state.copyWith(newConnectionErrorFLAG: !state.connectionErrorFLAG);
     } on SocketException {
       // Request for access token from server failed (internet connection error). Set screen state to ERROR.
-      state = state.copyWith(newConnectionErrorFLAG: !state.connectionErrorFLAG);
-      return;
+      return state = state.copyWith(newConnectionErrorFLAG: !state.connectionErrorFLAG);
     } catch (error) {
       // Error occured signing out (server error). Set a flag.
-      state = state.copyWith(newServerErrorFLAG: !state.serverErrorFLAG);
-      return;
+      return state = state.copyWith(newServerErrorFLAG: !state.serverErrorFLAG);
     }
   }
 

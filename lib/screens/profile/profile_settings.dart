@@ -11,13 +11,18 @@ import 'package:flutter_mobile_client/widgets/layouts/line.dart';
 import 'package:flutter_mobile_client/widgets/textfield/long.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ProfileSettings extends ConsumerWidget {
+class ProfileSettings extends ConsumerStatefulWidget {
   const ProfileSettings({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    dynamic x = ref.watch(tokenProvider);
+  ConsumerState<ProfileSettings> createState() => _ProfileSettingsState();
+}
 
+class _ProfileSettingsState extends ConsumerState<ProfileSettings> {
+  bool logoutLoading = false;
+  @override
+  Widget build(BuildContext context) {
+    dynamic x = ref.watch(tokenProvider);
     return KeyboardDismissLayout(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
@@ -32,7 +37,7 @@ class ProfileSettings extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const LongTextField(bottomPadding: 15, topPadding: 15),
+                    const LongTextField(bottomPadding: 30, topPadding: 15),
                     const IconTextButton(
                         text: "Security", icon: CupertinoIcons.lock, bottomPadding: 30),
                     const IconTextButton(
@@ -55,9 +60,18 @@ class ProfileSettings extends ConsumerWidget {
                     ),
                     const SizedBox(height: 15),
                     TouchableTextButton(
-                      text: "Logout, TOKEN: ${x.accessToken}",
-                      onTap: () {
-                        ref.read(tokenProvider.notifier).logout();
+                      textColor: Theme.of(context).colorScheme.error,
+                      animatedClick: true,
+                      text: "Logout",
+                      isLoading: logoutLoading,
+                      onTap: () async {
+                        setState(() {
+                          logoutLoading = true;
+                        });
+                        await ref.read(tokenProvider.notifier).logout();
+                        setState(() {
+                          logoutLoading = false;
+                        });
                       },
                     ),
                   ],

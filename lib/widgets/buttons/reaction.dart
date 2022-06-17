@@ -28,7 +28,7 @@ class ReactionButton extends StatelessWidget {
               Icon(
                 icon,
                 size: 16,
-                color: Theme.of(context).colorScheme.secondary,
+                color: Theme.of(context).colorScheme.onSurface,
               ),
               const SizedBox(width: 5),
               Text(

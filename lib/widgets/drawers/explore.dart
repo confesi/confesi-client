@@ -109,11 +109,12 @@ class ExploreDrawer extends StatelessWidget {
                   children: [
                     LineLayout(
                       color: Theme.of(context).colorScheme.onBackground,
-                      bottomPadding: 15,
                     ),
-                    const IconTextButton(
+                    TouchableTextButton(
+                      textColor: Theme.of(context).colorScheme.primary,
+                      animatedClick: false,
+                      onTap: () => print("tap"),
                       text: "Edit watched universities",
-                      icon: CupertinoIcons.pencil,
                     ),
                   ],
                 ),

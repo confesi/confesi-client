@@ -22,12 +22,10 @@ class PostTile extends StatelessWidget {
       required this.likes,
       required this.dislikes,
       required this.comments,
-      this.topLine = false,
       Key? key})
       : super(key: key);
 
   final IconData icon;
-  final bool topLine;
   final String date;
   final String faculty;
   final String genre;
@@ -40,8 +38,7 @@ class PostTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 15),
-      child: TouchableOpacity(
-        onLongTap: () => showButtonSheet(context),
+      child: GestureDetector(
         onTap: () => Navigator.push(
           context,
           MaterialPageRoute(
@@ -72,22 +69,25 @@ class PostTile extends StatelessWidget {
                           small: true,
                         ),
                       ),
-                      TouchableOpacity(
-                        onTap: () => showButtonSheet(context),
-                        child: Align(
-                          alignment: Alignment.centerRight,
-                          child: Container(
-                            constraints: const BoxConstraints(maxWidth: 40),
-                            // transparent hitbox trick
-                            color: Colors.transparent,
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 10, bottom: 10, right: 7),
-                              child: Align(
-                                alignment: Alignment.centerRight,
-                                child: Icon(
-                                  CupertinoIcons.ellipsis_vertical,
-                                  color: Theme.of(context).colorScheme.onBackground,
-                                  size: 22,
+                      Container(
+                        color: Colors.transparent,
+                        child: TouchableOpacity(
+                          onTap: () => showButtonSheet(context),
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 10, bottom: 10, right: 15),
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: Container(
+                                constraints: const BoxConstraints(maxWidth: 40),
+                                // transparent hitbox trick
+                                color: Colors.transparent,
+                                child: Align(
+                                  alignment: Alignment.centerRight,
+                                  child: Icon(
+                                    CupertinoIcons.ellipsis,
+                                    color: Theme.of(context).colorScheme.onBackground,
+                                    size: 24,
+                                  ),
                                 ),
                               ),
                             ),

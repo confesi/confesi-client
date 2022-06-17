@@ -36,17 +36,18 @@ class ExploreHome extends StatelessWidget {
                   physics: const BouncingScrollPhysics(),
                   child: Column(
                     children: const [
+                      SizedBox(height: 15),
                       PostTile(
-                          icon: CupertinoIcons.flame,
-                          date: "Dec 14, 9:04am",
-                          faculty: "engineering",
-                          genre: "Relationships",
-                          body:
-                              "Gotta be honest. Sometimes I swipe by girls and guys on Tinder or Bumble and I wish there was a super dislike button. Like bro, I don't know what your parents were thinking having you.",
-                          likes: 31,
-                          dislikes: 1,
-                          comments: 16,
-                          topLine: false),
+                        icon: CupertinoIcons.flame,
+                        date: "Dec 14, 9:04am",
+                        faculty: "engineering",
+                        genre: "Relationships",
+                        body:
+                            "Gotta be honest. Sometimes I swipe by girls and guys on Tinder or Bumble and I wish there was a super dislike button. Like bro, I don't know what your parents were thinking having you.",
+                        likes: 31,
+                        dislikes: 1,
+                        comments: 16,
+                      ),
                       PostTile(
                           icon: CupertinoIcons.star,
                           date: "Dec 14, 12:01pm",
@@ -58,16 +59,16 @@ class ExploreHome extends StatelessWidget {
                           dislikes: 3,
                           comments: 25),
                       PostTile(
-                          icon: CupertinoIcons.flame,
-                          date: "Dec 14, 9:04am",
-                          faculty: "engineering",
-                          genre: "Relationships",
-                          body:
-                              "Gotta be honest. Sometimes I swipe by girls and guys on Tinder or Bumble and I wish there was a super dislike button. Like bro, I don't know what your parents were thinking having you.",
-                          likes: 31,
-                          dislikes: 1,
-                          comments: 16,
-                          topLine: false),
+                        icon: CupertinoIcons.flame,
+                        date: "Dec 14, 9:04am",
+                        faculty: "engineering",
+                        genre: "Relationships",
+                        body:
+                            "Gotta be honest. Sometimes I swipe by girls and guys on Tinder or Bumble and I wish there was a super dislike button. Like bro, I don't know what your parents were thinking having you.",
+                        likes: 31,
+                        dislikes: 1,
+                        comments: 16,
+                      ),
                     ],
                   ),
                 ),
