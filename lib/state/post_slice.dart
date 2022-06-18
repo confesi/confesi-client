@@ -1,7 +1,12 @@
-// make picker lists in alphebetical order
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_mobile_client/constants/general.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:http/http.dart' as http;
 
 @immutable
 class PostState {
@@ -31,6 +36,34 @@ class PostState {
 
 class PostNotifier extends StateNotifier<PostState> {
   PostNotifier() : super(const PostState());
+
+  dynamic createPost(String body, String accessToken) async {
+    print("attempgint to send post");
+    try {
+      final response = await http
+          .post(
+            Uri.parse('$kDomain/api/posts/create'),
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+              'Authorization': 'Bearer $accessToken'
+            },
+            body: jsonEncode(<String, String>{
+              "body": body,
+              "genre": "relationships",
+            }),
+          )
+          .timeout(const Duration(seconds: 2));
+      if (response.statusCode == 201) {
+      } else if (response.statusCode == 500) {
+      } else if (response.statusCode == 400) {
+      } else {
+        print("nope");
+      }
+    } on TimeoutException {
+    } on SocketException {
+    } catch (error) {}
+    return "abc";
+  }
 }
 
 final postProvider = StateNotifierProvider<PostNotifier, PostState>((ref) {

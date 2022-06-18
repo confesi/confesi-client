@@ -106,6 +106,7 @@ class TokenNotifier extends StateNotifier<TokenState> {
         return state = state.copyWith(newScreen: ScreenState.open);
       }
     } on TimeoutException {
+      print("TIMEOUT");
       // Request for access token from server failed (timeout error - probably connectivity). Set screen state to ERROR.
       return state = state.copyWith(newScreen: ScreenState.connectionError);
     } on SocketException {

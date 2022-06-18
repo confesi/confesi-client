@@ -3,30 +3,43 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobile_client/constants/typography.dart';
 import 'package:flutter_mobile_client/responsive/sizes.dart';
 import 'package:flutter_mobile_client/screens/post/post_details.dart';
+import 'package:flutter_mobile_client/state/post_slice.dart';
+import 'package:flutter_mobile_client/state/token_slice.dart';
 import 'package:flutter_mobile_client/widgets/buttons/action.dart';
 import 'package:flutter_mobile_client/widgets/layouts/line.dart';
 import 'package:flutter_mobile_client/widgets/text/group.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class PostHome extends StatefulWidget {
+class PostHome extends ConsumerStatefulWidget {
   const PostHome({Key? key}) : super(key: key);
 
   @override
-  State<PostHome> createState() => _PostHomeState();
+  ConsumerState<PostHome> createState() => _PostHomeState();
 }
 
-class _PostHomeState extends State<PostHome> {
-  final ScrollController controller = ScrollController();
+class _PostHomeState extends ConsumerState<PostHome> {
+  final ScrollController scrollController = ScrollController();
+  TextEditingController textFieldController = TextEditingController();
+  FocusNode focusNode = FocusNode();
 
   bool pressed = false;
 
   @override
   void initState() {
     super.initState();
-    controller.addListener(() {
-      if (controller.offset <= 0) {
+    scrollController.addListener(() {
+      if (scrollController.offset <= 0) {
         FocusScope.of(context).unfocus();
       }
     });
+  }
+
+  @override
+  void dispose() {
+    focusNode.dispose();
+    scrollController.dispose();
+    textFieldController.dispose();
+    super.dispose();
   }
 
   @override
@@ -81,10 +94,17 @@ class _PostHomeState extends State<PostHome> {
                         const SizedBox(width: 15),
                         ActionButton(
                           loading: pressed,
-                          onPress: () {
+                          onPress: () async {
                             setState(() {
-                              pressed = !pressed;
-                              FocusScope.of(context).unfocus();
+                              pressed = true;
+                            });
+                            FocusScope.of(context).unfocus();
+                            await ref.read(postProvider.notifier).createPost(
+                                textFieldController.text, ref.read(tokenProvider).accessToken);
+                            // to show some sort of loading even if post happens really quickly
+                            await Future.delayed(const Duration(milliseconds: 400));
+                            setState(() {
+                              pressed = false;
                             });
                           },
                           text: "publish post",
@@ -98,19 +118,24 @@ class _PostHomeState extends State<PostHome> {
                     const SizedBox(height: 15),
                     LineLayout(color: Theme.of(context).colorScheme.onBackground),
                     Expanded(
-                      child: SingleChildScrollView(
-                        controller: controller,
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 15, bottom: 15),
-                          child: TextField(
-                            textCapitalization: TextCapitalization.sentences,
-                            keyboardType: TextInputType.multiline,
-                            maxLines: null,
-                            style: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
-                            decoration: InputDecoration.collapsed(
-                              hintText: "spill your guts...",
-                              hintStyle:
-                                  kDetail.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                      child: GestureDetector(
+                        onTap: () => focusNode.requestFocus(),
+                        child: SingleChildScrollView(
+                          controller: scrollController,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 15, bottom: 15),
+                            child: TextField(
+                              focusNode: focusNode,
+                              controller: textFieldController,
+                              textCapitalization: TextCapitalization.sentences,
+                              keyboardType: TextInputType.multiline,
+                              maxLines: null,
+                              style: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
+                              decoration: InputDecoration.collapsed(
+                                hintText: "spill your guts...",
+                                hintStyle: kDetail.copyWith(
+                                    color: Theme.of(context).colorScheme.onSurface),
+                              ),
                             ),
                           ),
                         ),
