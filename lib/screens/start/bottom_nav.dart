@@ -11,6 +11,7 @@ import 'package:flutter_mobile_client/screens/explore/explore_home.dart';
 import 'package:flutter_mobile_client/screens/post/post_home.dart';
 import 'package:flutter_mobile_client/screens/profile/profile_home.dart';
 import 'package:flutter_mobile_client/screens/start/error.dart';
+import 'package:flutter_mobile_client/state/explore_feed_slice.dart';
 import 'package:flutter_mobile_client/state/token_slice.dart';
 import 'package:flutter_mobile_client/widgets/sheets/error_snackbar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,7 +27,11 @@ class BottomNav extends ConsumerStatefulWidget {
 class _BottomNavState extends ConsumerState<BottomNav> with TickerProviderStateMixin {
   @override
   void initState() {
+    // Starts refreshing access tokens
     ref.read(tokenProvider.notifier).startAutoRefreshingAccessTokens();
+    // Gets the first few posts for the explore feed
+    ref.read(exploreFeedProvider.notifier).getPosts(ref.read(tokenProvider).accessToken);
+
     super.initState();
   }
 

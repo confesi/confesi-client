@@ -8,6 +8,8 @@ import 'package:flutter_mobile_client/widgets/buttons/action.dart';
 import 'package:flutter_mobile_client/widgets/text/group.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../constants/typography.dart';
+
 class ErrorScreen extends ConsumerStatefulWidget {
   const ErrorScreen({required this.message, Key? key}) : super(key: key);
 
@@ -42,16 +44,6 @@ class _ErrorScreenState extends ConsumerState<ErrorScreen> {
               MaterialPageRoute(builder: (context) => const BottomNav()),
               (Route<dynamic> route) => false);
           break;
-        case ScreenState.connectionError:
-          setState(() {
-            updatableMessage = kOpenConnectionError;
-          });
-          break;
-        case ScreenState.serverError:
-          setState(() {
-            updatableMessage = kOpenServerError;
-          });
-          break;
         default:
       }
     });
@@ -69,9 +61,10 @@ class _ErrorScreenState extends ConsumerState<ErrorScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                GroupText(
-                  header: "Uh oh!",
-                  body: updatableMessage,
+                Text(
+                  updatableMessage,
+                  style: kDisplay.copyWith(color: Theme.of(context).colorScheme.primary),
+                  textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 25),
                 ActionButton(

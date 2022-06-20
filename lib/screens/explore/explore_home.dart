@@ -1,56 +1,88 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobile_client/constants/messages/snackbars.dart';
 import 'package:flutter_mobile_client/screens/profile/profile_edit.dart';
+import 'package:flutter_mobile_client/state/explore_feed_slice.dart';
+import 'package:flutter_mobile_client/state/post_slice.dart';
+import 'package:flutter_mobile_client/state/token_slice.dart';
 import 'package:flutter_mobile_client/widgets/drawers/explore.dart';
 import 'package:flutter_mobile_client/widgets/layouts/appbar.dart';
+import 'package:flutter_mobile_client/widgets/text/error_with_button.dart';
+import 'package:flutter_mobile_client/widgets/text/group.dart';
 import 'package:flutter_mobile_client/widgets/tiles/post.dart';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ExploreHome extends StatefulWidget {
+import '../../widgets/sheets/error_snackbar.dart';
+
+class ExploreHome extends ConsumerStatefulWidget {
   const ExploreHome({Key? key}) : super(key: key);
 
   @override
-  State<ExploreHome> createState() => _ExploreHomeState();
+  ConsumerState<ExploreHome> createState() => _ExploreHomeState();
 }
 
-class _ExploreHomeState extends State<ExploreHome> {
-  List<Widget> items = <Widget>[
-    const SizedBox(height: 15),
-    const PostTile(
-      icon: CupertinoIcons.flame,
-      date: "Dec 14, 9:04am",
-      faculty: "engineering",
-      genre: "Relationships",
-      body:
-          "Gotta be honest. Sometimes I swipe by girls and guys on Tinder or Bumble and I wish there was a super dislike button. Like bro, I don't know what your parents were thinking having you.",
-      likes: 31,
-      dislikes: 1,
-      comments: 16,
-    ),
-    const PostTile(
-        icon: CupertinoIcons.star,
-        date: "Dec 14, 12:01pm",
-        faculty: "visual arts",
-        genre: "Classes",
-        body:
-            "I really hate my profs. They drive me absolutely insane. Like seriously, grow up, get better, and do better!!",
-        likes: 11,
-        dislikes: 3,
-        comments: 25),
-    const PostTile(
-      icon: CupertinoIcons.flame,
-      date: "Dec 14, 9:04am",
-      faculty: "engineering",
-      genre: "Relationships",
-      body:
-          "Gotta be honest. Sometimes I swipe by girls and guys on Tinder or Bumble and I wish there was a super dislike button. Like bro, I don't know what your parents were thinking having you.",
-      likes: 31,
-      dislikes: 1,
-      comments: 16,
-    ),
-  ];
+class _ExploreHomeState extends ConsumerState<ExploreHome> {
+  Widget displayBody(FeedStatus feedStatus, List<Widget> posts) {
+    switch (feedStatus) {
+      case FeedStatus.data:
+        return Container(
+          color: Theme.of(context).colorScheme.surface,
+          child: CustomScrollView(
+            physics: const BouncingScrollPhysics(
+              parent: AlwaysScrollableScrollPhysics(),
+            ),
+            slivers: <Widget>[
+              CupertinoSliverRefreshControl(
+                onRefresh: () async {
+                  // just to appear like it's doing something (no jank)
+                  await Future.delayed(const Duration(milliseconds: 400));
+                  await ref
+                      .read(exploreFeedProvider.notifier)
+                      .getPosts(ref.read(tokenProvider).accessToken);
+                },
+              ),
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                    return posts[index];
+                  },
+                  childCount: posts.length,
+                ),
+              ),
+            ],
+          ),
+        );
+      case FeedStatus.loading:
+        return const Center(
+          key: Key("loading"),
+          child: CupertinoActivityIndicator(),
+        );
+      case FeedStatus.error:
+      default:
+        return Center(
+            key: const Key("error"),
+            child: ErrorWithButtonText(
+              onPress: () => ref
+                  .read(exploreFeedProvider.notifier)
+                  .getPosts(ref.read(tokenProvider).accessToken),
+            ));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final posts = ref.watch(exploreFeedProvider).feedPosts;
+    final feedStatus = ref.watch(exploreFeedProvider).feedStatus;
+    ref.listen<ExploreFeedState>(exploreFeedProvider,
+        (ExploreFeedState? prevState, ExploreFeedState newState) {
+      if (prevState?.connectionErrorFLAG != newState.connectionErrorFLAG) {
+        showErrorSnackbar(context, kSnackbarConnectionError);
+      }
+      if (prevState?.serverErrorFLAG != newState.serverErrorFLAG) {
+        showErrorSnackbar(context, kSnackbarServerError);
+      }
+    });
     return Scaffold(
       drawer: const ExploreDrawer(),
       backgroundColor: Theme.of(context).colorScheme.background,
@@ -60,7 +92,7 @@ class _ExploreHomeState extends State<ExploreHome> {
           children: [
             Builder(builder: (context) {
               return AppbarLayout(
-                text: "University of British Columbia",
+                text: "University of Victoria",
                 showIcon: true,
                 icon: CupertinoIcons.bars,
                 iconTap: () {
@@ -69,46 +101,11 @@ class _ExploreHomeState extends State<ExploreHome> {
               );
             }),
             Expanded(
-              child: Container(
-                color: Theme.of(context).colorScheme.surface,
-                child: CustomScrollView(
-                  physics: const BouncingScrollPhysics(
-                    parent: AlwaysScrollableScrollPhysics(),
-                  ),
-                  slivers: <Widget>[
-                    CupertinoSliverRefreshControl(
-                      onRefresh: () async {
-                        await Future<void>.delayed(
-                          const Duration(milliseconds: 1000),
-                        );
-                        setState(() {
-                          items.insert(
-                            1,
-                            const PostTile(
-                              icon: CupertinoIcons.flame,
-                              date: "Dec 14, 9:04am",
-                              faculty: "engineering",
-                              genre: "Relationships",
-                              body:
-                                  "Gotta be honest. Sometimes I swipe by girls and guys on Tinder or Bumble and I wish there was a super dislike button. Like bro, I don't know what your parents were thinking having you.",
-                              likes: 31,
-                              dislikes: 1,
-                              comments: 16,
-                            ),
-                          );
-                        });
-                      },
-                    ),
-                    SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (BuildContext context, int index) {
-                          return items[index];
-                        },
-                        childCount: items.length,
-                      ),
-                    ),
-                  ],
-                ),
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 200),
+                transitionBuilder: (Widget child, Animation<double> animation) =>
+                    FadeTransition(opacity: animation, child: child),
+                child: displayBody(feedStatus, posts),
               ),
             ),
           ],
