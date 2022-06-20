@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_mobile_client/constants/general.dart';
+import 'package:flutter_mobile_client/state/token_slice.dart';
+import 'package:flutter_mobile_client/widgets/text/error_with_button.dart';
 import 'package:flutter_mobile_client/widgets/tiles/post.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -36,9 +38,11 @@ class ExploreFeedState {
     this.postsCurrentlyLoading = false,
     this.hasMorePosts = true,
     this.error = false,
+    required this.refAccessToken,
   });
 
   final FeedStatus feedStatus;
+  final String refAccessToken;
   final List<Widget> feedPosts;
   final bool postsCurrentlyLoading;
   final bool hasMorePosts;
@@ -56,8 +60,10 @@ class ExploreFeedState {
     bool? newPostsCurrentlyLoading,
     bool? newHasMorePosts,
     bool? newError,
+    String? newRefAccessToken,
   }) {
     return ExploreFeedState(
+      refAccessToken: newRefAccessToken ?? refAccessToken,
       postsCurrentlyLoading: newPostsCurrentlyLoading ?? postsCurrentlyLoading,
       feedStatus: newFeedStatus ?? feedStatus,
       feedPosts: newFeedPosts ?? feedPosts,
@@ -70,7 +76,11 @@ class ExploreFeedState {
 }
 
 class ExploreFeedNotifier extends StateNotifier<ExploreFeedState> {
-  ExploreFeedNotifier() : super(const ExploreFeedState());
+  ExploreFeedNotifier({
+    required this.accessToken,
+  }) : super(ExploreFeedState(refAccessToken: accessToken));
+
+  final String accessToken;
 
   void getPostsError(ErrorType errorType) {
     if (state.feedPosts.isEmpty) {
@@ -79,9 +89,18 @@ class ExploreFeedNotifier extends StateNotifier<ExploreFeedState> {
     } else {
       // If the feed already has some posts, then show a snackbar error (shown via listener that picks up on toggle change)
       if (errorType == ErrorType.connectionError) {
-        state = state.copyWith(newConnectionErrorFLAG: !state.connectionErrorFLAG, newError: true);
+        state = state.copyWith(newFeedPosts: [
+          ...state.feedPosts,
+          ErrorWithButtonText(
+              headerText: "Connection error",
+              buttonText: "try again",
+              onPress: () {
+                print(accessToken);
+                getPosts(accessToken, LoadingType.morePosts);
+              })
+        ]);
       } else {
-        state = state.copyWith(newServerErrorFLAG: !state.serverErrorFLAG, newError: true);
+        state = state.copyWith(newError: true);
       }
     }
   }
@@ -158,5 +177,6 @@ class ExploreFeedNotifier extends StateNotifier<ExploreFeedState> {
 }
 
 final exploreFeedProvider = StateNotifierProvider<ExploreFeedNotifier, ExploreFeedState>((ref) {
-  return ExploreFeedNotifier();
+  final accessToken = ref.watch(tokenProvider).accessToken;
+  return ExploreFeedNotifier(accessToken: accessToken);
 });
