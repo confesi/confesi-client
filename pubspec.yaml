@@ -43,6 +43,7 @@ dependencies:
   page_transition: ^2.0.5
   modal_bottom_sheet: ^2.0.1
   custom_refresh_indicator: ^1.2.1
+  visibility_detector: ^0.3.3
 
 dev_dependencies:
   flutter_test:

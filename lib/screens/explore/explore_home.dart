@@ -12,6 +12,7 @@ import 'package:flutter_mobile_client/widgets/text/group.dart';
 import 'package:flutter_mobile_client/widgets/tiles/post.dart';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 import '../../widgets/sheets/error_snackbar.dart';
 
@@ -23,12 +24,30 @@ class ExploreHome extends ConsumerStatefulWidget {
 }
 
 class _ExploreHomeState extends ConsumerState<ExploreHome> {
-  Widget displayBody(FeedStatus feedStatus, List<Widget> posts) {
+  ScrollController scrollController = ScrollController();
+
+  void getPosts() {
+    if ((scrollController.position.maxScrollExtent <= scrollController.offset) &&
+        ref.read(exploreFeedProvider).hasMorePosts) {
+      ref
+          .read(exploreFeedProvider.notifier)
+          .getPosts(ref.read(tokenProvider).accessToken, LoadingType.morePosts);
+    }
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
+
+  Widget displayBody(FeedStatus feedStatus, List<Widget> posts, bool hasMorePosts, bool error) {
     switch (feedStatus) {
       case FeedStatus.data:
         return Container(
           color: Theme.of(context).colorScheme.surface,
           child: CustomScrollView(
+            controller: scrollController,
             physics: const BouncingScrollPhysics(
               parent: AlwaysScrollableScrollPhysics(),
             ),
@@ -39,15 +58,50 @@ class _ExploreHomeState extends ConsumerState<ExploreHome> {
                   await Future.delayed(const Duration(milliseconds: 400));
                   await ref
                       .read(exploreFeedProvider.notifier)
-                      .getPosts(ref.read(tokenProvider).accessToken);
+                      .getPosts(ref.read(tokenProvider).accessToken, LoadingType.refresh);
                 },
               ),
               SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) {
-                    return posts[index];
+                    if (index < posts.length) {
+                      return posts[index];
+                    } else {
+                      return Center(
+                          child: hasMorePosts
+                              ? error
+                                  ? ErrorWithButtonText(
+                                      headerText: "Connection error",
+                                      buttonText: "try again",
+                                      onPress: () => ref
+                                          .read(exploreFeedProvider.notifier)
+                                          .getPosts(ref.read(tokenProvider).accessToken,
+                                              LoadingType.morePosts))
+                                  : Padding(
+                                      padding: const EdgeInsets.only(bottom: 15),
+                                      child: VisibilityDetector(
+                                        key: const Key("loading-indicator"),
+                                        onVisibilityChanged: (details) {
+                                          if (details.visibleFraction > 0) {
+                                            getPosts();
+                                          }
+                                        },
+                                        child: const CupertinoActivityIndicator(),
+                                      ),
+                                    )
+                              : Padding(
+                                  padding: const EdgeInsets.only(bottom: 5),
+                                  child: ErrorWithButtonText(
+                                      headerText: "You've reached the bottom",
+                                      buttonText: "reload",
+                                      onPress: () => ref
+                                          .read(exploreFeedProvider.notifier)
+                                          .getPosts(ref.read(tokenProvider).accessToken,
+                                              LoadingType.morePosts)),
+                                ));
+                    }
                   },
-                  childCount: posts.length,
+                  childCount: posts.length + 1,
                 ),
               ),
             ],
@@ -65,7 +119,7 @@ class _ExploreHomeState extends ConsumerState<ExploreHome> {
             child: ErrorWithButtonText(
               onPress: () => ref
                   .read(exploreFeedProvider.notifier)
-                  .getPosts(ref.read(tokenProvider).accessToken),
+                  .getPosts(ref.read(tokenProvider).accessToken, LoadingType.refresh),
             ));
     }
   }
@@ -74,6 +128,8 @@ class _ExploreHomeState extends ConsumerState<ExploreHome> {
   Widget build(BuildContext context) {
     final posts = ref.watch(exploreFeedProvider).feedPosts;
     final feedStatus = ref.watch(exploreFeedProvider).feedStatus;
+    final hasMorePosts = ref.watch(exploreFeedProvider).hasMorePosts;
+    final error = ref.watch(exploreFeedProvider).error;
     ref.listen<ExploreFeedState>(exploreFeedProvider,
         (ExploreFeedState? prevState, ExploreFeedState newState) {
       if (prevState?.connectionErrorFLAG != newState.connectionErrorFLAG) {
@@ -105,7 +161,7 @@ class _ExploreHomeState extends ConsumerState<ExploreHome> {
                 duration: const Duration(milliseconds: 200),
                 transitionBuilder: (Widget child, Animation<double> animation) =>
                     FadeTransition(opacity: animation, child: child),
-                child: displayBody(feedStatus, posts),
+                child: displayBody(feedStatus, posts, hasMorePosts, error),
               ),
             ),
           ],

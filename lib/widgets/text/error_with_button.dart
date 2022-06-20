@@ -2,11 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobile_client/constants/typography.dart';
 
 class ErrorWithButtonText extends StatelessWidget {
-  const ErrorWithButtonText({required this.onPress, this.text = "Connection Error", Key? key})
+  const ErrorWithButtonText(
+      {this.buttonText = "try again",
+      required this.onPress,
+      this.headerText = "Connection Error",
+      Key? key})
       : super(key: key);
 
   final VoidCallback onPress;
-  final String text;
+  final String headerText;
+  final String buttonText;
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +20,7 @@ class ErrorWithButtonText extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          text,
+          headerText,
           style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
           textAlign: TextAlign.center,
           overflow: TextOverflow.ellipsis,
@@ -24,7 +29,7 @@ class ErrorWithButtonText extends StatelessWidget {
         TextButton(
           onPressed: () => onPress(),
           child: Text(
-            "try again",
+            buttonText,
             style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
             textAlign: TextAlign.center,
             overflow: TextOverflow.ellipsis,

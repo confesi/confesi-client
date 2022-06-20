@@ -29,10 +29,16 @@ class _BottomNavState extends ConsumerState<BottomNav> with TickerProviderStateM
   void initState() {
     // Starts refreshing access tokens
     ref.read(tokenProvider.notifier).startAutoRefreshingAccessTokens();
-    // Gets the first few posts for the explore feed
-    ref.read(exploreFeedProvider.notifier).getPosts(ref.read(tokenProvider).accessToken);
-
+    loadInitialExplorePosts();
     super.initState();
+  }
+
+  // Gets the first few posts for the explore feed
+  void loadInitialExplorePosts() async {
+    await Future.delayed(const Duration(seconds: 10));
+    ref
+        .read(exploreFeedProvider.notifier)
+        .getPosts(ref.read(tokenProvider).accessToken, LoadingType.refresh);
   }
 
   @override

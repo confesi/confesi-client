@@ -52,6 +52,7 @@ class PostTile extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 30),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
                   padding: const EdgeInsets.only(left: 15),
@@ -103,7 +104,7 @@ class PostTile extends StatelessWidget {
                   child: Text(
                     body,
                     style: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
-                    textAlign: TextAlign.justify,
+                    textAlign: TextAlign.left,
                   ),
                 ),
                 const SizedBox(height: 30),
