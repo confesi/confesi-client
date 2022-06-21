@@ -28,10 +28,28 @@ class ExploreHome extends ConsumerStatefulWidget {
 class _ExploreHomeState extends ConsumerState<ExploreHome> {
   ScrollController scrollController = ScrollController();
 
-  void getPosts() {
-    if (ref.read(exploreFeedProvider).hasMorePosts) {
-      ref.read(exploreFeedProvider.notifier).getPosts(ref.read(tokenProvider).accessToken);
+  void getPosts(LoadingType loadingType) async {
+    if (ref.read(exploreFeedProvider).hasMorePosts &&
+        scrollController.position.maxScrollExtent == scrollController.offset) {
+      await ref
+          .read(exploreFeedProvider.notifier)
+          .getPosts(ref.read(tokenProvider).accessToken, loadingType);
     }
+    print(
+        "max scroll: ${scrollController.position.maxScrollExtent}, offset: ${scrollController.offset}");
+    if (scrollController.position.maxScrollExtent > scrollController.offset) {
+      getPosts(loadingType);
+    }
+  }
+
+  @override
+  void initState() {
+    // scrollController.addListener(() {
+    //   if (scrollController.position.maxScrollExtent <= scrollController.offset) {
+    //     getPosts(LoadingType.morePosts);
+    //   }
+    // });
+    super.initState();
   }
 
   @override
@@ -70,82 +88,94 @@ class _ExploreHomeState extends ConsumerState<ExploreHome> {
                 },
               );
             }),
-            Expanded(
-              child: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 200),
-                transitionBuilder: (Widget child, Animation<double> animation) =>
-                    FadeTransition(opacity: animation, child: child),
-                child: Container(
-                  color: Theme.of(context).colorScheme.surface,
-                  child: CustomScrollView(
-                    controller: scrollController,
-                    physics: const BouncingScrollPhysics(
-                      parent: AlwaysScrollableScrollPhysics(),
+            feedStatus == FeedStatus.loading && posts.isEmpty
+                ? const Expanded(
+                    child: Center(
+                      child: CupertinoActivityIndicator(),
                     ),
-                    slivers: <Widget>[
-                      CupertinoSliverRefreshControl(
-                        onRefresh: () async {
-                          // just to appear like it's doing something (no jank)
-                          await Future.delayed(const Duration(milliseconds: 200));
-                          getPosts();
-                        },
-                      ),
-                      SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                          (BuildContext context, int index) {
-                            if (index < posts.length) {
-                              return posts[index];
-                            }
-                            return AnimatedSwitcher(
-                              duration: const Duration(milliseconds: 200),
-                              transitionBuilder: (Widget child, Animation<double> animation) =>
-                                  FadeTransition(opacity: animation, child: child),
-                              child: AnimatedSize(
-                                clipBehavior: Clip.antiAliasWithSaveLayer,
-                                duration: const Duration(milliseconds: 400),
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(bottom: 15),
-                                    child: Center(
-                                      child: feedStatus == FeedStatus.data ||
-                                              feedStatus == FeedStatus.loading
-                                          ? VisibilityDetector(
-                                              key: const Key("loading-indicator"),
-                                              onVisibilityChanged: (details) {
-                                                if (details.visibleFraction > 0) {
-                                                  getPosts();
-                                                }
-                                              },
-                                              child: const CupertinoActivityIndicator(),
-                                            )
-                                          : feedStatus == FeedStatus.error
-                                              ? Text(
-                                                  "Error. Try again. Really long text that should be a big problem unless it is fixed. Error. Try again. Really long text that should be a big problem unless it is fixed.",
-                                                  style: kDetail.copyWith(
-                                                      color: Theme.of(context).colorScheme.primary),
-                                                  textAlign: TextAlign.center,
-                                                  // overflow: TextOverflow.ellipsis,
-                                                )
-                                              : ErrorWithButtonText(
-                                                  headerText: "You've reached the bottom",
-                                                  buttonText: "load mores",
-                                                  onPress: () => getPosts(),
-                                                ),
+                  )
+                : Expanded(
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 200),
+                      transitionBuilder: (Widget child, Animation<double> animation) =>
+                          FadeTransition(opacity: animation, child: child),
+                      child: Container(
+                        color: Theme.of(context).colorScheme.surface,
+                        child: CustomScrollView(
+                          controller: scrollController,
+                          physics: const BouncingScrollPhysics(
+                            parent: AlwaysScrollableScrollPhysics(),
+                          ),
+                          slivers: <Widget>[
+                            CupertinoSliverRefreshControl(
+                              onRefresh: () async {
+                                getPosts(LoadingType.refresh);
+                              },
+                            ),
+                            SliverList(
+                              delegate: SliverChildBuilderDelegate(
+                                (BuildContext context, int index) {
+                                  if (index < posts.length) {
+                                    return posts[index];
+                                  }
+                                  return AnimatedSwitcher(
+                                    duration: const Duration(milliseconds: 200),
+                                    transitionBuilder:
+                                        (Widget child, Animation<double> animation) =>
+                                            FadeTransition(opacity: animation, child: child),
+                                    child: AnimatedSize(
+                                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                                      duration: const Duration(milliseconds: 400),
+                                      child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(bottom: 15),
+                                          child: Center(
+                                              child: feedStatus == FeedStatus.data ||
+                                                      feedStatus == FeedStatus.loading
+                                                  ? VisibilityDetector(
+                                                      key: const Key("loading-indicator"),
+                                                      onVisibilityChanged: (details) {
+                                                        if (details.visibleFraction > 0) {
+                                                          getPosts(LoadingType.morePosts);
+                                                        }
+                                                      },
+                                                      child: const CupertinoActivityIndicator(),
+                                                    )
+                                                  : feedStatus == FeedStatus.error
+                                                      ? Text(
+                                                          "Connection error",
+                                                          style: kBody.copyWith(
+                                                              color: Theme.of(context)
+                                                                  .colorScheme
+                                                                  .onSurface),
+                                                          textAlign: TextAlign.center,
+                                                          overflow: TextOverflow.ellipsis,
+                                                          textScaleFactor: 1,
+                                                        )
+                                                      : Text(
+                                                          "You've reached the bottom",
+                                                          style: kBody.copyWith(
+                                                              color: Theme.of(context)
+                                                                  .colorScheme
+                                                                  .onSurface),
+                                                          textAlign: TextAlign.center,
+                                                          overflow: TextOverflow.ellipsis,
+                                                          textScaleFactor: 1,
+                                                        )),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
+                                  );
+                                },
+                                childCount: posts.length + 1,
                               ),
-                            );
-                          },
-                          childCount: posts.length + 1,
+                            ),
+                          ],
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
-            ),
           ],
         ),
       ),

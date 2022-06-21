@@ -10,7 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
-const kNumberOfPostsToLoad = 2;
+const kNumberOfPostsToLoad = 3;
 
 enum FeedStatus {
   error,
@@ -78,20 +78,25 @@ class ExploreFeedNotifier extends StateNotifier<ExploreFeedState> {
 
   final String accessToken;
 
-  void getPostsError(ErrorType errorType) {
+  void getPostsError(ErrorType errorType, LoadingType loadingType) {
     state = state.copyWith(newFeedStatus: FeedStatus.error);
-    if (errorType == ErrorType.connectionError) {
-      state = state.copyWith(newConnectionErrorFLAG: !state.connectionErrorFLAG);
-    } else {
-      state = state.copyWith(newServerErrorFLAG: !state.serverErrorFLAG);
+    if (true) {
+      if (loadingType == LoadingType.refresh) {
+        state = state.copyWith(newConnectionErrorFLAG: !state.connectionErrorFLAG);
+      } else {
+        state = state.copyWith(newServerErrorFLAG: !state.serverErrorFLAG);
+      }
     }
   }
 
-  Future<void> getPosts(String accessToken) async {
+  Future<void> getPosts(String accessToken, LoadingType loadingType) async {
     print("<===== GET GET GET =====>");
+    // temp clear lodaing status?
+    if (state.postsCurrentlyLoading) return;
     state = state.copyWith(
-        newFeedStatus: state.feedPosts.isNotEmpty ? FeedStatus.data : FeedStatus.loading);
-    await Future.delayed(const Duration(milliseconds: 400));
+        newFeedStatus: state.feedPosts.isNotEmpty ? FeedStatus.data : FeedStatus.loading,
+        newPostsCurrentlyLoading: true);
+    if (loadingType == LoadingType.refresh) await Future.delayed(const Duration(milliseconds: 400));
     try {
       final response = await http
           .post(
@@ -108,6 +113,7 @@ class ExploreFeedNotifier extends StateNotifier<ExploreFeedState> {
       if (response.statusCode == 200) {
         print("200");
         final posts = json.decode(response.body)["posts"];
+
         if (posts.length < kNumberOfPostsToLoad) {
           state = state.copyWith(newHasMorePosts: false);
         } else {
@@ -128,25 +134,28 @@ class ExploreFeedNotifier extends StateNotifier<ExploreFeedState> {
             ),
           );
         }
-        print([
-          const SizedBox(height: 15),
-          ...state.feedPosts.skip(1),
-          ...postsToAdd,
-        ]);
-        state = state.copyWith(newFeedStatus: FeedStatus.data, newFeedPosts: [
-          const SizedBox(height: 15),
-          ...state.feedPosts.skip(1),
-          ...postsToAdd,
-        ]);
+        state = state.copyWith(
+            newPostsCurrentlyLoading: false,
+            newFeedStatus: FeedStatus.data,
+            newFeedPosts: loadingType == LoadingType.morePosts
+                ? [
+                    const SizedBox(height: 15),
+                    ...state.feedPosts.skip(1),
+                    ...postsToAdd,
+                  ]
+                : [
+                    const SizedBox(height: 15),
+                    ...postsToAdd,
+                  ]);
       } else {
-        getPostsError(ErrorType.serverError);
+        getPostsError(ErrorType.serverError, loadingType);
       }
     } on TimeoutException {
-      getPostsError(ErrorType.connectionError);
+      getPostsError(ErrorType.connectionError, loadingType);
     } on SocketException {
-      getPostsError(ErrorType.connectionError);
+      getPostsError(ErrorType.connectionError, loadingType);
     } catch (error) {
-      getPostsError(ErrorType.serverError);
+      getPostsError(ErrorType.serverError, loadingType);
     }
   }
 }
