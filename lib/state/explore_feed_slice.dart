@@ -10,11 +10,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
-const kNumberOfPostsToLoad = 2;
+const kNumberOfPostsToLoad = 30;
 
 enum FeedStatus {
-  loading,
   error,
+  loading,
   data,
 }
 
@@ -37,7 +37,6 @@ class ExploreFeedState {
     this.feedPosts = const [],
     this.postsCurrentlyLoading = false,
     this.hasMorePosts = true,
-    this.error = false,
     required this.refAccessToken,
   });
 
@@ -46,7 +45,6 @@ class ExploreFeedState {
   final List<Widget> feedPosts;
   final bool postsCurrentlyLoading;
   final bool hasMorePosts;
-  final bool error;
 
   // flags that I can toggle (value doesn't matter) to get snackbar error message to show up
   final bool connectionErrorFLAG;
@@ -59,7 +57,6 @@ class ExploreFeedState {
     bool? newConnectionErrorFLAG,
     bool? newPostsCurrentlyLoading,
     bool? newHasMorePosts,
-    bool? newError,
     String? newRefAccessToken,
   }) {
     return ExploreFeedState(
@@ -70,7 +67,6 @@ class ExploreFeedState {
       connectionErrorFLAG: newConnectionErrorFLAG ?? connectionErrorFLAG,
       serverErrorFLAG: newServerErrorFLAG ?? serverErrorFLAG,
       hasMorePosts: newHasMorePosts ?? hasMorePosts,
-      error: newError ?? error,
     );
   }
 }
@@ -82,41 +78,24 @@ class ExploreFeedNotifier extends StateNotifier<ExploreFeedState> {
 
   final String accessToken;
 
-  void getPostsError(ErrorType errorType) {
-    if (state.feedPosts.isEmpty) {
-      // If the feed is empty (first load) then just show an error message + refresh button
-      state = state.copyWith(newFeedStatus: FeedStatus.error);
-    } else {
-      // If the feed already has some posts, then show a snackbar error (shown via listener that picks up on toggle change)
+  void getPostsError(ErrorType errorType, LoadingType loadingType) {
+    state = state.copyWith(newFeedStatus: FeedStatus.error);
+    if (loadingType == LoadingType.refresh) {
       if (errorType == ErrorType.connectionError) {
-        state = state.copyWith(newFeedPosts: [
-          ...state.feedPosts,
-          ErrorWithButtonText(
-              headerText: "Connection error",
-              buttonText: "try again",
-              onPress: () {
-                print(accessToken);
-                getPosts(accessToken, LoadingType.morePosts);
-              })
-        ]);
+        state = state.copyWith(newConnectionErrorFLAG: !state.connectionErrorFLAG);
       } else {
-        state = state.copyWith(newError: true);
+        state = state.copyWith(newServerErrorFLAG: !state.serverErrorFLAG);
       }
     }
   }
 
   Future<void> getPosts(String accessToken, LoadingType loadingType) async {
     print("state method for more posts called");
-    // This prevents spamming the API while it is already loading.
-    // if (state.postsCurrentlyLoading) return;
-    // If we are calling this from an error state (meaning we clicked "reload again" or something) then
+    // If we are calling this from an refresh error state (meaning we clicked "reload again" or
+    // something while there are no posts already lodaed) then
     // we want to show a spinner (results from setting to loading state).
-    if (state.feedStatus == FeedStatus.error) {
-      // Make it appear it's loading
-      state = state.copyWith(newFeedStatus: FeedStatus.loading);
-      await Future.delayed(const Duration(milliseconds: 400));
-    }
-    state = state.copyWith(newError: false); // newPostsCurrentlyLoading: true,
+    state = state.copyWith(newFeedStatus: FeedStatus.loading);
+    await Future.delayed(const Duration(milliseconds: 400));
     try {
       final response = await http
           .post(
@@ -163,16 +142,15 @@ class ExploreFeedNotifier extends StateNotifier<ExploreFeedState> {
                   ]
                 : [const SizedBox(height: 15), ...postsToAdd]);
       } else {
-        getPostsError(ErrorType.serverError);
+        getPostsError(ErrorType.serverError, loadingType);
       }
     } on TimeoutException {
-      getPostsError(ErrorType.connectionError);
+      getPostsError(ErrorType.connectionError, loadingType);
     } on SocketException {
-      getPostsError(ErrorType.connectionError);
+      getPostsError(ErrorType.connectionError, loadingType);
     } catch (error) {
-      getPostsError(ErrorType.serverError);
+      getPostsError(ErrorType.serverError, loadingType);
     }
-    // state = state.copyWith(newPostsCurrentlyLoading: false);
   }
 }
 
