@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobile_client/constants/messages/snackbars.dart';
+import 'package:flutter_mobile_client/constants/typography.dart';
 import 'package:flutter_mobile_client/screens/profile/profile_edit.dart';
 import 'package:flutter_mobile_client/state/explore_feed_slice.dart';
 import 'package:flutter_mobile_client/state/post_slice.dart';
@@ -28,11 +29,8 @@ class _ExploreHomeState extends ConsumerState<ExploreHome> {
   ScrollController scrollController = ScrollController();
 
   void getPosts() {
-    if ((scrollController.position.maxScrollExtent <= scrollController.offset) &&
-        ref.read(exploreFeedProvider).hasMorePosts) {
-      ref
-          .read(exploreFeedProvider.notifier)
-          .getPosts(ref.read(tokenProvider).accessToken, LoadingType.morePosts);
+    if (ref.read(exploreFeedProvider).hasMorePosts) {
+      ref.read(exploreFeedProvider.notifier).getPosts(ref.read(tokenProvider).accessToken);
     }
   }
 
@@ -42,144 +40,10 @@ class _ExploreHomeState extends ConsumerState<ExploreHome> {
     super.dispose();
   }
 
-  Widget displayBody(FeedStatus feedStatus, List<Widget> posts, bool hasMorePosts) {
-    if (feedStatus == FeedStatus.loading && posts.isEmpty) {
-      return const Center(
-        key: Key("loading"),
-        child: CupertinoActivityIndicator(),
-      );
-    } else if (feedStatus == FeedStatus.error && posts.isEmpty) {
-      return Center(
-        key: const Key("error"),
-        child: ErrorWithButtonText(
-          onPress: () => ref
-              .read(exploreFeedProvider.notifier)
-              .getPosts(ref.read(tokenProvider).accessToken, LoadingType.refresh),
-        ),
-      );
-    } else {
-      return Container(
-        color: Theme.of(context).colorScheme.surface,
-        child: CustomScrollView(
-          controller: scrollController,
-          physics: const BouncingScrollPhysics(
-            parent: AlwaysScrollableScrollPhysics(),
-          ),
-          slivers: <Widget>[
-            CupertinoSliverRefreshControl(
-              onRefresh: () async {
-                // just to appear like it's doing something (no jank)
-                await Future.delayed(const Duration(milliseconds: 200));
-                await ref
-                    .read(exploreFeedProvider.notifier)
-                    .getPosts(ref.read(tokenProvider).accessToken, LoadingType.refresh);
-              },
-            ),
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
-                  if (!hasMorePosts) {
-                    SpinnerOrTextConnection(
-                        onVisible: getPosts, displayState: DisplayState.endOfFeed);
-                  }
-                  if (index < posts.length) {
-                    return posts[index];
-                  } else if (feedStatus == FeedStatus.loading || feedStatus == FeedStatus.data) {
-                    return SpinnerOrTextConnection(
-                        onVisible: getPosts, displayState: DisplayState.loading);
-                  } else if (feedStatus == FeedStatus.error) {
-                    return const SpinnerOrTextConnection(displayState: DisplayState.error);
-                  }
-                },
-                childCount: posts.length + 1,
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-  }
-
-  // Widget displayBody(FeedStatus feedStatus, List<Widget> posts, bool hasMorePosts) {
-  //   switch (feedStatus) {
-  //     case FeedStatus.data:
-  //       return Container(
-  //         color: Theme.of(context).colorScheme.surface,
-  //         child: CustomScrollView(
-  //           controller: scrollController,
-  //           physics: const BouncingScrollPhysics(
-  //             parent: AlwaysScrollableScrollPhysics(),
-  //           ),
-  //           slivers: <Widget>[
-  //             CupertinoSliverRefreshControl(
-  //               onRefresh: () async {
-  //                 // just to appear like it's doing something (no jank)
-  //                 await Future.delayed(const Duration(milliseconds: 400));
-  //                 await ref
-  //                     .read(exploreFeedProvider.notifier)
-  //                     .getPosts(ref.read(tokenProvider).accessToken, LoadingType.refresh);
-  //               },
-  //             ),
-  //             SliverList(
-  //               delegate: SliverChildBuilderDelegate(
-  //                 (BuildContext context, int index) {
-  //                   if (index < posts.length) {
-  //                     return posts[index];
-  //                   } else {
-  //                     return Center(
-  //                       child: hasMorePosts
-  //                           ? Padding(
-  //                               padding: const EdgeInsets.only(bottom: 15),
-  //                               child: VisibilityDetector(
-  //                                 key: const Key("loading-indicator"),
-  //                                 onVisibilityChanged: (details) {
-  //                                   if (details.visibleFraction > 0) {
-  //                                     getPosts();
-  //                                   }
-  //                                 },
-  //                                 child: const CupertinoActivityIndicator(),
-  //                               ),
-  //                             )
-  //                           : Padding(
-  //                               padding: const EdgeInsets.only(bottom: 5),
-  //                               child: ErrorWithButtonText(
-  //                                   headerText: "You've reached the bottom",
-  //                                   buttonText: "reload",
-  //                                   onPress: () => ref.read(exploreFeedProvider.notifier).getPosts(
-  //                                       ref.read(tokenProvider).accessToken,
-  //                                       LoadingType.morePosts)),
-  //                             ),
-  //                     );
-  //                   }
-  //                 },
-  //                 childCount: posts.length + 1,
-  //               ),
-  //             ),
-  //           ],
-  //         ),
-  //       );
-  //     case FeedStatus.loading:
-  //       return const Center(
-  //         key: Key("loading"),
-  //         child: CupertinoActivityIndicator(),
-  //       );
-  //     case FeedStatus.error:
-  //     default:
-  //       return Center(
-  //           key: const Key("error"),
-  //           child: ErrorWithButtonText(
-  //             onPress: () => ref
-  //                 .read(exploreFeedProvider.notifier)
-  //                 .getPosts(ref.read(tokenProvider).accessToken, LoadingType.refresh),
-  //           ));
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     final posts = ref.watch(exploreFeedProvider).feedPosts;
     final feedStatus = ref.watch(exploreFeedProvider).feedStatus;
-    final hasMorePosts = ref.watch(exploreFeedProvider).hasMorePosts;
     ref.listen<ExploreFeedState>(exploreFeedProvider,
         (ExploreFeedState? prevState, ExploreFeedState newState) {
       if (prevState?.connectionErrorFLAG != newState.connectionErrorFLAG) {
@@ -211,7 +75,75 @@ class _ExploreHomeState extends ConsumerState<ExploreHome> {
                 duration: const Duration(milliseconds: 200),
                 transitionBuilder: (Widget child, Animation<double> animation) =>
                     FadeTransition(opacity: animation, child: child),
-                child: displayBody(feedStatus, posts, hasMorePosts),
+                child: Container(
+                  color: Theme.of(context).colorScheme.surface,
+                  child: CustomScrollView(
+                    controller: scrollController,
+                    physics: const BouncingScrollPhysics(
+                      parent: AlwaysScrollableScrollPhysics(),
+                    ),
+                    slivers: <Widget>[
+                      CupertinoSliverRefreshControl(
+                        onRefresh: () async {
+                          // just to appear like it's doing something (no jank)
+                          await Future.delayed(const Duration(milliseconds: 200));
+                          getPosts();
+                        },
+                      ),
+                      SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          (BuildContext context, int index) {
+                            if (index < posts.length) {
+                              return posts[index];
+                            }
+                            return AnimatedSwitcher(
+                              duration: const Duration(milliseconds: 200),
+                              transitionBuilder: (Widget child, Animation<double> animation) =>
+                                  FadeTransition(opacity: animation, child: child),
+                              child: AnimatedSize(
+                                clipBehavior: Clip.antiAliasWithSaveLayer,
+                                duration: const Duration(milliseconds: 400),
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(bottom: 15),
+                                    child: Center(
+                                      child: feedStatus == FeedStatus.data ||
+                                              feedStatus == FeedStatus.loading
+                                          ? VisibilityDetector(
+                                              key: const Key("loading-indicator"),
+                                              onVisibilityChanged: (details) {
+                                                if (details.visibleFraction > 0) {
+                                                  getPosts();
+                                                }
+                                              },
+                                              child: const CupertinoActivityIndicator(),
+                                            )
+                                          : feedStatus == FeedStatus.error
+                                              ? Text(
+                                                  "Error. Try again. Really long text that should be a big problem unless it is fixed. Error. Try again. Really long text that should be a big problem unless it is fixed.",
+                                                  style: kDetail.copyWith(
+                                                      color: Theme.of(context).colorScheme.primary),
+                                                  textAlign: TextAlign.center,
+                                                  // overflow: TextOverflow.ellipsis,
+                                                )
+                                              : ErrorWithButtonText(
+                                                  headerText: "You've reached the bottom",
+                                                  buttonText: "load mores",
+                                                  onPress: () => getPosts(),
+                                                ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                          childCount: posts.length + 1,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
           ],

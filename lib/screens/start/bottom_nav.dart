@@ -37,9 +37,7 @@ class _BottomNavState extends ConsumerState<BottomNav> with TickerProviderStateM
   void loadInitialExplorePosts() async {
     // TODO: remove later; just delay for testing
     await Future.delayed(const Duration(seconds: 2));
-    ref
-        .read(exploreFeedProvider.notifier)
-        .getPosts(ref.read(tokenProvider).accessToken, LoadingType.refresh);
+    ref.read(exploreFeedProvider.notifier).getPosts(ref.read(tokenProvider).accessToken);
   }
 
   @override

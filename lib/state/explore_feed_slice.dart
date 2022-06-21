@@ -10,7 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
-const kNumberOfPostsToLoad = 30;
+const kNumberOfPostsToLoad = 2;
 
 enum FeedStatus {
   error,
@@ -78,23 +78,19 @@ class ExploreFeedNotifier extends StateNotifier<ExploreFeedState> {
 
   final String accessToken;
 
-  void getPostsError(ErrorType errorType, LoadingType loadingType) {
+  void getPostsError(ErrorType errorType) {
     state = state.copyWith(newFeedStatus: FeedStatus.error);
-    if (loadingType == LoadingType.refresh) {
-      if (errorType == ErrorType.connectionError) {
-        state = state.copyWith(newConnectionErrorFLAG: !state.connectionErrorFLAG);
-      } else {
-        state = state.copyWith(newServerErrorFLAG: !state.serverErrorFLAG);
-      }
+    if (errorType == ErrorType.connectionError) {
+      state = state.copyWith(newConnectionErrorFLAG: !state.connectionErrorFLAG);
+    } else {
+      state = state.copyWith(newServerErrorFLAG: !state.serverErrorFLAG);
     }
   }
 
-  Future<void> getPosts(String accessToken, LoadingType loadingType) async {
-    print("state method for more posts called");
-    // If we are calling this from an refresh error state (meaning we clicked "reload again" or
-    // something while there are no posts already lodaed) then
-    // we want to show a spinner (results from setting to loading state).
-    state = state.copyWith(newFeedStatus: FeedStatus.loading);
+  Future<void> getPosts(String accessToken) async {
+    print("<===== GET GET GET =====>");
+    state = state.copyWith(
+        newFeedStatus: state.feedPosts.isNotEmpty ? FeedStatus.data : FeedStatus.loading);
     await Future.delayed(const Duration(milliseconds: 400));
     try {
       final response = await http
@@ -132,24 +128,25 @@ class ExploreFeedNotifier extends StateNotifier<ExploreFeedState> {
             ),
           );
         }
-        state = state.copyWith(
-            newFeedStatus: FeedStatus.data,
-            newFeedPosts: loadingType == LoadingType.morePosts
-                ? [
-                    const SizedBox(height: 15),
-                    ...state.feedPosts.skip(1),
-                    ...postsToAdd,
-                  ]
-                : [const SizedBox(height: 15), ...postsToAdd]);
+        print([
+          const SizedBox(height: 15),
+          ...state.feedPosts.skip(1),
+          ...postsToAdd,
+        ]);
+        state = state.copyWith(newFeedStatus: FeedStatus.data, newFeedPosts: [
+          const SizedBox(height: 15),
+          ...state.feedPosts.skip(1),
+          ...postsToAdd,
+        ]);
       } else {
-        getPostsError(ErrorType.serverError, loadingType);
+        getPostsError(ErrorType.serverError);
       }
     } on TimeoutException {
-      getPostsError(ErrorType.connectionError, loadingType);
+      getPostsError(ErrorType.connectionError);
     } on SocketException {
-      getPostsError(ErrorType.connectionError, loadingType);
+      getPostsError(ErrorType.connectionError);
     } catch (error) {
-      getPostsError(ErrorType.serverError, loadingType);
+      getPostsError(ErrorType.serverError);
     }
   }
 }

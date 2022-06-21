@@ -54,7 +54,7 @@ class SpinnerOrTextConnection extends ConsumerWidget {
                           buttonText: "load mores",
                           onPress: () => ref
                               .read(exploreFeedProvider.notifier)
-                              .getPosts(ref.read(tokenProvider).accessToken, LoadingType.morePosts),
+                              .getPosts(ref.read(tokenProvider).accessToken),
                         ),
             ),
           ),
