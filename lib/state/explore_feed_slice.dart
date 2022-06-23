@@ -1,7 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_mobile_client/constants/general.dart';
 import 'package:flutter_mobile_client/state/token_slice.dart';
 import 'package:flutter_mobile_client/widgets/text/error_with_button.dart';
@@ -9,38 +12,21 @@ import 'package:flutter_mobile_client/widgets/tiles/post.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:visibility_detector/visibility_detector.dart';
 
-const kNumberOfPostsToLoad = 3;
-
-enum FeedStatus {
-  error,
-  loading,
-  data,
-}
-
-enum ErrorType {
-  serverError,
-  connectionError,
-}
-
-enum LoadingType {
-  refresh,
-  morePosts,
-}
+const kNumberOfPostsToLoad = 1;
 
 @immutable
 class ExploreFeedState {
   const ExploreFeedState({
     this.connectionErrorFLAG = false,
     this.serverErrorFLAG = false,
-    this.feedStatus = FeedStatus.loading,
     this.feedPosts = const [],
     this.postsCurrentlyLoading = false,
     this.hasMorePosts = true,
     required this.refAccessToken,
   });
 
-  final FeedStatus feedStatus;
   final String refAccessToken;
   final List<Widget> feedPosts;
   final bool postsCurrentlyLoading;
@@ -51,22 +37,16 @@ class ExploreFeedState {
   final bool serverErrorFLAG;
 
   ExploreFeedState copyWith({
-    FeedStatus? newFeedStatus,
     List<Widget>? newFeedPosts,
     bool? newServerErrorFLAG,
     bool? newConnectionErrorFLAG,
-    bool? newPostsCurrentlyLoading,
-    bool? newHasMorePosts,
     String? newRefAccessToken,
   }) {
     return ExploreFeedState(
       refAccessToken: newRefAccessToken ?? refAccessToken,
-      postsCurrentlyLoading: newPostsCurrentlyLoading ?? postsCurrentlyLoading,
-      feedStatus: newFeedStatus ?? feedStatus,
       feedPosts: newFeedPosts ?? feedPosts,
       connectionErrorFLAG: newConnectionErrorFLAG ?? connectionErrorFLAG,
       serverErrorFLAG: newServerErrorFLAG ?? serverErrorFLAG,
-      hasMorePosts: newHasMorePosts ?? hasMorePosts,
     );
   }
 }
@@ -78,25 +58,12 @@ class ExploreFeedNotifier extends StateNotifier<ExploreFeedState> {
 
   final String accessToken;
 
-  void getPostsError(ErrorType errorType, LoadingType loadingType) {
-    state = state.copyWith(newFeedStatus: FeedStatus.error);
-    if (true) {
-      if (loadingType == LoadingType.refresh) {
-        state = state.copyWith(newConnectionErrorFLAG: !state.connectionErrorFLAG);
-      } else {
-        state = state.copyWith(newServerErrorFLAG: !state.serverErrorFLAG);
-      }
-    }
+  void getPostsError() {
+    state = state.copyWith();
   }
 
-  Future<void> getPosts(String accessToken, LoadingType loadingType) async {
-    print("<===== GET GET GET =====>");
-    // temp clear lodaing status?
+  Future<void> getPosts(String accessToken) async {
     if (state.postsCurrentlyLoading) return;
-    state = state.copyWith(
-        newFeedStatus: state.feedPosts.isNotEmpty ? FeedStatus.data : FeedStatus.loading,
-        newPostsCurrentlyLoading: true);
-    if (loadingType == LoadingType.refresh) await Future.delayed(const Duration(milliseconds: 400));
     try {
       final response = await http
           .post(
@@ -115,9 +82,9 @@ class ExploreFeedNotifier extends StateNotifier<ExploreFeedState> {
         final posts = json.decode(response.body)["posts"];
 
         if (posts.length < kNumberOfPostsToLoad) {
-          state = state.copyWith(newHasMorePosts: false);
+          state = state.copyWith();
         } else {
-          state = state.copyWith(newHasMorePosts: true);
+          state = state.copyWith();
         }
         List<Widget> postsToAdd = [];
         for (var post in posts) {
@@ -127,35 +94,37 @@ class ExploreFeedNotifier extends StateNotifier<ExploreFeedState> {
               date: "Dec 14, 9:04am",
               faculty: "engineering",
               genre: "Relationships",
-              body: post["text"],
+              body: post == posts.last ? "LAST LAST LAST LAST LAST LAST" : post["text"],
               likes: 31,
               dislikes: 1,
               comments: 999,
             ),
           );
         }
-        state = state.copyWith(
-            newPostsCurrentlyLoading: false,
-            newFeedStatus: FeedStatus.data,
-            newFeedPosts: loadingType == LoadingType.morePosts
-                ? [
-                    const SizedBox(height: 15),
-                    ...state.feedPosts.skip(1),
-                    ...postsToAdd,
-                  ]
-                : [
-                    const SizedBox(height: 15),
-                    ...postsToAdd,
-                  ]);
+        // state = state.copyWith(
+        //     newFeedPosts: loadingType == LoadingType.morePosts
+        //         ? [
+        //             const SizedBox(height: 15),
+        //             ...state.feedPosts.skip(1),
+        //             ...postsToAdd,
+        //           ]
+        //         : [
+        //             const SizedBox(height: 15),
+        //             ...postsToAdd,
+        //           ]);
       } else {
-        getPostsError(ErrorType.serverError, loadingType);
+        state = state.copyWith();
+        getPostsError();
       }
     } on TimeoutException {
-      getPostsError(ErrorType.connectionError, loadingType);
+      state = state.copyWith();
+      getPostsError();
     } on SocketException {
-      getPostsError(ErrorType.connectionError, loadingType);
+      state = state.copyWith();
+      getPostsError();
     } catch (error) {
-      getPostsError(ErrorType.serverError, loadingType);
+      state = state.copyWith();
+      getPostsError();
     }
   }
 }
