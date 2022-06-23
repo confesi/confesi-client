@@ -2,101 +2,105 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_mobile_client/behaviors/overscroll.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 
+enum FetchType {
+  morePosts,
+  refreshPosts,
+}
+
 class InfiniteScrollable extends StatefulWidget {
-  const InfiniteScrollable({Key? key}) : super(key: key);
+  const InfiniteScrollable(
+      {required this.refreshPosts,
+      required this.currentlyFetching,
+      required this.hasError,
+      required this.noMorePosts,
+      required this.fetchMorePosts,
+      required this.posts,
+      Key? key})
+      : super(key: key);
+
+  final List<Widget> posts;
+  final Function fetchMorePosts;
+  final Function refreshPosts;
+
+  // all false by default
+  final bool currentlyFetching;
+  final bool hasError;
+  final bool noMorePosts;
 
   @override
   State<InfiniteScrollable> createState() => _InfiniteScrollableState();
 }
 
 class _InfiniteScrollableState extends State<InfiniteScrollable> {
+  bool fetching = false;
+
   @override
   void initState() {
-    getPosts();
+    // widget.refreshPosts();
     itemPositionsListener.itemPositions.addListener(() {
       final indicies = itemPositionsListener.itemPositions.value.map((post) => post.index);
       // print(
       //     "indicies: $indicies, detail: ${indicies.toList().last}, posts length: ${posts.length}");
       // can add check if the list is at least x long, then check back to reload preemtively by x items
-      if (currentlyFetching == false &&
-          noMorePosts == false &&
-          hasError == false &&
-          indicies.toList().last == posts.length) {
-        getPosts();
+      if (widget.currentlyFetching == false &&
+          widget.noMorePosts == false &&
+          widget.hasError == false &&
+          indicies.toList().last == widget.posts.length) {
+        getPosts(FetchType.morePosts);
       }
     });
     super.initState();
   }
 
-  Future<void> getPosts() async {
-    currentlyFetching = true;
-    print("<===========>");
-    final response = await http.get(Uri.parse("https://jsonplaceholder.typicode.com/todos"));
-    await Future.delayed(const Duration(seconds: 1));
-    if (response.statusCode == 200) {
-      for (int i = 0; i < 5; i++) {
-        if (i == 4) {
-          posts.add("END END END END END");
-        } else {
-          posts.add(json.decode(response.body)[Random().nextInt(100)]["title"]);
-        }
-      }
+  void getPosts(FetchType fetchType) async {
+    if (fetching) return;
+    fetching = true;
+    if (fetchType == FetchType.morePosts) {
+      // await Future.delayed(const Duration(seconds: 2));
+      await widget.fetchMorePosts();
+    } else {
+      await widget.refreshPosts();
     }
-    setState(() {});
-    currentlyFetching = false;
+    fetching = false;
   }
 
   final ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
   final ItemScrollController itemScrollController = ItemScrollController();
 
   Widget infiniteList() {
-    return ScrollablePositionedList.builder(
-      physics: const BouncingScrollPhysics(),
-      itemPositionsListener: itemPositionsListener,
-      itemScrollController: itemScrollController,
-      itemCount: posts.length + 1,
-      itemBuilder: (BuildContext context, int index) {
-        return index < posts.length
-            ? Padding(
-                padding: const EdgeInsets.symmetric(vertical: 15),
-                child: Container(
-                  width: double.infinity,
-                  color: Colors.blueAccent.withOpacity(.2),
-                  child: TextButton(
-                    onPressed: () => getPosts(),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 30),
-                      child: Text("${index + 1} + ${posts[index]}"),
-                    ),
-                  ),
-                ),
-              )
-            : hasError
-                ? TextButton(
-                    onPressed: () => tryAgain(),
-                    child: const Text("error loading more, try again"),
-                  )
-                : noMorePosts
-                    ? TextButton(
-                        onPressed: () => tryAgain(),
-                        child: const Text("out of posts, try loading more"),
-                      )
-                    : const CupertinoActivityIndicator();
-      },
+    return ScrollConfiguration(
+      behavior: NoOverScrollSplash(),
+      child: ScrollablePositionedList.builder(
+        physics: const ClampingScrollPhysics(),
+        itemPositionsListener: itemPositionsListener,
+        itemScrollController: itemScrollController,
+        itemCount: widget.posts.length + 1,
+        itemBuilder: (BuildContext context, int index) {
+          return index < widget.posts.length
+              ? widget.posts[index]
+              : widget.hasError
+                  ? TextButton(
+                      onPressed: () => getPosts(FetchType.refreshPosts),
+                      child: const Text("error loading more, try again"),
+                    )
+                  : widget.noMorePosts
+                      ? TextButton(
+                          onPressed: () => getPosts(FetchType.refreshPosts),
+                          child: const Text("out of posts, try loading more"),
+                        )
+                      : const Padding(
+                          padding: EdgeInsets.only(bottom: 15),
+                          child: CupertinoActivityIndicator(),
+                        );
+        },
+      ),
     );
-  }
-
-  void tryAgain() {
-    setState(() {
-      noMorePosts = false;
-      hasError = false;
-    });
-    getPosts();
   }
 
   Widget spinner() {
@@ -104,24 +108,28 @@ class _InfiniteScrollableState extends State<InfiniteScrollable> {
   }
 
   Widget error() {
-    return const Center(child: Text("error"));
+    return Center(
+        child: TextButton(
+      onPressed: () => getPosts(FetchType.refreshPosts),
+      child: const Text("error loading, try again"),
+    ));
   }
 
   Widget empty() {
-    return const Center(child: Text("no more posts"));
+    return Center(
+        child: TextButton(
+      onPressed: () => getPosts(FetchType.refreshPosts),
+      child: const Text("out of posts, try loading more (full screen)"),
+    ));
   }
 
-  List posts = [];
-  bool currentlyFetching = false;
-  bool hasError = false; // false
-  bool noMorePosts = false; // false
-
   Widget getBody() {
-    if (posts.isEmpty) {
+    // checks if posts array is empty or equal to one (one becuase the first will be a sized box)
+    if (widget.posts.isEmpty || widget.posts.length == 1) {
       // no posts
-      if (hasError) {
+      if (widget.hasError) {
         return error();
-      } else if (noMorePosts) {
+      } else if (widget.noMorePosts) {
         return empty();
       } else {
         return spinner();
@@ -137,6 +145,7 @@ class _InfiniteScrollableState extends State<InfiniteScrollable> {
     return CustomRefreshIndicator(
       extentPercentageToArmed: 0.1,
       onRefresh: () async {
+        getPosts(FetchType.refreshPosts);
         HapticFeedback.lightImpact();
         await Future.delayed(const Duration(seconds: 1));
       },
@@ -145,7 +154,7 @@ class _InfiniteScrollableState extends State<InfiniteScrollable> {
           animation: controller,
           builder: (BuildContext context, _) {
             return Padding(
-              padding: EdgeInsets.only(top: !controller.isIdle ? 15.0 * controller.value : 0),
+              padding: EdgeInsets.only(top: !controller.isIdle ? 18.0 * controller.value : 0),
               child: Stack(
                 alignment: Alignment.topCenter,
                 children: <Widget>[

@@ -28,16 +28,25 @@ class ExploreHome extends ConsumerStatefulWidget {
   ConsumerState<ExploreHome> createState() => _ExploreHomeState();
 }
 
-class _ExploreHomeState extends ConsumerState<ExploreHome> {
+class _ExploreHomeState extends ConsumerState<ExploreHome> with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   ScrollController scrollController = ScrollController();
 
-  void getPosts() async {
-    await ref.read(exploreFeedProvider.notifier).getPosts(ref.read(tokenProvider).accessToken);
+  @override
+  void initState() {
+    startDelay();
+    super.initState();
+  }
+
+  void startDelay() async {
+    await Future.delayed(const Duration(seconds: 5));
+    ref.read(exploreFeedProvider.notifier).refreshPosts();
   }
 
   @override
   Widget build(BuildContext context) {
-    final posts = ref.watch(exploreFeedProvider).feedPosts;
     ref.listen<ExploreFeedState>(exploreFeedProvider,
         (ExploreFeedState? prevState, ExploreFeedState newState) {
       if (prevState?.connectionErrorFLAG != newState.connectionErrorFLAG) {
@@ -64,8 +73,18 @@ class _ExploreHomeState extends ConsumerState<ExploreHome> {
                 },
               );
             }),
-            const Expanded(
-              child: InfiniteScrollable(),
+            Expanded(
+              child: Container(
+                color: Theme.of(context).colorScheme.surface,
+                child: InfiniteScrollable(
+                  hasError: ref.watch(exploreFeedProvider).hasError,
+                  noMorePosts: ref.watch(exploreFeedProvider).noMorePosts,
+                  currentlyFetching: ref.watch(exploreFeedProvider).currentlyFetching,
+                  posts: ref.watch(exploreFeedProvider).posts,
+                  fetchMorePosts: () => ref.read(exploreFeedProvider.notifier).fetchMorePosts(),
+                  refreshPosts: () => ref.read(exploreFeedProvider.notifier).refreshPosts(),
+                ),
+              ),
             ),
           ],
         ),

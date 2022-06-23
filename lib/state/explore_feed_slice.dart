@@ -14,39 +14,58 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:visibility_detector/visibility_detector.dart';
 
-const kNumberOfPostsToLoad = 1;
+// ~IMPORTANT~ this value should be the same as the number of posts the server sends back
+const kNumberOfPostsToLoad = 5;
+
+enum LoadPostsType {
+  refresh,
+  loadMore,
+}
+
+enum RequestErrorType {
+  connectionError,
+  serverError,
+}
 
 @immutable
 class ExploreFeedState {
   const ExploreFeedState({
+    this.hasError = false,
+    this.currentlyFetching = false,
+    this.noMorePosts = false,
     this.connectionErrorFLAG = false,
     this.serverErrorFLAG = false,
-    this.feedPosts = const [],
-    this.postsCurrentlyLoading = false,
-    this.hasMorePosts = true,
+    this.posts = const [],
     required this.refAccessToken,
   });
 
   final String refAccessToken;
-  final List<Widget> feedPosts;
-  final bool postsCurrentlyLoading;
-  final bool hasMorePosts;
+  final List<Widget> posts;
+  final bool currentlyFetching;
+  final bool hasError;
+  final bool noMorePosts;
 
   // flags that I can toggle (value doesn't matter) to get snackbar error message to show up
   final bool connectionErrorFLAG;
   final bool serverErrorFLAG;
 
   ExploreFeedState copyWith({
-    List<Widget>? newFeedPosts,
+    List<Widget>? newPosts,
     bool? newServerErrorFLAG,
     bool? newConnectionErrorFLAG,
     String? newRefAccessToken,
+    bool? newHasError,
+    bool? newCurrentlyFetching,
+    bool? newNoMorePosts,
   }) {
     return ExploreFeedState(
       refAccessToken: newRefAccessToken ?? refAccessToken,
-      feedPosts: newFeedPosts ?? feedPosts,
+      posts: newPosts ?? posts,
       connectionErrorFLAG: newConnectionErrorFLAG ?? connectionErrorFLAG,
       serverErrorFLAG: newServerErrorFLAG ?? serverErrorFLAG,
+      hasError: newHasError ?? hasError,
+      currentlyFetching: newCurrentlyFetching ?? currentlyFetching,
+      noMorePosts: newNoMorePosts ?? noMorePosts,
     );
   }
 }
@@ -58,33 +77,51 @@ class ExploreFeedNotifier extends StateNotifier<ExploreFeedState> {
 
   final String accessToken;
 
-  void getPostsError() {
-    state = state.copyWith();
+  void onRequestError(LoadPostsType loadPostsType, RequestErrorType requestErrorType) {
+    state = state.copyWith(newHasError: true, newCurrentlyFetching: false);
+    if (loadPostsType == LoadPostsType.refresh) {
+      if (requestErrorType == RequestErrorType.connectionError) {
+        state = state.copyWith(newConnectionErrorFLAG: !state.connectionErrorFLAG);
+      } else {
+        state = state.copyWith(newServerErrorFLAG: !state.serverErrorFLAG);
+      }
+    }
   }
 
-  Future<void> getPosts(String accessToken) async {
-    if (state.postsCurrentlyLoading) return;
-    try {
-      final response = await http
-          .post(
-            Uri.parse('$kDomain/api/posts/retrieve'),
-            headers: <String, String>{
-              'Content-Type': 'application/json; charset=UTF-8',
-              'Authorization': 'Bearer $accessToken',
-            },
-            body: jsonEncode(<String, dynamic>{
-              "number_of_posts": kNumberOfPostsToLoad,
-            }),
-          )
-          .timeout(const Duration(seconds: 2));
-      if (response.statusCode == 200) {
-        print("200");
-        final posts = json.decode(response.body)["posts"];
+  Future<void> fetchMorePosts() async {
+    state = state.copyWith(newHasError: false, newNoMorePosts: false);
+    await _getPosts(LoadPostsType.loadMore);
+  }
 
+  Future<void> refreshPosts() async {
+    state = state.copyWith(newHasError: false, newNoMorePosts: false);
+    await _getPosts(LoadPostsType.refresh);
+  }
+
+  Future<void> _getPosts(LoadPostsType loadPostsType) async {
+    if (state.currentlyFetching) return;
+    state = state.copyWith(newCurrentlyFetching: true);
+    print("<=========>");
+    // if (loadPostsType == LoadPostsType.refresh) state = state.copyWith(newPosts: []);
+    try {
+      final response = await http.post(
+        Uri.parse('$kDomain/api/posts/retrieve'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $accessToken',
+        },
+        // body: jsonEncode(<String, dynamic>{
+        //   "number_of_posts": kNumberOfPostsToLoad,
+        // }),
+      ).timeout(const Duration(seconds: 2));
+      state = state.copyWith(newCurrentlyFetching: false);
+      if (response.statusCode == 200) {
+        final posts = json.decode(response.body)["posts"];
         if (posts.length < kNumberOfPostsToLoad) {
-          state = state.copyWith();
+          print("uh oh, less than");
+          state = state.copyWith(newNoMorePosts: true);
         } else {
-          state = state.copyWith();
+          state = state.copyWith(newNoMorePosts: false);
         }
         List<Widget> postsToAdd = [];
         for (var post in posts) {
@@ -101,30 +138,27 @@ class ExploreFeedNotifier extends StateNotifier<ExploreFeedState> {
             ),
           );
         }
-        // state = state.copyWith(
-        //     newFeedPosts: loadingType == LoadingType.morePosts
-        //         ? [
-        //             const SizedBox(height: 15),
-        //             ...state.feedPosts.skip(1),
-        //             ...postsToAdd,
-        //           ]
-        //         : [
-        //             const SizedBox(height: 15),
-        //             ...postsToAdd,
-        //           ]);
+        state = state.copyWith(
+          newPosts: loadPostsType == LoadPostsType.loadMore
+              ? [
+                  const SizedBox(height: 15),
+                  ...state.posts,
+                  ...postsToAdd,
+                ]
+              : [
+                  const SizedBox(height: 15),
+                  ...postsToAdd,
+                ],
+        );
       } else {
-        state = state.copyWith();
-        getPostsError();
+        onRequestError(loadPostsType, RequestErrorType.serverError);
       }
     } on TimeoutException {
-      state = state.copyWith();
-      getPostsError();
+      onRequestError(loadPostsType, RequestErrorType.connectionError);
     } on SocketException {
-      state = state.copyWith();
-      getPostsError();
+      onRequestError(loadPostsType, RequestErrorType.connectionError);
     } catch (error) {
-      state = state.copyWith();
-      getPostsError();
+      onRequestError(loadPostsType, RequestErrorType.serverError);
     }
   }
 }
