@@ -45,13 +45,15 @@ class _InfiniteScrollableState extends State<InfiniteScrollable> {
     // widget.refreshPosts();
     itemPositionsListener.itemPositions.addListener(() {
       final indicies = itemPositionsListener.itemPositions.value.map((post) => post.index);
-      // print(
-      //     "indicies: $indicies, detail: ${indicies.toList().last}, posts length: ${posts.length}");
+      print(
+          "indicies: $indicies, detail: ${indicies.toList().last}, posts length: ${widget.posts.length}");
       // can add check if the list is at least x long, then check back to reload preemtively by x items
       if (widget.currentlyFetching == false &&
           widget.noMorePosts == false &&
           widget.hasError == false &&
-          indicies.toList().last == widget.posts.length) {
+          // the right part of this last condition is something to do with the number of posts being received at a time, the length of total widgets (remember 1 or 2 are loader and sized box?)
+          indicies.toList().last >= widget.posts.length - 3) {
+        print("PASSED");
         getPosts(FetchType.morePosts);
       }
     });
