@@ -41,7 +41,6 @@ class _ExploreHomeState extends ConsumerState<ExploreHome> with AutomaticKeepAli
   }
 
   void startDelay() async {
-    await Future.delayed(const Duration(seconds: 5));
     ref.read(exploreFeedProvider.notifier).refreshPosts();
   }
 

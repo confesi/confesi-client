@@ -143,18 +143,18 @@ class _InfiniteScrollableState extends State<InfiniteScrollable> {
   @override
   Widget build(BuildContext context) {
     return CustomRefreshIndicator(
-      extentPercentageToArmed: 0.1,
+      offsetToArmed: 0,
       onRefresh: () async {
         getPosts(FetchType.refreshPosts);
         HapticFeedback.lightImpact();
-        await Future.delayed(const Duration(seconds: 1));
+        await Future.delayed(const Duration(milliseconds: 400));
       },
       builder: (BuildContext context, Widget child, IndicatorController controller) {
         return AnimatedBuilder(
           animation: controller,
           builder: (BuildContext context, _) {
             return Padding(
-              padding: EdgeInsets.only(top: !controller.isIdle ? 18.0 * controller.value : 0),
+              padding: EdgeInsets.only(top: !controller.isIdle ? 15.0 * controller.value : 0),
               child: Stack(
                 alignment: Alignment.topCenter,
                 children: <Widget>[

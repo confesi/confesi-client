@@ -142,7 +142,7 @@ class ExploreFeedNotifier extends StateNotifier<ExploreFeedState> {
           newPosts: loadPostsType == LoadPostsType.loadMore
               ? [
                   const SizedBox(height: 15),
-                  ...state.posts,
+                  ...state.posts.skip(1),
                   ...postsToAdd,
                 ]
               : [
