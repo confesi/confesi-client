@@ -49,18 +49,19 @@ class _LongTextFieldState extends State<LongTextField> {
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surface,
             borderRadius: const BorderRadius.all(
-              Radius.circular(5),
+              Radius.circular(10),
             ),
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 9),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             child: Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Icon(
                   widget.icon,
-                  size: 18,
+                  size: 22,
                   color: Theme.of(context).colorScheme.onSurface,
                 ),
                 const SizedBox(width: 15),

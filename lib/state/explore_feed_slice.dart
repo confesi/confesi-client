@@ -36,10 +36,8 @@ class ExploreFeedState {
     this.connectionErrorFLAG = false,
     this.serverErrorFLAG = false,
     this.posts = const [],
-    required this.refAccessToken,
   });
 
-  final String refAccessToken;
   final List<Widget> posts;
   final bool currentlyFetching;
   final bool hasError;
@@ -53,13 +51,11 @@ class ExploreFeedState {
     List<Widget>? newPosts,
     bool? newServerErrorFLAG,
     bool? newConnectionErrorFLAG,
-    String? newRefAccessToken,
     bool? newHasError,
     bool? newCurrentlyFetching,
     bool? newNoMorePosts,
   }) {
     return ExploreFeedState(
-      refAccessToken: newRefAccessToken ?? refAccessToken,
       posts: newPosts ?? posts,
       connectionErrorFLAG: newConnectionErrorFLAG ?? connectionErrorFLAG,
       serverErrorFLAG: newServerErrorFLAG ?? serverErrorFLAG,
@@ -71,12 +67,9 @@ class ExploreFeedState {
 }
 
 class ExploreFeedNotifier extends StateNotifier<ExploreFeedState> {
-  ExploreFeedNotifier({
-    required this.accessToken,
-  }) : super(ExploreFeedState(refAccessToken: accessToken));
+  ExploreFeedNotifier() : super(const ExploreFeedState());
 
-  final String accessToken;
-
+  // on error set posts array to zero?
   void onRequestError(LoadPostsType loadPostsType, RequestErrorType requestErrorType) {
     state = state.copyWith(newHasError: true, newCurrentlyFetching: false);
     if (loadPostsType == LoadPostsType.refresh) {
@@ -88,17 +81,17 @@ class ExploreFeedNotifier extends StateNotifier<ExploreFeedState> {
     }
   }
 
-  Future<void> fetchMorePosts() async {
+  Future<void> fetchMorePosts(String accessToken) async {
     state = state.copyWith(newHasError: false, newNoMorePosts: false);
-    await _getPosts(LoadPostsType.loadMore);
+    await _getPosts(LoadPostsType.loadMore, accessToken);
   }
 
-  Future<void> refreshPosts() async {
+  Future<void> refreshPosts(String accessToken) async {
     state = state.copyWith(newHasError: false, newNoMorePosts: false);
-    await _getPosts(LoadPostsType.refresh);
+    await _getPosts(LoadPostsType.refresh, accessToken);
   }
 
-  Future<void> _getPosts(LoadPostsType loadPostsType) async {
+  Future<void> _getPosts(LoadPostsType loadPostsType, String accessToken) async {
     if (state.currentlyFetching) return;
     state = state.copyWith(newCurrentlyFetching: true);
     print("<=========>");
@@ -164,6 +157,5 @@ class ExploreFeedNotifier extends StateNotifier<ExploreFeedState> {
 }
 
 final exploreFeedProvider = StateNotifierProvider<ExploreFeedNotifier, ExploreFeedState>((ref) {
-  final accessToken = ref.watch(tokenProvider).accessToken;
-  return ExploreFeedNotifier(accessToken: accessToken);
+  return ExploreFeedNotifier();
 });

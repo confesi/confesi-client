@@ -54,7 +54,7 @@ class TokenNotifier extends StateNotifier<TokenState> {
   void startAutoRefreshingAccessTokens() {
     // Refreshes 500 milliseconds before the access token is set to expire
     Timer.periodic(const Duration(milliseconds: kAccessTokenLifetime - 500), (timer) {
-      print("SCREEN STATE: ${state.screen.toString()}");
+      print("Currently: ${state.screen.toString()}");
       // Basically checking if we're either logged in (home) or no internet or server error - in that case, keep checking.
       if (state.screen == ScreenState.home ||
           state.screen == ScreenState.connectionError ||

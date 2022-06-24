@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobile_client/widgets/layouts/appbar.dart';
 
+import '../../constants/typography.dart';
+
 class ProfileEdit extends StatelessWidget {
   const ProfileEdit({Key? key}) : super(key: key);
 
@@ -11,8 +13,15 @@ class ProfileEdit extends StatelessWidget {
       body: SafeArea(
         bottom: false,
         child: Column(
-          children: const [
-            AppbarLayout(text: "Edit profile"),
+          children: [
+            AppbarLayout(
+              centerWidget: Text(
+                "Edit Profile",
+                style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+              ),
+            ),
           ],
         ),
       ),

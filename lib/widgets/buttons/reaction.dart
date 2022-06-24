@@ -14,7 +14,7 @@ class ReactionButton extends StatelessWidget {
       padding: const EdgeInsets.only(right: 10),
       child: Container(
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
+          color: Theme.of(context).colorScheme.secondary,
           borderRadius: const BorderRadius.all(
             Radius.circular(20),
           ),
@@ -28,12 +28,14 @@ class ReactionButton extends StatelessWidget {
               Icon(
                 icon,
                 size: 16,
-                color: Theme.of(context).colorScheme.onSurface,
+                color: Theme.of(context).colorScheme.primary,
               ),
               const SizedBox(width: 5),
               Text(
                 count.toString(),
-                style: kDetail.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                style: kDetail.copyWith(
+                  color: Theme.of(context).colorScheme.primary,
+                ),
                 textAlign: TextAlign.left,
               ),
             ],

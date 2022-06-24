@@ -38,6 +38,7 @@ class IconTextButton extends StatelessWidget {
               ),
               Icon(
                 CupertinoIcons.chevron_forward,
+                size: 24,
                 color: Theme.of(context).colorScheme.onBackground,
               ),
             ],

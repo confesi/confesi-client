@@ -41,7 +41,7 @@ class _ExploreHomeState extends ConsumerState<ExploreHome> with AutomaticKeepAli
   }
 
   void startDelay() async {
-    ref.read(exploreFeedProvider.notifier).refreshPosts();
+    ref.read(exploreFeedProvider.notifier).refreshPosts(ref.read(tokenProvider).accessToken);
   }
 
   @override
@@ -64,7 +64,12 @@ class _ExploreHomeState extends ConsumerState<ExploreHome> with AutomaticKeepAli
           children: [
             Builder(builder: (context) {
               return AppbarLayout(
-                text: "University of Victoria",
+                centerWidget: Text(
+                  "University of Victoria",
+                  style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                ),
                 showIcon: true,
                 icon: CupertinoIcons.bars,
                 iconTap: () {
@@ -80,8 +85,12 @@ class _ExploreHomeState extends ConsumerState<ExploreHome> with AutomaticKeepAli
                   noMorePosts: ref.watch(exploreFeedProvider).noMorePosts,
                   currentlyFetching: ref.watch(exploreFeedProvider).currentlyFetching,
                   posts: ref.watch(exploreFeedProvider).posts,
-                  fetchMorePosts: () => ref.read(exploreFeedProvider.notifier).fetchMorePosts(),
-                  refreshPosts: () => ref.read(exploreFeedProvider.notifier).refreshPosts(),
+                  fetchMorePosts: () => ref
+                      .read(exploreFeedProvider.notifier)
+                      .fetchMorePosts(ref.read(tokenProvider).accessToken),
+                  refreshPosts: () => ref
+                      .read(exploreFeedProvider.notifier)
+                      .refreshPosts(ref.read(tokenProvider).accessToken),
                 ),
               ),
             ),

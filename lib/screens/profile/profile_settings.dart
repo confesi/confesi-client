@@ -31,7 +31,14 @@ class _ProfileSettingsState extends ConsumerState<ProfileSettings> {
           bottom: false,
           child: Column(
             children: [
-              const AppbarLayout(text: "Settings"),
+              AppbarLayout(
+                centerWidget: Text(
+                  "Settings",
+                  style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Column(

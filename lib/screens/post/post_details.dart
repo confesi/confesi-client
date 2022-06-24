@@ -22,8 +22,13 @@ class PostDetails extends StatelessWidget {
         bottom: false,
         child: Column(
           children: [
-            const AppbarLayout(
-              text: "Post details",
+            AppbarLayout(
+              centerWidget: Text(
+                "Post Details",
+                style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+              ),
             ),
             Expanded(
               child: SingleChildScrollView(
@@ -47,16 +52,14 @@ class PostDetails extends StatelessWidget {
                           padding: const EdgeInsets.only(left: 15),
                           child: Text(
                             "Details from profile",
-                            style: kTitle.copyWith(
-                                color: Theme.of(context).colorScheme.primary),
+                            style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
                             textAlign: TextAlign.left,
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ),
                       Padding(
-                        padding:
-                            const EdgeInsets.only(left: 15, right: 15, top: 15),
+                        padding: const EdgeInsets.only(left: 15, right: 15, top: 15),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: const [
@@ -64,26 +67,21 @@ class PostDetails extends StatelessWidget {
                                 leftText: "University",
                                 rightText: "university of victoria",
                                 topLine: true),
-                            RowText(
-                                leftText: "Faculty",
-                                rightText: "computer science"),
+                            RowText(leftText: "Faculty", rightText: "computer science"),
                             RowText(leftText: "Year", rightText: "two"),
                           ],
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 30),
+                        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 30),
                         child: Hero(
                           tag: "details-button",
                           child: Material(
                             child: LongButton(
                               text: "Done",
                               onPress: () => Navigator.of(context).pop(),
-                              textColor:
-                                  Theme.of(context).colorScheme.onPrimary,
-                              backgroundColor:
-                                  Theme.of(context).colorScheme.primary,
+                              textColor: Theme.of(context).colorScheme.onPrimary,
+                              backgroundColor: Theme.of(context).colorScheme.primary,
                             ),
                           ),
                         ),

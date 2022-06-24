@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobile_client/widgets/textfield/long.dart';
+import '../../constants/typography.dart';
 import '../../widgets/layouts/appbar.dart';
 
 // TODO: Show cupertertino scrollbar inside here
@@ -15,7 +16,14 @@ class ExplorePost extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            const AppbarLayout(text: "Thread"),
+            AppbarLayout(
+              centerWidget: Text(
+                "Thread",
+                style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+              ),
+            ),
             Expanded(
               child: Stack(
                 children: const [
