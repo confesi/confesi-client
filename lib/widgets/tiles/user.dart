@@ -4,7 +4,10 @@ import 'package:flutter_mobile_client/widgets/symbols/circle.dart';
 import 'package:flutter_mobile_client/widgets/text/group.dart';
 
 class UserTile extends StatelessWidget {
-  const UserTile({Key? key}) : super(key: key);
+  const UserTile({required this.displayName, required this.username, Key? key}) : super(key: key);
+
+  final String displayName;
+  final String username;
 
   @override
   Widget build(BuildContext context) {
@@ -21,10 +24,10 @@ class UserTile extends StatelessWidget {
                 icon: CupertinoIcons.flame,
                 radius: 26,
               ),
-              const GroupText(
+              GroupText(
                 leftAlign: true,
-                body: "duckeater12",
-                header: "Anonymous",
+                body: username,
+                header: displayName,
                 small: true,
               ),
               const Spacer(),

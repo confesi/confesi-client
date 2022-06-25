@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_mobile_client/constants/general.dart';
+import 'package:flutter_mobile_client/models/search/user.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
@@ -12,9 +13,9 @@ import 'package:http/http.dart' as http;
 class SearchState {
   const SearchState({this.results = const []});
 
-  final List<Widget> results;
+  final List<dynamic> results;
 
-  SearchState copyWith({List<Widget>? newResults}) {
+  SearchState copyWith({List<dynamic>? newResults}) {
     return SearchState(
       results: newResults ?? results,
     );
@@ -24,7 +25,56 @@ class SearchState {
 class SearchNotifier extends StateNotifier<SearchState> {
   SearchNotifier() : super(const SearchState());
 
-  Future<void> refineResults(String query) async {}
+  dynamic cancelToken;
+
+  final Dio _dio = Dio(
+    BaseOptions(
+      baseUrl: kDomain,
+      connectTimeout: 5000,
+      receiveTimeout: 3000,
+    ),
+  );
+
+  Future<void> refineResults(String query, String accessToken) async {
+    // Cancel token logic
+    if (cancelToken != null) {
+      cancelToken.cancel();
+      cancelToken = null;
+    } else {
+      cancelToken = CancelToken();
+    }
+
+    if (query.isEmpty) {
+      // cancelToken.cancel();
+      state = state.copyWith(newResults: []);
+      return;
+    }
+
+    _dio.options.headers["Authorization"] = "Bearer $accessToken";
+    try {
+      final response = await _dio.post(
+        "$kDomain/api/search/users",
+        data: {"username": query},
+        cancelToken: cancelToken,
+      );
+      if (response.statusCode == 200) {
+        state = state.copyWith(
+            newResults: response.data["users"].map((user) => User.fromJson(user)).toList());
+      }
+    } on DioError catch (e) {
+      if (CancelToken.isCancel(e)) {
+        print("WAS CANCELLED");
+      } else if (e.response == null) {
+        print("CONNECTION ERROR");
+      } else if (e.response?.statusCode == 404) {
+        print(e.response?.statusCode);
+      } else {
+        print("SERVER ERROR");
+      }
+    } catch (error) {
+      print("CATCH ALL - SERVER ERROR: $error");
+    }
+  }
 }
 
 final searchProvider = StateNotifierProvider<SearchNotifier, SearchState>((ref) {

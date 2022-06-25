@@ -10,6 +10,7 @@ class LongTextField extends StatefulWidget {
       this.bottomPadding = 0.0,
       this.topPadding = 0.0,
       this.horizontalPadding = 0.0,
+      required this.onChange,
       Key? key})
       : super(key: key);
 
@@ -18,6 +19,7 @@ class LongTextField extends StatefulWidget {
   final String hintText;
   final double topPadding;
   final double horizontalPadding;
+  final Function(String) onChange;
 
   @override
   State<LongTextField> createState() => _LongTextFieldState();
@@ -70,6 +72,7 @@ class _LongTextFieldState extends State<LongTextField> {
                     focusNode: focusNode,
                     controller: controller,
                     onChanged: (newValue) {
+                      widget.onChange(newValue);
                       setState(() {
                         text = newValue;
                       });

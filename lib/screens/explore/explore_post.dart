@@ -26,10 +26,11 @@ class ExplorePost extends StatelessWidget {
             ),
             Expanded(
               child: Stack(
-                children: const [
+                children: [
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: LongTextField(
+                      onChange: (value) => print(value),
                       topPadding: 15,
                       icon: CupertinoIcons.chat_bubble,
                       horizontalPadding: 15,

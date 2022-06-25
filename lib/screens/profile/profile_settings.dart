@@ -44,7 +44,11 @@ class _ProfileSettingsState extends ConsumerState<ProfileSettings> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const LongTextField(bottomPadding: 30, topPadding: 15),
+                    LongTextField(
+                      bottomPadding: 30,
+                      topPadding: 15,
+                      onChange: (value) => print(value),
+                    ),
                     const IconTextButton(
                         text: "Security", icon: CupertinoIcons.lock, bottomPadding: 30),
                     const IconTextButton(
