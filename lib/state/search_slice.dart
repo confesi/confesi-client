@@ -35,6 +35,8 @@ class SearchNotifier extends StateNotifier<SearchState> {
     ),
   );
 
+  void clearSearchResults() => state = state.copyWith(newResults: []);
+
   Future<void> refineResults(String query, String accessToken) async {
     // Cancel token logic
     if (cancelToken != null) {

@@ -37,7 +37,7 @@ class PostTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 15),
+      padding: const EdgeInsets.only(bottom: 8),
       child: GestureDetector(
         onTap: () => Navigator.push(
           context,

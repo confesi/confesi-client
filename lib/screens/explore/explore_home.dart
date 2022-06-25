@@ -79,7 +79,7 @@ class _ExploreHomeState extends ConsumerState<ExploreHome> with AutomaticKeepAli
             }),
             Expanded(
               child: Container(
-                color: Theme.of(context).colorScheme.surface,
+                color: Theme.of(context).colorScheme.surfaceVariant,
                 child: InfiniteScrollable(
                   hasError: ref.watch(exploreFeedProvider).hasError,
                   noMorePosts: ref.watch(exploreFeedProvider).noMorePosts,

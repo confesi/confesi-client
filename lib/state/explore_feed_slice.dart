@@ -134,12 +134,10 @@ class ExploreFeedNotifier extends StateNotifier<ExploreFeedState> {
         state = state.copyWith(
           newPosts: loadPostsType == LoadPostsType.loadMore
               ? [
-                  const SizedBox(height: 15),
-                  ...state.posts.skip(1),
+                  ...state.posts,
                   ...postsToAdd,
                 ]
               : [
-                  const SizedBox(height: 15),
                   ...postsToAdd,
                 ],
         );

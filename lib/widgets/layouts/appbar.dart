@@ -30,7 +30,7 @@ class AppbarLayout extends StatelessWidget {
                   color: bottomBorder
                       ? Theme.of(context).colorScheme.onBackground
                       : Colors.transparent,
-                  width: 1),
+                  width: .35),
             ),
           ),
           child: centerWidgetFullWidth

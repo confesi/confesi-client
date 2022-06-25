@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobile_client/constants/typography.dart';
+import 'package:flutter_mobile_client/state/search_slice.dart';
 import 'package:flutter_mobile_client/widgets/buttons/touchable_opacity.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class LongTextField extends StatefulWidget {
+class LongTextField extends ConsumerStatefulWidget {
   const LongTextField(
       {this.hintText = "Search",
       this.icon = CupertinoIcons.search,
@@ -22,12 +24,12 @@ class LongTextField extends StatefulWidget {
   final Function(String) onChange;
 
   @override
-  State<LongTextField> createState() => _LongTextFieldState();
+  ConsumerState<LongTextField> createState() => _LongTextFieldState();
 }
 
 String text = "";
 
-class _LongTextFieldState extends State<LongTextField> {
+class _LongTextFieldState extends ConsumerState<LongTextField> {
   final TextEditingController controller = TextEditingController();
   FocusNode focusNode = FocusNode();
 

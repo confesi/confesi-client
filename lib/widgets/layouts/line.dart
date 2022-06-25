@@ -23,7 +23,7 @@ class LineLayout extends StatelessWidget {
           top: topPadding,
           bottom: bottomPadding),
       child: Container(
-        height: 1,
+        height: 0.35,
         width: double.infinity,
         color: color,
       ),

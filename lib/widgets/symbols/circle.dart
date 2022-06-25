@@ -15,7 +15,7 @@ class CircleSymbol extends StatelessWidget {
         width: radius * 2,
         height: radius * 2,
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.primary,
+          color: Theme.of(context).colorScheme.secondary,
           shape: BoxShape.circle,
         ),
         child: Center(

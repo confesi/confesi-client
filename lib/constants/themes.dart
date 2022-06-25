@@ -19,10 +19,11 @@ List<ThemeData> themesList = [
   ),
   ThemeData(
     colorScheme: const ColorScheme(
+      surfaceVariant: Color.fromARGB(255, 23, 23, 23),
       brightness: Brightness.dark,
-      primary: Color(0xffe6f5fc),
+      primary: Color(0xffd7dadc),
       onPrimary: Color(0xff333333),
-      secondary: Color(0xffe6dcf5),
+      secondary: Color(0xfffde5b6),
       onSecondary: Color(0xff333333),
       error: Color(0xffEB5353),
       onError: Colors.white,

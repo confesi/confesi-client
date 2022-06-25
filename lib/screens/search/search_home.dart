@@ -8,11 +8,16 @@ import 'package:flutter_mobile_client/widgets/tiles/user.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../constants/typography.dart';
 
-class SearchHome extends ConsumerWidget {
+class SearchHome extends ConsumerStatefulWidget {
   const SearchHome({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<SearchHome> createState() => _SearchHomeState();
+}
+
+class _SearchHomeState extends ConsumerState<SearchHome> {
+  @override
+  Widget build(BuildContext context) {
     return KeyboardDismissLayout(
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
@@ -30,17 +35,19 @@ class SearchHome extends ConsumerWidget {
                 showIcon: false,
               ),
               Expanded(
-                child: Container(
-                  color: Theme.of(context).colorScheme.surface,
+                child: SingleChildScrollView(
                   child: Column(
-                    children: ref
-                        .watch(searchProvider)
-                        .results
-                        .map(
-                          (result) =>
-                              UserTile(displayName: result.displayName, username: result.username),
-                        )
-                        .toList(),
+                    children: [
+                      ...ref
+                          .watch(searchProvider)
+                          .results
+                          .map(
+                            (result) => UserTile(
+                                displayName: result.displayName, username: result.username),
+                          )
+                          .toList(),
+                      const SizedBox(height: 15),
+                    ],
                   ),
                 ),
               ),

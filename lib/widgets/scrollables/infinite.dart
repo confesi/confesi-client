@@ -3,10 +3,14 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobile_client/behaviors/overscroll.dart';
+import 'package:flutter_mobile_client/widgets/layouts/line.dart';
+import 'package:flutter_mobile_client/widgets/tiles/highlight.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
+
+import '../../constants/typography.dart';
 
 enum FetchType {
   morePosts,
@@ -45,14 +49,14 @@ class _InfiniteScrollableState extends State<InfiniteScrollable> {
     // widget.refreshPosts();
     itemPositionsListener.itemPositions.addListener(() {
       final indicies = itemPositionsListener.itemPositions.value.map((post) => post.index);
-      // print(
-      //     "indicies: $indicies, detail: ${indicies.toList().last}, posts length: ${widget.posts.length}");
+      print(
+          "indicies: $indicies, detail: ${indicies.toList().last}, posts length: ${widget.posts.length}");
       // can add check if the list is at least x long, then check back to reload preemtively by x items
       if (widget.currentlyFetching == false &&
           widget.noMorePosts == false &&
           widget.hasError == false &&
           // the right part of this last condition is something to do with the number of posts being received at a time, the length of total widgets (remember 1 or 2 are loader and sized box?)
-          indicies.toList().last >= widget.posts.length - 3) {
+          indicies.toList().last >= widget.posts.length - 4) {
         print("PASSED");
         getPosts(FetchType.morePosts);
       }
@@ -84,22 +88,77 @@ class _InfiniteScrollableState extends State<InfiniteScrollable> {
         itemScrollController: itemScrollController,
         itemCount: widget.posts.length + 1,
         itemBuilder: (BuildContext context, int index) {
-          return index < widget.posts.length
-              ? widget.posts[index]
-              : widget.hasError
-                  ? TextButton(
-                      onPressed: () => getPosts(FetchType.refreshPosts),
-                      child: const Text("error loading more, try again"),
-                    )
-                  : widget.noMorePosts
+          return index == 0
+              ? Container(
+                  color: Theme.of(context).colorScheme.background,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 15),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                "Hottest posts today",
+                                style: kHeader.copyWith(
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            Icon(
+                              CupertinoIcons.ellipsis,
+                              color: Theme.of(context).colorScheme.onBackground,
+                              size: 24,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 15),
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          physics: const BouncingScrollPhysics(),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 15),
+                            child: Row(
+                              children: const [
+                                HighlightTile(),
+                                HighlightTile(),
+                                HighlightTile(),
+                                HighlightTile(),
+                                HighlightTile(),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              : index < widget.posts.length
+                  ? index == 1
+                      ? Padding(
+                          padding: const EdgeInsets.only(top: 8),
+                          child: widget.posts[index],
+                        )
+                      : widget.posts[index]
+                  : widget.hasError
                       ? TextButton(
                           onPressed: () => getPosts(FetchType.refreshPosts),
-                          child: const Text("out of posts, try loading more"),
+                          child: const Text("error loading more, try again"),
                         )
-                      : const Padding(
-                          padding: EdgeInsets.only(bottom: 15),
-                          child: CupertinoActivityIndicator(),
-                        );
+                      : widget.noMorePosts
+                          ? TextButton(
+                              onPressed: () => getPosts(FetchType.refreshPosts),
+                              child: const Text("out of posts, try loading more"),
+                            )
+                          : const Padding(
+                              padding: EdgeInsets.only(bottom: 8),
+                              child: CupertinoActivityIndicator(),
+                            );
         },
       ),
     );
@@ -145,7 +204,8 @@ class _InfiniteScrollableState extends State<InfiniteScrollable> {
   @override
   Widget build(BuildContext context) {
     return CustomRefreshIndicator(
-      offsetToArmed: 0,
+      // // extentPercentageToArmed: .35,
+      // offsetToArmed: 0.0,
       onRefresh: () async {
         getPosts(FetchType.refreshPosts);
         HapticFeedback.lightImpact();
@@ -155,29 +215,30 @@ class _InfiniteScrollableState extends State<InfiniteScrollable> {
         return AnimatedBuilder(
           animation: controller,
           builder: (BuildContext context, _) {
-            return Padding(
-              padding: EdgeInsets.only(top: !controller.isIdle ? 15.0 * controller.value : 0),
-              child: Stack(
-                alignment: Alignment.topCenter,
-                children: <Widget>[
-                  if (!controller.isIdle)
-                    Transform.scale(
-                      scale: controller.value >= 1 ? 1 : controller.value,
-                      child: const CupertinoActivityIndicator(),
-                    ),
-                  Opacity(
-                    opacity: controller.isArmed || controller.isLoading
-                        ? controller.value > 1
-                            ? 1
-                            : controller.value
-                        : 1,
-                    child: Transform.translate(
-                      offset: Offset(0, 25.0 * controller.value),
-                      child: child,
-                    ),
-                  )
-                ],
-              ),
+            return Stack(
+              children: <Widget>[
+                AnimatedBuilder(
+                  animation: controller,
+                  builder: (BuildContext context, _) {
+                    return Container(
+                      color: Theme.of(context).colorScheme.secondary,
+                      width: double.infinity,
+                      height: controller.value * 50,
+                      child: FittedBox(
+                        alignment: Alignment.center,
+                        fit: BoxFit.scaleDown,
+                        child: CupertinoActivityIndicator(
+                          color: Theme.of(context).colorScheme.background,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                Transform.translate(
+                  offset: Offset(0, controller.value * 50),
+                  child: child,
+                ),
+              ],
             );
           },
         );
