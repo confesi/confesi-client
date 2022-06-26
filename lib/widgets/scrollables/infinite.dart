@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobile_client/behaviors/overscroll.dart';
-import 'package:flutter_mobile_client/widgets/buttons/scrollable.dart';
+import 'package:flutter_mobile_client/widgets/scrollables/scrollable.dart';
 import 'package:flutter_mobile_client/widgets/layouts/line.dart';
 import 'package:flutter_mobile_client/widgets/tiles/highlight.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
@@ -162,20 +162,16 @@ class _InfiniteScrollableState extends State<InfiniteScrollable> {
                         )
                       : widget.posts[index]
                   : widget.hasError
-                      ? ScrollableButton(
-                          text: "Unexpected error loading more posts. Try again?",
+                      ? ScrollableIndicator(
+                          text: "Error loading more posts. Try again?",
                           onPress: () => getPosts(FetchType.morePosts),
                         )
                       : widget.noMorePosts
-                          ? ScrollableButton(
+                          ? ScrollableIndicator(
                               text: "You've reached the bottom. Try loading more?",
                               onPress: () => getPosts(FetchType.morePosts),
                             )
-                          : const Padding(
-                              padding: EdgeInsets.only(
-                                  bottom: 16, top: 8), // posts already have bottom padding of 8
-                              child: CupertinoActivityIndicator(),
-                            );
+                          : const ScrollableIndicator(spinner: true);
         },
       ),
     );
@@ -186,14 +182,14 @@ class _InfiniteScrollableState extends State<InfiniteScrollable> {
   }
 
   Widget error() {
-    return ScrollableButton(
+    return ScrollableIndicator(
       text: "Error loading content. Try again?",
       onPress: () => getPosts(FetchType.refreshPosts),
     );
   }
 
   Widget empty() {
-    return ScrollableButton(
+    return ScrollableIndicator(
       text: "Unexpected error. No posts found. Try again?",
       onPress: () => getPosts(FetchType.refreshPosts),
     );

@@ -160,7 +160,6 @@ class ExploreFeedNotifier extends StateNotifier<ExploreFeedState> {
       }
     } on TimeoutException {
       print("here2");
-
       onRequestError(loadPostsType, RequestErrorType.connectionError);
     } on SocketException {
       print("here3");
