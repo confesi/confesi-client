@@ -103,7 +103,8 @@ class PostTile extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: Text(
                     body,
-                    style: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
+                    style:
+                        kBody.copyWith(color: Theme.of(context).colorScheme.primary, height: 1.4),
                     textAlign: TextAlign.left,
                   ),
                 ),

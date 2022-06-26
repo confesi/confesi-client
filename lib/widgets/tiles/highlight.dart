@@ -2,7 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobile_client/constants/typography.dart';
 
 class HighlightTile extends StatelessWidget {
-  const HighlightTile({Key? key}) : super(key: key);
+  const HighlightTile(
+      {required this.bottomText, required this.topText, required this.backgroundColor, Key? key})
+      : super(key: key);
+
+  final Color backgroundColor;
+  final String topText;
+  final String bottomText;
 
   @override
   Widget build(BuildContext context) {
@@ -25,11 +31,11 @@ class HighlightTile extends StatelessWidget {
                 ),
               ),
               child: Padding(
-                padding: const EdgeInsets.only(left: 10, bottom: 8),
+                padding: const EdgeInsets.only(left: 10, bottom: 6),
                 child: Align(
                   alignment: Alignment.bottomLeft,
                   child: Text(
-                    "UVic ∙ 92% likes",
+                    bottomText,
                     style: kHeader.copyWith(
                       color: Theme.of(context).colorScheme.primary,
                     ),
@@ -41,13 +47,13 @@ class HighlightTile extends StatelessWidget {
             Container(
               height: 32,
               width: 175,
-              color: Theme.of(context).colorScheme.secondary,
+              color: backgroundColor,
               child: Padding(
-                padding: const EdgeInsets.only(left: 10, right: 10),
+                padding: const EdgeInsets.only(left: 10, right: 10, top: 2),
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    "Relationships 💕",
+                    topText,
                     style: kDetail.copyWith(
                       color: Theme.of(context).colorScheme.background,
                     ),

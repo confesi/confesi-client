@@ -49,8 +49,8 @@ class _InfiniteScrollableState extends State<InfiniteScrollable> {
     // widget.refreshPosts();
     itemPositionsListener.itemPositions.addListener(() {
       final indicies = itemPositionsListener.itemPositions.value.map((post) => post.index);
-      print(
-          "indicies: $indicies, detail: ${indicies.toList().last}, posts length: ${widget.posts.length}");
+      // print(
+      //     "indicies: $indicies, detail: ${indicies.toList().last}, posts length: ${widget.posts.length}");
       // can add check if the list is at least x long, then check back to reload preemtively by x items
       if (widget.currentlyFetching == false &&
           widget.noMorePosts == false &&
@@ -124,12 +124,27 @@ class _InfiniteScrollableState extends State<InfiniteScrollable> {
                           child: Padding(
                             padding: const EdgeInsets.only(left: 15),
                             child: Row(
-                              children: const [
-                                HighlightTile(),
-                                HighlightTile(),
-                                HighlightTile(),
-                                HighlightTile(),
-                                HighlightTile(),
+                              children: [
+                                HighlightTile(
+                                  backgroundColor: Theme.of(context).colorScheme.secondary,
+                                  topText: "Politics",
+                                  bottomText: "UVic",
+                                ),
+                                HighlightTile(
+                                  backgroundColor: Theme.of(context).colorScheme.secondary,
+                                  topText: "Relationships",
+                                  bottomText: "UBC",
+                                ),
+                                HighlightTile(
+                                  backgroundColor: Theme.of(context).colorScheme.secondary,
+                                  topText: "Classes",
+                                  bottomText: "U of A",
+                                ),
+                                HighlightTile(
+                                  backgroundColor: Theme.of(context).colorScheme.secondary,
+                                  topText: "General",
+                                  bottomText: "UVic",
+                                ),
                               ],
                             ),
                           ),
@@ -147,12 +162,12 @@ class _InfiniteScrollableState extends State<InfiniteScrollable> {
                       : widget.posts[index]
                   : widget.hasError
                       ? TextButton(
-                          onPressed: () => getPosts(FetchType.refreshPosts),
+                          onPressed: () => getPosts(FetchType.morePosts),
                           child: const Text("error loading more, try again"),
                         )
                       : widget.noMorePosts
                           ? TextButton(
-                              onPressed: () => getPosts(FetchType.refreshPosts),
+                              onPressed: () => getPosts(FetchType.morePosts),
                               child: const Text("out of posts, try loading more"),
                             )
                           : const Padding(
@@ -185,8 +200,8 @@ class _InfiniteScrollableState extends State<InfiniteScrollable> {
   }
 
   Widget getBody() {
-    // checks if posts array is empty or equal to one (one becuase the first will be a sized box)
-    if (widget.posts.isEmpty || widget.posts.length == 1) {
+    // checks if posts array is empty
+    if (widget.posts.isEmpty) {
       // no posts
       if (widget.hasError) {
         return error();

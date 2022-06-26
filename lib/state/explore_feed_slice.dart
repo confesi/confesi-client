@@ -6,6 +6,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_mobile_client/constants/general.dart';
+import 'package:flutter_mobile_client/models/feed/post.dart';
+import 'package:flutter_mobile_client/state/post_slice.dart';
 import 'package:flutter_mobile_client/state/token_slice.dart';
 import 'package:flutter_mobile_client/widgets/text/error_with_button.dart';
 import 'package:flutter_mobile_client/widgets/tiles/post.dart';
@@ -36,12 +38,14 @@ class ExploreFeedState {
     this.connectionErrorFLAG = false,
     this.serverErrorFLAG = false,
     this.posts = const [],
+    this.lastSeenID = "000000000000000000000000",
   });
 
   final List<Widget> posts;
   final bool currentlyFetching;
   final bool hasError;
   final bool noMorePosts;
+  final String lastSeenID;
 
   // flags that I can toggle (value doesn't matter) to get snackbar error message to show up
   final bool connectionErrorFLAG;
@@ -54,8 +58,10 @@ class ExploreFeedState {
     bool? newHasError,
     bool? newCurrentlyFetching,
     bool? newNoMorePosts,
+    String? newLastSeenID,
   }) {
     return ExploreFeedState(
+      lastSeenID: newLastSeenID ?? lastSeenID,
       posts: newPosts ?? posts,
       connectionErrorFLAG: newConnectionErrorFLAG ?? connectionErrorFLAG,
       serverErrorFLAG: newServerErrorFLAG ?? serverErrorFLAG,
@@ -81,12 +87,15 @@ class ExploreFeedNotifier extends StateNotifier<ExploreFeedState> {
     }
   }
 
+  void resetLastSeenPostID() => state = state.copyWith(newLastSeenID: "000000000000000000000000");
+
   Future<void> fetchMorePosts(String accessToken) async {
     state = state.copyWith(newHasError: false, newNoMorePosts: false);
     await _getPosts(LoadPostsType.loadMore, accessToken);
   }
 
   Future<void> refreshPosts(String accessToken) async {
+    resetLastSeenPostID();
     state = state.copyWith(newHasError: false, newNoMorePosts: false);
     await _getPosts(LoadPostsType.refresh, accessToken);
   }
@@ -97,16 +106,18 @@ class ExploreFeedNotifier extends StateNotifier<ExploreFeedState> {
     print("<=========>");
     // if (loadPostsType == LoadPostsType.refresh) state = state.copyWith(newPosts: []);
     try {
-      final response = await http.post(
-        Uri.parse('$kDomain/api/posts/retrieve'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer $accessToken',
-        },
-        // body: jsonEncode(<String, dynamic>{
-        //   "number_of_posts": kNumberOfPostsToLoad,
-        // }),
-      ).timeout(const Duration(seconds: 2));
+      final response = await http
+          .post(
+            Uri.parse('$kDomain/api/posts/retrieve'),
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+              'Authorization': 'Bearer $accessToken',
+            },
+            body: jsonEncode(<String, dynamic>{
+              "last_post_viewed_id": state.lastSeenID,
+            }),
+          )
+          .timeout(const Duration(seconds: 2));
       state = state.copyWith(newCurrentlyFetching: false);
       if (response.statusCode == 200) {
         final posts = json.decode(response.body)["posts"];
@@ -116,22 +127,24 @@ class ExploreFeedNotifier extends StateNotifier<ExploreFeedState> {
         } else {
           state = state.copyWith(newNoMorePosts: false);
         }
-        List<Widget> postsToAdd = [];
-        for (var post in posts) {
-          postsToAdd.add(
-            PostTile(
-              icon: CupertinoIcons.flame,
-              date: "Dec 14, 9:04am",
-              faculty: "engineering",
-              genre: "Relationships",
-              body: post == posts.last ? "LAST LAST LAST LAST LAST LAST" : post["text"],
-              likes: 31,
-              dislikes: 1,
-              comments: 999,
-            ),
-          );
-        }
+        dynamic decodedPosts = json.decode(response.body)["posts"];
+        List postsToAdd = decodedPosts
+            .map(
+              (post) => PostTile(
+                date: Post.fromJson(post).date,
+                icon: Post.fromJson(post).icon,
+                faculty: Post.fromJson(post).faculty,
+                genre: Post.fromJson(post).genre,
+                body: Post.fromJson(post).body,
+                likes: Post.fromJson(post).likes,
+                dislikes: Post.fromJson(post).dislikes,
+                comments: Post.fromJson(post).comments,
+              ),
+            )
+            .toList();
         state = state.copyWith(
+          newLastSeenID: decodedPosts.length >= 1 ? decodedPosts.last["_id"] : state.lastSeenID,
+          // newLastSeenID: decodedPosts.last["_id"] ?? state.lastSeenID,
           newPosts: loadPostsType == LoadPostsType.loadMore
               ? [
                   ...state.posts,
@@ -142,13 +155,20 @@ class ExploreFeedNotifier extends StateNotifier<ExploreFeedState> {
                 ],
         );
       } else {
+        print("here1");
         onRequestError(loadPostsType, RequestErrorType.serverError);
       }
     } on TimeoutException {
+      print("here2");
+
       onRequestError(loadPostsType, RequestErrorType.connectionError);
     } on SocketException {
+      print("here3");
+
       onRequestError(loadPostsType, RequestErrorType.connectionError);
     } catch (error) {
+      print("here4: $error");
+
       onRequestError(loadPostsType, RequestErrorType.serverError);
     }
   }
