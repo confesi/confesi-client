@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobile_client/behaviors/overscroll.dart';
+import 'package:flutter_mobile_client/widgets/buttons/scrollable.dart';
 import 'package:flutter_mobile_client/widgets/layouts/line.dart';
 import 'package:flutter_mobile_client/widgets/tiles/highlight.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
@@ -161,17 +162,18 @@ class _InfiniteScrollableState extends State<InfiniteScrollable> {
                         )
                       : widget.posts[index]
                   : widget.hasError
-                      ? TextButton(
-                          onPressed: () => getPosts(FetchType.morePosts),
-                          child: const Text("error loading more, try again"),
+                      ? ScrollableButton(
+                          text: "Unexpected error loading more posts. Try again?",
+                          onPress: () => getPosts(FetchType.morePosts),
                         )
                       : widget.noMorePosts
-                          ? TextButton(
-                              onPressed: () => getPosts(FetchType.morePosts),
-                              child: const Text("out of posts, try loading more"),
+                          ? ScrollableButton(
+                              text: "You've reached the bottom. Try loading more?",
+                              onPress: () => getPosts(FetchType.morePosts),
                             )
                           : const Padding(
-                              padding: EdgeInsets.only(bottom: 8),
+                              padding: EdgeInsets.only(
+                                  bottom: 16, top: 8), // posts already have bottom padding of 8
                               child: CupertinoActivityIndicator(),
                             );
         },
@@ -184,19 +186,17 @@ class _InfiniteScrollableState extends State<InfiniteScrollable> {
   }
 
   Widget error() {
-    return Center(
-        child: TextButton(
-      onPressed: () => getPosts(FetchType.refreshPosts),
-      child: const Text("error loading, try again"),
-    ));
+    return ScrollableButton(
+      text: "Error loading content. Try again?",
+      onPress: () => getPosts(FetchType.refreshPosts),
+    );
   }
 
   Widget empty() {
-    return Center(
-        child: TextButton(
-      onPressed: () => getPosts(FetchType.refreshPosts),
-      child: const Text("out of posts, try loading more (full screen)"),
-    ));
+    return ScrollableButton(
+      text: "Unexpected error. No posts found. Try again?",
+      onPress: () => getPosts(FetchType.refreshPosts),
+    );
   }
 
   Widget getBody() {
