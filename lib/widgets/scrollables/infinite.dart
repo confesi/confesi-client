@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobile_client/behaviors/overscroll.dart';
+import 'package:flutter_mobile_client/constants/messages/explore_feed.dart';
 import 'package:flutter_mobile_client/widgets/scrollables/scrollable.dart';
 import 'package:flutter_mobile_client/widgets/layouts/line.dart';
 import 'package:flutter_mobile_client/widgets/tiles/highlight.dart';
@@ -27,8 +28,6 @@ class InfiniteScrollable extends StatefulWidget {
       required this.fetchMorePosts,
       required this.posts,
       required this.dailyPosts,
-      required this.refreshDailyPosts,
-      required this.dailyHasError,
       Key? key})
       : super(key: key);
 
@@ -36,12 +35,10 @@ class InfiniteScrollable extends StatefulWidget {
   final List<Widget> dailyPosts;
   final Function fetchMorePosts;
   final Function refreshPosts;
-  final Function refreshDailyPosts;
 
   // all false by default
   final bool currentlyFetching;
   final bool hasError;
-  final bool dailyHasError;
   final bool noMorePosts;
 
   @override
@@ -53,7 +50,6 @@ class _InfiniteScrollableState extends State<InfiniteScrollable> {
 
   @override
   void initState() {
-    widget.refreshDailyPosts();
     itemPositionsListener.itemPositions.addListener(() {
       final indicies = itemPositionsListener.itemPositions.value.map((post) => post.index);
       // print(
@@ -96,69 +92,72 @@ class _InfiniteScrollableState extends State<InfiniteScrollable> {
         itemCount: widget.posts.length + 1,
         itemBuilder: (BuildContext context, int index) {
           return index == 0
-              ? Container(
-                  color: Theme.of(context).colorScheme.background,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 15),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                "Hottest posts today",
-                                style: kHeader.copyWith(
-                                  color: Theme.of(context).colorScheme.primary,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            Icon(
-                              CupertinoIcons.ellipsis,
-                              color: Theme.of(context).colorScheme.onBackground,
-                              size: 24,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 15),
-                        child: widget.dailyPosts.isEmpty
-                            ? const Center(
-                                child: CupertinoActivityIndicator(),
-                              )
-                            : SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                physics: const BouncingScrollPhysics(),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 15),
-                                  child: Row(
-                                    children: widget.dailyPosts,
+              ? Column(
+                  children: [
+                    Container(
+                      color: Theme.of(context).colorScheme.background,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 15),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    "Hottest posts today",
+                                    style: kHeader.copyWith(
+                                      color: Theme.of(context).colorScheme.primary,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
-                              ),
+                                Icon(
+                                  CupertinoIcons.ellipsis,
+                                  color: Theme.of(context).colorScheme.onBackground,
+                                  size: 24,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 15),
+                            child: widget.dailyPosts.isEmpty
+                                ? const Center(
+                                    child: CupertinoActivityIndicator(),
+                                  )
+                                : SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    physics: const BouncingScrollPhysics(),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(left: 15),
+                                      child: Row(
+                                        children: widget.dailyPosts,
+                                      ),
+                                    ),
+                                  ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: widget.posts[index],
+                    )
+                  ],
                 )
               : index < widget.posts.length
-                  ? index == 1
-                      ? Padding(
-                          padding: const EdgeInsets.only(top: 8),
-                          child: widget.posts[index],
-                        )
-                      : widget.posts[index]
+                  ? widget.posts[index]
                   : widget.hasError
                       ? ScrollableIndicator(
-                          text: "Error loading more posts. Try again?",
+                          text: kScrollableError,
                           onPress: () => getPosts(FetchType.morePosts),
                         )
                       : widget.noMorePosts
                           ? ScrollableIndicator(
-                              text: "You've reached the bottom. Try loading more?",
+                              text: kScrollableNoMorePosts,
                               onPress: () => getPosts(FetchType.morePosts),
                             )
                           : const ScrollableIndicator(spinner: true);
@@ -173,14 +172,14 @@ class _InfiniteScrollableState extends State<InfiniteScrollable> {
 
   Widget error() {
     return ScrollableIndicator(
-      text: "Error loading content. Try again?",
+      text: kFullscreenError,
       onPress: () => getPosts(FetchType.refreshPosts),
     );
   }
 
   Widget empty() {
     return ScrollableIndicator(
-      text: "Unexpected error. No posts found. Try again?",
+      text: kFullscreenNoPostsFound,
       onPress: () => getPosts(FetchType.refreshPosts),
     );
   }

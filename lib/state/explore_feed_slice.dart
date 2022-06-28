@@ -6,10 +6,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_mobile_client/constants/general.dart';
+import 'package:flutter_mobile_client/models/feed/highlight.dart';
 import 'package:flutter_mobile_client/models/feed/post.dart';
 import 'package:flutter_mobile_client/state/post_slice.dart';
 import 'package:flutter_mobile_client/state/token_slice.dart';
 import 'package:flutter_mobile_client/widgets/text/error_with_button.dart';
+import 'package:flutter_mobile_client/widgets/tiles/highlight.dart';
 import 'package:flutter_mobile_client/widgets/tiles/post.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -32,7 +34,6 @@ enum RequestErrorType {
 @immutable
 class ExploreFeedState {
   const ExploreFeedState({
-    this.hasDailyError = false,
     this.hasError = false,
     this.currentlyFetching = false,
     this.noMorePosts = false,
@@ -40,7 +41,7 @@ class ExploreFeedState {
     this.serverErrorFLAG = false,
     this.posts = const [],
     this.dailyPosts = const [],
-    this.lastSeenID = "000000000000000000000000",
+    this.lastSeenID = "",
   });
 
   final List<Widget> posts;
@@ -49,7 +50,6 @@ class ExploreFeedState {
   final bool hasError;
   final bool noMorePosts;
   final String lastSeenID;
-  final bool hasDailyError;
 
   // flags that I can toggle (value doesn't matter) to get snackbar error message to show up
   final bool connectionErrorFLAG;
@@ -64,10 +64,8 @@ class ExploreFeedState {
     bool? newCurrentlyFetching,
     bool? newNoMorePosts,
     String? newLastSeenID,
-    bool? newHasDailyError,
   }) {
     return ExploreFeedState(
-      hasDailyError: newHasDailyError ?? hasDailyError,
       lastSeenID: newLastSeenID ?? lastSeenID,
       dailyPosts: newDailyPosts ?? dailyPosts,
       posts: newPosts ?? posts,
@@ -83,20 +81,6 @@ class ExploreFeedState {
 class ExploreFeedNotifier extends StateNotifier<ExploreFeedState> {
   ExploreFeedNotifier() : super(const ExploreFeedState());
 
-  void loadDailyPosts(String accessToken) async {
-    state = state.copyWith(newHasDailyError: false, newDailyPosts: []);
-    // Simulate API CALL
-    await Future.delayed(const Duration(seconds: 2));
-    // state = state.copyWith(newDailyError: true);
-    // await Future.delayed(const Duration(seconds: 2));
-    state = state.copyWith(
-      newDailyPosts: const [
-        Text("hot 1"),
-        Text("hot 2"),
-      ],
-    );
-  }
-
   // on error set posts array to zero?
   void onRequestError(LoadPostsType loadPostsType, RequestErrorType requestErrorType) {
     state = state.copyWith(newHasError: true, newCurrentlyFetching: false);
@@ -109,24 +93,21 @@ class ExploreFeedNotifier extends StateNotifier<ExploreFeedState> {
     }
   }
 
-  void resetLastSeenPostID() => state = state.copyWith(newLastSeenID: "000000000000000000000000");
-
   Future<void> fetchMorePosts(String accessToken) async {
     state = state.copyWith(newHasError: false, newNoMorePosts: false);
     await _getPosts(LoadPostsType.loadMore, accessToken);
   }
 
   Future<void> refreshPosts(String accessToken) async {
-    resetLastSeenPostID();
-    state = state.copyWith(newHasError: false, newNoMorePosts: false);
+    state = state.copyWith(newHasError: false, newNoMorePosts: false, newLastSeenID: "");
     await _getPosts(LoadPostsType.refresh, accessToken);
   }
 
   Future<void> _getPosts(LoadPostsType loadPostsType, String accessToken) async {
     if (state.currentlyFetching) return;
     state = state.copyWith(newCurrentlyFetching: true);
+    print(state.lastSeenID);
     print("<=========>");
-    // if (loadPostsType == LoadPostsType.refresh) state = state.copyWith(newPosts: []);
     try {
       final response = await http
           .post(
@@ -136,7 +117,8 @@ class ExploreFeedNotifier extends StateNotifier<ExploreFeedState> {
               'Authorization': 'Bearer $accessToken',
             },
             body: jsonEncode(<String, dynamic>{
-              "last_post_viewed_id": state.lastSeenID,
+              "lastPostViewedID": state.lastSeenID,
+              "returnDailyPosts": loadPostsType == LoadPostsType.refresh ? true : false,
             }),
           )
           .timeout(const Duration(seconds: 2));
@@ -148,6 +130,18 @@ class ExploreFeedNotifier extends StateNotifier<ExploreFeedState> {
           state = state.copyWith(newNoMorePosts: true);
         } else {
           state = state.copyWith(newNoMorePosts: false);
+        }
+        List dailyPostsToAdd = [];
+        if (loadPostsType == LoadPostsType.refresh) {
+          dynamic decodedDailyPosts = json.decode(response.body)["dailyPosts"];
+          dailyPostsToAdd = decodedDailyPosts
+              .map(
+                (post) => HighlightTile(
+                  bottomText: Highlight.fromJson(post).university,
+                  topText: Highlight.fromJson(post).genre,
+                ),
+              )
+              .toList();
         }
         dynamic decodedPosts = json.decode(response.body)["posts"];
         List postsToAdd = decodedPosts
@@ -166,15 +160,14 @@ class ExploreFeedNotifier extends StateNotifier<ExploreFeedState> {
             .toList();
         state = state.copyWith(
           newLastSeenID: decodedPosts.length >= 1 ? decodedPosts.last["_id"] : state.lastSeenID,
-          // newLastSeenID: decodedPosts.last["_id"] ?? state.lastSeenID,
+          newDailyPosts:
+              loadPostsType == LoadPostsType.refresh ? [...dailyPostsToAdd] : state.dailyPosts,
           newPosts: loadPostsType == LoadPostsType.loadMore
               ? [
                   ...state.posts,
                   ...postsToAdd,
                 ]
-              : [
-                  ...postsToAdd,
-                ],
+              : [...postsToAdd],
         );
       } else {
         print("here1");

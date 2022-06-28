@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobile_client/constants/typography.dart';
 
 class HighlightTile extends StatelessWidget {
-  const HighlightTile(
-      {required this.bottomText, required this.topText, required this.backgroundColor, Key? key})
+  const HighlightTile({required this.bottomText, required this.topText, Key? key})
       : super(key: key);
 
-  final Color backgroundColor;
   final String topText;
   final String bottomText;
 
@@ -47,7 +45,7 @@ class HighlightTile extends StatelessWidget {
             Container(
               height: 32,
               width: 175,
-              color: backgroundColor,
+              color: Theme.of(context).colorScheme.secondary,
               child: Padding(
                 padding: const EdgeInsets.only(left: 10, right: 10, top: 2),
                 child: Align(
