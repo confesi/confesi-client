@@ -26,16 +26,22 @@ class InfiniteScrollable extends StatefulWidget {
       required this.noMorePosts,
       required this.fetchMorePosts,
       required this.posts,
+      required this.dailyPosts,
+      required this.refreshDailyPosts,
+      required this.dailyHasError,
       Key? key})
       : super(key: key);
 
   final List<Widget> posts;
+  final List<Widget> dailyPosts;
   final Function fetchMorePosts;
   final Function refreshPosts;
+  final Function refreshDailyPosts;
 
   // all false by default
   final bool currentlyFetching;
   final bool hasError;
+  final bool dailyHasError;
   final bool noMorePosts;
 
   @override
@@ -47,7 +53,7 @@ class _InfiniteScrollableState extends State<InfiniteScrollable> {
 
   @override
   void initState() {
-    // widget.refreshPosts();
+    widget.refreshDailyPosts();
     itemPositionsListener.itemPositions.addListener(() {
       final indicies = itemPositionsListener.itemPositions.value.map((post) => post.index);
       // print(
@@ -93,6 +99,7 @@ class _InfiniteScrollableState extends State<InfiniteScrollable> {
               ? Container(
                   color: Theme.of(context).colorScheme.background,
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 15),
@@ -119,37 +126,20 @@ class _InfiniteScrollableState extends State<InfiniteScrollable> {
                       ),
                       Padding(
                         padding: const EdgeInsets.only(bottom: 15),
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          physics: const BouncingScrollPhysics(),
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 15),
-                            child: Row(
-                              children: [
-                                HighlightTile(
-                                  backgroundColor: Theme.of(context).colorScheme.secondary,
-                                  topText: "Politics",
-                                  bottomText: "UVic",
+                        child: widget.dailyPosts.isEmpty
+                            ? const Center(
+                                child: CupertinoActivityIndicator(),
+                              )
+                            : SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                physics: const BouncingScrollPhysics(),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 15),
+                                  child: Row(
+                                    children: widget.dailyPosts,
+                                  ),
                                 ),
-                                HighlightTile(
-                                  backgroundColor: Theme.of(context).colorScheme.secondary,
-                                  topText: "Relationships",
-                                  bottomText: "UBC",
-                                ),
-                                HighlightTile(
-                                  backgroundColor: Theme.of(context).colorScheme.secondary,
-                                  topText: "Classes",
-                                  bottomText: "U of A",
-                                ),
-                                HighlightTile(
-                                  backgroundColor: Theme.of(context).colorScheme.secondary,
-                                  topText: "General",
-                                  bottomText: "UVic",
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                              ),
                       ),
                     ],
                   ),

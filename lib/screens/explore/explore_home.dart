@@ -81,6 +81,11 @@ class _ExploreHomeState extends ConsumerState<ExploreHome> with AutomaticKeepAli
               child: Container(
                 color: Theme.of(context).colorScheme.surfaceVariant,
                 child: InfiniteScrollable(
+                  dailyHasError: ref.watch(exploreFeedProvider).hasDailyError,
+                  refreshDailyPosts: () => ref
+                      .read(exploreFeedProvider.notifier)
+                      .loadDailyPosts(ref.read(tokenProvider).accessToken),
+                  dailyPosts: ref.watch(exploreFeedProvider).dailyPosts,
                   hasError: ref.watch(exploreFeedProvider).hasError,
                   noMorePosts: ref.watch(exploreFeedProvider).noMorePosts,
                   currentlyFetching: ref.watch(exploreFeedProvider).currentlyFetching,
@@ -88,9 +93,14 @@ class _ExploreHomeState extends ConsumerState<ExploreHome> with AutomaticKeepAli
                   fetchMorePosts: () => ref
                       .read(exploreFeedProvider.notifier)
                       .fetchMorePosts(ref.read(tokenProvider).accessToken),
-                  refreshPosts: () => ref
-                      .read(exploreFeedProvider.notifier)
-                      .refreshPosts(ref.read(tokenProvider).accessToken),
+                  refreshPosts: () {
+                    ref
+                        .read(exploreFeedProvider.notifier)
+                        .refreshPosts(ref.read(tokenProvider).accessToken);
+                    ref
+                        .read(exploreFeedProvider.notifier)
+                        .loadDailyPosts(ref.read(tokenProvider).accessToken);
+                  },
                 ),
               ),
             ),

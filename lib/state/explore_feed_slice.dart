@@ -32,26 +32,31 @@ enum RequestErrorType {
 @immutable
 class ExploreFeedState {
   const ExploreFeedState({
+    this.hasDailyError = false,
     this.hasError = false,
     this.currentlyFetching = false,
     this.noMorePosts = false,
     this.connectionErrorFLAG = false,
     this.serverErrorFLAG = false,
     this.posts = const [],
+    this.dailyPosts = const [],
     this.lastSeenID = "000000000000000000000000",
   });
 
   final List<Widget> posts;
+  final List<Widget> dailyPosts;
   final bool currentlyFetching;
   final bool hasError;
   final bool noMorePosts;
   final String lastSeenID;
+  final bool hasDailyError;
 
   // flags that I can toggle (value doesn't matter) to get snackbar error message to show up
   final bool connectionErrorFLAG;
   final bool serverErrorFLAG;
 
   ExploreFeedState copyWith({
+    List<Widget>? newDailyPosts,
     List<Widget>? newPosts,
     bool? newServerErrorFLAG,
     bool? newConnectionErrorFLAG,
@@ -59,9 +64,12 @@ class ExploreFeedState {
     bool? newCurrentlyFetching,
     bool? newNoMorePosts,
     String? newLastSeenID,
+    bool? newHasDailyError,
   }) {
     return ExploreFeedState(
+      hasDailyError: newHasDailyError ?? hasDailyError,
       lastSeenID: newLastSeenID ?? lastSeenID,
+      dailyPosts: newDailyPosts ?? dailyPosts,
       posts: newPosts ?? posts,
       connectionErrorFLAG: newConnectionErrorFLAG ?? connectionErrorFLAG,
       serverErrorFLAG: newServerErrorFLAG ?? serverErrorFLAG,
@@ -74,6 +82,20 @@ class ExploreFeedState {
 
 class ExploreFeedNotifier extends StateNotifier<ExploreFeedState> {
   ExploreFeedNotifier() : super(const ExploreFeedState());
+
+  void loadDailyPosts(String accessToken) async {
+    state = state.copyWith(newHasDailyError: false, newDailyPosts: []);
+    // Simulate API CALL
+    await Future.delayed(const Duration(seconds: 2));
+    // state = state.copyWith(newDailyError: true);
+    // await Future.delayed(const Duration(seconds: 2));
+    state = state.copyWith(
+      newDailyPosts: const [
+        Text("hot 1"),
+        Text("hot 2"),
+      ],
+    );
+  }
 
   // on error set posts array to zero?
   void onRequestError(LoadPostsType loadPostsType, RequestErrorType requestErrorType) {
