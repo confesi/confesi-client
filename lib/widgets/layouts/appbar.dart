@@ -27,9 +27,8 @@ class AppbarLayout extends StatelessWidget {
           decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(
-                  color: bottomBorder
-                      ? Theme.of(context).colorScheme.onBackground
-                      : Colors.transparent,
+                  color:
+                      bottomBorder ? Theme.of(context).colorScheme.background : Colors.transparent,
                   width: .35),
             ),
           ),

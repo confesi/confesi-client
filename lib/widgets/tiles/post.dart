@@ -22,9 +22,11 @@ class PostTile extends StatelessWidget {
       required this.likes,
       required this.dislikes,
       required this.comments,
+      this.threadView = false,
       Key? key})
       : super(key: key);
 
+  final bool threadView;
   final IconData icon;
   final String date;
   final String faculty;
@@ -39,15 +41,24 @@ class PostTile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
       child: GestureDetector(
-        onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const ExplorePost(),
-          ),
-        ),
+        onTap: () => threadView
+            ? null
+            : Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ExplorePost(
+                      date: date,
+                      icon: icon,
+                      faculty: faculty,
+                      genre: genre,
+                      body: body,
+                      likes: likes,
+                      dislikes: dislikes,
+                      comments: comments),
+                ),
+              ),
         child: Container(
-          width: double.infinity,
-          decoration: BoxDecoration(color: Theme.of(context).colorScheme.background),
+          color: Theme.of(context).colorScheme.background,
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 30),
             child: Column(
@@ -103,8 +114,10 @@ class PostTile extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: Text(
                     body,
-                    style:
-                        kBody.copyWith(color: Theme.of(context).colorScheme.primary, height: 1.4),
+                    style: kBody.copyWith(
+                        color: Theme.of(context).colorScheme.primary,
+                        height: 1.4,
+                        fontSize: threadView ? 19 : null),
                     textAlign: TextAlign.left,
                   ),
                 ),
