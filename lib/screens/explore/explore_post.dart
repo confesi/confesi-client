@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobile_client/widgets/textfield/long.dart';
 import 'package:flutter_mobile_client/widgets/tiles/post.dart';
+import 'package:mongo_dart/mongo_dart.dart';
 import '../../constants/typography.dart';
 import '../../widgets/layouts/appbar.dart';
 
@@ -17,9 +18,11 @@ class ExplorePost extends StatelessWidget {
       required this.likes,
       required this.dislikes,
       required this.comments,
+      required this.parentID,
       Key? key})
       : super(key: key);
 
+  final ObjectId? parentID;
   final IconData icon;
   final String date;
   final String faculty;
@@ -57,6 +60,7 @@ class ExplorePost extends StatelessWidget {
                 child: Column(
                   children: [
                     PostTile(
+                      parentID: parentID,
                       threadView: true,
                       date: date,
                       icon: icon,

@@ -10,3 +10,7 @@ const int kEmailMinLength = 3;
 const int kEmailMaxLength = 255;
 const int kUsernameMinLength = 3;
 const int kUsernameMaxLength = 30;
+const int kPostPreviewCharacters = 250;
+const kNumberOfPostsToLoad =
+    5; // ~IMPORTANT~ this value should be the same as the number of posts the server sends back
+

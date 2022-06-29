@@ -11,6 +11,9 @@ import 'package:flutter_mobile_client/widgets/sheets/button.dart';
 import 'package:flutter_mobile_client/widgets/symbols/circle.dart';
 import 'package:flutter_mobile_client/widgets/text/group.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:mongo_dart/mongo_dart.dart';
+
+import '../../constants/general.dart';
 
 class PostTile extends StatelessWidget {
   const PostTile(
@@ -23,9 +26,11 @@ class PostTile extends StatelessWidget {
       required this.dislikes,
       required this.comments,
       this.threadView = false,
+      this.parentID,
       Key? key})
       : super(key: key);
 
+  final ObjectId? parentID;
   final bool threadView;
   final IconData icon;
   final String date;
@@ -47,6 +52,7 @@ class PostTile extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => ExplorePost(
+                      parentID: parentID,
                       date: date,
                       icon: icon,
                       faculty: faculty,
@@ -109,11 +115,49 @@ class PostTile extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 30),
+                parentID != null
+                    ? TouchableOpacity(
+                        onTap: () => print("Linking to: $parentID"),
+                        child: Container(
+                          // transparent hitbox trick
+                          color: Colors.transparent,
+                          child: Column(
+                            children: [
+                              const SizedBox(height: 30),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 15),
+                                child: RichText(
+                                  textAlign: TextAlign.left,
+                                  text: TextSpan(
+                                    style: kBody.copyWith(
+                                        color: Theme.of(context).colorScheme.onSurface),
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                        text: "reacting to ",
+                                        style: kBody.copyWith(
+                                            color: Theme.of(context).colorScheme.onSurface),
+                                      ),
+                                      TextSpan(
+                                        text: "@women",
+                                        style: kTitle.copyWith(
+                                            color: Theme.of(context).colorScheme.primary),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 30),
+                            ],
+                          ),
+                        ),
+                      )
+                    : const SizedBox(height: 30),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: Text(
-                    body,
+                    threadView
+                        ? body
+                        : "${body.substring(0, body.length >= kPostPreviewCharacters ? kPostPreviewCharacters : body.length)} ${body.length >= kPostPreviewCharacters && !threadView ? "..." : ""}",
                     style: kBody.copyWith(
                         color: Theme.of(context).colorScheme.primary,
                         height: 1.4,

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 
 class TouchableOpacity extends StatefulWidget {
-  const TouchableOpacity({this.onLongTap, required this.child, required this.onTap, Key? key})
-      : super(key: key);
+  const TouchableOpacity({required this.child, required this.onTap, Key? key}) : super(key: key);
 
   final Widget child;
   final Function onTap;
-  final Function? onLongTap;
 
   @override
   State<TouchableOpacity> createState() => _TouchableOpacityState();

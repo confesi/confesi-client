@@ -18,9 +18,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:visibility_detector/visibility_detector.dart';
 
-// ~IMPORTANT~ this value should be the same as the number of posts the server sends back
-const kNumberOfPostsToLoad = 5;
-
 enum LoadPostsType {
   refresh,
   loadMore,
@@ -147,6 +144,7 @@ class ExploreFeedNotifier extends StateNotifier<ExploreFeedState> {
         List postsToAdd = decodedPosts
             .map(
               (post) => PostTile(
+                parentID: Post.fromJson(post).parentID,
                 date: Post.fromJson(post).date,
                 icon: Post.fromJson(post).icon,
                 faculty: Post.fromJson(post).faculty,

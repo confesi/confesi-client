@@ -47,6 +47,7 @@ dependencies:
   infinite_scroll_pagination: ^3.2.0
   scrollable_positioned_list: ^0.3.2
   dio: ^4.0.6
+  mongo_dart: ^0.7.4+1
 
 dev_dependencies:
   flutter_test:
