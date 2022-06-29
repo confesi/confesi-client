@@ -144,7 +144,10 @@ class ExploreFeedNotifier extends StateNotifier<ExploreFeedState> {
         List postsToAdd = decodedPosts
             .map(
               (post) => PostTile(
+                parentText: Post.fromJson(post).parentText,
                 parentID: Post.fromJson(post).parentID,
+                parentGenre: Post.fromJson(post).parentGenre,
+                parentFaculty: Post.fromJson(post).parentFaculty,
                 date: Post.fromJson(post).date,
                 icon: Post.fromJson(post).icon,
                 faculty: Post.fromJson(post).faculty,

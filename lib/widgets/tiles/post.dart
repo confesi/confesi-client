@@ -3,13 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobile_client/constants/typography.dart';
 import 'package:flutter_mobile_client/screens/explore/explore_post.dart';
 import 'package:flutter_mobile_client/widgets/buttons/comment.dart';
+import 'package:flutter_mobile_client/widgets/buttons/info.dart';
 import 'package:flutter_mobile_client/widgets/buttons/option.dart';
+import 'package:flutter_mobile_client/widgets/buttons/post.dart';
 import 'package:flutter_mobile_client/widgets/buttons/reaction.dart';
 import 'package:flutter_mobile_client/widgets/buttons/touchable_opacity.dart';
 import 'package:flutter_mobile_client/widgets/layouts/scrollbar.dart';
 import 'package:flutter_mobile_client/widgets/sheets/button.dart';
 import 'package:flutter_mobile_client/widgets/symbols/circle.dart';
 import 'package:flutter_mobile_client/widgets/text/group.dart';
+import 'package:flutter_mobile_client/widgets/tiles/post_reply.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 
@@ -27,10 +30,16 @@ class PostTile extends StatelessWidget {
       required this.comments,
       this.threadView = false,
       this.parentID,
+      this.parentText,
+      this.parentGenre,
+      this.parentFaculty,
       Key? key})
       : super(key: key);
 
   final ObjectId? parentID;
+  final String? parentText;
+  final String? parentGenre;
+  final String? parentFaculty;
   final bool threadView;
   final IconData icon;
   final String date;
@@ -52,6 +61,9 @@ class PostTile extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => ExplorePost(
+                      parentFaculty: parentFaculty,
+                      parentGenre: parentGenre,
+                      parentText: parentText,
                       parentID: parentID,
                       date: date,
                       icon: icon,
@@ -115,43 +127,7 @@ class PostTile extends StatelessWidget {
                     ],
                   ),
                 ),
-                parentID != null
-                    ? TouchableOpacity(
-                        onTap: () => print("Linking to: $parentID"),
-                        child: Container(
-                          // transparent hitbox trick
-                          color: Colors.transparent,
-                          child: Column(
-                            children: [
-                              const SizedBox(height: 30),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 15),
-                                child: RichText(
-                                  textAlign: TextAlign.left,
-                                  text: TextSpan(
-                                    style: kBody.copyWith(
-                                        color: Theme.of(context).colorScheme.onSurface),
-                                    children: <TextSpan>[
-                                      TextSpan(
-                                        text: "reacting to ",
-                                        style: kBody.copyWith(
-                                            color: Theme.of(context).colorScheme.onSurface),
-                                      ),
-                                      TextSpan(
-                                        text: "@women",
-                                        style: kTitle.copyWith(
-                                            color: Theme.of(context).colorScheme.primary),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 30),
-                            ],
-                          ),
-                        ),
-                      )
-                    : const SizedBox(height: 30),
+                const SizedBox(height: 30),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: Text(
@@ -165,25 +141,65 @@ class PostTile extends StatelessWidget {
                     textAlign: TextAlign.left,
                   ),
                 ),
+                parentID != null
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 30, bottom: 15),
+                              child: Text(
+                                "reacting to:",
+                                style:
+                                    kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                              ),
+                            ),
+                            PostReplyTile(
+                              onPress: () => print("Going to: ${parentID ?? "ERROR"}"),
+                              university: parentFaculty ?? "error",
+                              genre: parentGenre ?? "error",
+                              body: parentText ?? "error",
+                              threadView: threadView,
+                            ),
+                          ],
+                        ),
+                      )
+                    : Container(),
                 const SizedBox(height: 30),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  padding: const EdgeInsets.only(left: 10, right: 15),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Wrap(
                       runSpacing: 10,
-                      alignment: WrapAlignment.start,
-                      crossAxisAlignment: WrapCrossAlignment.start,
+                      spacing: 10,
                       children: [
-                        ReactionButton(
-                          icon: CupertinoIcons.hand_thumbsup_fill,
-                          count: likes,
+                        PostButton(
+                          onPress: () => print("yeet"),
+                          icon: CupertinoIcons.hand_thumbsup,
+                          value: likes,
                         ),
-                        ReactionButton(
-                          icon: CupertinoIcons.hand_thumbsdown_fill,
-                          count: dislikes,
+                        PostButton(
+                          onPress: () => print("yeet"),
+                          icon: CupertinoIcons.hand_thumbsdown,
+                          value: dislikes,
                         ),
-                        CommentButton(count: comments),
+                        PostButton(
+                          onPress: () => print("yeet"),
+                          icon: CupertinoIcons.chat_bubble,
+                          value: comments,
+                        ),
+                        PostButton(
+                          onPress: () => print("yeet"),
+                          icon: CupertinoIcons.share,
+                          value: "share",
+                        ),
+                        PostButton(
+                          onPress: () => print("yeet"),
+                          icon: CupertinoIcons.arrow_2_squarepath,
+                          value: "repost",
+                        ),
                       ],
                     ),
                   ),

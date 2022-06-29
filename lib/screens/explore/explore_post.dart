@@ -19,10 +19,16 @@ class ExplorePost extends StatelessWidget {
       required this.dislikes,
       required this.comments,
       required this.parentID,
+      required this.parentGenre,
+      required this.parentFaculty,
+      required this.parentText,
       Key? key})
       : super(key: key);
 
   final ObjectId? parentID;
+  final String? parentGenre;
+  final String? parentFaculty;
+  final String? parentText;
   final IconData icon;
   final String date;
   final String faculty;
@@ -35,6 +41,7 @@ class ExplorePost extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       bottomSheet: LongTextField(
         onChange: (value) => print(value),
         topPadding: 15,
@@ -60,6 +67,9 @@ class ExplorePost extends StatelessWidget {
                 child: Column(
                   children: [
                     PostTile(
+                      parentFaculty: parentFaculty,
+                      parentGenre: parentGenre,
+                      parentText: parentText,
                       parentID: parentID,
                       threadView: true,
                       date: date,

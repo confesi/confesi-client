@@ -1,12 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobile_client/constants/typography.dart';
 
-class ReactionButton extends StatelessWidget {
-  const ReactionButton({required this.icon, required this.count, Key? key}) : super(key: key);
+class InfoButton extends StatelessWidget {
+  const InfoButton({required this.icon, required this.text, Key? key}) : super(key: key);
 
   final IconData icon;
-  final int count;
+  final String text;
 
   @override
   Widget build(BuildContext context) {
@@ -27,12 +26,11 @@ class ReactionButton extends StatelessWidget {
             children: [
               Icon(
                 icon,
-                size: 16,
+                size: 20,
                 color: Theme.of(context).colorScheme.onSurface,
               ),
-              const SizedBox(width: 8),
               Text(
-                count.toString(),
+                text,
                 style: kDetail.copyWith(
                   color: Theme.of(context).colorScheme.onSurface,
                 ),

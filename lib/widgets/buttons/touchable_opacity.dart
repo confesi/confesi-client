@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
 class TouchableOpacity extends StatefulWidget {
-  const TouchableOpacity({required this.child, required this.onTap, Key? key}) : super(key: key);
+  const TouchableOpacity({this.tappable = true, required this.child, required this.onTap, Key? key})
+      : super(key: key);
 
   final Widget child;
   final Function onTap;
+  final bool tappable;
 
   @override
   State<TouchableOpacity> createState() => _TouchableOpacityState();
@@ -49,36 +51,29 @@ class _TouchableOpacityState extends State<TouchableOpacity> with SingleTickerPr
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      // onLongPress: () {
-      //   if (widget.onLongTap != null) {
-      //     widget.onLongTap!();
-      //   }
-      // },
-      onTapDown: (_) => setState(() {
-        animController.forward();
-        animController.addListener(() {
-          setState(() {});
-        });
-      }),
-      onTapUp: (_) => setState(() {
-        // animController.forward();
-        // reverseAnim();
-      }),
-      onTapCancel: () => setState(() {
-        animController.reverse();
-        animController.addListener(() {
-          setState(() {});
-        });
-      }),
-      onTap: () {
-        widget.onTap();
-        startAnim();
-      },
-      child: Opacity(
-        opacity: -anim.value * 0.8 + 1,
-        child: widget.child,
-      ),
-    );
+    return widget.tappable
+        ? GestureDetector(
+            onTapDown: (_) => setState(() {
+              animController.forward();
+              animController.addListener(() {
+                setState(() {});
+              });
+            }),
+            onTapCancel: () => setState(() {
+              animController.reverse();
+              animController.addListener(() {
+                setState(() {});
+              });
+            }),
+            onTap: () {
+              widget.onTap();
+              startAnim();
+            },
+            child: Opacity(
+              opacity: -anim.value * 0.8 + 1,
+              child: widget.child,
+            ),
+          )
+        : widget.child;
   }
 }
