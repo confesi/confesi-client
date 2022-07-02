@@ -16,7 +16,7 @@ class HeaderGroupText extends StatelessWidget {
       children: [
         Text(
           header,
-          style: kDisplay.copyWith(color: Theme.of(context).colorScheme.primary),
+          style: kDisplay.copyWith(color: Theme.of(context).colorScheme.background),
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 5),
@@ -24,7 +24,7 @@ class HeaderGroupText extends StatelessWidget {
           body,
           style: kTitle.copyWith(
               color: dark
-                  ? Theme.of(context).colorScheme.primary
+                  ? Theme.of(context).colorScheme.background
                   : Theme.of(context).colorScheme.onSurface),
           textAlign: TextAlign.center,
         ),

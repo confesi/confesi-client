@@ -13,6 +13,7 @@ import 'package:flutter_mobile_client/screens/profile/profile_home.dart';
 import 'package:flutter_mobile_client/screens/search/search_home.dart';
 import 'package:flutter_mobile_client/screens/start/error.dart';
 import 'package:flutter_mobile_client/state/explore_feed_slice.dart';
+import 'package:flutter_mobile_client/state/university_search_slice.dart';
 import 'package:flutter_mobile_client/state/user_search_slice.dart';
 import 'package:flutter_mobile_client/state/token_slice.dart';
 import 'package:flutter_mobile_client/widgets/sheets/error_snackbar.dart';

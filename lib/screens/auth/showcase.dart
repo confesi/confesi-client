@@ -95,7 +95,7 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
                       children: [
                         SingleTextButton(
                             backgroundColor: Colors.transparent,
-                            textColor: Theme.of(context).colorScheme.primary,
+                            textColor: Theme.of(context).colorScheme.background,
                             text: "Skip",
                             onPress: () => Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(builder: (context) => const BottomNav()),

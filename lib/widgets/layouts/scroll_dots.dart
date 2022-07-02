@@ -27,12 +27,12 @@ class _ScrollDotsLayoutState extends State<ScrollDotsLayout> {
             height: 9,
             decoration: BoxDecoration(
               color: i == widget.pageIndex
-                  ? Theme.of(context).colorScheme.primary
+                  ? Theme.of(context).colorScheme.background
                   : Theme.of(context).colorScheme.secondary,
               shape: BoxShape.circle,
               border: i == widget.pageIndex
                   ? null
-                  : Border.all(color: Theme.of(context).colorScheme.primary, width: 2),
+                  : Border.all(color: Theme.of(context).colorScheme.background, width: 2),
             ),
           ),
         );

@@ -163,7 +163,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen>
                             },
                             icon: CupertinoIcons.chevron_right,
                             backgroundColor: Theme.of(context).colorScheme.secondary,
-                            textColor: Theme.of(context).colorScheme.primary,
+                            textColor: Theme.of(context).colorScheme.background,
                             text: "Register",
                           ),
                           Center(
