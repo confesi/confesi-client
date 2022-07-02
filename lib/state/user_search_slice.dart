@@ -10,20 +10,20 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 @immutable
-class SearchState {
-  const SearchState({this.results = const []});
+class UserSearchState {
+  const UserSearchState({this.results = const []});
 
   final List<dynamic> results;
 
-  SearchState copyWith({List<dynamic>? newResults}) {
-    return SearchState(
+  UserSearchState copyWith({List<dynamic>? newResults}) {
+    return UserSearchState(
       results: newResults ?? results,
     );
   }
 }
 
-class SearchNotifier extends StateNotifier<SearchState> {
-  SearchNotifier() : super(const SearchState());
+class UserSearchNotifier extends StateNotifier<UserSearchState> {
+  UserSearchNotifier() : super(const UserSearchState());
 
   dynamic cancelToken;
 
@@ -79,6 +79,6 @@ class SearchNotifier extends StateNotifier<SearchState> {
   }
 }
 
-final searchProvider = StateNotifierProvider<SearchNotifier, SearchState>((ref) {
-  return SearchNotifier();
+final userSearchProvider = StateNotifierProvider<UserSearchNotifier, UserSearchState>((ref) {
+  return UserSearchNotifier();
 });

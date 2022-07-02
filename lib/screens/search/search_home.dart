@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_client/state/search_slice.dart';
+import 'package:flutter_mobile_client/state/user_search_slice.dart';
 import 'package:flutter_mobile_client/state/token_slice.dart';
 import 'package:flutter_mobile_client/widgets/layouts/appbar.dart';
 import 'package:flutter_mobile_client/widgets/layouts/keyboard_dismiss.dart';
@@ -28,7 +28,7 @@ class _SearchHomeState extends ConsumerState<SearchHome> {
               AppbarLayout(
                 centerWidget: LongTextField(
                   onChange: (value) => ref
-                      .read(searchProvider.notifier)
+                      .read(userSearchProvider.notifier)
                       .refineResults(value, ref.read(tokenProvider).accessToken),
                 ),
                 centerWidgetFullWidth: true,
@@ -39,7 +39,7 @@ class _SearchHomeState extends ConsumerState<SearchHome> {
                   child: Column(
                     children: [
                       ...ref
-                          .watch(searchProvider)
+                          .watch(userSearchProvider)
                           .results
                           .map(
                             (result) => UserTile(

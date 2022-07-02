@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobile_client/constants/typography.dart';
+import 'package:flutter_mobile_client/screens/setting_menus/watched_universities.dart';
 import 'package:flutter_mobile_client/widgets/buttons/icon_text.dart';
 import 'package:flutter_mobile_client/widgets/buttons/touchable_text.dart';
 import 'package:flutter_mobile_client/widgets/layouts/line.dart';
@@ -50,9 +51,10 @@ class ExploreDrawer extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                         const SizedBox(height: 15),
-                        const IconTextButton(
+                        IconTextButton(
+                          onPress: () => Navigator.of(context).pop(),
                           text: "University of Victoria",
-                          icon: CupertinoIcons.house,
+                          leftIcon: CupertinoIcons.house,
                         ),
                         LineLayout(
                           color: Theme.of(context).colorScheme.onBackground,
@@ -65,17 +67,20 @@ class ExploreDrawer extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                         const SizedBox(height: 15),
-                        const IconTextButton(
+                        IconTextButton(
+                          onPress: () => Navigator.of(context).pop(),
                           text: "University of Colorado",
-                          icon: CupertinoIcons.rocket,
+                          leftIcon: CupertinoIcons.rocket,
                         ),
-                        const IconTextButton(
+                        IconTextButton(
+                          onPress: () => Navigator.of(context).pop(),
                           text: "Trinity Western University",
-                          icon: CupertinoIcons.rocket,
+                          leftIcon: CupertinoIcons.rocket,
                         ),
-                        const IconTextButton(
+                        IconTextButton(
+                          onPress: () => Navigator.of(context).pop(),
                           text: "University of Michigan",
-                          icon: CupertinoIcons.rocket,
+                          leftIcon: CupertinoIcons.rocket,
                         ),
                         LineLayout(
                           color: Theme.of(context).colorScheme.onBackground,
@@ -88,13 +93,15 @@ class ExploreDrawer extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                         const SizedBox(height: 15),
-                        const IconTextButton(
+                        IconTextButton(
+                          onPress: () => Navigator.of(context).pop(),
                           text: "Random university",
-                          icon: CupertinoIcons.tickets,
+                          leftIcon: CupertinoIcons.tickets,
                         ),
-                        const IconTextButton(
+                        IconTextButton(
+                          onPress: () => Navigator.of(context).pop(),
                           text: "All campuses",
-                          icon: CupertinoIcons.square_stack_3d_down_right,
+                          leftIcon: CupertinoIcons.square_stack_3d_down_right,
                         ),
                       ],
                     ),
@@ -113,7 +120,15 @@ class ExploreDrawer extends StatelessWidget {
                     TouchableTextButton(
                       textColor: Theme.of(context).colorScheme.primary,
                       animatedClick: false,
-                      onTap: () => print("tap"),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const WatchedUniversitiesSettingsMenu(),
+                          ),
+                        );
+                      },
                       text: "Edit watched universities",
                     ),
                   ],

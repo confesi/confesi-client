@@ -27,7 +27,7 @@ class Post {
       this.icon, this.parentID, this.parentText, this.parentFaculty, this.parentGenre);
 
   static ObjectId? getParentID(dynamic parentPost) {
-    if (parentPost != null) {
+    if (parentPost != null && parentPost["id"] != null) {
       return ObjectId.parse(parentPost["id"]);
     } else {
       return null;
@@ -35,7 +35,7 @@ class Post {
   }
 
   static String? getParentText(dynamic parentPost) {
-    if (parentPost != null) {
+    if (parentPost != null && parentPost["text"] != null) {
       return parentPost["text"];
     } else {
       return null;
@@ -43,7 +43,7 @@ class Post {
   }
 
   static String? getParentFaculty(dynamic parentPost) {
-    if (parentPost != null) {
+    if (parentPost != null && parentPost["faculty"] != null) {
       return formatFaculty(parentPost["faculty"]);
     } else {
       return null;
@@ -51,8 +51,8 @@ class Post {
   }
 
   static String? getParentGenre(dynamic parentPost) {
-    if (parentPost != null) {
-      return formatGenre(parentPost["genre"]);
+    if (parentPost != null && parentPost["genre"] != null) {
+      return formatGenre(parentPost["genre"]).toLowerCase();
     } else {
       return null;
     }

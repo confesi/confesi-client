@@ -22,6 +22,8 @@ String formatFaculty(String faculty) {
       return "social sciences";
     case "LAW":
       return "law";
+    case "OTHER":
+      return "other";
     default:
       return "error";
   }

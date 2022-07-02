@@ -6,8 +6,11 @@ class AppbarLayout extends StatelessWidget {
   const AppbarLayout(
       {this.iconTap,
       this.icon,
+      this.iconRight,
+      this.iconRightTap,
       this.bottomBorder = true,
       this.showIcon = true,
+      this.showRightIcon = false,
       required this.centerWidget,
       this.centerWidgetFullWidth = false,
       Key? key})
@@ -16,9 +19,12 @@ class AppbarLayout extends StatelessWidget {
   final bool centerWidgetFullWidth;
   final Widget centerWidget;
   final bool showIcon;
+  final bool showRightIcon;
   final bool bottomBorder;
   final IconData? icon;
   final Function? iconTap;
+  final IconData? iconRight;
+  final Function? iconRightTap;
 
   Widget children(BuildContext context) => Material(
         color: Theme.of(context).colorScheme.background,
@@ -68,10 +74,26 @@ class AppbarLayout extends StatelessWidget {
                       Expanded(
                         child: centerWidget,
                       ),
-                      const Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Icon(CupertinoIcons.chevron_back, color: Colors.transparent),
-                      ),
+                      showRightIcon
+                          ? TouchableOpacity(
+                              onTap: () {
+                                if (iconRightTap != null) {
+                                  iconRightTap!();
+                                }
+                              },
+                              child: Container(
+                                color: Colors.transparent,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: Icon(iconRight ?? CupertinoIcons.arrow_clockwise),
+                                ),
+                              ),
+                            )
+                          : Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Icon(iconRight ?? CupertinoIcons.arrow_clockwise,
+                                  color: Colors.transparent),
+                            ),
                     ],
                   ),
                 ),

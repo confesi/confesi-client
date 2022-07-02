@@ -70,6 +70,16 @@ class _ExploreHomeState extends ConsumerState<ExploreHome> with AutomaticKeepAli
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
                 ),
+                showRightIcon: true,
+                iconRight: CupertinoIcons.arrow_clockwise,
+                iconRightTap: () {
+                  ref
+                      .read(exploreFeedProvider.notifier)
+                      .refreshPostsFullScreen(ref.read(tokenProvider).accessToken);
+                  // ref
+                  //     .read(exploreFeedProvider.notifier)
+                  //     .refreshPosts(ref.read(tokenProvider).accessToken);
+                },
                 showIcon: true,
                 icon: CupertinoIcons.bars,
                 iconTap: () {

@@ -4,17 +4,27 @@ import 'package:flutter_mobile_client/constants/typography.dart';
 import 'package:flutter_mobile_client/widgets/buttons/touchable_opacity.dart';
 
 class IconTextButton extends StatelessWidget {
-  const IconTextButton({this.bottomPadding = 15, required this.text, required this.icon, Key? key})
+  const IconTextButton(
+      {required this.onPress,
+      this.bottomPadding = 15,
+      required this.text,
+      this.leftIcon = CupertinoIcons.info,
+      this.leftIconVisible = true,
+      this.rightIcon = CupertinoIcons.chevron_right,
+      Key? key})
       : super(key: key);
 
+  final IconData rightIcon;
   final String text;
-  final IconData icon;
+  final IconData leftIcon;
   final double bottomPadding;
+  final VoidCallback onPress;
+  final bool leftIconVisible;
 
   @override
   Widget build(BuildContext context) {
     return TouchableOpacity(
-      onTap: () => print("group clicked"),
+      onTap: () => onPress(),
       child: Container(
         // transparent color trick to increase hitbox size
         color: Colors.transparent,
@@ -22,12 +32,16 @@ class IconTextButton extends StatelessWidget {
           padding: EdgeInsets.only(bottom: bottomPadding),
           child: Row(
             children: [
-              Icon(
-                icon,
-                size: 24,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-              const SizedBox(width: 15),
+              leftIconVisible
+                  ? Padding(
+                      padding: const EdgeInsets.only(right: 15),
+                      child: Icon(
+                        leftIcon,
+                        size: 24,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    )
+                  : Container(),
               Expanded(
                 child: Text(
                   text,
@@ -37,7 +51,7 @@ class IconTextButton extends StatelessWidget {
                 ),
               ),
               Icon(
-                CupertinoIcons.chevron_forward,
+                rightIcon,
                 size: 24,
                 color: Theme.of(context).colorScheme.onBackground,
               ),

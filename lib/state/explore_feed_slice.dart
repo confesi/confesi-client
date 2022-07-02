@@ -95,6 +95,14 @@ class ExploreFeedNotifier extends StateNotifier<ExploreFeedState> {
     await _getPosts(LoadPostsType.loadMore, accessToken);
   }
 
+  Future<void> refreshPostsFullScreen(String accessToken) async {
+    state =
+        state.copyWith(newHasError: false, newNoMorePosts: false, newLastSeenID: "", newPosts: []);
+    // as to not cause a janky screen
+    await Future.delayed(const Duration(milliseconds: 400));
+    await _getPosts(LoadPostsType.refresh, accessToken);
+  }
+
   Future<void> refreshPosts(String accessToken) async {
     state = state.copyWith(newHasError: false, newNoMorePosts: false, newLastSeenID: "");
     await _getPosts(LoadPostsType.refresh, accessToken);

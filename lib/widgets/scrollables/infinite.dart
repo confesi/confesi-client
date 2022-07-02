@@ -48,8 +48,11 @@ class InfiniteScrollable extends StatefulWidget {
 class _InfiniteScrollableState extends State<InfiniteScrollable> {
   bool fetching = false;
 
+  late ItemPositionsListener itemPositionsListener;
+
   @override
   void initState() {
+    itemPositionsListener = ItemPositionsListener.create();
     itemPositionsListener.itemPositions.addListener(() {
       final indicies = itemPositionsListener.itemPositions.value.map((post) => post.index);
       // print(
@@ -79,16 +82,12 @@ class _InfiniteScrollableState extends State<InfiniteScrollable> {
     fetching = false;
   }
 
-  final ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
-  final ItemScrollController itemScrollController = ItemScrollController();
-
   Widget infiniteList() {
     return ScrollConfiguration(
       behavior: NoOverScrollSplash(),
       child: ScrollablePositionedList.builder(
         physics: const ClampingScrollPhysics(),
         itemPositionsListener: itemPositionsListener,
-        itemScrollController: itemScrollController,
         itemCount: widget.posts.length + 1,
         itemBuilder: (BuildContext context, int index) {
           return index == 0

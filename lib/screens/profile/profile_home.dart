@@ -116,19 +116,9 @@ class ProfileHome extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 15),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
-                        child: Text(
-                          "Flexes",
-                          style: kHeader.copyWith(color: Theme.of(context).colorScheme.primary),
-                          textAlign: TextAlign.left,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      const SizedBox(height: 15),
                       SingleChildScrollView(
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          padding: const EdgeInsets.symmetric(horizontal: 0),
                           child: Column(
                             children: const [
                               StatTile(),

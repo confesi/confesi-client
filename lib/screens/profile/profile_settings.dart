@@ -11,6 +11,8 @@ import 'package:flutter_mobile_client/widgets/layouts/line.dart';
 import 'package:flutter_mobile_client/widgets/textfield/long.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../setting_menus/watched_universities.dart';
+
 class ProfileSettings extends ConsumerStatefulWidget {
   const ProfileSettings({Key? key}) : super(key: key);
 
@@ -45,31 +47,64 @@ class _ProfileSettingsState extends ConsumerState<ProfileSettings> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     LongTextField(
-                      bottomPadding: 30,
+                      bottomPadding: 25,
                       topPadding: 15,
                       onChange: (value) => print(value),
                     ),
-                    const IconTextButton(
-                        text: "Security", icon: CupertinoIcons.lock, bottomPadding: 30),
-                    const IconTextButton(
-                        text: "Notifications", icon: CupertinoIcons.bell, bottomPadding: 30),
-                    const IconTextButton(
-                        text: "Theme", icon: CupertinoIcons.color_filter, bottomPadding: 30),
-                    const IconTextButton(
+                    IconTextButton(
+                      onPress: () => print("TAP"),
+                      text: "Security",
+                      leftIcon: CupertinoIcons.lock,
+                      bottomPadding: 30,
+                    ),
+                    IconTextButton(
+                      onPress: () => print("TAP"),
+                      text: "Notifications",
+                      leftIcon: CupertinoIcons.bell,
+                      bottomPadding: 30,
+                    ),
+                    IconTextButton(
+                      onPress: () => print("TAP"),
+                      text: "Theme",
+                      leftIcon: CupertinoIcons.color_filter,
+                      bottomPadding: 30,
+                    ),
+                    IconTextButton(
+                        onPress: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const WatchedUniversitiesSettingsMenu(),
+                              ),
+                            ),
                         text: "Watched universities",
-                        icon: CupertinoIcons.rocket,
+                        leftIcon: CupertinoIcons.rocket,
                         bottomPadding: 30),
-                    const IconTextButton(
-                        text: "About", icon: CupertinoIcons.info, bottomPadding: 15),
+                    IconTextButton(
+                      onPress: () => print("TAP"),
+                      text: "About",
+                      leftIcon: CupertinoIcons.info,
+                      bottomPadding: 30,
+                    ),
+                    IconTextButton(
+                      onPress: () => print("TAP"),
+                      text: "Email us",
+                      leftIcon: CupertinoIcons.mail,
+                      bottomPadding: 30,
+                    ),
+                    IconTextButton(
+                      onPress: () => print("TAP"),
+                      text: "Report a problem",
+                      leftIcon: CupertinoIcons.flag,
+                      bottomPadding: 30,
+                    ),
                     LineLayout(color: Theme.of(context).colorScheme.onBackground),
-                    const SizedBox(height: 15),
+                    const SizedBox(height: 25),
                     Text(
                       "Quick settings",
                       style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
                       textAlign: TextAlign.left,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: 15),
                     TouchableTextButton(
                       textColor: Theme.of(context).colorScheme.error,
                       animatedClick: true,
