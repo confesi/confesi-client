@@ -21,10 +21,6 @@ class WatchedUniversitiesSettingsMenu extends ConsumerWidget {
   List<Widget> getBody(List<dynamic> universities, BuildContext context) {
     if (universities.isNotEmpty) {
       return [
-        const RowWithBorderText(
-          leftText: "Add universities to watch list",
-          rightText: "(3/5)",
-        ),
         ...universities
             .map(
               (result) => IconTextButton(
@@ -38,10 +34,6 @@ class WatchedUniversitiesSettingsMenu extends ConsumerWidget {
       ];
     } else {
       return [
-        const RowWithBorderText(
-          leftText: "Edit watched universities",
-          rightText: "(3/5)",
-        ),
         IconTextButton(
           onPress: () => print("tap"),
           text: "University of Colorado",
@@ -98,6 +90,10 @@ class WatchedUniversitiesSettingsMenu extends ConsumerWidget {
                               .refineResults(value, ref.read(tokenProvider).accessToken),
                         ),
                         const SizedBox(height: 20),
+                        const RowWithBorderText(
+                          leftText: "Add or remove watched universities",
+                          rightText: "(3/5)",
+                        ),
                         ...getBody(ref.watch(universitySearchProvider).results, context),
                         const SizedBox(height: 20),
                       ],

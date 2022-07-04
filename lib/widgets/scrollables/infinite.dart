@@ -5,11 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_mobile_client/behaviors/overscroll.dart';
 import 'package:flutter_mobile_client/constants/messages/explore_feed.dart';
 import 'package:flutter_mobile_client/widgets/scrollables/scrollable.dart';
-import 'package:flutter_mobile_client/widgets/layouts/line.dart';
-import 'package:flutter_mobile_client/widgets/tiles/highlight.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 
 import '../../constants/typography.dart';
