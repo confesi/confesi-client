@@ -10,7 +10,7 @@ class KeyboardDismissLayout extends StatelessWidget {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       onVerticalDragUpdate: (details) {
-        if (details.delta.direction > 0 && details.delta.distance > 20) {
+        if (details.delta.direction > 0 && details.delta.distance > 15) {
           FocusScope.of(context).unfocus();
         }
       },

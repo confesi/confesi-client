@@ -27,12 +27,21 @@ class BottomNav extends ConsumerStatefulWidget {
   ConsumerState<BottomNav> createState() => _BottomNavState();
 }
 
-class _BottomNavState extends ConsumerState<BottomNav> with TickerProviderStateMixin {
+class _BottomNavState extends ConsumerState<BottomNav> with SingleTickerProviderStateMixin {
+  late TabController tabController;
+
   @override
   void initState() {
     // Starts refreshing access tokens
     ref.read(tokenProvider.notifier).startAutoRefreshingAccessTokens();
+    tabController = TabController(vsync: this, length: 5);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    tabController.dispose();
+    super.dispose();
   }
 
   @override
@@ -53,150 +62,78 @@ class _BottomNavState extends ConsumerState<BottomNav> with TickerProviderStateM
         showErrorSnackbar(context, kSnackbarServerError);
       }
     });
-    return DefaultTabController(
-      length: 5,
-      child: Container(
-        color: Theme.of(context).colorScheme.background,
-        child: SafeArea(
-          top: false,
-          child: GestureDetector(
-            onTap: () {
-              print("Tap");
-              FocusScope.of(context).requestFocus(FocusNode());
-            },
-            child: Scaffold(
-              body: TabBarView(
-                // physics: const ClampingScrollPhysics(),
-                physics: const NeverScrollableScrollPhysics(),
-                children: [
-                  const ExploreHome(),
-                  Container(
-                    color: Colors.lightGreen,
+    return Container(
+      color: Theme.of(context).colorScheme.background,
+      child: SafeArea(
+        top: false,
+        child: GestureDetector(
+          onTap: () {
+            print("Tap");
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
+          child: Scaffold(
+            body: TabBarView(
+              physics: const NeverScrollableScrollPhysics(),
+              controller: tabController,
+              children: [
+                const ExploreHome(),
+                Container(
+                  color: Colors.lightGreen,
+                ),
+                const PostHome(),
+                const SearchHome(),
+                const ProfileHome(),
+              ],
+            ),
+            bottomNavigationBar: Theme(
+              data: ThemeData(
+                highlightColor: Colors.transparent,
+                splashColor: Colors.transparent,
+              ),
+              child: TabBar(
+                isScrollable: false,
+                labelStyle: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
+                unselectedLabelColor: Theme.of(context).colorScheme.onBackground,
+                labelColor: Theme.of(context).colorScheme.primary,
+                indicatorSize: TabBarIndicatorSize.tab,
+                indicatorColor: Colors.transparent,
+                controller: tabController,
+                enableFeedback: true,
+                onTap: (tapIndex) {
+                  HapticFeedback.lightImpact();
+                  // if I'm clicking to a tab from the search screen, clear the current results
+                  if (tapIndex == 3) {
+                    ref.read(userSearchProvider.notifier).clearSearchResults();
+                  }
+                },
+                tabs: [
+                  Tab(
+                    text: Responsive.isTablet(context) ? "Explore" : null,
+                    icon: const Icon(CupertinoIcons.compass),
                   ),
-                  const PostHome(),
-                  const SearchHome(),
-                  const ProfileHome(),
+                  Tab(
+                    text: Responsive.isTablet(context) ? "Hot" : null,
+                    icon: const Icon(CupertinoIcons.flame),
+                  ),
+                  Tab(
+                    text: Responsive.isTablet(context) ? "Post" : null,
+                    icon: const Icon(CupertinoIcons.add),
+                  ),
+                  Tab(
+                    text: Responsive.isTablet(context) ? "Search" : null,
+                    icon: const Icon(CupertinoIcons.search),
+                  ),
+                  Tab(
+                    text: Responsive.isTablet(context) ? "Profile" : null,
+                    icon: const Icon(CupertinoIcons.profile_circled),
+                  )
                 ],
               ),
-              bottomNavigationBar: Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.background,
-                ),
-                child: TabBar(
-                  labelStyle: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
-                  tabs: [
-                    Tab(
-                      text: Responsive.isTablet(context) ? "Explore" : null,
-                      icon: const Icon(CupertinoIcons.compass),
-                    ),
-                    Tab(
-                      text: Responsive.isTablet(context) ? "Hot" : null,
-                      icon: const Icon(CupertinoIcons.flame),
-                    ),
-                    Tab(
-                      text: Responsive.isTablet(context) ? "Post" : null,
-                      icon: const Icon(CupertinoIcons.add),
-                    ),
-                    Tab(
-                      text: Responsive.isTablet(context) ? "Search" : null,
-                      icon: const Icon(CupertinoIcons.search),
-                    ),
-                    Tab(
-                      text: Responsive.isTablet(context) ? "Profile" : null,
-                      icon: const Icon(CupertinoIcons.profile_circled),
-                    )
-                  ],
-                  enableFeedback: true,
-                  onTap: (tapIndex) {
-                    HapticFeedback.lightImpact();
-                    // if I'm clicking to a tab from the search screen, clear the current results
-                    if (tapIndex == 3) {
-                      ref.read(userSearchProvider.notifier).clearSearchResults();
-                    }
-                  },
-                  unselectedLabelColor: Theme.of(context).colorScheme.onBackground,
-                  labelColor: Theme.of(context).colorScheme.primary,
-                  indicatorSize: TabBarIndicatorSize.tab,
-                  indicatorColor: Colors.transparent,
-                ),
-              ),
-              backgroundColor: Theme.of(context).colorScheme.background,
             ),
+            backgroundColor: Theme.of(context).colorScheme.background,
           ),
         ),
       ),
     );
   }
 }
-
-
-
-
-
-
-// import 'package:flutter/material.dart';
-// import 'package:flutter_mobile_client/constants/typography.dart';
-// import 'package:flutter_mobile_client/state/user_slice.dart';
-// import 'package:flutter_riverpod/flutter_riverpod.dart';
-// import 'package:stacked_themes/stacked_themes.dart';
-// import 'package:flutter/cupertino.dart';
-
-// class BottomNav extends ConsumerWidget {
-//   const BottomNav({Key? key}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context, WidgetRef ref) {
-//     UserState provider = ref.watch(userProvider);
-//     return WillPopScope(
-//       onWillPop: () async => false, // disables back button
-//       child: Scaffold(
-//         body: Builder(
-//           builder: (context) {
-//             return Center(
-//               child: Column(
-//                 mainAxisAlignment: MainAxisAlignment.center,
-//                 children: [
-//                   Text(
-//                     "access token: ${provider.token.accessToken}",
-//                   ),
-//                   TextButton(
-//                     onPressed: () {
-//                       getThemeManager(context).toggleDarkLightTheme();
-//                     },
-//                     child: const Text("change theme"),
-//                   ),
-//                   TextButton(
-//                     onPressed: () {
-//                       ref.read(userProvider.notifier).logout().then((value) {
-//                         if (ref.read(userProvider).logoutSuccess == false) {
-//                           Navigator.of(context).restorablePush(_modalBuilder);
-//                         }
-//                       });
-//                     },
-//                     child: const Text("logout"),
-//                   ),
-//                 ],
-//               ),
-//             );
-//           },
-//         ),
-//       ),
-//     );
-//   }
-
-//   static Route<void> _modalBuilder(BuildContext context, Object? arguments) {
-//     return CupertinoModalPopupRoute<void>(
-//       builder: (BuildContext context) {
-//         return CupertinoActionSheet(
-//           title: Padding(
-//             padding: const EdgeInsets.only(bottom: 2),
-//             child: Text(
-//               "Logging out requires an internet connection",
-//               style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
-//             ),
-//           ),
-//         );
-//       },
-//     );
-//   }
-// }

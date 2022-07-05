@@ -1,24 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_mobile_client/constants/messages/snackbars.dart';
 import 'package:flutter_mobile_client/constants/typography.dart';
-import 'package:flutter_mobile_client/screens/profile/profile_edit.dart';
+import 'package:flutter_mobile_client/screens/explore/explore_new.dart';
+import 'package:flutter_mobile_client/screens/explore/explore_popular.dart';
 import 'package:flutter_mobile_client/state/explore_feed_slice.dart';
-import 'package:flutter_mobile_client/state/post_slice.dart';
 import 'package:flutter_mobile_client/state/token_slice.dart';
-import 'package:flutter_mobile_client/widgets/connection/spinner_or_text.dart';
 import 'package:flutter_mobile_client/widgets/drawers/explore.dart';
 import 'package:flutter_mobile_client/widgets/layouts/appbar.dart';
-import 'package:flutter_mobile_client/widgets/scrollables/infinite.dart';
-import 'package:flutter_mobile_client/widgets/text/error_with_button.dart';
-import 'package:flutter_mobile_client/widgets/text/group.dart';
-import 'package:flutter_mobile_client/widgets/tiles/post.dart';
-import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
+import 'package:flutter_mobile_client/widgets/tabs/shrinking.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:visibility_detector/visibility_detector.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-
 import '../../widgets/sheets/error_snackbar.dart';
 
 class ExploreHome extends ConsumerStatefulWidget {
@@ -28,21 +19,29 @@ class ExploreHome extends ConsumerStatefulWidget {
   ConsumerState<ExploreHome> createState() => _ExploreHomeState();
 }
 
-class _ExploreHomeState extends ConsumerState<ExploreHome> with AutomaticKeepAliveClientMixin {
+class _ExploreHomeState extends ConsumerState<ExploreHome>
+    with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
   @override
   bool get wantKeepAlive => true;
 
   ScrollController scrollController = ScrollController();
 
+  late TabController tabController;
+
   @override
   void initState() {
-    startDelay();
+    ref.read(exploreFeedProvider.notifier).refreshPosts(ref.read(tokenProvider).accessToken);
+    tabController = TabController(vsync: this, length: 2);
     super.initState();
   }
 
-  void startDelay() async {
-    ref.read(exploreFeedProvider.notifier).refreshPosts(ref.read(tokenProvider).accessToken);
+  @override
+  void dispose() {
+    tabController.dispose();
+    super.dispose();
   }
+
+  bool isShown = true;
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +55,10 @@ class _ExploreHomeState extends ConsumerState<ExploreHome> with AutomaticKeepAli
       }
     });
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+          onPressed: () => setState(() {
+                isShown = !isShown;
+              })),
       drawer: const ExploreDrawer(),
       backgroundColor: Theme.of(context).colorScheme.background,
       body: SafeArea(
@@ -76,9 +79,6 @@ class _ExploreHomeState extends ConsumerState<ExploreHome> with AutomaticKeepAli
                   ref
                       .read(exploreFeedProvider.notifier)
                       .refreshPostsFullScreen(ref.read(tokenProvider).accessToken);
-                  // ref
-                  //     .read(exploreFeedProvider.notifier)
-                  //     .refreshPosts(ref.read(tokenProvider).accessToken);
                 },
                 showIcon: true,
                 icon: CupertinoIcons.bars,
@@ -88,21 +88,60 @@ class _ExploreHomeState extends ConsumerState<ExploreHome> with AutomaticKeepAli
               );
             }),
             Expanded(
-              child: Container(
-                color: Theme.of(context).colorScheme.surfaceVariant,
-                child: InfiniteScrollable(
-                  dailyPosts: ref.watch(exploreFeedProvider).dailyPosts,
-                  hasError: ref.watch(exploreFeedProvider).hasError,
-                  noMorePosts: ref.watch(exploreFeedProvider).noMorePosts,
-                  currentlyFetching: ref.watch(exploreFeedProvider).currentlyFetching,
-                  posts: ref.watch(exploreFeedProvider).posts,
-                  fetchMorePosts: () => ref
-                      .read(exploreFeedProvider.notifier)
-                      .fetchMorePosts(ref.read(tokenProvider).accessToken),
-                  refreshPosts: () => ref
-                      .read(exploreFeedProvider.notifier)
-                      .refreshPosts(ref.read(tokenProvider).accessToken),
-                ),
+              child: Stack(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 0),
+                    child: NotificationListener<ScrollUpdateNotification>(
+                      // on tap switch also show
+                      onNotification: (details) {
+                        if (details.metrics.atEdge &&
+                            details.metrics.extentBefore == 0 &&
+                            isShown == false) {
+                          print("AT TOP");
+                          setState(() {
+                            isShown = true;
+                          });
+                        }
+                        if (details.scrollDelta! > 0 &&
+                            details.scrollDelta != null &&
+                            isShown == true) {
+                          setState(() {
+                            isShown = false;
+                          });
+                        } else if (details.scrollDelta! < 0 &&
+                            details.scrollDelta != null &&
+                            isShown == false) {
+                          setState(() {
+                            isShown = true;
+                          });
+                        }
+                        return true;
+                      },
+                      child: Column(
+                        children: [
+                          AnimatedContainer(
+                            duration: const Duration(milliseconds: 400),
+                            height: isShown ? 50 : 0,
+                          ),
+                          Expanded(
+                            child: TabBarView(
+                              controller: tabController,
+                              children: const [
+                                ExploreNew(),
+                                ExplorePopular(),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  ShrinkingTabBar(
+                    isShown: isShown,
+                    tabController: tabController,
+                  ),
+                ],
               ),
             ),
           ],
