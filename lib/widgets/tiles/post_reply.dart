@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_client/widgets/buttons/touchable_opacity.dart';
-
 import '../../constants/general.dart';
 import '../../constants/typography.dart';
+import '../buttons/touchable_opacity.dart';
 
 class PostReplyTile extends StatelessWidget {
   const PostReplyTile(

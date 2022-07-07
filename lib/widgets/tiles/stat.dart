@@ -1,6 +1,9 @@
+import 'package:Confessi/constants/typography.dart';
+import 'package:Confessi/widgets/text/group.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_client/constants/typography.dart';
-import 'package:flutter_mobile_client/widgets/text/group.dart';
+
+// import '../../constants/typography.dart';
+// import '../text/group.dart';
 
 class StatTile extends StatelessWidget {
   const StatTile({Key? key}) : super(key: key);
@@ -17,10 +20,11 @@ class StatTile extends StatelessWidget {
             const Expanded(
               flex: 2,
               child: GroupText(
-                  small: true,
-                  body: "How many posts of yours have reached \"hottest\".",
-                  header: "Hots",
-                  leftAlign: true),
+                small: true,
+                body: "How many posts of yours have reached \"hottest\".",
+                header: "Hots",
+                leftAlign: true,
+              ),
             ),
             Flexible(
               child: Container(

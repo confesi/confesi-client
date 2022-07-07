@@ -1,19 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_client/constants/typography.dart';
-import 'package:flutter_mobile_client/models/search/university.dart';
-import 'package:flutter_mobile_client/state/token_slice.dart';
-import 'package:flutter_mobile_client/state/university_search_slice.dart';
-import 'package:flutter_mobile_client/widgets/layouts/appbar.dart';
-import 'package:flutter_mobile_client/widgets/layouts/keyboard_dismiss.dart';
-import 'package:flutter_mobile_client/widgets/layouts/line.dart';
-import 'package:flutter_mobile_client/widgets/text/group.dart';
-import 'package:flutter_mobile_client/widgets/textfield/long.dart';
-import 'package:flutter_mobile_client/widgets/tiles/university.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+import '../../constants/typography.dart';
+import '../../state/token_slice.dart';
+import '../../state/university_search_slice.dart';
 import '../../widgets/buttons/icon_text.dart';
+import '../../widgets/layouts/appbar.dart';
+import '../../widgets/layouts/keyboard_dismiss.dart';
 import '../../widgets/text/row_with_border.dart';
+import '../../widgets/textfield/long.dart';
 
 class WatchedUniversitiesSettingsMenu extends ConsumerWidget {
   const WatchedUniversitiesSettingsMenu({Key? key}) : super(key: key);

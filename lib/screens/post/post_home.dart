@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_client/constants/typography.dart';
-import 'package:flutter_mobile_client/responsive/sizes.dart';
-import 'package:flutter_mobile_client/screens/post/post_details.dart';
-import 'package:flutter_mobile_client/state/post_slice.dart';
-import 'package:flutter_mobile_client/state/token_slice.dart';
-import 'package:flutter_mobile_client/widgets/buttons/action.dart';
-import 'package:flutter_mobile_client/widgets/layouts/line.dart';
-import 'package:flutter_mobile_client/widgets/text/group.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../constants/typography.dart';
+import '../../responsive/sizes.dart';
+import '../../state/post_slice.dart';
+import '../../state/token_slice.dart';
+import '../../widgets/buttons/action.dart';
+import '../../widgets/layouts/line.dart';
+import '../../widgets/text/group.dart';
+import 'post_details.dart';
 
 class PostHome extends ConsumerStatefulWidget {
   const PostHome({Key? key}) : super(key: key);

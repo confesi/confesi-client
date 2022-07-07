@@ -3,22 +3,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_mobile_client/constants/messages/open.dart';
-import 'package:flutter_mobile_client/constants/messages/snackbars.dart';
-import 'package:flutter_mobile_client/constants/typography.dart';
-import 'package:flutter_mobile_client/responsive/sizes.dart';
-import 'package:flutter_mobile_client/screens/explore/explore_home.dart';
-import 'package:flutter_mobile_client/screens/post/post_home.dart';
-import 'package:flutter_mobile_client/screens/profile/profile_home.dart';
-import 'package:flutter_mobile_client/screens/search/search_home.dart';
-import 'package:flutter_mobile_client/screens/start/error.dart';
-import 'package:flutter_mobile_client/state/explore_feed_slice.dart';
-import 'package:flutter_mobile_client/state/university_search_slice.dart';
-import 'package:flutter_mobile_client/state/user_search_slice.dart';
-import 'package:flutter_mobile_client/state/token_slice.dart';
-import 'package:flutter_mobile_client/widgets/sheets/error_snackbar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../constants/messages/snackbars.dart';
+import '../../constants/typography.dart';
+import '../../responsive/sizes.dart';
+import '../../state/token_slice.dart';
+import '../../state/user_search_slice.dart';
+import '../../widgets/sheets/error_snackbar.dart';
 import '../auth/open.dart';
+import '../explore/explore_home.dart';
+import '../post/post_home.dart';
+import '../profile/profile_home.dart';
+import '../search/search_home.dart';
 
 class BottomNav extends ConsumerStatefulWidget {
   const BottomNav({Key? key}) : super(key: key);

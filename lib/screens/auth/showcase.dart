@@ -1,10 +1,9 @@
+import 'package:Confessi/screens/auth/showcase_item.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_client/behaviors/overscroll.dart';
-import 'package:flutter_mobile_client/screens/auth/showcase_item.dart';
-import 'package:flutter_mobile_client/screens/start/bottom_nav.dart';
-import 'package:flutter_mobile_client/widgets/layouts/scroll_dots.dart';
-
+import '../../behaviors/overscroll.dart';
 import '../../widgets/buttons/single_text.dart';
+import '../../widgets/layouts/scroll_dots.dart';
+import '../start/bottom_nav.dart';
 
 class ShowcaseScreen extends StatefulWidget {
   const ShowcaseScreen({Key? key}) : super(key: key);

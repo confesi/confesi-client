@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_client/constants/typography.dart';
+
+import '../../constants/typography.dart';
 
 class HighlightTile extends StatelessWidget {
   const HighlightTile({required this.bottomText, required this.topText, Key? key})

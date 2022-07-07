@@ -1,22 +1,16 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter_mobile_client/constants/general.dart';
-import 'package:flutter_mobile_client/models/feed/highlight.dart';
-import 'package:flutter_mobile_client/models/feed/post.dart';
-import 'package:flutter_mobile_client/state/post_slice.dart';
-import 'package:flutter_mobile_client/state/token_slice.dart';
-import 'package:flutter_mobile_client/widgets/text/error_with_button.dart';
-import 'package:flutter_mobile_client/widgets/tiles/highlight.dart';
-import 'package:flutter_mobile_client/widgets/tiles/post.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:visibility_detector/visibility_detector.dart';
+
+import '../constants/general.dart';
+import '../models/feed/highlight.dart';
+import '../models/feed/post.dart';
+import '../widgets/tiles/highlight.dart';
+import '../widgets/tiles/post.dart';
 
 enum LoadPostsType {
   refresh,
@@ -179,7 +173,7 @@ class ExploreFeedNotifier extends StateNotifier<ExploreFeedState> {
               : [...postsToAdd],
         );
       } else {
-        print("here1");
+        print("here1 + ${response.statusCode}");
         onRequestError(loadPostsType, RequestErrorType.serverError);
       }
     } on TimeoutException {

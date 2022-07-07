@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_client/widgets/buttons/option.dart';
-import 'package:flutter_mobile_client/widgets/layouts/scrollbar.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+
+import '../buttons/option.dart';
+import '../layouts/scrollbar.dart';
 
 Future<dynamic> showButtonSheet(BuildContext context) {
   return showMaterialModalBottomSheet(

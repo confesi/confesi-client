@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_client/widgets/buttons/single_text.dart';
-import 'package:flutter_mobile_client/widgets/text/header_group.dart';
+
+import '../../widgets/text/header_group.dart';
 
 class ShowcaseItem extends StatelessWidget {
   const ShowcaseItem(

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_client/state/user_search_slice.dart';
-import 'package:flutter_mobile_client/state/token_slice.dart';
-import 'package:flutter_mobile_client/widgets/layouts/appbar.dart';
-import 'package:flutter_mobile_client/widgets/layouts/keyboard_dismiss.dart';
-import 'package:flutter_mobile_client/widgets/textfield/long.dart';
-import 'package:flutter_mobile_client/widgets/tiles/user.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../constants/typography.dart';
+import '../../state/token_slice.dart';
+import '../../state/user_search_slice.dart';
+import '../../widgets/layouts/appbar.dart';
+import '../../widgets/layouts/keyboard_dismiss.dart';
+import '../../widgets/textfield/long.dart';
+import '../../widgets/tiles/user.dart';
 
 class SearchHome extends ConsumerStatefulWidget {
   const SearchHome({Key? key}) : super(key: key);

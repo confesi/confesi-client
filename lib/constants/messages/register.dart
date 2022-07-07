@@ -1,4 +1,4 @@
-import 'package:flutter_mobile_client/constants/general.dart';
+import '../general.dart';
 
 const kRegisterConnectionError = "Connection error.";
 const kRegisterServerError = "We've experienced a rare server error. Please try again later.";

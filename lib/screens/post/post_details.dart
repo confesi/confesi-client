@@ -1,15 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_client/constants/typography.dart';
-import 'package:flutter_mobile_client/screens/profile/profile_edit.dart';
-import 'package:flutter_mobile_client/widgets/buttons/details.dart';
-import 'package:flutter_mobile_client/widgets/buttons/long.dart';
-import 'package:flutter_mobile_client/widgets/buttons/touchable_opacity.dart';
-import 'package:flutter_mobile_client/widgets/layouts/appbar.dart';
-import 'package:flutter_mobile_client/widgets/layouts/line.dart';
-import 'package:flutter_mobile_client/widgets/text/animated_load.dart';
-import 'package:flutter_mobile_client/widgets/text/link.dart';
-import 'package:flutter_mobile_client/widgets/text/row.dart';
+
+import '../../constants/typography.dart';
+import '../../widgets/buttons/details.dart';
+import '../../widgets/buttons/long.dart';
+import '../../widgets/layouts/appbar.dart';
+import '../../widgets/text/row.dart';
 
 class PostDetails extends StatelessWidget {
   const PostDetails({Key? key}) : super(key: key);

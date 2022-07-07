@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_client/widgets/buttons/icon_text.dart';
-import 'package:flutter_mobile_client/widgets/symbols/circle.dart';
-import 'package:flutter_mobile_client/widgets/text/group.dart';
+
+import '../buttons/icon_text.dart';
+import '../symbols/circle.dart';
 
 class UniversityTile extends StatelessWidget {
   const UniversityTile({required this.universityCode, required this.universityName, Key? key})

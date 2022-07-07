@@ -1,14 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_client/constants/messages/open.dart';
-import 'package:flutter_mobile_client/screens/auth/open.dart';
-import 'package:flutter_mobile_client/screens/start/bottom_nav.dart';
-import 'package:flutter_mobile_client/state/token_slice.dart';
-import 'package:flutter_mobile_client/widgets/buttons/action.dart';
-import 'package:flutter_mobile_client/widgets/text/group.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../constants/typography.dart';
+import '../../state/token_slice.dart';
+import '../../widgets/buttons/action.dart';
+import '../auth/open.dart';
+import 'bottom_nav.dart';
 
 class ErrorScreen extends ConsumerStatefulWidget {
   const ErrorScreen({required this.message, Key? key}) : super(key: key);

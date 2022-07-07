@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_client/widgets/textfield/long.dart';
-import 'package:flutter_mobile_client/widgets/tiles/post.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 import '../../constants/typography.dart';
 import '../../widgets/layouts/appbar.dart';
+import '../../widgets/textfield/long.dart';
+import '../../widgets/tiles/post.dart';
 
 // TODO: Show cupertertino scrollbar inside here
 

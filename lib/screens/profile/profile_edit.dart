@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_client/widgets/layouts/appbar.dart';
-
 import '../../constants/typography.dart';
+import '../../widgets/layouts/appbar.dart';
 
 class ProfileEdit extends StatelessWidget {
   const ProfileEdit({Key? key}) : super(key: key);

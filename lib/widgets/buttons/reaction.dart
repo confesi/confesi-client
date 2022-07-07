@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_client/constants/typography.dart';
+
+import '../../constants/typography.dart';
 
 class ReactionButton extends StatelessWidget {
   const ReactionButton({required this.icon, required this.count, Key? key}) : super(key: key);

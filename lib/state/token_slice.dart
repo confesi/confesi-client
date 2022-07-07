@@ -1,13 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter_mobile_client/constants/general.dart';
-import 'package:flutter_mobile_client/responses/login.dart';
-import 'package:flutter_mobile_client/responses/register.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+import '../constants/general.dart';
+import '../responses/login.dart';
+import '../responses/register.dart';
 
 enum ScreenState {
   home, // screen you will be on most of the time (home/bottom_nav screen). Authenticated.

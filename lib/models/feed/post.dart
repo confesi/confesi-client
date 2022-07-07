@@ -1,12 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_client/constants/conversions/university.dart';
-
 import '../../constants/conversions/date.dart';
 import '../../constants/conversions/faculty.dart';
 import '../../constants/conversions/genre.dart';
 import '../../constants/conversions/genre_icon.dart';
-
 import 'package:mongo_dart/mongo_dart.dart';
 
 class Post {

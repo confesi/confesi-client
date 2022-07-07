@@ -1,7 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_client/constants/typography.dart';
-import 'package:flutter_mobile_client/widgets/buttons/touchable_opacity.dart';
+
+import '../../constants/typography.dart';
+import 'touchable_opacity.dart';
 
 class PostButton extends StatelessWidget {
   const PostButton({required this.onPress, required this.icon, required this.value, Key? key})

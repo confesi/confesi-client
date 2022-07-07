@@ -1,13 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_client/constants/typography.dart';
-import 'package:flutter_mobile_client/screens/setting_menus/watched_universities.dart';
-import 'package:flutter_mobile_client/widgets/buttons/icon_text.dart';
-import 'package:flutter_mobile_client/widgets/buttons/touchable_text.dart';
-import 'package:flutter_mobile_client/widgets/layouts/line.dart';
-import 'package:flutter_mobile_client/widgets/text/group.dart';
-import 'package:flutter_mobile_client/widgets/text/link.dart';
-import 'package:flutter_mobile_client/widgets/text/row.dart';
+
+import '../../constants/typography.dart';
+import '../../screens/setting_menus/watched_universities.dart';
+import '../buttons/icon_text.dart';
+import '../buttons/touchable_text.dart';
+import '../layouts/line.dart';
+import '../text/group.dart';
 
 class ExploreDrawer extends StatelessWidget {
   const ExploreDrawer({Key? key}) : super(key: key);

@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_client/widgets/symbols/circle.dart';
-import 'package:flutter_mobile_client/widgets/text/group.dart';
+
+import '../symbols/circle.dart';
+import '../text/group.dart';
 
 class UserTile extends StatelessWidget {
   const UserTile({required this.displayName, required this.username, Key? key}) : super(key: key);

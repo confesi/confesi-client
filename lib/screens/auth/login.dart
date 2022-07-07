@@ -1,25 +1,17 @@
-import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_client/behaviors/overscroll.dart';
-import 'package:flutter_mobile_client/constants/general.dart';
-import 'package:flutter_mobile_client/constants/typography.dart';
-import 'package:flutter_mobile_client/models/auth/email_login.dart';
-import 'package:flutter_mobile_client/models/auth/username_login.dart';
-import 'package:flutter_mobile_client/responses/login.dart';
-import 'package:flutter_mobile_client/screens/auth/open.dart';
-import 'package:flutter_mobile_client/screens/start/bottom_nav.dart';
-import 'package:flutter_mobile_client/state/token_slice.dart';
-import 'package:flutter_mobile_client/utils/auth/email_or_username.dart';
-import 'package:flutter_mobile_client/widgets/buttons/pop.dart';
-import 'package:flutter_mobile_client/widgets/layouts/keyboard_dismiss.dart';
-import 'package:flutter_mobile_client/widgets/layouts/minimal_appbar.dart';
-import 'package:flutter_mobile_client/widgets/text/fade_size.dart';
-import 'package:flutter_mobile_client/widgets/text/link.dart';
-import 'package:flutter_mobile_client/widgets/textfield/bulge.dart';
-import 'package:flutter_mobile_client/widgets/textfield/long.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:http/http.dart' as http;
+import '../../behaviors/overscroll.dart';
+import '../../constants/typography.dart';
+import '../../responses/login.dart';
+import '../../state/token_slice.dart';
+import '../../widgets/buttons/pop.dart';
+import '../../widgets/layouts/keyboard_dismiss.dart';
+import '../../widgets/layouts/minimal_appbar.dart';
+import '../../widgets/text/fade_size.dart';
+import '../../widgets/text/link.dart';
+import '../../widgets/textfield/bulge.dart';
+import '../start/bottom_nav.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);

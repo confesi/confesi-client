@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_client/constants/typography.dart';
-import 'package:flutter_mobile_client/widgets/layouts/line.dart';
+
+import '../../constants/typography.dart';
+import '../layouts/line.dart';
 
 class RowWithBorderText extends StatelessWidget {
   const RowWithBorderText({required this.leftText, required this.rightText, Key? key})

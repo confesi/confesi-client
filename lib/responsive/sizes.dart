@@ -1,5 +1,5 @@
+import 'package:Confessi/constants/general.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_client/constants/general.dart';
 
 // ignore: must_be_immutable
 class Responsive extends StatelessWidget {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_client/constants/typography.dart';
-import 'package:flutter_mobile_client/widgets/buttons/touchable_opacity.dart';
+
+import '../../constants/typography.dart';
+import 'touchable_opacity.dart';
 
 class LongButton extends StatelessWidget {
   const LongButton(

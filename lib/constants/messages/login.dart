@@ -1,4 +1,4 @@
-import 'package:flutter_mobile_client/constants/general.dart';
+import '../general.dart';
 
 const kLoginPasswordIncorrectError = "Password incorrect.";
 const kLoginInternalServerError = "Internal server error. Please try again later.";

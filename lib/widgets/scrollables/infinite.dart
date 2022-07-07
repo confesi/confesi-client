@@ -1,22 +1,21 @@
-import 'dart:convert';
-import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_mobile_client/behaviors/overscroll.dart';
-import 'package:flutter_mobile_client/constants/messages/explore_feed.dart';
-import 'package:flutter_mobile_client/widgets/scrollables/scrollable.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:flutter/material.dart';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 
+import '../../behaviors/overscroll.dart';
+import '../../constants/messages/explore_feed.dart';
 import '../../constants/typography.dart';
+import 'scrollable.dart';
 
 enum FetchType {
   morePosts,
   refreshPosts,
 }
 
-class InfiniteScrollable extends StatefulWidget {
+class InfiniteScrollable extends ConsumerStatefulWidget {
   const InfiniteScrollable(
       {required this.refreshPosts,
       required this.currentlyFetching,
@@ -39,10 +38,10 @@ class InfiniteScrollable extends StatefulWidget {
   final bool noMorePosts;
 
   @override
-  State<InfiniteScrollable> createState() => _InfiniteScrollableState();
+  ConsumerState<InfiniteScrollable> createState() => _InfiniteScrollableState();
 }
 
-class _InfiniteScrollableState extends State<InfiniteScrollable> {
+class _InfiniteScrollableState extends ConsumerState<InfiniteScrollable> {
   bool fetching = false;
 
   late ItemPositionsListener itemPositionsListener;
@@ -88,61 +87,56 @@ class _InfiniteScrollableState extends State<InfiniteScrollable> {
         itemCount: widget.posts.length + 1,
         itemBuilder: (BuildContext context, int index) {
           return index == 0
-              ? Column(
-                  children: [
-                    Container(
-                      color: Theme.of(context).colorScheme.background,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 15),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    "Hottest posts today",
-                                    style: kHeader.copyWith(
-                                      color: Theme.of(context).colorScheme.primary,
+              ? Padding(
+                  padding: const EdgeInsets.only(top: 8, bottom: 8),
+                  child: Container(
+                    color: Theme.of(context).colorScheme.background,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 15),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  "Hottest posts today",
+                                  style: kHeader.copyWith(
+                                    color: Theme.of(context).colorScheme.primary,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              Icon(
+                                CupertinoIcons.ellipsis,
+                                color: Theme.of(context).colorScheme.onBackground,
+                                size: 24,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 15),
+                          child: widget.dailyPosts.isEmpty
+                              ? const Center(
+                                  child: CupertinoActivityIndicator(),
+                                )
+                              : SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  physics: const BouncingScrollPhysics(),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 15),
+                                    child: Row(
+                                      children: widget.dailyPosts,
                                     ),
-                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
-                                Icon(
-                                  CupertinoIcons.ellipsis,
-                                  color: Theme.of(context).colorScheme.onBackground,
-                                  size: 24,
-                                ),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 15),
-                            child: widget.dailyPosts.isEmpty
-                                ? const Center(
-                                    child: CupertinoActivityIndicator(),
-                                  )
-                                : SingleChildScrollView(
-                                    scrollDirection: Axis.horizontal,
-                                    physics: const BouncingScrollPhysics(),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(left: 15),
-                                      child: Row(
-                                        children: widget.dailyPosts,
-                                      ),
-                                    ),
-                                  ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8),
-                      child: widget.posts[index],
-                    )
-                  ],
+                  ),
                 )
               : index < widget.posts.length
                   ? widget.posts[index]
@@ -200,8 +194,6 @@ class _InfiniteScrollableState extends State<InfiniteScrollable> {
   @override
   Widget build(BuildContext context) {
     return CustomRefreshIndicator(
-      // // extentPercentageToArmed: .35,
-      // offsetToArmed: 0.0,
       onRefresh: () async {
         getPosts(FetchType.refreshPosts);
         HapticFeedback.lightImpact();
@@ -217,14 +209,17 @@ class _InfiniteScrollableState extends State<InfiniteScrollable> {
                   animation: controller,
                   builder: (BuildContext context, _) {
                     return Container(
-                      color: Theme.of(context).colorScheme.secondary,
+                      color: Theme.of(context).colorScheme.surfaceVariant,
                       width: double.infinity,
                       height: controller.value * 50,
                       child: FittedBox(
                         alignment: Alignment.center,
                         fit: BoxFit.scaleDown,
-                        child: CupertinoActivityIndicator(
-                          color: Theme.of(context).colorScheme.background,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 8),
+                          child: CupertinoActivityIndicator(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
                         ),
                       ),
                     );

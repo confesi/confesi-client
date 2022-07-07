@@ -1,11 +1,12 @@
+import 'package:Confessi/screens/start/splash.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_client/constants/messages/open.dart';
-import 'package:flutter_mobile_client/screens/auth/open.dart';
-import 'package:flutter_mobile_client/screens/start/bottom_nav.dart';
-import 'package:flutter_mobile_client/screens/start/error.dart';
-import 'package:flutter_mobile_client/screens/start/splash.dart';
-import 'package:flutter_mobile_client/state/token_slice.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../constants/messages/open.dart';
+import '../../state/token_slice.dart';
+import '../auth/open.dart';
+import 'bottom_nav.dart';
+import 'error.dart';
 
 class InitialLoad extends ConsumerStatefulWidget {
   const InitialLoad({Key? key}) : super(key: key);

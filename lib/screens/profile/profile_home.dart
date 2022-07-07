@@ -1,14 +1,13 @@
+import 'package:Confessi/screens/profile/profile_edit.dart';
+import 'package:Confessi/screens/profile/profile_settings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_client/constants/typography.dart';
-import 'package:flutter_mobile_client/screens/profile/profile_edit.dart';
-import 'package:flutter_mobile_client/screens/profile/profile_settings.dart';
-import 'package:flutter_mobile_client/widgets/buttons/action.dart';
-import 'package:flutter_mobile_client/widgets/buttons/emblem.dart';
-import 'package:flutter_mobile_client/widgets/layouts/line.dart';
-import 'package:flutter_mobile_client/widgets/text/group.dart';
-
+import '../../constants/typography.dart';
+import '../../widgets/buttons/action.dart';
+import '../../widgets/buttons/emblem.dart';
 import '../../widgets/images/circle.dart';
+import '../../widgets/layouts/line.dart';
+import '../../widgets/text/group.dart';
 import '../../widgets/tiles/stat.dart';
 
 class ProfileHome extends StatelessWidget {

@@ -1,16 +1,17 @@
+import 'package:Confessi/screens/explore/explore_new.dart';
+import 'package:Confessi/screens/explore/explore_popular.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_client/constants/messages/snackbars.dart';
-import 'package:flutter_mobile_client/constants/typography.dart';
-import 'package:flutter_mobile_client/screens/explore/explore_new.dart';
-import 'package:flutter_mobile_client/screens/explore/explore_popular.dart';
-import 'package:flutter_mobile_client/state/explore_feed_slice.dart';
-import 'package:flutter_mobile_client/state/token_slice.dart';
-import 'package:flutter_mobile_client/widgets/drawers/explore.dart';
-import 'package:flutter_mobile_client/widgets/layouts/appbar.dart';
-import 'package:flutter_mobile_client/widgets/tabs/shrinking.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../constants/messages/snackbars.dart';
+import '../../constants/typography.dart';
+import '../../state/explore_feed_slice.dart';
+import '../../state/token_slice.dart';
+import '../../widgets/drawers/explore.dart';
+import '../../widgets/layouts/appbar.dart';
 import '../../widgets/sheets/error_snackbar.dart';
+import '../../widgets/tabs/explore.dart';
 
 class ExploreHome extends ConsumerStatefulWidget {
   const ExploreHome({Key? key}) : super(key: key);
@@ -31,7 +32,7 @@ class _ExploreHomeState extends ConsumerState<ExploreHome>
   @override
   void initState() {
     ref.read(exploreFeedProvider.notifier).refreshPosts(ref.read(tokenProvider).accessToken);
-    tabController = TabController(vsync: this, length: 2);
+    tabController = TabController(vsync: this, length: 3);
     super.initState();
   }
 
@@ -40,8 +41,6 @@ class _ExploreHomeState extends ConsumerState<ExploreHome>
     tabController.dispose();
     super.dispose();
   }
-
-  bool isShown = true;
 
   @override
   Widget build(BuildContext context) {
@@ -55,10 +54,6 @@ class _ExploreHomeState extends ConsumerState<ExploreHome>
       }
     });
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-          onPressed: () => setState(() {
-                isShown = !isShown;
-              })),
       drawer: const ExploreDrawer(),
       backgroundColor: Theme.of(context).colorScheme.background,
       body: SafeArea(
@@ -88,58 +83,25 @@ class _ExploreHomeState extends ConsumerState<ExploreHome>
               );
             }),
             Expanded(
-              child: Stack(
+              child: Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 0),
-                    child: NotificationListener<ScrollUpdateNotification>(
-                      // on tap switch also show
-                      onNotification: (details) {
-                        if (details.metrics.atEdge &&
-                            details.metrics.extentBefore == 0 &&
-                            isShown == false) {
-                          print("AT TOP");
-                          setState(() {
-                            isShown = true;
-                          });
-                        }
-                        if (details.scrollDelta! > 0 &&
-                            details.scrollDelta != null &&
-                            isShown == true) {
-                          setState(() {
-                            isShown = false;
-                          });
-                        } else if (details.scrollDelta! < 0 &&
-                            details.scrollDelta != null &&
-                            isShown == false) {
-                          setState(() {
-                            isShown = true;
-                          });
-                        }
-                        return true;
-                      },
-                      child: Column(
-                        children: [
-                          AnimatedContainer(
-                            duration: const Duration(milliseconds: 400),
-                            height: isShown ? 50 : 0,
-                          ),
-                          Expanded(
-                            child: TabBarView(
-                              controller: tabController,
-                              children: const [
-                                ExploreNew(),
-                                ExplorePopular(),
-                              ],
-                            ),
-                          ),
+                  ShrinkingTabBar(
+                    tabController: tabController,
+                  ),
+                  Expanded(
+                    child: Container(
+                      color: Theme.of(context).colorScheme.surfaceVariant,
+                      child: TabBarView(
+                        physics: const BouncingScrollPhysics(),
+                        controller: tabController,
+                        dragStartBehavior: DragStartBehavior.down,
+                        children: const [
+                          ExploreNew(),
+                          ExplorePopular(),
+                          ExploreNew(),
                         ],
                       ),
                     ),
-                  ),
-                  ShrinkingTabBar(
-                    isShown: isShown,
-                    tabController: tabController,
                   ),
                 ],
               ),

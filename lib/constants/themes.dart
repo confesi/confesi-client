@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 // Light theme (index 0), dark theme (index 1)
 List<ThemeData> themesList = [
   ThemeData(
+    highlightColor: Colors.transparent,
+    splashColor: Colors.transparent,
     colorScheme: const ColorScheme(
       brightness: Brightness.light,
       primary: Color(0xff333333),
@@ -18,6 +20,8 @@ List<ThemeData> themesList = [
     ),
   ),
   ThemeData(
+    highlightColor: Colors.transparent,
+    splashColor: Colors.transparent,
     colorScheme: const ColorScheme(
       surfaceVariant: Color.fromARGB(255, 23, 23, 23),
       brightness: Brightness.dark,

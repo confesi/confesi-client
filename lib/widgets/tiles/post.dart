@@ -1,22 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_client/constants/typography.dart';
-import 'package:flutter_mobile_client/screens/explore/explore_post.dart';
-import 'package:flutter_mobile_client/widgets/buttons/comment.dart';
-import 'package:flutter_mobile_client/widgets/buttons/info.dart';
-import 'package:flutter_mobile_client/widgets/buttons/option.dart';
-import 'package:flutter_mobile_client/widgets/buttons/post.dart';
-import 'package:flutter_mobile_client/widgets/buttons/reaction.dart';
-import 'package:flutter_mobile_client/widgets/buttons/touchable_opacity.dart';
-import 'package:flutter_mobile_client/widgets/layouts/scrollbar.dart';
-import 'package:flutter_mobile_client/widgets/sheets/button.dart';
-import 'package:flutter_mobile_client/widgets/symbols/circle.dart';
-import 'package:flutter_mobile_client/widgets/text/group.dart';
-import 'package:flutter_mobile_client/widgets/tiles/post_reply.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 
 import '../../constants/general.dart';
+import '../../constants/typography.dart';
+import '../../screens/explore/explore_post.dart';
+import '../buttons/post.dart';
+import '../buttons/touchable_opacity.dart';
+import '../sheets/button.dart';
+import '../symbols/circle.dart';
+import '../text/group.dart';
+import 'post_reply.dart';
 
 class PostTile extends StatelessWidget {
   const PostTile(

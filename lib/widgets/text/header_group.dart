@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_client/constants/typography.dart';
+
+import '../../constants/typography.dart';
 
 class HeaderGroupText extends StatelessWidget {
   const HeaderGroupText({this.dark = false, required this.header, required this.body, Key? key})

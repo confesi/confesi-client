@@ -1,13 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_mobile_client/behaviors/overscroll.dart';
-import 'package:flutter_mobile_client/constants/typography.dart';
-import 'package:flutter_mobile_client/widgets/buttons/touchable_opacity.dart';
-import 'package:flutter_mobile_client/widgets/layouts/scrollbar.dart';
-import 'package:flutter_mobile_client/widgets/text/animated_load.dart';
-
+import '../../constants/typography.dart';
 import '../sheets/picker.dart';
+import 'touchable_opacity.dart';
 
 class DetailsButton extends StatefulWidget {
   const DetailsButton({required this.header, required this.body, Key? key}) : super(key: key);

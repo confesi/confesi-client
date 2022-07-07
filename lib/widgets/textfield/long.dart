@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_client/constants/typography.dart';
-import 'package:flutter_mobile_client/state/user_search_slice.dart';
-import 'package:flutter_mobile_client/widgets/buttons/touchable_opacity.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../constants/typography.dart';
 
 class LongTextField extends ConsumerStatefulWidget {
   const LongTextField(

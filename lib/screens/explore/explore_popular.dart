@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_client/state/explore_feed_slice.dart';
-import 'package:flutter_mobile_client/state/token_slice.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+import '../../state/explore_feed_slice.dart';
+import '../../state/token_slice.dart';
 import '../../widgets/scrollables/infinite.dart';
 
 class ExplorePopular extends ConsumerWidget {

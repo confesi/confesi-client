@@ -1,16 +1,10 @@
+import 'package:Confessi/screens/auth/login.dart';
+import 'package:Confessi/screens/auth/register.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_client/screens/auth/login.dart';
-import 'package:flutter_mobile_client/screens/auth/register.dart';
-import 'package:flutter_mobile_client/screens/auth/showcase.dart';
-import 'package:flutter_mobile_client/state/token_slice.dart';
-import 'package:flutter_mobile_client/widgets/buttons/long.dart';
-import 'package:flutter_mobile_client/widgets/text/group.dart';
-import 'package:flutter_mobile_client/widgets/text/header_group.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:stacked_themes/stacked_themes.dart';
-
 import '../../widgets/buttons/pop.dart';
+import '../../widgets/text/header_group.dart';
 
 class OpenScreen extends ConsumerWidget {
   const OpenScreen({Key? key}) : super(key: key);

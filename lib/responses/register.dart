@@ -1,5 +1,5 @@
-import 'package:flutter_mobile_client/constants/general.dart';
-import 'package:flutter_mobile_client/constants/messages/register.dart';
+import '../constants/general.dart';
+import '../constants/messages/register.dart';
 
 enum RegisterResponse {
   connectionError,

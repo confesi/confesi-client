@@ -1,14 +1,10 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_mobile_client/constants/general.dart';
-import 'package:flutter_mobile_client/models/search/university.dart';
-import 'package:flutter_mobile_client/models/search/user.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:http/http.dart' as http;
+
+import '../constants/general.dart';
+import '../models/search/university.dart';
 
 @immutable
 class UniversitySearchState {

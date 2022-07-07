@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_mobile_client/constants/conversions/genre.dart';
-import 'package:flutter_mobile_client/constants/conversions/university.dart';
+import '../../constants/conversions/genre.dart';
+import '../../constants/conversions/university.dart';
 
 class Highlight {
   final String university;

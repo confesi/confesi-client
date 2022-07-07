@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_client/constants/typography.dart';
+
+import '../../constants/typography.dart';
 
 class InfoButton extends StatelessWidget {
   const InfoButton({required this.icon, required this.text, Key? key}) : super(key: key);

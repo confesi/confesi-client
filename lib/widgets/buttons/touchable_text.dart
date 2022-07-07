@@ -1,6 +1,5 @@
+import 'package:Confessi/widgets/buttons/touchable_opacity.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile_client/widgets/buttons/touchable_opacity.dart';
-
 import '../../constants/typography.dart';
 
 class TouchableTextButton extends StatefulWidget {
