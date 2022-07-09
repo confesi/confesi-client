@@ -66,21 +66,21 @@ class ExplorePost extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    PostTile(
-                      parentFaculty: parentFaculty,
-                      parentGenre: parentGenre,
-                      parentText: parentText,
-                      parentID: parentID,
-                      threadView: true,
-                      date: date,
-                      icon: icon,
-                      faculty: faculty,
-                      genre: genre,
-                      body: body,
-                      likes: likes,
-                      dislikes: dislikes,
-                      comments: comments,
-                    ),
+                    // PostTile(
+                    //   parentFaculty: parentFaculty,
+                    //   parentGenre: parentGenre,
+                    //   parentText: parentText,
+                    //   parentID: parentID,
+                    //   threadView: true,
+                    //   date: date,
+                    //   icon: icon,
+                    //   faculty: faculty,
+                    //   genre: genre,
+                    //   body: body,
+                    //   likes: likes,
+                    //   dislikes: dislikes,
+                    //   comments: comments,
+                    // ),
                     Container(
                       height: 500,
                       color: Colors.blueAccent,

@@ -31,12 +31,10 @@ class ExploreFeedState {
     this.connectionErrorFLAG = false,
     this.serverErrorFLAG = false,
     this.posts = const [],
-    this.dailyPosts = const [],
     this.lastSeenID = "",
   });
 
   final List<Widget> posts;
-  final List<Widget> dailyPosts;
   final bool currentlyFetching;
   final bool hasError;
   final bool noMorePosts;
@@ -47,7 +45,6 @@ class ExploreFeedState {
   final bool serverErrorFLAG;
 
   ExploreFeedState copyWith({
-    List<Widget>? newDailyPosts,
     List<Widget>? newPosts,
     bool? newServerErrorFLAG,
     bool? newConnectionErrorFLAG,
@@ -58,7 +55,6 @@ class ExploreFeedState {
   }) {
     return ExploreFeedState(
       lastSeenID: newLastSeenID ?? lastSeenID,
-      dailyPosts: newDailyPosts ?? dailyPosts,
       posts: newPosts ?? posts,
       connectionErrorFLAG: newConnectionErrorFLAG ?? connectionErrorFLAG,
       serverErrorFLAG: newServerErrorFLAG ?? serverErrorFLAG,
@@ -105,66 +101,46 @@ class ExploreFeedNotifier extends StateNotifier<ExploreFeedState> {
   Future<void> _getPosts(LoadPostsType loadPostsType, String accessToken) async {
     if (state.currentlyFetching) return;
     state = state.copyWith(newCurrentlyFetching: true);
-    print(state.lastSeenID);
-    print("<=========>");
     try {
       final response = await http
           .post(
-            Uri.parse('$kDomain/api/posts/retrieve'),
+            Uri.parse('$kDomain/api/posts/recents'),
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
               'Authorization': 'Bearer $accessToken',
             },
             body: jsonEncode(<String, dynamic>{
               "lastPostViewedID": state.lastSeenID,
-              "returnDailyPosts": loadPostsType == LoadPostsType.refresh ? true : false,
+              "last_post_viewed_ID": state.lastSeenID,
             }),
           )
           .timeout(const Duration(seconds: 2));
       state = state.copyWith(newCurrentlyFetching: false);
       if (response.statusCode == 200) {
-        final posts = json.decode(response.body)["posts"];
+        final posts = json.decode(response.body)["foundPosts"];
         if (posts.length < kNumberOfPostsToLoad) {
-          print("uh oh, less than");
           state = state.copyWith(newNoMorePosts: true);
         } else {
           state = state.copyWith(newNoMorePosts: false);
         }
-        List dailyPostsToAdd = [];
-        if (loadPostsType == LoadPostsType.refresh) {
-          dynamic decodedDailyPosts = json.decode(response.body)["dailyPosts"];
-          dailyPostsToAdd = decodedDailyPosts
-              .map(
-                (post) => HighlightTile(
-                  bottomText: Highlight.fromJson(post).university,
-                  topText: Highlight.fromJson(post).genre,
-                ),
-              )
-              .toList();
-        }
-        dynamic decodedPosts = json.decode(response.body)["posts"];
+        dynamic decodedPosts = json.decode(response.body)["foundPosts"];
         List postsToAdd = decodedPosts
             .map(
               (post) => PostTile(
-                parentText: Post.fromJson(post).parentText,
-                parentID: Post.fromJson(post).parentID,
-                parentGenre: Post.fromJson(post).parentGenre,
-                parentFaculty: Post.fromJson(post).parentFaculty,
+                replyingtoPost: Post.fromJson(post).year.toString(),
                 date: Post.fromJson(post).date,
                 icon: Post.fromJson(post).icon,
                 faculty: Post.fromJson(post).faculty,
                 genre: Post.fromJson(post).genre,
-                body: Post.fromJson(post).body,
-                likes: Post.fromJson(post).likes,
-                dislikes: Post.fromJson(post).dislikes,
+                text: Post.fromJson(post).text,
                 comments: Post.fromJson(post).comments,
+                votes: Post.fromJson(post).votes,
+                year: Post.fromJson(post).year,
               ),
             )
             .toList();
         state = state.copyWith(
           newLastSeenID: decodedPosts.length >= 1 ? decodedPosts.last["_id"] : state.lastSeenID,
-          newDailyPosts:
-              loadPostsType == LoadPostsType.refresh ? [...dailyPostsToAdd] : state.dailyPosts,
           newPosts: loadPostsType == LoadPostsType.loadMore
               ? [
                   ...state.posts,
@@ -176,8 +152,8 @@ class ExploreFeedNotifier extends StateNotifier<ExploreFeedState> {
         print("here1 + ${response.statusCode}");
         onRequestError(loadPostsType, RequestErrorType.serverError);
       }
-    } on TimeoutException {
-      print("here2");
+    } on TimeoutException catch (e) {
+      print("here2 $e");
       onRequestError(loadPostsType, RequestErrorType.connectionError);
     } on SocketException {
       print("here3");

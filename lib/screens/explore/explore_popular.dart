@@ -12,7 +12,7 @@ class ExplorePopular extends ConsumerWidget {
     return Container(
       color: Theme.of(context).colorScheme.surfaceVariant,
       child: InfiniteScrollable(
-        dailyPosts: ref.watch(exploreFeedProvider).dailyPosts,
+        dailyPosts: [],
         hasError: ref.watch(exploreFeedProvider).hasError,
         noMorePosts: ref.watch(exploreFeedProvider).noMorePosts,
         currentlyFetching: ref.watch(exploreFeedProvider).currentlyFetching,

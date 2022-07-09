@@ -1,7 +1,7 @@
+import 'package:Confessi/models/feed/post.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mongo_dart/mongo_dart.dart';
-
 import '../../constants/general.dart';
 import '../../constants/typography.dart';
 import '../../screens/explore/explore_post.dart';
@@ -18,30 +18,24 @@ class PostTile extends StatelessWidget {
       required this.icon,
       required this.faculty,
       required this.genre,
-      required this.body,
-      required this.likes,
-      required this.dislikes,
+      required this.text,
       required this.comments,
+      required this.votes,
+      required this.year,
+      required this.replyingtoPost,
       this.threadView = false,
-      this.parentID,
-      this.parentText,
-      this.parentGenre,
-      this.parentFaculty,
       Key? key})
       : super(key: key);
 
-  final ObjectId? parentID;
-  final String? parentText;
-  final String? parentGenre;
-  final String? parentFaculty;
-  final bool threadView;
+  final String? replyingtoPost;
   final IconData icon;
+  final bool threadView;
   final String date;
   final String faculty;
   final String genre;
-  final String body;
-  final int likes;
-  final int dislikes;
+  final String text;
+  final int year;
+  final int votes;
   final int comments;
 
   @override
@@ -49,26 +43,26 @@ class PostTile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
       child: GestureDetector(
-        onTap: () => threadView
-            ? null
-            : Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ExplorePost(
-                      parentFaculty: parentFaculty,
-                      parentGenre: parentGenre,
-                      parentText: parentText,
-                      parentID: parentID,
-                      date: date,
-                      icon: icon,
-                      faculty: faculty,
-                      genre: genre,
-                      body: body,
-                      likes: likes,
-                      dislikes: dislikes,
-                      comments: comments),
-                ),
-              ),
+        // onTap: () => threadView
+        //     ? null
+        //     : Navigator.push(
+        //         context,
+        //         MaterialPageRoute(
+        //           builder: (context) => ExplorePost(
+        //               parentFaculty: parentFaculty,
+        //               parentGenre: parentGenre,
+        //               parentText: parentText,
+        //               parentID: parentID,
+        //               date: date,
+        //               icon: icon,
+        //               faculty: faculty,
+        //               genre: genre,
+        //               body: body,
+        //               likes: likes,
+        //               votes: dislikes,
+        //               comments: comments),
+        //         ),
+        //       ),
         child: Container(
           color: Theme.of(context).colorScheme.background,
           child: Padding(
@@ -88,8 +82,8 @@ class PostTile extends StatelessWidget {
                       Expanded(
                         child: GroupText(
                           leftAlign: true,
-                          body: "$date ∙ $faculty",
-                          header: genre,
+                          body: "$date ∙ $faculty ∙ year $year",
+                          header: "$genre $replyingtoPost",
                           small: true,
                         ),
                       ),
@@ -125,17 +119,17 @@ class PostTile extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: Text(
-                    threadView
-                        ? body
-                        : "${body.substring(0, body.length >= kPostPreviewCharacters ? kPostPreviewCharacters : body.length)} ${body.length >= kPostPreviewCharacters && !threadView ? "..." : ""}",
+                    replyingtoPost != null
+                        ? text
+                        : "${text.substring(0, text.length >= kPostPreviewCharacters ? kPostPreviewCharacters : text.length)} ${text.length >= kPostPreviewCharacters && !threadView ? "..." : ""}",
                     style: kBody.copyWith(
                         color: Theme.of(context).colorScheme.primary,
                         height: 1.4,
-                        fontSize: threadView ? 19 : null),
+                        fontSize: replyingtoPost != null ? 19 : null),
                     textAlign: TextAlign.left,
                   ),
                 ),
-                parentID != null
+                threadView
                     ? Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 15),
                         child: Column(
@@ -150,10 +144,10 @@ class PostTile extends StatelessWidget {
                               ),
                             ),
                             PostReplyTile(
-                              onPress: () => print("Going to: ${parentID ?? "ERROR"}"),
-                              university: parentFaculty ?? "error",
-                              genre: parentGenre ?? "error",
-                              body: parentText ?? "error",
+                              onPress: () => print("Going to: ${"ERROR"}"),
+                              university: "error",
+                              genre: "error",
+                              body: "error",
                               threadView: threadView,
                             ),
                           ],
@@ -172,12 +166,12 @@ class PostTile extends StatelessWidget {
                         PostButton(
                           onPress: () => print("yeet"),
                           icon: CupertinoIcons.hand_thumbsup,
-                          value: likes,
+                          value: votes,
                         ),
                         PostButton(
                           onPress: () => print("yeet"),
                           icon: CupertinoIcons.hand_thumbsdown,
-                          value: dislikes,
+                          value: votes,
                         ),
                         PostButton(
                           onPress: () => print("yeet"),
