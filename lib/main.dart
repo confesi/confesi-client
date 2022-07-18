@@ -1,4 +1,7 @@
+import 'dart:io' show Platform;
+
 import 'package:Confessi/core/network/connection_info.dart';
+import 'package:Confessi/core/router/router.dart';
 import 'package:Confessi/dependency_injection.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
@@ -13,15 +16,16 @@ void main() async {
   runApp(
     DevicePreview(
       enabled: kPreviewMode,
-      builder: (context) => MyApp(network: sl()),
+      builder: (context) => MyApp(network: sl(), appRouter: sl()),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({required this.network, Key? key}) : super(key: key);
+  const MyApp({required this.appRouter, required this.network, Key? key}) : super(key: key);
 
   final NetworkInfo network;
+  final AppRouter appRouter;
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +33,12 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       useInheritedMediaQuery: kPreviewMode,
       title: "Confesi",
+      onGenerateRoute: appRouter.onGenerateRoute,
+      initialRoute: "/",
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.system,
+      builder: DevicePreview.appBuilder,
       home: Builder(builder: (context) {
         return Scaffold(
           backgroundColor: Theme.of(context).colorScheme.background,
@@ -49,6 +56,14 @@ class MyApp extends StatelessWidget {
                   TextButton(
                     onPressed: () async => print(await network.isConnected),
                     child: const Text("Connection?"),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pushNamed("/login"),
+                    child: const Text("Navigate to named route =>"),
+                  ),
+                  TextButton(
+                    onPressed: () => print("Platform: ${Theme.of(context).platform}"),
+                    child: const Text("Platform?"),
                   ),
                 ],
               ),
