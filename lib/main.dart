@@ -1,5 +1,3 @@
-import 'dart:io' show Platform;
-
 import 'package:Confessi/core/network/connection_info.dart';
 import 'package:Confessi/core/router/router.dart';
 import 'package:Confessi/dependency_injection.dart';
@@ -34,7 +32,7 @@ class MyApp extends StatelessWidget {
       useInheritedMediaQuery: kPreviewMode,
       title: "Confesi",
       onGenerateRoute: appRouter.onGenerateRoute,
-      initialRoute: "/",
+      initialRoute: "/splash",
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.system,
