@@ -1,54 +1,74 @@
-import 'package:Confessi/constants/general.dart';
-import 'package:flutter/material.dart';
+import 'package:Confessi/core/network/connection_info.dart';
+import 'package:Confessi/core/router/router.dart';
+import 'package:Confessi/dependency_injection.dart';
 import 'package:device_preview/device_preview.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:stacked_themes/stacked_themes.dart';
+import 'package:flutter/material.dart';
 
-import 'constants/themes.dart';
-import 'screens/start/initial_load.dart';
+import 'core/constants/general.dart';
+import 'core/styles/themes.dart';
+import 'core/styles/typography.dart';
 
 void main() async {
+  await init();
   WidgetsFlutterBinding.ensureInitialized();
-  await ThemeManager.initialise();
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarColor: Colors.transparent, // status bar color
-  ));
-  final double screenWidth = MediaQueryData.fromWindow(WidgetsBinding.instance.window).size.width;
-  if (screenWidth < kTabletBreakpoint) {
-    await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  }
   runApp(
     DevicePreview(
-      enabled: !kProductionBuild, // set to release mode constant
-      builder: (context) => const ProviderScope(
-        child: MyApp(),
-      ),
+      enabled: kPreviewMode,
+      builder: (context) => MyApp(network: sl(), appRouter: sl()),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({required this.appRouter, required this.network, Key? key}) : super(key: key);
+
+  final NetworkInfo network;
+  final AppRouter appRouter;
+
   @override
   Widget build(BuildContext context) {
-    return ThemeBuilder(
-      // statusBarColorBuilder: (theme) => theme?.backgroundColor,
-      defaultThemeMode:
-          ThemeMode.system, // change to "ThemeMode.light/dark" to default to one or the other
-      lightTheme: themesList[0],
-      darkTheme: themesList[1],
-      builder: (context, regularTheme, darkTheme, themeMode) => MaterialApp(
-        title: "Confessi",
-        theme: regularTheme,
-        darkTheme: darkTheme,
-        themeMode: themeMode,
-        debugShowCheckedModeBanner: false,
-        useInheritedMediaQuery: true,
-        locale: DevicePreview.locale(context),
-        builder: DevicePreview.appBuilder,
-        home: const InitialLoad(), // CupertinoNav()
-      ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      useInheritedMediaQuery: kPreviewMode,
+      title: "Confesi",
+      onGenerateRoute: appRouter.onGenerateRoute,
+      initialRoute: "/splash",
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: ThemeMode.system,
+      builder: DevicePreview.appBuilder,
+      home: Builder(builder: (context) {
+        return Scaffold(
+          backgroundColor: Theme.of(context).colorScheme.background,
+          body: SafeArea(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Hello World",
+                    style: kDisplay.copyWith(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () async => print(await network.isConnected),
+                    child: const Text("Connection?"),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pushNamed("/login"),
+                    child: const Text("Navigate to named route =>"),
+                  ),
+                  TextButton(
+                    onPressed: () => print("Platform: ${Theme.of(context).platform}"),
+                    child: const Text("Platform?"),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      }),
     );
   }
 }
