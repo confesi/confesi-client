@@ -17,15 +17,37 @@ class AuthenticationRepository implements IAuthenticationRepository {
   AuthenticationRepository({required this.networkInfo, required this.datasource});
 
   @override
-  Future<Either<Failure, Tokens>> login(String usernameOrEmail, String password) {
-    // TODO: implement login
-    throw UnimplementedError();
+  Future<Either<Failure, Tokens>> login(String usernameOrEmail, String password) async {
+    if (await networkInfo.isConnected) {
+      try {
+        return Right(await datasource.login(usernameOrEmail, password));
+      } on SocketException {
+        return Left(ConnectionFailure());
+      } on TimeoutException {
+        return Left(ConnectionFailure());
+      } catch (e) {
+        return Left(ServerFailure());
+      }
+    } else {
+      return Left(ConnectionFailure());
+    }
   }
 
   @override
-  Future<Either<Failure, Success>> logout() {
-    // TODO: implement logout
-    throw UnimplementedError();
+  Future<Either<Failure, Success>> logout(String refreshToken) async {
+    if (await networkInfo.isConnected) {
+      try {
+        return Right(await datasource.logout(refreshToken));
+      } on SocketException {
+        return Left(ConnectionFailure());
+      } on TimeoutException {
+        return Left(ConnectionFailure());
+      } catch (e) {
+        return Left(ServerFailure());
+      }
+    } else {
+      return Left(ConnectionFailure());
+    }
   }
 
   @override

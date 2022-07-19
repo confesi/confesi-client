@@ -3,7 +3,7 @@ import 'package:dartz/dartz.dart';
 import '../../../../core/results/failures.dart';
 import '../../../../core/usecases/usecase.dart';
 import '../../data/repositories/authentication_repository_concrete.dart';
-import '../entities/access_token.dart';
+import '../entities/tokens.dart';
 
 class SetAccessToken implements Usecase<Tokens, NoParams> {
   final AuthenticationRepository repository;

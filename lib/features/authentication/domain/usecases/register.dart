@@ -10,6 +10,7 @@ import '../entities/tokens.dart';
 class Register implements Usecase<Tokens, Params> {
   final AuthenticationRepository repository;
   final FlutterSecureStorage secureStorage;
+
   Register({required this.repository, required this.secureStorage});
 
   @override
