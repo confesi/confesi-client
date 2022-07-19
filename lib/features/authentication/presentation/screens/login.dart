@@ -59,12 +59,13 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<TokenState>(tokenProvider, (TokenState? prevState, TokenState newState) {
-      // Screen switching logic.
-      if (newState.screen == ScreenState.home) {
-        print("NAV TO BOTTOM NAV");
-      }
-    });
+    //! If screen state is ScreenState.home then nav to bottom nav screen
+    // ref.listen<TokenState>(tokenProvider, (TokenState? prevState, TokenState newState) {
+    //   // Screen switching logic.
+    //   if (newState.screen == ScreenState.home) {
+    //     print("NAV TO BOTTOM NAV");
+    //   }
+    // });
     double heightFactor = MediaQuery.of(context).size.height / 100;
     return KeyboardDismissLayout(
       child: Scaffold(
@@ -114,25 +115,26 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                             justText: true,
                             onPress: () async {
                               FocusScope.of(context).unfocus();
-                              LoginResponse response = localResponses(
-                                  usernameEmailController.text, passwordController.text);
-                              if (response == LoginResponse.success) {
-                                // now we're doing a server call (passes all local tests)
-                                hideErrorMessage();
-                                setState(() {
-                                  isLoading = true;
-                                });
-                                response = await ref
-                                    .read(tokenProvider.notifier)
-                                    .login(usernameEmailController.text, passwordController.text);
-                                showErrorMessage(errorMessagesToShow(response));
-                                setState(() {
-                                  isLoading = false;
-                                });
-                              } else {
-                                // deal with local error
-                                showErrorMessage(errorMessagesToShow(response));
-                              }
+                              //! Deal with logging in error message
+                              // LoginResponse response = localResponses(
+                              //     usernameEmailController.text, passwordController.text);
+                              // if (response == LoginResponse.success) {
+                              //   // now we're doing a server call (passes all local tests)
+                              //   hideErrorMessage();
+                              //   setState(() {
+                              //     isLoading = true;
+                              //   });
+                              //   response = await ref
+                              //       .read(tokenProvider.notifier)
+                              //       .login(usernameEmailController.text, passwordController.text);
+                              //   showErrorMessage(errorMessagesToShow(response));
+                              //   setState(() {
+                              //     isLoading = false;
+                              //   });
+                              // } else {
+                              //   // deal with local error
+                              //   showErrorMessage(errorMessagesToShow(response));
+                              // }
                             },
                             icon: CupertinoIcons.chevron_right,
                             backgroundColor: Theme.of(context).colorScheme.primary,

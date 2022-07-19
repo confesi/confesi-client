@@ -64,12 +64,13 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<TokenState>(tokenProvider, (TokenState? prevState, TokenState newState) {
-      // Screen switching logic.
-      if (newState.screen == ScreenState.onboarding) {
-        print("NAV TO ONBOARDING SET OF SCREENS");
-      }
-    });
+    //! If screen state is ScreenState.onboarding then nav to onboarding screens
+    // ref.listen<TokenState>(tokenProvider, (TokenState? prevState, TokenState newState) {
+    //   // Screen switching logic.
+    //   if (newState.screen == ScreenState.onboarding) {
+    //     print("NAV TO ONBOARDING SET OF SCREENS");
+    //   }
+    // });
     double heightFactor = MediaQuery.of(context).size.height / 100;
     return KeyboardDismissLayout(
       child: Scaffold(
@@ -124,26 +125,27 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                             justText: true,
                             onPress: () async {
                               FocusScope.of(context).unfocus();
-                              RegisterResponse response = localResponses(emailController.text,
-                                  usernameController.text, passwordController.text);
-                              if (response == RegisterResponse.success) {
-                                // now we're doing a server call (passes all local tests)
-                                hideErrorMessage();
-                                setState(() {
-                                  isLoading = true;
-                                });
-                                response = await ref.read(tokenProvider.notifier).register(
-                                    emailController.text,
-                                    usernameController.text,
-                                    passwordController.text);
-                                showErrorMessage(errorMessagesToShow(response));
-                                setState(() {
-                                  isLoading = false;
-                                });
-                              } else {
-                                // deal with local error
-                                showErrorMessage(errorMessagesToShow(response));
-                              }
+                              //! Deal with registration error message
+                              // RegisterResponse response = localResponses(emailController.text,
+                              //     usernameController.text, passwordController.text);
+                              // if (response == RegisterResponse.success) {
+                              //   // now we're doing a server call (passes all local tests)
+                              //   hideErrorMessage();
+                              //   setState(() {
+                              //     isLoading = true;
+                              //   });
+                              //   response = await ref.read(tokenProvider.notifier).register(
+                              //       emailController.text,
+                              //       usernameController.text,
+                              //       passwordController.text);
+                              //   showErrorMessage(errorMessagesToShow(response));
+                              //   setState(() {
+                              //     isLoading = false;
+                              //   });
+                              // } else {
+                              //   // deal with local error
+                              //   showErrorMessage(errorMessagesToShow(response));
+                              // }
                             },
                             icon: CupertinoIcons.chevron_right,
                             backgroundColor: Theme.of(context).colorScheme.secondary,
@@ -153,8 +155,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                           Center(
                             child: LinkText(
                                 onPress: () {
-                                  Navigator.push(context,
-                                      MaterialPageRoute(builder: (context) => const LoginScreen()));
+                                  print("NAV TO LOGIN SCREEN");
                                 },
                                 linkText: "Tap here.",
                                 text: "Already a user? "),

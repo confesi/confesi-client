@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 
 import '../../../../core/results/failures.dart';
 import '../../../../core/results/successes.dart';
-import '../entities/access_token.dart';
+import '../entities/tokens.dart';
 
 abstract class IAuthenticationRepository {
   Future<Either<Failure, Tokens>> setAccessToken();
