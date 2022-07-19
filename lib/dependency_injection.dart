@@ -23,7 +23,7 @@ Future<void> init() async {
 
   //! Data source
   // Registers the authentication data source
-  sl.registerLazySingleton(() => AuthenticationDatasource(client: sl()));
+  sl.registerLazySingleton(() => AuthenticationDatasource(client: sl(), secureStorage: sl()));
 
   //! External
   // Registers connection checker package.

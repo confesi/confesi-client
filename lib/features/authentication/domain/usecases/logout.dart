@@ -15,18 +15,17 @@ class Logout implements Usecase<Success, Params> {
 
   @override
   Future<Either<Failure, Success>> call(Params params) async {
-    final response = await repository.logout(params.refreshToken);
-    response.fold(
-      (failure) => failure,
-      (success) async {
-        try {
-          await secureStorage.delete(key: params.refreshToken);
-        } catch (e) {
-          return ServerFailure();
-        }
+    final result = await repository.logout(params.refreshToken);
+    return result.fold(
+      (failure) => Left(failure),
+      (tokens) async {
+        final result = await repository.deleteRefreshToken();
+        return result.fold(
+          (failure) => Left(failure),
+          (success) => Right(tokens),
+        );
       },
     );
-    return response;
   }
 }
 

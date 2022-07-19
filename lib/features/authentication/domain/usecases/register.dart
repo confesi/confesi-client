@@ -16,17 +16,16 @@ class Register implements Usecase<Tokens, Params> {
   @override
   Future<Either<Failure, Tokens>> call(Params params) async {
     final tokens = await repository.register(params.username, params.password, params.email);
-    tokens.fold(
-      (failure) => failure,
+    return tokens.fold(
+      (failure) => Left(failure),
       (tokens) async {
-        try {
-          await secureStorage.write(key: "refreshToken", value: tokens.refreshToken);
-        } catch (e) {
-          return ServerFailure();
-        }
+        final result = await repository.setRefreshToken(tokens.refreshToken);
+        return result.fold(
+          (failure) => Left(failure),
+          (success) => Right(tokens),
+        );
       },
     );
-    return tokens;
   }
 }
 

@@ -46,3 +46,6 @@ class UsernameInvalidException implements Exception {}
 
 /// Thrown when email is invalid (formatting, profanity, etc.).
 class EmailInvalidException implements Exception {}
+
+/// Thrown when the received token from secure storage is null/empty.
+class EmptyTokenException implements Exception {}

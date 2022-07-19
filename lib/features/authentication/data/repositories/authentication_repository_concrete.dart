@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:Confessi/features/authentication/domain/entities/access_token.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/network/connection_info.dart';
@@ -68,8 +69,46 @@ class AuthenticationRepository implements IAuthenticationRepository {
   }
 
   @override
-  Future<Either<Failure, Tokens>> setAccessToken() {
-    // TODO: implement setAccessToken
-    throw UnimplementedError();
+  Future<Either<Failure, AccessToken>> getAccessToken(String refreshToken) async {
+    if (await networkInfo.isConnected) {
+      try {
+        return Right(await datasource.getAccessToken(refreshToken));
+      } on SocketException {
+        return Left(ConnectionFailure());
+      } on TimeoutException {
+        return Left(ConnectionFailure());
+      } catch (e) {
+        return Left(ServerFailure());
+      }
+    } else {
+      return Left(ConnectionFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, Success>> deleteRefreshToken() async {
+    try {
+      return Right(await datasource.deleteRefreshToken());
+    } catch (e) {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, Success>> setRefreshToken(String refreshToken) async {
+    try {
+      return Right(await datasource.setRefreshToken(refreshToken));
+    } catch (e) {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> getRefreshToken() async {
+    try {
+      return Right(await datasource.getRefreshToken());
+    } catch (e) {
+      return Left(ServerFailure());
+    }
   }
 }
