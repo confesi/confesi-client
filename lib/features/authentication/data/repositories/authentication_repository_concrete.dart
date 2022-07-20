@@ -1,3 +1,5 @@
+// TODO: Handle differnet kinds of errors returned (ex: email incorrect, password wrong, etc. - not just generic server error). Add associated [Failures] to repository layer.
+
 import 'dart:async';
 import 'dart:io';
 

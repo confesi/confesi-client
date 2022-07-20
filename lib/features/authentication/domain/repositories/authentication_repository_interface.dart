@@ -1,3 +1,4 @@
+import 'package:Confessi/features/authentication/domain/entities/access_token.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/results/failures.dart';
@@ -5,7 +6,7 @@ import '../../../../core/results/successes.dart';
 import '../entities/tokens.dart';
 
 abstract class IAuthenticationRepository {
-  Future<Either<Failure, Tokens>> getAccessToken();
+  Future<Either<Failure, AccessToken>> getAccessToken(String refreshToken);
   Future<Either<Failure, String>> getRefreshToken();
   Future<Either<Failure, Success>> deleteRefreshToken();
   Future<Either<Failure, Success>> setRefreshToken(String refreshToken);

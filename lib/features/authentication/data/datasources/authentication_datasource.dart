@@ -1,8 +1,9 @@
-// TODO: Handle differnet kinds of errors returned (ex: email incorrect, password wrong, etc. - not just generic server error).
+// TODO: Handle differnet kinds of errors returned (ex: email incorrect, password wrong, etc. - not just generic server error). Add associated [Failures] to repository layer.
 
 import 'dart:convert';
 
 import 'package:Confessi/features/authentication/data/models/access_token_model.dart';
+import 'package:Confessi/features/authentication/data/utils/error_message_handler.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
@@ -41,11 +42,12 @@ class AuthenticationDatasource implements IAuthenticationDatasource {
           }),
         )
         .timeout(const Duration(seconds: 2));
+    final statusCode = response.statusCode;
     final decodedBody = json.decode(response.body);
-    if (response.statusCode == 200) {
+    if (statusCode == 200) {
       return TokensModel.fromJson(decodedBody);
     } else {
-      throw ServerException();
+      throw errorMessageHandler(decodedBody["errorMessage"]);
     }
   }
 
@@ -84,10 +86,12 @@ class AuthenticationDatasource implements IAuthenticationDatasource {
           }),
         )
         .timeout(const Duration(seconds: 2));
-    if (response.statusCode == 200) {
-      return TokensModel.fromJson(json.decode(response.body));
+    final statusCode = response.statusCode;
+    final decodedBody = json.decode(response.body);
+    if (statusCode == 200) {
+      return TokensModel.fromJson(decodedBody);
     } else {
-      throw ServerException();
+      throw errorMessageHandler(decodedBody["errorMessage"]);
     }
   }
 
@@ -104,10 +108,12 @@ class AuthenticationDatasource implements IAuthenticationDatasource {
           }),
         )
         .timeout(const Duration(seconds: 2));
-    if (response.statusCode == 200) {
-      return AccessTokenModel.fromJson(json.decode(response.body));
+    final statusCode = response.statusCode;
+    final decodedBody = json.decode(response.body);
+    if (statusCode == 200) {
+      return AccessTokenModel.fromJson(decodedBody);
     } else {
-      throw ServerException();
+      throw errorMessageHandler(decodedBody["errorMessage"]);
     }
   }
 
