@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:Confessi/features/authentication/data/utils/exception_handler.dart';
 import 'package:Confessi/features/authentication/domain/entities/access_token.dart';
 import 'package:dartz/dartz.dart';
 
@@ -24,12 +25,8 @@ class AuthenticationRepository implements IAuthenticationRepository {
     if (await networkInfo.isConnected) {
       try {
         return Right(await datasource.login(usernameOrEmail, password));
-      } on SocketException {
-        return Left(ConnectionFailure());
-      } on TimeoutException {
-        return Left(ConnectionFailure());
       } catch (e) {
-        return Left(ServerFailure());
+        return Left(exceptionHandler(e));
       }
     } else {
       return Left(ConnectionFailure());
@@ -41,12 +38,8 @@ class AuthenticationRepository implements IAuthenticationRepository {
     if (await networkInfo.isConnected) {
       try {
         return Right(await datasource.logout(refreshToken));
-      } on SocketException {
-        return Left(ConnectionFailure());
-      } on TimeoutException {
-        return Left(ConnectionFailure());
       } catch (e) {
-        return Left(ServerFailure());
+        return Left(exceptionHandler(e));
       }
     } else {
       return Left(ConnectionFailure());
@@ -58,12 +51,8 @@ class AuthenticationRepository implements IAuthenticationRepository {
     if (await networkInfo.isConnected) {
       try {
         return Right(await datasource.register(username, password, email));
-      } on SocketException {
-        return Left(ConnectionFailure());
-      } on TimeoutException {
-        return Left(ConnectionFailure());
       } catch (e) {
-        return Left(ServerFailure());
+        return Left(exceptionHandler(e));
       }
     } else {
       return Left(ConnectionFailure());
@@ -75,12 +64,8 @@ class AuthenticationRepository implements IAuthenticationRepository {
     if (await networkInfo.isConnected) {
       try {
         return Right(await datasource.getAccessToken(refreshToken));
-      } on SocketException {
-        return Left(ConnectionFailure());
-      } on TimeoutException {
-        return Left(ConnectionFailure());
       } catch (e) {
-        return Left(ServerFailure());
+        return Left(exceptionHandler(e));
       }
     } else {
       return Left(ConnectionFailure());

@@ -47,7 +47,7 @@ class AuthenticationDatasource implements IAuthenticationDatasource {
     if (statusCode == 200) {
       return TokensModel.fromJson(decodedBody);
     } else {
-      throw errorMessageHandler(decodedBody["errorMessage"]);
+      throw errorMessageHandler(decodedBody);
     }
   }
 
@@ -91,7 +91,7 @@ class AuthenticationDatasource implements IAuthenticationDatasource {
     if (statusCode == 200) {
       return TokensModel.fromJson(decodedBody);
     } else {
-      throw errorMessageHandler(decodedBody["errorMessage"]);
+      throw errorMessageHandler(decodedBody);
     }
   }
 
@@ -113,7 +113,7 @@ class AuthenticationDatasource implements IAuthenticationDatasource {
     if (statusCode == 200) {
       return AccessTokenModel.fromJson(decodedBody);
     } else {
-      throw errorMessageHandler(decodedBody["errorMessage"]);
+      throw errorMessageHandler(decodedBody);
     }
   }
 

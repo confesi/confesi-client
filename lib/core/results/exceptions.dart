@@ -1,4 +1,4 @@
-//! General
+//! General exceptions
 
 /// Thrown when server has error (basically, catch-all error).
 class ServerException implements Exception {}
@@ -9,7 +9,7 @@ class ConnectionException implements Exception {}
 /// Thrown when fields are blank that need to be filled out.
 class FieldsBlankException implements Exception {}
 
-//! Authentication
+//! Authentication exceptions
 
 /// Thrown when password is incorrect.
 class PasswordIncorrectException implements Exception {}

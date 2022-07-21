@@ -1,8 +1,8 @@
 import 'package:Confessi/core/results/exceptions.dart';
 
 /// Switches through all error messages from api's error response field, and returns a matching exception.
-Exception errorMessageHandler(String errorMessage) {
-  switch (errorMessage) {
+Exception errorMessageHandler(dynamic errorMessage) {
+  switch (errorMessage["errorMessage"] as String) {
     case "missing fields":
       return FieldsBlankException();
     case "password incorrect":
