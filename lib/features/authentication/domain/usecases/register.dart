@@ -7,14 +7,13 @@ import '../../../../core/usecases/usecase.dart';
 import '../../data/repositories/authentication_repository_concrete.dart';
 import '../entities/tokens.dart';
 
-class Register implements Usecase<Tokens, Params> {
+class Register implements Usecase<Tokens, RegisterParams> {
   final AuthenticationRepository repository;
-  final FlutterSecureStorage secureStorage;
 
-  Register({required this.repository, required this.secureStorage});
+  Register({required this.repository});
 
   @override
-  Future<Either<Failure, Tokens>> call(Params params) async {
+  Future<Either<Failure, Tokens>> call(RegisterParams params) async {
     final tokens = await repository.register(params.username, params.password, params.email);
     return tokens.fold(
       (failure) => Left(failure),
@@ -29,12 +28,12 @@ class Register implements Usecase<Tokens, Params> {
   }
 }
 
-class Params extends Equatable {
+class RegisterParams extends Equatable {
   final String username;
   final String email;
   final String password;
 
-  const Params({required this.username, required this.email, required this.password});
+  const RegisterParams({required this.username, required this.email, required this.password});
 
   @override
   List<Object?> get props => [username, email, password];

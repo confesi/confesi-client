@@ -13,8 +13,8 @@ class RenewAccessToken implements Usecase<Tokens, NoParams> {
 
   @override
   Future<Either<Failure, Tokens>> call(NoParams noParams) async {
-    final result = await repository.getRefreshToken();
-    return result.fold(
+    final failureOrToken = await repository.getRefreshToken();
+    return failureOrToken.fold(
       (failure) => Left(failure),
       (refreshToken) async {
         final response = await repository.getAccessToken(refreshToken);

@@ -7,33 +7,29 @@ import '../../../../core/results/successes.dart';
 import '../../../../core/usecases/usecase.dart';
 import '../../data/repositories/authentication_repository_concrete.dart';
 
-class Logout implements Usecase<Success, Params> {
+class Logout implements Usecase<Success, NoParams> {
   final AuthenticationRepository repository;
-  final FlutterSecureStorage secureStorage;
 
-  Logout({required this.repository, required this.secureStorage});
+  Logout({required this.repository});
 
   @override
-  Future<Either<Failure, Success>> call(Params params) async {
-    final result = await repository.logout(params.refreshToken);
-    return result.fold(
+  Future<Either<Failure, Success>> call(NoParams noParams) async {
+    final failureOrRefreshToken = await repository.getRefreshToken();
+    return failureOrRefreshToken.fold(
       (failure) => Left(failure),
-      (tokens) async {
-        final result = await repository.deleteRefreshToken();
-        return result.fold(
+      (refreshToken) async {
+        final failureOrSuccess = await repository.logout(refreshToken);
+        return failureOrSuccess.fold(
           (failure) => Left(failure),
-          (success) => Right(tokens),
+          (success) async {
+            final failureOrSuccess = await repository.deleteRefreshToken();
+            return failureOrSuccess.fold(
+              (failure) => Left(failure),
+              (success) => Right(success),
+            );
+          },
         );
       },
     );
   }
-}
-
-class Params extends Equatable {
-  final String refreshToken;
-
-  const Params({required this.refreshToken});
-
-  @override
-  List<Object?> get props => [refreshToken];
 }

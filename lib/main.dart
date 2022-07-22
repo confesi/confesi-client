@@ -31,8 +31,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       lazy: false,
-      create: (context) => sl<AuthenticationCubit>()
-        ..registerUser("feldogddlksjdddfix", "", "fedddldidd2x@gmail.com"),
+      create: (context) => sl<AuthenticationCubit>()..startAutoRefreshingAccessTokens(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         useInheritedMediaQuery: kPreviewMode,
