@@ -1,7 +1,8 @@
-import 'package:Confessi/core/results/exceptions.dart';
+import '../../../../core/results/exceptions.dart';
 
 /// Switches through all error messages from api's error response field, and returns a matching exception.
-Exception errorMessageHandler(dynamic errorMessage) {
+Exception errorMessageToException(dynamic errorMessage) {
+  if (errorMessage["errorMessage"].runtimeType != String) throw ServerException();
   switch (errorMessage["errorMessage"] as String) {
     case "missing fields":
       return FieldsBlankException();
@@ -19,11 +20,11 @@ Exception errorMessageHandler(dynamic errorMessage) {
       return PasswordTooShortException();
     case "password too long":
       return PasswordTooLongException();
-    case "username and email taken":
+    case "email and username taken":
       return UsernameAndEmailTakenException();
     case "email taken":
       return EmailTakenException();
-    case "username taken":
+    case "username already taken":
       return UsernameTakenException();
     case "username invalid":
       return UsernameInvalidException();

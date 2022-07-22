@@ -1,11 +1,10 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:Confessi/core/results/exceptions.dart';
-
+import '../../../../core/results/exceptions.dart';
 import '../../../../core/results/failures.dart';
 
-Failure exceptionHandler(Object exception) {
+Failure exceptionToFailure(Object exception) {
   try {
     throw exception;
   } on SocketException {

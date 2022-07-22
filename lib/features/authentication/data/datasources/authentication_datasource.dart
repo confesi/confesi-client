@@ -3,7 +3,7 @@
 import 'dart:convert';
 
 import 'package:Confessi/features/authentication/data/models/access_token_model.dart';
-import 'package:Confessi/features/authentication/data/utils/error_message_handler.dart';
+import 'package:Confessi/features/authentication/data/utils/error_message_to_exception.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
@@ -47,7 +47,7 @@ class AuthenticationDatasource implements IAuthenticationDatasource {
     if (statusCode == 200) {
       return TokensModel.fromJson(decodedBody);
     } else {
-      throw errorMessageHandler(decodedBody);
+      throw errorMessageToException(decodedBody);
     }
   }
 
@@ -91,7 +91,7 @@ class AuthenticationDatasource implements IAuthenticationDatasource {
     if (statusCode == 200) {
       return TokensModel.fromJson(decodedBody);
     } else {
-      throw errorMessageHandler(decodedBody);
+      throw errorMessageToException(decodedBody);
     }
   }
 
@@ -113,7 +113,7 @@ class AuthenticationDatasource implements IAuthenticationDatasource {
     if (statusCode == 200) {
       return AccessTokenModel.fromJson(decodedBody);
     } else {
-      throw errorMessageHandler(decodedBody);
+      throw errorMessageToException(decodedBody);
     }
   }
 

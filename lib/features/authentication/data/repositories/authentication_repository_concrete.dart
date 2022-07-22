@@ -1,18 +1,15 @@
-// TODO: Handle differnet kinds of errors returned (ex: email incorrect, password wrong, etc. - not just generic server error). Add associated [Failures] to repository layer.
-
 import 'dart:async';
-import 'dart:io';
 
-import 'package:Confessi/features/authentication/data/utils/exception_handler.dart';
-import 'package:Confessi/features/authentication/domain/entities/access_token.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/network/connection_info.dart';
 import '../../../../core/results/failures.dart';
 import '../../../../core/results/successes.dart';
+import '../../domain/entities/access_token.dart';
 import '../../domain/entities/tokens.dart';
 import '../../domain/repositories/authentication_repository_interface.dart';
 import '../datasources/authentication_datasource.dart';
+import '../utils/exception_to_failure.dart';
 
 class AuthenticationRepository implements IAuthenticationRepository {
   final NetworkInfo networkInfo;
@@ -26,7 +23,7 @@ class AuthenticationRepository implements IAuthenticationRepository {
       try {
         return Right(await datasource.login(usernameOrEmail, password));
       } catch (e) {
-        return Left(exceptionHandler(e));
+        return Left(exceptionToFailure(e));
       }
     } else {
       return Left(ConnectionFailure());
@@ -39,7 +36,7 @@ class AuthenticationRepository implements IAuthenticationRepository {
       try {
         return Right(await datasource.logout(refreshToken));
       } catch (e) {
-        return Left(exceptionHandler(e));
+        return Left(exceptionToFailure(e));
       }
     } else {
       return Left(ConnectionFailure());
@@ -52,7 +49,7 @@ class AuthenticationRepository implements IAuthenticationRepository {
       try {
         return Right(await datasource.register(username, password, email));
       } catch (e) {
-        return Left(exceptionHandler(e));
+        return Left(exceptionToFailure(e));
       }
     } else {
       return Left(ConnectionFailure());
@@ -65,7 +62,7 @@ class AuthenticationRepository implements IAuthenticationRepository {
       try {
         return Right(await datasource.getAccessToken(refreshToken));
       } catch (e) {
-        return Left(exceptionHandler(e));
+        return Left(exceptionToFailure(e));
       }
     } else {
       return Left(ConnectionFailure());
