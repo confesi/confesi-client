@@ -1,10 +1,11 @@
-import 'package:Confessi/features/authentication/domain/entities/access_token.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/results/failures.dart';
 import '../../../../core/results/successes.dart';
+import '../entities/access_token.dart';
 import '../entities/tokens.dart';
 
+/// The interface for how the implementation of the authentication repository should look.
 abstract class IAuthenticationRepository {
   Future<Either<Failure, AccessToken>> getAccessToken(String refreshToken);
   Future<Either<Failure, String>> getRefreshToken();

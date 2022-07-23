@@ -1,5 +1,6 @@
-import 'package:Confessi/features/authentication/domain/entities/access_token.dart';
+import '../../domain/entities/access_token.dart';
 
+/// Model for access token.
 class AccessTokenModel extends AccessToken {
   const AccessTokenModel({
     required String accessToken,

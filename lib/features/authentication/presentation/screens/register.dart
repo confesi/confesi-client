@@ -1,5 +1,7 @@
+import 'package:Confessi/features/authentication/presentation/cubit/authentication_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/styles/typography.dart';
 import '../../../../core/widgets/behaviours/overscroll.dart';
@@ -64,107 +66,99 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
 
   @override
   Widget build(BuildContext context) {
-    //! If screen state is ScreenState.onboarding then nav to onboarding screens
-    // ref.listen<TokenState>(tokenProvider, (TokenState? prevState, TokenState newState) {
-    //   // Screen switching logic.
-    //   if (newState.screen == ScreenState.onboarding) {
-    //     print("NAV TO ONBOARDING SET OF SCREENS");
-    //   }
-    // });
     double heightFactor = MediaQuery.of(context).size.height / 100;
-    return KeyboardDismissLayout(
-      child: Scaffold(
-        resizeToAvoidBottomInset: true,
-        backgroundColor: Theme.of(context).colorScheme.background,
-        body: SafeArea(
-          child: CupertinoScrollbar(
-            child: ScrollConfiguration(
-              behavior: NoOverScrollSplash(),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const MinimalAppbarLayout(),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(height: 15),
-                          Text(
-                            "Let's get you started.",
-                            style: kDisplay.copyWith(color: Theme.of(context).colorScheme.primary),
-                            textAlign: TextAlign.left,
-                          ),
-                          SizedBox(height: heightFactor * 8),
-                          Column(
-                            children: [
-                              BulgeTextField(
-                                controller: emailController,
-                                hintText: "Email",
-                                bottomPadding: 10,
-                              ),
-                              BulgeTextField(
-                                controller: usernameController,
-                                hintText: "Username",
-                                bottomPadding: 10,
-                              ),
-                              BulgeTextField(
-                                controller: passwordController,
-                                password: true,
-                                hintText: "Password",
-                              ),
-                            ],
-                          ),
-                          FadeSizeText(
-                            text: errorText,
-                            childController: errorAnimController,
-                          ),
-                          PopButton(
-                            loading: isLoading,
-                            justText: true,
-                            onPress: () async {
-                              FocusScope.of(context).unfocus();
-                              //! Deal with registration error message
-                              // RegisterResponse response = localResponses(emailController.text,
-                              //     usernameController.text, passwordController.text);
-                              // if (response == RegisterResponse.success) {
-                              //   // now we're doing a server call (passes all local tests)
-                              //   hideErrorMessage();
-                              //   setState(() {
-                              //     isLoading = true;
-                              //   });
-                              //   response = await ref.read(tokenProvider.notifier).register(
-                              //       emailController.text,
-                              //       usernameController.text,
-                              //       passwordController.text);
-                              //   showErrorMessage(errorMessagesToShow(response));
-                              //   setState(() {
-                              //     isLoading = false;
-                              //   });
-                              // } else {
-                              //   // deal with local error
-                              //   showErrorMessage(errorMessagesToShow(response));
-                              // }
-                            },
-                            icon: CupertinoIcons.chevron_right,
-                            backgroundColor: Theme.of(context).colorScheme.secondary,
-                            textColor: Theme.of(context).colorScheme.background,
-                            text: "Register",
-                          ),
-                          Center(
-                            child: LinkText(
-                                onPress: () {
-                                  print("NAV TO LOGIN SCREEN");
-                                },
-                                linkText: "Tap here.",
-                                text: "Already a user? "),
-                          ),
-                          const SizedBox(height: 10),
-                        ],
+    return BlocListener<AuthenticationCubit, AuthenticationState>(
+      listener: (context, state) {
+        if (state is UserAuthenticationError) {
+          showErrorMessage(state.message);
+        }
+      },
+      child: KeyboardDismissLayout(
+        child: Scaffold(
+          resizeToAvoidBottomInset: true,
+          backgroundColor: Theme.of(context).colorScheme.background,
+          body: SafeArea(
+            child: CupertinoScrollbar(
+              child: ScrollConfiguration(
+                behavior: NoOverScrollSplash(),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const MinimalAppbarLayout(),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 30),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 15),
+                            Text(
+                              "Let's get you started.",
+                              style:
+                                  kDisplay.copyWith(color: Theme.of(context).colorScheme.primary),
+                              textAlign: TextAlign.left,
+                            ),
+                            SizedBox(height: heightFactor * 8),
+                            Column(
+                              children: [
+                                BulgeTextField(
+                                  controller: emailController,
+                                  hintText: "Email",
+                                  bottomPadding: 10,
+                                ),
+                                BulgeTextField(
+                                  controller: usernameController,
+                                  hintText: "Username",
+                                  bottomPadding: 10,
+                                ),
+                                BulgeTextField(
+                                  controller: passwordController,
+                                  password: true,
+                                  hintText: "Password",
+                                ),
+                              ],
+                            ),
+                            FadeSizeText(
+                              text: errorText,
+                              childController: errorAnimController,
+                            ),
+                            PopButton(
+                              loading: isLoading,
+                              justText: true,
+                              onPress: () async {
+                                FocusScope.of(context).unfocus();
+                                setState(() {
+                                  isLoading = true;
+                                });
+                                await context.read<AuthenticationCubit>().registerUser(
+                                      usernameController.text,
+                                      passwordController.text,
+                                      emailController.text,
+                                    );
+                                setState(() {
+                                  isLoading = false;
+                                });
+                              },
+                              icon: CupertinoIcons.chevron_right,
+                              backgroundColor: Theme.of(context).colorScheme.secondary,
+                              textColor: Theme.of(context).colorScheme.onSecondary,
+                              text: "Register",
+                            ),
+                            const SizedBox(height: 10),
+                            Center(
+                              child: LinkText(
+                                  onPress: () {
+                                    Navigator.of(context).pushNamed("/login");
+                                  },
+                                  linkText: "Tap here.",
+                                  text: "Already a user? "),
+                            ),
+                            const SizedBox(height: 10),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),

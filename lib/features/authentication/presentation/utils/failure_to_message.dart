@@ -1,7 +1,7 @@
-import 'package:Confessi/features/authentication/constants.dart';
-
 import '../../../../core/results/failures.dart';
+import '../../constants.dart';
 
+/// Switches through all the possible [Failure]s, and returns their corresponding error message.
 String failureToMessage(Failure failure) {
   switch (failure.runtimeType) {
     case ConnectionFailure:
@@ -34,6 +34,8 @@ String failureToMessage(Failure failure) {
       return kEmailInvalid;
     case PasswordInvalidFailure:
       return kPasswordInvalid;
+    case AccountDoesNotExistFailure:
+      return kAccountDoesNotExist;
     default:
       return kServerError;
   }

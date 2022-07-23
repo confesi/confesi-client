@@ -1,16 +1,14 @@
-// TODO: Handle differnet kinds of errors returned (ex: email incorrect, password wrong, etc. - not just generic server error). Add associated [Failures] to repository layer.
-
 import 'dart:convert';
 
-import 'package:Confessi/features/authentication/data/models/access_token_model.dart';
-import 'package:Confessi/features/authentication/data/utils/error_message_to_exception.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../../core/constants/general.dart';
 import '../../../../core/results/exceptions.dart';
 import '../../../../core/results/successes.dart';
+import '../models/access_token_model.dart';
 import '../models/tokens_model.dart';
+import '../utils/error_message_to_exception.dart';
 
 abstract class IAuthenticationDatasource {
   Future<AccessTokenModel> getAccessToken(String refreshToken);
@@ -22,12 +20,16 @@ abstract class IAuthenticationDatasource {
   Future<TokensModel> login(String usernameOrEmail, String password);
 }
 
+/// The data source for authentication. Connects to the dangerous outside world.
+///
+/// Throws exceptions when things go wrong.
 class AuthenticationDatasource implements IAuthenticationDatasource {
   final http.Client client;
   final FlutterSecureStorage secureStorage;
 
   AuthenticationDatasource({required this.client, required this.secureStorage});
 
+  /// Logs the user in. Returns access and refresh tokens upon being successful.
   @override
   Future<TokensModel> login(String usernameOrEmail, String password) async {
     final response = await http
@@ -51,6 +53,7 @@ class AuthenticationDatasource implements IAuthenticationDatasource {
     }
   }
 
+  /// Logs the user out.
   @override
   Future<Success> logout(String refreshToken) async {
     final response = await http
@@ -71,6 +74,7 @@ class AuthenticationDatasource implements IAuthenticationDatasource {
     }
   }
 
+  /// Registers the user. Returns access and refresh tokens upon being successful.
   @override
   Future<TokensModel> register(String username, String password, String email) async {
     final response = await http
@@ -88,13 +92,14 @@ class AuthenticationDatasource implements IAuthenticationDatasource {
         .timeout(const Duration(seconds: 2));
     final statusCode = response.statusCode;
     final decodedBody = json.decode(response.body);
-    if (statusCode == 200) {
+    if (statusCode == 201) {
       return TokensModel.fromJson(decodedBody);
     } else {
       throw errorMessageToException(decodedBody);
     }
   }
 
+  /// Gets an access token given a refresh token.
   @override
   Future<AccessTokenModel> getAccessToken(String refreshToken) async {
     final response = await http
@@ -117,18 +122,21 @@ class AuthenticationDatasource implements IAuthenticationDatasource {
     }
   }
 
+  /// Deletes the current refresh token in the device's storage.
   @override
   Future<Success> deleteRefreshToken() async {
     await secureStorage.delete(key: "refreshToken");
     return ApiSuccess();
   }
 
+  /// Sets the device's refresh token in storage.
   @override
   Future<Success> setRefreshToken(String refreshToken) async {
     await secureStorage.write(key: "refreshToken", value: refreshToken);
     return ApiSuccess();
   }
 
+  /// Gets the current device's refresh token from storage.
   @override
   Future<String> getRefreshToken() async {
     final result = await secureStorage.read(key: "refreshToken");

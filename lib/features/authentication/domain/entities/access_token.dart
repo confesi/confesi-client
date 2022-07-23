@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+/// [AccessToken] entity. Stores the access token.
 class AccessToken extends Equatable {
   final String accessToken;
 

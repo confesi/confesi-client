@@ -1,7 +1,5 @@
-import 'package:Confessi/core/results/successes.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../../../../core/results/failures.dart';
 import '../../../../core/usecases/usecase.dart';
@@ -13,6 +11,7 @@ class Login implements Usecase<Tokens, LoginParams> {
 
   Login({required this.repository});
 
+  /// Logs the user in.
   @override
   Future<Either<Failure, Tokens>> call(LoginParams params) async {
     final tokens = await repository.login(params.usernameOrEmail, params.password);

@@ -1,6 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:equatable/equatable.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../../../../core/results/failures.dart';
 import '../../../../core/results/successes.dart';
@@ -12,6 +10,7 @@ class Logout implements Usecase<Success, NoParams> {
 
   Logout({required this.repository});
 
+  /// Logs the user out.
   @override
   Future<Either<Failure, Success>> call(NoParams noParams) async {
     final failureOrRefreshToken = await repository.getRefreshToken();

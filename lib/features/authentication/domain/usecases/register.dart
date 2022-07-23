@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../../../../core/results/failures.dart';
 import '../../../../core/usecases/usecase.dart';
@@ -12,6 +11,7 @@ class Register implements Usecase<Tokens, RegisterParams> {
 
   Register({required this.repository});
 
+  /// Registers the user.
   @override
   Future<Either<Failure, Tokens>> call(RegisterParams params) async {
     final tokens = await repository.register(params.username, params.password, params.email);

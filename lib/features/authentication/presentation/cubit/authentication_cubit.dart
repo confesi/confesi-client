@@ -1,16 +1,17 @@
 import 'dart:async';
 
-import 'package:Confessi/core/usecases/usecase.dart';
-import 'package:Confessi/features/authentication/constants.dart';
-import 'package:Confessi/features/authentication/domain/usecases/logout.dart';
-import 'package:Confessi/features/authentication/domain/usecases/renew_access_token.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
+import '../../../../core/results/failures.dart';
+import '../../../../core/usecases/usecase.dart';
+import '../../constants.dart';
 import '../../domain/entities/tokens.dart';
 import '../../domain/usecases/login.dart';
+import '../../domain/usecases/logout.dart';
 import '../../domain/usecases/register.dart';
+import '../../domain/usecases/renew_access_token.dart';
 import '../utils/email_validation.dart';
 import '../utils/failure_to_message.dart';
 import '../utils/password_validation.dart';
@@ -31,6 +32,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     required this.renewAccessToken,
   }) : super(UnknownUserAuthenticationStatus());
 
+  /// Registers the user. Upon error, returns [UserAuthenticationError].
   Future<void> registerUser(String username, String password, String email) async {
     final usernameEither = usernameValidator(username);
     final passwordEither = passwordValidator(password);
@@ -50,7 +52,6 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
                 emit(UserAuthenticationError(message: failureToMessage(failure)));
               },
               (email) async {
-                emit(AuthenticationLoading());
                 final failureOrTokens = await register(
                     RegisterParams(username: username, email: email, password: password));
                 failureOrTokens.fold(
@@ -69,8 +70,8 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     );
   }
 
+  /// Logs in the user. Upon error, returns [UserAuthenticationError].
   Future<void> loginUser(String usernameOrEmail, String password) async {
-    emit(AuthenticationLoading());
     final failureOrTokens =
         await login(LoginParams(usernameOrEmail: usernameOrEmail, password: password));
     failureOrTokens.fold(
@@ -83,8 +84,8 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     );
   }
 
+  /// Logs out the user. Upon error, currently does nothing, as the user will still be logged in.
   Future<void> logoutUser() async {
-    emit(AuthenticationLoading());
     final failureOrSuccess = await logout.call(NoParams());
     failureOrSuccess.fold(
       (failure) =>
@@ -95,14 +96,22 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     );
   }
 
+  /// Renews the user's access token. Upon error, converts the [AuthenticatedUser] state
+  /// to [SemiAuthenticatedUser] state.
   Future<void> renewUserAccessToken() async {
     final failureOrTokens = await renewAccessToken.call(NoParams());
     failureOrTokens.fold(
       (failure) {
-        if (state is AuthenticatedUser) {
+        if (failure is EmptyTokenFailure) {
+          emit(NoUser());
+        } else if (failure is ConnectionFailure) {
           emit(SemiAuthenticatedUser());
         } else {
-          emit(NoUser());
+          if (state is! NoUser && state is! UserAuthenticationError) {
+            emit(SemiAuthenticatedUser());
+          } else {
+            emit(NoUser());
+          }
         }
       },
       (tokens) {
@@ -111,7 +120,10 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     );
   }
 
+  /// Should be called right when app starts. It automatically starts calling [renewUserAccessToken], then
+  /// does so on a timer, constantly getting the user a valid access token right before theirs expires.
   Future<void> startAutoRefreshingAccessTokens() async {
+    await Future.delayed(const Duration(milliseconds: 400));
     renewUserAccessToken();
     Timer.periodic(const Duration(milliseconds: kAccessTokenLifetime - 500), (timer) {
       if (state is! NoUser && state is! UserAuthenticationError) {

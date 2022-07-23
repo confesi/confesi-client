@@ -23,11 +23,15 @@ const String kPasswordTooLong =
 const String kUsernameAndEmailTaken = "Username and email taken.";
 const String kEmailTaken = "Email taken.";
 const String kUsernameTaken = "Username taken.";
-const String kUsernameInvalid = "Invalid username.";
-const String kEmailInvalid = "Invalid email.";
-const String kPasswordInvalid = "Invalid password.";
-const String kServerError = "Internal server error. Sorry!";
+const String kUsernameInvalid =
+    "Invalid username. Names must be appropriate, and only contain letters, numbers, and underscores.";
+const String kEmailInvalid = "Invalid email. Emails must be formatted properly.";
+const String kPasswordInvalid = "Invalid password. Passwords cannot contain a space.";
+const String kServerError = "Internal server error. Sorry Try again later.";
+const String kAccountDoesNotExist = "That account doesn't exist. Maybe you have a typo?";
 
 //! Tokens
 
-const int kAccessTokenLifetime = 1800000; // Time in milliseconds (1,800,000 = 30 minutes). 
+// const int kAccessTokenLifetime = 1800000; // Time in milliseconds (1,800,000 = 30 minutes).
+const int kAccessTokenLifetime =
+    3000; // TODO: Remove. This is a temporary replacement constant. Uncomment the line above.

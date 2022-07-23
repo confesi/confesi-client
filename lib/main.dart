@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'core/constants/general.dart';
-import 'core/network/connection_info.dart';
 import 'core/router/router.dart';
 import 'core/styles/themes.dart';
 import 'dependency_injection.dart';
@@ -16,15 +15,14 @@ void main() async {
   runApp(
     DevicePreview(
       enabled: kPreviewMode,
-      builder: (context) => MyApp(network: sl(), appRouter: sl()),
+      builder: (context) => MyApp(appRouter: sl()),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({required this.appRouter, required this.network, Key? key}) : super(key: key);
+  const MyApp({required this.appRouter, Key? key}) : super(key: key);
 
-  final NetworkInfo network;
   final AppRouter appRouter;
 
   @override
@@ -41,7 +39,28 @@ class MyApp extends StatelessWidget {
         darkTheme: AppTheme.darkTheme,
         themeMode: ThemeMode.system,
         builder: DevicePreview.appBuilder,
-        home: const SplashScreen(),
+
+        /// Manages navigating to new screens if the authentication state switches to certain values.
+        home: BlocListener<AuthenticationCubit, AuthenticationState>(
+          listenWhen: (previous, current) {
+            if ((previous.runtimeType == SemiAuthenticatedUser &&
+                    current.runtimeType == AuthenticatedUser) ||
+                (previous.runtimeType == AuthenticatedUser &&
+                    current.runtimeType == SemiAuthenticatedUser)) {
+              return false;
+            } else {
+              return previous.runtimeType != current.runtimeType;
+            }
+          },
+          listener: (context, state) {
+            if (state is NoUser) {
+              Navigator.pushNamed(context, "/open");
+            } else if (state is AuthenticatedUser || state is SemiAuthenticatedUser) {
+              Navigator.pushNamed(context, "/home");
+            }
+          },
+          child: const SplashScreen(),
+        ),
       ),
     );
   }

@@ -20,6 +20,9 @@ class FieldsBlankFailure extends Failure {}
 /// For when password is incorrect.
 class PasswordIncorrectFailure extends Failure {}
 
+/// For when the queried account doesn't exist.
+class AccountDoesNotExistFailure extends Failure {}
+
 /// For when email is too short.
 class EmailTooShortFailure extends Failure {}
 

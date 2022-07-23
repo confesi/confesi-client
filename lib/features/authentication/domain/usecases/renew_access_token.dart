@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:equatable/equatable.dart';
 
 import '../../../../core/results/failures.dart';
 import '../../../../core/usecases/usecase.dart';
@@ -11,6 +10,7 @@ class RenewAccessToken implements Usecase<Tokens, NoParams> {
 
   RenewAccessToken({required this.repository});
 
+  /// Gets the current refresh token for the user.
   @override
   Future<Either<Failure, Tokens>> call(NoParams noParams) async {
     final failureOrToken = await repository.getRefreshToken();

@@ -1,6 +1,3 @@
-import 'package:Confessi/features/authentication/domain/usecases/logout.dart';
-import 'package:Confessi/features/authentication/domain/usecases/renew_access_token.dart';
-import 'package:Confessi/features/authentication/presentation/cubit/authentication_cubit.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
@@ -11,10 +8,14 @@ import 'core/router/router.dart';
 import 'features/authentication/data/datasources/authentication_datasource.dart';
 import 'features/authentication/data/repositories/authentication_repository_concrete.dart';
 import 'features/authentication/domain/usecases/login.dart';
+import 'features/authentication/domain/usecases/logout.dart';
 import 'features/authentication/domain/usecases/register.dart';
+import 'features/authentication/domain/usecases/renew_access_token.dart';
+import 'features/authentication/presentation/cubit/authentication_cubit.dart';
 
 final GetIt sl = GetIt.instance;
 
+/// Injects the needed dependencies for the app to run.
 Future<void> init() async {
   //! State (BLoC or Cubit)
   // Registers the authentication cubit.

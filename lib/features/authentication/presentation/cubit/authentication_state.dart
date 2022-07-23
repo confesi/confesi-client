@@ -29,9 +29,6 @@ class AuthenticatedUser extends AuthenticationState {
   List<Object?> get props => [tokens];
 }
 
-/// User authentication status is being checked (ex: just pressed login button with account details, or logout, or register, etc.).
-class AuthenticationLoading extends AuthenticationState {}
-
 /// A user that was previously an [AuthenticatedUser], but the automatic renewing of
 /// their access token has failed. AKA: they're probably legit, but we can't prove who they are.
 class SemiAuthenticatedUser extends AuthenticationState {}

@@ -1,8 +1,9 @@
-import 'package:Confessi/features/authentication/constants.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/results/failures.dart';
+import '../../constants.dart';
 
+/// Ensures a passed [username] is valid. Else, returns a [Failure].
 Either<Failure, String> usernameValidator(String username) {
   if (username.isEmpty) {
     return Left(FieldsBlankFailure());

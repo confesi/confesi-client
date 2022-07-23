@@ -1,5 +1,6 @@
-import 'package:Confessi/features/authentication/domain/entities/tokens.dart';
+import '../../domain/entities/tokens.dart';
 
+/// Model for access and refresh token.
 class TokensModel extends Tokens {
   const TokensModel({
     required String accessToken,

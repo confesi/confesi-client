@@ -1,9 +1,9 @@
 import '../../../../core/results/exceptions.dart';
 
-/// Switches through all error messages from api's error response field, and returns a matching exception.
+/// Switches through all error messages from the api's error response field, and returns a matching exception.
 Exception errorMessageToException(dynamic errorMessage) {
-  if (errorMessage["errorMessage"].runtimeType != String) throw ServerException();
-  switch (errorMessage["errorMessage"] as String) {
+  if (errorMessage["error"].runtimeType != String) throw ServerException();
+  switch (errorMessage["error"] as String) {
     case "missing fields":
       return FieldsBlankException();
     case "password incorrect":
@@ -28,10 +28,12 @@ Exception errorMessageToException(dynamic errorMessage) {
       return UsernameTakenException();
     case "username invalid":
       return UsernameInvalidException();
-    case "email invalid":
+    case "invalid email":
       return EmailInvalidException();
     case "password invalid":
       return PasswordInvalidException();
+    case "account doesn't exist":
+      return AccountDoesNotExistException();
     default:
       return ServerException();
   }
