@@ -62,7 +62,11 @@ class MyApp extends StatelessWidget {
             if (state is NoUser) {
               Navigator.pushNamed(context, "/open");
             } else if (state is AuthenticatedUser || state is SemiAuthenticatedUser) {
-              Navigator.pushNamed(context, "/home");
+              if (state is AuthenticatedUser && state.justRegistered) {
+                Navigator.pushNamed(context, "/onboarding");
+              } else {
+                Navigator.pushNamed(context, "/home");
+              }
             }
           },
           child: const SplashScreen(),

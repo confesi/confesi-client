@@ -15,11 +15,6 @@ class OpenScreen extends StatelessWidget {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Theme.of(context).colorScheme.background,
-        appBar: AppBar(
-          toolbarHeight: 0,
-          backgroundColor: Theme.of(context).colorScheme.background,
-          shadowColor: Colors.transparent,
-        ),
         body: SafeArea(
           child: Center(
             child: CustomScrollView(

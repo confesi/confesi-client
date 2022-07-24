@@ -19,14 +19,15 @@ class UserAuthenticationError extends AuthenticationState {
   List<Object?> get props => [message];
 }
 
-/// A user who has a valid access token.
+/// A user who has a valid access token. Also includes details if it's their first time registering (in order to show onboarding screens).
 class AuthenticatedUser extends AuthenticationState {
   final Tokens tokens;
+  final bool justRegistered;
 
-  AuthenticatedUser({required this.tokens});
+  AuthenticatedUser({required this.tokens, required this.justRegistered});
 
   @override
-  List<Object?> get props => [tokens];
+  List<Object?> get props => [tokens, justRegistered];
 }
 
 /// A user that was previously an [AuthenticatedUser], but the automatic renewing of

@@ -96,14 +96,14 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
                           backgroundColor: Colors.transparent,
                           textColor: Theme.of(context).colorScheme.background,
                           text: "Skip",
-                          onPress: () => print("NAV TO BOTTOM NAV"),
+                          onPress: () => Navigator.pushNamed(context, "/home"),
                         ),
                         SingleTextButton(
                           backgroundColor: Theme.of(context).colorScheme.background,
                           textColor: Theme.of(context).colorScheme.primary,
                           text: pageIndex + 1 == pages.length ? "Done" : "Next",
                           onPress: () => pageIndex + 1 == pages.length
-                              ? print("NAV TO BOTTOM NAV")
+                              ? Navigator.pushNamed(context, "/home")
                               : controller.animateToPage(pageIndex + 1,
                                   duration: const Duration(milliseconds: 400),
                                   curve: Curves.easeInOutSine),

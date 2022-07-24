@@ -59,7 +59,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
                     emit(UserAuthenticationError(message: failureToMessage(failure)));
                   },
                   (tokens) {
-                    emit(AuthenticatedUser(tokens: tokens));
+                    emit(AuthenticatedUser(tokens: tokens, justRegistered: true));
                   },
                 );
               },
@@ -79,7 +79,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
         emit(UserAuthenticationError(message: failureToMessage(failure)));
       },
       (tokens) {
-        emit(AuthenticatedUser(tokens: tokens));
+        emit(AuthenticatedUser(tokens: tokens, justRegistered: false));
       },
     );
   }
@@ -115,7 +115,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
         }
       },
       (tokens) {
-        emit(AuthenticatedUser(tokens: tokens));
+        emit(AuthenticatedUser(tokens: tokens, justRegistered: false));
       },
     );
   }

@@ -1,4 +1,5 @@
 import 'package:Confessi/features/authentication/presentation/screens/TEMP_HOME.dart';
+import 'package:Confessi/features/authentication/presentation/screens/onboarding.dart';
 import 'package:flutter/material.dart';
 
 import '../../features/authentication/presentation/screens/login.dart';
@@ -15,6 +16,8 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const SplashScreen());
       case "/open":
         return MaterialPageRoute(builder: (_) => const OpenScreen());
+      case "/onboarding":
+        return MaterialPageRoute(builder: (_) => const ShowcaseScreen());
       case "/login":
         return MaterialPageRoute(builder: (_) => const LoginScreen());
       case "/register":
