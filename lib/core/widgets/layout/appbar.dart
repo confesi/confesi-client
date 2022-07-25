@@ -5,13 +5,13 @@ import '../buttons/touchable_opacity.dart';
 
 class AppbarLayout extends StatelessWidget {
   const AppbarLayout({
-    this.iconTap,
-    this.icon,
-    this.iconRight,
-    this.iconRightTap,
+    this.leftIcon,
+    this.rightIcon,
+    this.leftIconOnPress,
+    this.rightIconOnPress,
     this.bottomBorder = true,
-    this.showIcon = true,
-    this.showRightIcon = false,
+    this.leftIconVisible = true,
+    this.rightIconVisible = false,
     required this.centerWidget,
     this.centerWidgetFullWidth = false,
     Key? key,
@@ -19,13 +19,13 @@ class AppbarLayout extends StatelessWidget {
 
   final bool centerWidgetFullWidth;
   final Widget centerWidget;
-  final bool showIcon;
-  final bool showRightIcon;
+  final bool leftIconVisible;
+  final bool rightIconVisible;
   final bool bottomBorder;
-  final IconData? icon;
-  final Function? iconTap;
-  final IconData? iconRight;
-  final Function? iconRightTap;
+  final IconData? leftIcon;
+  final Function? leftIconOnPress;
+  final IconData? rightIcon;
+  final Function? rightIconOnPress;
 
   Widget children(BuildContext context) => Material(
         color: Theme.of(context).colorScheme.background,
@@ -34,27 +34,25 @@ class AppbarLayout extends StatelessWidget {
           decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(
-                  color:
-                      bottomBorder ? Theme.of(context).colorScheme.background : Colors.transparent,
-                  width: .35),
+                color: bottomBorder ? Theme.of(context).colorScheme.background : Colors.transparent,
+                width: .35,
+              ),
             ),
           ),
-          child: centerWidgetFullWidth
-              ? Center(
-                  child: Padding(
+          child: Center(
+            child: centerWidgetFullWidth
+                ? Padding(
                     padding: const EdgeInsets.all(10),
                     child: centerWidget,
-                  ),
-                )
-              : Center(
-                  child: Row(
+                  )
+                : Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      showIcon
+                      leftIconVisible
                           ? TouchableOpacity(
                               onTap: () {
-                                if (iconTap != null) {
-                                  iconTap!();
+                                if (leftIconOnPress != null) {
+                                  leftIconOnPress!();
                                 } else {
                                   Navigator.pop(context);
                                 }
@@ -63,41 +61,43 @@ class AppbarLayout extends StatelessWidget {
                                 color: Colors.transparent,
                                 child: Padding(
                                   padding: const EdgeInsets.all(10),
-                                  child: Icon(icon ?? CupertinoIcons.chevron_back),
+                                  child: Icon(leftIcon ?? CupertinoIcons.chevron_back),
                                 ),
                               ),
                             )
                           : Padding(
                               padding: const EdgeInsets.all(10),
-                              child: Icon(icon ?? CupertinoIcons.chevron_back,
-                                  color: Colors.transparent),
+                              child: Icon(
+                                leftIcon ?? CupertinoIcons.chevron_back,
+                                color: Colors.transparent,
+                              ),
                             ),
                       Expanded(
                         child: centerWidget,
                       ),
-                      showRightIcon
+                      rightIconVisible
                           ? TouchableOpacity(
                               onTap: () {
-                                if (iconRightTap != null) {
-                                  iconRightTap!();
+                                if (rightIconOnPress != null) {
+                                  rightIconOnPress!();
                                 }
                               },
                               child: Container(
                                 color: Colors.transparent,
                                 child: Padding(
                                   padding: const EdgeInsets.all(10),
-                                  child: Icon(iconRight ?? CupertinoIcons.arrow_clockwise),
+                                  child: Icon(rightIcon ?? CupertinoIcons.arrow_clockwise),
                                 ),
                               ),
                             )
                           : Padding(
                               padding: const EdgeInsets.all(10),
-                              child: Icon(iconRight ?? CupertinoIcons.arrow_clockwise,
+                              child: Icon(rightIcon ?? CupertinoIcons.arrow_clockwise,
                                   color: Colors.transparent),
                             ),
                     ],
                   ),
-                ),
+          ),
         ),
       );
 

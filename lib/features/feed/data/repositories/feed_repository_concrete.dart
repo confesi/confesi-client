@@ -1,11 +1,12 @@
-import 'package:Confessi/core/network/connection_info.dart';
-import 'package:Confessi/features/feed/data/datasources/feed_datasource.dart';
-import 'package:Confessi/features/feed/data/utils/exception_to_failure.dart';
-import 'package:Confessi/features/feed/domain/entities/post.dart';
-import 'package:Confessi/core/results/successes.dart';
-import 'package:Confessi/core/results/failures.dart';
-import 'package:Confessi/features/feed/domain/repositories/feed_repository_interface.dart';
 import 'package:dartz/dartz.dart';
+
+import '../../../../core/network/connection_info.dart';
+import '../../../../core/results/failures.dart';
+import '../../../../core/results/successes.dart';
+import '../../domain/entities/post.dart';
+import '../../domain/repositories/feed_repository_interface.dart';
+import '../datasources/feed_datasource.dart';
+import '../utils/exception_to_failure.dart';
 
 class FeedRepository implements IFeedRepository {
   final NetworkInfo networkInfo;
@@ -19,6 +20,7 @@ class FeedRepository implements IFeedRepository {
       try {
         return Right(await datasource.fetchRecents(lastSeenPostId));
       } catch (e) {
+        print("error here ig $e");
         return Left(exceptionToFailure(e));
       }
     } else {

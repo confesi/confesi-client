@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import '../../domain/entities/post.dart';
 
 class PostModel extends Post {

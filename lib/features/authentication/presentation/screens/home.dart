@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/responsive/breakpoints.dart';
 import '../../../../core/styles/typography.dart';
-import '../../../feed/presentation/screens/explore_home.dart';
+import '../../../feed/presentation/screens/home.dart';
 import '../cubit/authentication_cubit.dart';
 
 class HomeScreen extends StatefulWidget {

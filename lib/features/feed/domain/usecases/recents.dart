@@ -1,8 +1,9 @@
-import 'package:Confessi/core/results/failures.dart';
-import 'package:Confessi/core/usecases/usecase.dart';
-import 'package:Confessi/features/feed/data/repositories/feed_repository_concrete.dart';
-import 'package:Confessi/features/feed/domain/entities/post.dart';
 import 'package:dartz/dartz.dart';
+
+import '../../../../core/results/failures.dart';
+import '../../../../core/usecases/usecase.dart';
+import '../../data/repositories/feed_repository_concrete.dart';
+import '../entities/post.dart';
 
 class Recents implements Usecase<List<Post>, String> {
   final FeedRepository repository;

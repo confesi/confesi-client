@@ -108,7 +108,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   }
 
   /// Renews the user's access token. Upon error, converts the [User] state
-  /// to [SemiAuthenticatedUser] state.
+  /// to a semi authenticated state by removing their [tokens] field and setting [tokensAvailable] to false.
   Future<void> renewUserAccessToken() async {
     final failureOrTokens = await renewAccessToken.call(NoParams());
     failureOrTokens.fold(
@@ -134,6 +134,8 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   /// Should be called right when app starts. It automatically starts calling [renewUserAccessToken], then
   /// does so on a timer, constantly getting the user a valid access token right before theirs expires.
   Future<void> startAutoRefreshingAccessTokens() async {
+    // This delay is so that the splash screen doesn't INSTANTLY switch to either the open screen or home screen. It allows time for it to
+    // be seen without "janking" quickly away.
     await Future.delayed(const Duration(milliseconds: 400));
     renewUserAccessToken();
     Timer.periodic(const Duration(milliseconds: kAccessTokenLifetime - 500), (timer) {

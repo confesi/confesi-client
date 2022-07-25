@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:mongo_dart/mongo_dart.dart';
 
 import '../../data/models/post_model.dart';
 

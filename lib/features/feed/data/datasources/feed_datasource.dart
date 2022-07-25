@@ -20,11 +20,14 @@ class FeedDatasource implements IFeedDatasource {
 
   @override
   Future<List<PostModel>> fetchRecents(String lastSeenPostId) async {
+    print("DATA SOURCE here");
     final response = await http
         .post(
           Uri.parse('$kDomain/api/posts/recents'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization':
+                'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI2MmQwYWM2NDRkOTlkOGU2OTY2ZTQ0NTciLCJpYXQiOjE2NTg3MTY3NDUsImV4cCI6MTY1ODcxODU0NX0.u9NCS1ES4FaXDzTa4Gl5SlhMPVGmvXNnXBtgCAHM0jI',
           },
           body: jsonEncode(<String, String>{
             "last_post_viewed_ID": lastSeenPostId,
@@ -33,8 +36,11 @@ class FeedDatasource implements IFeedDatasource {
         .timeout(const Duration(seconds: 2));
     final statusCode = response.statusCode;
     final decodedBody = json.decode(response.body);
+    print("Status code: $statusCode");
+    print("Body: $decodedBody");
     if (statusCode == 200) {
-      return decodedBody.map((post) => PostModel.fromJson(post)).toList();
+      print(decodedBody["foundPosts"]);
+      return decodedBody["foundPosts"].map((post) => PostModel.fromJson(post)).toList();
     } else {
       throw errorMessageToException(decodedBody);
     }

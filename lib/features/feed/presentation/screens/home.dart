@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/styles/typography.dart';
 import '../../../../core/widgets/layout/appbar.dart';
-import 'explore_recents.dart';
-import 'explore_trending.dart';
+import '../widgets/drawer.dart';
+import '../widgets/top_tabs.dart';
+import 'recents_feed.dart';
+import 'trending_feed.dart';
 
 class ExploreHome extends StatefulWidget {
   const ExploreHome({Key? key}) : super(key: key);
@@ -48,7 +50,7 @@ class _ExploreHomeState extends State<ExploreHome>
     //   }
     // });
     return Scaffold(
-      // drawer: const ExploreDrawer(),
+      drawer: const ExploreDrawer(),
       backgroundColor: Theme.of(context).colorScheme.background,
       body: SafeArea(
         bottom: false,
@@ -62,16 +64,12 @@ class _ExploreHomeState extends State<ExploreHome>
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
                 ),
-                showRightIcon: true,
-                iconRight: CupertinoIcons.arrow_clockwise,
-                iconRightTap: () {
-                  // ref
-                  //     .read(exploreFeedProvider.notifier)
-                  //     .refreshPostsFullScreen(ref.read(tokenProvider).accessToken);
-                },
-                showIcon: true,
-                icon: CupertinoIcons.bars,
-                iconTap: () {
+                rightIconVisible: true,
+                rightIcon: CupertinoIcons.arrow_clockwise,
+                rightIconOnPress: () => print("implement: refresh feed?"),
+                leftIconVisible: true,
+                leftIcon: CupertinoIcons.bars,
+                leftIconOnPress: () {
                   Scaffold.of(context).openDrawer();
                 },
               );
@@ -79,9 +77,9 @@ class _ExploreHomeState extends State<ExploreHome>
             Expanded(
               child: Column(
                 children: [
-                  // ShrinkingTabBar(
-                  //   tabController: tabController,
-                  // ),
+                  TopTabs(
+                    tabController: tabController,
+                  ),
                   Expanded(
                     child: Container(
                       color: Theme.of(context).colorScheme.surfaceVariant,
