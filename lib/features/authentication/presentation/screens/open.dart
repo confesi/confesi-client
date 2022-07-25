@@ -15,11 +15,6 @@ class OpenScreen extends StatelessWidget {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Theme.of(context).colorScheme.background,
-        appBar: AppBar(
-          toolbarHeight: 0,
-          backgroundColor: Theme.of(context).colorScheme.background,
-          shadowColor: Colors.transparent,
-        ),
         body: SafeArea(
           child: Center(
             child: CustomScrollView(
@@ -60,18 +55,18 @@ class OpenScreen extends StatelessWidget {
                               Column(
                                 children: [
                                   PopButton(
-                                    onPress: () => print("NAVIGATION TAPPED"),
+                                    onPress: () => Navigator.of(context).pushNamed("/register"),
                                     icon: CupertinoIcons.chevron_right,
                                     backgroundColor: Theme.of(context).colorScheme.secondary,
-                                    textColor: Theme.of(context).colorScheme.background,
+                                    textColor: Theme.of(context).colorScheme.onSecondary,
                                     text: "Create new account",
                                     bottomPadding: 20,
                                   ),
                                   PopButton(
-                                    onPress: () => print("NAVIGATION TAPPED"),
+                                    onPress: () => Navigator.of(context).pushNamed("/login"),
                                     icon: CupertinoIcons.chevron_right,
                                     backgroundColor: Theme.of(context).colorScheme.primary,
-                                    textColor: Theme.of(context).colorScheme.background,
+                                    textColor: Theme.of(context).colorScheme.onPrimary,
                                     text: "Existing user login",
                                     bottomPadding: 30,
                                   ),

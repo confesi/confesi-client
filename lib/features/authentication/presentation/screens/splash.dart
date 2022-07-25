@@ -8,11 +8,6 @@ class SplashScreen extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
-      appBar: AppBar(
-        toolbarHeight: 0,
-        backgroundColor: Theme.of(context).colorScheme.background,
-        shadowColor: Colors.transparent,
-      ),
       body: SafeArea(
         child: Center(
           child: Hero(

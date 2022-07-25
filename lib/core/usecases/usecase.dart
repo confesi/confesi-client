@@ -3,8 +3,11 @@ import 'package:equatable/equatable.dart';
 
 import '../results/failures.dart';
 
-abstract class Usecase<Type, Params> {
-  Future<Either<Failure, Type>> call(Params params);
+/// Interface class for how a usecase should appear.
+///
+/// Types: <return_type_of_function (besides [Failure]), [call]'s argument type>.
+abstract class Usecase<ReturnType, ArgumentType> {
+  Future<Either<Failure, ReturnType>> call(ArgumentType params);
 }
 
 class NoParams extends Equatable {

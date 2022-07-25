@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-// Includes the theme for the app
+/// The theme class for the app.
 class AppTheme {
+  /// App's light theme.
   static ThemeData lightTheme = ThemeData(
     highlightColor: Colors.transparent,
     splashColor: Colors.transparent,
@@ -20,6 +21,7 @@ class AppTheme {
     ),
   );
 
+  /// App's dark theme.
   static ThemeData darkTheme = ThemeData(
     highlightColor: Colors.transparent,
     splashColor: Colors.transparent,

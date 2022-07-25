@@ -7,10 +7,28 @@ import '../../data/repositories/authentication_repository_concrete.dart';
 
 class Logout implements Usecase<Success, NoParams> {
   final AuthenticationRepository repository;
+
   Logout({required this.repository});
 
+  /// Logs the user out.
   @override
-  Future<Either<Failure, Success>> call(NoParams params) async {
-    return await repository.logout();
+  Future<Either<Failure, Success>> call(NoParams noParams) async {
+    final failureOrRefreshToken = await repository.getRefreshToken();
+    return failureOrRefreshToken.fold(
+      (failure) => Left(failure),
+      (refreshToken) async {
+        final failureOrSuccess = await repository.logout(refreshToken);
+        return failureOrSuccess.fold(
+          (failure) => Left(failure),
+          (success) async {
+            final failureOrSuccess = await repository.deleteRefreshToken();
+            return failureOrSuccess.fold(
+              (failure) => Left(failure),
+              (success) => Right(success),
+            );
+          },
+        );
+      },
+    );
   }
 }

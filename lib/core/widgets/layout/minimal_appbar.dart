@@ -12,10 +12,12 @@ class MinimalAppbarLayout extends StatelessWidget {
       this.bottomBorder = true,
       this.showIcon = true,
       this.text = "",
+      this.pressable = true,
       Key? key})
       : super(key: key);
 
   final String text;
+  final bool pressable;
   final bool showIcon;
   final bool bottomBorder;
   final IconData? icon;
@@ -28,19 +30,22 @@ class MinimalAppbarLayout extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             showIcon
-                ? TouchableOpacity(
-                    onTap: () {
-                      if (iconTap != null) {
-                        iconTap!();
-                      } else {
-                        Navigator.pop(context);
-                      }
-                    },
-                    child: Container(
-                      color: Colors.transparent,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-                        child: Icon(icon ?? CupertinoIcons.arrow_turn_up_left),
+                ? AbsorbPointer(
+                    absorbing: !pressable,
+                    child: TouchableOpacity(
+                      onTap: () {
+                        if (iconTap != null) {
+                          iconTap!();
+                        } else {
+                          Navigator.pop(context);
+                        }
+                      },
+                      child: Container(
+                        color: Colors.transparent,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+                          child: Icon(icon ?? CupertinoIcons.arrow_turn_up_left),
+                        ),
                       ),
                     ),
                   )
