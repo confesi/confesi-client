@@ -23,8 +23,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
   late AnimationController errorAnimController;
   TextEditingController usernameEmailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  // To show spinner on button.
-  bool isLoading = false;
+
   // What to show as error message.
   String errorText = "";
 
@@ -38,6 +37,8 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
   @override
   void dispose() {
     errorAnimController.dispose();
+    usernameEmailController.dispose();
+    passwordController.dispose();
     super.dispose();
   }
 
@@ -62,94 +63,94 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
   @override
   Widget build(BuildContext context) {
     double heightFactor = MediaQuery.of(context).size.height / 100;
-    return BlocListener<AuthenticationCubit, AuthenticationState>(
+    return BlocConsumer<AuthenticationCubit, AuthenticationState>(
       listener: (context, state) {
-        if (state is UserAuthenticationError) {
+        if (state is UserError) {
           showErrorMessage(state.message);
         }
       },
-      child: KeyboardDismissLayout(
-        child: Scaffold(
-          resizeToAvoidBottomInset: true,
-          backgroundColor: Theme.of(context).colorScheme.background,
-          body: SafeArea(
-            child: CupertinoScrollbar(
-              child: ScrollConfiguration(
-                behavior: NoOverScrollSplash(),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const MinimalAppbarLayout(),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 30),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(height: 15),
-                            Text(
-                              "Let's log you in.",
-                              style:
-                                  kDisplay.copyWith(color: Theme.of(context).colorScheme.primary),
-                              textAlign: TextAlign.left,
-                            ),
-                            SizedBox(height: heightFactor * 8),
-                            Column(
-                              children: [
-                                BulgeTextField(
-                                  controller: usernameEmailController,
-                                  hintText: "Email or username",
-                                  bottomPadding: 10,
-                                ),
-                                BulgeTextField(
-                                  controller: passwordController,
-                                  password: true,
-                                  hintText: "Password",
-                                ),
-                              ],
-                            ),
-                            FadeSizeText(
-                              text: errorText,
-                              childController: errorAnimController,
-                            ),
-                            PopButton(
-                              loading: isLoading,
-                              justText: true,
-                              onPress: () async {
-                                FocusScope.of(context).unfocus();
-                                setState(() {
-                                  isLoading = true;
-                                });
-                                await context.read<AuthenticationCubit>().loginUser(
-                                      usernameEmailController.text,
-                                      passwordController.text,
-                                    );
-                                setState(() {
-                                  isLoading = false;
-                                });
-                              },
-                              icon: CupertinoIcons.chevron_right,
-                              backgroundColor: Theme.of(context).colorScheme.primary,
-                              textColor: Theme.of(context).colorScheme.onPrimary,
-                              text: "Login",
-                            ),
-                            const SizedBox(height: 10),
-                            Center(
-                              child: LinkText(
-                                  onPress: () {}, linkText: "Tap here.", text: "Forgot password? "),
-                            ),
-                            const SizedBox(height: 10),
-                          ],
+      builder: (context, state) {
+        return KeyboardDismissLayout(
+          child: Scaffold(
+            resizeToAvoidBottomInset: true,
+            backgroundColor: Theme.of(context).colorScheme.background,
+            body: SafeArea(
+              child: CupertinoScrollbar(
+                child: ScrollConfiguration(
+                  behavior: NoOverScrollSplash(),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        MinimalAppbarLayout(
+                          pressable: state is UserLoading ? false : true,
                         ),
-                      ),
-                    ],
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 30),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(height: 15),
+                              Text(
+                                "Let's log you in.",
+                                style:
+                                    kDisplay.copyWith(color: Theme.of(context).colorScheme.primary),
+                                textAlign: TextAlign.left,
+                              ),
+                              SizedBox(height: heightFactor * 8),
+                              Column(
+                                children: [
+                                  BulgeTextField(
+                                    controller: usernameEmailController,
+                                    hintText: "Email or username",
+                                    bottomPadding: 10,
+                                  ),
+                                  BulgeTextField(
+                                    controller: passwordController,
+                                    password: true,
+                                    hintText: "Password",
+                                  ),
+                                ],
+                              ),
+                              FadeSizeText(
+                                text: errorText,
+                                childController: errorAnimController,
+                              ),
+                              PopButton(
+                                loading: state is UserLoading ? true : false,
+                                justText: true,
+                                onPress: () async {
+                                  FocusScope.of(context).unfocus();
+                                  await context.read<AuthenticationCubit>().loginUser(
+                                        usernameEmailController.text,
+                                        passwordController.text,
+                                      );
+                                },
+                                icon: CupertinoIcons.chevron_right,
+                                backgroundColor: Theme.of(context).colorScheme.primary,
+                                textColor: Theme.of(context).colorScheme.onPrimary,
+                                text: "Login",
+                              ),
+                              const SizedBox(height: 10),
+                              Center(
+                                child: LinkText(
+                                    onPress: () {},
+                                    linkText: "Tap here.",
+                                    text: "Forgot password? "),
+                              ),
+                              const SizedBox(height: 10),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

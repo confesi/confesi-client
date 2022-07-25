@@ -15,6 +15,7 @@ import '../../domain/usecases/renew_access_token.dart';
 import '../utils/email_validation.dart';
 import '../utils/failure_to_message.dart';
 import '../utils/password_validation.dart';
+import '../utils/username_or_email_validation.dart';
 import '../utils/username_validation.dart';
 
 part 'authentication_state.dart';
@@ -30,36 +31,37 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     required this.login,
     required this.logout,
     required this.renewAccessToken,
-  }) : super(UnknownUserAuthenticationStatus());
+  }) : super(UnknownUserStatus());
 
-  /// Registers the user. Upon error, returns [UserAuthenticationError].
+  /// Registers the user. Upon error, returns [UserError].
   Future<void> registerUser(String username, String password, String email) async {
+    emit(UserLoading());
     final usernameEither = usernameValidator(username);
     final passwordEither = passwordValidator(password);
     final emailEither = emailValidator(email);
     usernameEither.fold(
       (failure) {
-        emit(UserAuthenticationError(message: failureToMessage(failure)));
+        emit(UserError(message: failureToMessage(failure)));
       },
       (username) {
         passwordEither.fold(
           (failure) {
-            emit(UserAuthenticationError(message: failureToMessage(failure)));
+            emit(UserError(message: failureToMessage(failure)));
           },
           (password) {
             emailEither.fold(
               (failure) {
-                emit(UserAuthenticationError(message: failureToMessage(failure)));
+                emit(UserError(message: failureToMessage(failure)));
               },
               (email) async {
                 final failureOrTokens = await register(
                     RegisterParams(username: username, email: email, password: password));
                 failureOrTokens.fold(
                   (failure) {
-                    emit(UserAuthenticationError(message: failureToMessage(failure)));
+                    emit(UserError(message: failureToMessage(failure)));
                   },
                   (tokens) {
-                    emit(AuthenticatedUser(tokens: tokens, justRegistered: true));
+                    emit(User(tokens: tokens, justRegistered: true));
                   },
                 );
               },
@@ -70,16 +72,25 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     );
   }
 
-  /// Logs in the user. Upon error, returns [UserAuthenticationError].
+  /// Logs in the user. Upon error, returns [UserError].
   Future<void> loginUser(String usernameOrEmail, String password) async {
-    final failureOrTokens =
-        await login(LoginParams(usernameOrEmail: usernameOrEmail, password: password));
-    failureOrTokens.fold(
+    emit(UserLoading());
+    final usernameOrEmailEither = usernameOrEmailValidator(usernameOrEmail);
+    usernameOrEmailEither.fold(
       (failure) {
-        emit(UserAuthenticationError(message: failureToMessage(failure)));
+        emit(UserError(message: failureToMessage(failure)));
       },
-      (tokens) {
-        emit(AuthenticatedUser(tokens: tokens, justRegistered: false));
+      (usernameOrEmail) async {
+        final failureOrTokens =
+            await login(LoginParams(usernameOrEmail: usernameOrEmail, password: password));
+        failureOrTokens.fold(
+          (failure) {
+            emit(UserError(message: failureToMessage(failure)));
+          },
+          (tokens) {
+            emit(User(tokens: tokens));
+          },
+        );
       },
     );
   }
@@ -96,7 +107,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     );
   }
 
-  /// Renews the user's access token. Upon error, converts the [AuthenticatedUser] state
+  /// Renews the user's access token. Upon error, converts the [User] state
   /// to [SemiAuthenticatedUser] state.
   Future<void> renewUserAccessToken() async {
     final failureOrTokens = await renewAccessToken.call(NoParams());
@@ -105,17 +116,17 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
         if (failure is EmptyTokenFailure) {
           emit(NoUser());
         } else if (failure is ConnectionFailure) {
-          emit(SemiAuthenticatedUser());
+          emit(User(tokensAvailable: false, tokens: null));
         } else {
-          if (state is! NoUser && state is! UserAuthenticationError) {
-            emit(SemiAuthenticatedUser());
+          if (state is! NoUser && state is! UserError) {
+            emit(User(tokensAvailable: false, tokens: null));
           } else {
             emit(NoUser());
           }
         }
       },
       (tokens) {
-        emit(AuthenticatedUser(tokens: tokens, justRegistered: false));
+        emit(User(tokens: tokens));
       },
     );
   }
@@ -126,7 +137,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     await Future.delayed(const Duration(milliseconds: 400));
     renewUserAccessToken();
     Timer.periodic(const Duration(milliseconds: kAccessTokenLifetime - 500), (timer) {
-      if (state is! NoUser && state is! UserAuthenticationError) {
+      if (state is User) {
         renewUserAccessToken();
       }
     });

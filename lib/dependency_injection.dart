@@ -1,3 +1,4 @@
+import 'package:Confessi/features/feed/data/repositories/feed_repository_concrete.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
@@ -12,6 +13,7 @@ import 'features/authentication/domain/usecases/logout.dart';
 import 'features/authentication/domain/usecases/register.dart';
 import 'features/authentication/domain/usecases/renew_access_token.dart';
 import 'features/authentication/presentation/cubit/authentication_cubit.dart';
+import 'features/feed/data/datasources/feed_datasource.dart';
 
 final GetIt sl = GetIt.instance;
 
@@ -41,10 +43,14 @@ Future<void> init() async {
   //! Repositories
   // Registers the authentication repository.
   sl.registerLazySingleton(() => AuthenticationRepository(networkInfo: sl(), datasource: sl()));
+  // Registers the feed repository.
+  sl.registerLazySingleton(() => FeedRepository(networkInfo: sl(), datasource: sl()));
 
   //! Data sources
-  // Registers the authentication data source
+  // Registers the authentication data source.
   sl.registerLazySingleton(() => AuthenticationDatasource(client: sl(), secureStorage: sl()));
+  // Registers the feed data source.
+  sl.registerLazySingleton(() => FeedDatasource(client: sl()));
 
   //! External
   // Registers connection checker package.

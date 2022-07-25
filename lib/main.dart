@@ -43,29 +43,16 @@ class MyApp extends StatelessWidget {
         /// Manages navigating to new screens if the authentication state switches to certain values.
         home: BlocListener<AuthenticationCubit, AuthenticationState>(
           listenWhen: (previous, current) {
-            if (previous.runtimeType == AuthenticatedUser &&
-                current.runtimeType == SemiAuthenticatedUser) {
-              return false;
-            } else if (previous.runtimeType == AuthenticatedUser && current.runtimeType == NoUser) {
-              return true;
-            } else if (previous.runtimeType == SemiAuthenticatedUser &&
-                current.runtimeType == AuthenticatedUser) {
-              return false;
-            } else if (previous.runtimeType == SemiAuthenticatedUser &&
-                current.runtimeType == NoUser) {
-              return true;
-            } else {
-              return previous.runtimeType != current.runtimeType;
-            }
+            return previous.runtimeType != current.runtimeType;
           },
           listener: (context, state) {
             if (state is NoUser) {
-              Navigator.pushNamed(context, "/open");
-            } else if (state is AuthenticatedUser || state is SemiAuthenticatedUser) {
-              if (state is AuthenticatedUser && state.justRegistered) {
-                Navigator.pushNamed(context, "/onboarding");
+              Navigator.of(context).pushNamed("/open");
+            } else if (state is User) {
+              if (state.justRegistered) {
+                Navigator.of(context).pushNamed("/onboarding");
               } else {
-                Navigator.pushNamed(context, "/home");
+                Navigator.of(context).pushNamed("/home");
               }
             }
           },

@@ -1,4 +1,4 @@
-import 'package:Confessi/features/authentication/presentation/screens/TEMP_HOME.dart';
+import 'package:Confessi/features/authentication/presentation/screens/home.dart';
 import 'package:Confessi/features/authentication/presentation/screens/onboarding.dart';
 import 'package:flutter/material.dart';
 
@@ -23,7 +23,7 @@ class AppRouter {
       case "/register":
         return MaterialPageRoute(builder: (_) => const RegisterScreen());
       case "/home": // Most of the screens are tabs under the /home named route.
-        return MaterialPageRoute(builder: (_) => const TempHome());
+        return MaterialPageRoute(builder: (_) => const HomeScreen());
       case "/feed/details":
         return MaterialPageRoute(builder: (_) => const Text("Feed details"));
       case "/settings":
