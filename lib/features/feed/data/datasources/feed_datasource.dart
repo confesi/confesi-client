@@ -8,9 +8,20 @@ import '../models/post_model.dart';
 import '../utils/error_message_to_exception.dart';
 
 abstract class IFeedDatasource {
-  Future<List<Post>> fetchRecents(String lastSeenPostId);
-  Future<List<Post>> fetchTrending(String lastSeenPostId);
-  Future<List<Post>> fetchDailyHottest();
+  // Recents feed.
+  Future<List<Post>> fetchRecents(String lastSeenPostId, String token);
+  Future<List<Post>> refreshRecents(String token);
+
+  // Trending feed.
+  Future<List<Post>> fetchTrending(String lastSeenPostId, String token);
+  Future<List<Post>> refreshTrending(String token);
+
+  // Daily Hottest section (on top of trending feed).
+  Future<List<Post>> fetchDailyHottest(String token);
+  Future<List<Post>> refreshDailyHottest(String token);
+
+  // Refreshing all feeds.
+  Future<List<Post>> refreshAllFeeds(String token);
 }
 
 class FeedDatasource implements IFeedDatasource {
@@ -19,7 +30,7 @@ class FeedDatasource implements IFeedDatasource {
   FeedDatasource({required this.client});
 
   @override
-  Future<List<PostModel>> fetchRecents(String lastSeenPostId) async {
+  Future<List<PostModel>> fetchRecents(String lastSeenPostId, String token) async {
     // final decodedBody = json.decode(dummyJSON);
     // final posts = decodedBody["foundPosts"] as Iterable;
     // return posts.map((post) => PostModel.fromJson(post)).toList();
@@ -28,8 +39,7 @@ class FeedDatasource implements IFeedDatasource {
           Uri.parse('$kDomain/api/posts/recents'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
-            'Authorization':
-                'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI2MmQwYWM2NDRkOTlkOGU2OTY2ZTQ0NTciLCJpYXQiOjE2NTg3MjE2ODAsImV4cCI6MTY1ODcyMzQ4MH0.TiSSPG2ALpHm7Xizrqm18Xw1NrSHRohevmttOADggX0',
+            'Authorization': 'Bearer $token',
           },
           body: jsonEncode(<String, String>{
             "last_post_viewed_ID": lastSeenPostId,
@@ -49,14 +59,38 @@ class FeedDatasource implements IFeedDatasource {
   }
 
   @override
-  Future<List<Post>> fetchTrending(String lastSeenPostId) {
+  Future<List<Post>> fetchDailyHottest(String token) {
+    // TODO: implement fetchDailyHottest
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<Post>> fetchTrending(String lastSeenPostId, String token) {
     // TODO: implement fetchTrending
     throw UnimplementedError();
   }
 
   @override
-  Future<List<Post>> fetchDailyHottest() {
-    // TODO: implement fetchDailyHottest
+  Future<List<Post>> refreshAllFeeds(String token) {
+    // TODO: implement refreshAllFeeds
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<Post>> refreshDailyHottest(String token) {
+    // TODO: implement refreshDailyHottest
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<Post>> refreshRecents(String token) {
+    // TODO: implement refreshRecents
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<Post>> refreshTrending(String token) {
+    // TODO: implement refreshTrending
     throw UnimplementedError();
   }
 }

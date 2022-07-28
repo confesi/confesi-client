@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:Confessi/features/authentication/domain/usecases/refresh_tokens.dart';
+import 'package:Confessi/features/feed/domain/usecases/recents.dart';
+import 'package:Confessi/features/feed/presentation/cubit/recents_cubit.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
@@ -25,6 +27,8 @@ Future<void> init() async {
   // Registers the authentication cubit.
   sl.registerFactory(
       () => AuthenticationCubit(register: sl(), login: sl(), logout: sl(), refreshTokens: sl()));
+  // Registers the recents cubit.
+  sl.registerFactory(() => RecentsCubit(recents: sl()));
 
   //! Usecases
   // Registers the register usecase.
@@ -35,6 +39,8 @@ Future<void> init() async {
   sl.registerLazySingleton(() => Logout(repository: sl()));
   // Registers the auto token refresh usecase.
   sl.registerLazySingleton(() => RefreshTokens(repository: sl(), tokenEmitter: sl()));
+  // Registers the recents feed usecase.
+  sl.registerLazySingleton(() => Recents(repository: sl()));
 
   //! Core
   // Registers custom connection checker class.

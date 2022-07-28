@@ -40,15 +40,6 @@ class _ExploreHomeState extends State<ExploreHome>
 
   @override
   Widget build(BuildContext context) {
-    // ref.listen<ExploreFeedState>(exploreFeedProvider,
-    //     (ExploreFeedState? prevState, ExploreFeedState newState) {
-    //   if (prevState?.connectionErrorFLAG != newState.connectionErrorFLAG) {
-    //     showErrorSnackbar(context, kSnackbarConnectionError);
-    //   }
-    //   if (prevState?.serverErrorFLAG != newState.serverErrorFLAG) {
-    //     showErrorSnackbar(context, kSnackbarServerError);
-    //   }
-    // });
     return Scaffold(
       drawer: const ExploreDrawer(),
       backgroundColor: Theme.of(context).colorScheme.background,

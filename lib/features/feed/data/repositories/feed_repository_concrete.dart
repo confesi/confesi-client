@@ -15,12 +15,12 @@ class FeedRepository implements IFeedRepository {
   FeedRepository({required this.networkInfo, required this.datasource});
 
   @override
-  Future<Either<Failure, List<Post>>> fetchRecents(String lastSeenPostId) async {
+  Future<Either<Failure, List<Post>>> fetchRecents(String lastSeenPostId, String token) async {
     if (await networkInfo.isConnected) {
       try {
-        return Right(await datasource.fetchRecents(lastSeenPostId));
+        return Right(await datasource.fetchRecents(lastSeenPostId, token));
       } catch (e) {
-        print("error here ig $e");
+        print("error here ig: $e");
         return Left(exceptionToFailure(e));
       }
     } else {
@@ -29,37 +29,37 @@ class FeedRepository implements IFeedRepository {
   }
 
   @override
-  Future<Either<Failure, List<Post>>> fetchDailyHottest() {
+  Future<Either<Failure, List<Post>>> fetchDailyHottest(String token) {
     // TODO: implement fetchDailyHottest
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<Failure, List<Post>>> fetchTrending(String lastSeenPostId) {
+  Future<Either<Failure, List<Post>>> fetchTrending(String lastSeenPostId, String token) {
     // TODO: implement fetchTrending
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<Failure, Success>> refreshAllFeeds() {
+  Future<Either<Failure, List<Post>>> refreshAllFeeds(String token) {
     // TODO: implement refreshAllFeeds
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<Failure, Success>> refreshDailyHottest() {
+  Future<Either<Failure, List<Post>>> refreshDailyHottest(String token) {
     // TODO: implement refreshDailyHottest
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<Failure, Success>> refreshRecents() {
+  Future<Either<Failure, List<Post>>> refreshRecents(String token) {
     // TODO: implement refreshRecents
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<Failure, Success>> refreshTrending() {
+  Future<Either<Failure, List<Post>>> refreshTrending(String token) {
     // TODO: implement refreshTrending
     throw UnimplementedError();
   }
