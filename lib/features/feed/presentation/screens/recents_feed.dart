@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../dependency_injection.dart';
+import '../../../authentication/presentation/cubit/authentication_cubit.dart';
 import '../../domain/usecases/recents.dart';
 
 class ExploreRecents extends StatelessWidget {
@@ -22,7 +24,18 @@ class ExploreRecents extends StatelessWidget {
               },
               child: const Text("load posts"),
             ),
-            const Text("..."),
+            TextButton(
+              onPressed: () async {
+                await context.read<AuthenticationCubit>().startRefreshingTokensStream();
+              },
+              child: const Text("start refreshing (listen)"),
+            ),
+            TextButton(
+              onPressed: () async {
+                await context.read<AuthenticationCubit>().refreshBothTokens();
+              },
+              child: const Text("refresh"),
+            ),
           ],
         ),
       ),

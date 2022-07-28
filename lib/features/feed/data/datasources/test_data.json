@@ -1,0 +1,33 @@
+{
+  "_id": "62dcc0349a4cce309d8e5f39",
+  "rank": 0,
+  "university": "UBC",
+  "genre": "RELATIONSHIPS",
+  "year": 6,
+  "faculty": "LAW",
+  "reports": 0,
+  "text": "replying to actual post",
+  "comment_count": 0,
+  "votes": 0,
+  "created_date": "2022-07-24T03:44:52.204Z",
+  "child_data": {
+    "child_type": "child needs loading",
+    "child_id": "asldkflkjldskjf",
+    "child": null
+  },
+  "__v": 0
+}
+
+TYPES:
+
+"child_type": "no child",
+"child_id": null,
+"child": null
+
+"child_type": "has child",
+"child_id": "asldkflkjldskjf",
+"child": {POST}
+
+"child_type": "child needs loading",
+"child_id": "asldkflkjldskjf",
+"child": null

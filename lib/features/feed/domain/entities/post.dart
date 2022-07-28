@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../data/models/post_model.dart';
+import '../../data/models/post_child_data.dart';
 
 class Post extends Equatable {
   final String university;
@@ -12,7 +12,7 @@ class Post extends Equatable {
   final int commentCount;
   final int votes;
   final DateTime createdDate;
-  final PostModel? replyingPost;
+  final PostChildDataModel child;
 
   const Post({
     required this.university,
@@ -24,7 +24,7 @@ class Post extends Equatable {
     required this.commentCount,
     required this.votes,
     required this.createdDate,
-    this.replyingPost,
+    required this.child,
   });
 
   @override
@@ -38,6 +38,6 @@ class Post extends Equatable {
         commentCount,
         votes,
         createdDate,
-        replyingPost
+        child,
       ];
 }

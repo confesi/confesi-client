@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:Confessi/features/authentication/domain/usecases/refresh_tokens.dart';
 import 'package:bloc/bloc.dart';
+import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
@@ -11,7 +13,6 @@ import '../../domain/entities/tokens.dart';
 import '../../domain/usecases/login.dart';
 import '../../domain/usecases/logout.dart';
 import '../../domain/usecases/register.dart';
-import '../../domain/usecases/renew_access_token.dart';
 import '../utils/email_validation.dart';
 import '../utils/failure_to_message.dart';
 import '../utils/password_validation.dart';
@@ -24,14 +25,45 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   final Register register;
   final Login login;
   final Logout logout;
-  final RenewAccessToken renewAccessToken;
+  final RefreshTokens refreshTokens;
 
   AuthenticationCubit({
+    required this.refreshTokens,
     required this.register,
     required this.login,
     required this.logout,
-    required this.renewAccessToken,
   }) : super(UnknownUserStatus());
+
+  Future<void> startRefreshingTokensStream() async {
+    // This delay is so that the splash screen doesn't INSTANTLY switch to either the open screen
+    // or home screen on opening the app (if user is opening app for the first time).
+    if (state is UnknownUserStatus) {
+      await Future.delayed(const Duration(milliseconds: 400));
+    }
+    refreshTokens.startRefreshing(state).listen((event) {
+      event.fold(
+        (failure) {
+          if (failure is EmptyTokenFailure) {
+            emit(NoUser());
+          } else if (failure is ConnectionFailure) {
+            emit(User(tokensAvailable: false, tokens: null));
+          } else {
+            if (state is! NoUser && state is! UserError) {
+              emit(User(tokensAvailable: false, tokens: null));
+            } else {
+              emit(NoUser());
+            }
+          }
+        },
+        (tokens) {
+          emit(User(tokens: tokens));
+        },
+      );
+    });
+  }
+
+  /// Refreshes the both the current access and refresh tokens.
+  Future<void> refreshBothTokens() async => refreshTokens.refresh();
 
   /// Registers the user. Upon error, returns [UserError].
   Future<void> registerUser(String username, String password, String email) async {
@@ -105,43 +137,5 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
         emit(NoUser());
       },
     );
-  }
-
-  /// Renews the user's access token. Upon error, converts the [User] state
-  /// to a semi authenticated state by removing their [tokens] field and setting [tokensAvailable] to false.
-  Future<void> renewUserAccessToken() async {
-    final failureOrTokens = await renewAccessToken.call(NoParams());
-    failureOrTokens.fold(
-      (failure) {
-        if (failure is EmptyTokenFailure) {
-          emit(NoUser());
-        } else if (failure is ConnectionFailure) {
-          emit(User(tokensAvailable: false, tokens: null));
-        } else {
-          if (state is! NoUser && state is! UserError) {
-            emit(User(tokensAvailable: false, tokens: null));
-          } else {
-            emit(NoUser());
-          }
-        }
-      },
-      (tokens) {
-        emit(User(tokens: tokens));
-      },
-    );
-  }
-
-  /// Should be called right when app starts. It automatically starts calling [renewUserAccessToken], then
-  /// does so on a timer, constantly getting the user a valid access token right before theirs expires.
-  Future<void> startAutoRefreshingAccessTokens() async {
-    // This delay is so that the splash screen doesn't INSTANTLY switch to either the open screen or home screen. It allows time for it to
-    // be seen without "janking" quickly away.
-    await Future.delayed(const Duration(milliseconds: 400));
-    renewUserAccessToken();
-    Timer.periodic(const Duration(milliseconds: kAccessTokenLifetime - 500), (timer) {
-      if (state is User) {
-        renewUserAccessToken();
-      }
-    });
   }
 }

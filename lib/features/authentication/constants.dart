@@ -34,4 +34,4 @@ const String kAccountDoesNotExist = "That account doesn't exist. Maybe you have 
 
 // const int kAccessTokenLifetime = 1800000; // Time in milliseconds (1,800,000 = 30 minutes).
 const int kAccessTokenLifetime =
-    3000; // TODO: Remove. This is a temporary replacement constant. Uncomment the line above.
+    30000; // TODO: Remove. This is a temporary replacement constant. Uncomment the line above.

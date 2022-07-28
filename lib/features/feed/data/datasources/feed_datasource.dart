@@ -20,14 +20,16 @@ class FeedDatasource implements IFeedDatasource {
 
   @override
   Future<List<PostModel>> fetchRecents(String lastSeenPostId) async {
-    print("DATA SOURCE here");
+    // final decodedBody = json.decode(dummyJSON);
+    // final posts = decodedBody["foundPosts"] as Iterable;
+    // return posts.map((post) => PostModel.fromJson(post)).toList();
     final response = await http
         .post(
           Uri.parse('$kDomain/api/posts/recents'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
             'Authorization':
-                'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI2MmQwYWM2NDRkOTlkOGU2OTY2ZTQ0NTciLCJpYXQiOjE2NTg3MTY3NDUsImV4cCI6MTY1ODcxODU0NX0.u9NCS1ES4FaXDzTa4Gl5SlhMPVGmvXNnXBtgCAHM0jI',
+                'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI2MmQwYWM2NDRkOTlkOGU2OTY2ZTQ0NTciLCJpYXQiOjE2NTg3MjE2ODAsImV4cCI6MTY1ODcyMzQ4MH0.TiSSPG2ALpHm7Xizrqm18Xw1NrSHRohevmttOADggX0',
           },
           body: jsonEncode(<String, String>{
             "last_post_viewed_ID": lastSeenPostId,
@@ -36,11 +38,11 @@ class FeedDatasource implements IFeedDatasource {
         .timeout(const Duration(seconds: 2));
     final statusCode = response.statusCode;
     final decodedBody = json.decode(response.body);
-    print("Status code: $statusCode");
-    print("Body: $decodedBody");
     if (statusCode == 200) {
-      print(decodedBody["foundPosts"]);
-      return decodedBody["foundPosts"].map((post) => PostModel.fromJson(post)).toList();
+      final posts = decodedBody["foundPosts"] as Iterable;
+      final ans = posts.map((post) => PostModel.fromJson(post)).toList();
+      print("ANS: $ans");
+      return ans;
     } else {
       throw errorMessageToException(decodedBody);
     }

@@ -1,4 +1,6 @@
-import 'package:Confessi/features/feed/data/repositories/feed_repository_concrete.dart';
+import 'dart:async';
+
+import 'package:Confessi/features/authentication/domain/usecases/refresh_tokens.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
@@ -11,9 +13,9 @@ import 'features/authentication/data/repositories/authentication_repository_conc
 import 'features/authentication/domain/usecases/login.dart';
 import 'features/authentication/domain/usecases/logout.dart';
 import 'features/authentication/domain/usecases/register.dart';
-import 'features/authentication/domain/usecases/renew_access_token.dart';
 import 'features/authentication/presentation/cubit/authentication_cubit.dart';
 import 'features/feed/data/datasources/feed_datasource.dart';
+import 'features/feed/data/repositories/feed_repository_concrete.dart';
 
 final GetIt sl = GetIt.instance;
 
@@ -22,7 +24,7 @@ Future<void> init() async {
   //! State (BLoC or Cubit)
   // Registers the authentication cubit.
   sl.registerFactory(
-      () => AuthenticationCubit(register: sl(), login: sl(), logout: sl(), renewAccessToken: sl()));
+      () => AuthenticationCubit(register: sl(), login: sl(), logout: sl(), refreshTokens: sl()));
 
   //! Usecases
   // Registers the register usecase.
@@ -31,8 +33,8 @@ Future<void> init() async {
   sl.registerLazySingleton(() => Login(repository: sl()));
   // Registers the logout usecase.
   sl.registerLazySingleton(() => Logout(repository: sl()));
-  // Registers the renew access token usecase.
-  sl.registerLazySingleton(() => RenewAccessToken(repository: sl()));
+  // Registers the auto token refresh usecase.
+  sl.registerLazySingleton(() => RefreshTokens(repository: sl(), tokenEmitter: sl()));
 
   //! Core
   // Registers custom connection checker class.
@@ -59,4 +61,8 @@ Future<void> init() async {
   sl.registerLazySingleton(() => http.Client());
   // Registers the secure storage package.
   sl.registerLazySingleton(() => const FlutterSecureStorage());
+
+  //! Other
+  // Registers the token emitter timer class used to keep refreshing tokens.
+  sl.registerLazySingleton(() => TokenEmitter(repository: sl()));
 }

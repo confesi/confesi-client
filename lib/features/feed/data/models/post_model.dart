@@ -1,4 +1,5 @@
 import '../../domain/entities/post.dart';
+import 'post_child_data.dart';
 
 class PostModel extends Post {
   const PostModel({
@@ -11,7 +12,7 @@ class PostModel extends Post {
     required int commentCount,
     required int votes,
     required DateTime createdDate,
-    PostModel? replyingPost,
+    required PostChildDataModel child,
   }) : super(
           university: university,
           genre: genre,
@@ -22,12 +23,10 @@ class PostModel extends Post {
           commentCount: commentCount,
           votes: votes,
           createdDate: createdDate,
-          replyingPost: replyingPost,
+          child: child,
         );
 
   factory PostModel.fromJson(Map<String, dynamic> json) {
-    final replyingPostData = json["replying_post_ID"];
-    final replyingPost = replyingPostData != null ? PostModel.fromJson(replyingPostData) : null;
     return PostModel(
       university: json["university"] as String,
       genre: json["genre"] as String,
@@ -37,8 +36,8 @@ class PostModel extends Post {
       text: json["text"] as String,
       commentCount: json["comment_count"] as int,
       votes: json["votes"] as int,
-      createdDate: json["created_date"] as DateTime,
-      replyingPost: replyingPost,
+      createdDate: DateTime.parse(json["created_date"]),
+      child: PostChildDataModel.fromJson(json["child_data"]),
     );
   }
 }
