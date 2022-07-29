@@ -1,3 +1,5 @@
+import 'package:Confessi/features/feed/domain/entities/post_child.dart';
+
 import '../../domain/entities/post.dart';
 import 'post_child_data.dart';
 

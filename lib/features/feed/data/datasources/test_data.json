@@ -1,33 +1,97 @@
 {
-  "_id": "62dcc0349a4cce309d8e5f39",
-  "rank": 0,
-  "university": "UBC",
-  "genre": "RELATIONSHIPS",
-  "year": 6,
-  "faculty": "LAW",
-  "reports": 0,
-  "text": "replying to actual post",
-  "comment_count": 0,
-  "votes": 0,
-  "created_date": "2022-07-24T03:44:52.204Z",
-  "child_data": {
-    "child_type": "child needs loading",
-    "child_id": "asldkflkjldskjf",
-    "child": null
-  },
-  "__v": 0
+  "foundPosts": [
+    {
+      "_id": "62dcaaf09a4cce309d8e567c",
+      "rank": 30.145533333333333,
+      "university": "UBC",
+      "genre": "RELATIONSHIPS",
+      "year": 6,
+      "faculty": "LAW",
+      "reports": 0,
+      "text": "post-fix",
+      "comment_count": 0,
+      "votes": 1,
+      "created_date": "2022-07-24T02:14:08.632Z",
+      "child_data": {
+        "child_type": "no child",
+        "child_id": null,
+        "child": null
+      },
+      "__v": 0
+    },
+    {
+      "_id": "62dcbef19a4cce309d8e5e9f",
+      "rank": 0,
+      "university": "UBC",
+      "genre": "RELATIONSHIPS",
+      "year": 6,
+      "faculty": "LAW",
+      "reports": 0,
+      "text": "replying to actual post",
+      "comment_count": 0,
+      "votes": 0,
+      "created_date": "2022-07-24T03:39:29.371Z",
+      "child_data": {
+        "child_type": "has child",
+        "child_id": "62dcaaf09a4cce309d8e567c",
+        "child": {
+          "_id": "62dcaaf09a4cce309d8e567c",
+          "user_ID": "62d0ac644d99d8e6966e4457",
+          "rank": 30.145533333333333,
+          "university": "UBC",
+          "genre": "RELATIONSHIPS",
+          "year": 6,
+          "faculty": "LAW",
+          "reports": 0,
+          "text": "post-fix",
+          "comment_count": 0,
+          "votes": 1,
+          "created_date": "2022-07-24T02:14:08.632Z",
+          "child_data": {
+            "child_type": "no child",
+            "child_id": null,
+            "child": null
+          },
+          "__v": 0
+        }
+      }
+    },
+    {
+      "_id": "62dcc0349a4cce309d8e5f39",
+      "rank": 0,
+      "university": "UBC",
+      "genre": "RELATIONSHIPS",
+      "year": 6,
+      "faculty": "LAW",
+      "reports": 0,
+      "text": "replying to actual post",
+      "comment_count": 0,
+      "votes": 0,
+      "created_date": "2022-07-24T03:44:52.204Z",
+      "child_data": {
+        "child_type": "no child",
+        "child_id": null,
+        "child": null
+      },
+      "__v": 0
+    },
+    {
+      "_id": "62dcbef19a4cce309d8e5e9f",
+      "rank": 0,
+      "university": "UBC",
+      "genre": "RELATIONSHIPS",
+      "year": 6,
+      "faculty": "LAW",
+      "reports": 0,
+      "text": "replying to actual post",
+      "comment_count": 0,
+      "votes": 0,
+      "created_date": "2022-07-24T03:39:29.371Z",
+      "child_data": {
+        "child_type": "child needs loading",
+        "child_id": "62dcaaf09a4cce309d8e567c",
+        "child": null
+      }
+    }
+  ]
 }
-
-TYPES:
-
-"child_type": "no child",
-"child_id": null,
-"child": null
-
-"child_type": "has child",
-"child_id": "asldkflkjldskjf",
-"child": {POST}
-
-"child_type": "child needs loading",
-"child_id": "asldkflkjldskjf",
-"child": null

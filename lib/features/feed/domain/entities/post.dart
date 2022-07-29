@@ -1,3 +1,4 @@
+import 'package:Confessi/features/feed/domain/entities/post_child.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../data/models/post_child_data.dart';
@@ -12,7 +13,7 @@ class Post extends Equatable {
   final int commentCount;
   final int votes;
   final DateTime createdDate;
-  final PostChildDataModel child;
+  final PostChild child;
 
   const Post({
     required this.university,

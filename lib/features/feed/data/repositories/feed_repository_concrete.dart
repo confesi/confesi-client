@@ -29,6 +29,12 @@ class FeedRepository implements IFeedRepository {
   }
 
   @override
+  Future<Either<Failure, List<Post>>> refreshRecents(String token) {
+    // TODO: implement refreshRecents
+    throw UnimplementedError();
+  }
+
+  @override
   Future<Either<Failure, List<Post>>> fetchDailyHottest(String token) {
     // TODO: implement fetchDailyHottest
     throw UnimplementedError();
@@ -49,12 +55,6 @@ class FeedRepository implements IFeedRepository {
   @override
   Future<Either<Failure, List<Post>>> refreshDailyHottest(String token) {
     // TODO: implement refreshDailyHottest
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<Failure, List<Post>>> refreshRecents(String token) {
-    // TODO: implement refreshRecents
     throw UnimplementedError();
   }
 
