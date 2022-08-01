@@ -1,27 +1,27 @@
 import 'dart:async';
 
-import 'package:Confessi/core/authorization/api_client_3.dart';
-import 'package:Confessi/features/authentication/domain/usecases/refresh_tokens.dart';
-import 'package:Confessi/features/feed/domain/usecases/recents.dart';
-import 'package:Confessi/features/feed/domain/usecases/trending.dart';
-import 'package:Confessi/features/feed/presentation/cubit/recents_cubit.dart';
-import 'package:Confessi/features/feed/presentation/cubit/trending_cubit.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
+import 'core/authorization/api_client.dart';
 import 'core/network/connection_info.dart';
 import 'core/router/router.dart';
 import 'features/authentication/data/datasources/authentication_datasource.dart';
 import 'features/authentication/data/repositories/authentication_repository_concrete.dart';
 import 'features/authentication/domain/usecases/login.dart';
 import 'features/authentication/domain/usecases/logout.dart';
+import 'features/authentication/domain/usecases/refresh_tokens.dart';
 import 'features/authentication/domain/usecases/register.dart';
 import 'features/authentication/presentation/cubit/authentication_cubit.dart';
 import 'features/feed/data/datasources/feed_datasource.dart';
 import 'features/feed/data/repositories/feed_repository_concrete.dart';
+import 'features/feed/domain/usecases/recents.dart';
+import 'features/feed/domain/usecases/trending.dart';
+import 'features/feed/presentation/cubit/recents_cubit.dart';
+import 'features/feed/presentation/cubit/trending_cubit.dart';
 
 final GetIt sl = GetIt.instance;
 

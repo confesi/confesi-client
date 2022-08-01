@@ -1,7 +1,8 @@
-import 'package:Confessi/core/usecases/usecase.dart';
-import 'package:Confessi/features/feed/domain/usecases/trending.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+
+import '../../../../core/usecases/usecase.dart';
+import '../../domain/usecases/trending.dart';
 
 part 'trending_state.dart';
 

@@ -1,6 +1,7 @@
-import 'package:Confessi/features/feed/presentation/cubit/trending_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../cubit/trending_cubit.dart';
 
 class ExploreTrending extends StatelessWidget {
   const ExploreTrending({Key? key}) : super(key: key);

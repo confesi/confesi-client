@@ -1,7 +1,6 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/results/failures.dart';
-import '../../../../core/results/successes.dart';
 import '../entities/post.dart';
 
 /// The interface for how the implementation of the feed repository should look.

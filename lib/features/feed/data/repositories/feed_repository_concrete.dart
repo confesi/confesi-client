@@ -2,7 +2,6 @@ import 'package:dartz/dartz.dart';
 
 import '../../../../core/network/connection_info.dart';
 import '../../../../core/results/failures.dart';
-import '../../../../core/results/successes.dart';
 import '../../domain/entities/post.dart';
 import '../../domain/repositories/feed_repository_interface.dart';
 import '../datasources/feed_datasource.dart';

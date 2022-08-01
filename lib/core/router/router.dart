@@ -1,4 +1,3 @@
-import 'package:Confessi/features/feed/presentation/cubit/trending_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -10,6 +9,7 @@ import '../../features/authentication/presentation/screens/open.dart';
 import '../../features/authentication/presentation/screens/register.dart';
 import '../../features/authentication/presentation/screens/splash.dart';
 import '../../features/feed/presentation/cubit/recents_cubit.dart';
+import '../../features/feed/presentation/cubit/trending_cubit.dart';
 
 /// The application's routes (screens) manager.
 class AppRouter {

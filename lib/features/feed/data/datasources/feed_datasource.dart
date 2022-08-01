@@ -1,11 +1,10 @@
 import 'dart:convert';
 
-import 'package:Confessi/core/authorization/api_client_3.dart';
-import 'package:Confessi/core/constants/general.dart';
-import 'package:Confessi/core/results/exceptions.dart';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../../core/authorization/api_client.dart';
+import '../../../../core/results/exceptions.dart';
 import '../../domain/entities/post.dart';
 import '../models/post_model.dart';
 
@@ -155,7 +154,7 @@ class FeedDatasource implements IFeedDatasource {
   @override
   Future<List<Post>> fetchTrending() async {
     try {
-      final response = await api.post("$kDomain/api/posts/trending");
+      final response = await api.post("/api/posts/trending");
       print("Response: ${response.data}");
       throw ServerException();
     } catch (e) {
