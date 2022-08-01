@@ -1,8 +1,12 @@
 import 'dart:async';
 
+import 'package:Confessi/core/authorization/api_client_3.dart';
 import 'package:Confessi/features/authentication/domain/usecases/refresh_tokens.dart';
 import 'package:Confessi/features/feed/domain/usecases/recents.dart';
+import 'package:Confessi/features/feed/domain/usecases/trending.dart';
 import 'package:Confessi/features/feed/presentation/cubit/recents_cubit.dart';
+import 'package:Confessi/features/feed/presentation/cubit/trending_cubit.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
@@ -29,6 +33,8 @@ Future<void> init() async {
       () => AuthenticationCubit(register: sl(), login: sl(), logout: sl(), refreshTokens: sl()));
   // Registers the recents cubit.
   sl.registerFactory(() => RecentsCubit(recents: sl()));
+  // Registers the trending cubit.
+  sl.registerFactory(() => TrendingCubit(trending: sl()));
 
   //! Usecases
   // Registers the register usecase.
@@ -41,6 +47,8 @@ Future<void> init() async {
   sl.registerLazySingleton(() => RefreshTokens(repository: sl(), tokenEmitter: sl()));
   // Registers the recents feed usecase.
   sl.registerLazySingleton(() => Recents(repository: sl()));
+  // Registers the trending feed usecase.
+  sl.registerLazySingleton(() => Trending(repository: sl()));
 
   //! Core
   // Registers custom connection checker class.
@@ -58,7 +66,7 @@ Future<void> init() async {
   // Registers the authentication data source.
   sl.registerLazySingleton(() => AuthenticationDatasource(client: sl(), secureStorage: sl()));
   // Registers the feed data source.
-  sl.registerLazySingleton(() => FeedDatasource(client: sl()));
+  sl.registerLazySingleton(() => FeedDatasource(client: sl(), apiClient: sl()));
 
   //! External
   // Registers connection checker package.
@@ -67,6 +75,10 @@ Future<void> init() async {
   sl.registerLazySingleton(() => http.Client());
   // Registers the secure storage package.
   sl.registerLazySingleton(() => const FlutterSecureStorage());
+  // Registers the Dio client.
+  sl.registerLazySingleton(() => Dio());
+  // Registers the custom ApiClient class.
+  sl.registerLazySingleton(() => ApiClient(dio: sl(), networkInfo: sl(), secureStorage: sl()));
 
   //! Other
   // Registers the token emitter timer class used to keep refreshing tokens.

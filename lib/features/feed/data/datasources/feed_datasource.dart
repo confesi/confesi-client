@@ -1,11 +1,13 @@
 import 'dart:convert';
 
+import 'package:Confessi/core/authorization/api_client_3.dart';
+import 'package:Confessi/core/constants/general.dart';
+import 'package:Confessi/core/results/exceptions.dart';
+import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 
-import '../../../../core/constants/general.dart';
 import '../../domain/entities/post.dart';
 import '../models/post_model.dart';
-import '../utils/error_message_to_exception.dart';
 
 const String testJson = """{
   "foundPosts": [
@@ -15,7 +17,7 @@ const String testJson = """{
       "university": "UBC",
       "genre": "RELATIONSHIPS",
       "year": 6,
-      "faculty": "LAW",
+      "faculty": "FINE_ARTS",
       "reports": 0,
       "text": "post-fix",
       "comment_count": 0,
@@ -71,7 +73,7 @@ const String testJson = """{
       "university": "UBC",
       "genre": "RELATIONSHIPS",
       "year": 6,
-      "faculty": "LAW",
+      "faculty": "COMPUTER_SCIENCE",
       "reports": 0,
       "text": "replying to actual post",
       "comment_count": 0,
@@ -93,7 +95,7 @@ abstract class IFeedDatasource {
   Future<List<Post>> refreshRecents(String token);
 
   // Trending feed.
-  Future<List<Post>> fetchTrending(String lastSeenPostId, String token);
+  Future<List<Post>> fetchTrending();
   Future<List<Post>> refreshTrending(String token);
 
   // Daily Hottest section (on top of trending feed).
@@ -106,8 +108,12 @@ abstract class IFeedDatasource {
 
 class FeedDatasource implements IFeedDatasource {
   final http.Client client;
+  final ApiClient apiClient;
+  late Dio api;
 
-  FeedDatasource({required this.client});
+  FeedDatasource({required this.client, required this.apiClient}) {
+    api = apiClient.dio;
+  }
 
   @override
   Future<List<PostModel>> fetchRecents(String lastSeenPostId, String token) async {
@@ -147,9 +153,15 @@ class FeedDatasource implements IFeedDatasource {
   }
 
   @override
-  Future<List<Post>> fetchTrending(String lastSeenPostId, String token) {
-    // TODO: implement fetchTrending
-    throw UnimplementedError();
+  Future<List<Post>> fetchTrending() async {
+    try {
+      final response = await api.post("$kDomain/api/posts/trending");
+      print("Response: ${response.data}");
+      throw ServerException();
+    } catch (e) {
+      print("Error caught: $e");
+      throw ServerException();
+    }
   }
 
   @override

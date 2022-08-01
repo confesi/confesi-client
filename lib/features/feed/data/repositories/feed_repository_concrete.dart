@@ -41,9 +41,19 @@ class FeedRepository implements IFeedRepository {
   }
 
   @override
-  Future<Either<Failure, List<Post>>> fetchTrending(String lastSeenPostId, String token) {
-    // TODO: implement fetchTrending
-    throw UnimplementedError();
+  Future<Either<Failure, List<Post>>> fetchTrending() async {
+    if (await networkInfo.isConnected) {
+      print("connected!");
+      try {
+        return Right(await datasource.fetchTrending());
+      } catch (e) {
+        print("error here ig: $e");
+        return Left(exceptionToFailure(e));
+      }
+    } else {
+      print("not connected!");
+      return Left(ConnectionFailure());
+    }
   }
 
   @override

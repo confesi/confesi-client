@@ -1,14 +1,15 @@
-import 'package:Confessi/features/authentication/presentation/screens/home.dart';
-import 'package:Confessi/features/authentication/presentation/screens/onboarding.dart';
-import 'package:Confessi/features/feed/presentation/cubit/recents_cubit.dart';
+import 'package:Confessi/features/feed/presentation/cubit/trending_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../dependency_injection.dart';
+import '../../features/authentication/presentation/screens/home.dart';
 import '../../features/authentication/presentation/screens/login.dart';
+import '../../features/authentication/presentation/screens/onboarding.dart';
 import '../../features/authentication/presentation/screens/open.dart';
 import '../../features/authentication/presentation/screens/register.dart';
 import '../../features/authentication/presentation/screens/splash.dart';
+import '../../features/feed/presentation/cubit/recents_cubit.dart';
 
 /// The application's routes (screens) manager.
 class AppRouter {
@@ -27,12 +28,15 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const RegisterScreen());
       case "/home": // Most of the screens are tabs under the /home named route.
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            lazy: false,
-            create: (context) => sl<RecentsCubit>(),
-            child: const HomeScreen(),
-          ),
-        );
+            builder: (_) => BlocProvider(
+                  lazy: false,
+                  create: (context) => sl<TrendingCubit>(),
+                  child: BlocProvider(
+                    lazy: false,
+                    create: (context) => sl<RecentsCubit>()..startLoading(),
+                    child: const HomeScreen(),
+                  ),
+                ));
       case "/feed/details":
         return MaterialPageRoute(builder: (_) => const Text("Feed details"));
       case "/settings":

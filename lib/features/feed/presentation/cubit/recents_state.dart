@@ -13,7 +13,10 @@ abstract class RecentsState extends Equatable {
   List<Object?> get props => [];
 }
 
-/// Initial state. Occurs when the entire feed is loading.
+/// Initial state.
+class InitialState extends RecentsState {}
+
+/// Loading state.
 class LoadingAll extends RecentsState {}
 
 /// Posts are in the feed.

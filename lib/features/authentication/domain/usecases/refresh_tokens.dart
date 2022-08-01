@@ -20,7 +20,7 @@ class RefreshTokens {
     return tokenEmitter.stream;
   }
 
-  void refresh() => tokenEmitter.startRefreshing();
+  Future<void> refresh() async => await tokenEmitter.startRefreshing();
 }
 
 class TokenEmitter {
@@ -36,7 +36,7 @@ class TokenEmitter {
     timer?.cancel();
   }
 
-  void refreshTokens() async {
+  Future<void> refreshTokens() async {
     if (!_controller.isClosed) {
       final failureOrToken = await repository.getRefreshToken();
       failureOrToken.fold(
@@ -45,19 +45,21 @@ class TokenEmitter {
           final response = await repository.getAccessToken(refreshToken);
           response.fold(
             (failure) => _controller.sink.add(Left(failure)),
-            (accessToken) => _controller.sink.add(
-                Right(Tokens(accessToken: accessToken.accessToken, refreshToken: refreshToken))),
+            (accessToken) {
+              _controller.sink.add(
+                  Right(Tokens(accessToken: accessToken.accessToken, refreshToken: refreshToken)));
+            },
           );
         },
       );
     }
   }
 
-  void startRefreshing() {
+  Future<void> startRefreshing() async {
     timer?.cancel();
-    refreshTokens();
+    await refreshTokens();
     timer = Timer.periodic(const Duration(milliseconds: kAccessTokenLifetime - 2000), (t) async {
-      refreshTokens();
+      await refreshTokens();
     });
   }
 

@@ -11,7 +11,7 @@ abstract class IFeedRepository {
   Future<Either<Failure, List<Post>>> refreshRecents(String token);
 
   // Trending feed.
-  Future<Either<Failure, List<Post>>> fetchTrending(String lastSeenPostId, String token);
+  Future<Either<Failure, List<Post>>> fetchTrending();
   Future<Either<Failure, List<Post>>> refreshTrending(String token);
 
   // Daily Hottest section (on top of trending feed).

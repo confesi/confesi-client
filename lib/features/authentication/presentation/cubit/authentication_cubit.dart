@@ -63,7 +63,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   }
 
   /// Refreshes the both the current access and refresh tokens.
-  Future<void> refreshBothTokens() async => refreshTokens.refresh();
+  Future<void> refreshBothTokens() async => await refreshTokens.refresh();
 
   /// Registers the user. Upon error, returns [UserError].
   Future<void> registerUser(String username, String password, String email) async {

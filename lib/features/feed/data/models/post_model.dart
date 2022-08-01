@@ -1,5 +1,4 @@
-import 'package:Confessi/features/feed/domain/entities/post_child.dart';
-
+import '../../../../core/results/exceptions.dart';
 import '../../domain/entities/post.dart';
 import 'post_child_data.dart';
 
@@ -28,12 +27,73 @@ class PostModel extends Post {
           child: child,
         );
 
+  static String facultyFormatter(String faculty) {
+    switch (faculty) {
+      case "LAW":
+        return "Law";
+      case "ENGINEERING":
+        return "Engineering";
+      case "FINE_ARTS":
+        return "Fine arts";
+      case "COMPUTER_SCIENCE":
+        return "Computer science";
+      case "BUSINESS":
+        return "Business";
+      case "EDUCATION":
+        return "Education";
+      case "MEDICAL":
+        return "Medical";
+      case "HUMAN_AND_SOCIAL_DEVELOPMENT":
+        return "Human & Social Development";
+      case "HUMANITIES":
+        return "Humanities";
+      case "SCIENCE":
+        return "Science";
+      case "SOCIAL_SCIENCES":
+        return "Social sciences";
+      default:
+        throw ServerException();
+    }
+  }
+
+  static String universityFormatter(String university) {
+    switch (university) {
+      case "UVIC":
+        return "UVic";
+      case "UBC":
+        return "UBC";
+      case "SFU":
+        return "SFU";
+      default:
+        throw ServerException();
+    }
+  }
+
+  static String genreFormatter(String genre) {
+    switch (genre) {
+      case "RELATIONSHIPS":
+        return "Relationships";
+      case "POLITICS":
+        return "Politics";
+      case "CLASSES":
+        return "Classes";
+      case "GENERAL":
+        return "General";
+      case "OPINIONS":
+        return "Opinions";
+      case "CONFESSIONS":
+        return "Confessions";
+      default:
+        throw ServerException();
+    }
+  }
+
   factory PostModel.fromJson(Map<String, dynamic> json) {
     return PostModel(
-      university: json["university"] as String,
-      genre: json["genre"] as String,
+      university: universityFormatter(json["university"]),
+      genre: genreFormatter(json["genre"]),
       year: json["year"] as int,
-      faculty: json["faculty"] as String,
+      faculty: facultyFormatter(json["faculty"]),
       reports: json["reports"] as int,
       text: json["text"] as String,
       commentCount: json["comment_count"] as int,

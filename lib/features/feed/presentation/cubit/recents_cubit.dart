@@ -1,9 +1,9 @@
-import 'package:Confessi/features/feed/domain/entities/post.dart';
-import 'package:Confessi/features/feed/domain/entities/post_child.dart';
-import 'package:Confessi/features/feed/domain/usecases/recents.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+
+import '../../domain/entities/post.dart';
+import '../../domain/usecases/recents.dart';
 
 part 'recents_state.dart';
 
@@ -17,11 +17,15 @@ class RecentsCubit extends Cubit<RecentsState> {
 
   RecentsCubit({
     required this.recents,
-  }) : super(LoadingAll());
+  }) : super(InitialState());
+
+  void startLoading() {
+    emit(LoadingAll());
+  }
 
   Future<void> fetchPosts(String lastSeenPostId, String token) async {
     if (state is ErrorLoadingAny) {
-      emit(LoadingAll());
+      emit(InitialState());
     } else if (state is HasPosts) {
       final hasPosts = state as HasPosts;
       emit(HasPosts(posts: hasPosts.posts, feedState: FeedState.loadingMore));
@@ -29,8 +33,9 @@ class RecentsCubit extends Cubit<RecentsState> {
     final failureOrPosts =
         await recents(RecentsParams(lastSeenPostId: lastSeenPostId, token: token));
     failureOrPosts.fold(
-      (failure) => print("Failure..."),
+      (failure) => print("Failure... $failure"),
       (posts) {
+        print("HEREEEE");
         if (state is HasPosts) {
           print("Success!");
           final hasPosts = state as HasPosts;
