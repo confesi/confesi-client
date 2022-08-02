@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jwt_decode/jwt_decode.dart';
@@ -7,12 +8,14 @@ import 'package:jwt_decode/jwt_decode.dart';
 import '../constants/general.dart';
 import '../network/connection_info.dart';
 import '../results/exceptions.dart';
+import '../results/failures.dart';
+import '../results/successes.dart';
 
 class ApiClient {
   final Dio dio;
   final NetworkInfo networkInfo;
   final FlutterSecureStorage secureStorage;
-  String? accessToken;
+  String? _accessToken;
 
   /// The base options for all requests with this Dio client.
   final BaseOptions baseOptions = BaseOptions(
@@ -20,16 +23,22 @@ class ApiClient {
     receiveTimeout: 3000,
     receiveDataWhenStatusError: true,
     followRedirects: true,
-    headers: {"content-Type": "application/json"},
+    validateStatus: (number) => true,
+    headers: {
+      "content-Type": "application/json"
+    }, // TODO: add this instead? "application/json; charset=UTF-8"
     baseUrl: kDomain, // Domain constant (base path).
   );
 
   /// Is the current access token valid? Checks if it's null, empty, or expired.
-  bool get validToken {
-    if (accessToken == null || accessToken!.isEmpty || Jwt.isExpired(accessToken!)) return false;
+  bool get _validToken {
+    if (_accessToken == null || _accessToken!.isEmpty || Jwt.isExpired(_accessToken!)) return false;
     return true;
   }
 
+  /// Acts as a smart Http Client that has automatic re-requesting if tokens are invalid.
+  ///
+  /// The header, "protectedRoute", determines if tokens need to be aquired for the request or not.
   ApiClient({
     required this.dio,
     required this.networkInfo,
@@ -40,42 +49,67 @@ class ApiClient {
       // Runs before a request happens. If there's no valid access token, it'll
       // get a new one before running the request.
       onRequest: (options, handler) async {
-        if (!validToken) {
-          await getAndSetAccessTokenVariable(dio);
+        if (options.headers["protectedRoute"] == true) {
+          if (!_validToken) {
+            await _getAndSetAccessTokenVariable();
+          }
+          _setHeader(options);
+        } else {
+          options.headers.remove("authorization");
         }
-        setHeader(options);
         handler.next(options);
       },
       // Runs on an error. If this error is a token error (401 or 403), then the access token
       // is refreshed and the request is re-run.
       onError: (error, handler) async {
-        if (tokenInvalidResponse(error)) {
-          await refreshAndRedoRequest(error, handler);
+        print("onError");
+        if (_tokenInvalidResponse(error)) {
+          await _refreshAndRedoRequest(error, handler);
         } else {
           // Other error occurs (non-token issue).
-          handler.reject(error);
+          print("here: $error");
+          handler.next(error);
+          throw DioError(requestOptions: error.requestOptions, type: error.type);
+          // handler.reject(error);
         }
       },
     ));
   }
 
-  /// Sets the current [accessToken] to request header.
-  void setHeader(RequestOptions options) =>
-      options.headers["authorization"] = "Bearer $accessToken";
+  void setAccessToken(String accessToken) => _accessToken = accessToken;
+
+  void removeAccessToken() => _accessToken = null;
+
+  Future<Either<Failure, Success>> getRefreshAndSetAccessToken() async {
+    try {
+      await _getAndSetAccessTokenVariable();
+      return Right(ApiSuccess());
+    } on EmptyTokenException {
+      return Left(EmptyTokenFailure());
+    } on ConnectionException {
+      return Left(ConnectionFailure());
+    } catch (e) {
+      return Left(ServerFailure());
+    }
+  }
+
+  /// Sets the current [_accessToken] to request header.
+  void _setHeader(RequestOptions options) =>
+      options.headers["authorization"] = "Bearer $_accessToken";
 
   /// Refreshes access token, sets it to header, and resolves cloned request of the original.
-  Future<void> refreshAndRedoRequest(DioError error, ErrorInterceptorHandler handler) async {
-    await getAndSetAccessTokenVariable(dio);
-    setHeader(error.requestOptions);
+  Future<void> _refreshAndRedoRequest(DioError error, ErrorInterceptorHandler handler) async {
+    await _getAndSetAccessTokenVariable();
+    _setHeader(error.requestOptions);
     handler.resolve(await dio.post(error.requestOptions.path,
         data: error.requestOptions.data, options: Options(method: error.requestOptions.method)));
   }
 
-  /// Gets new access token using the device's refresh token and sets it to [accessToken] class field.
+  /// Gets new access token using the device's refresh token and sets it to [_accessToken] class field.
   ///
   /// If the refresh token from the device's storage is null or empty, an [EmptyTokenException] is thrown.
   /// This should be handled with care. This means the user has somehow been logged out!
-  Future<void> getAndSetAccessTokenVariable(Dio dio) async {
+  Future<void> _getAndSetAccessTokenVariable() async {
     final refreshToken = await secureStorage.read(key: "refreshToken");
     if (refreshToken == null || refreshToken.isEmpty) {
       // User is no longer logged in!
@@ -89,10 +123,10 @@ class ApiClient {
           data: {"token": refreshToken},
         );
         // If refresh fails, throw a custom exception.
-        if (!validStatusCode(response)) {
+        if (!_validStatusCode(response)) {
           throw ServerException();
         }
-        accessToken = response.data["accessToken"];
+        _accessToken = response.data["accessToken"];
       } on DioError catch (e) {
         // Based on the different dio errors, throw custom exception classes.
         switch (e.type) {
@@ -111,9 +145,9 @@ class ApiClient {
     }
   }
 
-  bool tokenInvalidResponse(DioError error) =>
+  bool _tokenInvalidResponse(DioError error) =>
       error.response?.statusCode == 403 || error.response?.statusCode == 401;
 
-  bool validStatusCode(Response response) =>
+  bool _validStatusCode(Response response) =>
       response.statusCode == 200 || response.statusCode == 201;
 }

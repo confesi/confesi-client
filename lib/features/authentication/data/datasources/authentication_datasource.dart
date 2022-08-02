@@ -1,8 +1,10 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../../core/authorization/api_client.dart';
 import '../../../../core/constants/general.dart';
 import '../../../../core/results/exceptions.dart';
 import '../../../../core/results/successes.dart';
@@ -24,33 +26,47 @@ abstract class IAuthenticationDatasource {
 ///
 /// Throws exceptions when things go wrong.
 class AuthenticationDatasource implements IAuthenticationDatasource {
-  final http.Client client;
   final FlutterSecureStorage secureStorage;
+  final ApiClient apiClient;
+  late Dio api;
 
-  AuthenticationDatasource({required this.client, required this.secureStorage});
+  AuthenticationDatasource({required this.secureStorage, required this.apiClient}) {
+    api = apiClient.dio;
+  }
 
   /// Logs the user in. Returns access and refresh tokens upon being successful.
   @override
   Future<TokensModel> login(String usernameOrEmail, String password) async {
-    final response = await http
-        .post(
-          Uri.parse('$kDomain/api/user/login'),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-          body: jsonEncode(<String, String>{
-            "usernameOrEmail": usernameOrEmail,
-            "password": password,
-          }),
-        )
-        .timeout(const Duration(seconds: 2));
+    final response = await api.post(
+      "/api/user/login",
+      data: jsonEncode(
+        <String, String>{
+          "usernameOrEmail": usernameOrEmail,
+          "password": password,
+        },
+      ),
+      options: Options(headers: {"protectedRoute": false}),
+    );
+    print("here");
     final statusCode = response.statusCode;
-    final decodedBody = json.decode(response.body);
+    print("code: $statusCode");
     if (statusCode == 200) {
-      return TokensModel.fromJson(decodedBody);
+      return TokensModel.fromJson(response.data);
     } else {
-      throw errorMessageToException(decodedBody);
+      throw errorMessageToException(response.data);
     }
+    // final response = await http
+    //     .post(
+    //       Uri.parse('$kDomain/api/user/login'),
+    //       headers: <String, String>{
+    //         'Content-Type': 'application/json; charset=UTF-8',
+    //       },
+    //       body: jsonEncode(<String, String>{
+    //         "usernameOrEmail": usernameOrEmail,
+    //         "password": password,
+    //       }),
+    //     )
+    //     .timeout(const Duration(seconds: 2));
   }
 
   /// Logs the user out.

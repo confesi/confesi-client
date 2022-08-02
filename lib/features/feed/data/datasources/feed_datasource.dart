@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:http/http.dart' as http;
 
 import '../../../../core/authorization/api_client.dart';
 import '../../../../core/results/exceptions.dart';
@@ -106,11 +105,10 @@ abstract class IFeedDatasource {
 }
 
 class FeedDatasource implements IFeedDatasource {
-  final http.Client client;
   final ApiClient apiClient;
   late Dio api;
 
-  FeedDatasource({required this.client, required this.apiClient}) {
+  FeedDatasource({required this.apiClient}) {
     api = apiClient.dio;
   }
 
@@ -154,7 +152,8 @@ class FeedDatasource implements IFeedDatasource {
   @override
   Future<List<Post>> fetchTrending() async {
     try {
-      final response = await api.post("/api/posts/trending");
+      final response = await api.post("/api/posts/trending",
+          options: Options(headers: {"protectedRoute": true}));
       print("Response: ${response.data}");
       throw ServerException();
     } catch (e) {

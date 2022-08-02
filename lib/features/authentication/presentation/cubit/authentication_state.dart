@@ -25,18 +25,14 @@ class UserError extends AuthenticationState {
 /// The [tokens] field becomes null, and [tokensAvailable] becomes false if the user has a refresh token, but an attempt to renew their
 /// access token fails.
 class User extends AuthenticationState {
-  final Tokens? tokens;
   final bool justRegistered;
-  final bool tokensAvailable;
 
   User({
-    required this.tokens,
     this.justRegistered = false,
-    this.tokensAvailable = true,
   });
 
   @override
-  List<Object?> get props => [tokens, justRegistered, tokensAvailable];
+  List<Object?> get props => [justRegistered];
 }
 
 /// No authenticated user exists.

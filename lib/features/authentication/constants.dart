@@ -27,7 +27,7 @@ const String kUsernameInvalid =
     "Invalid username. Names must be appropriate, and only contain letters, numbers, and underscores.";
 const String kEmailInvalid = "Invalid email. Please format it properly.";
 const String kPasswordInvalid = "Invalid password. Passwords cannot contain a space.";
-const String kServerError = "Internal server error. Sorry. Try again later.";
+const String kServerError = "Internal server error. Sorry, try again later.";
 const String kAccountDoesNotExist = "That account doesn't exist. Maybe you have a typo?";
 
 //! Tokens

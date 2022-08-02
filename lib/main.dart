@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       lazy: false,
-      create: (context) => sl<AuthenticationCubit>()..startRefreshingTokensStream(),
+      create: (context) => sl<AuthenticationCubit>()..silentlyAuthenticateUser(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         useInheritedMediaQuery: kPreviewMode,

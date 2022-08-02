@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/authorization/valid_token.dart';
 import '../../../../core/results/exceptions.dart';
 import '../../../authentication/presentation/cubit/authentication_cubit.dart';
 import '../cubit/recents_cubit.dart';
@@ -44,7 +43,7 @@ class ExploreRecents extends StatelessWidget {
             ),
             TextButton(
               onPressed: () async {
-                await authCubit.refreshBothTokens();
+                // await authCubit.refreshBothTokens();
                 // await context.read<AuthenticationCubit>().refreshBothTokens();
               },
               child: const Text("refresh"),

@@ -13,8 +13,8 @@ import 'features/authentication/data/datasources/authentication_datasource.dart'
 import 'features/authentication/data/repositories/authentication_repository_concrete.dart';
 import 'features/authentication/domain/usecases/login.dart';
 import 'features/authentication/domain/usecases/logout.dart';
-import 'features/authentication/domain/usecases/refresh_tokens.dart';
 import 'features/authentication/domain/usecases/register.dart';
+import 'features/authentication/domain/usecases/silent_authentication.dart';
 import 'features/authentication/presentation/cubit/authentication_cubit.dart';
 import 'features/feed/data/datasources/feed_datasource.dart';
 import 'features/feed/data/repositories/feed_repository_concrete.dart';
@@ -29,8 +29,8 @@ final GetIt sl = GetIt.instance;
 Future<void> init() async {
   //! State (BLoC or Cubit)
   // Registers the authentication cubit.
-  sl.registerFactory(
-      () => AuthenticationCubit(register: sl(), login: sl(), logout: sl(), refreshTokens: sl()));
+  sl.registerFactory(() =>
+      AuthenticationCubit(register: sl(), login: sl(), logout: sl(), silentAuthentication: sl()));
   // Registers the recents cubit.
   sl.registerFactory(() => RecentsCubit(recents: sl()));
   // Registers the trending cubit.
@@ -38,13 +38,13 @@ Future<void> init() async {
 
   //! Usecases
   // Registers the register usecase.
-  sl.registerLazySingleton(() => Register(repository: sl()));
+  sl.registerLazySingleton(() => Register(repository: sl(), apiClient: sl()));
   // Registers the login usecase.
-  sl.registerLazySingleton(() => Login(repository: sl()));
+  sl.registerLazySingleton(() => Login(repository: sl(), apiClient: sl()));
   // Registers the logout usecase.
-  sl.registerLazySingleton(() => Logout(repository: sl()));
-  // Registers the auto token refresh usecase.
-  sl.registerLazySingleton(() => RefreshTokens(repository: sl(), tokenEmitter: sl()));
+  sl.registerLazySingleton(() => Logout(repository: sl(), apiClient: sl()));
+  // Registers the silent authentication usecase.
+  sl.registerLazySingleton(() => SilentAuthentication(apiClient: sl()));
   // Registers the recents feed usecase.
   sl.registerLazySingleton(() => Recents(repository: sl()));
   // Registers the trending feed usecase.
@@ -64,23 +64,20 @@ Future<void> init() async {
 
   //! Data sources
   // Registers the authentication data source.
-  sl.registerLazySingleton(() => AuthenticationDatasource(client: sl(), secureStorage: sl()));
+  sl.registerLazySingleton(() => AuthenticationDatasource(secureStorage: sl(), apiClient: sl()));
   // Registers the feed data source.
-  sl.registerLazySingleton(() => FeedDatasource(client: sl(), apiClient: sl()));
+  sl.registerLazySingleton(() => FeedDatasource(apiClient: sl()));
 
   //! External
   // Registers connection checker package.
   sl.registerLazySingleton(() => InternetConnectionChecker());
   // Registers HTTP client.
-  sl.registerLazySingleton(() => http.Client());
+  sl.registerLazySingleton(
+      () => http.Client()); // TODO: Eventually remove this when everything is transitioned to Dio
   // Registers the secure storage package.
   sl.registerLazySingleton(() => const FlutterSecureStorage());
   // Registers the Dio client.
   sl.registerLazySingleton(() => Dio());
   // Registers the custom ApiClient class.
   sl.registerLazySingleton(() => ApiClient(dio: sl(), networkInfo: sl(), secureStorage: sl()));
-
-  //! Other
-  // Registers the token emitter timer class used to keep refreshing tokens.
-  sl.registerLazySingleton(() => TokenEmitter(repository: sl()));
 }
