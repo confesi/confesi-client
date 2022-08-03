@@ -24,9 +24,7 @@ class ApiClient {
     receiveDataWhenStatusError: true,
     followRedirects: true,
     validateStatus: (number) => true,
-    headers: {
-      "content-Type": "application/json"
-    }, // TODO: add this instead? "application/json; charset=UTF-8"
+    headers: {"content-Type": "application/json; charset=UTF-8"},
     baseUrl: kDomain, // Domain constant (base path).
   );
 

@@ -3,17 +3,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../constants.dart';
 import '../../domain/entities/post.dart';
+import 'error_message.dart';
 
 class InfiniteScroll extends StatefulWidget {
   const InfiniteScroll({
     required this.onLoad,
+    required this.onRefresh,
     required this.items,
+    required this.feedState,
     Key? key,
   }) : super(key: key);
 
   final Function onLoad;
+  final Function onRefresh;
   final List<Post> items;
+  final FeedState feedState;
 
   @override
   State<InfiniteScroll> createState() => _InfiniteScrollState();
@@ -22,18 +28,19 @@ class InfiniteScroll extends StatefulWidget {
 class _InfiniteScrollState extends State<InfiniteScroll> {
   bool isRefreshing = false;
   late ScrollController scrollController;
-  bool calling = false;
-  int loads = 0;
+  bool isLoading = false;
 
   @override
   void initState() {
+    print("<== INIT CALLED ==>");
     scrollController = ScrollController();
     scrollController.addListener(() async {
-      if (scrollController.offset == scrollController.position.maxScrollExtent) {
-        setState(() {
-          loads++;
-        });
+      if (scrollController.offset == scrollController.position.maxScrollExtent &&
+          isLoading == false &&
+          widget.feedState == FeedState.loadingMore) {
+        isLoading = true;
         await widget.onLoad();
+        isLoading = false;
       }
     });
     WidgetsBinding.instance.addPostFrameCallback((_) => _fetchMore());
@@ -41,10 +48,15 @@ class _InfiniteScrollState extends State<InfiniteScroll> {
   }
 
   Future<void> _fetchMore() async {
-    if (scrollController.offset == scrollController.position.maxScrollExtent) {
+    // await widget.onLoad();
+    if (scrollController.offset == scrollController.position.maxScrollExtent &&
+        isLoading == false &&
+        widget.feedState == FeedState.loadingMore) {
+      isLoading = true;
       await widget.onLoad();
-      // Adding this line prevents a stack overflow error.
-      await Future.delayed(Duration.zero);
+      isLoading = false;
+      // If the posts don't fill the entire height of the screen, wait x time, and then load more.
+      await Future.delayed(const Duration(milliseconds: 400));
       _fetchMore();
     }
   }
@@ -53,6 +65,72 @@ class _InfiniteScrollState extends State<InfiniteScroll> {
   void dispose() {
     scrollController.dispose();
     super.dispose();
+  }
+
+  Widget _buildFeed() {
+    return ListView.builder(
+      physics: const ClampingScrollPhysics(
+        parent: AlwaysScrollableScrollPhysics(),
+      ),
+      controller: scrollController,
+      itemCount: widget.items.length + 1,
+      itemBuilder: (context, index) {
+        if (index < widget.items.length) {
+          return Padding(
+            padding: index == 0 ? const EdgeInsets.all(0) : const EdgeInsets.only(top: 16),
+            child: Container(
+              height: 50,
+              color: Colors.blueAccent,
+              child: Center(
+                child: Text("data: ${widget.items[index].faculty}"),
+              ),
+            ),
+          );
+        } else {
+          return ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: 100),
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 200),
+              child: Center(
+                child: _buildIndicator(),
+              ),
+            ),
+          );
+        }
+      },
+    );
+  }
+
+  // TODO: wrap in same animator fade?
+  Widget _buildIndicator() {
+    switch (widget.feedState) {
+      case FeedState.errorLoadingMore:
+        return ErrorMessage(
+          key: UniqueKey(),
+          headerText: kErrorLoadingMoreHeader,
+          bodyText: kErrorLoadingMoreBody,
+          onTap: () => widget.onLoad(),
+        );
+      case FeedState.loadingMore:
+        return const CupertinoActivityIndicator(radius: 12);
+      case FeedState.reachedEnd:
+        return ErrorMessage(
+          key: UniqueKey(),
+          headerText: kReachedEndHeader,
+          bodyText: kReachedEndBody,
+          onTap: () => widget.onLoad(),
+        );
+      case FeedState.errorRefreshing:
+        return ErrorMessage(
+          key: UniqueKey(),
+          headerText: kErrorLoadingMoreHeader,
+          bodyText: kErrorLoadingMoreBody,
+          onTap: () => widget.onLoad(),
+        );
+      default:
+        throw UnimplementedError(
+            "The FeedState you're trying to develop doesn't have a case yet in the InfiniteScroll widget.");
+    }
   }
 
   @override
@@ -65,11 +143,13 @@ class _InfiniteScrollState extends State<InfiniteScroll> {
           setState(() {
             isRefreshing = true;
           });
-          await widget.onLoad();
-          await Future.delayed(const Duration(milliseconds: 800));
+          await Future.delayed(const Duration(milliseconds: 400));
+          await widget.onRefresh();
           setState(() {
             isRefreshing = false;
           });
+          await Future.delayed(const Duration(milliseconds: 400));
+          _fetchMore();
         },
         builder: (BuildContext context, Widget child, IndicatorController controller) {
           return AnimatedBuilder(
@@ -102,10 +182,6 @@ class _InfiniteScrollState extends State<InfiniteScroll> {
                     offset: Offset(0, controller.value * 80),
                     child: child,
                   ),
-                  Text(
-                    "loads: $loads",
-                    style: const TextStyle(fontSize: 35),
-                  ),
                 ],
               );
             },
@@ -113,36 +189,7 @@ class _InfiniteScrollState extends State<InfiniteScroll> {
         },
         child: AbsorbPointer(
           absorbing: isRefreshing,
-          child: ListView.builder(
-            physics: const ClampingScrollPhysics(),
-            controller: scrollController,
-            itemCount: widget.items.length + 1,
-            itemBuilder: (context, index) {
-              if (index < widget.items.length) {
-                return Padding(
-                  padding: index == 0 ? const EdgeInsets.all(0) : const EdgeInsets.only(top: 16),
-                  child: Container(
-                    height: 200,
-                    color: Colors.pink,
-                    child: Center(
-                      child: Text("data: ${widget.items[index].faculty}"),
-                    ),
-                  ),
-                );
-              } else {
-                return Container(
-                  height: 100,
-                  color: Colors.blueAccent.withOpacity(0.2),
-                  child: Center(
-                    child: CupertinoActivityIndicator(
-                      radius: 12,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
-                );
-              }
-            },
-          ),
+          child: _buildFeed(),
         ),
       ),
     );

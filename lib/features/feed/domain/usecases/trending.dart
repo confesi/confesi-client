@@ -15,13 +15,9 @@ class Trending implements Usecase<List<Post>, NoParams> {
     final posts = await repository.fetchTrending();
     return posts.fold(
       (failure) {
-        print("..Failure");
         return Left(failure);
       },
-      (posts) {
-        print("..Success");
-        return Right(posts);
-      },
+      (posts) => Right(posts),
     );
   }
 }

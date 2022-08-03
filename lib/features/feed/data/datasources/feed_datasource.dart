@@ -1,9 +1,9 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:dio/dio.dart';
 
 import '../../../../core/authorization/api_client.dart';
-import '../../../../core/results/exceptions.dart';
 import '../../domain/entities/post.dart';
 import '../models/post_model.dart';
 
@@ -151,15 +151,26 @@ class FeedDatasource implements IFeedDatasource {
 
   @override
   Future<List<Post>> fetchTrending() async {
-    try {
-      final response = await api.post("/api/posts/trending",
-          options: Options(headers: {"protectedRoute": true}));
-      print("Response: ${response.data}");
-      throw ServerException();
-    } catch (e) {
-      print("Error caught: $e");
-      throw ServerException();
-    }
+    await Future.delayed(Duration(
+        milliseconds: Random().nextInt(100) * 15)); // TODO: Remove this. It is a simulated delay.
+    final decodedBody = json.decode(testJson);
+    final posts = decodedBody["foundPosts"] as Iterable;
+    // print(posts);
+    posts.map((post) => print(post));
+    return posts.map((post) => PostModel.fromJson(post)).toList();
+    // try {
+    //   final response = await api.post("/api/posts/trending",
+    //       options: Options(headers: {"protectedRoute": true}));
+    //   print("Response: ${response.data}");
+    //   if (response.statusCode == 200 || response.statusCode == 201) {
+    //     return response.data.map((post) => PostModel.fromJson(post));
+    //   } else {
+    //     throw ServerException();
+    //   }
+    // } catch (e) {
+    //   print("Error caught: $e");
+    //   throw ServerException();
+    // }
   }
 
   @override

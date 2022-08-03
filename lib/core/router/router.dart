@@ -28,15 +28,20 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const RegisterScreen());
       case "/home": // Most of the screens are tabs under the /home named route.
         return MaterialPageRoute(
-            builder: (_) => BlocProvider(
-                  lazy: false,
-                  create: (context) => sl<TrendingCubit>(),
-                  child: BlocProvider(
-                    lazy: false,
-                    create: (context) => sl<RecentsCubit>()..startLoading(),
-                    child: const HomeScreen(),
-                  ),
-                ));
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                lazy: false,
+                create: (context) => sl<TrendingCubit>()..fetchPosts(),
+              ),
+              BlocProvider(
+                lazy: false,
+                create: (context) => sl<RecentsCubit>(),
+              ),
+            ],
+            child: const HomeScreen(),
+          ),
+        );
       case "/feed/details":
         return MaterialPageRoute(builder: (_) => const Text("Feed details"));
       case "/settings":

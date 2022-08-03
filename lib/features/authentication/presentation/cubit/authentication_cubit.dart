@@ -10,9 +10,9 @@ import '../../domain/usecases/logout.dart';
 import '../../domain/usecases/register.dart';
 import '../../domain/usecases/silent_authentication.dart';
 import '../utils/email_validation.dart';
+import '../utils/empty_validator.dart';
 import '../utils/failure_to_message.dart';
 import '../utils/password_validation.dart';
-import '../utils/username_or_email_validation.dart';
 import '../utils/username_validation.dart';
 
 part 'authentication_state.dart';
@@ -84,20 +84,28 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   /// Logs in the user. Upon error, returns [UserError].
   Future<void> loginUser(String usernameOrEmail, String password) async {
     emit(UserLoading());
-    final usernameOrEmailEither = usernameOrEmailValidator(usernameOrEmail);
+    final usernameOrEmailEither = emptyValidator(usernameOrEmail);
+    final passwordEither = emptyValidator(password);
     usernameOrEmailEither.fold(
       (failure) {
         emit(UserError(message: failureToMessage(failure)));
       },
       (usernameOrEmail) async {
-        final failureOrSuccess =
-            await login(LoginParams(usernameOrEmail: usernameOrEmail, password: password));
-        failureOrSuccess.fold(
+        passwordEither.fold(
           (failure) {
             emit(UserError(message: failureToMessage(failure)));
           },
-          (success) {
-            emit(User());
+          (password) async {
+            final failureOrSuccess =
+                await login(LoginParams(usernameOrEmail: usernameOrEmail, password: password));
+            failureOrSuccess.fold(
+              (failure) {
+                emit(UserError(message: failureToMessage(failure)));
+              },
+              (success) {
+                emit(User());
+              },
+            );
           },
         );
       },

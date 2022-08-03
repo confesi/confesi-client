@@ -7,10 +7,10 @@ import '../../../../core/results/failures.dart';
 ///
 /// Meant to prevent spamming the server if the data entered is obviously not going
 /// to be correct.
-Either<Failure, String> usernameOrEmailValidator(String usernameOrEmail) {
-  if (usernameOrEmail.isEmpty) {
+Either<Failure, String> emptyValidator(String value) {
+  if (value.isEmpty) {
     return Left(FieldsBlankFailure());
   } else {
-    return Right(usernameOrEmail);
+    return Right(value);
   }
 }

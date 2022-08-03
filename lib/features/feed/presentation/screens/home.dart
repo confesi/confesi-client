@@ -55,9 +55,6 @@ class _ExploreHomeState extends State<ExploreHome>
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
                 ),
-                rightIconVisible: true,
-                rightIcon: CupertinoIcons.arrow_clockwise,
-                rightIconOnPress: () => print("implement: refresh feed?"),
                 leftIconVisible: true,
                 leftIcon: CupertinoIcons.bars,
                 leftIconOnPress: () {

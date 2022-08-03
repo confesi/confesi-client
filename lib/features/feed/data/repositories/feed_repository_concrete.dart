@@ -46,11 +46,9 @@ class FeedRepository implements IFeedRepository {
       try {
         return Right(await datasource.fetchTrending());
       } catch (e) {
-        print("error here ig: $e");
         return Left(exceptionToFailure(e));
       }
     } else {
-      print("not connected!");
       return Left(ConnectionFailure());
     }
   }
