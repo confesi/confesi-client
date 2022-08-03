@@ -1,3 +1,4 @@
+import 'package:Confessi/features/feed/presentation/widgets/post_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -7,7 +8,8 @@ class ExploreRecents extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.blueAccent,
+      color: Theme.of(context).colorScheme.shadow,
+      child: const Center(child: PostTile()),
     );
   }
 

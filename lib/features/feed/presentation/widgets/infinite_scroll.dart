@@ -1,3 +1,4 @@
+import 'package:Confessi/core/behaviors/no_scroll_glow.dart';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -68,36 +69,39 @@ class _InfiniteScrollState extends State<InfiniteScroll> {
   }
 
   Widget _buildFeed() {
-    return ListView.builder(
-      physics: const ClampingScrollPhysics(
-        parent: AlwaysScrollableScrollPhysics(),
+    return ScrollConfiguration(
+      behavior: NoGlow(),
+      child: ListView.builder(
+        physics: const ClampingScrollPhysics(
+          parent: AlwaysScrollableScrollPhysics(),
+        ),
+        controller: scrollController,
+        itemCount: widget.items.length + 1,
+        itemBuilder: (context, index) {
+          if (index < widget.items.length) {
+            return Padding(
+              padding: index == 0 ? const EdgeInsets.all(0) : const EdgeInsets.only(top: 16),
+              child: Container(
+                height: 50,
+                color: Colors.blueAccent,
+                child: Center(
+                  child: Text("data: ${widget.items[index].faculty}"),
+                ),
+              ),
+            );
+          } else {
+            return ConstrainedBox(
+              constraints: const BoxConstraints(minHeight: 100),
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 200),
+                child: Center(
+                  child: _buildIndicator(),
+                ),
+              ),
+            );
+          }
+        },
       ),
-      controller: scrollController,
-      itemCount: widget.items.length + 1,
-      itemBuilder: (context, index) {
-        if (index < widget.items.length) {
-          return Padding(
-            padding: index == 0 ? const EdgeInsets.all(0) : const EdgeInsets.only(top: 16),
-            child: Container(
-              height: 50,
-              color: Colors.blueAccent,
-              child: Center(
-                child: Text("data: ${widget.items[index].faculty}"),
-              ),
-            ),
-          );
-        } else {
-          return ConstrainedBox(
-            constraints: const BoxConstraints(minHeight: 100),
-            child: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 200),
-              child: Center(
-                child: _buildIndicator(),
-              ),
-            ),
-          );
-        }
-      },
     );
   }
 
