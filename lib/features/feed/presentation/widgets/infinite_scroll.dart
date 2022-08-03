@@ -85,7 +85,7 @@ class _InfiniteScrollState extends State<InfiniteScroll> {
                 height: 50,
                 color: Colors.blueAccent,
                 child: Center(
-                  child: Text("data: ${widget.items[index].faculty}"),
+                  child: Text("Dummy post to show it works, data: ${widget.items[index].faculty}"),
                 ),
               ),
             );

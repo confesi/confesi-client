@@ -63,17 +63,12 @@ class TrendingCubit extends Cubit<TrendingState> {
   }
 
   /// Getting a whole new batch of posts.
-  // TODO: implement errorLoadingMore listener and state wigdet stuff
   Future<void> refreshPosts() async {
     final failureOrPosts = await trending(NoParams());
     final hasPosts = state as HasPosts;
     failureOrPosts.fold(
       (failure) {
-        print("ERROR HERE ON REFRESH");
-        emit(HasPosts(
-            posts: hasPosts.posts,
-            feedState: FeedState
-                .errorRefreshing)); // TODO: deal with case of the throw exception if this enum value doesn't exist in the infinite scroll widget
+        emit(HasPosts(posts: hasPosts.posts, feedState: FeedState.errorRefreshing));
       },
       (posts) {
         if (posts.length < kPostsReturnedPerLoad) {

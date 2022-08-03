@@ -19,11 +19,9 @@ class UserError extends AuthenticationState {
   List<Object?> get props => [message];
 }
 
-/// A user who has a valid access token. Also, includes details if it's their first time registering (in order to show onboarding screens).
-/// The [tokensAvailable] specifies if the user actively has a valid access token (or at least, their [tokens] field isn't null).
+/// An authenticated user.
 ///
-/// The [tokens] field becomes null, and [tokensAvailable] becomes false if the user has a refresh token, but an attempt to renew their
-/// access token fails.
+/// Has a [justRegistered] field to show if this is their first time on their account.
 class User extends AuthenticationState {
   final bool justRegistered;
 

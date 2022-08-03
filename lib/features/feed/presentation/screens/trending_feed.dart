@@ -1,3 +1,4 @@
+import 'package:Confessi/core/constants/messages.dart';
 import 'package:Confessi/core/widgets/sheets/snackbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -64,7 +65,7 @@ class _ExploreTrendingState extends State<ExploreTrending> with AutomaticKeepAli
       },
       listener: (context, state) {
         print("LISTENED!!!!");
-        showSnackbar(context, "Error refreshing feed");
+        showSnackbar(context, kSnackbarConnectionError);
       },
     );
   }

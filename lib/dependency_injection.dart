@@ -71,9 +71,6 @@ Future<void> init() async {
   //! External
   // Registers connection checker package.
   sl.registerLazySingleton(() => InternetConnectionChecker());
-  // Registers HTTP client.
-  sl.registerLazySingleton(
-      () => http.Client()); // TODO: Eventually remove this when everything is transitioned to Dio
   // Registers the secure storage package.
   sl.registerLazySingleton(() => const FlutterSecureStorage());
   // Registers the Dio client.
