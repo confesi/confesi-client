@@ -72,6 +72,7 @@ class AuthenticationRepository implements IAuthenticationRepository {
         return Left(exceptionToFailure(e));
       }
     } else {
+      print("this connection prob");
       return Left(ConnectionFailure());
     }
   }

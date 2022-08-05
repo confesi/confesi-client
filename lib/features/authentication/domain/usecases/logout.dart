@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 
+import '../../../../core/authorization/api_client.dart';
 import '../../../../core/results/failures.dart';
 import '../../../../core/results/successes.dart';
 import '../../../../core/usecases/usecase.dart';
@@ -7,8 +8,9 @@ import '../../data/repositories/authentication_repository_concrete.dart';
 
 class Logout implements Usecase<Success, NoParams> {
   final AuthenticationRepository repository;
+  final ApiClient apiClient;
 
-  Logout({required this.repository});
+  Logout({required this.repository, required this.apiClient});
 
   /// Logs the user out.
   @override
@@ -24,7 +26,10 @@ class Logout implements Usecase<Success, NoParams> {
             final failureOrSuccess = await repository.deleteRefreshToken();
             return failureOrSuccess.fold(
               (failure) => Left(failure),
-              (success) => Right(success),
+              (success) {
+                apiClient.removeAccessToken();
+                return Right(success);
+              },
             );
           },
         );

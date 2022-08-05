@@ -1,9 +1,9 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:http/http.dart' as http;
 
-import '../../../../core/constants/general.dart';
+import '../../../../core/authorization/api_client.dart';
 import '../../../../core/results/exceptions.dart';
 import '../../../../core/results/successes.dart';
 import '../models/access_token_model.dart';
@@ -24,49 +24,42 @@ abstract class IAuthenticationDatasource {
 ///
 /// Throws exceptions when things go wrong.
 class AuthenticationDatasource implements IAuthenticationDatasource {
-  final http.Client client;
   final FlutterSecureStorage secureStorage;
+  final ApiClient apiClient;
+  late Dio api;
 
-  AuthenticationDatasource({required this.client, required this.secureStorage});
+  AuthenticationDatasource({required this.secureStorage, required this.apiClient}) {
+    api = apiClient.dio;
+  }
 
   /// Logs the user in. Returns access and refresh tokens upon being successful.
   @override
   Future<TokensModel> login(String usernameOrEmail, String password) async {
-    final response = await http
-        .post(
-          Uri.parse('$kDomain/api/user/login'),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-          body: jsonEncode(<String, String>{
-            "usernameOrEmail": usernameOrEmail,
-            "password": password,
-          }),
-        )
-        .timeout(const Duration(seconds: 2));
-    final statusCode = response.statusCode;
-    final decodedBody = json.decode(response.body);
-    if (statusCode == 200) {
-      return TokensModel.fromJson(decodedBody);
+    final response = await api.post(
+      "/api/user/login",
+      data: jsonEncode(
+        <String, String>{
+          "usernameOrEmail": usernameOrEmail,
+          "password": password,
+        },
+      ),
+      options: Options(headers: {"protectedRoute": false}),
+    );
+    if (response.statusCode == 200) {
+      return TokensModel.fromJson(response.data);
     } else {
-      throw errorMessageToException(decodedBody);
+      throw errorMessageToException(response.data);
     }
   }
 
   /// Logs the user out.
   @override
   Future<Success> logout(String refreshToken) async {
-    final response = await http
-        .delete(
-          Uri.parse('$kDomain/api/user/logout'),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-          body: jsonEncode(<String, String>{
-            "token": refreshToken,
-          }),
-        )
-        .timeout(const Duration(seconds: 2));
+    final response = await api.delete(
+      "/api/user/logout",
+      data: jsonEncode(<String, String>{"token": refreshToken}),
+      options: Options(headers: {"protectedRoute": false}),
+    );
     if (response.statusCode == 200) {
       return ApiSuccess();
     } else {
@@ -77,48 +70,40 @@ class AuthenticationDatasource implements IAuthenticationDatasource {
   /// Registers the user. Returns access and refresh tokens upon being successful.
   @override
   Future<TokensModel> register(String username, String password, String email) async {
-    final response = await http
-        .post(
-          Uri.parse('$kDomain/api/user/register'),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-          body: jsonEncode(<String, String>{
-            "username": username,
-            "password": password,
-            "email": email,
-          }),
-        )
-        .timeout(const Duration(seconds: 2));
-    final statusCode = response.statusCode;
-    final decodedBody = json.decode(response.body);
-    if (statusCode == 201) {
-      return TokensModel.fromJson(decodedBody);
+    final response = await api.post(
+      "/api/user/register",
+      data: jsonEncode(
+        <String, String>{
+          "username": username,
+          "password": password,
+          "email": email,
+        },
+      ),
+      options: Options(headers: {"protectedRoute": false}),
+    );
+    if (response.statusCode == 201) {
+      return TokensModel.fromJson(response.data);
     } else {
-      throw errorMessageToException(decodedBody);
+      throw errorMessageToException(response.data);
     }
   }
 
   /// Gets an access token given a refresh token.
   @override
   Future<AccessTokenModel> getAccessToken(String refreshToken) async {
-    final response = await http
-        .post(
-          Uri.parse('$kDomain/api/user/token'),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-          body: jsonEncode(<String, String>{
-            "token": refreshToken,
-          }),
-        )
-        .timeout(const Duration(seconds: 2));
-    final statusCode = response.statusCode;
-    final decodedBody = json.decode(response.body);
-    if (statusCode == 200) {
-      return AccessTokenModel.fromJson(decodedBody);
+    final response = await api.post(
+      "/api/user/token",
+      data: jsonEncode(
+        <String, String>{
+          "token": refreshToken,
+        },
+      ),
+      options: Options(headers: {"protectedRoute": false}),
+    );
+    if (response.statusCode == 200) {
+      return AccessTokenModel.fromJson(response.data);
     } else {
-      throw errorMessageToException(decodedBody);
+      throw errorMessageToException(response.data);
     }
   }
 

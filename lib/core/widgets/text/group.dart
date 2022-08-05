@@ -38,6 +38,7 @@ class GroupText extends StatelessWidget {
               ? kDetail.copyWith(color: Theme.of(context).colorScheme.onSurface)
               : kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
           textAlign: leftAlign ? TextAlign.left : TextAlign.center,
+          overflow: TextOverflow.ellipsis,
         ),
       ],
     );

@@ -40,15 +40,6 @@ class _ExploreHomeState extends State<ExploreHome>
 
   @override
   Widget build(BuildContext context) {
-    // ref.listen<ExploreFeedState>(exploreFeedProvider,
-    //     (ExploreFeedState? prevState, ExploreFeedState newState) {
-    //   if (prevState?.connectionErrorFLAG != newState.connectionErrorFLAG) {
-    //     showErrorSnackbar(context, kSnackbarConnectionError);
-    //   }
-    //   if (prevState?.serverErrorFLAG != newState.serverErrorFLAG) {
-    //     showErrorSnackbar(context, kSnackbarServerError);
-    //   }
-    // });
     return Scaffold(
       drawer: const ExploreDrawer(),
       backgroundColor: Theme.of(context).colorScheme.background,
@@ -64,9 +55,6 @@ class _ExploreHomeState extends State<ExploreHome>
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
                 ),
-                rightIconVisible: true,
-                rightIcon: CupertinoIcons.arrow_clockwise,
-                rightIconOnPress: () => print("implement: refresh feed?"),
                 leftIconVisible: true,
                 leftIcon: CupertinoIcons.bars,
                 leftIconOnPress: () {
