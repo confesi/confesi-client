@@ -8,6 +8,8 @@ import '../../../../core/results/failures.dart';
 Failure exceptionToFailure(Object exception) {
   try {
     throw exception;
+  } on ConnectionException {
+    return ConnectionFailure();
   } on SocketException {
     return ConnectionFailure();
   } on TimeoutException {

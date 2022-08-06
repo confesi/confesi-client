@@ -3,7 +3,6 @@ import 'dart:math';
 
 import 'package:dio/dio.dart';
 
-import '../../../../core/authorization/api_client.dart';
 import '../../domain/entities/post.dart';
 import '../models/post_model.dart';
 
@@ -105,15 +104,11 @@ abstract class IFeedDatasource {
 }
 
 class FeedDatasource implements IFeedDatasource {
-  final ApiClient apiClient;
-  late Dio api;
-
-  FeedDatasource({required this.apiClient}) {
-    api = apiClient.dio;
-  }
+  FeedDatasource();
 
   @override
-  Future<List<PostModel>> fetchRecents(String lastSeenPostId, String token) async {
+  Future<List<PostModel>> fetchRecents(
+      String lastSeenPostId, String token) async {
     final decodedBody = json.decode(testJson);
     final posts = decodedBody["foundPosts"] as Iterable;
     // print(posts);
@@ -152,7 +147,8 @@ class FeedDatasource implements IFeedDatasource {
   @override
   Future<List<Post>> fetchTrending() async {
     await Future.delayed(Duration(
-        milliseconds: Random().nextInt(100) * 15)); // TODO: Remove this. It is a simulated delay.
+        milliseconds: Random().nextInt(100) *
+            15)); // TODO: Remove this. It is a simulated delay.
     final decodedBody = json.decode(testJson);
     final posts = decodedBody["foundPosts"] as Iterable;
     // print(posts);

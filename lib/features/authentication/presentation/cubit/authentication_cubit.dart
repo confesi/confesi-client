@@ -43,7 +43,8 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   }
 
   /// Registers the user. Upon error, returns [UserError].
-  Future<void> registerUser(String username, String password, String email) async {
+  Future<void> registerUser(
+      String username, String password, String email) async {
     emit(UserLoading());
     final usernameEither = usernameValidator(username);
     final passwordEither = passwordValidator(password);
@@ -63,8 +64,8 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
                 emit(UserError(message: failureToMessage(failure)));
               },
               (email) async {
-                final failureOrSuccess = await register(
-                    RegisterParams(username: username, email: email, password: password));
+                final failureOrSuccess = await register(RegisterParams(
+                    username: username, email: email, password: password));
                 failureOrSuccess.fold(
                   (failure) {
                     emit(UserError(message: failureToMessage(failure)));
@@ -96,8 +97,8 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
             emit(UserError(message: failureToMessage(failure)));
           },
           (password) async {
-            final failureOrSuccess =
-                await login(LoginParams(usernameOrEmail: usernameOrEmail, password: password));
+            final failureOrSuccess = await login(LoginParams(
+                usernameOrEmail: usernameOrEmail, password: password));
             failureOrSuccess.fold(
               (failure) {
                 emit(UserError(message: failureToMessage(failure)));
@@ -116,8 +117,9 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   Future<void> logoutUser() async {
     final failureOrSuccess = await logout.call(NoParams());
     failureOrSuccess.fold(
-      (failure) =>
-          null, // Do nothing upon failure to logout, as the user would still be logged in (hopefully)? Instead, upon pressing logout, check if the state didn't change, then if not, show an error dialog.
+      (failure) {
+        print("failure...");
+      }, // Do nothing upon failure to logout, as the user would still be logged in (hopefully)? Instead, upon pressing logout, check if the state didn't change, then if not, show an error dialog.
       (success) {
         emit(NoUser());
       },

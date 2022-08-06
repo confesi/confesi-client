@@ -18,11 +18,13 @@ class AuthenticationRepository implements IAuthenticationRepository {
   final NetworkInfo networkInfo;
   final AuthenticationDatasource datasource;
 
-  AuthenticationRepository({required this.networkInfo, required this.datasource});
+  AuthenticationRepository(
+      {required this.networkInfo, required this.datasource});
 
   /// Logs the user in.
   @override
-  Future<Either<Failure, Tokens>> login(String usernameOrEmail, String password) async {
+  Future<Either<Failure, Tokens>> login(
+      String usernameOrEmail, String password) async {
     if (await networkInfo.isConnected) {
       try {
         return Right(await datasource.login(usernameOrEmail, password));
@@ -50,7 +52,8 @@ class AuthenticationRepository implements IAuthenticationRepository {
 
   /// Registers the user.
   @override
-  Future<Either<Failure, Tokens>> register(String username, String password, String email) async {
+  Future<Either<Failure, Tokens>> register(
+      String username, String password, String email) async {
     if (await networkInfo.isConnected) {
       try {
         return Right(await datasource.register(username, password, email));
@@ -64,7 +67,8 @@ class AuthenticationRepository implements IAuthenticationRepository {
 
   /// Gets an access token given a refresh token.
   @override
-  Future<Either<Failure, AccessToken>> getAccessToken(String refreshToken) async {
+  Future<Either<Failure, AccessToken>> getAccessToken(
+      String refreshToken) async {
     if (await networkInfo.isConnected) {
       try {
         return Right(await datasource.getAccessToken(refreshToken));
@@ -72,7 +76,6 @@ class AuthenticationRepository implements IAuthenticationRepository {
         return Left(exceptionToFailure(e));
       }
     } else {
-      print("this connection prob");
       return Left(ConnectionFailure());
     }
   }

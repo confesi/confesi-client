@@ -1,12 +1,11 @@
 import 'dart:async';
 
+import 'package:Confessi/core/authorization/http_client.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
-import 'package:http/http.dart' as http;
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
-import 'core/authorization/api_client.dart';
 import 'core/network/connection_info.dart';
 import 'core/router/router.dart';
 import 'features/authentication/data/datasources/authentication_datasource.dart';
@@ -29,8 +28,8 @@ final GetIt sl = GetIt.instance;
 Future<void> init() async {
   //! State (BLoC or Cubit)
   // Registers the authentication cubit.
-  sl.registerFactory(() =>
-      AuthenticationCubit(register: sl(), login: sl(), logout: sl(), silentAuthentication: sl()));
+  sl.registerFactory(() => AuthenticationCubit(
+      register: sl(), login: sl(), logout: sl(), silentAuthentication: sl()));
   // Registers the recents cubit.
   sl.registerFactory(() => RecentsCubit(recents: sl()));
   // Registers the trending cubit.
@@ -38,13 +37,13 @@ Future<void> init() async {
 
   //! Usecases
   // Registers the register usecase.
-  sl.registerLazySingleton(() => Register(repository: sl(), apiClient: sl()));
+  sl.registerLazySingleton(() => Register(repository: sl(), netClient: sl()));
   // Registers the login usecase.
-  sl.registerLazySingleton(() => Login(repository: sl(), apiClient: sl()));
+  sl.registerLazySingleton(() => Login(repository: sl(), netClient: sl()));
   // Registers the logout usecase.
-  sl.registerLazySingleton(() => Logout(repository: sl(), apiClient: sl()));
+  sl.registerLazySingleton(() => Logout(repository: sl(), netClient: sl()));
   // Registers the silent authentication usecase.
-  sl.registerLazySingleton(() => SilentAuthentication(apiClient: sl()));
+  sl.registerLazySingleton(() => SilentAuthentication(netClient: sl()));
   // Registers the recents feed usecase.
   sl.registerLazySingleton(() => Recents(repository: sl()));
   // Registers the trending feed usecase.
@@ -58,15 +57,18 @@ Future<void> init() async {
 
   //! Repositories
   // Registers the authentication repository.
-  sl.registerLazySingleton(() => AuthenticationRepository(networkInfo: sl(), datasource: sl()));
+  sl.registerLazySingleton(
+      () => AuthenticationRepository(networkInfo: sl(), datasource: sl()));
   // Registers the feed repository.
-  sl.registerLazySingleton(() => FeedRepository(networkInfo: sl(), datasource: sl()));
+  sl.registerLazySingleton(
+      () => FeedRepository(networkInfo: sl(), datasource: sl()));
 
   //! Data sources
   // Registers the authentication data source.
-  sl.registerLazySingleton(() => AuthenticationDatasource(secureStorage: sl(), apiClient: sl()));
+  sl.registerLazySingleton(
+      () => AuthenticationDatasource(secureStorage: sl(), netClient: sl()));
   // Registers the feed data source.
-  sl.registerLazySingleton(() => FeedDatasource(apiClient: sl()));
+  sl.registerLazySingleton(() => FeedDatasource());
 
   //! External
   // Registers connection checker package.
@@ -75,6 +77,6 @@ Future<void> init() async {
   sl.registerLazySingleton(() => const FlutterSecureStorage());
   // Registers the Dio client.
   sl.registerLazySingleton(() => Dio());
-  // Registers the custom ApiClient class.
-  sl.registerLazySingleton(() => ApiClient(dio: sl(), networkInfo: sl(), secureStorage: sl()));
+  // Registers the custom net client class.
+  sl.registerLazySingleton(() => ApiClient(secureStorage: sl()));
 }

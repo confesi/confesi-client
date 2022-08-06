@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/responsive/breakpoints.dart';
@@ -14,7 +15,8 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
   late TabController tabController;
 
   @override
@@ -65,10 +67,13 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             TextButton(
-                              onPressed: () => context.read<AuthenticationCubit>().logoutUser(),
+                              onPressed: () => context
+                                  .read<AuthenticationCubit>()
+                                  .logoutUser(),
                               child: const Text("logout"),
                             ),
-                            BlocBuilder<AuthenticationCubit, AuthenticationState>(
+                            BlocBuilder<AuthenticationCubit,
+                                AuthenticationState>(
                               builder: (context, state) {
                                 return Text("State: $state");
                               },
@@ -88,9 +93,14 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     splashColor: Colors.transparent,
                   ),
                   child: TabBar(
+                    onTap: (tabIndex) {
+                      HapticFeedback.lightImpact();
+                    },
                     isScrollable: false,
-                    labelStyle: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
-                    unselectedLabelColor: Theme.of(context).colorScheme.onBackground,
+                    labelStyle: kBody.copyWith(
+                        color: Theme.of(context).colorScheme.primary),
+                    unselectedLabelColor:
+                        Theme.of(context).colorScheme.onBackground,
                     labelColor: Theme.of(context).colorScheme.primary,
                     indicatorSize: TabBarIndicatorSize.tab,
                     indicatorColor: Colors.transparent,

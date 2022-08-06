@@ -1,9 +1,9 @@
 import 'dart:convert';
 
+import 'package:Confessi/core/authorization/http_client.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import '../../../../core/authorization/api_client.dart';
 import '../../../../core/results/exceptions.dart';
 import '../../../../core/results/successes.dart';
 import '../models/access_token_model.dart';
@@ -25,42 +25,37 @@ abstract class IAuthenticationDatasource {
 /// Throws exceptions when things go wrong.
 class AuthenticationDatasource implements IAuthenticationDatasource {
   final FlutterSecureStorage secureStorage;
-  final ApiClient apiClient;
-  late Dio api;
+  final ApiClient netClient;
 
-  AuthenticationDatasource({required this.secureStorage, required this.apiClient}) {
-    api = apiClient.dio;
-  }
+  AuthenticationDatasource({
+    required this.secureStorage,
+    required this.netClient,
+  });
 
   /// Logs the user in. Returns access and refresh tokens upon being successful.
   @override
   Future<TokensModel> login(String usernameOrEmail, String password) async {
-    final response = await api.post(
-      "/api/user/login",
-      data: jsonEncode(
-        <String, String>{
-          "usernameOrEmail": usernameOrEmail,
-          "password": password,
-        },
-      ),
-      options: Options(headers: {"protectedRoute": false}),
+    final response = await netClient.req(
+      false,
+      Method.post,
+      {
+        'usernameOrEmail': usernameOrEmail,
+        'password': password,
+      },
+      '/api/user/login',
     );
-    if (response.statusCode == 200) {
-      return TokensModel.fromJson(response.data);
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return TokensModel.fromJson(jsonDecode(response.body));
     } else {
-      throw errorMessageToException(response.data);
+      throw errorMessageToException(jsonDecode(response.body));
     }
   }
 
-  /// Logs the user out.
   @override
   Future<Success> logout(String refreshToken) async {
-    final response = await api.delete(
-      "/api/user/logout",
-      data: jsonEncode(<String, String>{"token": refreshToken}),
-      options: Options(headers: {"protectedRoute": false}),
-    );
-    if (response.statusCode == 200) {
+    final response = await netClient.req(
+        false, Method.delete, {'token': refreshToken}, "/api/user/logout");
+    if (response.statusCode == 200 || response.statusCode == 201) {
       return ApiSuccess();
     } else {
       throw ServerException();
@@ -69,41 +64,34 @@ class AuthenticationDatasource implements IAuthenticationDatasource {
 
   /// Registers the user. Returns access and refresh tokens upon being successful.
   @override
-  Future<TokensModel> register(String username, String password, String email) async {
-    final response = await api.post(
-      "/api/user/register",
-      data: jsonEncode(
-        <String, String>{
-          "username": username,
-          "password": password,
-          "email": email,
-        },
-      ),
-      options: Options(headers: {"protectedRoute": false}),
-    );
-    if (response.statusCode == 201) {
-      return TokensModel.fromJson(response.data);
+  Future<TokensModel> register(
+      String username, String password, String email) async {
+    final response = await netClient.req(
+        false,
+        Method.post,
+        {"username": username, "password": password, "email": email},
+        '/api/user/register');
+    if (response.statusCode == 201 || response.statusCode == 200) {
+      return TokensModel.fromJson(jsonDecode(response.body));
     } else {
-      throw errorMessageToException(response.data);
+      throw errorMessageToException(jsonDecode(response.body));
     }
   }
 
   /// Gets an access token given a refresh token.
   @override
   Future<AccessTokenModel> getAccessToken(String refreshToken) async {
-    final response = await api.post(
-      "/api/user/token",
-      data: jsonEncode(
-        <String, String>{
+    final response = await netClient.req(
+        false,
+        Method.post,
+        {
           "token": refreshToken,
         },
-      ),
-      options: Options(headers: {"protectedRoute": false}),
-    );
-    if (response.statusCode == 200) {
-      return AccessTokenModel.fromJson(response.data);
+        '/api/user/token');
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return AccessTokenModel.fromJson(jsonDecode(response.body));
     } else {
-      throw errorMessageToException(response.data);
+      throw errorMessageToException(jsonDecode(response.body));
     }
   }
 

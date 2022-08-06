@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:dio/dio.dart';
+
 import '../../../../core/results/exceptions.dart';
 import '../../../../core/results/failures.dart';
 
@@ -9,6 +11,8 @@ Failure exceptionToFailure(Object exception) {
   try {
     throw exception;
   } on SocketException {
+    return ConnectionFailure();
+  } on ConnectionException {
     return ConnectionFailure();
   } on TimeoutException {
     return ConnectionFailure();

@@ -29,7 +29,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       lazy: false,
-      create: (context) => sl<AuthenticationCubit>()..silentlyAuthenticateUser(),
+      create: (context) =>
+          sl<AuthenticationCubit>()..silentlyAuthenticateUser(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         useInheritedMediaQuery: kPreviewMode,
@@ -43,7 +44,8 @@ class MyApp extends StatelessWidget {
         /// Manages navigating to new screens if the authentication state switches to certain values.
         home: BlocListener<AuthenticationCubit, AuthenticationState>(
           listenWhen: (previous, current) {
-            return (previous.runtimeType != current.runtimeType) && previous is! UserError;
+            return (previous.runtimeType != current.runtimeType) &&
+                previous is! UserError;
           },
           listener: (context, state) {
             if (state is NoUser) {
