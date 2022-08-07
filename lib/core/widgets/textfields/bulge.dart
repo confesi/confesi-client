@@ -52,6 +52,7 @@ class _BulgeTextFieldState extends State<BulgeTextField> {
           bottom: widget.bottomPadding),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Text(
             widget.hintText,

@@ -51,7 +51,8 @@ class _ExploreHomeState extends State<ExploreHome>
               return AppbarLayout(
                 centerWidget: Text(
                   "University of Victoria",
-                  style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
+                  style: kTitle.copyWith(
+                      color: Theme.of(context).colorScheme.primary),
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
                 ),
@@ -70,7 +71,7 @@ class _ExploreHomeState extends State<ExploreHome>
                   ),
                   Expanded(
                     child: Container(
-                      color: Theme.of(context).colorScheme.surfaceVariant,
+                      color: Theme.of(context).colorScheme.shadow,
                       child: TabBarView(
                         physics: const BouncingScrollPhysics(),
                         controller: tabController,

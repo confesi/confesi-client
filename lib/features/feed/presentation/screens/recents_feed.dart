@@ -1,5 +1,4 @@
 import 'package:Confessi/features/feed/presentation/widgets/post_tile.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ExploreRecents extends StatelessWidget {
@@ -9,80 +8,20 @@ class ExploreRecents extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Theme.of(context).colorScheme.shadow,
-      child: const Center(child: PostTile()),
+      child: const Center(
+        child: PostTile(
+          university: 'UVic',
+          genre: 'Politics',
+          time: '8h',
+          faculty: 'Engineering',
+          text:
+              'In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before final copy is available. This generally helps designers in their creative process!',
+          likes: 55,
+          hates: 21,
+          comments: '4 comments',
+          year: 4,
+        ),
+      ),
     );
   }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   final authCubit = context.watch<AuthenticationCubit>();
-  //   final recentsCubit = context.watch<RecentsCubit>();
-  //   return BlocListener<RecentsCubit, RecentsState>(
-  //     listener: (previous, current) async {
-  //       if (current is LoadingAll) {
-  //         // RetryToken retryToken = RetryToken(authCubit);
-  //         // await retryToken.validAndSetToken();
-  //         // recentsCubit.fetchPosts("", retryToken.token);
-  //       }
-  //     },
-  //     child: Center(
-  //       child: Column(
-  //         mainAxisAlignment: MainAxisAlignment.center,
-  //         children: [
-  //           TextButton(
-  //             onPressed: () async {
-  //               // RetryToken retryToken = RetryToken(authCubit);
-  //               // await retryToken.validAndSetToken();
-  //               // print("token from presentation: ${retryToken.token}");
-  //               // recentsCubit.fetchPosts("", retryToken.token);
-  //             },
-  //             child: const Text("load posts"),
-  //           ),
-  //           TextButton(
-  //             onPressed: () async {
-  //               print(authCubit.state);
-  //             },
-  //             child: const Text("get auth state"),
-  //           ),
-  //           TextButton(
-  //             onPressed: () async {
-  //               // await authCubit.refreshBothTokens();
-  //               // await context.read<AuthenticationCubit>().refreshBothTokens();
-  //             },
-  //             child: const Text("refresh"),
-  //           ),
-  //           Container(
-  //             width: double.infinity,
-  //             color: Colors.blueAccent.withOpacity(0.5),
-  //             child: BlocBuilder<RecentsCubit, RecentsState>(
-  //               builder: (context, state) {
-  //                 return Text("State: ${state.runtimeType}");
-  //               },
-  //             ),
-  //           ),
-  //           Expanded(
-  //             child: BlocBuilder<RecentsCubit, RecentsState>(
-  //               builder: (context, state) {
-  //                 if (state is HasPosts) {
-  //                   return InfiniteScroll(
-  //                     items: state.posts,
-  //                     onLoad: () async {
-  //                       // RetryToken retryToken = RetryToken(authCubit);
-  //                       // await retryToken.validAndSetToken();
-  //                       // recentsCubit.fetchPosts("", retryToken.token);
-  //                     },
-  //                   );
-  //                 } else if (state is InitialState || state is LoadingAll) {
-  //                   return const CupertinoActivityIndicator();
-  //                 } else {
-  //                   throw ServerException();
-  //                 }
-  //               },
-  //             ),
-  //           ),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
 }

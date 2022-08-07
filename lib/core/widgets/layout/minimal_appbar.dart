@@ -13,6 +13,7 @@ class MinimalAppbarLayout extends StatelessWidget {
       this.showIcon = true,
       this.text = "",
       this.pressable = true,
+      this.farLeft = false,
       Key? key})
       : super(key: key);
 
@@ -23,6 +24,7 @@ class MinimalAppbarLayout extends StatelessWidget {
   final IconData? icon;
   final Function? iconTap;
   final Function? textTap;
+  final bool farLeft;
 
   Widget children(BuildContext context) => Material(
         color: Theme.of(context).colorScheme.background,
@@ -43,15 +45,21 @@ class MinimalAppbarLayout extends StatelessWidget {
                       child: Container(
                         color: Colors.transparent,
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-                          child: Icon(icon ?? CupertinoIcons.arrow_turn_up_left),
+                          padding: EdgeInsets.symmetric(
+                              vertical: 10, horizontal: farLeft ? 10 : 30),
+                          child: Icon(
+                            key: const Key('minimal-appbar-icon'),
+                            icon ?? CupertinoIcons.arrow_turn_up_left,
+                          ),
                         ),
                       ),
                     ),
                   )
                 : Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-                    child: Icon(icon ?? CupertinoIcons.chevron_back, color: Colors.transparent),
+                    padding: EdgeInsets.symmetric(
+                        vertical: 10, horizontal: farLeft ? 10 : 30),
+                    child: Icon(icon ?? CupertinoIcons.chevron_back,
+                        color: Colors.transparent),
                   ),
             Expanded(
               child: textTap != null
@@ -61,7 +69,8 @@ class MinimalAppbarLayout extends StatelessWidget {
                         onTap: () => textTap!(),
                         child: Text(
                           text,
-                          style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
+                          style: kTitle.copyWith(
+                              color: Theme.of(context).colorScheme.primary),
                           overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.center,
                         ),
@@ -69,14 +78,19 @@ class MinimalAppbarLayout extends StatelessWidget {
                     )
                   : Text(
                       text,
-                      style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
+                      style: kTitle.copyWith(
+                          color: Theme.of(context).colorScheme.primary),
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.center,
                     ),
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-              child: Icon(CupertinoIcons.chevron_back, color: Colors.transparent),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                vertical: 10,
+                horizontal: farLeft ? 10 : 30,
+              ),
+              child: const Icon(CupertinoIcons.chevron_back,
+                  color: Colors.transparent),
             ),
           ],
         ),
@@ -85,7 +99,10 @@ class MinimalAppbarLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Theme.of(context).platform == TargetPlatform.iOS
-        ? Hero(tag: "appbar", child: children(context))
+        ? Hero(
+            tag: 'appbar',
+            child: children(context),
+          )
         : children(context);
   }
 }

@@ -21,9 +21,25 @@ const String kReachedEndBody = "Try loading more";
 /// Should be the same as the number of posts the server sends back.
 const int kPostsReturnedPerLoad = 3;
 
+/// Specifies which state the (infinite scrolling) feed is in.
 enum FeedState {
   loadingMore, // Currently loading more posts to feed.
   errorLoadingMore, // Error loading more posts to feed.
   errorRefreshing, // Error refreshing feed posts.
   reachedEnd, // Reached end of feed.
+}
+
+/// The text length of the posts displayed inside the feed before truncating.
+const int kPreviewPostTextLength = 300;
+
+/// The text length of the posts displayed inside the feed before truncating.
+const int kPreviewQuotePostTextLength = 150;
+
+/// Max length a comment can be.
+const int kMaxCommentLength = 5000;
+
+/// Specifies if the post_tile.dart widget is currently being displayed in the feed, or detailed view.
+enum PostView {
+  detailView,
+  feedView,
 }

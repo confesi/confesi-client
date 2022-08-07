@@ -34,7 +34,9 @@ class AppbarLayout extends StatelessWidget {
           decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(
-                color: bottomBorder ? Theme.of(context).colorScheme.background : Colors.transparent,
+                color: bottomBorder
+                    ? Theme.of(context).colorScheme.background
+                    : Colors.transparent,
                 width: .35,
               ),
             ),
@@ -61,13 +63,15 @@ class AppbarLayout extends StatelessWidget {
                                 color: Colors.transparent,
                                 child: Padding(
                                   padding: const EdgeInsets.all(10),
-                                  child: Icon(leftIcon ?? CupertinoIcons.chevron_back),
+                                  child: Icon(
+                                      leftIcon ?? CupertinoIcons.chevron_back),
                                 ),
                               ),
                             )
                           : Padding(
                               padding: const EdgeInsets.all(10),
                               child: Icon(
+                                key: const Key('appbar-icon'),
                                 leftIcon ?? CupertinoIcons.chevron_back,
                                 color: Colors.transparent,
                               ),
@@ -86,13 +90,15 @@ class AppbarLayout extends StatelessWidget {
                                 color: Colors.transparent,
                                 child: Padding(
                                   padding: const EdgeInsets.all(10),
-                                  child: Icon(rightIcon ?? CupertinoIcons.arrow_clockwise),
+                                  child: Icon(rightIcon ??
+                                      CupertinoIcons.arrow_clockwise),
                                 ),
                               ),
                             )
                           : Padding(
                               padding: const EdgeInsets.all(10),
-                              child: Icon(rightIcon ?? CupertinoIcons.arrow_clockwise,
+                              child: Icon(
+                                  rightIcon ?? CupertinoIcons.arrow_clockwise,
                                   color: Colors.transparent),
                             ),
                     ],
@@ -104,7 +110,10 @@ class AppbarLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Theme.of(context).platform == TargetPlatform.iOS
-        ? Hero(tag: "appbar", child: children(context))
+        ? Hero(
+            tag: 'appbar',
+            child: children(context),
+          )
         : children(context);
   }
 }

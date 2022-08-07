@@ -19,7 +19,8 @@ class RegisterScreen extends StatefulWidget {
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProviderStateMixin {
+class _RegisterScreenState extends State<RegisterScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController errorAnimController;
   TextEditingController usernameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -30,8 +31,8 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
 
   @override
   void initState() {
-    errorAnimController =
-        AnimationController(vsync: this, duration: const Duration(milliseconds: 400));
+    errorAnimController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 400));
     super.initState();
   }
 
@@ -96,8 +97,9 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                               const SizedBox(height: 15),
                               Text(
                                 "Let's get you started.",
-                                style:
-                                    kDisplay.copyWith(color: Theme.of(context).colorScheme.primary),
+                                style: kDisplay.copyWith(
+                                    color:
+                                        Theme.of(context).colorScheme.primary),
                                 textAlign: TextAlign.left,
                               ),
                               SizedBox(height: heightFactor * 8),
@@ -129,25 +131,32 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                                 justText: true,
                                 onPress: () async {
                                   FocusScope.of(context).unfocus();
-                                  await context.read<AuthenticationCubit>().registerUser(
+                                  await context
+                                      .read<AuthenticationCubit>()
+                                      .registerUser(
                                         usernameController.text,
                                         passwordController.text,
                                         emailController.text,
                                       );
                                 },
                                 icon: CupertinoIcons.chevron_right,
-                                backgroundColor: Theme.of(context).colorScheme.secondary,
-                                textColor: Theme.of(context).colorScheme.onSecondary,
+                                backgroundColor:
+                                    Theme.of(context).colorScheme.secondary,
+                                textColor:
+                                    Theme.of(context).colorScheme.onSecondary,
                                 text: "Register",
                               ),
                               const SizedBox(height: 10),
                               Center(
                                 child: LinkText(
-                                    onPress: () {
-                                      Navigator.of(context).pushNamed("/login");
-                                    },
-                                    linkText: "Tap here.",
-                                    text: "Already a user? "),
+                                  pressable:
+                                      state is UserLoading ? false : true,
+                                  onPress: () {
+                                    Navigator.of(context).pushNamed("/login");
+                                  },
+                                  linkText: "Tap here.",
+                                  text: "Already a user? ",
+                                ),
                               ),
                               const SizedBox(height: 10),
                             ],

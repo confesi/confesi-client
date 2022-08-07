@@ -19,7 +19,8 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStateMixin {
+class _LoginScreenState extends State<LoginScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController errorAnimController;
   TextEditingController usernameEmailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -29,8 +30,8 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
 
   @override
   void initState() {
-    errorAnimController =
-        AnimationController(vsync: this, duration: const Duration(milliseconds: 400));
+    errorAnimController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 400));
     super.initState();
   }
 
@@ -93,8 +94,9 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                               const SizedBox(height: 15),
                               Text(
                                 "Let's log you in.",
-                                style:
-                                    kDisplay.copyWith(color: Theme.of(context).colorScheme.primary),
+                                style: kDisplay.copyWith(
+                                    color:
+                                        Theme.of(context).colorScheme.primary),
                                 textAlign: TextAlign.left,
                               ),
                               SizedBox(height: heightFactor * 8),
@@ -121,14 +123,18 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                                 justText: true,
                                 onPress: () async {
                                   FocusScope.of(context).unfocus();
-                                  await context.read<AuthenticationCubit>().loginUser(
+                                  await context
+                                      .read<AuthenticationCubit>()
+                                      .loginUser(
                                         usernameEmailController.text,
                                         passwordController.text,
                                       );
                                 },
                                 icon: CupertinoIcons.chevron_right,
-                                backgroundColor: Theme.of(context).colorScheme.primary,
-                                textColor: Theme.of(context).colorScheme.onPrimary,
+                                backgroundColor:
+                                    Theme.of(context).colorScheme.primary,
+                                textColor:
+                                    Theme.of(context).colorScheme.onPrimary,
                                 text: "Login",
                               ),
                               const SizedBox(height: 10),

@@ -1,3 +1,4 @@
+import 'package:Confessi/features/feed/presentation/screens/detail_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,6 +16,8 @@ import '../../features/feed/presentation/cubit/trending_cubit.dart';
 class AppRouter {
   /// Converts: navigating to a named route -> that actual route.
   Route onGenerateRoute(RouteSettings routeSettings) {
+    /// Arguments passed to a named route.
+    final args = routeSettings.arguments as Map<String, dynamic>?;
     switch (routeSettings.name) {
       case "/splash":
         return MaterialPageRoute(builder: (_) => const SplashScreen());
@@ -42,12 +45,27 @@ class AppRouter {
             child: const HomeScreen(),
           ),
         );
+      case '/home/detail':
+        return MaterialPageRoute(
+          builder: (_) => DetailViewScreen(
+            genre: args!['genre'],
+            time: args['time'],
+            faculty: args['faculty'],
+            text: args['text'],
+            likes: args['likes'],
+            hates: args['hates'],
+            comments: args['comments'],
+            year: args['year'],
+            university: args['university'],
+          ),
+        );
       case "/feed/details":
         return MaterialPageRoute(builder: (_) => const Text("Feed details"));
       case "/settings":
         return MaterialPageRoute(builder: (_) => const Text("Settings"));
       case "/settings/watchedUniversities":
-        return MaterialPageRoute(builder: (_) => const Text("Watched universities"));
+        return MaterialPageRoute(
+            builder: (_) => const Text("Watched universities"));
       default:
         throw Exception("Named route not defined");
     }

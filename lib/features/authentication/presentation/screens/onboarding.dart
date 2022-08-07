@@ -96,14 +96,19 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
                         children: [
                           SingleTextButton(
                             backgroundColor: Colors.transparent,
-                            textColor: Theme.of(context).colorScheme.background,
+                            textColor:
+                                Theme.of(context).colorScheme.onSecondary,
                             text: "Skip",
-                            onPress: () => Navigator.pushNamed(context, "/home"),
+                            onPress: () =>
+                                Navigator.pushNamed(context, "/home"),
                           ),
                           SingleTextButton(
-                            backgroundColor: Theme.of(context).colorScheme.background,
-                            textColor: Theme.of(context).colorScheme.primary,
-                            text: pageIndex + 1 == pages.length ? "Done" : "Next",
+                            backgroundColor:
+                                Theme.of(context).colorScheme.onError,
+                            textColor:
+                                Theme.of(context).colorScheme.onSecondary,
+                            text:
+                                pageIndex + 1 == pages.length ? "Done" : "Next",
                             onPress: () => pageIndex + 1 == pages.length
                                 ? Navigator.pushNamed(context, "/home")
                                 : controller.animateToPage(pageIndex + 1,

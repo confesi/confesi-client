@@ -48,7 +48,6 @@ class ShowcaseItem extends StatelessWidget {
                     child: SingleChildScrollView(
                       physics: const BouncingScrollPhysics(),
                       child: HeaderGroupText(
-                        dark: true,
                         body: body,
                         header: header,
                       ),

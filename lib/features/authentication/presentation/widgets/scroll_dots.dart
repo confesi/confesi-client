@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 
 class ScrollDots extends StatefulWidget {
   const ScrollDots(
-      {this.verticalPadding = 0.0, required this.pageLength, required this.pageIndex, Key? key})
+      {this.verticalPadding = 0.0,
+      required this.pageLength,
+      required this.pageIndex,
+      Key? key})
       : super(key: key);
 
   final int pageIndex;
@@ -27,12 +30,14 @@ class _ScrollDotsState extends State<ScrollDots> {
             height: 9,
             decoration: BoxDecoration(
               color: i == widget.pageIndex
-                  ? Theme.of(context).colorScheme.background
+                  ? Theme.of(context).colorScheme.onSecondary
                   : Theme.of(context).colorScheme.secondary,
               shape: BoxShape.circle,
               border: i == widget.pageIndex
                   ? null
-                  : Border.all(color: Theme.of(context).colorScheme.background, width: 2),
+                  : Border.all(
+                      color: Theme.of(context).colorScheme.onSecondary,
+                      width: 2),
             ),
           ),
         );
@@ -44,7 +49,8 @@ class _ScrollDotsState extends State<ScrollDots> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 30, vertical: widget.verticalPadding),
+      padding: EdgeInsets.symmetric(
+          horizontal: 30, vertical: widget.verticalPadding),
       child: Wrap(
         spacing: 8,
         runSpacing: 8,

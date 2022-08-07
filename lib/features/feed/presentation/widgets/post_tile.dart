@@ -1,56 +1,100 @@
 import 'package:Confessi/core/styles/typography.dart';
 import 'package:Confessi/core/widgets/buttons/touchable_opacity.dart';
-import 'package:Confessi/core/widgets/layout/line.dart';
+import 'package:Confessi/core/widgets/sheets/button_options.dart';
 import 'package:Confessi/core/widgets/text/group.dart';
+import 'package:Confessi/features/feed/constants.dart';
+import 'package:Confessi/features/feed/presentation/widgets/quote_tile.dart';
 import 'package:Confessi/features/feed/presentation/widgets/vote_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PostTile extends StatelessWidget {
-  const PostTile({Key? key}) : super(key: key);
+  const PostTile({
+    required this.genre,
+    required this.time,
+    required this.faculty,
+    required this.text,
+    required this.likes,
+    required this.hates,
+    required this.comments,
+    required this.year,
+    required this.university,
+    this.postView = PostView.feedView,
+    Key? key,
+  }) : super(key: key);
+
+  final String university;
+  final String genre;
+  final String time;
+  final String faculty;
+  final String text;
+  final int likes;
+  final int hates;
+  final int year;
+  final String comments;
+  final PostView postView;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Theme.of(context).colorScheme.background,
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 30),
-      width: double.infinity,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          //! Top Row
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 15),
-                child: Container(
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.secondary,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Center(
-                    child: Icon(
-                      CupertinoIcons.flame,
-                      color: Theme.of(context).colorScheme.onSecondary,
+    return GestureDetector(
+      onTap: () => postView == PostView.feedView
+          ? Navigator.pushNamed(
+              context,
+              '/home/detail',
+              arguments: {
+                'genre': genre,
+                'time': time,
+                'faculty': faculty,
+                'text': text,
+                'likes': likes,
+                'hates': hates,
+                'comments': comments,
+                'year': year,
+                'university': university,
+                'postView': PostView.detailView
+              },
+            )
+          : FocusManager.instance.primaryFocus?.unfocus(),
+      child: Container(
+        color: Theme.of(context).colorScheme.background,
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 30),
+        width: double.infinity,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            //! Top Row
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 15),
+                  child: Container(
+                    width: 50,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.secondary,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Center(
+                      child: Icon(
+                        CupertinoIcons.flame,
+                        color: Theme.of(context).colorScheme.onSecondary,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              const Expanded(
-                child: GroupText(
-                  body: "1 hour ago • Engineering",
-                  header: "Politics",
-                  leftAlign: true,
-                  small: true,
+                Expanded(
+                  child: GroupText(
+                    body: "$time • $faculty • Year $year",
+                    header: genre,
+                    leftAlign: true,
+                    small: true,
+                  ),
                 ),
-              ),
-              TouchableOpacity(
-                  onTap: () => print("tap"),
+                TouchableOpacity(
+                  onTap: () => showButtonOptionsSheet(context),
                   child: Container(
                     // Transparent container hitbox trick.
                     color: Colors.transparent,
@@ -61,45 +105,58 @@ class PostTile extends StatelessWidget {
                         color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
-                  )),
-            ],
-          ),
-          const SizedBox(height: 30),
-          //! Middle row
-          Text(
-            "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before final copy is available.",
-            style: kBody.copyWith(
-              color: Theme.of(context).colorScheme.primary,
-              height: 1.5,
-            ),
-          ),
-          const SizedBox(height: 30),
-          //! Bottom row
-          Wrap(
-            runAlignment: WrapAlignment.center,
-            crossAxisAlignment: WrapCrossAlignment.center,
-            spacing: 8,
-            runSpacing: 8,
-            children: [
-              const VoteTile(
-                isActive: true,
-                value: 31,
-                icon: CupertinoIcons.hand_thumbsup_fill,
-              ),
-              const VoteTile(
-                isActive: false,
-                value: 19,
-                icon: CupertinoIcons.hand_thumbsdown_fill,
-              ),
-              Text(
-                "4 comments",
-                style: kDetail.copyWith(
-                  color: Theme.of(context).colorScheme.onSurface,
+                  ),
                 ),
+              ],
+            ),
+            const SizedBox(height: 30),
+            //! Middle (1) row
+            Text(
+              text.length > kPreviewPostTextLength &&
+                      postView == PostView.feedView
+                  ? "${text.substring(0, kPreviewPostTextLength)}..."
+                  : text,
+              style: kBody.copyWith(
+                color: Theme.of(context).colorScheme.primary,
+                height: 1.5,
               ),
-            ],
-          ),
-        ],
+            ),
+            const SizedBox(height: 30),
+            QuoteTile(
+              genre: 'Relationships',
+              postView: postView,
+              text:
+                  'I cannot believe my boyfriend sometimes! Oh my goodness, he is so annoying. Seriously. This really makes me angry. I am trying to be melodramatic right now! Take me seriously!',
+            ),
+            //! Bottom row
+            Wrap(
+              runAlignment: WrapAlignment.center,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                VoteTile(
+                  isActive: true,
+                  value: likes,
+                  icon: CupertinoIcons.hand_thumbsup_fill,
+                  onTap: () => print("tap"),
+                ),
+                VoteTile(
+                  isActive: false,
+                  value: hates,
+                  icon: CupertinoIcons.hand_thumbsdown_fill,
+                  onTap: () => print("tap"),
+                ),
+                Text(
+                  comments,
+                  style: kDetail.copyWith(
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
