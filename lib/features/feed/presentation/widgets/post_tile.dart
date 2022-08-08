@@ -1,3 +1,4 @@
+import 'package:Confessi/core/constants/buttons.dart';
 import 'package:Confessi/core/styles/typography.dart';
 import 'package:Confessi/core/widgets/buttons/touchable_opacity.dart';
 import 'package:Confessi/core/widgets/sheets/button_options.dart';
@@ -137,12 +138,16 @@ class PostTile extends StatelessWidget {
               runSpacing: 8,
               children: [
                 VoteTile(
+                  tooltip: 'this is good content',
+                  tooltipLocation: TooltipLocation.below,
                   isActive: true,
                   value: likes,
                   icon: CupertinoIcons.hand_thumbsup_fill,
                   onTap: () => print("tap"),
                 ),
                 VoteTile(
+                  tooltip: 'this is bad content',
+                  tooltipLocation: TooltipLocation.below,
                   isActive: false,
                   value: hates,
                   icon: CupertinoIcons.hand_thumbsdown_fill,

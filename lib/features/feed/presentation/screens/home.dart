@@ -58,7 +58,6 @@ class _ExploreHomeState extends State<ExploreHome>
                 ),
                 leftIconVisible: true,
                 leftIcon: CupertinoIcons.bars,
-                leftIconToolTip: 'menu drawer',
                 leftIconOnPress: () {
                   Scaffold.of(context).openDrawer();
                 },

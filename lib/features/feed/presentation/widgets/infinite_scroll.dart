@@ -1,4 +1,4 @@
-import 'package:Confessi/core/behaviors/no_scroll_glow.dart';
+import 'package:Confessi/core/widgets/behaviours/overscroll.dart';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +36,8 @@ class _InfiniteScrollState extends State<InfiniteScroll> {
     print("<== INIT CALLED ==>");
     scrollController = ScrollController();
     scrollController.addListener(() async {
-      if (scrollController.offset == scrollController.position.maxScrollExtent &&
+      if (scrollController.offset ==
+              scrollController.position.maxScrollExtent &&
           isLoading == false &&
           widget.feedState == FeedState.loadingMore) {
         isLoading = true;
@@ -70,7 +71,7 @@ class _InfiniteScrollState extends State<InfiniteScroll> {
 
   Widget _buildFeed() {
     return ScrollConfiguration(
-      behavior: NoGlow(),
+      behavior: NoOverScrollSplash(),
       child: ListView.builder(
         physics: const ClampingScrollPhysics(
           parent: AlwaysScrollableScrollPhysics(),
@@ -80,12 +81,15 @@ class _InfiniteScrollState extends State<InfiniteScroll> {
         itemBuilder: (context, index) {
           if (index < widget.items.length) {
             return Padding(
-              padding: index == 0 ? const EdgeInsets.all(0) : const EdgeInsets.only(top: 16),
+              padding: index == 0
+                  ? const EdgeInsets.all(0)
+                  : const EdgeInsets.only(top: 16),
               child: Container(
                 height: 50,
                 color: Colors.blueAccent,
                 child: Center(
-                  child: Text("Dummy post to show it works, data: ${widget.items[index].faculty}"),
+                  child: Text(
+                      "Dummy post to show it works, data: ${widget.items[index].faculty}"),
                 ),
               ),
             );
@@ -155,7 +159,8 @@ class _InfiniteScrollState extends State<InfiniteScroll> {
           await Future.delayed(const Duration(milliseconds: 400));
           _fetchMore();
         },
-        builder: (BuildContext context, Widget child, IndicatorController controller) {
+        builder: (BuildContext context, Widget child,
+            IndicatorController controller) {
           return AnimatedBuilder(
             animation: controller,
             builder: (BuildContext context, _) {

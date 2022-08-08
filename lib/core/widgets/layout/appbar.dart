@@ -1,3 +1,4 @@
+import 'package:Confessi/core/constants/buttons.dart';
 import 'package:Confessi/core/styles/typography.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,8 +17,6 @@ class AppbarLayout extends StatelessWidget {
     this.rightIconVisible = false,
     required this.centerWidget,
     this.centerWidgetFullWidth = false,
-    this.leftIconToolTip,
-    this.rightIconToolTip,
     Key? key,
   }) : super(key: key);
 
@@ -30,8 +29,6 @@ class AppbarLayout extends StatelessWidget {
   final Function? leftIconOnPress;
   final IconData? rightIcon;
   final Function? rightIconOnPress;
-  final String? rightIconToolTip;
-  final String? leftIconToolTip;
 
   Widget children(BuildContext context) => Material(
         color: Theme.of(context).colorScheme.background,
@@ -58,7 +55,6 @@ class AppbarLayout extends StatelessWidget {
                     children: [
                       leftIconVisible
                           ? TouchableOpacity(
-                              tooltip: leftIconToolTip,
                               onTap: () {
                                 if (leftIconOnPress != null) {
                                   leftIconOnPress!();
@@ -88,7 +84,7 @@ class AppbarLayout extends StatelessWidget {
                       ),
                       rightIconVisible
                           ? TouchableOpacity(
-                              tooltip: rightIconToolTip,
+                              tooltipLocation: TooltipLocation.below,
                               onTap: () {
                                 if (rightIconOnPress != null) {
                                   rightIconOnPress!();

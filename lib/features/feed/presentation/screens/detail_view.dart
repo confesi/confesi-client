@@ -4,7 +4,7 @@ import 'package:Confessi/core/widgets/layout/appbar.dart';
 import 'package:Confessi/core/widgets/layout/keyboard_dismiss.dart';
 import 'package:Confessi/core/widgets/layout/line.dart';
 import 'package:Confessi/core/widgets/textfields/bulge.dart';
-import 'package:Confessi/core/widgets/textfields/thin.dart';
+import 'package:Confessi/core/widgets/textfields/expandable.dart';
 import 'package:Confessi/features/feed/presentation/widgets/comment_sheet.dart';
 import 'package:Confessi/features/feed/presentation/widgets/post_tile.dart';
 import 'package:flutter/cupertino.dart';
@@ -70,7 +70,6 @@ class _DetailViewScreenState extends State<DetailViewScreen> {
                   textAlign: TextAlign.center,
                 ),
                 leftIconVisible: true,
-                leftIconToolTip: 'go back',
               ),
               Expanded(
                 child: CupertinoScrollbar(

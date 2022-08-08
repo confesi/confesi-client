@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 import '../../styles/typography.dart';
 
-class ThinTextfield extends StatefulWidget {
-  const ThinTextfield({
+class ExpandableTextfield extends StatefulWidget {
+  const ExpandableTextfield({
     required this.controller,
     required this.onChanged,
     this.maxCharacters,
@@ -20,10 +20,10 @@ class ThinTextfield extends StatefulWidget {
   final int? maxLines;
 
   @override
-  State<ThinTextfield> createState() => _ThinTextfieldState();
+  State<ExpandableTextfield> createState() => _ExpandableTextfieldState();
 }
 
-class _ThinTextfieldState extends State<ThinTextfield> {
+class _ExpandableTextfieldState extends State<ExpandableTextfield> {
   FocusNode focusNode = FocusNode();
 
   @override
@@ -59,7 +59,7 @@ class _ThinTextfieldState extends State<ThinTextfield> {
                 onChanged: (value) => widget.onChanged(value),
                 maxLines: widget.maxLines,
                 minLines: widget.minLines,
-                keyboardType: TextInputType.multiline,
+                keyboardType: TextInputType.text,
                 focusNode: focusNode,
                 controller: widget.controller,
                 style: kBody.copyWith(

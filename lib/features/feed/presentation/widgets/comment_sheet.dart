@@ -1,9 +1,10 @@
+import 'package:Confessi/core/constants/buttons.dart';
+import 'package:Confessi/core/widgets/buttons/simple_text.dart';
 import 'package:Confessi/core/widgets/buttons/touchable_opacity.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 
 import '../../../../core/styles/typography.dart';
-import '../../../../core/widgets/textfields/thin.dart';
+import '../../../../core/widgets/textfields/expandable.dart';
 
 class CommentSheet extends StatefulWidget {
   const CommentSheet({
@@ -49,13 +50,10 @@ class _CommentSheetState extends State<CommentSheet>
   void manageAnim() {
     setState(() {});
     if (commentController.text.isEmpty) {
-      // reverse other anim (hide it)
       popAnimController.reverse();
       showAnimController.forward();
     } else {
       showAnimController.reverse().then((value) {
-        print('START');
-        // start other anim (show it)
         popAnimController.forward();
       });
     }
@@ -71,6 +69,7 @@ class _CommentSheetState extends State<CommentSheet>
   void dispose() {
     commentController.dispose();
     showAnimController.dispose();
+    popAnimController.dispose();
     super.dispose();
   }
 
@@ -81,8 +80,8 @@ class _CommentSheetState extends State<CommentSheet>
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          ThinTextfield(
-            maxLines: 5,
+          ExpandableTextfield(
+            maxLines: 8,
             minLines: 1,
             maxCharacters: widget.maxCharacters,
             onChanged: (value) {
@@ -108,42 +107,28 @@ class _CommentSheetState extends State<CommentSheet>
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Expanded(
-                                  child: Text(
-                                    'writing to #general',
-                                    textAlign: TextAlign.left,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: kBody.copyWith(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onSurface,
-                                    ),
-                                  ),
+                                SimpleTextButton(
+                                  tooltipLocation: TooltipLocation.above,
+                                  text: 'delete',
+                                  tooltip: 'delete your comment',
+                                  isErrorText: true,
+                                  onTap: () {
+                                    // Clears text.
+                                    commentController.clear();
+                                    // Pushes down keyboard (unfocus).
+                                    FocusScope.of(context).unfocus();
+                                  },
                                 ),
-                                const SizedBox(width: 10),
-                                TouchableOpacity(
+                                SimpleTextButton(
+                                  tooltipLocation: TooltipLocation.above,
+                                  text: 'post comment',
                                   tooltip: 'submit comment to thread',
-                                  onTap: () =>
-                                      widget.onSubmit(commentController.text),
-                                  child: Container(
-                                    padding: const EdgeInsets.all(10),
-                                    decoration: BoxDecoration(
-                                      color:
-                                          Theme.of(context).colorScheme.surface,
-                                      borderRadius: const BorderRadius.all(
-                                        Radius.circular(10),
-                                      ),
-                                    ),
-                                    child: Text(
-                                      'post comment',
-                                      textAlign: TextAlign.right,
-                                      style: kBody.copyWith(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary,
-                                      ),
-                                    ),
-                                  ),
+                                  onTap: () {
+                                    // Pushes down keyboard (unfocus).
+                                    FocusScope.of(context).unfocus();
+                                    // 'Submits' the comment.
+                                    widget.onSubmit(commentController.text);
+                                  },
                                 ),
                               ],
                             ),

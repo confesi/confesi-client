@@ -1,5 +1,7 @@
+import 'package:Confessi/core/constants/buttons.dart';
 import 'package:Confessi/core/widgets/behaviours/tool_tip.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class TouchableOpacity extends StatefulWidget {
   const TouchableOpacity({
@@ -7,6 +9,8 @@ class TouchableOpacity extends StatefulWidget {
     required this.child,
     required this.onTap,
     this.tooltip,
+    this.tapType,
+    this.tooltipLocation,
     Key? key,
   }) : super(key: key);
 
@@ -14,6 +18,8 @@ class TouchableOpacity extends StatefulWidget {
   final Function onTap;
   final bool tappable;
   final String? tooltip;
+  final TapType? tapType;
+  final TooltipLocation? tooltipLocation;
 
   @override
   State<TouchableOpacity> createState() => _TouchableOpacityState();
@@ -62,6 +68,7 @@ class _TouchableOpacityState extends State<TouchableOpacity>
   @override
   Widget build(BuildContext context) {
     return ToolTip(
+      tooltipLocation: widget.tooltipLocation,
       message: widget.tooltip,
       child: widget.tappable
           ? GestureDetector(
@@ -79,6 +86,13 @@ class _TouchableOpacityState extends State<TouchableOpacity>
               }),
               onTap: () {
                 widget.onTap();
+                if (widget.tapType != null) {
+                  if (widget.tapType == TapType.lightImpact) {
+                    HapticFeedback.lightImpact();
+                  } else if (widget.tapType == TapType.strongImpact) {
+                    HapticFeedback.heavyImpact();
+                  }
+                }
                 startAnim();
               },
               child: Opacity(
