@@ -100,7 +100,7 @@ class MinimalAppbarLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return Theme.of(context).platform == TargetPlatform.iOS
         ? Hero(
-            tag: 'appbar',
+            tag: 'minimal-appbar',
             child: children(context),
           )
         : children(context);

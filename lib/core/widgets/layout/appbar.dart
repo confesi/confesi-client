@@ -1,8 +1,10 @@
+import 'package:Confessi/core/styles/typography.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../buttons/touchable_opacity.dart';
 
+/// If [leftIconOnPress] is null, defaults to popping current context.
 class AppbarLayout extends StatelessWidget {
   const AppbarLayout({
     this.leftIcon,
@@ -14,6 +16,8 @@ class AppbarLayout extends StatelessWidget {
     this.rightIconVisible = false,
     required this.centerWidget,
     this.centerWidgetFullWidth = false,
+    this.leftIconToolTip,
+    this.rightIconToolTip,
     Key? key,
   }) : super(key: key);
 
@@ -26,6 +30,8 @@ class AppbarLayout extends StatelessWidget {
   final Function? leftIconOnPress;
   final IconData? rightIcon;
   final Function? rightIconOnPress;
+  final String? rightIconToolTip;
+  final String? leftIconToolTip;
 
   Widget children(BuildContext context) => Material(
         color: Theme.of(context).colorScheme.background,
@@ -52,6 +58,7 @@ class AppbarLayout extends StatelessWidget {
                     children: [
                       leftIconVisible
                           ? TouchableOpacity(
+                              tooltip: leftIconToolTip,
                               onTap: () {
                                 if (leftIconOnPress != null) {
                                   leftIconOnPress!();
@@ -81,6 +88,7 @@ class AppbarLayout extends StatelessWidget {
                       ),
                       rightIconVisible
                           ? TouchableOpacity(
+                              tooltip: rightIconToolTip,
                               onTap: () {
                                 if (rightIconOnPress != null) {
                                   rightIconOnPress!();
@@ -90,8 +98,9 @@ class AppbarLayout extends StatelessWidget {
                                 color: Colors.transparent,
                                 child: Padding(
                                   padding: const EdgeInsets.all(10),
-                                  child: Icon(rightIcon ??
-                                      CupertinoIcons.arrow_clockwise),
+                                  child: Icon(
+                                    rightIcon ?? CupertinoIcons.arrow_clockwise,
+                                  ),
                                 ),
                               ),
                             )

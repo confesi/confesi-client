@@ -1,18 +1,26 @@
+import 'package:Confessi/core/widgets/behaviours/tool_tip.dart';
 import 'package:flutter/material.dart';
 
 class TouchableOpacity extends StatefulWidget {
-  const TouchableOpacity({this.tappable = true, required this.child, required this.onTap, Key? key})
-      : super(key: key);
+  const TouchableOpacity({
+    this.tappable = true,
+    required this.child,
+    required this.onTap,
+    this.tooltip,
+    Key? key,
+  }) : super(key: key);
 
   final Widget child;
   final Function onTap;
   final bool tappable;
+  final String? tooltip;
 
   @override
   State<TouchableOpacity> createState() => _TouchableOpacityState();
 }
 
-class _TouchableOpacityState extends State<TouchableOpacity> with SingleTickerProviderStateMixin {
+class _TouchableOpacityState extends State<TouchableOpacity>
+    with SingleTickerProviderStateMixin {
   late AnimationController animController;
   late Animation anim;
 
@@ -23,8 +31,10 @@ class _TouchableOpacityState extends State<TouchableOpacity> with SingleTickerPr
         vsync: this,
         duration: const Duration(milliseconds: 0),
         reverseDuration: const Duration(milliseconds: 400));
-    anim =
-        CurvedAnimation(parent: animController, curve: Curves.linear, reverseCurve: Curves.linear);
+    anim = CurvedAnimation(
+        parent: animController,
+        curve: Curves.linear,
+        reverseCurve: Curves.linear);
   }
 
   @override
@@ -51,29 +61,32 @@ class _TouchableOpacityState extends State<TouchableOpacity> with SingleTickerPr
 
   @override
   Widget build(BuildContext context) {
-    return widget.tappable
-        ? GestureDetector(
-            onTapDown: (_) => setState(() {
-              animController.forward();
-              animController.addListener(() {
-                setState(() {});
-              });
-            }),
-            onTapCancel: () => setState(() {
-              animController.reverse();
-              animController.addListener(() {
-                setState(() {});
-              });
-            }),
-            onTap: () {
-              widget.onTap();
-              startAnim();
-            },
-            child: Opacity(
-              opacity: -anim.value * 0.8 + 1,
-              child: widget.child,
-            ),
-          )
-        : widget.child;
+    return ToolTip(
+      message: widget.tooltip,
+      child: widget.tappable
+          ? GestureDetector(
+              onTapDown: (_) => setState(() {
+                animController.forward();
+                animController.addListener(() {
+                  setState(() {});
+                });
+              }),
+              onTapCancel: () => setState(() {
+                animController.reverse();
+                animController.addListener(() {
+                  setState(() {});
+                });
+              }),
+              onTap: () {
+                widget.onTap();
+                startAnim();
+              },
+              child: Opacity(
+                opacity: -anim.value * 0.8 + 1,
+                child: widget.child,
+              ),
+            )
+          : widget.child,
+    );
   }
 }

@@ -94,6 +94,7 @@ class PostTile extends StatelessWidget {
                   ),
                 ),
                 TouchableOpacity(
+                  tooltip: 'post options',
                   onTap: () => showButtonOptionsSheet(context),
                   child: Container(
                     // Transparent container hitbox trick.
@@ -110,7 +111,7 @@ class PostTile extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 30),
-            //! Middle (1) row
+            //! Middle row
             Text(
               text.length > kPreviewPostTextLength &&
                       postView == PostView.feedView

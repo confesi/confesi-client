@@ -1,5 +1,6 @@
 import 'package:Confessi/core/styles/typography.dart';
 import 'package:Confessi/core/widgets/behaviours/overscroll.dart';
+import 'package:Confessi/core/widgets/layout/appbar.dart';
 import 'package:Confessi/core/widgets/layout/keyboard_dismiss.dart';
 import 'package:Confessi/core/widgets/layout/line.dart';
 import 'package:Confessi/core/widgets/textfields/bulge.dart';
@@ -8,6 +9,7 @@ import 'package:Confessi/features/feed/presentation/widgets/comment_sheet.dart';
 import 'package:Confessi/features/feed/presentation/widgets/post_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:keyboard_attachable/keyboard_attachable.dart';
 
 import '../../../../core/widgets/layout/minimal_appbar.dart';
 import '../../constants.dart';
@@ -45,70 +47,143 @@ class _DetailViewScreenState extends State<DetailViewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return KeyboardDismissLayout(
-      child: Container(
-        color: Theme.of(context).colorScheme.background,
-        child: SafeArea(
-          child: Scaffold(
-            bottomSheet: Container(
-              color: Theme.of(context).colorScheme.background,
-              child: CommentSheet(
-                maxCharacters: kMaxCommentLength,
-                onSubmit: (comment) => print(comment),
-              ),
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
+      resizeToAvoidBottomInset: false,
+      body: SafeArea(
+        maintainBottomViewPadding: true,
+        child: FooterLayout(
+          footer: KeyboardAttachable(
+            child: CommentSheet(
+              onSubmit: (comment) => print(comment),
+              maxCharacters: kMaxCommentLength,
             ),
-            backgroundColor: Theme.of(context).colorScheme.background,
-            body: Column(
-              children: [
-                const MinimalAppbarLayout(farLeft: true),
-                Expanded(
-                  child: CupertinoScrollbar(
-                    child: ScrollConfiguration(
-                      behavior: NoOverScrollSplash(),
-                      child: SingleChildScrollView(
-                        keyboardDismissBehavior:
-                            ScrollViewKeyboardDismissBehavior.onDrag,
-                        child: Column(
-                          children: [
-                            PostTile(
-                              postView: PostView.detailView,
-                              university: widget.university,
-                              genre: widget.genre,
-                              time: widget.time,
-                              faculty: widget.faculty,
-                              text: widget.text,
-                              likes: widget.likes,
-                              hates: widget.hates,
-                              comments: widget.comments,
-                              year: widget.year,
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 15),
-                              child: LineLayout(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onBackground),
-                            ),
-                            Container(
-                              color: Colors.redAccent,
-                              height: 300,
-                            ),
-                            Container(
-                              color: Colors.blue,
-                              height: MediaQuery.of(context).viewPadding.bottom,
-                            ),
-                          ],
-                        ),
+          ),
+          child: Column(
+            children: [
+              AppbarLayout(
+                centerWidget: Text(
+                  'Thread View',
+                  style: kTitle.copyWith(
+                      color: Theme.of(context).colorScheme.primary),
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                ),
+                leftIconVisible: true,
+                leftIconToolTip: 'go back',
+              ),
+              Expanded(
+                child: CupertinoScrollbar(
+                  child: ScrollConfiguration(
+                    behavior: NoOverScrollSplash(),
+                    child: SingleChildScrollView(
+                      keyboardDismissBehavior:
+                          ScrollViewKeyboardDismissBehavior.onDrag,
+                      child: Column(
+                        children: [
+                          PostTile(
+                            postView: PostView.detailView,
+                            university: widget.university,
+                            genre: widget.genre,
+                            time: widget.time,
+                            faculty: widget.faculty,
+                            text: widget.text,
+                            likes: widget.likes,
+                            hates: widget.hates,
+                            comments: widget.comments,
+                            year: widget.year,
+                          ),
+                        ],
                       ),
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
     );
   }
 }
+
+
+
+
+
+// KeyboardDismissLayout(
+//       child: Container(
+//         color: Theme.of(context).colorScheme.background,
+//         child: SafeArea(
+//           child: Scaffold(
+//             bottomSheet: Container(
+//               color: Theme.of(context).colorScheme.background,
+//               child: CommentSheet(
+//                 maxCharacters: kMaxCommentLength,
+//                 onSubmit: (comment) => print(comment),
+//               ),
+//             ),
+//             backgroundColor: Theme.of(context).colorScheme.background,
+//             body: Column(
+//               children: [
+//                 AppbarLayout(
+//                   centerWidget: Text(
+//                     'Thread View',
+//                     style: kTitle.copyWith(
+//                         color: Theme.of(context).colorScheme.primary),
+//                     overflow: TextOverflow.ellipsis,
+//                     textAlign: TextAlign.center,
+//                   ),
+//                   leftIconVisible: true,
+//                   rightIcon: CupertinoIcons.pen,
+//                   rightIconVisible: true,
+//                 ),
+//                 Expanded(
+//                   child: CupertinoScrollbar(
+//                     child: ScrollConfiguration(
+//                       behavior: NoOverScrollSplash(),
+//                       child: SingleChildScrollView(
+//                         keyboardDismissBehavior:
+//                             ScrollViewKeyboardDismissBehavior.onDrag,
+//                         child: Column(
+//                           children: [
+//                             PostTile(
+//                               postView: PostView.detailView,
+//                               university: widget.university,
+//                               genre: widget.genre,
+//                               time: widget.time,
+//                               faculty: widget.faculty,
+//                               text: widget.text,
+//                               likes: widget.likes,
+//                               hates: widget.hates,
+//                               comments: widget.comments,
+//                               year: widget.year,
+//                             ),
+//                             Padding(
+//                               padding:
+//                                   const EdgeInsets.symmetric(horizontal: 15),
+//                               child: LineLayout(
+//                                   color: Theme.of(context)
+//                                       .colorScheme
+//                                       .onBackground),
+//                             ),
+//                             Container(
+//                               color: Colors.redAccent,
+//                               height: 300,
+//                             ),
+//                             Container(
+//                               color: Colors.blue,
+//                               height: MediaQuery.of(context).viewPadding.bottom,
+//                             ),
+//                           ],
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ),
+//         ),
+//       ),
+//     );
