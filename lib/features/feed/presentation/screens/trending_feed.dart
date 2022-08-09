@@ -15,7 +15,8 @@ class ExploreTrending extends StatefulWidget {
   State<ExploreTrending> createState() => _ExploreTrendingState();
 }
 
-class _ExploreTrendingState extends State<ExploreTrending> with AutomaticKeepAliveClientMixin {
+class _ExploreTrendingState extends State<ExploreTrending>
+    with AutomaticKeepAliveClientMixin {
   Widget _buildFeed(TrendingState state, TrendingCubit trendingCubit) {
     if (state is ErrorLoadingAny) {
       return Center(
@@ -53,18 +54,14 @@ class _ExploreTrendingState extends State<ExploreTrending> with AutomaticKeepAli
         );
       },
       listenWhen: (previous, current) {
-        print("${previous.runtimeType} : ${current.runtimeType}");
-        if (current is HasPosts) {
-          print("FeedState => ${current.feedState}");
-        }
-        if (current is HasPosts && current.feedState == FeedState.errorRefreshing) {
+        if (current is HasPosts &&
+            current.feedState == FeedState.errorRefreshing) {
           return true;
         } else {
           return false;
         }
       },
       listener: (context, state) {
-        print("LISTENED!!!!");
         showSnackbar(context, kSnackbarConnectionError);
       },
     );

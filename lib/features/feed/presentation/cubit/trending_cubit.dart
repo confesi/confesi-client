@@ -49,13 +49,18 @@ class TrendingCubit extends Cubit<TrendingState> {
       final hasPosts = state as HasPosts;
       failureOrPosts.fold(
         (failure) {
-          emit(HasPosts(posts: hasPosts.posts, feedState: FeedState.errorLoadingMore));
+          emit(HasPosts(
+              posts: hasPosts.posts, feedState: FeedState.errorLoadingMore));
         },
         (posts) {
           if (posts.length < kPostsReturnedPerLoad) {
-            emit(HasPosts(posts: [...hasPosts.posts, ...posts], feedState: FeedState.reachedEnd));
+            emit(HasPosts(
+                posts: [...hasPosts.posts, ...posts],
+                feedState: FeedState.reachedEnd));
           } else {
-            emit(HasPosts(posts: [...hasPosts.posts, ...posts], feedState: FeedState.loadingMore));
+            emit(HasPosts(
+                posts: [...hasPosts.posts, ...posts],
+                feedState: FeedState.loadingMore));
           }
         },
       );
@@ -68,7 +73,8 @@ class TrendingCubit extends Cubit<TrendingState> {
     final hasPosts = state as HasPosts;
     failureOrPosts.fold(
       (failure) {
-        emit(HasPosts(posts: hasPosts.posts, feedState: FeedState.errorRefreshing));
+        emit(HasPosts(
+            posts: hasPosts.posts, feedState: FeedState.errorRefreshing));
       },
       (posts) {
         if (posts.length < kPostsReturnedPerLoad) {

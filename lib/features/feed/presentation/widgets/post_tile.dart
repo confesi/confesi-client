@@ -6,6 +6,7 @@ import 'package:Confessi/core/widgets/text/group.dart';
 import 'package:Confessi/features/feed/constants.dart';
 import 'package:Confessi/features/feed/presentation/widgets/quote_tile.dart';
 import 'package:Confessi/features/feed/presentation/widgets/vote_tile.dart';
+import 'package:Confessi/features/feed/presentation/widgets/vote_tile_set.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -15,8 +16,7 @@ class PostTile extends StatelessWidget {
     required this.time,
     required this.faculty,
     required this.text,
-    required this.likes,
-    required this.hates,
+    required this.votes,
     required this.comments,
     required this.year,
     required this.university,
@@ -29,8 +29,7 @@ class PostTile extends StatelessWidget {
   final String time;
   final String faculty;
   final String text;
-  final int likes;
-  final int hates;
+  final int votes;
   final int year;
   final String comments;
   final PostView postView;
@@ -47,8 +46,7 @@ class PostTile extends StatelessWidget {
                 'time': time,
                 'faculty': faculty,
                 'text': text,
-                'likes': likes,
-                'hates': hates,
+                'votes': votes,
                 'comments': comments,
                 'year': year,
                 'university': university,
@@ -88,7 +86,7 @@ class PostTile extends StatelessWidget {
                 ),
                 Expanded(
                   child: GroupText(
-                    body: "$time • $faculty • Year $year",
+                    body: "$time / year $year / $faculty",
                     header: genre,
                     leftAlign: true,
                     small: true,
@@ -137,21 +135,8 @@ class PostTile extends StatelessWidget {
               spacing: 8,
               runSpacing: 8,
               children: [
-                VoteTile(
-                  tooltip: 'this is good content',
-                  tooltipLocation: TooltipLocation.below,
-                  isActive: true,
-                  value: likes,
-                  icon: CupertinoIcons.hand_thumbsup_fill,
-                  onTap: () => print("tap"),
-                ),
-                VoteTile(
-                  tooltip: 'this is bad content',
-                  tooltipLocation: TooltipLocation.below,
-                  isActive: false,
-                  value: hates,
-                  icon: CupertinoIcons.hand_thumbsdown_fill,
-                  onTap: () => print("tap"),
+                VoteTileSet(
+                  votes: votes,
                 ),
                 Text(
                   comments,

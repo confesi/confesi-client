@@ -1,13 +1,8 @@
 import 'package:Confessi/features/feed/domain/entities/post_child.dart';
 
 import '../../../../core/results/exceptions.dart';
+import '../../constants.dart';
 import 'post_model.dart';
-
-enum ChildType {
-  noChild,
-  hasChild,
-  childNeedsLoading,
-}
 
 class PostChildDataModel extends PostChild {
   const PostChildDataModel({
@@ -37,7 +32,8 @@ class PostChildDataModel extends PostChild {
     return PostChildDataModel(
       childType: _jsonChildTypeFormatter(json["child_type"]),
       childId: json["child_id"],
-      childPost: json["child"] != null ? PostModel.fromJson(json["child"]) : null,
+      childPost:
+          json["child"] != null ? PostModel.fromJson(json["child"]) : null,
     );
   }
 }

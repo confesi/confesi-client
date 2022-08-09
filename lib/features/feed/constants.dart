@@ -43,3 +43,12 @@ enum PostView {
   detailView,
   feedView,
 }
+
+/// Specifies which type of child the quoted post is.
+///
+/// Does it need loading? Does it already exist with its data? Is there even a child at all?
+enum ChildType {
+  noChild,
+  hasChild,
+  childNeedsLoading,
+}

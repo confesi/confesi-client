@@ -16,8 +16,7 @@ class ExploreRecents extends StatelessWidget {
           faculty: 'Engineering',
           text:
               'In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before final copy is available. This generally helps designers in their creative process! Here is a bunch more text in order to make the post long enough to be scrolled. This is an interesting way to do design, lmao.',
-          likes: 55,
-          hates: 21,
+          votes: 21,
           comments: '4 comments',
           year: 4,
         ),

@@ -1,17 +1,14 @@
 import 'package:Confessi/core/styles/typography.dart';
 import 'package:Confessi/core/widgets/behaviours/overscroll.dart';
 import 'package:Confessi/core/widgets/layout/appbar.dart';
-import 'package:Confessi/core/widgets/layout/keyboard_dismiss.dart';
 import 'package:Confessi/core/widgets/layout/line.dart';
-import 'package:Confessi/core/widgets/textfields/bulge.dart';
-import 'package:Confessi/core/widgets/textfields/expandable.dart';
 import 'package:Confessi/features/feed/presentation/widgets/comment_sheet.dart';
+import 'package:Confessi/features/feed/presentation/widgets/comment_tile.dart';
 import 'package:Confessi/features/feed/presentation/widgets/post_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:keyboard_attachable/keyboard_attachable.dart';
 
-import '../../../../core/widgets/layout/minimal_appbar.dart';
 import '../../constants.dart';
 
 class DetailViewScreen extends StatefulWidget {
@@ -21,8 +18,7 @@ class DetailViewScreen extends StatefulWidget {
     required this.time,
     required this.faculty,
     required this.text,
-    required this.likes,
-    required this.hates,
+    required this.votes,
     required this.comments,
     required this.year,
     required this.university,
@@ -32,8 +28,7 @@ class DetailViewScreen extends StatefulWidget {
   final String time;
   final String faculty;
   final String text;
-  final int likes;
-  final int hates;
+  final int votes;
   final int year;
   final String university;
   final String comments;
@@ -87,11 +82,15 @@ class _DetailViewScreenState extends State<DetailViewScreen> {
                             time: widget.time,
                             faculty: widget.faculty,
                             text: widget.text,
-                            likes: widget.likes,
-                            hates: widget.hates,
+                            votes: widget.votes,
                             comments: widget.comments,
                             year: widget.year,
                           ),
+                          LineLayout(
+                              horizontalPadding: 15,
+                              color:
+                                  Theme.of(context).colorScheme.onBackground),
+                          const CommentTile(),
                         ],
                       ),
                     ),
@@ -105,84 +104,3 @@ class _DetailViewScreenState extends State<DetailViewScreen> {
     );
   }
 }
-
-
-
-
-
-// KeyboardDismissLayout(
-//       child: Container(
-//         color: Theme.of(context).colorScheme.background,
-//         child: SafeArea(
-//           child: Scaffold(
-//             bottomSheet: Container(
-//               color: Theme.of(context).colorScheme.background,
-//               child: CommentSheet(
-//                 maxCharacters: kMaxCommentLength,
-//                 onSubmit: (comment) => print(comment),
-//               ),
-//             ),
-//             backgroundColor: Theme.of(context).colorScheme.background,
-//             body: Column(
-//               children: [
-//                 AppbarLayout(
-//                   centerWidget: Text(
-//                     'Thread View',
-//                     style: kTitle.copyWith(
-//                         color: Theme.of(context).colorScheme.primary),
-//                     overflow: TextOverflow.ellipsis,
-//                     textAlign: TextAlign.center,
-//                   ),
-//                   leftIconVisible: true,
-//                   rightIcon: CupertinoIcons.pen,
-//                   rightIconVisible: true,
-//                 ),
-//                 Expanded(
-//                   child: CupertinoScrollbar(
-//                     child: ScrollConfiguration(
-//                       behavior: NoOverScrollSplash(),
-//                       child: SingleChildScrollView(
-//                         keyboardDismissBehavior:
-//                             ScrollViewKeyboardDismissBehavior.onDrag,
-//                         child: Column(
-//                           children: [
-//                             PostTile(
-//                               postView: PostView.detailView,
-//                               university: widget.university,
-//                               genre: widget.genre,
-//                               time: widget.time,
-//                               faculty: widget.faculty,
-//                               text: widget.text,
-//                               likes: widget.likes,
-//                               hates: widget.hates,
-//                               comments: widget.comments,
-//                               year: widget.year,
-//                             ),
-//                             Padding(
-//                               padding:
-//                                   const EdgeInsets.symmetric(horizontal: 15),
-//                               child: LineLayout(
-//                                   color: Theme.of(context)
-//                                       .colorScheme
-//                                       .onBackground),
-//                             ),
-//                             Container(
-//                               color: Colors.redAccent,
-//                               height: 300,
-//                             ),
-//                             Container(
-//                               color: Colors.blue,
-//                               height: MediaQuery.of(context).viewPadding.bottom,
-//                             ),
-//                           ],
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                 ),
-//               ],
-//             ),
-//           ),
-//         ),
-//       ),
-//     );

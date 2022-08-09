@@ -10,9 +10,9 @@ class PostModel extends Post {
     required String faculty,
     required int reports,
     required String text,
-    required int commentCount,
+    required String commentCount,
     required int votes,
-    required DateTime createdDate,
+    required String createdDate,
     required PostChildDataModel child,
   }) : super(
           university: university,
@@ -27,36 +27,36 @@ class PostModel extends Post {
           child: child,
         );
 
-  static String facultyFormatter(String faculty) {
+  static String _facultyFormatter(String faculty) {
     switch (faculty) {
       case "LAW":
-        return "Law";
+        return "law";
       case "ENGINEERING":
-        return "Engineering";
+        return "engineering";
       case "FINE_ARTS":
-        return "Fine arts";
+        return "fine arts";
       case "COMPUTER_SCIENCE":
-        return "Computer science";
+        return "computer science";
       case "BUSINESS":
-        return "Business";
+        return "business";
       case "EDUCATION":
-        return "Education";
+        return "education";
       case "MEDICAL":
-        return "Medical";
+        return "medical";
       case "HUMAN_AND_SOCIAL_DEVELOPMENT":
-        return "Human & Social Development";
+        return "human & social development";
       case "HUMANITIES":
-        return "Humanities";
+        return "humanities";
       case "SCIENCE":
-        return "Science";
+        return "science";
       case "SOCIAL_SCIENCES":
-        return "Social sciences";
+        return "social sciences";
       default:
         throw ServerException();
     }
   }
 
-  static String universityFormatter(String university) {
+  static String _universityFormatter(String university) {
     switch (university) {
       case "UVIC":
         return "UVic";
@@ -69,7 +69,7 @@ class PostModel extends Post {
     }
   }
 
-  static String genreFormatter(String genre) {
+  static String _genreFormatter(String genre) {
     switch (genre) {
       case "RELATIONSHIPS":
         return "Relationships";
@@ -88,17 +88,42 @@ class PostModel extends Post {
     }
   }
 
+  static String _formatDate(String dateISO) {
+    DateTime postedDate = DateTime.parse(dateISO).toUtc();
+    DateTime currentDate = DateTime.now().toUtc();
+    Duration timeBetween = currentDate.difference(postedDate);
+    if (timeBetween.inMinutes < 0) {
+      return "error";
+    } else if (timeBetween.inDays >= 365) {
+      return "${(timeBetween.inDays / 365).floor()}y";
+    } else if (timeBetween.inHours >= 48) {
+      return "${timeBetween.inDays}d";
+    } else if (timeBetween.inMinutes >= 60) {
+      return "${timeBetween.inHours}h";
+    } else if (timeBetween.inMinutes <= 3) {
+      return "now";
+    } else {
+      return "${timeBetween.inMinutes}min";
+    }
+  }
+
+  static bool isPlural(int number) => number == 1 ? false : true;
+
+  static String _formatCommentCount(int commentCount) => isPlural(commentCount)
+      ? '$commentCount comments'
+      : '$commentCount comment';
+
   factory PostModel.fromJson(Map<String, dynamic> json) {
     return PostModel(
-      university: universityFormatter(json["university"]),
-      genre: genreFormatter(json["genre"]),
+      university: _universityFormatter(json["university"]),
+      genre: _genreFormatter(json["genre"]),
       year: json["year"] as int,
-      faculty: facultyFormatter(json["faculty"]),
+      faculty: _facultyFormatter(json["faculty"]),
       reports: json["reports"] as int,
       text: json["text"] as String,
-      commentCount: json["comment_count"] as int,
+      commentCount: _formatCommentCount(json["comment_count"]),
       votes: json["votes"] as int,
-      createdDate: DateTime.parse(json["created_date"]),
+      createdDate: _formatDate(json["created_date"]),
       child: PostChildDataModel.fromJson(json["child_data"]),
     );
   }

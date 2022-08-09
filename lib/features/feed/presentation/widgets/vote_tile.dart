@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 
 class VoteTile extends StatelessWidget {
   const VoteTile({
-    required this.value,
     required this.icon,
     required this.isActive,
     required this.onTap,
@@ -15,7 +14,6 @@ class VoteTile extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  final int value;
   final IconData icon;
   final bool isActive;
   final VoidCallback onTap;
@@ -37,25 +35,18 @@ class VoteTile extends StatelessWidget {
             color: isActive
                 ? Theme.of(context).colorScheme.primary
                 : Theme.of(context).colorScheme.onBackground,
-            width: 0.35,
+            width: 0.7,
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 8),
+          padding: const EdgeInsets.all(8),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                value.toString(),
-                style: kDetail.copyWith(
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-              ),
-              const SizedBox(width: 6),
               Icon(
                 icon,
-                size: 12,
+                size: 14,
                 color: Theme.of(context).colorScheme.primary,
               ),
             ],

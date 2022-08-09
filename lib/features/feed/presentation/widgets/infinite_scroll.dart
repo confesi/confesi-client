@@ -1,4 +1,5 @@
 import 'package:Confessi/core/widgets/behaviours/overscroll.dart';
+import 'package:Confessi/features/feed/presentation/widgets/post_tile.dart';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -81,18 +82,19 @@ class _InfiniteScrollState extends State<InfiniteScroll> {
         itemBuilder: (context, index) {
           if (index < widget.items.length) {
             return Padding(
-              padding: index == 0
-                  ? const EdgeInsets.all(0)
-                  : const EdgeInsets.only(top: 16),
-              child: Container(
-                height: 50,
-                color: Colors.blueAccent,
-                child: Center(
-                  child: Text(
-                      "Dummy post to show it works, data: ${widget.items[index].faculty}"),
-                ),
-              ),
-            );
+                padding: index == 0
+                    ? const EdgeInsets.all(0)
+                    : const EdgeInsets.only(top: 16),
+                child: PostTile(
+                  genre: widget.items[index].genre,
+                  time: widget.items[index].createdDate,
+                  faculty: widget.items[index].faculty,
+                  text: widget.items[index].text,
+                  votes: widget.items[index].votes,
+                  comments: widget.items[index].commentCount,
+                  year: widget.items[index].year,
+                  university: widget.items[index].university,
+                ));
           } else {
             return ConstrainedBox(
               constraints: const BoxConstraints(minHeight: 100),
@@ -204,3 +206,6 @@ class _InfiniteScrollState extends State<InfiniteScroll> {
     );
   }
 }
+
+
+// widget.items[index].faculty

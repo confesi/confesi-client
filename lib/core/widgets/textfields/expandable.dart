@@ -59,7 +59,7 @@ class _ExpandableTextfieldState extends State<ExpandableTextfield> {
                 onChanged: (value) => widget.onChanged(value),
                 maxLines: widget.maxLines,
                 minLines: widget.minLines,
-                keyboardType: TextInputType.text,
+                keyboardType: TextInputType.multiline,
                 focusNode: focusNode,
                 controller: widget.controller,
                 style: kBody.copyWith(
