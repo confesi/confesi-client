@@ -75,7 +75,7 @@ class CommentTile extends StatelessWidget {
               height: 1.2,
             ),
           ),
-          const SizedBox(height: 3),
+          const SizedBox(height: 5),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [

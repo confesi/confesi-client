@@ -4,11 +4,13 @@ import 'package:Confessi/core/widgets/buttons/touchable_opacity.dart';
 import 'package:Confessi/core/widgets/sheets/button_options.dart';
 import 'package:Confessi/core/widgets/text/group.dart';
 import 'package:Confessi/features/feed/constants.dart';
+import 'package:Confessi/features/feed/domain/entities/post_child.dart';
 import 'package:Confessi/features/feed/presentation/widgets/quote_tile.dart';
 import 'package:Confessi/features/feed/presentation/widgets/vote_tile.dart';
 import 'package:Confessi/features/feed/presentation/widgets/vote_tile_set.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 
 class PostTile extends StatelessWidget {
   const PostTile({
@@ -22,6 +24,7 @@ class PostTile extends StatelessWidget {
     required this.university,
     required this.icon,
     this.postView = PostView.feedView,
+    required this.postChild,
     Key? key,
   }) : super(key: key);
 
@@ -35,6 +38,7 @@ class PostTile extends StatelessWidget {
   final int year;
   final String comments;
   final PostView postView;
+  final PostChild postChild;
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +48,7 @@ class PostTile extends StatelessWidget {
               context,
               '/home/detail',
               arguments: {
+                'post_child': postChild,
                 'icon': icon,
                 'genre': genre,
                 'time': time,
@@ -131,6 +136,7 @@ class PostTile extends StatelessWidget {
               text:
                   'I cannot believe my boyfriend sometimes! Oh my goodness, he is so annoying. Seriously. This really makes me angry. I am trying to be melodramatic right now! Take me seriously!',
             ),
+            Text(postChild.toString()),
             //! Bottom row
             Wrap(
               runAlignment: WrapAlignment.center,
@@ -139,7 +145,6 @@ class PostTile extends StatelessWidget {
               runSpacing: 8,
               children: [
                 VoteTileSet(
-                  isLarge: false,
                   votes: votes,
                 ),
                 Text(

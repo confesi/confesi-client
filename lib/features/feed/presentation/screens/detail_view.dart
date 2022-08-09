@@ -2,6 +2,7 @@ import 'package:Confessi/core/styles/typography.dart';
 import 'package:Confessi/core/widgets/behaviours/overscroll.dart';
 import 'package:Confessi/core/widgets/layout/appbar.dart';
 import 'package:Confessi/core/widgets/layout/line.dart';
+import 'package:Confessi/features/feed/domain/entities/post_child.dart';
 import 'package:Confessi/features/feed/presentation/widgets/comment_sheet.dart';
 import 'package:Confessi/features/feed/presentation/widgets/comment_tile.dart';
 import 'package:Confessi/features/feed/presentation/widgets/post_tile.dart';
@@ -23,6 +24,7 @@ class DetailViewScreen extends StatefulWidget {
     required this.comments,
     required this.year,
     required this.university,
+    required this.postChild,
   }) : super(key: key);
 
   final IconData icon;
@@ -34,6 +36,7 @@ class DetailViewScreen extends StatefulWidget {
   final int year;
   final String university;
   final String comments;
+  final PostChild postChild;
 
   @override
   State<DetailViewScreen> createState() => _DetailViewScreenState();
@@ -78,6 +81,7 @@ class _DetailViewScreenState extends State<DetailViewScreen> {
                       child: Column(
                         children: [
                           PostTile(
+                            postChild: widget.postChild,
                             icon: widget.icon,
                             postView: PostView.detailView,
                             university: widget.university,

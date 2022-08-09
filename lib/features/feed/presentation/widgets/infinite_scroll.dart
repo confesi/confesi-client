@@ -82,20 +82,22 @@ class _InfiniteScrollState extends State<InfiniteScroll> {
         itemBuilder: (context, index) {
           if (index < widget.items.length) {
             return Padding(
-                padding: index == 0
-                    ? const EdgeInsets.all(0)
-                    : const EdgeInsets.only(top: 16),
-                child: PostTile(
-                  icon: widget.items[index].icon,
-                  genre: widget.items[index].genre,
-                  time: widget.items[index].createdDate,
-                  faculty: widget.items[index].faculty,
-                  text: widget.items[index].text,
-                  votes: widget.items[index].votes,
-                  comments: widget.items[index].commentCount,
-                  year: widget.items[index].year,
-                  university: widget.items[index].university,
-                ));
+              padding: index == 0
+                  ? const EdgeInsets.all(0)
+                  : const EdgeInsets.only(top: 16),
+              child: PostTile(
+                postChild: widget.items[index].child,
+                icon: widget.items[index].icon,
+                genre: widget.items[index].genre,
+                time: widget.items[index].createdDate,
+                faculty: widget.items[index].faculty,
+                text: widget.items[index].text,
+                votes: widget.items[index].votes,
+                comments: widget.items[index].commentCount,
+                year: widget.items[index].year,
+                university: widget.items[index].university,
+              ),
+            );
           } else {
             return ConstrainedBox(
               constraints: const BoxConstraints(minHeight: 100),

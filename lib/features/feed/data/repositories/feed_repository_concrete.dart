@@ -14,7 +14,8 @@ class FeedRepository implements IFeedRepository {
   FeedRepository({required this.networkInfo, required this.datasource});
 
   @override
-  Future<Either<Failure, List<Post>>> fetchRecents(String lastSeenPostId, String token) async {
+  Future<Either<Failure, List<Post>>> fetchRecents(
+      String lastSeenPostId, String token) async {
     if (await networkInfo.isConnected) {
       try {
         return Right(await datasource.fetchRecents(lastSeenPostId, token));
@@ -46,6 +47,7 @@ class FeedRepository implements IFeedRepository {
       try {
         return Right(await datasource.fetchTrending());
       } catch (e) {
+        print(e);
         return Left(exceptionToFailure(e));
       }
     } else {

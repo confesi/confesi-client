@@ -31,6 +31,43 @@ const String testJson = """{
       "_id": "62dcbef19a4cce309d8e5e9f",
       "rank": 0,
       "university": "UBC",
+      "genre": "GENERAL",
+      "year": 1,
+      "faculty": "MEDICAL",
+      "reports": 93,
+      "text": "This is a post (top level parent of 3 deep chain)",
+      "comment_count": 81,
+      "votes": 43290,
+      "created_date": "2022-07-24T03:39:29.371Z",
+      "child_data": {
+        "child_type": "has child",
+        "child_id": "62dcaaf09a4cce309d8e567c",
+        "child": {
+          "_id": "62dcaaf09a4cce309d8e567c",
+          "user_ID": "62d0ac644d99d8e6966e4457",
+          "rank": 30.145533333333333,
+          "university": "UVIC",
+          "genre": "RELATIONSHIPS",
+          "year": 6,
+          "faculty": "SOCIAL_SCIENCES",
+          "reports": 0,
+          "text": "post-fix",
+          "comment_count": 0,
+          "votes": 19302,
+          "created_date": "2022-07-24T02:14:08.632Z",
+          "child_data": {
+            "child_type": "child needs loading",
+            "child_id": "62dcaaf09a4cce309d8e567c",
+            "child": null
+          },
+          "__v": 0
+        }
+      }
+    },
+    {
+      "_id": "62dcbef19a4cce309d8e5e9f",
+      "rank": 0,
+      "university": "UBC",
       "genre": "CLASSES",
       "year": 6,
       "faculty": "LAW",
@@ -72,7 +109,7 @@ const String testJson = """{
       "year": 1,
       "faculty": "COMPUTER_SCIENCE",
       "reports": 0,
-      "text": "replying to actual post",
+      "text": "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32. The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from de Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.",
       "comment_count": 0,
       "votes": 92123231341,
       "created_date": "2022-07-24T03:44:52.204Z",
