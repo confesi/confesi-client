@@ -1,4 +1,5 @@
 import 'package:Confessi/features/feed/presentation/widgets/post_tile.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ExploreRecents extends StatelessWidget {
@@ -10,6 +11,7 @@ class ExploreRecents extends StatelessWidget {
       color: Theme.of(context).colorScheme.shadow,
       child: const Center(
         child: PostTile(
+          icon: CupertinoIcons.flame,
           university: 'UVic',
           genre: 'Politics',
           time: '8h',

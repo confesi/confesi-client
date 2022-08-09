@@ -20,10 +20,12 @@ class PostTile extends StatelessWidget {
     required this.comments,
     required this.year,
     required this.university,
+    required this.icon,
     this.postView = PostView.feedView,
     Key? key,
   }) : super(key: key);
 
+  final IconData icon;
   final String university;
   final String genre;
   final String time;
@@ -42,6 +44,7 @@ class PostTile extends StatelessWidget {
               context,
               '/home/detail',
               arguments: {
+                'icon': icon,
                 'genre': genre,
                 'time': time,
                 'faculty': faculty,
@@ -78,7 +81,7 @@ class PostTile extends StatelessWidget {
                     ),
                     child: Center(
                       child: Icon(
-                        CupertinoIcons.flame,
+                        icon,
                         color: Theme.of(context).colorScheme.onSecondary,
                       ),
                     ),
@@ -118,7 +121,7 @@ class PostTile extends StatelessWidget {
                   : text,
               style: kBody.copyWith(
                 color: Theme.of(context).colorScheme.primary,
-                height: 1.5,
+                height: 1.2,
               ),
             ),
             const SizedBox(height: 30),
@@ -136,6 +139,7 @@ class PostTile extends StatelessWidget {
               runSpacing: 8,
               children: [
                 VoteTileSet(
+                  isLarge: false,
                   votes: votes,
                 ),
                 Text(

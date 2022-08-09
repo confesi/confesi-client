@@ -14,6 +14,7 @@ import '../../constants.dart';
 class DetailViewScreen extends StatefulWidget {
   const DetailViewScreen({
     Key? key,
+    required this.icon,
     required this.genre,
     required this.time,
     required this.faculty,
@@ -24,6 +25,7 @@ class DetailViewScreen extends StatefulWidget {
     required this.university,
   }) : super(key: key);
 
+  final IconData icon;
   final String genre;
   final String time;
   final String faculty;
@@ -76,6 +78,7 @@ class _DetailViewScreenState extends State<DetailViewScreen> {
                       child: Column(
                         children: [
                           PostTile(
+                            icon: widget.icon,
                             postView: PostView.detailView,
                             university: widget.university,
                             genre: widget.genre,
@@ -87,10 +90,15 @@ class _DetailViewScreenState extends State<DetailViewScreen> {
                             year: widget.year,
                           ),
                           LineLayout(
-                              horizontalPadding: 15,
-                              color:
-                                  Theme.of(context).colorScheme.onBackground),
-                          const CommentTile(),
+                            horizontalPadding: 15,
+                            color: Theme.of(context).colorScheme.onBackground,
+                          ),
+                          const SizedBox(height: 15),
+                          const CommentTile(
+                            votes: 239587,
+                            text:
+                                'This is a really cool comment that acts as a base to show what a comment should really look like. Hopefully, that makes sense.',
+                          ),
                         ],
                       ),
                     ),

@@ -32,7 +32,7 @@ class QuoteTile extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(Radius.circular(10)),
             border: Border.all(
-              width: 0.35,
+              width: 0.7,
               color: Theme.of(context).colorScheme.onBackground,
             ),
           ),

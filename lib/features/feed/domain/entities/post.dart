@@ -1,5 +1,6 @@
 import 'package:Confessi/features/feed/domain/entities/post_child.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 
 class Post extends Equatable {
   final String university;
@@ -12,8 +13,10 @@ class Post extends Equatable {
   final int votes;
   final String createdDate;
   final PostChild child;
+  final IconData icon;
 
   const Post({
+    required this.icon,
     required this.university,
     required this.genre,
     required this.year,

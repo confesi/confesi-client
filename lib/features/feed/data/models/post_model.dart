@@ -1,3 +1,6 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
 import '../../../../core/results/exceptions.dart';
 import '../../domain/entities/post.dart';
 import 'post_child_data.dart';
@@ -14,7 +17,9 @@ class PostModel extends Post {
     required int votes,
     required String createdDate,
     required PostChildDataModel child,
+    required IconData icon,
   }) : super(
+          icon: icon,
           university: university,
           genre: genre,
           year: year,
@@ -107,6 +112,25 @@ class PostModel extends Post {
     }
   }
 
+  static IconData _genreToIcon(String genre) {
+    switch (genre) {
+      case "RELATIONSHIPS":
+        return CupertinoIcons.heart_fill;
+      case "POLITICS":
+        return CupertinoIcons.bubble_left_bubble_right_fill;
+      case "CLASSES":
+        return CupertinoIcons.briefcase_fill;
+      case "GENERAL":
+        return CupertinoIcons.cube_fill;
+      case "OPINIONS":
+        return CupertinoIcons.envelope_open_fill;
+      case "CONFESSIONS":
+        return CupertinoIcons.bandage_fill;
+      default:
+        throw ServerException();
+    }
+  }
+
   static bool isPlural(int number) => number == 1 ? false : true;
 
   static String _formatCommentCount(int commentCount) => isPlural(commentCount)
@@ -115,6 +139,7 @@ class PostModel extends Post {
 
   factory PostModel.fromJson(Map<String, dynamic> json) {
     return PostModel(
+      icon: _genreToIcon(json['genre']),
       university: _universityFormatter(json["university"]),
       genre: _genreFormatter(json["genre"]),
       year: json["year"] as int,
