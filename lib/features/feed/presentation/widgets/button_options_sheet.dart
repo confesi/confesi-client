@@ -2,9 +2,12 @@ import 'package:Confessi/core/widgets/layout/swipebar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../buttons/option.dart';
+import '../../../../core/widgets/buttons/option.dart';
 
 Future<dynamic> showButtonOptionsSheet(BuildContext context) {
+  // late PersistentBottomSheetController _controller;
+  // GlobalKey<ScaffoldState> _key = GlobalKey();
+  // bool _open = false;
   return showModalBottomSheet(
     backgroundColor: Colors.transparent,
     context: context,
@@ -49,7 +52,10 @@ Future<dynamic> showButtonOptionsSheet(BuildContext context) {
                   OptionButton(
                     text: "Details",
                     icon: CupertinoIcons.info,
-                    onTap: () => print("tap"),
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.pushNamed(context, '/home/post/stats');
+                    },
                   ),
                 ],
               ),

@@ -1,16 +1,14 @@
 import 'package:Confessi/core/constants/buttons.dart';
 import 'package:Confessi/core/styles/typography.dart';
 import 'package:Confessi/core/widgets/buttons/touchable_opacity.dart';
-import 'package:Confessi/core/widgets/sheets/button_options.dart';
 import 'package:Confessi/core/widgets/text/group.dart';
 import 'package:Confessi/features/feed/constants.dart';
 import 'package:Confessi/features/feed/domain/entities/post_child.dart';
+import 'package:Confessi/features/feed/presentation/widgets/button_options_sheet.dart';
 import 'package:Confessi/features/feed/presentation/widgets/quote_tile.dart';
-import 'package:Confessi/features/feed/presentation/widgets/vote_tile.dart';
 import 'package:Confessi/features/feed/presentation/widgets/vote_tile_set.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 
 class PostTile extends StatelessWidget {
   const PostTile({
@@ -39,6 +37,31 @@ class PostTile extends StatelessWidget {
   final String comments;
   final PostView postView;
   final PostChild postChild;
+
+  Widget _renderQuoteChild(BuildContext context) {
+    final ChildType childType = postChild.childType;
+    if (childType == ChildType.noChild) {
+      return Container();
+    } else if (childType == ChildType.childNeedsLoading) {
+      return Container(
+        padding: const EdgeInsets.all(10),
+        margin: const EdgeInsets.only(bottom: 30),
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          border: Border.all(
+            width: 0.7,
+            color: Theme.of(context).colorScheme.onBackground,
+          ),
+        ),
+        child: const CupertinoActivityIndicator(radius: 12),
+      );
+    } else {
+      return QuoteTile(
+        post: postChild.childPost!,
+        postView: postView,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,6 +125,7 @@ class PostTile extends StatelessWidget {
                 ),
                 TouchableOpacity(
                   tooltip: 'post options',
+                  tooltipLocation: TooltipLocation.above,
                   onTap: () => showButtonOptionsSheet(context),
                   child: Container(
                     // Transparent container hitbox trick.
@@ -130,13 +154,8 @@ class PostTile extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 30),
-            QuoteTile(
-              genre: 'Relationships',
-              postView: postView,
-              text:
-                  'I cannot believe my boyfriend sometimes! Oh my goodness, he is so annoying. Seriously. This really makes me angry. I am trying to be melodramatic right now! Take me seriously!',
-            ),
-            Text(postChild.toString()),
+            _renderQuoteChild(context),
+            // Text('For Debugging: ${postChild.childType.toString()}'),
             //! Bottom row
             Wrap(
               runAlignment: WrapAlignment.center,

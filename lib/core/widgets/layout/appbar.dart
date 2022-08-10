@@ -17,6 +17,7 @@ class AppbarLayout extends StatelessWidget {
     this.rightIconVisible = false,
     required this.centerWidget,
     this.centerWidgetFullWidth = false,
+    this.heroAnimEnabled = true,
     Key? key,
   }) : super(key: key);
 
@@ -29,6 +30,7 @@ class AppbarLayout extends StatelessWidget {
   final Function? leftIconOnPress;
   final IconData? rightIcon;
   final Function? rightIconOnPress;
+  final bool heroAnimEnabled;
 
   Widget children(BuildContext context) => Material(
         color: Theme.of(context).colorScheme.background,
@@ -114,7 +116,7 @@ class AppbarLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Theme.of(context).platform == TargetPlatform.iOS
+    return Theme.of(context).platform == TargetPlatform.iOS && heroAnimEnabled
         ? Hero(
             tag: 'appbar',
             child: children(context),

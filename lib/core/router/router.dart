@@ -1,4 +1,5 @@
 import 'package:Confessi/features/feed/presentation/screens/detail_view.dart';
+import 'package:Confessi/features/feed/presentation/screens/post_advanced_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -45,6 +46,7 @@ class AppRouter {
             child: const HomeScreen(),
           ),
         );
+      // Detailed view for each post (thread view, has comments, fully expanded text, etc.).
       case '/home/detail':
         return MaterialPageRoute(
           builder: (_) => DetailViewScreen(
@@ -60,8 +62,11 @@ class AppRouter {
             university: args['university'],
           ),
         );
-      case "/feed/details":
-        return MaterialPageRoute(builder: (_) => const Text("Feed details"));
+      // An individual post's advanced stats.
+      case "/home/post/stats":
+        return MaterialPageRoute(
+          builder: (_) => const PostAdvancedDetailsScreen(),
+        );
       case "/settings":
         return MaterialPageRoute(builder: (_) => const Text("Settings"));
       case "/settings/watchedUniversities":
