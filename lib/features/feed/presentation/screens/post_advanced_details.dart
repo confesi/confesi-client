@@ -95,7 +95,7 @@ class PostAdvancedDetailsScreen extends StatelessWidget {
                                     tooltipLocation: TooltipLocation.above,
                                     onTap: () => showInfoSheet(
                                       context,
-                                      'Post status',
+                                      kPostStatusTitle,
                                       kPostStatusDescription,
                                     ),
                                     child: const Icon(

@@ -38,6 +38,7 @@ class SimpleTextButton extends StatelessWidget {
         child: Text(
           text,
           textAlign: TextAlign.right,
+          overflow: TextOverflow.ellipsis,
           style: kBody.copyWith(
             color: isErrorText
                 ? Theme.of(context).colorScheme.error

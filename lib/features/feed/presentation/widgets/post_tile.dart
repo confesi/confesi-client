@@ -160,8 +160,8 @@ class PostTile extends StatelessWidget {
             Wrap(
               runAlignment: WrapAlignment.center,
               crossAxisAlignment: WrapCrossAlignment.center,
-              spacing: 8,
-              runSpacing: 8,
+              spacing: 10,
+              runSpacing: 10,
               children: [
                 VoteTileSet(
                   votes: votes,

@@ -11,7 +11,6 @@ class VoteTile extends StatelessWidget {
     required this.onTap,
     this.tooltip,
     this.tooltipLocation,
-    this.showOutline = true,
     Key? key,
   }) : super(key: key);
 
@@ -20,7 +19,6 @@ class VoteTile extends StatelessWidget {
   final VoidCallback onTap;
   final String? tooltip;
   final TooltipLocation? tooltipLocation;
-  final bool showOutline;
 
   @override
   Widget build(BuildContext context) {
@@ -28,28 +26,13 @@ class VoteTile extends StatelessWidget {
       tooltip: tooltip,
       tooltipLocation: tooltipLocation,
       onTap: () => onTap(),
-      child: Container(
-        width: 36,
-        height: 36,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: showOutline
-              ? Border.all(
-                  color: isActive
-                      ? Theme.of(context).colorScheme.primary
-                      : Theme.of(context).colorScheme.onBackground,
-                  width: 0.7,
-                )
-              : null,
-        ),
-        child: Center(
-          child: Icon(
-            icon,
-            size: 15,
-            color: isActive
-                ? Theme.of(context).colorScheme.primary
-                : Theme.of(context).colorScheme.onBackground,
-          ),
+      child: Center(
+        child: Icon(
+          icon,
+          size: 15,
+          color: isActive
+              ? Theme.of(context).colorScheme.primary
+              : Theme.of(context).colorScheme.onBackground,
         ),
       ),
     );

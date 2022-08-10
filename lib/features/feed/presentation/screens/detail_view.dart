@@ -101,7 +101,7 @@ class _DetailViewScreenState extends State<DetailViewScreen> {
                           const CommentTile(
                             votes: 239587,
                             text:
-                                'This is a really cool comment that acts as a base to show what a comment should really look like. Hopefully, that makes sense.',
+                                'This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.',
                           ),
                         ],
                       ),

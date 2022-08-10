@@ -44,11 +44,11 @@ Future<dynamic> showInfoSheet(
                     Text(
                       body,
                       style: kBody.copyWith(
-                        color: Theme.of(context).colorScheme.primary,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 30),
+                    const SizedBox(height: 45),
                   ],
                 ),
               ),

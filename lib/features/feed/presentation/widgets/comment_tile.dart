@@ -75,20 +75,23 @@ class CommentTile extends StatelessWidget {
               height: 1.2,
             ),
           ),
-          const SizedBox(height: 5),
+          const SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Text(
-                'reply =>',
-                style: kDetail.copyWith(
-                  color: Theme.of(context).colorScheme.onSurface,
+              TouchableOpacity(
+                tooltip: 'write a reply to this comment',
+                onTap: () => print('tappp'),
+                child: Text(
+                  'reply',
+                  style: kDetail.copyWith(
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
                 ),
               ),
               const SizedBox(width: 10),
               VoteTileSet(
                 votes: votes,
-                isLarge: false,
               ),
             ],
           ),
