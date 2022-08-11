@@ -59,3 +59,12 @@ const String kPostStatusTitle = 'Post status';
 /// Describes what the 'post status' field means on a post's advanced details page.
 const String kPostStatusDescription =
     'A post\'s status describes how well it is being received by users. Posts with a negative status are at risk of being reviewed by a moderator, or even getting deleted entirely. To help your post maintain good standing, don\'t post anything blatantly bad. Confesi tries to be a platform for free expression, but some things won\'t fly.';
+
+/// How deep a threaded comment is. Root essentially means level zero.
+enum CommentDepth {
+  root,
+  one,
+  two,
+  three,
+  four,
+}

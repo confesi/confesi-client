@@ -3,6 +3,7 @@ import 'package:Confessi/core/widgets/behaviours/overscroll.dart';
 import 'package:Confessi/core/widgets/layout/appbar.dart';
 import 'package:Confessi/core/widgets/layout/line.dart';
 import 'package:Confessi/features/feed/domain/entities/post_child.dart';
+import 'package:Confessi/features/feed/presentation/widgets/comment_divider.dart';
 import 'package:Confessi/features/feed/presentation/widgets/comment_sheet.dart';
 import 'package:Confessi/features/feed/presentation/widgets/comment_tile.dart';
 import 'package:Confessi/features/feed/presentation/widgets/post_tile.dart';
@@ -93,12 +94,57 @@ class _DetailViewScreenState extends State<DetailViewScreen> {
                             comments: widget.comments,
                             year: widget.year,
                           ),
-                          LineLayout(
-                            horizontalPadding: 15,
-                            color: Theme.of(context).colorScheme.onBackground,
-                          ),
-                          const SizedBox(height: 15),
+                          const CommentDivider(),
                           const CommentTile(
+                            depth: CommentDepth.root,
+                            votes: 239587,
+                            text:
+                                'This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.',
+                          ),
+                          const CommentTile(
+                            depth: CommentDepth.one,
+                            votes: 239587,
+                            text:
+                                'This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.',
+                          ),
+                          const CommentTile(
+                            depth: CommentDepth.one,
+                            votes: 239587,
+                            text:
+                                'This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.',
+                          ),
+                          const CommentTile(
+                            depth: CommentDepth.one,
+                            votes: 239587,
+                            text:
+                                'This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.',
+                          ),
+                          const CommentTile(
+                            depth: CommentDepth.two,
+                            votes: 239587,
+                            text:
+                                'This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.',
+                          ),
+                          const CommentTile(
+                            depth: CommentDepth.three,
+                            votes: 239587,
+                            text:
+                                'This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.',
+                          ),
+                          const CommentTile(
+                            depth: CommentDepth.three,
+                            votes: 239587,
+                            text:
+                                'This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.',
+                          ),
+                          const CommentTile(
+                            depth: CommentDepth.four,
+                            votes: 239587,
+                            text:
+                                'This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.',
+                          ),
+                          const CommentTile(
+                            depth: CommentDepth.root,
                             votes: 239587,
                             text:
                                 'This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.',

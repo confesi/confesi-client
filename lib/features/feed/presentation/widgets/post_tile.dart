@@ -4,11 +4,13 @@ import 'package:Confessi/core/widgets/buttons/touchable_opacity.dart';
 import 'package:Confessi/core/widgets/text/group.dart';
 import 'package:Confessi/features/feed/constants.dart';
 import 'package:Confessi/features/feed/domain/entities/post_child.dart';
-import 'package:Confessi/features/feed/presentation/widgets/button_options_sheet.dart';
+import 'package:Confessi/core/widgets/sheets/button_options_sheet.dart';
 import 'package:Confessi/features/feed/presentation/widgets/quote_tile.dart';
 import 'package:Confessi/features/feed/presentation/widgets/vote_tile_set.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../core/widgets/buttons/option.dart';
 
 class PostTile extends StatelessWidget {
   const PostTile({
@@ -126,7 +128,36 @@ class PostTile extends StatelessWidget {
                 TouchableOpacity(
                   tooltip: 'post options',
                   tooltipLocation: TooltipLocation.above,
-                  onTap: () => showButtonOptionsSheet(context),
+                  onTap: () => showButtonOptionsSheet(context, [
+                    OptionButton(
+                      text: "Report",
+                      icon: CupertinoIcons.nosign,
+                      onTap: () => print("tap"),
+                    ),
+                    OptionButton(
+                      text: "Share",
+                      icon: CupertinoIcons.share,
+                      onTap: () => print("tap"),
+                    ),
+                    OptionButton(
+                      text: "Reply",
+                      icon: CupertinoIcons.paperplane,
+                      onTap: () => print("tap"),
+                    ),
+                    OptionButton(
+                      text: "Save",
+                      icon: CupertinoIcons.bookmark,
+                      onTap: () => print("tap"),
+                    ),
+                    OptionButton(
+                      text: "Details",
+                      icon: CupertinoIcons.info,
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.pushNamed(context, '/home/post/stats');
+                      },
+                    ),
+                  ]),
                   child: Container(
                     // Transparent container hitbox trick.
                     color: Colors.transparent,
@@ -134,7 +165,7 @@ class PostTile extends StatelessWidget {
                       padding: const EdgeInsets.all(5),
                       child: Icon(
                         CupertinoIcons.ellipsis,
-                        color: Theme.of(context).colorScheme.onSurface,
+                        color: Theme.of(context).colorScheme.onBackground,
                       ),
                     ),
                   ),

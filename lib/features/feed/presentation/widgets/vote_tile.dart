@@ -1,7 +1,7 @@
 import 'package:Confessi/core/constants/buttons.dart';
 import 'package:Confessi/core/styles/typography.dart';
 import 'package:Confessi/core/widgets/buttons/touchable_opacity.dart';
-import 'package:Confessi/features/feed/presentation/widgets/button_options_sheet.dart';
+import 'package:Confessi/core/widgets/sheets/button_options_sheet.dart';
 import 'package:flutter/material.dart';
 
 class VoteTile extends StatelessWidget {
