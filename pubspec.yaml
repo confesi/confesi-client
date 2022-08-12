@@ -50,6 +50,7 @@ dependencies:
   dartz: ^0.10.1
   jwt_decode: ^0.3.1
   keyboard_attachable: ^2.1.0
+  flutter_slidable: ^2.0.0
 
 dev_dependencies:
   flutter_test:

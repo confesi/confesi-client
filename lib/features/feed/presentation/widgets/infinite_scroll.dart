@@ -34,7 +34,6 @@ class _InfiniteScrollState extends State<InfiniteScroll> {
 
   @override
   void initState() {
-    print("<== INIT CALLED ==>");
     scrollController = ScrollController();
     scrollController.addListener(() async {
       if (scrollController.offset ==

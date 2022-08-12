@@ -131,7 +131,7 @@ class PostTile extends StatelessWidget {
                   onTap: () => showButtonOptionsSheet(context, [
                     OptionButton(
                       text: "Report",
-                      icon: CupertinoIcons.nosign,
+                      icon: CupertinoIcons.flag,
                       onTap: () => print("tap"),
                     ),
                     OptionButton(
