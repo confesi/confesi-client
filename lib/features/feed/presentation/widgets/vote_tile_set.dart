@@ -6,11 +6,13 @@ import 'package:flutter/material.dart';
 
 class VoteTileSet extends StatelessWidget {
   const VoteTileSet({
-    required this.votes,
+    required this.likes,
+    required this.hates,
     Key? key,
   }) : super(key: key);
 
-  final int votes;
+  final int likes;
+  final int hates;
 
   @override
   Widget build(BuildContext context) {
@@ -18,25 +20,19 @@ class VoteTileSet extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         VoteTile(
-          tooltip: 'this is good content',
+          value: likes,
+          tooltip: 'like this content',
           icon: CupertinoIcons.hand_thumbsup,
           isActive: true,
           onTap: () => print('like'),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Text(
-            largeNumberFormatter(votes),
-            style: kDetail.copyWith(
-              color: Theme.of(context).colorScheme.primary,
-            ),
-          ),
-        ),
+        const SizedBox(width: 10),
         VoteTile(
-          tooltip: 'this is bad content',
+          value: hates,
+          tooltip: 'hate this content',
           icon: CupertinoIcons.hand_thumbsdown,
-          isActive: false,
-          onTap: () => print('hate'),
+          isActive: true,
+          onTap: () => print('like'),
         ),
       ],
     );

@@ -49,33 +49,16 @@ class _DetailViewScreenState extends State<DetailViewScreen> {
   double scrollableOffset = 0.0;
   bool isRefreshing = false;
   late ScrollController scrollController;
-  late IndicatorController indicatorController;
-  bool hideCommentSheet = false;
 
   @override
   void initState() {
     scrollController = ScrollController();
-    indicatorController = IndicatorController();
-    indicatorController.addListener(() {
-      if (indicatorController.state == IndicatorState.dragging &&
-          indicatorController.scrollingDirection == ScrollDirection.forward) {
-        setState(() {
-          hideCommentSheet = true;
-        });
-      }
-      if (indicatorController.state == IndicatorState.idle) {
-        setState(() {
-          hideCommentSheet = false;
-        });
-      }
-    });
     super.initState();
   }
 
   @override
   void dispose() {
     scrollController.dispose();
-    indicatorController.dispose();
     super.dispose();
   }
 
@@ -114,8 +97,10 @@ class _DetailViewScreenState extends State<DetailViewScreen> {
               ),
               Expanded(
                 child: CustomRefreshIndicator(
-                  controller: indicatorController,
                   onRefresh: () async {
+                    setState(() {
+                      isRefreshing = true;
+                    });
                     HapticFeedback.lightImpact();
                     await Future.delayed(const Duration(milliseconds: 400));
                     // await widget.onRefresh();
@@ -128,20 +113,18 @@ class _DetailViewScreenState extends State<DetailViewScreen> {
                   builder: (BuildContext context, Widget child,
                       IndicatorController controller) {
                     return AnimatedBuilder(
-                      animation: indicatorController,
+                      animation: controller,
                       builder: (BuildContext context, _) {
                         return Stack(
                           clipBehavior: Clip.hardEdge,
                           children: <Widget>[
                             AnimatedBuilder(
-                              animation: indicatorController,
+                              animation: controller,
                               builder: (BuildContext context, _) {
                                 return Container(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .surfaceVariant,
+                                  color: Theme.of(context).colorScheme.shadow,
                                   width: double.infinity,
-                                  height: indicatorController.value * 80,
+                                  height: controller.value * 80,
                                   child: FittedBox(
                                     alignment: Alignment.center,
                                     fit: BoxFit.scaleDown,
@@ -160,7 +143,7 @@ class _DetailViewScreenState extends State<DetailViewScreen> {
                               },
                             ),
                             Transform.translate(
-                              offset: Offset(0, indicatorController.value * 80),
+                              offset: Offset(0, controller.value * 80),
                               child: child,
                             ),
                           ],
@@ -190,7 +173,10 @@ class _DetailViewScreenState extends State<DetailViewScreen> {
                             comments: widget.comments,
                             year: widget.year,
                           ),
-                          const CommentDivider(),
+                          // TODO: make comments an int
+                          const CommentDivider(
+                            comments: 12938,
+                          ),
                           const CommentTile(
                             depth: CommentDepth.root,
                             votes: 239587,
@@ -231,7 +217,7 @@ class _DetailViewScreenState extends State<DetailViewScreen> {
                             depth: CommentDepth.four,
                             votes: 239587,
                             text:
-                                'This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.',
+                                'This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.',
                           ),
                           const CommentTile(
                             depth: CommentDepth.two,

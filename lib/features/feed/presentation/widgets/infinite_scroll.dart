@@ -174,7 +174,7 @@ class _InfiniteScrollState extends State<InfiniteScroll> {
                     animation: controller,
                     builder: (BuildContext context, _) {
                       return Container(
-                        color: Theme.of(context).colorScheme.surfaceVariant,
+                        color: Theme.of(context).colorScheme.shadow,
                         width: double.infinity,
                         height: controller.value * 80,
                         child: FittedBox(

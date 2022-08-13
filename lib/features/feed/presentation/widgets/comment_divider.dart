@@ -1,5 +1,6 @@
 import 'package:Confessi/core/constants/buttons.dart';
 import 'package:Confessi/core/styles/typography.dart';
+import 'package:Confessi/core/utils/large_number_formatter.dart';
 import 'package:Confessi/core/widgets/buttons/option.dart';
 import 'package:Confessi/core/widgets/buttons/touchable_opacity.dart';
 import 'package:Confessi/core/widgets/sheets/button_options_sheet.dart';
@@ -7,19 +8,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CommentDivider extends StatelessWidget {
-  const CommentDivider({Key? key}) : super(key: key);
+  const CommentDivider({
+    required this.comments,
+    Key? key,
+  }) : super(key: key);
+
+  final int comments;
 
   @override
   Widget build(BuildContext context) {
     return TouchableOpacity(
-      tooltip: 'how the comments should be arranged',
+      tooltip: 'comment sorting + total number of comments',
       tooltipLocation: TooltipLocation.above,
       onTap: () => showButtonOptionsSheet(
         context,
         [
           OptionButton(
             onTap: () {
-              Navigator.pop(context);
               print('Best tapped');
             },
             text: 'Best',
@@ -27,7 +32,6 @@ class CommentDivider extends StatelessWidget {
           ),
           OptionButton(
             onTap: () {
-              Navigator.pop(context);
               print('Liked tapped');
             },
             text: 'Liked',
@@ -35,7 +39,6 @@ class CommentDivider extends StatelessWidget {
           ),
           OptionButton(
             onTap: () {
-              Navigator.pop(context);
               print('Hated tapped');
             },
             text: 'Hated',
@@ -43,7 +46,6 @@ class CommentDivider extends StatelessWidget {
           ),
           OptionButton(
             onTap: () {
-              Navigator.pop(context);
               print('Recent tapped');
             },
             text: 'Recent',
@@ -64,11 +66,29 @@ class CommentDivider extends StatelessWidget {
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-          child: Text(
-            'Sort comments by: best',
-            style: kDetail.copyWith(
-              color: Theme.of(context).colorScheme.onSurface,
-            ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Text(
+                  'Sort comments by: best',
+                  style: kDetail.copyWith(
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+                  textAlign: TextAlign.left,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              const SizedBox(width: 5),
+              Text(
+                largeNumberFormatter(comments),
+                style: kDetail.copyWith(
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+                textAlign: TextAlign.right,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
           ),
         ),
       ),

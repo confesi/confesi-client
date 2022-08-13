@@ -152,10 +152,8 @@ class PostTile extends StatelessWidget {
                     OptionButton(
                       text: "Details",
                       icon: CupertinoIcons.info,
-                      onTap: () {
-                        Navigator.pop(context);
-                        Navigator.pushNamed(context, '/home/post/stats');
-                      },
+                      onTap: () =>
+                          Navigator.pushNamed(context, '/home/post/stats'),
                     ),
                   ]),
                   child: Container(
@@ -188,21 +186,29 @@ class PostTile extends StatelessWidget {
             _renderQuoteChild(context),
             // Text('For Debugging: ${postChild.childType.toString()}'),
             //! Bottom row
-            Wrap(
-              runAlignment: WrapAlignment.center,
-              crossAxisAlignment: WrapCrossAlignment.center,
-              spacing: 10,
-              runSpacing: 10,
+            // TODO: separate theses two into likes and hates
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 VoteTileSet(
-                  votes: votes,
+                  likes: votes,
+                  hates: votes,
                 ),
-                Text(
-                  comments,
-                  style: kDetail.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface,
-                  ),
-                ),
+                postView == PostView.feedView
+                    ? Flexible(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: Text(
+                            comments,
+                            style: kDetail.copyWith(
+                              color: Theme.of(context).colorScheme.onSurface,
+                            ),
+                            textAlign: TextAlign.left,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      )
+                    : Container(),
               ],
             ),
           ],

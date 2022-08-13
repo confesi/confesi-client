@@ -18,7 +18,10 @@ class OptionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TouchableOpacity(
-      onTap: () => onTap(),
+      onTap: () {
+        Navigator.pop(context);
+        onTap();
+      },
       child: Container(
         width: MediaQuery.of(context).size.width / 4,
         decoration: BoxDecoration(
