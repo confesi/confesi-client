@@ -30,10 +30,16 @@ enum FeedState {
 }
 
 /// The text length of the posts displayed inside the feed before truncating.
-const int kPreviewPostTextLength = 300;
+const int kPreviewPostTextLength = 150;
+
+/// The title length of the posts displayed inside the feed before truncating.
+///
+/// A title shouldn't normally be truncated, so, in the post limit, make it 150 as well, so
+/// users know what will be displayed.
+const int kPreviewPostTitleLength = 120;
 
 /// The text length of the posts displayed inside the feed before truncating.
-const int kPreviewQuotePostTextLength = 150;
+const int kPreviewQuotePostTextLength = 100;
 
 /// Max length a comment can be.
 const int kMaxCommentLength = 5000;
@@ -67,4 +73,10 @@ enum CommentDepth {
   two,
   three,
   four,
+}
+
+/// The types of badges a post can have.
+enum Badge {
+  loved,
+  hated,
 }

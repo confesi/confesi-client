@@ -51,12 +51,15 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => DetailViewScreen(
             genre: args!['genre'],
+            badges: args['badges'],
             postChild: args['post_child'],
             icon: args['icon'],
             time: args['time'],
             faculty: args['faculty'],
             text: args['text'],
-            votes: args['votes'],
+            title: args['title'],
+            likes: args['likes'],
+            hates: args['hates'],
             comments: args['comments'],
             year: args['year'],
             university: args['university'],

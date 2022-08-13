@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../core/results/exceptions.dart';
+import '../../constants.dart';
 import '../../domain/entities/post.dart';
 import 'post_child_data.dart';
 
@@ -13,12 +13,17 @@ class PostModel extends Post {
     required String faculty,
     required int reports,
     required String text,
-    required String commentCount,
-    required int votes,
+    required String title,
+    required int comments,
+    required int likes,
+    required int hates,
     required String createdDate,
     required PostChildDataModel child,
     required IconData icon,
+    required List<Badge> badges,
   }) : super(
+          badges: badges,
+          title: title,
           icon: icon,
           university: university,
           genre: genre,
@@ -26,8 +31,9 @@ class PostModel extends Post {
           faculty: faculty,
           reports: reports,
           text: text,
-          commentCount: commentCount,
-          votes: votes,
+          comments: comments,
+          likes: likes,
+          hates: hates,
           createdDate: createdDate,
           child: child,
         );
@@ -131,11 +137,24 @@ class PostModel extends Post {
     }
   }
 
-  static bool isPlural(int number) => number == 1 ? false : true;
-
-  static String _formatCommentCount(int commentCount) => isPlural(commentCount)
-      ? '$commentCount comments'
-      : '$commentCount comment';
+  static List<Badge> _badgesFormatter(List badges) {
+    List<Badge> badgesConverted = [];
+    for (var badge in badges) {
+      final Badge converted;
+      switch (badge) {
+        case 'LOVED':
+          converted = Badge.loved;
+          break;
+        case 'HATED':
+          converted = Badge.hated;
+          break;
+        default:
+          throw ServerException();
+      }
+      badgesConverted.add(converted);
+    }
+    return badgesConverted;
+  }
 
   factory PostModel.fromJson(Map<String, dynamic> json) {
     return PostModel(
@@ -146,10 +165,13 @@ class PostModel extends Post {
       faculty: _facultyFormatter(json["faculty"]),
       reports: json["reports"] as int,
       text: json["text"] as String,
-      commentCount: _formatCommentCount(json["comment_count"]),
-      votes: json["votes"] as int,
+      comments: json["comment_count"],
+      likes: json['likes'] as int,
+      hates: json['hates'] as int,
       createdDate: _formatDate(json["created_date"]),
       child: PostChildDataModel.fromJson(json["child_data"]),
+      title: json['title'] as String,
+      badges: _badgesFormatter(json['badges']),
     );
   }
 }

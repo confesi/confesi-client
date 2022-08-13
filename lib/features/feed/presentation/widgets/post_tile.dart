@@ -5,11 +5,14 @@ import 'package:Confessi/core/widgets/text/group.dart';
 import 'package:Confessi/features/feed/constants.dart';
 import 'package:Confessi/features/feed/domain/entities/post_child.dart';
 import 'package:Confessi/core/widgets/sheets/button_options_sheet.dart';
+import 'package:Confessi/features/feed/presentation/widgets/badge_tile.dart';
+import 'package:Confessi/features/feed/presentation/widgets/badge_tile_set.dart';
 import 'package:Confessi/features/feed/presentation/widgets/quote_tile.dart';
 import 'package:Confessi/features/feed/presentation/widgets/vote_tile_set.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../core/utils/is_plural.dart';
 import '../../../../core/widgets/buttons/option.dart';
 
 class PostTile extends StatelessWidget {
@@ -18,25 +21,31 @@ class PostTile extends StatelessWidget {
     required this.time,
     required this.faculty,
     required this.text,
-    required this.votes,
+    required this.title,
+    required this.likes,
+    required this.hates,
     required this.comments,
     required this.year,
     required this.university,
     required this.icon,
     this.postView = PostView.feedView,
     required this.postChild,
+    required this.badges,
     Key? key,
   }) : super(key: key);
 
+  final List<Badge> badges;
   final IconData icon;
   final String university;
   final String genre;
   final String time;
   final String faculty;
   final String text;
-  final int votes;
+  final String title;
+  final int likes;
+  final int hates;
   final int year;
-  final String comments;
+  final int comments;
   final PostView postView;
   final PostChild postChild;
 
@@ -65,6 +74,10 @@ class PostTile extends StatelessWidget {
     }
   }
 
+  List<BadgeTile> getBadges() {
+    return badges.map((badge) => BadgeTile(badge: badge)).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -74,12 +87,15 @@ class PostTile extends StatelessWidget {
               '/home/detail',
               arguments: {
                 'post_child': postChild,
+                'badges': badges,
                 'icon': icon,
                 'genre': genre,
                 'time': time,
                 'faculty': faculty,
                 'text': text,
-                'votes': votes,
+                'title': title,
+                'likes': likes,
+                'hates': hates,
                 'comments': comments,
                 'year': year,
                 'university': university,
@@ -171,6 +187,21 @@ class PostTile extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 30),
+            //! Title row
+            Text(
+              title.length > kPreviewPostTitleLength &&
+                      postView == PostView.feedView
+                  ? "${title.substring(0, kPreviewPostTitleLength)}..."
+                  : title,
+              style: kTitle.copyWith(
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+            Text(badges.toString()),
+            BadgeTileSet(
+              badges: getBadges(),
+            ),
+            const SizedBox(height: 30),
             //! Middle row
             Text(
               text.length > kPreviewPostTextLength &&
@@ -184,22 +215,22 @@ class PostTile extends StatelessWidget {
             ),
             const SizedBox(height: 30),
             _renderQuoteChild(context),
-            // Text('For Debugging: ${postChild.childType.toString()}'),
             //! Bottom row
-            // TODO: separate theses two into likes and hates
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 VoteTileSet(
-                  likes: votes,
-                  hates: votes,
+                  likes: likes,
+                  hates: hates,
                 ),
                 postView == PostView.feedView
                     ? Flexible(
                         child: Padding(
                           padding: const EdgeInsets.only(left: 10),
                           child: Text(
-                            comments,
+                            isPlural(comments) == true
+                                ? "$comments comments"
+                                : "$comments comment",
                             style: kDetail.copyWith(
                               color: Theme.of(context).colorScheme.onSurface,
                             ),

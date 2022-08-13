@@ -17,14 +17,16 @@ import '../../constants.dart';
 
 class CommentTile extends StatelessWidget {
   const CommentTile({
-    required this.votes,
+    required this.likes,
+    required this.hates,
     required this.text,
     required this.depth,
     Key? key,
   }) : super(key: key);
 
   final String text;
-  final int votes;
+  final int likes;
+  final int hates;
   final CommentDepth depth;
 
   double get commentDepthAdditivePadding {

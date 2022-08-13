@@ -2,6 +2,9 @@ import 'package:Confessi/features/feed/domain/entities/post_child.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
+import '../../constants.dart';
+import '../../data/models/post_model.dart';
+
 class Post extends Equatable {
   final String university;
   final String genre;
@@ -9,13 +12,18 @@ class Post extends Equatable {
   final String faculty;
   final int reports;
   final String text;
-  final String commentCount;
-  final int votes;
+  final String title;
+  final int comments;
+  final int likes;
+  final int hates;
   final String createdDate;
   final PostChild child;
   final IconData icon;
+  final List<Badge> badges;
 
   const Post({
+    required this.badges,
+    required this.title,
     required this.icon,
     required this.university,
     required this.genre,
@@ -23,8 +31,9 @@ class Post extends Equatable {
     required this.faculty,
     required this.reports,
     required this.text,
-    required this.commentCount,
-    required this.votes,
+    required this.comments,
+    required this.likes,
+    required this.hates,
     required this.createdDate,
     required this.child,
   });
@@ -37,8 +46,9 @@ class Post extends Equatable {
         faculty,
         reports,
         text,
-        commentCount,
-        votes,
+        comments,
+        likes,
+        hates,
         createdDate,
         child,
       ];

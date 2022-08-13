@@ -23,11 +23,14 @@ class DetailViewScreen extends StatefulWidget {
     required this.time,
     required this.faculty,
     required this.text,
-    required this.votes,
+    required this.title,
+    required this.likes,
+    required this.hates,
     required this.comments,
     required this.year,
     required this.university,
     required this.postChild,
+    required this.badges,
   }) : super(key: key);
 
   final IconData icon;
@@ -35,11 +38,14 @@ class DetailViewScreen extends StatefulWidget {
   final String time;
   final String faculty;
   final String text;
-  final int votes;
+  final String title;
+  final int likes;
+  final int hates;
   final int year;
   final String university;
-  final String comments;
+  final int comments;
   final PostChild postChild;
+  final List<Badge> badges;
 
   @override
   State<DetailViewScreen> createState() => _DetailViewScreenState();
@@ -161,6 +167,7 @@ class _DetailViewScreenState extends State<DetailViewScreen> {
                       child: Column(
                         children: [
                           PostTile(
+                            badges: widget.badges,
                             postChild: widget.postChild,
                             icon: widget.icon,
                             postView: PostView.detailView,
@@ -169,65 +176,76 @@ class _DetailViewScreenState extends State<DetailViewScreen> {
                             time: widget.time,
                             faculty: widget.faculty,
                             text: widget.text,
-                            votes: widget.votes,
+                            title: widget.title,
+                            likes: widget.likes,
+                            hates: widget.hates,
                             comments: widget.comments,
                             year: widget.year,
                           ),
                           // TODO: make comments an int
-                          const CommentDivider(
-                            comments: 12938,
+                          CommentDivider(
+                            comments: widget.comments,
                           ),
                           const CommentTile(
                             depth: CommentDepth.root,
-                            votes: 239587,
+                            likes: 1093841,
+                            hates: 19023,
                             text:
                                 'This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.',
                           ),
                           const CommentTile(
                             depth: CommentDepth.root,
-                            votes: 239587,
+                            likes: 1093841,
+                            hates: 19023,
                             text:
                                 'This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.',
                           ),
                           const CommentTile(
                             depth: CommentDepth.one,
-                            votes: 239587,
+                            likes: 1093841,
+                            hates: 19023,
                             text:
                                 'This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.',
                           ),
                           const CommentTile(
                             depth: CommentDepth.two,
-                            votes: 239587,
+                            likes: 1093841,
+                            hates: 19023,
                             text:
                                 'This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.',
                           ),
                           const CommentTile(
                             depth: CommentDepth.two,
-                            votes: 239587,
+                            likes: 1093841,
+                            hates: 19023,
                             text:
                                 'This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.',
                           ),
                           const CommentTile(
                             depth: CommentDepth.three,
-                            votes: 239587,
+                            likes: 1093841,
+                            hates: 19023,
                             text:
                                 'This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.',
                           ),
                           const CommentTile(
                             depth: CommentDepth.four,
-                            votes: 239587,
+                            likes: 1093841,
+                            hates: 19023,
                             text:
                                 'This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.',
                           ),
                           const CommentTile(
                             depth: CommentDepth.two,
-                            votes: 239587,
+                            likes: 1093841,
+                            hates: 19023,
                             text:
                                 'This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.',
                           ),
                           const CommentTile(
                             depth: CommentDepth.root,
-                            votes: 239587,
+                            likes: 1093841,
+                            hates: 19023,
                             text:
                                 'This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.',
                           ),
