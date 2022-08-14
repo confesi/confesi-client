@@ -1,54 +1,48 @@
 import 'package:Confessi/core/results/exceptions.dart';
 import 'package:Confessi/features/feed/constants.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/styles/typography.dart';
 
 class BadgeTile extends StatelessWidget {
   const BadgeTile({
-    required this.badge,
     Key? key,
+    required this.darkColor,
+    required this.lightColor,
+    required this.text,
   }) : super(key: key);
 
-  final Badge badge;
-
-  MaterialColor getColor() {
-    switch (badge) {
-      case Badge.loved:
-        return Colors.pink;
-      case Badge.hated:
-        return Colors.green;
-      default:
-        throw ServerException();
-    }
-  }
-
-  String getText() {
-    switch (badge) {
-      case Badge.loved:
-        return "Loved";
-      case Badge.hated:
-        return "Hated";
-      default:
-        throw ServerException();
-    }
-  }
+  final Color darkColor;
+  final Color lightColor;
+  final String text;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(top: 5, right: 5),
-      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 3),
+      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
       decoration: BoxDecoration(
-        color: getColor()[100],
+        color: lightColor,
         borderRadius: const BorderRadius.all(
-          Radius.circular(5),
+          Radius.circular(20),
         ),
-        border: Border.all(color: getColor(), width: .7),
+        border: Border.all(color: darkColor, width: .7),
       ),
-      child: Text(
-        getText(),
-        style: kDetail.copyWith(color: getColor(), fontSize: 12),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            CupertinoIcons.heart,
+            size: 14,
+            color: darkColor,
+          ),
+          const SizedBox(width: 4),
+          Text(
+            text,
+            style: kDetail.copyWith(color: darkColor, fontSize: 12),
+          ),
+        ],
       ),
     );
   }

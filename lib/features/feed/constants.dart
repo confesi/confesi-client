@@ -36,7 +36,7 @@ const int kPreviewPostTextLength = 150;
 ///
 /// A title shouldn't normally be truncated, so, in the post limit, make it 150 as well, so
 /// users know what will be displayed.
-const int kPreviewPostTitleLength = 120;
+const int kPreviewPostTitleLength = 100;
 
 /// The text length of the posts displayed inside the feed before truncating.
 const int kPreviewQuotePostTextLength = 100;
@@ -76,7 +76,7 @@ enum CommentDepth {
 }
 
 /// The types of badges a post can have.
-enum Badge {
+enum BadgeName {
   loved,
   hated,
 }

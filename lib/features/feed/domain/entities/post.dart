@@ -1,9 +1,7 @@
+import 'package:Confessi/features/feed/domain/entities/badge.dart';
 import 'package:Confessi/features/feed/domain/entities/post_child.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-
-import '../../constants.dart';
-import '../../data/models/post_model.dart';
 
 class Post extends Equatable {
   final String university;

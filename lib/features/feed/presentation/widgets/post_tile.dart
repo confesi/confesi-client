@@ -3,6 +3,7 @@ import 'package:Confessi/core/styles/typography.dart';
 import 'package:Confessi/core/widgets/buttons/touchable_opacity.dart';
 import 'package:Confessi/core/widgets/text/group.dart';
 import 'package:Confessi/features/feed/constants.dart';
+import 'package:Confessi/features/feed/domain/entities/badge.dart';
 import 'package:Confessi/features/feed/domain/entities/post_child.dart';
 import 'package:Confessi/core/widgets/sheets/button_options_sheet.dart';
 import 'package:Confessi/features/feed/presentation/widgets/badge_tile.dart';
@@ -34,7 +35,6 @@ class PostTile extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  final List<Badge> badges;
   final IconData icon;
   final String university;
   final String genre;
@@ -48,6 +48,7 @@ class PostTile extends StatelessWidget {
   final int comments;
   final PostView postView;
   final PostChild postChild;
+  final List<Badge> badges;
 
   Widget _renderQuoteChild(BuildContext context) {
     final ChildType childType = postChild.childType;
@@ -74,9 +75,14 @@ class PostTile extends StatelessWidget {
     }
   }
 
-  List<BadgeTile> getBadges() {
-    return badges.map((badge) => BadgeTile(badge: badge)).toList();
-  }
+  List<BadgeTile> getBadges() => badges
+      .map(
+        (badge) => BadgeTile(
+            darkColor: badge.darkColor,
+            lightColor: badge.lightColor,
+            text: badge.text),
+      )
+      .toList();
 
   @override
   Widget build(BuildContext context) {
@@ -86,8 +92,8 @@ class PostTile extends StatelessWidget {
               context,
               '/home/detail',
               arguments: {
-                'post_child': postChild,
                 'badges': badges,
+                'post_child': postChild,
                 'icon': icon,
                 'genre': genre,
                 'time': time,
@@ -197,7 +203,6 @@ class PostTile extends StatelessWidget {
                 color: Theme.of(context).colorScheme.primary,
               ),
             ),
-            Text(badges.toString()),
             BadgeTileSet(
               badges: getBadges(),
             ),

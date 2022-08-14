@@ -1,7 +1,8 @@
+import 'package:Confessi/features/feed/domain/entities/badge.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import '../../../../core/results/exceptions.dart';
-import '../../constants.dart';
 import '../../domain/entities/post.dart';
 import 'post_child_data.dart';
 
@@ -140,18 +141,28 @@ class PostModel extends Post {
   static List<Badge> _badgesFormatter(List badges) {
     List<Badge> badgesConverted = [];
     for (var badge in badges) {
-      final Badge converted;
       switch (badge) {
         case 'LOVED':
-          converted = Badge.loved;
+          badgesConverted.add(
+            const Badge(
+              darkColor: Color.fromARGB(255, 225, 146, 44),
+              lightColor: Color(0xffFFDEB4),
+              text: 'Loved',
+            ),
+          );
           break;
         case 'HATED':
-          converted = Badge.hated;
+          badgesConverted.add(
+            const Badge(
+              darkColor: Color.fromARGB(255, 144, 108, 36),
+              lightColor: Color(0xfffde5b6),
+              text: 'Hated',
+            ),
+          );
           break;
         default:
           throw ServerException();
       }
-      badgesConverted.add(converted);
     }
     return badgesConverted;
   }

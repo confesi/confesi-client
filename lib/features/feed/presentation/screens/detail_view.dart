@@ -9,11 +9,11 @@ import 'package:Confessi/features/feed/presentation/widgets/post_tile.dart';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:keyboard_attachable/keyboard_attachable.dart';
 
 import '../../constants.dart';
+import '../../domain/entities/badge.dart';
 
 class DetailViewScreen extends StatefulWidget {
   const DetailViewScreen({

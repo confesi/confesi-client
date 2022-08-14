@@ -15,7 +15,7 @@ class PostChildDataModel extends PostChild {
           childPost: childPost,
         );
 
-  static ChildType _jsonChildTypeFormatter(String? data) {
+  static ChildType _childTypeFormatter(String? data) {
     switch (data) {
       case "no child":
         return ChildType.noChild;
@@ -30,7 +30,7 @@ class PostChildDataModel extends PostChild {
 
   factory PostChildDataModel.fromJson(Map<String, dynamic> json) {
     return PostChildDataModel(
-      childType: _jsonChildTypeFormatter(json["child_type"]),
+      childType: _childTypeFormatter(json["child_type"]),
       childId: json["child_id"],
       childPost:
           json["child"] != null ? PostModel.fromJson(json["child"]) : null,
