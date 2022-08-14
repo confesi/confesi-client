@@ -145,8 +145,7 @@ class PostModel extends Post {
         case 'LOVED':
           badgesConverted.add(
             const Badge(
-              darkColor: Color.fromARGB(255, 225, 146, 44),
-              lightColor: Color(0xffFFDEB4),
+              icon: CupertinoIcons.heart,
               text: 'Loved',
             ),
           );
@@ -154,9 +153,32 @@ class PostModel extends Post {
         case 'HATED':
           badgesConverted.add(
             const Badge(
-              darkColor: Color.fromARGB(255, 144, 108, 36),
-              lightColor: Color(0xfffde5b6),
+              icon: CupertinoIcons.flag,
               text: 'Hated',
+            ),
+          );
+          break;
+        case 'CONTROVERSIAL':
+          badgesConverted.add(
+            const Badge(
+              icon: CupertinoIcons.speaker_1,
+              text: 'Controversial',
+            ),
+          );
+          break;
+        case 'ENGAGING':
+          badgesConverted.add(
+            const Badge(
+              icon: CupertinoIcons.chat_bubble,
+              text: 'Engaging',
+            ),
+          );
+          break;
+        case 'FIRE':
+          badgesConverted.add(
+            const Badge(
+              icon: CupertinoIcons.flame,
+              text: 'On Fiiiiiire',
             ),
           );
           break;

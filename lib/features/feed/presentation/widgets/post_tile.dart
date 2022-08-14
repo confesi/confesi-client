@@ -76,12 +76,7 @@ class PostTile extends StatelessWidget {
   }
 
   List<BadgeTile> getBadges() => badges
-      .map(
-        (badge) => BadgeTile(
-            darkColor: badge.darkColor,
-            lightColor: badge.lightColor,
-            text: badge.text),
-      )
+      .map((badge) => BadgeTile(text: badge.text, icon: badge.icon))
       .toList();
 
   @override

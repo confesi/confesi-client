@@ -10,7 +10,7 @@ const String testJson = """{
   "foundPosts": [
     {
       "_id": "62dcaaf09a4cce309d8e567c",
-      "badges": ["LOVED", "HATED"],
+      "badges": ["LOVED"],
       "rank": 30.145533333333333,
       "university": "UBC",
       "genre": "POLITICS",
@@ -32,7 +32,7 @@ const String testJson = """{
     },
     {
       "_id": "62dcbef19a4cce309d8e5e9f",
-      "badges": ["LOVED", "HATED"],
+      "badges": ["HATED", "ENGAGING"],
       "rank": 0,
       "university": "UBC",
       "genre": "GENERAL",
@@ -50,7 +50,7 @@ const String testJson = """{
         "child_id": "62dcaaf09a4cce309d8e567c",
         "child": {
           "_id": "62dcaaf09a4cce309d8e567c",
-          "badges": ["LOVED", "HATED"],
+          "badges": ["FIRE"],
           "rank": 30.145533333333333,
           "university": "UVIC",
           "genre": "RELATIONSHIPS",
@@ -74,7 +74,7 @@ const String testJson = """{
     },
     {
       "_id": "62dcbef19a4cce309d8e5e9f",
-      "badges": ["LOVED", "HATED"],
+      "badges": [],
       "rank": 0,
       "university": "UBC",
       "genre": "CLASSES",
@@ -116,7 +116,7 @@ const String testJson = """{
     },
     {
       "_id": "62dcc0349a4cce309d8e5f39",
-      "badges": ["LOVED", "HATED"],
+      "badges": ["CONTROVERSIAL"],
       "rank": 0,
       "university": "UBC",
       "genre": "RELATIONSHIPS",

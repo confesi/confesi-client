@@ -2,13 +2,11 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 class Badge extends Equatable {
-  final Color darkColor;
-  final Color lightColor;
+  final IconData icon;
   final String text;
 
-  const Badge(
-      {required this.darkColor, required this.lightColor, required this.text});
+  const Badge({required this.icon, required this.text});
 
   @override
-  List<Object?> get props => [darkColor, lightColor, text];
+  List<Object?> get props => [icon, text];
 }
