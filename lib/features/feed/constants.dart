@@ -39,7 +39,10 @@ const int kPreviewPostTextLength = 150;
 const int kPreviewPostTitleLength = 75;
 
 /// The text length of the posts displayed inside the feed before truncating.
-const int kPreviewQuotePostTextLength = 100;
+const int kPreviewQuotePostTextLength = 75;
+
+/// The text length of the posts displayed inside the feed before truncating.
+const int kPreviewQuotePostTitleLength = 75;
 
 /// Max length a comment can be.
 const int kMaxCommentLength = 5000;

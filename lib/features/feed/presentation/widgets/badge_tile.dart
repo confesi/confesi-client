@@ -19,13 +19,14 @@ class BadgeTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(top: 5, right: 5),
-      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
+      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
       decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
+        color: Theme.of(context).colorScheme.primaryContainer,
         borderRadius: const BorderRadius.all(
           Radius.circular(20),
         ),
-        border: Border.all(color: Theme.of(context).canvasColor, width: .7),
+        border: Border.all(
+            color: Theme.of(context).colorScheme.primaryContainer, width: .7),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -33,13 +34,14 @@ class BadgeTile extends StatelessWidget {
           Icon(
             icon,
             size: 14,
-            color: Theme.of(context).canvasColor,
+            color: Theme.of(context).colorScheme.secondaryContainer,
           ),
           const SizedBox(width: 4),
           Text(
             text,
             style: kDetail.copyWith(
-                color: Theme.of(context).canvasColor, fontSize: 12),
+                color: Theme.of(context).colorScheme.secondaryContainer,
+                fontSize: 12),
           ),
         ],
       ),

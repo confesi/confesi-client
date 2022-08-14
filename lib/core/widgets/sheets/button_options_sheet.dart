@@ -39,16 +39,21 @@ Future<dynamic> showButtonOptionsSheet(
                       runSpacing: 15,
                       children: [
                         text != null
-                            ? Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 30, vertical: 15),
-                                child: Text(
-                                  text,
-                                  style: kBody.copyWith(
-                                    color:
-                                        Theme.of(context).colorScheme.onSurface,
+                            ? SizedBox(
+                                // This infinite width ensure it is presented on its own row inside the Wrap widget.
+                                width: double.infinity,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 30, vertical: 15),
+                                  child: Text(
+                                    text,
+                                    style: kBody.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurface,
+                                    ),
+                                    textAlign: TextAlign.center,
                                   ),
-                                  textAlign: TextAlign.center,
                                 ),
                               )
                             : Container(),

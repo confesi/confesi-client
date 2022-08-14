@@ -6,8 +6,6 @@ class AppTheme {
   static ThemeData lightTheme = ThemeData(
     highlightColor: Colors.transparent,
     splashColor: Colors.transparent,
-    cardColor: const Color(0xfffde5b6), // Badge's light color.
-    canvasColor: const Color.fromARGB(255, 151, 107, 20), // Badge's dark color.
     colorScheme: const ColorScheme(
       brightness: Brightness.light,
       primary: Color(0xff333333),
@@ -21,6 +19,9 @@ class AppTheme {
       surface: Color.fromARGB(255, 246, 246, 246),
       onSurface: Color.fromARGB(255, 147, 147, 147),
       shadow: Color.fromARGB(255, 232, 232, 232),
+      primaryContainer: Color(0xfffde5b6), // Badge's light color.
+      secondaryContainer:
+          Color.fromARGB(255, 151, 107, 20), // Badge's dark color.
     ),
   );
 
@@ -28,8 +29,6 @@ class AppTheme {
   static ThemeData darkTheme = ThemeData(
     highlightColor: Colors.transparent,
     splashColor: Colors.transparent,
-    cardColor: const Color(0xff2a2a2a), // Badge's light color.
-    canvasColor: const Color(0xfffde5b6), // Badge's dark color.
     colorScheme: const ColorScheme(
       surfaceVariant: Color.fromARGB(255, 23, 23, 23),
       brightness: Brightness.dark,
@@ -44,6 +43,8 @@ class AppTheme {
       surface: Color.fromARGB(255, 55, 55, 55),
       onSurface: Color(0xff7d7d7d),
       shadow: Color.fromARGB(255, 19, 18, 18),
+      primaryContainer: Color(0xff333333), // Badge's light color.
+      secondaryContainer: Color(0xfffde5b6), // Badge's dark color.
     ),
   );
 }

@@ -69,7 +69,10 @@ class QuoteTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    post.genre,
+                    post.title.length > kPreviewQuotePostTitleLength &&
+                            postView == PostView.feedView
+                        ? "${post.title.substring(0, kPreviewQuotePostTitleLength)}..."
+                        : post.title,
                     style: kTitle.copyWith(
                       color: Theme.of(context).colorScheme.primary,
                     ),

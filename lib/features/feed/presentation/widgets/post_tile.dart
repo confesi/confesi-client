@@ -198,6 +198,7 @@ class PostTile extends StatelessWidget {
                 color: Theme.of(context).colorScheme.primary,
               ),
             ),
+            const SizedBox(height: 2),
             BadgeTileSet(
               badges: getBadges(),
             ),

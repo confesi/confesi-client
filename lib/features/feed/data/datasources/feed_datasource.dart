@@ -100,7 +100,7 @@ const String testJson = """{
           "faculty": "SOCIAL_SCIENCES",
           "reports": 0,
           "text": "post-fix",
-          "title": "My PYSCH 120A class is nuts!",
+          "title": "My PYSCH 120A class is nuts! It is truly an insane class. Sometimes I wish I could just drop it right now if it wasn't a part of my degree I totally would!!",
           "comment_count": 0,
           "likes": 10923,
           "hates": 91232,

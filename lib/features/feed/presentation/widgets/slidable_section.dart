@@ -1,3 +1,4 @@
+import 'package:Confessi/core/constants/buttons.dart';
 import 'package:Confessi/core/styles/typography.dart';
 import 'package:Confessi/core/widgets/buttons/touchable_opacity.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,12 +10,14 @@ class SlidableSection extends StatelessWidget {
     required this.icon,
     required this.onPress,
     required this.text,
+    this.tooltip,
     Key? key,
   }) : super(key: key);
 
   final VoidCallback onPress;
   final String text;
   final IconData icon;
+  final String? tooltip;
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +28,8 @@ class SlidableSection extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 5),
           child: TouchableOpacity(
+            tooltipLocation: TooltipLocation.above,
+            tooltip: tooltip,
             onTap: () {
               Slidable.of(context)?.close();
               onPress();

@@ -1,3 +1,4 @@
+import 'package:Confessi/core/constants/buttons.dart';
 import 'package:Confessi/core/styles/typography.dart';
 import 'package:Confessi/core/utils/large_number_formatter.dart';
 import 'package:Confessi/features/feed/presentation/widgets/vote_tile.dart';
@@ -21,6 +22,7 @@ class VoteTileSet extends StatelessWidget {
       children: [
         VoteTile(
           value: likes,
+          tooltipLocation: TooltipLocation.above,
           tooltip: 'like this content',
           icon: CupertinoIcons.hand_thumbsup,
           isActive: true,
@@ -29,6 +31,7 @@ class VoteTileSet extends StatelessWidget {
         const SizedBox(width: 10),
         VoteTile(
           value: hates,
+          tooltipLocation: TooltipLocation.above,
           tooltip: 'hate this content',
           icon: CupertinoIcons.hand_thumbsdown,
           isActive: true,

@@ -127,11 +127,13 @@ class CommentTile extends StatelessWidget {
         children: [
           SlidableSection(
             text: 'Share',
+            tooltip: 'share this content',
             icon: CupertinoIcons.share,
             onPress: () => print('tap'),
           ),
           SlidableSection(
             text: 'Reply',
+            tooltip: 'reply to this comment',
             icon: CupertinoIcons.arrowshape_turn_up_right,
             onPress: () => print('tap'),
           ),
@@ -142,11 +144,13 @@ class CommentTile extends StatelessWidget {
         children: [
           SlidableSection(
             text: '195',
+            tooltip: 'number of hates',
             icon: CupertinoIcons.hand_thumbsdown,
             onPress: () => print('tap'),
           ),
           SlidableSection(
             text: '23.2k',
+            tooltip: 'number of likes',
             icon: CupertinoIcons.hand_thumbsup,
             onPress: () => print('tap'),
           ),

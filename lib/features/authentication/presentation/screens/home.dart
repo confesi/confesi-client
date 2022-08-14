@@ -62,6 +62,7 @@ class _HomeScreenState extends State<HomeScreen>
                       color: Colors.orange,
                     ),
                     Scaffold(
+                      backgroundColor: Theme.of(context).colorScheme.background,
                       body: Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,

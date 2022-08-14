@@ -78,7 +78,7 @@ class _DetailViewScreenState extends State<DetailViewScreen> {
         color: Theme.of(context).colorScheme.background,
       ),
       backgroundColor: Theme.of(context).colorScheme.background,
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       body: SafeArea(
         maintainBottomViewPadding: true,
         child: FooterLayout(
