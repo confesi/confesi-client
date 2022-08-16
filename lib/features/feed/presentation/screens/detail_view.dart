@@ -1,19 +1,26 @@
+import 'dart:math';
+
 import 'package:Confessi/core/styles/typography.dart';
 import 'package:Confessi/core/widgets/layout/appbar.dart';
-import 'package:Confessi/core/widgets/layout/scrollable_view.dart';
 import 'package:Confessi/features/feed/domain/entities/post_child.dart';
 import 'package:Confessi/features/feed/presentation/widgets/comment_divider.dart';
 import 'package:Confessi/features/feed/presentation/widgets/comment_sheet.dart';
 import 'package:Confessi/features/feed/presentation/widgets/comment_tile.dart';
+import 'package:Confessi/features/feed/presentation/widgets/infinite_comment_thread.dart';
 import 'package:Confessi/features/feed/presentation/widgets/post_tile.dart';
-import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:keyboard_attachable/keyboard_attachable.dart';
 
 import '../../constants.dart';
 import '../../domain/entities/badge.dart';
+
+class Comment {
+  final String data;
+  final bool isRoot;
+
+  Comment({required this.data, required this.isRoot});
+}
 
 class DetailViewScreen extends StatefulWidget {
   const DetailViewScreen({
@@ -52,20 +59,32 @@ class DetailViewScreen extends StatefulWidget {
 }
 
 class _DetailViewScreenState extends State<DetailViewScreen> {
-  double scrollableOffset = 0.0;
-  bool isRefreshing = false;
-  late ScrollController scrollController;
+  List<Comment> comments = [];
 
-  @override
-  void initState() {
-    scrollController = ScrollController();
-    super.initState();
+  Future<void> loadMore() async {
+    for (var i = 0; i < 100; i++) {
+      var result = Random().nextInt(3);
+      comments
+          .add(Comment(data: 'some data', isRoot: result == 1 ? true : false));
+      if (result == 1 && !controller.rootIndexes.contains(comments.length)) {
+        controller.addToRootIndexes(comments.length);
+      }
+    }
   }
 
-  @override
-  void dispose() {
-    scrollController.dispose();
-    super.dispose();
+  // Controller for the comment thread.
+  InfiniteCommentThreadController<Comment> controller =
+      InfiniteCommentThreadController<Comment>();
+
+  bool isAtTop = true;
+
+  Widget buildComment(int index) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 50),
+      margin: const EdgeInsets.symmetric(vertical: 5),
+      color: Colors.lightBlueAccent,
+      child: Text('Comment: ${comments[index - 1].isRoot}'),
+    );
   }
 
   @override
@@ -89,7 +108,6 @@ class _DetailViewScreenState extends State<DetailViewScreen> {
             ),
           ),
           child: Column(
-            mainAxisSize: MainAxisSize.min,
             children: [
               AppbarLayout(
                 centerWidget: Text(
@@ -100,159 +118,65 @@ class _DetailViewScreenState extends State<DetailViewScreen> {
                   textAlign: TextAlign.center,
                 ),
                 leftIconVisible: true,
+                rightIcon: isAtTop ? null : CupertinoIcons.arrow_up_to_line,
+                rightIconVisible: true,
+                rightIconOnPress: () {
+                  FocusScope.of(context).unfocus();
+                  isAtTop ? controller.refresh() : controller.scrollToTop();
+                },
+                rightIconTooltip: 'scroll to top',
+                leftIconTooltip: 'go back',
               ),
               Expanded(
-                child: CustomRefreshIndicator(
-                  onRefresh: () async {
+                child: InfiniteCommentThread(
+                  comment: buildComment,
+                  loadMore: () async => await loadMore(),
+                  refreshScreen: () async {
+                    print('refresh');
+                    controller.clearComments();
                     setState(() {
-                      isRefreshing = true;
+                      loadMore();
                     });
-                    HapticFeedback.lightImpact();
-                    await Future.delayed(const Duration(milliseconds: 400));
-                    // await widget.onRefresh();
-                    setState(() {
-                      isRefreshing = false;
-                    });
-                    await Future.delayed(const Duration(milliseconds: 400));
-                    // _fetchMore();
                   },
-                  builder: (BuildContext context, Widget child,
-                      IndicatorController controller) {
-                    return AnimatedBuilder(
-                      animation: controller,
-                      builder: (BuildContext context, _) {
-                        return Stack(
-                          clipBehavior: Clip.hardEdge,
-                          children: <Widget>[
-                            AnimatedBuilder(
-                              animation: controller,
-                              builder: (BuildContext context, _) {
-                                return Container(
-                                  color: Theme.of(context).colorScheme.shadow,
-                                  width: double.infinity,
-                                  height: controller.value * 80,
-                                  child: FittedBox(
-                                    alignment: Alignment.center,
-                                    fit: BoxFit.scaleDown,
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 8),
-                                      child: CupertinoActivityIndicator(
-                                        radius: 12,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary,
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                            Transform.translate(
-                              offset: Offset(0, controller.value * 80),
-                              child: child,
-                            ),
-                          ],
-                        );
-                      },
-                    );
+                  onTopChange: (atTop) {
+                    if (atTop != isAtTop) {
+                      setState(() {
+                        isAtTop = atTop;
+                      });
+                    }
                   },
-                  child: AbsorbPointer(
-                    absorbing: isRefreshing,
-                    child: ScrollableView(
-                      controller: scrollController,
-                      physics: const ClampingScrollPhysics(
-                        parent: AlwaysScrollableScrollPhysics(),
+                  header: Column(
+                    children: [
+                      PostTile(
+                        badges: widget.badges,
+                        postChild: widget.postChild,
+                        icon: widget.icon,
+                        postView: PostView.detailView,
+                        university: widget.university,
+                        genre: widget.genre,
+                        time: widget.time,
+                        faculty: widget.faculty,
+                        text: widget.text,
+                        title: widget.title,
+                        likes: widget.likes,
+                        hates: widget.hates,
+                        comments: widget.comments,
+                        year: widget.year,
                       ),
-                      child: Column(
-                        children: [
-                          PostTile(
-                            badges: widget.badges,
-                            postChild: widget.postChild,
-                            icon: widget.icon,
-                            postView: PostView.detailView,
-                            university: widget.university,
-                            genre: widget.genre,
-                            time: widget.time,
-                            faculty: widget.faculty,
-                            text: widget.text,
-                            title: widget.title,
-                            likes: widget.likes,
-                            hates: widget.hates,
-                            comments: widget.comments,
-                            year: widget.year,
-                          ),
-                          // TODO: make comments an int
-                          CommentDivider(
-                            comments: widget.comments,
-                          ),
-                          const CommentTile(
-                            depth: CommentDepth.root,
-                            likes: 1093841,
-                            hates: 19023,
-                            text:
-                                'This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.',
-                          ),
-                          const CommentTile(
-                            depth: CommentDepth.root,
-                            likes: 1093841,
-                            hates: 19023,
-                            text:
-                                'This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.',
-                          ),
-                          const CommentTile(
-                            depth: CommentDepth.one,
-                            likes: 1093841,
-                            hates: 19023,
-                            text:
-                                'This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.',
-                          ),
-                          const CommentTile(
-                            depth: CommentDepth.two,
-                            likes: 1093841,
-                            hates: 19023,
-                            text:
-                                'This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.',
-                          ),
-                          const CommentTile(
-                            depth: CommentDepth.two,
-                            likes: 1093841,
-                            hates: 19023,
-                            text:
-                                'This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.',
-                          ),
-                          const CommentTile(
-                            depth: CommentDepth.three,
-                            likes: 1093841,
-                            hates: 19023,
-                            text:
-                                'This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.',
-                          ),
-                          const CommentTile(
-                            depth: CommentDepth.four,
-                            likes: 1093841,
-                            hates: 19023,
-                            text:
-                                'This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.',
-                          ),
-                          const CommentTile(
-                            depth: CommentDepth.two,
-                            likes: 1093841,
-                            hates: 19023,
-                            text:
-                                'This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.',
-                          ),
-                          const CommentTile(
-                            depth: CommentDepth.root,
-                            likes: 1093841,
-                            hates: 19023,
-                            text:
-                                'This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.',
-                          ),
-                        ],
+                      CommentDivider(
+                        comments: widget.comments,
                       ),
-                    ),
+                      const CommentTile(
+                        depth: CommentDepth.root,
+                        likes: 1093841,
+                        hates: 19023,
+                        text:
+                            'This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.',
+                      ),
+                    ],
                   ),
+                  comments: comments,
+                  controller: controller,
                 ),
               ),
             ],

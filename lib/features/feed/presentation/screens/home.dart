@@ -58,6 +58,7 @@ class _ExploreHomeState extends State<ExploreHome>
                 ),
                 leftIconVisible: true,
                 leftIcon: CupertinoIcons.bars,
+                leftIconTooltip: 'watched universities',
                 leftIconOnPress: () {
                   Scaffold.of(context).openDrawer();
                 },

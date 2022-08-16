@@ -25,6 +25,7 @@ class ExpandableTextfield extends StatefulWidget {
 
 class _ExpandableTextfieldState extends State<ExpandableTextfield> {
   FocusNode focusNode = FocusNode();
+  final ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
@@ -35,6 +36,7 @@ class _ExpandableTextfieldState extends State<ExpandableTextfield> {
   @override
   void dispose() {
     focusNode.dispose();
+    scrollController.dispose();
     super.dispose();
   }
 
@@ -42,34 +44,33 @@ class _ExpandableTextfieldState extends State<ExpandableTextfield> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => focusNode.requestFocus(),
-      child: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surface,
-            borderRadius: const BorderRadius.all(
-              Radius.circular(10),
-            ),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
+          borderRadius: const BorderRadius.all(
+            Radius.circular(10),
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: CupertinoScrollbar(
-              child: TextField(
-                maxLength: widget.maxCharacters,
-                onChanged: (value) => widget.onChanged(value),
-                maxLines: widget.maxLines,
-                minLines: widget.minLines,
-                keyboardType: TextInputType.multiline,
-                focusNode: focusNode,
-                controller: widget.controller,
-                style: kBody.copyWith(
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-                decoration: InputDecoration.collapsed(
-                  hintText: "What's your take?",
-                  hintStyle: kBody.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface,
-                  ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: CupertinoScrollbar(
+            controller: scrollController,
+            child: TextField(
+              scrollController: scrollController,
+              // maxLength: widget.maxCharacters,
+              onChanged: (value) => widget.onChanged(value),
+              maxLines: widget.maxLines,
+              minLines: widget.minLines,
+              keyboardType: TextInputType.multiline,
+              focusNode: focusNode,
+              controller: widget.controller,
+              style: kBody.copyWith(
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              decoration: InputDecoration.collapsed(
+                hintText: "What's your take?",
+                hintStyle: kBody.copyWith(
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
             ),

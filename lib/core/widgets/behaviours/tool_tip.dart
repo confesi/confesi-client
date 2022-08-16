@@ -21,6 +21,8 @@ class ToolTip extends StatelessWidget {
         ? child
         : SafeArea(
             child: Tooltip(
+              margin: const EdgeInsets.all(0),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
               preferBelow: tooltipLocation != null &&
                       tooltipLocation == TooltipLocation.above
                   ? false
@@ -33,7 +35,7 @@ class ToolTip extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.background,
                 borderRadius: const BorderRadius.all(
-                  Radius.circular(10),
+                  Radius.circular(20),
                 ),
                 boxShadow: [
                   BoxShadow(

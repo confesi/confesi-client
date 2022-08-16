@@ -11,6 +11,7 @@ class SimpleTextButton extends StatelessWidget {
     this.tooltip,
     this.isErrorText = false,
     this.tooltipLocation,
+    this.tapType = TapType.none,
     Key? key,
   }) : super(key: key);
 
@@ -19,11 +20,12 @@ class SimpleTextButton extends StatelessWidget {
   final String text;
   final bool isErrorText;
   final TooltipLocation? tooltipLocation;
+  final TapType tapType;
 
   @override
   Widget build(BuildContext context) {
     return TouchableOpacity(
-      tapType: TapType.strongImpact,
+      tapType: tapType,
       tooltip: tooltip,
       tooltipLocation: tooltipLocation,
       onTap: () => onTap(),
