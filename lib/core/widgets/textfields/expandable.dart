@@ -45,6 +45,7 @@ class _ExpandableTextfieldState extends State<ExpandableTextfield> {
     return GestureDetector(
       onTap: () => focusNode.requestFocus(),
       child: Container(
+        margin: const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surface,
           borderRadius: const BorderRadius.all(

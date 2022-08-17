@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 
-import '../buttons/touchable_opacity.dart';
+import '../behaviours/touchable_opacity.dart';
 
 /// If [leftIconOnPress] is null, defaults to popping current context.
 class AppbarLayout extends StatelessWidget {

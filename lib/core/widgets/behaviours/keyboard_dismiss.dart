@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class KeyboardDismissLayout extends StatelessWidget {
-  const KeyboardDismissLayout({required this.child, Key? key}) : super(key: key);
+  const KeyboardDismissLayout({required this.child, Key? key})
+      : super(key: key);
 
   final Widget child;
 

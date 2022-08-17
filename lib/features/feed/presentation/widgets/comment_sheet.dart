@@ -1,6 +1,5 @@
 import 'package:Confessi/core/constants/buttons.dart';
 import 'package:Confessi/core/widgets/buttons/simple_text.dart';
-import 'package:Confessi/features/feed/presentation/widgets/circle_comment_switcher_button.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/widgets/textfields/expandable.dart';
@@ -83,24 +82,14 @@ class _CommentSheetState extends State<CommentSheet>
             Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Row(
-                  // crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CircleCommentSwitcherButton(),
-                    Expanded(
-                      child: ExpandableTextfield(
-                        maxLines: 8,
-                        minLines: 1,
-                        maxCharacters: widget.maxCharacters,
-                        onChanged: (value) {
-                          manageAnim();
-                        },
-                        controller: commentController,
-                      ),
-                    ),
-                    CircleCommentSwitcherButton(),
-                  ],
+                ExpandableTextfield(
+                  maxLines: 8,
+                  minLines: 1,
+                  maxCharacters: widget.maxCharacters,
+                  onChanged: (value) {
+                    manageAnim();
+                  },
+                  controller: commentController,
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -157,6 +146,13 @@ class _CommentSheetState extends State<CommentSheet>
                 ),
               ],
             ),
+            // Positioned(
+            //   right: 0,
+            //   bottom: 50,
+            //   child: FloatingActionButton(
+            //     onPressed: () => print('tap'),
+            //   ),
+            // ),
           ],
         ),
       ),

@@ -2,7 +2,7 @@ import 'package:Confessi/core/constants/buttons.dart';
 import 'package:Confessi/core/styles/typography.dart';
 import 'package:Confessi/core/utils/large_number_formatter.dart';
 import 'package:Confessi/core/widgets/buttons/option.dart';
-import 'package:Confessi/core/widgets/buttons/touchable_opacity.dart';
+import 'package:Confessi/core/widgets/behaviours/touchable_opacity.dart';
 import 'package:Confessi/core/widgets/sheets/button_options_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +18,7 @@ class CommentDivider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TouchableOpacity(
-      tooltip: 'comment sorting + total number of comments',
+      tooltip: 'comment sorting + number of comments',
       tooltipLocation: TooltipLocation.above,
       onTap: () => showButtonOptionsSheet(
         context,

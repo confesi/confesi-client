@@ -1,4 +1,4 @@
-import 'package:Confessi/core/widgets/layout/keyboard_dismiss.dart';
+import 'package:Confessi/core/widgets/behaviours/keyboard_dismiss.dart';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -258,6 +258,9 @@ class _InfiniteCommentThreadState extends State<InfiniteCommentThread> {
     super.initState();
   }
 
+  double scrollExtent = 0.0;
+  bool x = false;
+
   @override
   Widget build(BuildContext context) {
     return CustomRefreshIndicator(
@@ -304,20 +307,27 @@ class _InfiniteCommentThreadState extends State<InfiniteCommentThread> {
       },
       child: AbsorbPointer(
         absorbing: widget.controller._isDoingRefreshAnim,
-        child: ScrollablePositionedList.builder(
-          physics: const ClampingScrollPhysics(
-            parent: AlwaysScrollableScrollPhysics(),
-          ),
-          itemCount: widget.controller.comments!.length + 1,
-          itemBuilder: (context, index) {
-            if (index == 0) {
-              return widget.header;
-            } else {
-              return widget.comment(index);
-            }
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onPanDown: (_) {
+            FocusScope.of(context).requestFocus(FocusNode());
           },
-          itemScrollController: widget.controller._itemScrollController,
-          itemPositionsListener: widget.controller._itemPositionsListener,
+          child: ScrollablePositionedList.builder(
+            shrinkWrap: true,
+            physics: const ClampingScrollPhysics(
+              parent: AlwaysScrollableScrollPhysics(),
+            ),
+            itemCount: widget.controller.comments!.length + 1,
+            itemBuilder: (context, index) {
+              if (index == 0) {
+                return widget.header;
+              } else {
+                return widget.comment(index);
+              }
+            },
+            itemScrollController: widget.controller._itemScrollController,
+            itemPositionsListener: widget.controller._itemPositionsListener,
+          ),
         ),
       ),
     );

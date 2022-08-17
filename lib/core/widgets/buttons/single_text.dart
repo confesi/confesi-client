@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../styles/typography.dart';
-import 'touchable_opacity.dart';
+import '../behaviours/touchable_opacity.dart';
 
 class SingleTextButton extends StatelessWidget {
   const SingleTextButton(

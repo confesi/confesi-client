@@ -1,6 +1,6 @@
 import 'package:Confessi/core/constants/buttons.dart';
 import 'package:Confessi/core/widgets/behaviours/overscroll.dart';
-import 'package:Confessi/core/widgets/buttons/touchable_opacity.dart';
+import 'package:Confessi/core/widgets/behaviours/touchable_opacity.dart';
 import 'package:Confessi/core/widgets/sheets/info_sheet.dart';
 import 'package:Confessi/core/widgets/text/spread_row.dart';
 import 'package:flutter/cupertino.dart';

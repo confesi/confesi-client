@@ -1,6 +1,6 @@
 import 'package:Confessi/core/constants/buttons.dart';
 import 'package:Confessi/core/styles/typography.dart';
-import 'package:Confessi/core/widgets/buttons/touchable_opacity.dart';
+import 'package:Confessi/core/widgets/behaviours/touchable_opacity.dart';
 import 'package:Confessi/core/widgets/text/group.dart';
 import 'package:Confessi/features/feed/constants.dart';
 import 'package:Confessi/features/feed/domain/entities/badge.dart';

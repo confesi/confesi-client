@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/styles/typography.dart';
-import '../../../../core/widgets/buttons/touchable_opacity.dart';
+import '../../../../core/widgets/behaviours/touchable_opacity.dart';
 
 class ErrorMessage extends StatelessWidget {
   const ErrorMessage({

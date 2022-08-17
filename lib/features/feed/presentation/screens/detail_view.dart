@@ -1,8 +1,10 @@
 import 'dart:math';
 
 import 'package:Confessi/core/styles/typography.dart';
+import 'package:Confessi/core/widgets/behaviours/touchable_opacity.dart';
 import 'package:Confessi/core/widgets/layout/appbar.dart';
 import 'package:Confessi/features/feed/domain/entities/post_child.dart';
+import 'package:Confessi/features/feed/presentation/widgets/circle_comment_switcher_button.dart';
 import 'package:Confessi/features/feed/presentation/widgets/comment_divider.dart';
 import 'package:Confessi/features/feed/presentation/widgets/comment_sheet.dart';
 import 'package:Confessi/features/feed/presentation/widgets/comment_tile.dart';
@@ -87,6 +89,8 @@ class _DetailViewScreenState extends State<DetailViewScreen> {
     );
   }
 
+  int acceptedData = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,90 +102,111 @@ class _DetailViewScreenState extends State<DetailViewScreen> {
       ),
       backgroundColor: Theme.of(context).colorScheme.background,
       resizeToAvoidBottomInset: true,
-      body: SafeArea(
-        maintainBottomViewPadding: true,
-        child: FooterLayout(
-          footer: KeyboardAttachable(
-            child: CommentSheet(
-              onSubmit: (comment) => print(comment),
-              maxCharacters: kMaxCommentLength,
+      body: Stack(
+        children: [
+          SafeArea(
+            maintainBottomViewPadding: true,
+            child: FooterLayout(
+              footer: KeyboardAttachable(
+                child: CommentSheet(
+                  onSubmit: (comment) => print(comment),
+                  maxCharacters: kMaxCommentLength,
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  AppbarLayout(
+                      centerWidget: Text(
+                        'Thread View',
+                        style: kTitle.copyWith(
+                            color: Theme.of(context).colorScheme.primary),
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                      ),
+                      leftIconVisible: true,
+                      rightIcon:
+                          isAtTop ? null : CupertinoIcons.arrow_up_to_line,
+                      rightIconVisible: true,
+                      rightIconOnPress: () {
+                        isAtTop
+                            ? controller.refresh()
+                            : controller.scrollToTop();
+                      },
+                      rightIconTooltip: 'scroll to top',
+                      leftIconTooltip: 'go back'),
+                  Expanded(
+                    child: Stack(
+                      children: [
+                        InfiniteCommentThread(
+                          comment: buildComment,
+                          loadMore: () async => await loadMore(),
+                          refreshScreen: () async {
+                            print('refresh');
+                            controller.clearComments();
+                            setState(() {
+                              loadMore();
+                            });
+                          },
+                          onTopChange: (atTop) {
+                            if (atTop != isAtTop) {
+                              setState(() {
+                                isAtTop = atTop;
+                              });
+                            }
+                          },
+                          header: Column(
+                            children: [
+                              PostTile(
+                                badges: widget.badges,
+                                postChild: widget.postChild,
+                                icon: widget.icon,
+                                postView: PostView.detailView,
+                                university: widget.university,
+                                genre: widget.genre,
+                                time: widget.time,
+                                faculty: widget.faculty,
+                                text: widget.text,
+                                title: widget.title,
+                                likes: widget.likes,
+                                hates: widget.hates,
+                                comments: widget.comments,
+                                year: widget.year,
+                              ),
+                              CommentDivider(
+                                comments: widget.comments,
+                              ),
+                              const CommentTile(
+                                depth: CommentDepth.root,
+                                likes: 1093841,
+                                hates: 19023,
+                                text:
+                                    'This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.',
+                              ),
+                            ],
+                          ),
+                          comments: comments,
+                          controller: controller,
+                        ),
+                        Positioned(
+                          right: 10,
+                          bottom: 10,
+                          child: CircleCommentSwitcherButton(
+                            scrollToRootDirection: ScrollToRootDirection.down,
+                            controller: controller,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  // Expanded(
+                  //   child:
+                  // ),
+                ],
+              ),
             ),
           ),
-          child: Column(
-            children: [
-              AppbarLayout(
-                centerWidget: Text(
-                  'Thread View',
-                  style: kTitle.copyWith(
-                      color: Theme.of(context).colorScheme.primary),
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                ),
-                leftIconVisible: true,
-                rightIcon: isAtTop ? null : CupertinoIcons.arrow_up_to_line,
-                rightIconVisible: true,
-                rightIconOnPress: () {
-                  FocusScope.of(context).unfocus();
-                  isAtTop ? controller.refresh() : controller.scrollToTop();
-                },
-                rightIconTooltip: 'scroll to top',
-                leftIconTooltip: 'go back',
-              ),
-              Expanded(
-                child: InfiniteCommentThread(
-                  comment: buildComment,
-                  loadMore: () async => await loadMore(),
-                  refreshScreen: () async {
-                    print('refresh');
-                    controller.clearComments();
-                    setState(() {
-                      loadMore();
-                    });
-                  },
-                  onTopChange: (atTop) {
-                    if (atTop != isAtTop) {
-                      setState(() {
-                        isAtTop = atTop;
-                      });
-                    }
-                  },
-                  header: Column(
-                    children: [
-                      PostTile(
-                        badges: widget.badges,
-                        postChild: widget.postChild,
-                        icon: widget.icon,
-                        postView: PostView.detailView,
-                        university: widget.university,
-                        genre: widget.genre,
-                        time: widget.time,
-                        faculty: widget.faculty,
-                        text: widget.text,
-                        title: widget.title,
-                        likes: widget.likes,
-                        hates: widget.hates,
-                        comments: widget.comments,
-                        year: widget.year,
-                      ),
-                      CommentDivider(
-                        comments: widget.comments,
-                      ),
-                      const CommentTile(
-                        depth: CommentDepth.root,
-                        likes: 1093841,
-                        hates: 19023,
-                        text:
-                            'This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.',
-                      ),
-                    ],
-                  ),
-                  comments: comments,
-                  controller: controller,
-                ),
-              ),
-            ],
-          ),
-        ),
+        ],
       ),
     );
   }

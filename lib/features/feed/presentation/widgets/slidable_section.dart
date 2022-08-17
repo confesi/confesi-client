@@ -1,6 +1,6 @@
 import 'package:Confessi/core/constants/buttons.dart';
 import 'package:Confessi/core/styles/typography.dart';
-import 'package:Confessi/core/widgets/buttons/touchable_opacity.dart';
+import 'package:Confessi/core/widgets/behaviours/touchable_opacity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';

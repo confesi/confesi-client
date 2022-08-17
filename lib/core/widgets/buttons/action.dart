@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 import '../../styles/typography.dart';
-import 'touchable_opacity.dart';
+import '../behaviours/touchable_opacity.dart';
 
 class ActionButton extends StatelessWidget {
   const ActionButton({

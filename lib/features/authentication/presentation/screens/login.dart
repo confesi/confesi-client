@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/styles/typography.dart';
 import '../../../../core/widgets/behaviours/overscroll.dart';
 import '../../../../core/widgets/buttons/pop.dart';
-import '../../../../core/widgets/layout/keyboard_dismiss.dart';
+import '../../../../core/widgets/behaviours/keyboard_dismiss.dart';
 import '../../../../core/widgets/layout/minimal_appbar.dart';
 import '../../../../core/widgets/text/link.dart';
 import '../../../../core/widgets/textfields/bulge.dart';

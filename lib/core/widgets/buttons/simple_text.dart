@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../constants/buttons.dart';
 import '../../styles/typography.dart';
-import 'touchable_opacity.dart';
+import '../behaviours/touchable_opacity.dart';
 
 class SimpleTextButton extends StatelessWidget {
   const SimpleTextButton({
