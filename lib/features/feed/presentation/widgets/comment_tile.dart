@@ -177,7 +177,7 @@ class CommentTile extends StatelessWidget {
                         left: depth == CommentDepth.root ? 0 : 15,
                       ),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -236,6 +236,7 @@ class CommentTile extends StatelessWidget {
                               color: Theme.of(context).colorScheme.primary,
                               height: 1.2,
                             ),
+                            textAlign: TextAlign.left,
                           ),
                         ],
                       ),

@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:Confessi/core/styles/typography.dart';
-import 'package:Confessi/core/widgets/behaviours/touchable_opacity.dart';
 import 'package:Confessi/core/widgets/layout/appbar.dart';
 import 'package:Confessi/features/feed/domain/entities/post_child.dart';
 import 'package:Confessi/features/feed/presentation/widgets/circle_comment_switcher_button.dart';
@@ -12,6 +11,7 @@ import 'package:Confessi/features/feed/presentation/widgets/infinite_comment_thr
 import 'package:Confessi/features/feed/presentation/widgets/post_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:keyboard_attachable/keyboard_attachable.dart';
 
 import '../../constants.dart';
@@ -64,8 +64,10 @@ class _DetailViewScreenState extends State<DetailViewScreen> {
   List<Comment> comments = [];
 
   Future<void> loadMore() async {
-    for (var i = 0; i < 100; i++) {
-      var result = Random().nextInt(3);
+    print('<=== load more ===>');
+    print('.');
+    for (var i = 0; i < 20; i++) {
+      var result = Random().nextInt(8);
       comments
           .add(Comment(data: 'some data', isRoot: result == 1 ? true : false));
       if (result == 1 && !controller.rootIndexes.contains(comments.length)) {
@@ -78,24 +80,27 @@ class _DetailViewScreenState extends State<DetailViewScreen> {
   InfiniteCommentThreadController<Comment> controller =
       InfiniteCommentThreadController<Comment>();
 
+  // Is the scrollview at the very top?
   bool isAtTop = true;
 
   Widget buildComment(int index) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 50),
-      margin: const EdgeInsets.symmetric(vertical: 5),
-      color: Colors.lightBlueAccent,
-      child: Text('Comment: ${comments[index - 1].isRoot}'),
+    return CommentTile(
+      likes: 12,
+      hates: 490,
+      text: '${comments[index - 1].data} : ${index - 1}',
+      depth: comments[index - 1].isRoot ? CommentDepth.root : CommentDepth.one,
     );
   }
 
-  int acceptedData = 0;
+  // Should the button to jump between root comments be visible?
+  bool visible = true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       // This bottom sheet is overlayed atop transformed widgets (covers scrollview)
       // content during scrolling-to-fresh since that utilizes transforms.
+
       bottomSheet: Container(
         height: MediaQuery.of(context).padding.bottom,
         color: Theme.of(context).colorScheme.background,
@@ -117,30 +122,33 @@ class _DetailViewScreenState extends State<DetailViewScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   AppbarLayout(
-                      centerWidget: Text(
-                        'Thread View',
-                        style: kTitle.copyWith(
-                            color: Theme.of(context).colorScheme.primary),
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.center,
-                      ),
-                      leftIconVisible: true,
-                      rightIcon:
-                          isAtTop ? null : CupertinoIcons.arrow_up_to_line,
-                      rightIconVisible: true,
-                      rightIconOnPress: () {
-                        isAtTop
-                            ? controller.refresh()
-                            : controller.scrollToTop();
-                      },
-                      rightIconTooltip: 'scroll to top',
-                      leftIconTooltip: 'go back'),
+                    centerWidget: Text(
+                      'Thread View',
+                      style: kTitle.copyWith(
+                          color: Theme.of(context).colorScheme.primary),
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
+                    ),
+                    leftIconVisible: true,
+                    rightIcon: isAtTop ? null : CupertinoIcons.arrow_up_to_line,
+                    rightIconVisible: isAtTop ? false : true,
+                    rightIconOnPress: () {
+                      isAtTop ? null : controller.scrollToTop();
+                    },
+                    rightIconTooltip: 'scroll to top',
+                    leftIconTooltip: 'go back',
+                  ),
                   Expanded(
                     child: Stack(
                       children: [
                         InfiniteCommentThread(
+                          preloadBy: 10,
                           comment: buildComment,
-                          loadMore: () async => await loadMore(),
+                          loadMore: () async {
+                            print('PREFETCHING');
+                            print(',.');
+                            await loadMore();
+                          },
                           refreshScreen: () async {
                             print('refresh');
                             controller.clearComments();
@@ -176,13 +184,6 @@ class _DetailViewScreenState extends State<DetailViewScreen> {
                               CommentDivider(
                                 comments: widget.comments,
                               ),
-                              const CommentTile(
-                                depth: CommentDepth.root,
-                                likes: 1093841,
-                                hates: 19023,
-                                text:
-                                    'This is a dummy comment that acts as a base to show what a comment should look like. Now I\'m just writing random stuff.',
-                              ),
                             ],
                           ),
                           comments: comments,
@@ -191,9 +192,15 @@ class _DetailViewScreenState extends State<DetailViewScreen> {
                         Positioned(
                           right: 10,
                           bottom: 10,
-                          child: CircleCommentSwitcherButton(
-                            scrollToRootDirection: ScrollToRootDirection.down,
-                            controller: controller,
+                          child: KeyboardVisibilityBuilder(
+                            builder: (context, isKeyboardVisible) {
+                              return CircleCommentSwitcherButton(
+                                visible: !isKeyboardVisible,
+                                scrollToRootDirection:
+                                    ScrollToRootDirection.down,
+                                controller: controller,
+                              );
+                            },
                           ),
                         ),
                       ],

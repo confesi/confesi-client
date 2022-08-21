@@ -27,7 +27,7 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
         imgPath: "assets/images/showcase/smiles.png",
         header: "Welcome",
         body:
-            "We are glad you've decided to join us! We have curated some tips for you here. Swipe (or skip) through them at your own pace.",
+            "We are glad you've decided to join us! We have curated some tips for you here. Swipe through them at your own pace.",
       ),
       ShowcaseItem(
         pageIndex: pageIndex,

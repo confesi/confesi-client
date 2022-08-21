@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 /// The message header for the error message that is shown in the middle of the page when there's a loading error.
 const String kErrorLoadingAnyHeader = "Error loading content";
 
@@ -82,4 +84,10 @@ enum CommentDepth {
 enum BadgeName {
   loved,
   hated,
+}
+
+/// In which direction is the button supposed to look in order to jump to the nearest root comment.
+enum ScrollToRootDirection {
+  up,
+  down,
 }

@@ -1,4 +1,3 @@
-import 'package:Confessi/core/widgets/behaviours/keyboard_dismiss.dart';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -61,7 +60,7 @@ class InfiniteCommentThreadController<T> extends ChangeNotifier {
 
   /// Clears the root indexes.
   void clearRootIndexes() {
-    rootIndexes.clear();
+    rootIndexes.clear(); // TODO: supposed to have underscore??? ie: _rootIndexes ??
     notifyListeners();
   }
 
@@ -232,6 +231,8 @@ class _InfiniteCommentThreadState extends State<InfiniteCommentThread> {
       final indicies = widget
           .controller._itemPositionsListener.itemPositions.value
           .map((post) => post.index);
+      // print(
+      //     '${indicies.last} + ${widget.preloadBy} >= ${widget.controller.comments!.length} && $isLoadingMore == false');
       if (indicies.toList().last + widget.preloadBy >=
               widget.controller.comments!.length &&
           isLoadingMore == false) {
