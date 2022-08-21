@@ -581,8 +581,19 @@ class SwipeRefreshState extends State<SwipeRefresh>
                       return Container(
                         width: 40,
                         height: 40,
+                        margin: const EdgeInsets.all(
+                            15), // prevents shadow from being cut off.
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .shadow
+                                    .withOpacity(0.5),
+                                blurRadius: 8,
+                              ),
+                            ],
                             color: widget.backgroundColor ??
                                 Theme.of(context).colorScheme.background,
                             borderRadius:

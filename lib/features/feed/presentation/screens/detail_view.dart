@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:Confessi/core/styles/typography.dart';
 import 'package:Confessi/core/widgets/layout/appbar.dart';
 import 'package:Confessi/features/feed/domain/entities/post_child.dart';
@@ -7,15 +5,16 @@ import 'package:Confessi/features/feed/presentation/widgets/circle_comment_switc
 import 'package:Confessi/features/feed/presentation/widgets/comment_divider.dart';
 import 'package:Confessi/features/feed/presentation/widgets/comment_sheet.dart';
 import 'package:Confessi/features/feed/presentation/widgets/comment_tile.dart';
-import 'package:Confessi/features/feed/presentation/widgets/infinite_comment_thread.dart';
 import 'package:Confessi/features/feed/presentation/widgets/post_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:keyboard_attachable/keyboard_attachable.dart';
 
 import '../../constants.dart';
 import '../../domain/entities/badge.dart';
+import '../widgets/infinite_list.dart';
 
 class Comment {
   final String data;
@@ -61,46 +60,61 @@ class DetailViewScreen extends StatefulWidget {
 }
 
 class _DetailViewScreenState extends State<DetailViewScreen> {
-  List<Comment> comments = [];
-
-  Future<void> loadMore() async {
-    print('<=== load more ===>');
-    print('.');
-    for (var i = 0; i < 20; i++) {
-      var result = Random().nextInt(8);
-      comments
-          .add(Comment(data: 'some data', isRoot: result == 1 ? true : false));
-      if (result == 1 && !controller.rootIndexes.contains(comments.length)) {
-        controller.addToRootIndexes(comments.length);
-      }
-    }
-  }
-
-  // Controller for the comment thread.
-  InfiniteCommentThreadController<Comment> controller =
-      InfiniteCommentThreadController<Comment>();
-
   // Is the scrollview at the very top?
-  bool isAtTop = true;
-
-  Widget buildComment(int index) {
-    return CommentTile(
-      likes: 12,
-      hates: 490,
-      text: '${comments[index - 1].data} : ${index - 1}',
-      depth: comments[index - 1].isRoot ? CommentDepth.root : CommentDepth.one,
-    );
-  }
+  bool atTop = true;
 
   // Should the button to jump between root comments be visible?
   bool visible = true;
+
+  late InfiniteController controller;
+
+  Future<void> onLoad() async {
+    await Future.delayed(const Duration(milliseconds: 200));
+    if (!mounted) return;
+    setState(() {
+      controller.addItems([1, 2, 3]);
+    });
+  }
+
+  Future<void> onRefresh() async {
+    HapticFeedback.lightImpact();
+    await Future.delayed(const Duration(milliseconds: 800));
+    if (!mounted) return;
+    setState(() {
+      controller.setItems([1, 2, 3, 4]);
+    });
+  }
+
+  @override
+  void initState() {
+    controller = InfiniteController(
+      atTop: (isAtTop) {
+        if (!mounted) return;
+        setState(() {
+          atTop = isAtTop;
+        });
+      },
+      feedState: InfiniteListState.feedLoading,
+      preloadBy: 25,
+      items: [],
+      rootIndexes: [10, 20, 30, 40],
+      onLoad: () async => onLoad(),
+      onRefresh: () async => onRefresh(),
+    );
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       // This bottom sheet is overlayed atop transformed widgets (covers scrollview)
       // content during scrolling-to-fresh since that utilizes transforms.
-
       bottomSheet: Container(
         height: MediaQuery.of(context).padding.bottom,
         color: Theme.of(context).colorScheme.background,
@@ -130,10 +144,10 @@ class _DetailViewScreenState extends State<DetailViewScreen> {
                       textAlign: TextAlign.center,
                     ),
                     leftIconVisible: true,
-                    rightIcon: isAtTop ? null : CupertinoIcons.arrow_up_to_line,
-                    rightIconVisible: isAtTop ? false : true,
+                    rightIcon: atTop ? null : CupertinoIcons.arrow_up_to_line,
+                    rightIconVisible: atTop ? false : true,
                     rightIconOnPress: () {
-                      isAtTop ? null : controller.scrollToTop();
+                      atTop ? null : controller.scrollToTop();
                     },
                     rightIconTooltip: 'scroll to top',
                     leftIconTooltip: 'go back',
@@ -141,27 +155,22 @@ class _DetailViewScreenState extends State<DetailViewScreen> {
                   Expanded(
                     child: Stack(
                       children: [
-                        InfiniteCommentThread(
-                          preloadBy: 10,
-                          comment: buildComment,
-                          loadMore: () async {
-                            print('PREFETCHING');
-                            print(',.');
-                            await loadMore();
-                          },
-                          refreshScreen: () async {
-                            print('refresh');
-                            controller.clearComments();
-                            setState(() {
-                              loadMore();
-                            });
-                          },
-                          onTopChange: (atTop) {
-                            if (atTop != isAtTop) {
-                              setState(() {
-                                isAtTop = atTop;
-                              });
-                            }
+                        InfiniteList(
+                          controller: controller,
+                          // TODO: implement these widgets:
+                          fullPageLoading: const Text('full page loading'),
+                          fullPageError: const Text('full page error'),
+                          fullPageEmpty: const Text('full page empty'),
+                          feedLoading: const Text('feed loading'),
+                          feedError: const Text('feed error'),
+                          feedEmpty: const Text('feed empty'),
+                          itemBuilder: (context, index) {
+                            return CommentTile(
+                              likes: index,
+                              hates: index,
+                              text: 'dummy text here: $index',
+                              depth: CommentDepth.root,
+                            );
                           },
                           header: Column(
                             children: [
@@ -186,8 +195,6 @@ class _DetailViewScreenState extends State<DetailViewScreen> {
                               ),
                             ],
                           ),
-                          comments: comments,
-                          controller: controller,
                         ),
                         Positioned(
                           right: 10,

@@ -1,18 +1,11 @@
+import 'package:Confessi/core/widgets/behaviours/keyboard_dismiss.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:collection/collection.dart';
 
 import '../../../../core/widgets/edited_source_widgets/swipe_refresh.dart';
-
-/// Different states the feed can be in.
-enum FeedState {
-  fullPageLoading,
-  fullPageError,
-  fullPageEmpty,
-  feedLoading,
-  feedError,
-  feedEmpty,
-}
+import '../../constants.dart';
 
 /// Controller for the [InfiniteList].
 class InfiniteController extends ChangeNotifier {
@@ -34,7 +27,7 @@ class InfiniteController extends ChangeNotifier {
   final int preloadBy;
 
   /// The current state of the feed.
-  FeedState feedState;
+  InfiniteListState feedState;
 
   /// A callback telling if the feed is currently scrolled to the VERY top, or not.
   void Function(bool)? atTop;
@@ -42,10 +35,7 @@ class InfiniteController extends ChangeNotifier {
   /// Time it takes to animate to the next root index.
   Duration? scrollToRootDuration;
 
-  /// Time it takes to animate to the top.
-  Duration? scrollToTopDuration;
-
-  /// Time it takes to fade between different screens (based upon [FeedState]).
+  /// Time it takes to fade between different screens (based upon [InfiniteListState]).
   Duration? feedFadeDuration;
 
   InfiniteController({
@@ -57,10 +47,8 @@ class InfiniteController extends ChangeNotifier {
     this.preloadBy = 5,
     this.atTop,
     this.scrollToRootDuration,
-    this.scrollToTopDuration,
     this.feedFadeDuration,
   }) {
-    scrollToTopDuration ??= const Duration(milliseconds: 250);
     scrollToRootDuration ??= const Duration(milliseconds: 250);
     feedFadeDuration ??= const Duration(milliseconds: 250);
   }
@@ -117,7 +105,7 @@ class InfiniteController extends ChangeNotifier {
       }
       if (items.length - lastVisibleIndex < preloadBy &&
           !isLoadingMore &&
-          feedState == FeedState.feedLoading) {
+          feedState == InfiniteListState.feedLoading) {
         isLoadingMore = true;
         await onLoad();
         isLoadingMore = false;
@@ -155,11 +143,13 @@ class InfiniteController extends ChangeNotifier {
         duration: scrollToRootDuration!,
       );
     } else {
-      itemScrollController.scrollTo(
-        curve: Curves.easeInOutCubic,
-        index: lastVisibleIndex,
-        duration: scrollToRootDuration!,
-      );
+      //! Pondering keeping this in: if there's no below root loaded or in view, then scoll
+      //! to the last visible index
+      // itemScrollController.scrollTo(
+      //   curve: Curves.easeInOutCubic,
+      //   index: lastVisibleIndex,
+      //   duration: scrollToRootDuration!,
+      // );
     }
   }
 
@@ -185,15 +175,13 @@ class InfiniteController extends ChangeNotifier {
 
   /// Scroll to the very top of the scrollview.
   void scrollToTop() async {
-    itemScrollController.scrollTo(
-      curve: Curves.easeInOutCubic,
+    itemScrollController.jumpTo(
       index: 0,
-      duration: scrollToTopDuration!,
     );
   }
 
-  /// Set the current [FeedState].
-  void setFeedState(FeedState newFeedState) {
+  /// Set the current [InfiniteListState].
+  void setFeedState(InfiniteListState newFeedState) {
     feedState = newFeedState;
     notifyListeners();
   }
@@ -239,14 +227,14 @@ class _InfiniteListState extends State<InfiniteList> {
     super.initState();
   }
 
-  /// Builds the different children based on [FeedState].
+  /// Builds the different children based on [InfiniteListState].
   Widget buildRouter() {
     switch (widget.controller.feedState) {
-      case FeedState.feedLoading:
+      case InfiniteListState.feedLoading:
         return Container(key: UniqueKey(), child: widget.feedLoading);
-      case FeedState.feedEmpty:
+      case InfiniteListState.feedEmpty:
         return Container(key: UniqueKey(), child: widget.feedEmpty);
-      case FeedState.feedError:
+      case InfiniteListState.feedError:
         return Container(key: UniqueKey(), child: widget.feedError);
       default:
         throw UnimplementedError(
@@ -254,14 +242,14 @@ class _InfiniteListState extends State<InfiniteList> {
     }
   }
 
-  /// Builds different pages based on [FeedState].
+  /// Builds different pages based on [InfiniteListState].
   Widget buildPage() {
     switch (widget.controller.feedState) {
-      case FeedState.fullPageLoading:
+      case InfiniteListState.fullPageLoading:
         return Container(key: UniqueKey(), child: widget.fullPageLoading);
-      case FeedState.fullPageEmpty:
+      case InfiniteListState.fullPageEmpty:
         return Container(key: UniqueKey(), child: widget.fullPageEmpty);
-      case FeedState.fullPageError:
+      case InfiniteListState.fullPageError:
         return Container(key: UniqueKey(), child: widget.fullPageError);
       default:
         return buildList();
@@ -269,28 +257,33 @@ class _InfiniteListState extends State<InfiniteList> {
   }
 
   /// Builds the infnite list.
-  Widget buildList() => SwipeRefresh(
-        color: widget.refreshIndicatorColor,
-        backgroundColor: widget.refreshIndicatorBackgroundColor,
-        onRefresh: () async => widget.controller.onRefresh(),
-        child: ScrollablePositionedList.builder(
-          physics: AlwaysScrollableScrollPhysics(
-            parent: widget.controller.items.isEmpty
-                ? const NeverScrollableScrollPhysics()
-                : const ClampingScrollPhysics(),
+  Widget buildList() => KeyboardDismissLayout(
+        child: GestureDetector(
+          onVerticalDragDown: (details) => FocusScope.of(context).unfocus(),
+          child: SwipeRefresh(
+            color: widget.refreshIndicatorColor,
+            backgroundColor: widget.refreshIndicatorBackgroundColor,
+            onRefresh: () async => widget.controller.onRefresh(),
+            child: ScrollablePositionedList.builder(
+              physics: AlwaysScrollableScrollPhysics(
+                parent: widget.controller.items.isEmpty
+                    ? const NeverScrollableScrollPhysics()
+                    : const ClampingScrollPhysics(),
+              ),
+              itemBuilder: (context, index) {
+                if (index == 0) {
+                  return widget.header ?? Container();
+                } else if (index == widget.controller.items.length + 1) {
+                  return buildRouter();
+                } else {
+                  return widget.itemBuilder(context, index);
+                }
+              },
+              itemCount: widget.controller.items.length + 2,
+              itemPositionsListener: widget.controller.itemPositionsListener,
+              itemScrollController: widget.controller.itemScrollController,
+            ),
           ),
-          itemBuilder: (context, index) {
-            if (index == 0) {
-              return widget.header ?? Container();
-            } else if (index == widget.controller.items.length + 1) {
-              return buildRouter();
-            } else {
-              return widget.itemBuilder(context, index);
-            }
-          },
-          itemCount: widget.controller.items.length + 2,
-          itemPositionsListener: widget.controller.itemPositionsListener,
-          itemScrollController: widget.controller.itemScrollController,
         ),
       );
 

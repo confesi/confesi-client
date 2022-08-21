@@ -91,3 +91,13 @@ enum ScrollToRootDirection {
   up,
   down,
 }
+
+/// Different states the (comment, on the details_view.dart page) feed can be in.
+enum InfiniteListState {
+  fullPageLoading,
+  fullPageError,
+  fullPageEmpty,
+  feedLoading,
+  feedError,
+  feedEmpty,
+}

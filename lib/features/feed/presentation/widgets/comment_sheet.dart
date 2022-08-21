@@ -2,6 +2,7 @@ import 'package:Confessi/core/constants/buttons.dart';
 import 'package:Confessi/core/widgets/buttons/simple_text.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../core/styles/typography.dart';
 import '../../../../core/widgets/textfields/expandable.dart';
 
 class CommentSheet extends StatefulWidget {
@@ -27,6 +28,8 @@ class _CommentSheetState extends State<CommentSheet>
 
   late AnimationController popAnimController;
   late Animation popAnim;
+
+  int commentLength = 0;
 
   @override
   void initState() {
@@ -87,6 +90,9 @@ class _CommentSheetState extends State<CommentSheet>
                   minLines: 1,
                   maxCharacters: widget.maxCharacters,
                   onChanged: (value) {
+                    setState(() {
+                      commentLength = value.length;
+                    });
                     manageAnim();
                   },
                   controller: commentController,
@@ -123,10 +129,27 @@ class _CommentSheetState extends State<CommentSheet>
                                           FocusScope.of(context).unfocus();
                                         },
                                       ),
+                                      const SizedBox(width: 5),
+                                      Flexible(
+                                        child: Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            '$commentLength/${widget.maxCharacters} char.',
+                                            textAlign: TextAlign.left,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: kDetail.copyWith(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSurface,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 5),
                                       SimpleTextButton(
                                         tapType: TapType.strongImpact,
                                         tooltipLocation: TooltipLocation.above,
-                                        text: 'post comment',
+                                        text: 'post',
                                         tooltip: 'submit comment to thread',
                                         onTap: () {
                                           // Pushes down keyboard (unfocus).
