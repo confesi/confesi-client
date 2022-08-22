@@ -57,7 +57,7 @@ class _ExploreHomeState extends State<ExploreHome>
                   textAlign: TextAlign.center,
                 ),
                 leftIconVisible: true,
-                leftIcon: CupertinoIcons.bars,
+                leftIcon: CupertinoIcons.slider_horizontal_3,
                 leftIconTooltip: 'watched universities',
                 leftIconOnPress: () {
                   Scaffold.of(context).openDrawer();
@@ -74,7 +74,7 @@ class _ExploreHomeState extends State<ExploreHome>
                     child: Container(
                       color: Theme.of(context).colorScheme.shadow,
                       child: TabBarView(
-                        physics: const BouncingScrollPhysics(),
+                        physics: const ClampingScrollPhysics(),
                         controller: tabController,
                         dragStartBehavior: DragStartBehavior.down,
                         children: const [

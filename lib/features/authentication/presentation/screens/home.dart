@@ -1,3 +1,4 @@
+import 'package:Confessi/features/daily_hottest/presentation/screens/home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -52,9 +53,7 @@ class _HomeScreenState extends State<HomeScreen>
                   children: [
                     // const ExploreHome(),
                     const ExploreHome(),
-                    Container(
-                      color: Colors.blue,
-                    ),
+                    const HottestHome(),
                     Container(
                       color: Colors.red,
                     ),

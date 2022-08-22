@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 class ScrollDots extends StatefulWidget {
-  const ScrollDots(
-      {this.verticalPadding = 0.0,
-      required this.pageLength,
-      required this.pageIndex,
-      Key? key})
-      : super(key: key);
+  const ScrollDots({
+    this.verticalPadding = 0.0,
+    required this.pageLength,
+    required this.pageIndex,
+    Key? key,
+  }) : super(key: key);
 
   final int pageIndex;
   final int pageLength;

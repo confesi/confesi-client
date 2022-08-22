@@ -121,6 +121,7 @@ class SwipeRefresh extends StatefulWidget {
     required this.onRefresh,
     this.color,
     this.backgroundColor,
+    this.shadowColor,
     this.notificationPredicate = defaultScrollNotificationPredicate,
     this.semanticsLabel,
     this.semanticsValue,
@@ -178,6 +179,7 @@ class SwipeRefresh extends StatefulWidget {
   /// The progress indicator's background color. The current theme's
   /// [ThemeData.canvasColor] by default.
   final Color? backgroundColor;
+  final Color? shadowColor;
 
   /// A check that specifies whether a [ScrollNotification] should be
   /// handled by this widget.
@@ -587,10 +589,11 @@ class SwipeRefreshState extends State<SwipeRefresh>
                         decoration: BoxDecoration(
                             boxShadow: [
                               BoxShadow(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .shadow
-                                    .withOpacity(0.5),
+                                color: widget.shadowColor ??
+                                    Theme.of(context)
+                                        .colorScheme
+                                        .shadow
+                                        .withOpacity(0.5),
                                 blurRadius: 8,
                               ),
                             ],

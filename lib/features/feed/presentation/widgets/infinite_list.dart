@@ -199,6 +199,7 @@ class InfiniteList extends StatefulWidget {
     required this.feedEmpty,
     this.refreshIndicatorBackgroundColor,
     this.refreshIndicatorColor,
+    this.refreshIndicatorShadowColor,
     required this.itemBuilder,
     Key? key,
   }) : super(key: key);
@@ -213,6 +214,7 @@ class InfiniteList extends StatefulWidget {
   final Widget feedEmpty;
   final Color? refreshIndicatorColor;
   final Color? refreshIndicatorBackgroundColor;
+  final Color? refreshIndicatorShadowColor;
   final Widget Function(BuildContext, int) itemBuilder;
 
   @override
@@ -261,6 +263,7 @@ class _InfiniteListState extends State<InfiniteList> {
         child: GestureDetector(
           onVerticalDragDown: (details) => FocusScope.of(context).unfocus(),
           child: SwipeRefresh(
+            shadowColor: widget.refreshIndicatorShadowColor,
             color: widget.refreshIndicatorColor,
             backgroundColor: widget.refreshIndicatorBackgroundColor,
             onRefresh: () async => widget.controller.onRefresh(),
