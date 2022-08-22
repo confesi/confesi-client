@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:Confessi/core/styles/typography.dart';
 import 'package:Confessi/core/widgets/layout/line.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -34,38 +35,77 @@ class _HottestTileState extends State<HottestTile> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             AnimatedOpacity(
-              duration: const Duration(milliseconds: 400),
-              opacity: isSelected ? 1 : 0.5,
+              duration: const Duration(milliseconds: 250),
+              opacity: isSelected ? 1 : 0.75,
               child: AnimatedContainer(
                 width: double.infinity,
-                duration: const Duration(milliseconds: 400),
-                curve: Curves.easeInOutCubic,
-                height:
-                    isSelected ? constraints.maxHeight : constraints.maxHeight,
+                duration: const Duration(milliseconds: 250),
+                curve: Curves.easeInOut,
+                height: isSelected
+                    ? constraints.maxHeight
+                    : constraints.maxHeight * .8,
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.background,
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Colors.black12,
-                      blurRadius: 20,
-                    )
-                  ],
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.all(20),
-                      child: HeaderGroupText(
-                        left: true,
-                        header: 'University of British Columbia',
-                        body: 'Victoria, BC',
+                    Container(
+                      color: Theme.of(context).colorScheme.secondary,
+                      padding: const EdgeInsets.all(10),
+                      width: double.infinity,
+                      child: Text(
+                        '14 comments · 341 likes · 93 hates',
+                        style: kDetail.copyWith(
+                          color: Theme.of(context).colorScheme.onSecondary,
+                        ),
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    LineLayout(
-                      color: Theme.of(context).colorScheme.onBackground,
-                    )
+                    Expanded(
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 250),
+                        child: Image.asset(
+                          'assets/images/universities/uvic.jpg',
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Stack(
+                        children: [
+                          Positioned.fill(
+                            right: 5,
+                            child: Align(
+                              alignment: Alignment.bottomRight,
+                              child: Text(
+                                '0${widget.thisIndex + 1}',
+                                style: kFaded.copyWith(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onBackground
+                                      .withOpacity(0.2),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.all(20),
+                            child: HeaderGroupText(
+                              onSecondaryColors: false,
+                              multiLine: true,
+                              spaceBetween: 20,
+                              left: true,
+                              header:
+                                  "Sometimes dorm students can be so irreponsible. I seriously hate it. Last night, one came to my room drunk!",
+                              body: 'UVic, Year 1',
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),

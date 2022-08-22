@@ -52,6 +52,7 @@ dependencies:
   keyboard_attachable: ^2.1.0
   flutter_slidable: ^2.0.0
   flutter_keyboard_visibility: ^5.3.0
+  confetti: ^0.7.0
 
 dev_dependencies:
   flutter_test:

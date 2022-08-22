@@ -27,7 +27,6 @@ class _ExploreHomeState extends State<ExploreHome>
 
   @override
   void initState() {
-    // ref.read(exploreFeedProvider.notifier).refreshPosts(ref.read(tokenProvider).accessToken);
     tabController = TabController(vsync: this, length: 2);
     super.initState();
   }
@@ -62,6 +61,9 @@ class _ExploreHomeState extends State<ExploreHome>
                 leftIconOnPress: () {
                   Scaffold.of(context).openDrawer();
                 },
+                rightIconVisible: true,
+                rightIcon: CupertinoIcons.paperplane,
+                rightIconTooltip: 'go to messages',
               );
             }),
             Expanded(

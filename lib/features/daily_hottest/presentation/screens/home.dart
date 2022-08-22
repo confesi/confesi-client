@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:Confessi/features/authentication/presentation/widgets/scroll_dots.dart';
 import 'package:Confessi/features/daily_hottest/presentation/widgets/hottest_tile.dart';
+import 'package:confetti/confetti.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,9 +17,31 @@ class HottestHome extends StatefulWidget {
   State<HottestHome> createState() => _HottestHomeState();
 }
 
-class _HottestHomeState extends State<HottestHome> {
-  PageController pageController =
+class _HottestHomeState extends State<HottestHome>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
+  final PageController pageController =
       PageController(viewportFraction: .9, initialPage: 0);
+
+  final ConfettiController confettiController = ConfettiController();
+
+  bool confettiLaunched = false;
+
+  @override
+  void dispose() {
+    confettiController.dispose();
+    super.dispose();
+  }
+
+  Future<void> launchConfetti() async {
+    confettiLaunched = true;
+    confettiController.play();
+    HapticFeedback.heavyImpact();
+    await Future.delayed(const Duration(milliseconds: 800));
+    confettiController.stop();
+  }
 
   int currentIndex = 0;
 
@@ -31,47 +56,68 @@ class _HottestHomeState extends State<HottestHome> {
             children: [
               AppbarLayout(
                 centerWidget: Text(
-                  'Hottest Today 🔥',
+                  'Hottest Today',
                   style: kTitle.copyWith(
                       color: Theme.of(context).colorScheme.primary),
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
                 ),
-                leftIconVisible: false,
                 rightIconVisible: true,
                 rightIconTooltip: 'university leaderboard',
                 rightIcon: CupertinoIcons.chart_bar,
+                leftIconVisible: true,
+                leftIconTooltip: 'TEMPORARY to show confetti',
+                leftIcon: CupertinoIcons.star,
+                leftIconOnPress: () async => launchConfetti(),
               ),
               Expanded(
-                child: PageView(
-                  controller: pageController,
-                  physics: const BouncingScrollPhysics(),
-                  onPageChanged: (selectedIndex) {
-                    HapticFeedback.lightImpact();
-                    setState(() {
-                      currentIndex = selectedIndex;
-                    });
-                  },
+                child: Stack(
                   children: [
-                    HottestTile(
-                      color: Colors.blue,
-                      currentIndex: currentIndex,
-                      thisIndex: 0,
+                    PageView(
+                      controller: pageController,
+                      physics: const BouncingScrollPhysics(),
+                      onPageChanged: (selectedIndex) {
+                        HapticFeedback.lightImpact();
+                        setState(() {
+                          currentIndex = selectedIndex;
+                        });
+                      },
+                      children: [
+                        HottestTile(
+                          color: Colors.blue,
+                          currentIndex: currentIndex,
+                          thisIndex: 0,
+                        ),
+                        HottestTile(
+                          color: Colors.red,
+                          currentIndex: currentIndex,
+                          thisIndex: 1,
+                        ),
+                        HottestTile(
+                          color: Colors.pink,
+                          currentIndex: currentIndex,
+                          thisIndex: 2,
+                        ),
+                        HottestTile(
+                          color: Colors.green,
+                          currentIndex: currentIndex,
+                          thisIndex: 3,
+                        ),
+                      ],
                     ),
-                    HottestTile(
-                      color: Colors.red,
-                      currentIndex: currentIndex,
-                      thisIndex: 1,
-                    ),
-                    HottestTile(
-                      color: Colors.pink,
-                      currentIndex: currentIndex,
-                      thisIndex: 2,
-                    ),
-                    HottestTile(
-                      color: Colors.green,
-                      currentIndex: currentIndex,
-                      thisIndex: 3,
+                    Align(
+                      alignment: Alignment.center,
+                      child: ConfettiWidget(
+                        blastDirectionality: BlastDirectionality.explosive,
+                        blastDirection: -pi / 2,
+                        minBlastForce: 20,
+                        maxBlastForce: 45,
+                        colors: [
+                          Theme.of(context).colorScheme.secondary,
+                          Theme.of(context).colorScheme.primary,
+                        ],
+                        confettiController: confettiController,
+                      ),
                     ),
                   ],
                 ),
