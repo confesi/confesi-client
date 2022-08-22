@@ -149,8 +149,6 @@ class _DetailViewScreenState extends State<DetailViewScreen> {
                     rightIconOnPress: () {
                       atTop ? null : controller.scrollToTop();
                     },
-                    rightIconTooltip: 'scroll to top',
-                    leftIconTooltip: 'go back',
                   ),
                   Expanded(
                     child: Stack(

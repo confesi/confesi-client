@@ -1,3 +1,4 @@
+import 'package:Confessi/features/daily_hottest/presentation/screens/leaderboard.dart';
 import 'package:Confessi/features/feed/presentation/screens/detail_view.dart';
 import 'package:Confessi/features/feed/presentation/screens/post_advanced_details.dart';
 import 'package:flutter/material.dart';
@@ -69,6 +70,10 @@ class AppRouter {
       case "/home/post/stats":
         return MaterialPageRoute(
           builder: (_) => const PostAdvancedDetailsScreen(),
+        );
+      case "/hottest/leaderboard":
+        return MaterialPageRoute(
+          builder: (_) => const LeaderboardScreen(),
         );
       case "/settings":
         return MaterialPageRoute(builder: (_) => const Text("Settings"));

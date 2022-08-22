@@ -19,8 +19,6 @@ class AppbarLayout extends StatelessWidget {
     required this.centerWidget,
     this.centerWidgetFullWidth = false,
     this.heroAnimEnabled = true,
-    this.rightIconTooltip,
-    this.leftIconTooltip,
     Key? key,
   }) : super(key: key);
 
@@ -34,8 +32,6 @@ class AppbarLayout extends StatelessWidget {
   final IconData? rightIcon;
   final Function? rightIconOnPress;
   final bool heroAnimEnabled;
-  final String? rightIconTooltip;
-  final String? leftIconTooltip;
 
   @override
   Widget build(BuildContext context) {
@@ -53,76 +49,65 @@ class AppbarLayout extends StatelessWidget {
             ),
           ),
         ),
-        child: Center(
-          child: centerWidgetFullWidth
-              ? Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: centerWidget,
-                )
-              : Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    leftIconVisible
-                        ? TouchableOpacity(
-                            tooltip: leftIconTooltip,
-                            tooltipLocation: TooltipLocation.below,
-                            onTap: () {
-                              if (leftIconOnPress != null) {
-                                leftIconOnPress!();
-                              } else {
-                                Navigator.pop(context);
-                              }
-                            },
-                            child: Container(
-                              color: Colors.transparent,
-                              child: Padding(
-                                padding: const EdgeInsets.all(10),
-                                child: Icon(
-                                    leftIcon ?? CupertinoIcons.chevron_back),
-                              ),
-                            ),
-                          )
-                        : Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Icon(
-                              key: const Key('appbar-icon'),
-                              leftIcon ?? CupertinoIcons.chevron_back,
-                              color: Colors.transparent,
-                            ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            leftIconVisible
+                ? TouchableOpacity(
+                    onTap: () {
+                      if (leftIconOnPress != null) {
+                        leftIconOnPress!();
+                      } else {
+                        Navigator.pop(context);
+                      }
+                    },
+                    child: Container(
+                      color: Colors.transparent,
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 300),
+                          child: Icon(
+                            leftIcon ?? CupertinoIcons.back,
                           ),
-                    Expanded(
-                      child: centerWidget,
+                        ),
+                      ),
                     ),
-                    rightIconVisible
-                        ? TouchableOpacity(
-                            tooltip: rightIconTooltip,
-                            tooltipLocation: TooltipLocation.below,
-                            onTap: () {
-                              if (rightIconOnPress != null) {
-                                rightIconOnPress!();
-                              }
-                            },
-                            child: Container(
-                              color: Colors.transparent,
-                              child: Padding(
-                                padding: const EdgeInsets.all(10),
-                                child: AnimatedSwitcher(
-                                  duration: const Duration(milliseconds: 300),
-                                  child: Icon(
-                                    rightIcon,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          )
-                        : Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Icon(
-                                rightIcon ?? CupertinoIcons.arrow_clockwise,
-                                color: Colors.transparent),
+                  )
+                : Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Icon(rightIcon ?? CupertinoIcons.arrow_clockwise,
+                        color: Colors.transparent),
+                  ),
+            Flexible(
+              child: centerWidget,
+            ),
+            rightIconVisible
+                ? TouchableOpacity(
+                    onTap: () {
+                      if (rightIconOnPress != null) {
+                        rightIconOnPress!();
+                      }
+                    },
+                    child: Container(
+                      color: Colors.transparent,
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 300),
+                          child: Icon(
+                            rightIcon,
                           ),
-                  ],
-                ),
+                        ),
+                      ),
+                    ),
+                  )
+                : Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Icon(rightIcon ?? CupertinoIcons.arrow_clockwise,
+                        color: Colors.transparent),
+                  ),
+          ],
         ),
       ),
     );

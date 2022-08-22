@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:Confessi/features/authentication/presentation/widgets/scroll_dots.dart';
 import 'package:Confessi/features/daily_hottest/presentation/widgets/hottest_tile.dart';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/cupertino.dart';
@@ -63,10 +62,10 @@ class _HottestHomeState extends State<HottestHome>
                   textAlign: TextAlign.center,
                 ),
                 rightIconVisible: true,
-                rightIconTooltip: 'university leaderboard',
                 rightIcon: CupertinoIcons.chart_bar,
+                rightIconOnPress: () =>
+                    Navigator.of(context).pushNamed('/hottest/leaderboard'),
                 leftIconVisible: true,
-                leftIconTooltip: 'TEMPORARY to show confetti',
                 leftIcon: CupertinoIcons.star,
                 leftIconOnPress: () async => launchConfetti(),
               ),

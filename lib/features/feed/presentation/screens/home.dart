@@ -57,13 +57,11 @@ class _ExploreHomeState extends State<ExploreHome>
                 ),
                 leftIconVisible: true,
                 leftIcon: CupertinoIcons.slider_horizontal_3,
-                leftIconTooltip: 'watched universities',
                 leftIconOnPress: () {
                   Scaffold.of(context).openDrawer();
                 },
                 rightIconVisible: true,
                 rightIcon: CupertinoIcons.paperplane,
-                rightIconTooltip: 'go to messages',
               );
             }),
             Expanded(

@@ -6,6 +6,7 @@ class LineLayout extends StatelessWidget {
     this.topPadding = 0.0,
     this.bottomPadding = 0.0,
     required this.color,
+    this.width = double.infinity,
     Key? key,
   }) : super(key: key);
 
@@ -13,6 +14,7 @@ class LineLayout extends StatelessWidget {
   final double horizontalPadding;
   final double topPadding;
   final double bottomPadding;
+  final double width;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,7 @@ class LineLayout extends StatelessWidget {
           bottom: bottomPadding),
       child: Container(
         height: 0.7,
-        width: double.infinity,
+        width: width,
         color: color,
       ),
     );

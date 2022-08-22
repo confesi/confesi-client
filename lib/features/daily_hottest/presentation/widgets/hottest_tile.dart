@@ -99,7 +99,7 @@ class _HottestTileState extends State<HottestTile> {
                               spaceBetween: 20,
                               left: true,
                               header:
-                                  "Sometimes dorm students can be so irreponsible. I seriously hate it. Last night, one came to my room drunk!",
+                                  "Clustermates can be so irreponsible. I seriously hate it. Last night, one came to my room drunk!",
                               body: 'UVic, Year 1',
                             ),
                           ),
