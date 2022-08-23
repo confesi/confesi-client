@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:mongo_dart/mongo_dart.dart';
 
 import '../../../../core/styles/typography.dart';
 
 class LeaderboardRectangleTile extends StatelessWidget {
-  const LeaderboardRectangleTile({Key? key}) : super(key: key);
+  const LeaderboardRectangleTile({
+    required this.placing,
+    required this.points,
+    required this.university,
+    Key? key,
+  }) : super(key: key);
+
+  final String placing;
+  final String university;
+  final String points;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 10),
+      margin: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.background,
@@ -29,7 +37,7 @@ class LeaderboardRectangleTile extends StatelessWidget {
               ),
             ),
             child: Text(
-              '4th',
+              placing,
               style: kDetail.copyWith(
                 color: Theme.of(context).colorScheme.onSecondary,
                 fontWeight: FontWeight.bold,
@@ -44,7 +52,7 @@ class LeaderboardRectangleTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  'University of Waterloo',
+                  university,
                   style: kDetail.copyWith(
                     color: Theme.of(context).colorScheme.primary,
                   ),
@@ -52,7 +60,7 @@ class LeaderboardRectangleTile extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
                 Text(
-                  '86 pts',
+                  points,
                   style: kDetail.copyWith(
                     color: Theme.of(context).colorScheme.onSurface,
                   ),

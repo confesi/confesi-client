@@ -58,25 +58,25 @@ class LeaderboardScreen extends StatelessWidget {
                                     Flexible(
                                       child: LeaderboardCircleTile(
                                         minSize: 90,
-                                        header: '2nd',
-                                        body: 'SFU',
-                                        desc: '123 pts',
+                                        placing: '2nd',
+                                        university: 'SFU',
+                                        points: '123 pts',
                                       ),
                                     ),
                                     Flexible(
                                       child: LeaderboardCircleTile(
                                         minSize: 120,
-                                        header: '1st',
-                                        body: 'UVic',
-                                        desc: '153 pts',
+                                        placing: '1st',
+                                        university: 'UVic',
+                                        points: '153 pts',
                                       ),
                                     ),
                                     Flexible(
                                       child: LeaderboardCircleTile(
                                         minSize: 90,
-                                        header: '3rd',
-                                        body: 'UBC',
-                                        desc: '98 pts',
+                                        placing: '3rd',
+                                        university: 'UBC',
+                                        points: '98 pts',
                                       ),
                                     ),
                                   ],
@@ -92,12 +92,30 @@ class LeaderboardScreen extends StatelessWidget {
                                 Expanded(
                                   child: ListView(
                                     children: [
-                                      const SizedBox(height: 30),
+                                      const SizedBox(
+                                          height:
+                                              30), // Provides padding, while allowing the scroll to mee the horizontal line.
                                       Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
                                         children: const [
-                                          LeaderboardRectangleTile(),
+                                          LeaderboardRectangleTile(
+                                            placing: '4th',
+                                            points: '86 pts',
+                                            university:
+                                                'University of Waterloo',
+                                          ),
+                                          LeaderboardRectangleTile(
+                                            placing: '5th',
+                                            points: '84 pts',
+                                            university:
+                                                'Washington State University',
+                                          ),
+                                          LeaderboardRectangleTile(
+                                            placing: '6th',
+                                            points: '62 pts',
+                                            university: 'Harvard University',
+                                          ),
                                         ],
                                       ),
                                     ],

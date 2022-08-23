@@ -5,15 +5,15 @@ class LeaderboardCircleTile extends StatelessWidget {
   const LeaderboardCircleTile({
     Key? key,
     required this.minSize,
-    required this.header,
-    required this.body,
-    required this.desc,
+    required this.placing,
+    required this.university,
+    required this.points,
   }) : super(key: key);
 
   final double minSize;
-  final String header;
-  final String body;
-  final String desc;
+  final String placing;
+  final String university;
+  final String points;
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +66,7 @@ class LeaderboardCircleTile extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(10),
                     child: Text(
-                      header,
+                      placing,
                       style: kDetail.copyWith(
                         color: Theme.of(context).colorScheme.primary,
                         fontWeight: FontWeight.bold,
@@ -81,7 +81,7 @@ class LeaderboardCircleTile extends StatelessWidget {
           ),
           const SizedBox(height: 15),
           Text(
-            body,
+            university,
             style: kDetail.copyWith(
               color: Theme.of(context).colorScheme.onSurface,
             ),
@@ -89,7 +89,7 @@ class LeaderboardCircleTile extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
           ),
           Text(
-            desc,
+            points,
             style: kDetail.copyWith(
               color: Theme.of(context).colorScheme.onSurface,
             ),
