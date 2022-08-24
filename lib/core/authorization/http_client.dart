@@ -6,6 +6,7 @@ import 'package:Confessi/core/results/exceptions.dart';
 import 'package:Confessi/core/results/failures.dart';
 import 'package:Confessi/core/results/successes.dart';
 import 'package:dartz/dartz.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
@@ -130,8 +131,23 @@ class ApiClient {
     }
   }
 
-  Future<Response> req(bool isProtectedRoute, Method method, dynamic payload,
-      String endpoint) async {
+  Future<Response> req(
+      bool isProtectedRoute, Method method, dynamic payload, String endpoint,
+      {bool dummyData = false,
+      String? dummyPath,
+      Duration dummyDelay = const Duration(milliseconds: 800)}) async {
+    if (dummyData) {
+      try {
+        await Future.delayed(dummyDelay);
+        final String dummyResponse =
+            await rootBundle.loadString('assets/dummy_json/$dummyPath');
+        return http.Response(dummyResponse, 200);
+      } catch (e) {
+        print(
+            'ERROR: You\'ve likely messed something up with the dummy API path. Or, the asset can\'t be retreived for some reason. Full error message: $e');
+        rethrow;
+      }
+    }
     if (isProtectedRoute) {
       if (!_validToken) {
         // refresh access token variable

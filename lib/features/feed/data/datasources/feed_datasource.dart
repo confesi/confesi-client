@@ -157,8 +157,6 @@ abstract class IFeedDatasource {
 }
 
 class FeedDatasource implements IFeedDatasource {
-  FeedDatasource();
-
   @override
   Future<List<PostModel>> fetchRecents(
       String lastSeenPostId, String token) async {

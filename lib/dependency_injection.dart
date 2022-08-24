@@ -1,7 +1,10 @@
 import 'dart:async';
 
 import 'package:Confessi/core/authorization/http_client.dart';
-import 'package:dio/dio.dart';
+import 'package:Confessi/features/daily_hottest/data/datasources/leaderboard_datasource.dart';
+import 'package:Confessi/features/daily_hottest/data/repositories/leaderboard_repository_concrete.dart';
+import 'package:Confessi/features/daily_hottest/domain/usecases/ranking.dart';
+import 'package:Confessi/features/daily_hottest/presentation/cubit/leaderboard_cubit.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
@@ -34,6 +37,8 @@ Future<void> init() async {
   sl.registerFactory(() => RecentsCubit(recents: sl()));
   // Registers the trending cubit.
   sl.registerFactory(() => TrendingCubit(trending: sl()));
+  // Registers the leaderboard cubit.
+  sl.registerFactory(() => LeaderboardCubit(ranking: sl()));
 
   //! Usecases
   // Registers the register usecase.
@@ -48,12 +53,16 @@ Future<void> init() async {
   sl.registerLazySingleton(() => Recents(repository: sl()));
   // Registers the trending feed usecase.
   sl.registerLazySingleton(() => Trending(repository: sl()));
+  // Registers the leaderboard usecase.
+  sl.registerLazySingleton(() => Ranking(repository: sl()));
 
   //! Core
   // Registers custom connection checker class.
   sl.registerLazySingleton(() => NetworkInfo(sl()));
   // Registers the app routing system.
   sl.registerLazySingleton(() => AppRouter());
+  // Registers the custom net client class.
+  sl.registerLazySingleton(() => ApiClient(secureStorage: sl()));
 
   //! Repositories
   // Registers the authentication repository.
@@ -62,6 +71,9 @@ Future<void> init() async {
   // Registers the feed repository.
   sl.registerLazySingleton(
       () => FeedRepository(networkInfo: sl(), datasource: sl()));
+  // Registers the leaderboard repository.
+  sl.registerLazySingleton(
+      () => LeaderboardRepository(networkInfo: sl(), datasource: sl()));
 
   //! Data sources
   // Registers the authentication data source.
@@ -69,14 +81,12 @@ Future<void> init() async {
       () => AuthenticationDatasource(secureStorage: sl(), netClient: sl()));
   // Registers the feed data source.
   sl.registerLazySingleton(() => FeedDatasource());
+  // Registers the leaderboard data source.
+  sl.registerLazySingleton(() => LeaderboardDatasource(api: sl()));
 
   //! External
   // Registers connection checker package.
   sl.registerLazySingleton(() => InternetConnectionChecker());
   // Registers the secure storage package.
   sl.registerLazySingleton(() => const FlutterSecureStorage());
-  // Registers the Dio client.
-  sl.registerLazySingleton(() => Dio());
-  // Registers the custom net client class.
-  sl.registerLazySingleton(() => ApiClient(secureStorage: sl()));
 }

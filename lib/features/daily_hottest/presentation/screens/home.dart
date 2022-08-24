@@ -83,24 +83,24 @@ class _HottestHomeState extends State<HottestHome>
                       },
                       children: [
                         HottestTile(
-                          color: Colors.blue,
                           currentIndex: currentIndex,
                           thisIndex: 0,
                         ),
                         HottestTile(
-                          color: Colors.red,
                           currentIndex: currentIndex,
                           thisIndex: 1,
                         ),
                         HottestTile(
-                          color: Colors.pink,
                           currentIndex: currentIndex,
                           thisIndex: 2,
                         ),
                         HottestTile(
-                          color: Colors.green,
                           currentIndex: currentIndex,
                           thisIndex: 3,
+                        ),
+                        HottestTile(
+                          currentIndex: currentIndex,
+                          thisIndex: 4,
                         ),
                       ],
                     ),

@@ -11,6 +11,7 @@ import '../../features/authentication/presentation/screens/onboarding.dart';
 import '../../features/authentication/presentation/screens/open.dart';
 import '../../features/authentication/presentation/screens/register.dart';
 import '../../features/authentication/presentation/screens/splash.dart';
+import '../../features/daily_hottest/presentation/cubit/leaderboard_cubit.dart';
 import '../../features/feed/presentation/cubit/recents_cubit.dart';
 import '../../features/feed/presentation/cubit/trending_cubit.dart';
 
@@ -73,7 +74,11 @@ class AppRouter {
         );
       case "/hottest/leaderboard":
         return MaterialPageRoute(
-          builder: (_) => const LeaderboardScreen(),
+          builder: (_) => BlocProvider(
+            lazy: false,
+            create: (context) => sl<LeaderboardCubit>()..loadRankings(),
+            child: const LeaderboardScreen(),
+          ),
         );
       case "/settings":
         return MaterialPageRoute(builder: (_) => const Text("Settings"));

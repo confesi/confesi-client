@@ -1,0 +1,24 @@
+{
+    "rankings" : [
+        {
+            "university_name": "University of Victoria",
+            "placing": 1,
+            "points": 521
+        },
+        {
+            "university_name": "UVic",
+            "placing": 2,
+            "points": 312
+        },
+        {
+            "university_name": "UVic",
+            "placing": 3,
+            "points": 284
+        },
+        {
+            "university_name": "UVic",
+            "placing": 4,
+            "points": 53
+        }
+    ]
+}

@@ -9,13 +9,11 @@ import '../../../../core/widgets/text/header_group.dart';
 
 class HottestTile extends StatefulWidget {
   const HottestTile({
-    required this.color,
     required this.currentIndex,
     required this.thisIndex,
     Key? key,
   }) : super(key: key);
 
-  final Color color;
   final int currentIndex;
   final int thisIndex;
 
