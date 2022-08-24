@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:dio/dio.dart';
-
 import '../../domain/entities/post.dart';
 import '../models/post_model.dart';
 

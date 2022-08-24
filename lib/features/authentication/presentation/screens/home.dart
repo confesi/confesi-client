@@ -82,53 +82,44 @@ class _HomeScreenState extends State<HomeScreen>
                         ),
                       ),
                     ),
-                    // const PostHome(),
-                    // const SearchHome(),
-                    // const ProfileHome(),
                   ],
                 ),
-                bottomNavigationBar: Theme(
-                  data: ThemeData(
-                    highlightColor: Colors.transparent,
-                    splashColor: Colors.transparent,
-                  ),
-                  child: TabBar(
-                    onTap: (tabIndex) {
-                      HapticFeedback.lightImpact();
-                    },
-                    isScrollable: false,
-                    labelStyle: kBody.copyWith(
-                        color: Theme.of(context).colorScheme.primary),
-                    unselectedLabelColor:
-                        Theme.of(context).colorScheme.onBackground,
-                    labelColor: Theme.of(context).colorScheme.primary,
-                    indicatorSize: TabBarIndicatorSize.tab,
-                    indicatorColor: Colors.transparent,
-                    controller: tabController,
-                    enableFeedback: true,
-                    tabs: [
-                      Tab(
-                        text: Responsive.isTablet(context) ? "Explore" : null,
-                        icon: const Icon(CupertinoIcons.compass),
-                      ),
-                      Tab(
-                        text: Responsive.isTablet(context) ? "Hot" : null,
-                        icon: const Icon(CupertinoIcons.flame),
-                      ),
-                      Tab(
-                        text: Responsive.isTablet(context) ? "Post" : null,
-                        icon: const Icon(CupertinoIcons.add),
-                      ),
-                      Tab(
-                        text: Responsive.isTablet(context) ? "Search" : null,
-                        icon: const Icon(CupertinoIcons.search),
-                      ),
-                      Tab(
-                        text: Responsive.isTablet(context) ? "Profile" : null,
-                        icon: const Icon(CupertinoIcons.profile_circled),
-                      )
-                    ],
-                  ),
+                bottomNavigationBar: TabBar(
+                  onTap: (tabIndex) {
+                    HapticFeedback.lightImpact();
+                  },
+                  isScrollable: false,
+                  labelStyle: kBody.copyWith(
+                      color: Theme.of(context).colorScheme.primary),
+                  unselectedLabelColor:
+                      Theme.of(context).colorScheme.onBackground,
+                  labelColor: Theme.of(context).colorScheme.primary,
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  indicatorColor: Colors.transparent,
+                  controller: tabController,
+                  enableFeedback: true,
+                  tabs: [
+                    Tab(
+                      text: Responsive.isTablet(context) ? "Explore" : null,
+                      icon: const Icon(CupertinoIcons.compass),
+                    ),
+                    Tab(
+                      text: Responsive.isTablet(context) ? "Hot" : null,
+                      icon: const Icon(CupertinoIcons.flame),
+                    ),
+                    Tab(
+                      text: Responsive.isTablet(context) ? "Post" : null,
+                      icon: const Icon(CupertinoIcons.add),
+                    ),
+                    Tab(
+                      text: Responsive.isTablet(context) ? "Search" : null,
+                      icon: const Icon(CupertinoIcons.search),
+                    ),
+                    Tab(
+                      text: Responsive.isTablet(context) ? "Profile" : null,
+                      icon: const Icon(CupertinoIcons.profile_circled),
+                    )
+                  ],
                 ),
                 backgroundColor: Theme.of(context).colorScheme.background,
               ),

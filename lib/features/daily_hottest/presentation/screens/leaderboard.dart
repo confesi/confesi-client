@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:Confessi/core/utils/is_plural.dart';
+import 'package:Confessi/core/utils/number_postfix.dart';
 import 'package:Confessi/core/widgets/indicators/alert.dart';
 import 'package:Confessi/core/widgets/indicators/loading.dart';
 import 'package:Confessi/core/widgets/layout/appbar.dart';
@@ -20,23 +22,29 @@ class LeaderboardScreen extends StatelessWidget {
 
   List<Widget> getCircleRanks(Data data) {
     return [
-      data.rankings.isNotEmpty
-          ? Flexible(
-              child: LeaderboardCircleTile(
-                minSize: 90,
-                placing: data.rankings[0].placing.toString(),
-                university: data.rankings[0].universityName,
-                points: data.rankings[0].points.toString(),
-              ),
-            )
-          : Container(),
       data.rankings.length >= 2
           ? Flexible(
               child: LeaderboardCircleTile(
-                minSize: 120,
-                placing: data.rankings[1].placing.toString(),
+                minSize: 90,
+                placing:
+                    '${data.rankings[1].placing}${numberPostfix(data.rankings[1].placing)}',
                 university: data.rankings[1].universityName,
-                points: data.rankings[1].points.toString(),
+                points: isPlural(data.rankings[1].points)
+                    ? '${data.rankings[1].points} pts'
+                    : '${data.rankings[1].points} pt',
+              ),
+            )
+          : Container(),
+      data.rankings.isNotEmpty
+          ? Flexible(
+              child: LeaderboardCircleTile(
+                minSize: 120,
+                placing:
+                    '${data.rankings[0].placing}${numberPostfix(data.rankings[0].placing)}',
+                university: data.rankings[0].universityName,
+                points: isPlural(data.rankings[0].points)
+                    ? '${data.rankings[0].points} pts'
+                    : '${data.rankings[0].points} pt',
               ),
             )
           : Container(),
@@ -44,9 +52,12 @@ class LeaderboardScreen extends StatelessWidget {
           ? Flexible(
               child: LeaderboardCircleTile(
                 minSize: 90,
-                placing: data.rankings[2].placing.toString(),
+                placing:
+                    '${data.rankings[2].placing}${numberPostfix(data.rankings[2].placing)}',
                 university: data.rankings[2].universityName,
-                points: data.rankings[2].points.toString(),
+                points: isPlural(data.rankings[2].points)
+                    ? '${data.rankings[2].points} pts'
+                    : '${data.rankings[2].points} pt',
               ),
             )
           : Container(),
@@ -91,8 +102,10 @@ class LeaderboardScreen extends StatelessWidget {
                             } else if (index >= 3) {
                               return LeaderboardRectangleTile(
                                 placing:
-                                    state.rankings[index].placing.toString(),
-                                points: state.rankings[index].points.toString(),
+                                    '${state.rankings[index].placing}${numberPostfix(state.rankings[index].placing)}',
+                                points: isPlural(state.rankings[index].points)
+                                    ? '${state.rankings[index].points} pts'
+                                    : '${state.rankings[index].points} pt',
                                 university:
                                     state.rankings[index].universityName,
                               );

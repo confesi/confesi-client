@@ -1,8 +1,5 @@
-import 'package:Confessi/core/constants/buttons.dart';
-import 'package:Confessi/core/styles/typography.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mongo_dart/mongo_dart.dart';
 
 import '../behaviours/touchable_opacity.dart';
 

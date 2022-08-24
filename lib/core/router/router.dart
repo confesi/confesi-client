@@ -86,7 +86,7 @@ class AppRouter {
         return MaterialPageRoute(
             builder: (_) => const Text("Watched universities"));
       default:
-        throw Exception("Named route not defined");
+        throw Exception("Named route ${routeSettings.name} not defined");
     }
   }
 }

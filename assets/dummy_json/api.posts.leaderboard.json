@@ -1,22 +1,22 @@
 {
     "rankings" : [
         {
-            "university_name": "University of Victoria",
+            "university_name": "UVic",
             "placing": 1,
-            "points": 521
+            "points": 522
         },
         {
-            "university_name": "UVic",
+            "university_name": "SFU",
             "placing": 2,
             "points": 312
         },
         {
-            "university_name": "UVic",
+            "university_name": "UBC",
             "placing": 3,
             "points": 284
         },
         {
-            "university_name": "UVic",
+            "university_name": "University of Waterloo",
             "placing": 4,
             "points": 53
         }
