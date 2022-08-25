@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:Confessi/core/constants/general.dart';
+import 'package:Confessi/constants/shared/general.dart';
 import 'package:Confessi/core/results/exceptions.dart';
 import 'package:Confessi/core/results/failures.dart';
 import 'package:Confessi/core/results/successes.dart';

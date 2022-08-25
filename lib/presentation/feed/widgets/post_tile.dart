@@ -1,0 +1,251 @@
+import 'package:Confessi/constants/shared/buttons.dart';
+import 'package:Confessi/core/styles/typography.dart';
+import 'package:Confessi/presentation/shared/behaviours/touchable_opacity.dart';
+import 'package:Confessi/presentation/shared/text/group.dart';
+import 'package:Confessi/constants/feed/constants.dart';
+import 'package:Confessi/domain/feed/entities/badge.dart';
+import 'package:Confessi/domain/feed/entities/post_child.dart';
+import 'package:Confessi/presentation/shared/sheets/button_options_sheet.dart';
+import 'package:Confessi/presentation/feed/widgets/badge_tile.dart';
+import 'package:Confessi/presentation/feed/widgets/badge_tile_set.dart';
+import 'package:Confessi/presentation/feed/widgets/quote_tile.dart';
+import 'package:Confessi/presentation/feed/widgets/vote_tile_set.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+import '../../../core/utils/is_plural.dart';
+import '../../shared/buttons/option.dart';
+
+class PostTile extends StatelessWidget {
+  const PostTile({
+    required this.genre,
+    required this.time,
+    required this.faculty,
+    required this.text,
+    required this.title,
+    required this.likes,
+    required this.hates,
+    required this.comments,
+    required this.year,
+    required this.university,
+    required this.icon,
+    this.postView = PostView.feedView,
+    required this.postChild,
+    required this.badges,
+    Key? key,
+  }) : super(key: key);
+
+  final IconData icon;
+  final String university;
+  final String genre;
+  final String time;
+  final String faculty;
+  final String text;
+  final String title;
+  final int likes;
+  final int hates;
+  final int year;
+  final int comments;
+  final PostView postView;
+  final PostChild postChild;
+  final List<Badge> badges;
+
+  Widget _renderQuoteChild(BuildContext context) {
+    final ChildType childType = postChild.childType;
+    if (childType == ChildType.noChild) {
+      return Container();
+    } else if (childType == ChildType.childNeedsLoading) {
+      return Container(
+        padding: const EdgeInsets.all(10),
+        margin: const EdgeInsets.only(bottom: 30),
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          border: Border.all(
+            width: 0.7,
+            color: Theme.of(context).colorScheme.onBackground,
+          ),
+        ),
+        child: const CupertinoActivityIndicator(radius: 12),
+      );
+    } else {
+      return QuoteTile(
+        post: postChild.childPost!,
+        postView: postView,
+      );
+    }
+  }
+
+  List<BadgeTile> getBadges() => badges
+      .map((badge) => BadgeTile(text: badge.text, icon: badge.icon))
+      .toList();
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => postView == PostView.feedView
+          ? Navigator.pushNamed(
+              context,
+              '/home/detail',
+              arguments: {
+                'badges': badges,
+                'post_child': postChild,
+                'icon': icon,
+                'genre': genre,
+                'time': time,
+                'faculty': faculty,
+                'text': text,
+                'title': title,
+                'likes': likes,
+                'hates': hates,
+                'comments': comments,
+                'year': year,
+                'university': university,
+                'postView': PostView.detailView
+              },
+            )
+          : FocusManager.instance.primaryFocus?.unfocus(),
+      child: Container(
+        color: Theme.of(context).colorScheme.background,
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 30),
+        width: double.infinity,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            //! Top Row
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 15),
+                  child: Container(
+                    width: 50,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.secondary,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Center(
+                      child: Icon(
+                        icon,
+                        color: Theme.of(context).colorScheme.onSecondary,
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: GroupText(
+                    body: "$time / year $year / $faculty",
+                    header: genre,
+                    leftAlign: true,
+                    small: true,
+                  ),
+                ),
+                TouchableOpacity(
+                  tooltip: 'post options',
+                  tooltipLocation: TooltipLocation.above,
+                  onTap: () => showButtonOptionsSheet(context, [
+                    OptionButton(
+                      text: "Report",
+                      icon: CupertinoIcons.flag,
+                      onTap: () => print("tap"),
+                    ),
+                    OptionButton(
+                      text: "Share",
+                      icon: CupertinoIcons.share,
+                      onTap: () => print("tap"),
+                    ),
+                    OptionButton(
+                      text: "Reply",
+                      icon: CupertinoIcons.paperplane,
+                      onTap: () => print("tap"),
+                    ),
+                    OptionButton(
+                      text: "Save",
+                      icon: CupertinoIcons.bookmark,
+                      onTap: () => print("tap"),
+                    ),
+                    OptionButton(
+                      text: "Details",
+                      icon: CupertinoIcons.info,
+                      onTap: () =>
+                          Navigator.pushNamed(context, '/home/post/stats'),
+                    ),
+                  ]),
+                  child: Container(
+                    // Transparent container hitbox trick.
+                    color: Colors.transparent,
+                    child: Padding(
+                      padding: const EdgeInsets.all(5),
+                      child: Icon(
+                        CupertinoIcons.ellipsis,
+                        color: Theme.of(context).colorScheme.onBackground,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 30),
+            //! Title row
+            Text(
+              title.length > kPreviewPostTitleLength &&
+                      postView == PostView.feedView
+                  ? "${title.substring(0, kPreviewPostTitleLength)}..."
+                  : title,
+              style: kTitle.copyWith(
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+            const SizedBox(height: 2),
+            BadgeTileSet(
+              badges: getBadges(),
+            ),
+            const SizedBox(height: 30),
+            //! Middle row
+            Text(
+              text.length > kPreviewPostTextLength &&
+                      postView == PostView.feedView
+                  ? "${text.substring(0, kPreviewPostTextLength)}..."
+                  : text,
+              style: kBody.copyWith(
+                color: Theme.of(context).colorScheme.primary,
+                height: 1.2,
+              ),
+            ),
+            const SizedBox(height: 30),
+            _renderQuoteChild(context),
+            //! Bottom row
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                VoteTileSet(
+                  likes: likes,
+                  hates: hates,
+                ),
+                postView == PostView.feedView
+                    ? Flexible(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: Text(
+                            isPlural(comments) == true
+                                ? "$comments comments"
+                                : "$comments comment",
+                            style: kDetail.copyWith(
+                              color: Theme.of(context).colorScheme.onSurface,
+                            ),
+                            textAlign: TextAlign.left,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      )
+                    : Container(),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

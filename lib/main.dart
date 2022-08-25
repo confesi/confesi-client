@@ -2,12 +2,12 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'core/constants/general.dart';
+import 'constants/shared/general.dart';
 import 'core/router/router.dart';
 import 'core/styles/themes.dart';
 import 'dependency_injection.dart';
-import 'features/authentication/presentation/cubit/authentication_cubit.dart';
-import 'features/authentication/presentation/screens/splash.dart';
+import 'presentation/authentication/cubit/authentication_cubit.dart';
+import 'presentation/authentication/screens/splash.dart';
 
 void main() async {
   await init();

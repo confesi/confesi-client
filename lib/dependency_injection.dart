@@ -1,29 +1,29 @@
 import 'dart:async';
 
 import 'package:Confessi/core/authorization/http_client.dart';
-import 'package:Confessi/features/daily_hottest/data/datasources/leaderboard_datasource.dart';
-import 'package:Confessi/features/daily_hottest/data/repositories/leaderboard_repository_concrete.dart';
-import 'package:Confessi/features/daily_hottest/domain/usecases/ranking.dart';
-import 'package:Confessi/features/daily_hottest/presentation/cubit/leaderboard_cubit.dart';
+import 'package:Confessi/data/daily_hottest/datasources/leaderboard_datasource.dart';
+import 'package:Confessi/data/daily_hottest/repositories/leaderboard_repository_concrete.dart';
+import 'package:Confessi/domain/daily_hottest/usecases/ranking.dart';
+import 'package:Confessi/presentation/daily_hottest/cubit/leaderboard_cubit.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 import 'core/network/connection_info.dart';
 import 'core/router/router.dart';
-import 'features/authentication/data/datasources/authentication_datasource.dart';
-import 'features/authentication/data/repositories/authentication_repository_concrete.dart';
-import 'features/authentication/domain/usecases/login.dart';
-import 'features/authentication/domain/usecases/logout.dart';
-import 'features/authentication/domain/usecases/register.dart';
-import 'features/authentication/domain/usecases/silent_authentication.dart';
-import 'features/authentication/presentation/cubit/authentication_cubit.dart';
-import 'features/feed/data/datasources/feed_datasource.dart';
-import 'features/feed/data/repositories/feed_repository_concrete.dart';
-import 'features/feed/domain/usecases/recents.dart';
-import 'features/feed/domain/usecases/trending.dart';
-import 'features/feed/presentation/cubit/recents_cubit.dart';
-import 'features/feed/presentation/cubit/trending_cubit.dart';
+import 'data/authentication/datasources/authentication_datasource.dart';
+import 'data/authentication/repositories/authentication_repository_concrete.dart';
+import 'domain/authenticatioin/usecases/login.dart';
+import 'domain/authenticatioin/usecases/logout.dart';
+import 'domain/authenticatioin/usecases/register.dart';
+import 'domain/authenticatioin/usecases/silent_authentication.dart';
+import 'presentation/authentication/cubit/authentication_cubit.dart';
+import 'data/feed/datasources/feed_datasource.dart';
+import 'data/feed/repositories/feed_repository_concrete.dart';
+import 'domain/feed/usecases/recents.dart';
+import 'domain/feed/usecases/trending.dart';
+import 'presentation/feed/cubit/recents_cubit.dart';
+import 'presentation/feed/cubit/trending_cubit.dart';
 
 final GetIt sl = GetIt.instance;
 

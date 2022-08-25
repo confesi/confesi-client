@@ -1,19 +1,19 @@
-import 'package:Confessi/features/daily_hottest/presentation/screens/leaderboard.dart';
-import 'package:Confessi/features/feed/presentation/screens/detail_view.dart';
-import 'package:Confessi/features/feed/presentation/screens/post_advanced_details.dart';
+import 'package:Confessi/presentation/daily_hottest/screens/leaderboard.dart';
+import 'package:Confessi/presentation/feed/screens/detail_view.dart';
+import 'package:Confessi/presentation/feed/screens/post_advanced_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../dependency_injection.dart';
-import '../../features/authentication/presentation/screens/home.dart';
-import '../../features/authentication/presentation/screens/login.dart';
-import '../../features/authentication/presentation/screens/onboarding.dart';
-import '../../features/authentication/presentation/screens/open.dart';
-import '../../features/authentication/presentation/screens/register.dart';
-import '../../features/authentication/presentation/screens/splash.dart';
-import '../../features/daily_hottest/presentation/cubit/leaderboard_cubit.dart';
-import '../../features/feed/presentation/cubit/recents_cubit.dart';
-import '../../features/feed/presentation/cubit/trending_cubit.dart';
+import '../../presentation/authentication/screens/home.dart';
+import '../../presentation/authentication/screens/login.dart';
+import '../../presentation/authentication/screens/onboarding.dart';
+import '../../presentation/authentication/screens/open.dart';
+import '../../presentation/authentication/screens/register.dart';
+import '../../presentation/authentication/screens/splash.dart';
+import '../../presentation/daily_hottest/cubit/leaderboard_cubit.dart';
+import '../../presentation/feed/cubit/recents_cubit.dart';
+import '../../presentation/feed/cubit/trending_cubit.dart';
 
 /// The application's routes (screens) manager.
 class AppRouter {
