@@ -9,11 +9,17 @@ abstract class Failure extends Equatable {
 
 //! General failures
 
+/// Classic server failure, the "catch all" failure.
 class ServerFailure extends Failure {}
 
+/// Something went wrong with the connection!
 class ConnectionFailure extends Failure {}
 
+/// When input fields are blank that need to be filled in.
 class FieldsBlankFailure extends Failure {}
+
+/// For when something failed, but you don't really need to know why specifically.
+class GeneralFailure extends Failure {}
 
 //! Authentication failures
 

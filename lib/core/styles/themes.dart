@@ -19,6 +19,9 @@ class AppTheme {
       surface: Color.fromARGB(255, 246, 246, 246),
       onSurface: Color.fromARGB(255, 147, 147, 147),
       shadow: Color.fromARGB(255, 232, 232, 232),
+      primaryContainer: Color(0xfffde5b6), // Badge's light color.
+      secondaryContainer:
+          Color.fromARGB(255, 151, 107, 20), // Badge's dark color.
     ),
   );
 
@@ -40,6 +43,8 @@ class AppTheme {
       surface: Color.fromARGB(255, 55, 55, 55),
       onSurface: Color(0xff7d7d7d),
       shadow: Color.fromARGB(255, 19, 18, 18),
+      primaryContainer: Color(0xff333333), // Badge's light color.
+      secondaryContainer: Color(0xfffde5b6), // Badge's dark color.
     ),
   );
 }

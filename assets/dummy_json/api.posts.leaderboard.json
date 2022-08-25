@@ -1,0 +1,43 @@
+{
+    "rankings" : [
+        {
+            "university": "SFU",
+            "placing": 1,
+            "points": 489123
+        },
+        {
+            "university": "SFU",
+            "placing": 2,
+            "points": 14123
+        },
+        {
+            "university": "UBC",
+            "placing": 3,
+            "points": 331
+        },
+        {
+            "university": "SFU",
+            "placing": 4,
+            "points": 212
+        },
+        {
+            "university": "SFU",
+            "placing": 5,
+            "points": 194
+        },
+        {
+            "university": "SFU",
+            "placing": 6,
+            "points": 34
+        },
+        {
+            "university": "SFU",
+            "placing": 7,
+            "points": 12
+        },{
+            "university": "SFU",
+            "placing": 8,
+            "points": 1
+        }
+    ]
+}

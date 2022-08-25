@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+/// Faded text style - meant for decorative background numbers or display values. Not for primary reading.
+var kFaded = GoogleFonts.inter(
+  textStyle: const TextStyle(fontSize: 105, fontWeight: FontWeight.bold),
+);
+
 /// Largest text style - meant for BOLD DISPLAY!
 var kDisplay = GoogleFonts.dmSerifDisplay(
   textStyle: const TextStyle(fontSize: 24, fontWeight: FontWeight.normal),
@@ -8,7 +13,7 @@ var kDisplay = GoogleFonts.dmSerifDisplay(
 
 /// Very big text style.
 var kHeader = GoogleFonts.inter(
-  textStyle: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+  textStyle: const TextStyle(fontSize: 17, fontWeight: FontWeight.w900),
 );
 
 /// Big text style.
