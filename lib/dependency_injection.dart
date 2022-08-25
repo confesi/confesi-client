@@ -80,7 +80,7 @@ Future<void> init() async {
   sl.registerLazySingleton(
       () => AuthenticationDatasource(secureStorage: sl(), netClient: sl()));
   // Registers the feed data source.
-  sl.registerLazySingleton(() => FeedDatasource());
+  sl.registerLazySingleton(() => FeedDatasource(api: sl()));
   // Registers the leaderboard data source.
   sl.registerLazySingleton(() => LeaderboardDatasource(api: sl()));
 

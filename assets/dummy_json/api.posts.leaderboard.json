@@ -3,22 +3,41 @@
         {
             "university_name": "UVic",
             "placing": 1,
-            "points": 522
+            "points": 489123
         },
         {
             "university_name": "SFU",
             "placing": 2,
-            "points": 312
+            "points": 14123
         },
         {
             "university_name": "UBC",
             "placing": 3,
-            "points": 284
+            "points": 331
         },
         {
             "university_name": "University of Waterloo",
             "placing": 4,
-            "points": 53
+            "points": 212
+        },
+        {
+            "university_name": "University of Washington",
+            "placing": 5,
+            "points": 194
+        },
+        {
+            "university_name": "Trinity Western University",
+            "placing": 6,
+            "points": 34
+        },
+        {
+            "university_name": "Arizona State",
+            "placing": 7,
+            "points": 12
+        },{
+            "university_name": "Western University",
+            "placing": 8,
+            "points": 1
         }
     ]
 }

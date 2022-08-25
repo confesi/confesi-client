@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/styles/typography.dart';
+import '../../../../core/utils/large_number_formatter.dart';
 
 class LeaderboardScreen extends StatelessWidget {
   const LeaderboardScreen({Key? key}) : super(key: key);
@@ -30,8 +31,8 @@ class LeaderboardScreen extends StatelessWidget {
                     '${data.rankings[1].placing}${numberPostfix(data.rankings[1].placing)}',
                 university: data.rankings[1].universityName,
                 points: isPlural(data.rankings[1].points)
-                    ? '${data.rankings[1].points} pts'
-                    : '${data.rankings[1].points} pt',
+                    ? '${largeNumberFormatter(data.rankings[1].points)} pts'
+                    : '${largeNumberFormatter(data.rankings[1].points)} pt',
               ),
             )
           : Container(),
@@ -43,8 +44,8 @@ class LeaderboardScreen extends StatelessWidget {
                     '${data.rankings[0].placing}${numberPostfix(data.rankings[0].placing)}',
                 university: data.rankings[0].universityName,
                 points: isPlural(data.rankings[0].points)
-                    ? '${data.rankings[0].points} pts'
-                    : '${data.rankings[0].points} pt',
+                    ? '${largeNumberFormatter(data.rankings[0].points)} pts'
+                    : '${largeNumberFormatter(data.rankings[0].points)} pt',
               ),
             )
           : Container(),
@@ -56,8 +57,8 @@ class LeaderboardScreen extends StatelessWidget {
                     '${data.rankings[2].placing}${numberPostfix(data.rankings[2].placing)}',
                 university: data.rankings[2].universityName,
                 points: isPlural(data.rankings[2].points)
-                    ? '${data.rankings[2].points} pts'
-                    : '${data.rankings[2].points} pt',
+                    ? '${largeNumberFormatter(data.rankings[2].points)} pts'
+                    : '${largeNumberFormatter(data.rankings[2].points)} pt',
               ),
             )
           : Container(),
@@ -104,8 +105,8 @@ class LeaderboardScreen extends StatelessWidget {
                                 placing:
                                     '${state.rankings[index].placing}${numberPostfix(state.rankings[index].placing)}',
                                 points: isPlural(state.rankings[index].points)
-                                    ? '${state.rankings[index].points} pts'
-                                    : '${state.rankings[index].points} pt',
+                                    ? '${largeNumberFormatter(state.rankings[index].points)} pts'
+                                    : '${largeNumberFormatter(state.rankings[index].points)} pt',
                                 university:
                                     state.rankings[index].universityName,
                               );

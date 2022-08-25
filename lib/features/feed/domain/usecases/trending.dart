@@ -12,7 +12,7 @@ class Trending implements Usecase<List<Post>, NoParams> {
 
   @override
   Future<Either<Failure, List<Post>>> call(NoParams noParams) async {
-    final posts = await repository.fetchTrending();
+    final posts = await repository.fetchTrending('TEMP', 'TEMP');
     return posts.fold(
       (failure) {
         return Left(failure);
