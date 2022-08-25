@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 import '../../../core/results/failures.dart';
 import '../../../core/usecases/usecase.dart';
 import '../../../data/feed/repositories/feed_repository_concrete.dart';
-import '../entities/post.dart';
+import '../../shared/entities/post.dart';
 
 class Recents implements Usecase<List<Post>, RecentsParams> {
   final FeedRepository repository;

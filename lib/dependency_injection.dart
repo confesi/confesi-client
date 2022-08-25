@@ -1,9 +1,13 @@
 import 'dart:async';
 
 import 'package:Confessi/core/authorization/http_client.dart';
+import 'package:Confessi/data/daily_hottest/datasources/daily_hottest_datasource.dart';
 import 'package:Confessi/data/daily_hottest/datasources/leaderboard_datasource.dart';
+import 'package:Confessi/data/daily_hottest/repositories/daily_hottest_repository_concrete.dart';
 import 'package:Confessi/data/daily_hottest/repositories/leaderboard_repository_concrete.dart';
+import 'package:Confessi/domain/daily_hottest/usecases/posts.dart';
 import 'package:Confessi/domain/daily_hottest/usecases/ranking.dart';
+import 'package:Confessi/presentation/daily_hottest/cubit/hottest_cubit.dart';
 import 'package:Confessi/presentation/daily_hottest/cubit/leaderboard_cubit.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
@@ -39,6 +43,8 @@ Future<void> init() async {
   sl.registerFactory(() => TrendingCubit(trending: sl()));
   // Registers the leaderboard cubit.
   sl.registerFactory(() => LeaderboardCubit(ranking: sl()));
+  // Registers the daily hottest cubit.
+  sl.registerFactory(() => HottestCubit(posts: sl()));
 
   //! Usecases
   // Registers the register usecase.
@@ -55,6 +61,8 @@ Future<void> init() async {
   sl.registerLazySingleton(() => Trending(repository: sl()));
   // Registers the leaderboard usecase.
   sl.registerLazySingleton(() => Ranking(repository: sl()));
+  // Registers the daily hottest usecase.
+  sl.registerLazySingleton(() => Posts(repository: sl()));
 
   //! Core
   // Registers custom connection checker class.
@@ -74,6 +82,9 @@ Future<void> init() async {
   // Registers the leaderboard repository.
   sl.registerLazySingleton(
       () => LeaderboardRepository(networkInfo: sl(), datasource: sl()));
+  // Registers the daily hottest repository.
+  sl.registerLazySingleton(
+      () => DailyHottestRepository(networkInfo: sl(), datasource: sl()));
 
   //! Data sources
   // Registers the authentication data source.
@@ -83,6 +94,8 @@ Future<void> init() async {
   sl.registerLazySingleton(() => FeedDatasource(api: sl()));
   // Registers the leaderboard data source.
   sl.registerLazySingleton(() => LeaderboardDatasource(api: sl()));
+  // Registers the daily hottest data source.
+  sl.registerLazySingleton(() => DailyHottestDatasource(api: sl()));
 
   //! External
   // Registers connection checker package.

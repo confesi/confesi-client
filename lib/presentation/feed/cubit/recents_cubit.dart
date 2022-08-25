@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
-import '../../../domain/feed/entities/post.dart';
+import '../../../domain/shared/entities/post.dart';
 import '../../../domain/feed/usecases/recents.dart';
 
 part 'recents_state.dart';

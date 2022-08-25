@@ -49,12 +49,6 @@ const int kPreviewQuotePostTitleLength = 75;
 /// Max length a comment can be.
 const int kMaxCommentLength = 5000;
 
-/// Specifies if the post_tile.dart widget is currently being displayed in the feed, or detailed view.
-enum PostView {
-  detailView,
-  feedView,
-}
-
 /// Specifies which type of child the quoted post is.
 ///
 /// Does it need loading? Does it already exist with its data? Is there even a child at all?

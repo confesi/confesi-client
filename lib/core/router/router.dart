@@ -11,6 +11,7 @@ import '../../presentation/authentication/screens/onboarding.dart';
 import '../../presentation/authentication/screens/open.dart';
 import '../../presentation/authentication/screens/register.dart';
 import '../../presentation/authentication/screens/splash.dart';
+import '../../presentation/daily_hottest/cubit/hottest_cubit.dart';
 import '../../presentation/daily_hottest/cubit/leaderboard_cubit.dart';
 import '../../presentation/feed/cubit/recents_cubit.dart';
 import '../../presentation/feed/cubit/trending_cubit.dart';
@@ -32,7 +33,7 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const LoginScreen());
       case "/register":
         return MaterialPageRoute(builder: (_) => const RegisterScreen());
-      case "/home": // Most of the screens are tabs under the /home named route.
+      case "/home": //! Most of the (main) screens are tabs under the /home named route. Thus, should have their BLoC/Cubit providers here.
         return MaterialPageRoute(
           builder: (_) => MultiBlocProvider(
             providers: [
@@ -43,6 +44,10 @@ class AppRouter {
               BlocProvider(
                 lazy: false,
                 create: (context) => sl<RecentsCubit>(),
+              ),
+              BlocProvider(
+                lazy: false,
+                create: (context) => sl<HottestCubit>()..loadPosts(),
               ),
             ],
             child: const HomeScreen(),

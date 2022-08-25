@@ -4,7 +4,7 @@ import 'package:meta/meta.dart';
 
 import '../../../core/usecases/usecase.dart';
 import '../../../constants/feed/constants.dart';
-import '../../../domain/feed/entities/post.dart';
+import '../../../domain/shared/entities/post.dart';
 import '../../../domain/feed/usecases/trending.dart';
 
 part 'trending_state.dart';

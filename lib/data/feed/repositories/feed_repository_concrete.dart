@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 
 import '../../../core/network/connection_info.dart';
 import '../../../core/results/failures.dart';
-import '../../../domain/feed/entities/post.dart';
+import '../../../domain/shared/entities/post.dart';
 import '../../../domain/feed/repositories/feed_repository_interface.dart';
 import '../datasources/feed_datasource.dart';
 import '../utils/exception_to_failure.dart';
@@ -35,12 +35,6 @@ class FeedRepository implements IFeedRepository {
   }
 
   @override
-  Future<Either<Failure, List<Post>>> fetchDailyHottest(String token) {
-    // TODO: implement fetchDailyHottest
-    throw UnimplementedError();
-  }
-
-  @override
   Future<Either<Failure, List<Post>>> fetchTrending(
       String lastSeenPostId, String token) async {
     if (await networkInfo.isConnected) {
@@ -59,12 +53,6 @@ class FeedRepository implements IFeedRepository {
   @override
   Future<Either<Failure, List<Post>>> refreshAllFeeds(String token) {
     // TODO: implement refreshAllFeeds
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<Failure, List<Post>>> refreshDailyHottest(String token) {
-    // TODO: implement refreshDailyHottest
     throw UnimplementedError();
   }
 

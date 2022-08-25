@@ -3,11 +3,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/results/exceptions.dart';
-import '../../../domain/feed/entities/post.dart';
-import 'post_child_data.dart';
+import '../../../domain/shared/entities/post.dart';
+import '../../feed/models/post_child_data.dart';
+import '../utils/image_path_formatter.dart';
 
 class PostModel extends Post {
   const PostModel({
+    required String universityImagePath,
     required String university,
     required String genre,
     required int year,
@@ -23,6 +25,7 @@ class PostModel extends Post {
     required IconData icon,
     required List<Badge> badges,
   }) : super(
+          universityImagePath: universityImagePath,
           badges: badges,
           title: title,
           icon: icon,
@@ -76,6 +79,10 @@ class PostModel extends Post {
         return "UBC";
       case "SFU":
         return "SFU";
+      case "TWU":
+        return "TWU";
+      case "UFV":
+        return "UFV";
       default:
         throw ServerException();
     }
@@ -104,9 +111,7 @@ class PostModel extends Post {
     DateTime postedDate = DateTime.parse(dateISO).toUtc();
     DateTime currentDate = DateTime.now().toUtc();
     Duration timeBetween = currentDate.difference(postedDate);
-    if (timeBetween.inMinutes < 0) {
-      return "error";
-    } else if (timeBetween.inDays >= 365) {
+    if (timeBetween.inDays >= 365) {
       return "${(timeBetween.inDays / 365).floor()}y";
     } else if (timeBetween.inHours >= 48) {
       return "${timeBetween.inDays}d";
@@ -191,6 +196,7 @@ class PostModel extends Post {
 
   factory PostModel.fromJson(Map<String, dynamic> json) {
     return PostModel(
+      universityImagePath: imagePathFormatter(json['university']),
       icon: _genreToIcon(json['genre']),
       university: _universityFormatter(json["university"]),
       genre: _genreFormatter(json["genre"]),

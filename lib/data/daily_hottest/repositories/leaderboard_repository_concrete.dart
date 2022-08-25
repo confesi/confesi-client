@@ -17,7 +17,6 @@ class LeaderboardRepository implements ILeaderboardRepository {
       try {
         return Right(await datasource.fetchRanking());
       } catch (e) {
-        print('ERROR IS: $e');
         return Left(ServerFailure());
       }
     } else {

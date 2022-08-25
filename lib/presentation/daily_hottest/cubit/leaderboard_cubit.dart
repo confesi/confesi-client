@@ -16,7 +16,6 @@ class LeaderboardCubit extends Cubit<LeaderboardState> {
 
   Future<void> loadRankings() async {
     if (state is Error) {
-      // print('heree');
       final error = state as Error;
       emit(Error(message: error.message, retryingAfterError: true));
     } else {

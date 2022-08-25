@@ -7,8 +7,10 @@ class LeaderboardItem extends Equatable {
   final String universityName;
   final int placing;
   final int points;
+  final String universityImagePath;
 
   const LeaderboardItem({
+    required this.universityImagePath,
     required this.placing,
     required this.points,
     required this.universityName,

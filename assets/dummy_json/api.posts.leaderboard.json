@@ -1,41 +1,41 @@
 {
     "rankings" : [
         {
-            "university_name": "UVic",
+            "university": "SFU",
             "placing": 1,
             "points": 489123
         },
         {
-            "university_name": "SFU",
+            "university": "SFU",
             "placing": 2,
             "points": 14123
         },
         {
-            "university_name": "UBC",
+            "university": "UBC",
             "placing": 3,
             "points": 331
         },
         {
-            "university_name": "University of Waterloo",
+            "university": "SFU",
             "placing": 4,
             "points": 212
         },
         {
-            "university_name": "University of Washington",
+            "university": "SFU",
             "placing": 5,
             "points": 194
         },
         {
-            "university_name": "Trinity Western University",
+            "university": "SFU",
             "placing": 6,
             "points": 34
         },
         {
-            "university_name": "Arizona State",
+            "university": "SFU",
             "placing": 7,
             "points": 12
         },{
-            "university_name": "Western University",
+            "university": "SFU",
             "placing": 8,
             "points": 1
         }

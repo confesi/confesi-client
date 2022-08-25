@@ -8,8 +8,10 @@ class LeaderboardCircleTile extends StatelessWidget {
     required this.placing,
     required this.university,
     required this.points,
+    required this.universityImagePath,
   }) : super(key: key);
 
+  final String universityImagePath;
   final double minSize;
   final String placing;
   final String university;
@@ -40,12 +42,12 @@ class LeaderboardCircleTile extends StatelessWidget {
                   margin: const EdgeInsets.all(5),
                   constraints:
                       BoxConstraints(minWidth: minSize, minHeight: minSize),
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     color: Colors.red,
                     shape: BoxShape.circle,
                     image: DecorationImage(
                       fit: BoxFit.cover,
-                      image: AssetImage("assets/images/universities/uvic.jpg"),
+                      image: AssetImage(universityImagePath),
                     ),
                   ),
                 ),

@@ -7,3 +7,9 @@ const String kLeaderboardInfoBody =
 
 const String kConnectionError = 'Connection error.';
 const String kServerError = 'Unknown server error. Please try again later.';
+
+/// The text displayed if a hottest post doesn't provide a title.
+const String kNoTitleProvided = '[no title provided]';
+
+/// The maximum number of daily hottest posts that are displayed before being cut off.
+const int kMaxDisplayedHottestDailyPosts = 5;

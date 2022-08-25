@@ -1,4 +1,4 @@
-import 'package:Confessi/domain/feed/entities/post.dart';
+import 'package:Confessi/domain/shared/entities/post.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../constants/feed/constants.dart';
