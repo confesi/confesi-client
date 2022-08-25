@@ -33,9 +33,11 @@ class PostTile extends StatelessWidget {
     this.postView = PostView.feedView,
     required this.postChild,
     required this.badges,
+    required this.universityFullName,
     Key? key,
   }) : super(key: key);
 
+  final String universityFullName;
   final IconData icon;
   final String university;
   final String genre;
@@ -101,6 +103,7 @@ class PostTile extends StatelessWidget {
                 'comments': comments,
                 'year': year,
                 'university': university,
+                'university_full_name': universityFullName,
                 'postView': PostView.detailView
               },
             )
@@ -170,8 +173,23 @@ class PostTile extends StatelessWidget {
                     OptionButton(
                       text: "Details",
                       icon: CupertinoIcons.info,
-                      onTap: () =>
-                          Navigator.pushNamed(context, '/home/post/stats'),
+                      onTap: () => Navigator.pushNamed(
+                        context,
+                        '/home/post/stats',
+                        arguments: {
+                          'comments': comments,
+                          'faculty': faculty,
+                          'genre': genre,
+                          'hates': hates,
+                          'likes': likes,
+                          // TODO: implement 'moderation_status' and 'saves'
+                          'moderation_status': 'IMPLEMENT THIS STILL',
+                          'saves': 999999,
+                          'university': university,
+                          'year': year,
+                          'university_full_name': universityFullName,
+                        },
+                      ),
                     ),
                   ]),
                   child: Container(

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 class Post extends Equatable {
   final String universityImagePath;
   final String university;
+  final String universityFullName;
   final String genre;
   final int year;
   final String faculty;
@@ -21,6 +22,7 @@ class Post extends Equatable {
   final List<Badge> badges;
 
   const Post({
+    required this.universityFullName,
     required this.universityImagePath,
     required this.badges,
     required this.title,

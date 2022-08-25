@@ -43,7 +43,8 @@ class QuoteTile extends StatelessWidget {
               'comments': post.comments,
               'year': post.year,
               'university': post.university,
-              'postView': PostView.detailView
+              'postView': PostView.detailView,
+              'university_full_name': post.universityFullName,
             },
           );
         },

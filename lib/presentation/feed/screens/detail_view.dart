@@ -40,8 +40,10 @@ class DetailViewScreen extends StatefulWidget {
     required this.university,
     required this.postChild,
     required this.badges,
+    required this.universityFullName,
   }) : super(key: key);
 
+  final String universityFullName;
   final IconData icon;
   final String genre;
   final String time;
@@ -190,6 +192,7 @@ class _DetailViewScreenState extends State<DetailViewScreen> {
                                 hates: widget.hates,
                                 comments: widget.comments,
                                 year: widget.year,
+                                universityFullName: widget.universityFullName,
                               ),
                               CommentDivider(
                                 comments: widget.comments,

@@ -1,4 +1,5 @@
 import 'package:Confessi/constants/shared/buttons.dart';
+import 'package:Confessi/core/utils/add_commas_to_number.dart';
 import 'package:Confessi/presentation/shared/behaviours/overscroll.dart';
 import 'package:Confessi/presentation/shared/behaviours/touchable_opacity.dart';
 import 'package:Confessi/presentation/shared/sheets/info_sheet.dart';
@@ -11,7 +12,30 @@ import '../../shared/layout/appbar.dart';
 import '../../../constants/feed/constants.dart';
 
 class PostAdvancedDetailsScreen extends StatelessWidget {
-  const PostAdvancedDetailsScreen({Key? key}) : super(key: key);
+  const PostAdvancedDetailsScreen({
+    Key? key,
+    required this.comments,
+    required this.faculty,
+    required this.genre,
+    required this.hates,
+    required this.likes,
+    required this.moderationStatus,
+    required this.saves,
+    required this.university,
+    required this.year,
+    required this.universityFullName,
+  }) : super(key: key);
+
+  final String universityFullName;
+  final int likes;
+  final int hates;
+  final int comments;
+  final int saves;
+  final String university;
+  final String faculty;
+  final String genre;
+  final int year;
+  final String moderationStatus;
 
   @override
   Widget build(BuildContext context) {
@@ -50,14 +74,22 @@ class PostAdvancedDetailsScreen extends StatelessWidget {
                             ),
                             textAlign: TextAlign.left,
                           ),
-                          const SpreadRowText(
-                              leftText: 'Likes', rightText: '182,193'),
-                          const SpreadRowText(
-                              leftText: 'Hates', rightText: '12,193'),
-                          const SpreadRowText(
-                              leftText: 'Comments', rightText: '245'),
-                          const SpreadRowText(
-                              leftText: 'Saves', rightText: '94'),
+                          SpreadRowText(
+                            leftText: 'Likes',
+                            rightText: addCommasToNumber(likes),
+                          ),
+                          SpreadRowText(
+                            leftText: 'Hates',
+                            rightText: addCommasToNumber(hates),
+                          ),
+                          SpreadRowText(
+                            leftText: 'Comments',
+                            rightText: addCommasToNumber(comments),
+                          ),
+                          SpreadRowText(
+                            leftText: 'Saves',
+                            rightText: addCommasToNumber(saves),
+                          ),
                           const SizedBox(height: 30),
                           Text(
                             'About the poster',
@@ -66,15 +98,26 @@ class PostAdvancedDetailsScreen extends StatelessWidget {
                             ),
                             textAlign: TextAlign.left,
                           ),
-                          const SpreadRowText(
-                              leftText: 'University',
-                              rightText: 'University of Victoria'),
-                          const SpreadRowText(
-                              leftText: 'Faculty', rightText: 'Engineering'),
-                          const SpreadRowText(
-                              leftText: 'Genre', rightText: 'Politics'),
-                          const SpreadRowText(
-                              leftText: 'Year of study', rightText: '2'),
+                          SpreadRowText(
+                            leftText: 'University',
+                            rightText: university,
+                          ),
+                          SpreadRowText(
+                            leftText: 'University (full)',
+                            rightText: universityFullName,
+                          ),
+                          SpreadRowText(
+                            leftText: 'Faculty',
+                            rightText: faculty,
+                          ),
+                          SpreadRowText(
+                            leftText: 'Genre',
+                            rightText: genre,
+                          ),
+                          SpreadRowText(
+                            leftText: 'Year of study',
+                            rightText: year.toString(),
+                          ),
                           const SizedBox(height: 30),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -107,9 +150,10 @@ class PostAdvancedDetailsScreen extends StatelessWidget {
                               ),
                             ],
                           ),
-                          const SpreadRowText(
-                              leftText: 'Post status',
-                              rightText: 'Not well received'),
+                          SpreadRowText(
+                            leftText: 'Post status',
+                            rightText: moderationStatus,
+                          ),
                         ],
                       ),
                     ),

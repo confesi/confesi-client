@@ -74,6 +74,8 @@ class _HottestHomeState extends State<HottestHome>
               'comments': state.posts[currentIndex].comments,
               'year': state.posts[currentIndex].year,
               'university': state.posts[currentIndex].university,
+              'university_full_name':
+                  state.posts[currentIndex].universityFullName,
               'postView': PostView.detailView
             },
           );

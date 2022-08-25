@@ -24,7 +24,9 @@ class PostModel extends Post {
     required PostChildDataModel child,
     required IconData icon,
     required List<Badge> badges,
+    required String universityFullName,
   }) : super(
+          universityFullName: universityFullName,
           universityImagePath: universityImagePath,
           badges: badges,
           title: title,
@@ -45,27 +47,27 @@ class PostModel extends Post {
   static String _facultyFormatter(String faculty) {
     switch (faculty) {
       case "LAW":
-        return "law";
+        return "Law";
       case "ENGINEERING":
-        return "engineering";
+        return "Engineering";
       case "FINE_ARTS":
-        return "fine arts";
+        return "Fine arts";
       case "COMPUTER_SCIENCE":
-        return "computer science";
+        return "Computer science";
       case "BUSINESS":
-        return "business";
+        return "Business";
       case "EDUCATION":
-        return "education";
+        return "Education";
       case "MEDICAL":
-        return "medical";
+        return "Medical";
       case "HUMAN_AND_SOCIAL_DEVELOPMENT":
-        return "human & social development";
+        return "Human & social development";
       case "HUMANITIES":
-        return "humanities";
+        return "Humanities";
       case "SCIENCE":
-        return "science";
+        return "Science";
       case "SOCIAL_SCIENCES":
-        return "social sciences";
+        return "Social sciences";
       default:
         throw ServerException();
     }
@@ -83,6 +85,23 @@ class PostModel extends Post {
         return "TWU";
       case "UFV":
         return "UFV";
+      default:
+        throw ServerException();
+    }
+  }
+
+  static String _universityFullNameFormatter(String university) {
+    switch (university) {
+      case "UVIC":
+        return "University of Victoria";
+      case "UBC":
+        return "University of British Columbia";
+      case "SFU":
+        return "Simon Fraser University";
+      case "TWU":
+        return "Trinity Western University";
+      case "UFV":
+        return "University of the Fraser Valley";
       default:
         throw ServerException();
     }
@@ -199,6 +218,7 @@ class PostModel extends Post {
       universityImagePath: imagePathFormatter(json['university']),
       icon: _genreToIcon(json['genre']),
       university: _universityFormatter(json["university"]),
+      universityFullName: _universityFullNameFormatter(json['university']),
       genre: _genreFormatter(json["genre"]),
       year: json["year"] as int,
       faculty: _facultyFormatter(json["faculty"]),

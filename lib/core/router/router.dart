@@ -70,12 +70,24 @@ class AppRouter {
             comments: args['comments'],
             year: args['year'],
             university: args['university'],
+            universityFullName: args['university_full_name'],
           ),
         );
       // An individual post's advanced stats.
       case "/home/post/stats":
         return MaterialPageRoute(
-          builder: (_) => const PostAdvancedDetailsScreen(),
+          builder: (_) => PostAdvancedDetailsScreen(
+            comments: args!['comments'],
+            universityFullName: args['university_full_name'],
+            faculty: args['faculty'],
+            genre: args['genre'],
+            hates: args['hates'],
+            likes: args['likes'],
+            moderationStatus: args['moderation_status'],
+            saves: args['saves'],
+            university: args['university'],
+            year: args['year'],
+          ),
         );
       case "/hottest/leaderboard":
         return MaterialPageRoute(

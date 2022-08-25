@@ -85,6 +85,7 @@ class _InfiniteScrollState extends State<InfiniteScroll> {
                   ? const EdgeInsets.all(0)
                   : const EdgeInsets.only(top: 16),
               child: PostTile(
+                universityFullName: widget.items[index].universityFullName,
                 badges: widget.items[index].badges,
                 postChild: widget.items[index].child,
                 icon: widget.items[index].icon,

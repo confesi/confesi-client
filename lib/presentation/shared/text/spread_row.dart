@@ -18,6 +18,7 @@ class SpreadRowText extends StatelessWidget {
       padding: const EdgeInsets.only(top: 15),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             leftText,
@@ -28,9 +29,10 @@ class SpreadRowText extends StatelessWidget {
             textAlign: TextAlign.left,
           ),
           const SizedBox(width: 15),
-          Flexible(
+          Expanded(
             child: Text(
               rightText,
+              maxLines: 5,
               style: kBody.copyWith(
                 color: Theme.of(context).colorScheme.onSurface,
               ),
