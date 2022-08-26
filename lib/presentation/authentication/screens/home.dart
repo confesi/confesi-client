@@ -1,3 +1,4 @@
+import 'package:Confessi/presentation/create_post/screens/home.dart';
 import 'package:Confessi/presentation/daily_hottest/screens/home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +38,7 @@ class _HomeScreenState extends State<HomeScreen>
     return WillPopScope(
       onWillPop: () async => false, // disables back button
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         body: Container(
           color: Theme.of(context).colorScheme.background,
           child: SafeArea(
@@ -49,9 +51,7 @@ class _HomeScreenState extends State<HomeScreen>
                   // const ExploreHome(),
                   const ExploreHome(),
                   const HottestHome(),
-                  Container(
-                    color: Colors.red,
-                  ),
+                  const CreatePostHome(),
                   Container(
                     color: Colors.orange,
                   ),

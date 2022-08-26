@@ -13,7 +13,7 @@ var kDisplay = GoogleFonts.dmSerifDisplay(
 
 /// Very big text style.
 var kHeader = GoogleFonts.inter(
-  textStyle: const TextStyle(fontSize: 17, fontWeight: FontWeight.w900),
+  textStyle: const TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
 );
 
 /// Big text style.

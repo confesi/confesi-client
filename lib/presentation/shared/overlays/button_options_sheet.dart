@@ -15,8 +15,8 @@ Future<dynamic> showButtonOptionsSheet(
     // Optionally, you can change this BorderRadius... it's kinda preference.
     builder: (context) => ClipRRect(
       borderRadius: const BorderRadius.only(
-        topLeft: Radius.circular(0),
-        topRight: Radius.circular(0),
+        topLeft: Radius.circular(20),
+        topRight: Radius.circular(20),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,

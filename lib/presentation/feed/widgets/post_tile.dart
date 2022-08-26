@@ -246,7 +246,7 @@ class PostTile extends StatelessWidget {
                 postView == PostView.feedView
                     ? Flexible(
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 10),
+                          padding: const EdgeInsets.only(left: 15),
                           child: Text(
                             isPlural(comments) == true
                                 ? "$comments comments"

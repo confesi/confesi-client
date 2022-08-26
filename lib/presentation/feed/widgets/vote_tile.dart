@@ -39,13 +39,15 @@ class VoteTile extends StatelessWidget {
               size: 15,
               color: isActive
                   ? Theme.of(context).colorScheme.primary
-                  : Theme.of(context).colorScheme.onBackground,
+                  : Theme.of(context).colorScheme.onSurface,
             ),
             const SizedBox(width: 5),
             Text(
               largeNumberFormatter(value),
               style: kDetail.copyWith(
-                color: Theme.of(context).colorScheme.primary,
+                color: isActive
+                    ? Theme.of(context).colorScheme.primary
+                    : Theme.of(context).colorScheme.onSurface,
               ),
             ),
           ],

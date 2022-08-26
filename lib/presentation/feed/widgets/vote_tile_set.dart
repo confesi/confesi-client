@@ -25,10 +25,10 @@ class VoteTileSet extends StatelessWidget {
           tooltipLocation: TooltipLocation.above,
           tooltip: 'like this content',
           icon: CupertinoIcons.hand_thumbsup,
-          isActive: true,
+          isActive: false,
           onTap: () => print('like'),
         ),
-        const SizedBox(width: 10),
+        const SizedBox(width: 15),
         VoteTile(
           value: hates,
           tooltipLocation: TooltipLocation.above,

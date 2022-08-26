@@ -1,7 +1,5 @@
 import 'package:Confessi/core/styles/typography.dart';
-import 'package:Confessi/presentation/shared/behaviours/overscroll.dart';
 import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../layout/swipebar.dart';
@@ -14,8 +12,8 @@ Future<dynamic> showInfoSheet(
     // Optionally, you can change this BorderRadius... it's kinda preference.
     builder: (context) => ClipRRect(
       borderRadius: const BorderRadius.only(
-        topLeft: Radius.circular(0),
-        topRight: Radius.circular(0),
+        topLeft: Radius.circular(20),
+        topRight: Radius.circular(20),
       ),
       child: Container(
         constraints:

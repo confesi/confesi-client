@@ -24,7 +24,10 @@ class ExploreDrawer extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const GroupText(
-                      header: "Current feed", body: "University of Victoria", leftAlign: true),
+                      header: "Current feed",
+                      body: "University of Victoria",
+                      leftAlign: true,
+                      small: true),
                   LineLayout(
                     color: Theme.of(context).colorScheme.onBackground,
                     topPadding: 15,
@@ -44,7 +47,8 @@ class ExploreDrawer extends StatelessWidget {
                       children: [
                         Text(
                           "Default feed",
-                          style: kHeader.copyWith(color: Theme.of(context).colorScheme.primary),
+                          style: kTitle.copyWith(
+                              color: Theme.of(context).colorScheme.primary),
                           textAlign: TextAlign.left,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -60,7 +64,8 @@ class ExploreDrawer extends StatelessWidget {
                         ),
                         Text(
                           "Watched universities (3/5)",
-                          style: kHeader.copyWith(color: Theme.of(context).colorScheme.primary),
+                          style: kTitle.copyWith(
+                              color: Theme.of(context).colorScheme.primary),
                           textAlign: TextAlign.left,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -86,7 +91,8 @@ class ExploreDrawer extends StatelessWidget {
                         ),
                         Text(
                           "More options",
-                          style: kHeader.copyWith(color: Theme.of(context).colorScheme.primary),
+                          style: kTitle.copyWith(
+                              color: Theme.of(context).colorScheme.primary),
                           textAlign: TextAlign.left,
                           overflow: TextOverflow.ellipsis,
                         ),
