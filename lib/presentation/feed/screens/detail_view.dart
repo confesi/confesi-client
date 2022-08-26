@@ -14,7 +14,7 @@ import 'package:keyboard_attachable/keyboard_attachable.dart';
 
 import '../../../constants/feed/constants.dart';
 import '../../../constants/shared/feed.dart';
-import '../../../domain/feed/entities/badge.dart';
+import '../../../domain/shared/entities/badge.dart';
 import '../widgets/infinite_list.dart';
 
 class Comment {

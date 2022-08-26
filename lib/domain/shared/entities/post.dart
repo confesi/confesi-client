@@ -1,4 +1,4 @@
-import 'package:Confessi/domain/feed/entities/badge.dart';
+import 'package:Confessi/domain/shared/entities/badge.dart';
 import 'package:Confessi/domain/feed/entities/post_child.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';

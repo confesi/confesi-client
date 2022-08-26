@@ -1,11 +1,7 @@
 import 'package:Confessi/constants/shared/buttons.dart';
-import 'package:Confessi/core/utils/large_number_formatter.dart';
 import 'package:Confessi/presentation/shared/buttons/option.dart';
-import 'package:Confessi/presentation/shared/sheets/button_options_sheet.dart';
 import 'package:Confessi/presentation/feed/widgets/comment_header_text.dart';
-import 'package:Confessi/presentation/authentication/screens/open.dart';
 import 'package:Confessi/presentation/feed/widgets/slidable_section.dart';
-import 'package:Confessi/presentation/feed/widgets/vote_tile_set.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +10,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import '../../../core/styles/typography.dart';
 import '../../shared/behaviours/touchable_opacity.dart';
 import '../../../constants/feed/constants.dart';
+import '../../shared/overlays/button_options_sheet.dart';
 
 class CommentTile extends StatelessWidget {
   const CommentTile({

@@ -2,7 +2,6 @@ import 'package:Confessi/constants/shared/buttons.dart';
 import 'package:Confessi/core/utils/add_commas_to_number.dart';
 import 'package:Confessi/presentation/shared/behaviours/overscroll.dart';
 import 'package:Confessi/presentation/shared/behaviours/touchable_opacity.dart';
-import 'package:Confessi/presentation/shared/sheets/info_sheet.dart';
 import 'package:Confessi/presentation/shared/text/spread_row.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +9,7 @@ import 'package:flutter/material.dart';
 import '../../../core/styles/typography.dart';
 import '../../shared/layout/appbar.dart';
 import '../../../constants/feed/constants.dart';
+import '../../shared/overlays/info_sheet.dart';
 
 class PostAdvancedDetailsScreen extends StatelessWidget {
   const PostAdvancedDetailsScreen({
@@ -99,7 +99,7 @@ class PostAdvancedDetailsScreen extends StatelessWidget {
                             textAlign: TextAlign.left,
                           ),
                           SpreadRowText(
-                            leftText: 'University',
+                            leftText: 'University (abbr.)',
                             rightText: university,
                           ),
                           SpreadRowText(

@@ -3,9 +3,8 @@ import 'package:Confessi/core/styles/typography.dart';
 import 'package:Confessi/presentation/shared/behaviours/touchable_opacity.dart';
 import 'package:Confessi/presentation/shared/text/group.dart';
 import 'package:Confessi/constants/feed/constants.dart';
-import 'package:Confessi/domain/feed/entities/badge.dart';
+import 'package:Confessi/domain/shared/entities/badge.dart';
 import 'package:Confessi/domain/feed/entities/post_child.dart';
-import 'package:Confessi/presentation/shared/sheets/button_options_sheet.dart';
 import 'package:Confessi/presentation/feed/widgets/badge_tile.dart';
 import 'package:Confessi/presentation/feed/widgets/badge_tile_set.dart';
 import 'package:Confessi/presentation/feed/widgets/quote_tile.dart';
@@ -16,6 +15,7 @@ import 'package:flutter/material.dart';
 import '../../../constants/shared/feed.dart';
 import '../../../core/utils/is_plural.dart';
 import '../../shared/buttons/option.dart';
+import '../../shared/overlays/button_options_sheet.dart';
 
 class PostTile extends StatelessWidget {
   const PostTile({

@@ -19,7 +19,8 @@ void showSnackbar(BuildContext context, String message) {
           Expanded(
             child: Text(
               message,
-              style: kBody.copyWith(color: Theme.of(context).colorScheme.background),
+              style: kBody.copyWith(
+                  color: Theme.of(context).colorScheme.background),
             ),
           ),
         ],

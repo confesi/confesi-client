@@ -3,9 +3,10 @@ import 'package:Confessi/core/styles/typography.dart';
 import 'package:Confessi/core/utils/large_number_formatter.dart';
 import 'package:Confessi/presentation/shared/buttons/option.dart';
 import 'package:Confessi/presentation/shared/behaviours/touchable_opacity.dart';
-import 'package:Confessi/presentation/shared/sheets/button_options_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import '../../shared/overlays/button_options_sheet.dart';
 
 class CommentDivider extends StatelessWidget {
   const CommentDivider({

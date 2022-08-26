@@ -56,7 +56,6 @@ class _HottestHomeState extends State<HottestHome>
     } else if (state is Data && state.posts.isNotEmpty) {
       return GestureDetector(
         onTap: () {
-          print('pageview index $currentIndex tapped!');
           Navigator.pushNamed(
             context,
             '/home/detail',

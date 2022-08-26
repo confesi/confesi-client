@@ -1,6 +1,6 @@
 import '../../../core/results/exceptions.dart';
 
-String imagePathFormatter(String university) {
+String imagePathConverter(String university) {
   switch (university) {
     case "UVIC":
       return "assets/images/universities/uvic.jpeg";

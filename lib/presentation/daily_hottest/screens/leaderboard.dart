@@ -6,7 +6,6 @@ import 'package:Confessi/presentation/shared/indicators/alert.dart';
 import 'package:Confessi/presentation/shared/indicators/loading.dart';
 import 'package:Confessi/presentation/shared/layout/appbar.dart';
 import 'package:Confessi/presentation/shared/layout/line.dart';
-import 'package:Confessi/presentation/shared/sheets/info_sheet.dart';
 import 'package:Confessi/presentation/daily_hottest/cubit/leaderboard_cubit.dart';
 import 'package:Confessi/presentation/daily_hottest/widgets/leaderboard_circle_tile.dart';
 import 'package:Confessi/presentation/daily_hottest/widgets/leaderboard_rectangle_tile.dart';
@@ -17,6 +16,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../constants/daily_hottest/constants.dart';
 import '../../../core/styles/typography.dart';
 import '../../../core/utils/large_number_formatter.dart';
+import '../../shared/overlays/info_sheet.dart';
 
 class LeaderboardScreen extends StatelessWidget {
   const LeaderboardScreen({Key? key}) : super(key: key);
@@ -30,7 +30,8 @@ class LeaderboardScreen extends StatelessWidget {
                 minSize: 90,
                 placing:
                     '${data.rankings[1].placing}${numberPostfix(data.rankings[1].placing)}',
-                university: data.rankings[1].universityName,
+                universityFullName: data.rankings[1].universityFullName,
+                universityName: data.rankings[1].universityName,
                 points: isPlural(data.rankings[1].points)
                     ? '${largeNumberFormatter(data.rankings[1].points)} pts'
                     : '${largeNumberFormatter(data.rankings[1].points)} pt',
@@ -44,7 +45,8 @@ class LeaderboardScreen extends StatelessWidget {
                 minSize: 120,
                 placing:
                     '${data.rankings[0].placing}${numberPostfix(data.rankings[0].placing)}',
-                university: data.rankings[0].universityName,
+                universityFullName: data.rankings[0].universityFullName,
+                universityName: data.rankings[0].universityName,
                 points: isPlural(data.rankings[0].points)
                     ? '${largeNumberFormatter(data.rankings[0].points)} pts'
                     : '${largeNumberFormatter(data.rankings[0].points)} pt',
@@ -58,7 +60,8 @@ class LeaderboardScreen extends StatelessWidget {
                 minSize: 90,
                 placing:
                     '${data.rankings[2].placing}${numberPostfix(data.rankings[2].placing)}',
-                university: data.rankings[2].universityName,
+                universityFullName: data.rankings[2].universityFullName,
+                universityName: data.rankings[2].universityName,
                 points: isPlural(data.rankings[2].points)
                     ? '${largeNumberFormatter(data.rankings[2].points)} pts'
                     : '${largeNumberFormatter(data.rankings[2].points)} pt',
@@ -111,7 +114,7 @@ class LeaderboardScreen extends StatelessWidget {
                                     ? '${largeNumberFormatter(state.rankings[index].points)} pts'
                                     : '${largeNumberFormatter(state.rankings[index].points)} pt',
                                 university:
-                                    state.rankings[index].universityName,
+                                    state.rankings[index].universityFullName,
                               );
                             } else {
                               return Container();

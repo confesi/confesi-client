@@ -53,6 +53,7 @@ class LeaderboardRectangleTile extends StatelessWidget {
               children: [
                 Text(
                   university,
+                  maxLines: 5,
                   style: kDetail.copyWith(
                     color: Theme.of(context).colorScheme.primary,
                   ),
