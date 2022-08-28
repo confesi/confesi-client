@@ -19,6 +19,7 @@ class HottestTile extends StatefulWidget {
     required this.hates,
     required this.likes,
     required this.title,
+    required this.text,
     required this.university,
     required this.universityImagePath,
     required this.year,
@@ -31,6 +32,7 @@ class HottestTile extends StatefulWidget {
   final int likes;
   final int hates;
   final String title;
+  final String text;
   final String university;
   final String universityImagePath;
   final int year;
@@ -129,7 +131,7 @@ class _HottestTileState extends State<HottestTile> {
                                   spaceBetween: 20,
                                   left: true,
                                   header: widget.title.isEmpty
-                                      ? kNoTitleProvided
+                                      ? widget.text
                                       : widget.title,
                                   body:
                                       '${widget.university}, Year ${widget.year}',

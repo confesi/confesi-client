@@ -604,7 +604,7 @@ class SwipeRefreshState extends State<SwipeRefresh>
                         child: CircularProgressIndicator(
                           strokeWidth: 2.5,
                           color: widget.color ??
-                              Theme.of(context).colorScheme.primary,
+                              Theme.of(context).colorScheme.onSecondary,
                         ),
                       );
                     },

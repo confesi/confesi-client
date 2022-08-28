@@ -1,3 +1,4 @@
+import 'package:Confessi/presentation/create_post/screens/details.dart';
 import 'package:Confessi/presentation/daily_hottest/screens/leaderboard.dart';
 import 'package:Confessi/presentation/feed/screens/detail_view.dart';
 import 'package:Confessi/presentation/feed/screens/post_advanced_details.dart';
@@ -73,6 +74,8 @@ class AppRouter {
             universityFullName: args['university_full_name'],
           ),
         );
+      case '/home/create_post/details':
+        return MaterialPageRoute(builder: (_) => const DetailsScreen());
       // An individual post's advanced stats.
       case "/home/post/stats":
         return MaterialPageRoute(

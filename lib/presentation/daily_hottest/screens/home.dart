@@ -102,6 +102,7 @@ class _HottestHomeState extends State<HottestHome>
                           hates: post.value.hates,
                           likes: post.value.likes,
                           title: post.value.title,
+                          text: post.value.text,
                           university: post.value.university,
                           year: post.value.year,
                         ))
@@ -165,9 +166,7 @@ class _HottestHomeState extends State<HottestHome>
                       rightIcon: CupertinoIcons.chart_bar,
                       rightIconOnPress: () => Navigator.of(context)
                           .pushNamed('/hottest/leaderboard'),
-                      leftIconVisible: true,
-                      leftIcon: CupertinoIcons.star,
-                      leftIconOnPress: () async => launchConfetti(),
+                      leftIconVisible: false,
                     ),
                     Expanded(
                       child: BlocBuilder<HottestCubit, HottestState>(

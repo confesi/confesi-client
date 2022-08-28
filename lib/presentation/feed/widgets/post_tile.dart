@@ -206,7 +206,7 @@ class PostTile extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 30),
+            SizedBox(height: title.isEmpty ? 15 : 30),
             //! Title row
             Text(
               title.length > kPreviewPostTitleLength &&
@@ -217,11 +217,13 @@ class PostTile extends StatelessWidget {
                 color: Theme.of(context).colorScheme.primary,
               ),
             ),
-            const SizedBox(height: 2),
+            title.isEmpty || getBadges().isEmpty
+                ? Container()
+                : const SizedBox(height: 2),
             BadgeTileSet(
               badges: getBadges(),
             ),
-            const SizedBox(height: 30),
+            SizedBox(height: title.isEmpty ? 15 : 30),
             //! Middle row
             Text(
               text.length > kPreviewPostTextLength &&

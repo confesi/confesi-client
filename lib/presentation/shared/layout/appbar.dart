@@ -49,33 +49,37 @@ class AppbarLayout extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            leftIconVisible
-                ? TouchableOpacity(
-                    onTap: () {
-                      if (leftIconOnPress != null) {
-                        leftIconOnPress!();
-                      } else {
-                        Navigator.pop(context);
-                      }
-                    },
-                    child: Container(
-                      color: Colors.transparent,
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: AnimatedSwitcher(
-                          duration: const Duration(milliseconds: 300),
-                          child: Icon(
-                            leftIcon ?? CupertinoIcons.back,
-                          ),
+            if (leftIconVisible)
+              TouchableOpacity(
+                onTap: () {
+                  if (leftIconOnPress != null) {
+                    leftIconOnPress!();
+                  } else {
+                    Navigator.pop(context);
+                  }
+                },
+                child: Container(
+                  color: Colors.transparent,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 300),
+                      child: Transform.translate(
+                        offset: const Offset(-4, 0),
+                        child: Icon(
+                          leftIcon ?? CupertinoIcons.back,
                         ),
                       ),
                     ),
-                  )
-                : Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Icon(rightIcon ?? CupertinoIcons.arrow_clockwise,
-                        color: Colors.transparent),
                   ),
+                ),
+              )
+            else
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: Icon(rightIcon ?? CupertinoIcons.arrow_clockwise,
+                    color: Colors.transparent),
+              ),
             Flexible(
               child: centerWidget,
             ),

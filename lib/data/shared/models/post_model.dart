@@ -66,7 +66,7 @@ class PostModel extends Post {
       hates: json['hates'] as int,
       createdDate: formatDate(json["created_date"]),
       child: PostChildDataModel.fromJson(json["child_data"]),
-      title: json['title'] as String,
+      title: json['title'] != null ? json['title'] as String : '',
       badges: badgeConverter(json['badges']),
     );
   }

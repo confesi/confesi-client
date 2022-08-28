@@ -1,38 +1,43 @@
 import 'package:Confessi/presentation/shared/behaviours/touchable_opacity.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
 
 class FloatingButton extends StatelessWidget {
-  const FloatingButton({Key? key}) : super(key: key);
+  const FloatingButton({
+    Key? key,
+    required this.onTap,
+    required this.text,
+  }) : super(key: key);
+
+  final String text;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     return TouchableOpacity(
-      onTap: () => print('tap'),
+      onTap: () => onTap(),
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
+        padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 10),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.secondary,
           borderRadius: const BorderRadius.all(
             Radius.circular(20),
           ),
         ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              'Add details',
-              style:
-                  kBody.copyWith(color: Theme.of(context).colorScheme.primary),
+        child: Hero(
+          tag: 'top-right-btn',
+          child: FittedBox(
+            fit: BoxFit.fitHeight,
+            child: Material(
+              color: Colors.transparent,
+              child: Text(
+                text,
+                style: kDetail.copyWith(
+                    color: Theme.of(context).colorScheme.onSecondary),
+              ),
             ),
-            const SizedBox(width: 5),
-            Icon(
-              CupertinoIcons.arrow_right,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-          ],
+          ),
         ),
       ),
     );

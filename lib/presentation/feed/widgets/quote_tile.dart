@@ -70,17 +70,21 @@ class QuoteTile extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    post.title.length > kPreviewQuotePostTitleLength &&
-                            postView == PostView.feedView
-                        ? "${post.title.substring(0, kPreviewQuotePostTitleLength)}..."
-                        : post.title,
-                    style: kTitle.copyWith(
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                  const SizedBox(height: 5),
+                  post.title.isNotEmpty
+                      ? Text(
+                          post.title.length > kPreviewQuotePostTitleLength &&
+                                  postView == PostView.feedView
+                              ? "${post.title.substring(0, kPreviewQuotePostTitleLength)}..."
+                              : post.title,
+                          style: kTitle.copyWith(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          textAlign: TextAlign.left,
+                        )
+                      : Container(),
+                  post.title.isNotEmpty
+                      ? const SizedBox(height: 5)
+                      : Container(),
                   Text(
                     post.text.length > kPreviewQuotePostTextLength &&
                             postView == PostView.feedView
