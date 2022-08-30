@@ -1,4 +1,5 @@
 import 'package:Confessi/presentation/create_post/screens/details.dart';
+import 'package:Confessi/presentation/create_post/screens/home.dart';
 import 'package:Confessi/presentation/daily_hottest/screens/leaderboard.dart';
 import 'package:Confessi/presentation/feed/screens/detail_view.dart';
 import 'package:Confessi/presentation/feed/screens/post_advanced_details.dart';
@@ -52,6 +53,15 @@ class AppRouter {
               ),
             ],
             child: const HomeScreen(),
+          ),
+        );
+      // The direct route to creating a post (specifically, when you're replying to somebody else's post; separate from the tab that's a "create post" screen under /home, but uses the same screen).
+      case "/home/create_replied_post":
+        return MaterialPageRoute(
+          builder: (_) => CreatePostHome(
+            viewMethod: ViewMethod.separateScreen,
+            title: args!['title'],
+            body: args['body'],
           ),
         );
       // Detailed view for each post (thread view, has comments, fully expanded text, etc.).

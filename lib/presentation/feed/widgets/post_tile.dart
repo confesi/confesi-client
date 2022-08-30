@@ -1,5 +1,6 @@
 import 'package:Confessi/constants/shared/buttons.dart';
 import 'package:Confessi/core/styles/typography.dart';
+import 'package:Confessi/domain/shared/entities/post.dart';
 import 'package:Confessi/presentation/shared/behaviours/touchable_opacity.dart';
 import 'package:Confessi/presentation/shared/text/group.dart';
 import 'package:Confessi/constants/feed/constants.dart';
@@ -163,7 +164,13 @@ class PostTile extends StatelessWidget {
                     OptionButton(
                       text: "Reply",
                       icon: CupertinoIcons.paperplane,
-                      onTap: () => print("tap"),
+                      onTap: () => Navigator.of(context).pushNamed(
+                        '/home/create_replied_post',
+                        arguments: {
+                          'title': title,
+                          'body': text,
+                        },
+                      ),
                     ),
                     OptionButton(
                       text: "Save",

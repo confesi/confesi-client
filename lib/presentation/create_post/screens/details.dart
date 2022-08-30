@@ -101,8 +101,14 @@ class DetailsScreen extends StatelessWidget {
                         rightText: 'University of Victoria',
                         bottomLine: true,
                       ),
-                      const SizedBox(height: 15),
-                      const DisclaimerText(),
+                      const DisclaimerText(
+                        text:
+                            'Please be civil, but have fun. All posts are completely anonymous (excluding above details).',
+                      ),
+                      const DisclaimerText(
+                        text:
+                            'Change your default account details in settings.',
+                      ),
                     ],
                   ),
                 ),

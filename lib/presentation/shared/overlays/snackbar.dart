@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
 
-void showSnackbar(
-    BuildContext context, String message, {VoidCallback? onClosed}) async {
+void showSnackbar(BuildContext context, String message,
+    {VoidCallback? onClosed}) async {
   ScaffoldMessenger.of(context)
       .showSnackBar(
         SnackBar(

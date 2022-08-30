@@ -51,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen>
                   // const ExploreHome(),
                   const ExploreHome(),
                   const HottestHome(),
-                  const CreatePostHome(),
+                  const CreatePostHome(viewMethod: ViewMethod.tabScreen),
                   Container(
                     color: Colors.orange,
                   ),

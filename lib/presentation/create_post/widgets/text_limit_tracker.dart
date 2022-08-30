@@ -14,9 +14,10 @@ class TextLimitTracker extends StatelessWidget {
     return Row(
       children: [
         SizedBox(
-          height: 20,
-          width: 20,
+          height: 16,
+          width: 16,
           child: CircularProgressIndicator(
+            strokeWidth: 3,
             backgroundColor: Theme.of(context).colorScheme.shadow,
             color: value >= 1
                 ? Theme.of(context).colorScheme.error
