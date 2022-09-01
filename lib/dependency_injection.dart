@@ -1,12 +1,16 @@
 import 'dart:async';
 
 import 'package:Confessi/core/authorization/http_client.dart';
+import 'package:Confessi/data/create_post/datasources/create_post_datasource.dart';
+import 'package:Confessi/data/create_post/repositories/create_post_repository_concrete.dart';
 import 'package:Confessi/data/daily_hottest/datasources/daily_hottest_datasource.dart';
 import 'package:Confessi/data/daily_hottest/datasources/leaderboard_datasource.dart';
 import 'package:Confessi/data/daily_hottest/repositories/daily_hottest_repository_concrete.dart';
 import 'package:Confessi/data/daily_hottest/repositories/leaderboard_repository_concrete.dart';
+import 'package:Confessi/domain/create_post/usecases/upload_post.dart';
 import 'package:Confessi/domain/daily_hottest/usecases/posts.dart';
 import 'package:Confessi/domain/daily_hottest/usecases/ranking.dart';
+import 'package:Confessi/presentation/create_post/cubit/post_cubit.dart';
 import 'package:Confessi/presentation/daily_hottest/cubit/hottest_cubit.dart';
 import 'package:Confessi/presentation/daily_hottest/cubit/leaderboard_cubit.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -45,6 +49,8 @@ Future<void> init() async {
   sl.registerFactory(() => LeaderboardCubit(ranking: sl()));
   // Registers the daily hottest cubit.
   sl.registerFactory(() => HottestCubit(posts: sl()));
+  // Registers the create post cubit.
+  sl.registerFactory(() => CreatePostCubit(uploadPost: sl()));
 
   //! Usecases
   // Registers the register usecase.
@@ -63,6 +69,8 @@ Future<void> init() async {
   sl.registerLazySingleton(() => Ranking(repository: sl()));
   // Registers the daily hottest usecase.
   sl.registerLazySingleton(() => Posts(repository: sl()));
+  // Registers the upload post usecase.
+  sl.registerLazySingleton(() => UploadPost(repository: sl(), api: sl()));
 
   //! Core
   // Registers custom connection checker class.
@@ -85,17 +93,22 @@ Future<void> init() async {
   // Registers the daily hottest repository.
   sl.registerLazySingleton(
       () => DailyHottestRepository(networkInfo: sl(), datasource: sl()));
+  // Registers the create post repository.
+  sl.registerLazySingleton(
+      () => CreatePostRepository(networkInfo: sl(), datasource: sl()));
 
   //! Data sources
-  // Registers the authentication data source.
+  // Registers the authentication datasource.
   sl.registerLazySingleton(
       () => AuthenticationDatasource(secureStorage: sl(), netClient: sl()));
-  // Registers the feed data source.
+  // Registers the feed datasource.
   sl.registerLazySingleton(() => FeedDatasource(api: sl()));
-  // Registers the leaderboard data source.
+  // Registers the leaderboard datasource.
   sl.registerLazySingleton(() => LeaderboardDatasource(api: sl()));
-  // Registers the daily hottest data source.
+  // Registers the daily hottest datasource.
   sl.registerLazySingleton(() => DailyHottestDatasource(api: sl()));
+  // Registers the create post datasource.
+  sl.registerLazySingleton(() => CreatePostDatasource(api: sl()));
 
   //! External
   // Registers connection checker package.

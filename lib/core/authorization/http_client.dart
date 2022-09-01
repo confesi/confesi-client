@@ -135,13 +135,14 @@ class ApiClient {
       bool isProtectedRoute, Method method, dynamic payload, String endpoint,
       {bool dummyData = false,
       String? dummyPath,
-      Duration dummyDelay = const Duration(milliseconds: 800)}) async {
+      Duration dummyDelay = const Duration(milliseconds: 800),
+      int dummyStatusCode = 200}) async {
     if (dummyData) {
       try {
         await Future.delayed(dummyDelay);
         final String dummyResponse =
             await rootBundle.loadString('assets/dummy_json/$dummyPath');
-        return http.Response(dummyResponse, 200);
+        return http.Response(dummyResponse, dummyStatusCode);
       } catch (e) {
         print(
             'ERROR: You\'ve likely messed something up with the dummy API path. Or, the asset can\'t be retreived for some reason. Full error message: $e');

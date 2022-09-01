@@ -25,19 +25,10 @@ class FloatingButton extends StatelessWidget {
             Radius.circular(20),
           ),
         ),
-        child: Hero(
-          tag: 'top-right-btn',
-          child: FittedBox(
-            fit: BoxFit.fitHeight,
-            child: Material(
-              color: Colors.transparent,
-              child: Text(
-                text,
-                style: kDetail.copyWith(
-                    color: Theme.of(context).colorScheme.onSecondary),
-              ),
-            ),
-          ),
+        child: Text(
+          text,
+          style: kDetail.copyWith(
+              color: Theme.of(context).colorScheme.onSecondary),
         ),
       ),
     );

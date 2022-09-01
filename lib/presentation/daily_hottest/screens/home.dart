@@ -1,8 +1,5 @@
-import 'dart:math';
-
 import 'package:Confessi/presentation/daily_hottest/cubit/hottest_cubit.dart';
 import 'package:Confessi/presentation/daily_hottest/widgets/hottest_tile.dart';
-import 'package:confetti/confetti.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -29,21 +26,6 @@ class _HottestHomeState extends State<HottestHome>
 
   final PageController pageController =
       PageController(viewportFraction: .9, initialPage: 0);
-
-  final ConfettiController confettiController = ConfettiController();
-
-  @override
-  void dispose() {
-    confettiController.dispose();
-    super.dispose();
-  }
-
-  Future<void> launchConfetti() async {
-    confettiController.play();
-    HapticFeedback.heavyImpact();
-    await Future.delayed(const Duration(milliseconds: 800));
-    confettiController.stop();
-  }
 
   int currentIndex = 0;
 
@@ -79,55 +61,36 @@ class _HottestHomeState extends State<HottestHome>
             },
           );
         },
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            PageView(
-                controller: pageController,
-                physics: const BouncingScrollPhysics(),
-                onPageChanged: (selectedIndex) {
-                  HapticFeedback.lightImpact();
-                  setState(() {
-                    currentIndex = selectedIndex;
-                  });
-                },
-                children: state.posts
-                    .asMap()
-                    .entries
-                    .map((post) => HottestTile(
-                          currentIndex: currentIndex,
-                          thisIndex: post.key,
-                          universityImagePath: post.value.universityImagePath,
-                          comments: post.value.comments,
-                          hates: post.value.hates,
-                          likes: post.value.likes,
-                          title: post.value.title,
-                          text: post.value.text,
-                          university: post.value.university,
-                          year: post.value.year,
-                        ))
-                    .toList()
-                    .sublist(
-                        0,
-                        state.posts.length > kMaxDisplayedHottestDailyPosts
-                            ? kMaxDisplayedHottestDailyPosts
-                            : state.posts.length)),
-            Align(
-              alignment: Alignment.center,
-              child: ConfettiWidget(
-                blastDirectionality: BlastDirectionality.explosive,
-                blastDirection: -pi / 2,
-                minBlastForce: 20,
-                maxBlastForce: 45,
-                colors: [
-                  Theme.of(context).colorScheme.secondary,
-                  Theme.of(context).colorScheme.primary,
-                ],
-                confettiController: confettiController,
-              ),
-            ),
-          ],
-        ),
+        child: PageView(
+            controller: pageController,
+            physics: const BouncingScrollPhysics(),
+            onPageChanged: (selectedIndex) {
+              HapticFeedback.lightImpact();
+              setState(() {
+                currentIndex = selectedIndex;
+              });
+            },
+            children: state.posts
+                .asMap()
+                .entries
+                .map((post) => HottestTile(
+                      currentIndex: currentIndex,
+                      thisIndex: post.key,
+                      universityImagePath: post.value.universityImagePath,
+                      comments: post.value.comments,
+                      hates: post.value.hates,
+                      likes: post.value.likes,
+                      title: post.value.title,
+                      text: post.value.text,
+                      university: post.value.university,
+                      year: post.value.year,
+                    ))
+                .toList()
+                .sublist(
+                    0,
+                    state.posts.length > kMaxDisplayedHottestDailyPosts
+                        ? kMaxDisplayedHottestDailyPosts
+                        : state.posts.length)),
       );
     } else {
       final error = state as Error;

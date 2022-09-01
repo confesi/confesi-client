@@ -9,7 +9,7 @@ class AppTheme {
     colorScheme: const ColorScheme(
       brightness: Brightness.light,
       primary: Color(0xff333333),
-      onPrimary: Colors.white,
+      onPrimary: Color.fromARGB(255, 244, 244, 244),
       secondary: Color(0xfffde5b6),
       onSecondary: Color(0xff333333),
       error: Color(0xffEB5353),

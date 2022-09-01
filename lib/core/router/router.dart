@@ -13,6 +13,7 @@ import '../../presentation/authentication/screens/onboarding.dart';
 import '../../presentation/authentication/screens/open.dart';
 import '../../presentation/authentication/screens/register.dart';
 import '../../presentation/authentication/screens/splash.dart';
+import '../../presentation/create_post/cubit/post_cubit.dart';
 import '../../presentation/daily_hottest/cubit/hottest_cubit.dart';
 import '../../presentation/daily_hottest/cubit/leaderboard_cubit.dart';
 import '../../presentation/feed/cubit/recents_cubit.dart';
@@ -26,17 +27,33 @@ class AppRouter {
     final args = routeSettings.arguments as Map<String, dynamic>?;
     switch (routeSettings.name) {
       case "/splash":
-        return MaterialPageRoute(builder: (_) => const SplashScreen());
+        return MaterialPageRoute(
+          settings: routeSettings,
+          builder: (_) => const SplashScreen(),
+        );
       case "/open":
-        return MaterialPageRoute(builder: (_) => const OpenScreen());
+        return MaterialPageRoute(
+          settings: routeSettings,
+          builder: (_) => const OpenScreen(),
+        );
       case "/onboarding":
-        return MaterialPageRoute(builder: (_) => const ShowcaseScreen());
+        return MaterialPageRoute(
+          settings: routeSettings,
+          builder: (_) => const ShowcaseScreen(),
+        );
       case "/login":
-        return MaterialPageRoute(builder: (_) => const LoginScreen());
+        return MaterialPageRoute(
+          settings: routeSettings,
+          builder: (_) => const LoginScreen(),
+        );
       case "/register":
-        return MaterialPageRoute(builder: (_) => const RegisterScreen());
+        return MaterialPageRoute(
+          settings: routeSettings,
+          builder: (_) => const RegisterScreen(),
+        );
       case "/home": //! Most of the (main) screens are tabs under the /home named route. Thus, should have their BLoC/Cubit providers here.
         return MaterialPageRoute(
+          settings: routeSettings,
           builder: (_) => MultiBlocProvider(
             providers: [
               BlocProvider(
@@ -58,6 +75,7 @@ class AppRouter {
       // The direct route to creating a post (specifically, when you're replying to somebody else's post; separate from the tab that's a "create post" screen under /home, but uses the same screen).
       case "/home/create_replied_post":
         return MaterialPageRoute(
+          settings: routeSettings,
           builder: (_) => CreatePostHome(
             viewMethod: ViewMethod.separateScreen,
             title: args!['title'],
@@ -67,6 +85,7 @@ class AppRouter {
       // Detailed view for each post (thread view, has comments, fully expanded text, etc.).
       case '/home/detail':
         return MaterialPageRoute(
+          settings: routeSettings,
           builder: (_) => DetailViewScreen(
             genre: args!['genre'],
             badges: args['badges'],
@@ -85,10 +104,17 @@ class AppRouter {
           ),
         );
       case '/home/create_post/details':
-        return MaterialPageRoute(builder: (_) => const DetailsScreen());
+        return MaterialPageRoute(
+            settings: routeSettings,
+            builder: (_) => DetailsScreen(
+                  title: args!['title'],
+                  body: args['body'],
+                  id: args['id'],
+                ));
       // An individual post's advanced stats.
       case "/home/post/stats":
         return MaterialPageRoute(
+          settings: routeSettings,
           builder: (_) => PostAdvancedDetailsScreen(
             comments: args!['comments'],
             universityFullName: args['university_full_name'],
@@ -104,6 +130,7 @@ class AppRouter {
         );
       case "/hottest/leaderboard":
         return MaterialPageRoute(
+          settings: routeSettings,
           builder: (_) => BlocProvider(
             lazy: false,
             create: (context) => sl<LeaderboardCubit>()..loadRankings(),
@@ -111,9 +138,13 @@ class AppRouter {
           ),
         );
       case "/settings":
-        return MaterialPageRoute(builder: (_) => const Text("Settings"));
+        return MaterialPageRoute(
+          settings: routeSettings,
+          builder: (_) => const Text("Settings"),
+        );
       case "/settings/watchedUniversities":
         return MaterialPageRoute(
+            settings: routeSettings,
             builder: (_) => const Text("Watched universities"));
       default:
         throw Exception("Named route ${routeSettings.name} not defined");

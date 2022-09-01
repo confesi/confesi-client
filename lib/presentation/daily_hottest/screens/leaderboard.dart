@@ -155,6 +155,7 @@ class LeaderboardScreen extends StatelessWidget {
           child: Column(
             children: [
               AppbarLayout(
+                bottomBorder: false,
                 centerWidget: Text(
                   'University Leaderboard',
                   style: kTitle.copyWith(

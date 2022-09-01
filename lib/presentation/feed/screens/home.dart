@@ -48,6 +48,7 @@ class _ExploreHomeState extends State<ExploreHome>
           children: [
             Builder(builder: (context) {
               return AppbarLayout(
+                bottomBorder: false,
                 centerWidget: Text(
                   "University of Victoria",
                   style: kTitle.copyWith(

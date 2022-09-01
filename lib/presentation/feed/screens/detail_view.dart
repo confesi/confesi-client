@@ -139,6 +139,7 @@ class _DetailViewScreenState extends State<DetailViewScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   AppbarLayout(
+                    bottomBorder: false,
                     centerWidget: Text(
                       'Thread View',
                       style: kTitle.copyWith(

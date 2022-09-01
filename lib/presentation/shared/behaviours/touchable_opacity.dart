@@ -32,7 +32,6 @@ class _TouchableOpacityState extends State<TouchableOpacity>
 
   @override
   void initState() {
-    super.initState();
     animController = AnimationController(
         vsync: this,
         duration: const Duration(milliseconds: 0),
@@ -41,6 +40,7 @@ class _TouchableOpacityState extends State<TouchableOpacity>
         parent: animController,
         curve: Curves.linear,
         reverseCurve: Curves.linear);
+    super.initState();
   }
 
   @override

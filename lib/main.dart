@@ -1,3 +1,5 @@
+import 'package:Confessi/presentation/create_post/cubit/post_cubit.dart';
+import 'package:Confessi/presentation/shared/overlays/center_overlay_message.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,6 +10,7 @@ import 'core/styles/themes.dart';
 import 'dependency_injection.dart';
 import 'presentation/authentication/cubit/authentication_cubit.dart';
 import 'presentation/authentication/screens/splash.dart';
+import 'presentation/shared/overlays/snackbar.dart';
 
 void main() async {
   await init();
@@ -27,10 +30,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      lazy: false,
-      create: (context) =>
-          sl<AuthenticationCubit>()..silentlyAuthenticateUser(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          lazy: false,
+          create: (context) =>
+              sl<AuthenticationCubit>()..silentlyAuthenticateUser(),
+        ),
+        BlocProvider(
+          lazy: false,
+          create: (context) => sl<CreatePostCubit>(),
+        ),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         useInheritedMediaQuery: kPreviewMode,

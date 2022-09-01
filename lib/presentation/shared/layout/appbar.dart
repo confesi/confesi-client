@@ -40,9 +40,9 @@ class AppbarLayout extends StatelessWidget {
           border: Border(
             bottom: BorderSide(
               color: bottomBorder
-                  ? Theme.of(context).colorScheme.background
+                  ? Theme.of(context).colorScheme.shadow
                   : Colors.transparent,
-              width: .35,
+              width: .7,
             ),
           ),
         ),
