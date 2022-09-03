@@ -43,7 +43,7 @@ class __OverlayItemState extends State<_OverlayItem>
   void initState() {
     animController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 250),
+      duration: const Duration(milliseconds: 200),
     );
     anim = CurvedAnimation(
       parent: animController,
@@ -75,13 +75,19 @@ class __OverlayItemState extends State<_OverlayItem>
       opacity: anim.value,
       child: Container(
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.onPrimary,
+          color: Theme.of(context).colorScheme.background,
           borderRadius: const BorderRadius.all(
             Radius.circular(10),
           ),
+          boxShadow: [
+            BoxShadow(
+              color: Theme.of(context).colorScheme.shadow.withOpacity(0.4),
+              blurRadius: 20,
+            ),
+          ],
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
           child: Text(
             'Posted successfully!',
             style: kBody.copyWith(

@@ -1,12 +1,8 @@
-import 'package:Confessi/domain/shared/entities/post.dart';
-import 'package:Confessi/presentation/authentication/screens/home.dart';
 import 'package:Confessi/presentation/create_post/cubit/post_cubit.dart';
 import 'package:Confessi/presentation/create_post/utils/hint_text_generator.dart';
-import 'package:Confessi/presentation/create_post/widgets/floating_button.dart';
 import 'package:Confessi/presentation/create_post/widgets/text_limit_tracker.dart';
 import 'package:Confessi/presentation/daily_hottest/widgets/preview_quote_tile.dart';
 import 'package:Confessi/presentation/shared/behaviours/touchable_opacity.dart';
-import 'package:Confessi/presentation/shared/layout/line.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,9 +11,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../constants/create_post/constants.dart';
 import '../../../core/styles/typography.dart';
 import '../../shared/behaviours/keyboard_dismiss.dart';
+import '../../shared/layout/appbar.dart';
 import '../../shared/layout/scrollable_view.dart';
 import '../../shared/overlays/center_overlay_message.dart';
-import '../../shared/overlays/snackbar.dart';
 
 // TODO: move to feature constants file and document
 enum FocusedField {
@@ -138,9 +134,6 @@ class _CreatePostHomeState extends State<CreatePostHome>
         ],
       );
 
-  bool get hasContent =>
-      (titleController.text.isNotEmpty || bodyController.text.isNotEmpty);
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -156,105 +149,129 @@ class _CreatePostHomeState extends State<CreatePostHome>
         child: Scaffold(
           backgroundColor: Theme.of(context).colorScheme.background,
           body: SafeArea(
-            child: Column(
-              children: [
-                GestureDetector(
-                  onTap: () => titleFocusNode.requestFocus(),
-                  child: Container(
-                    color: Theme.of(context).colorScheme.background,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 7),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          AnimatedSize(
-                            duration: const Duration(milliseconds: 100),
-                            child:
-                                widget.viewMethod == ViewMethod.separateScreen
-                                    ? buildButton()
-                                    : hasContent
-                                        ? buildButton()
-                                        : Container(),
-                          ),
-                          Expanded(
-                            child: AnimatedSwitcher(
-                              duration: const Duration(milliseconds: 250),
-                              child: focusedField != FocusedField.none
-                                  ? TextLimitTracker(
-                                      value: getLimitPercent(),
-                                    )
-                                  : const TextLimitTracker(
-                                      value: 0,
-                                    ),
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          FloatingButton(
-                            text: 'Add details',
-                            onTap: () => Navigator.of(context).pushNamed(
-                              '/home/create_post/details',
-                              arguments: {
-                                'title': titleController.text,
-                                'body': bodyController.text,
-                                'id': 'TEMP_ID', // TODO: add an actual id
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+              child: Column(
+            children: [
+              AppbarLayout(
+                bottomBorder: false,
+                centerWidget: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 250),
+                  child: focusedField != FocusedField.none
+                      ? TextLimitTracker(
+                          value: getLimitPercent(),
+                        )
+                      : Text(
+                          'Create Confession',
+                          style: kTitle.copyWith(
+                              color: Theme.of(context).colorScheme.primary),
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
+                        ),
                 ),
-                const SizedBox(height: 10),
-                Expanded(
-                  child: Container(
-                    color: Theme.of(context).colorScheme.shadow,
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: LayoutBuilder(
-                            builder: (context, constraints) {
-                              return KeyboardDismissLayout(
-                                child: GestureDetector(
-                                  onTap: () => bodyFocusNode.requestFocus(),
-                                  child: SizedBox(
-                                    height: constraints.maxHeight,
-                                    child: ScrollableView(
-                                      physics: const ClampingScrollPhysics(),
-                                      controller: scrollController,
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 10, right: 10),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.max,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
+                rightIconVisible: true,
+                rightIcon: CupertinoIcons.arrow_right,
+                rightIconOnPress: () {
+                  FocusScope.of(context).unfocus();
+                  Navigator.of(context)
+                      .pushNamed('/home/create_post/details', arguments: {
+                    'title': titleController.text,
+                    'body': bodyController.text,
+                    'id': "ADD LATER" // TODO: add the id later (can be null?)
+                  });
+                },
+                leftIconVisible: true,
+                leftIcon: CupertinoIcons.xmark,
+                leftIconOnPress: () => print('left icon tapped'),
+              ),
+              Expanded(
+                child: Container(
+                  color: Theme.of(context).colorScheme.background,
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: LayoutBuilder(
+                          builder: (context, constraints) {
+                            return KeyboardDismissLayout(
+                              child: GestureDetector(
+                                onTap: () => bodyFocusNode.requestFocus(),
+                                child: SizedBox(
+                                  height: constraints.maxHeight,
+                                  child: ScrollableView(
+                                    physics: const ClampingScrollPhysics(),
+                                    controller: scrollController,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 10, right: 10),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          // Transparent hitbox trick.
+                                          Container(
+                                            height: 20,
+                                            color: Colors.transparent,
+                                          ),
+                                          Container(
                                             // Transparent hitbox trick.
-                                            Container(
-                                              height: 20,
-                                              color: Colors.transparent,
+                                            color: Colors.transparent,
+                                            child: TextField(
+                                              inputFormatters: [
+                                                LengthLimitingTextInputFormatter(
+                                                    kPostTitleMaxLength),
+                                              ],
+                                              onChanged: (value) =>
+                                                  setState(() {}),
+                                              controller: titleController,
+                                              focusNode: titleFocusNode,
+                                              textCapitalization:
+                                                  TextCapitalization.sentences,
+                                              keyboardType:
+                                                  TextInputType.multiline,
+                                              maxLines: null,
+                                              style: kHeader.copyWith(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .primary),
+                                              decoration: InputDecoration(
+                                                isCollapsed: true,
+                                                border: InputBorder.none,
+                                                hintMaxLines: 3,
+                                                hintText: titleHint,
+                                              ),
+                                              textAlign: TextAlign.left,
                                             ),
-                                            Container(
+                                          ),
+                                          GestureDetector(
+                                            onTap: () =>
+                                                titleFocusNode.requestFocus(),
+                                            child: Container(
+                                              // Transparent hitbox trick.
+                                              color: Colors.transparent,
+                                              width: double.infinity,
+                                              child: const SizedBox(height: 15),
+                                            ),
+                                          ),
+                                          GestureDetector(
+                                            onTap: () =>
+                                                bodyFocusNode.requestFocus(),
+                                            child: Container(
                                               // Transparent hitbox trick.
                                               color: Colors.transparent,
                                               child: TextField(
-                                                inputFormatters: [
-                                                  LengthLimitingTextInputFormatter(
-                                                      kPostTitleMaxLength),
-                                                ],
                                                 onChanged: (value) =>
                                                     setState(() {}),
-                                                controller: titleController,
-                                                focusNode: titleFocusNode,
+                                                inputFormatters: [
+                                                  LengthLimitingTextInputFormatter(
+                                                      kPostTextMaxLength),
+                                                ],
+                                                controller: bodyController,
+                                                focusNode: bodyFocusNode,
                                                 textCapitalization:
                                                     TextCapitalization
                                                         .sentences,
                                                 keyboardType:
                                                     TextInputType.multiline,
                                                 maxLines: null,
-                                                style: kHeader.copyWith(
+                                                style: kBody.copyWith(
                                                     color: Theme.of(context)
                                                         .colorScheme
                                                         .primary),
@@ -262,92 +279,46 @@ class _CreatePostHomeState extends State<CreatePostHome>
                                                   isCollapsed: true,
                                                   border: InputBorder.none,
                                                   hintMaxLines: 3,
-                                                  hintText: titleHint,
+                                                  hintText: bodyHint,
                                                 ),
-                                                textAlign: TextAlign.left,
                                               ),
                                             ),
-                                            GestureDetector(
-                                              onTap: () =>
-                                                  titleFocusNode.requestFocus(),
-                                              child: Container(
-                                                // Transparent hitbox trick.
-                                                color: Colors.transparent,
-                                                width: double.infinity,
-                                                child:
-                                                    const SizedBox(height: 15),
-                                              ),
-                                            ),
-                                            GestureDetector(
-                                              onTap: () =>
-                                                  bodyFocusNode.requestFocus(),
-                                              child: Container(
-                                                // Transparent hitbox trick.
-                                                color: Colors.transparent,
-                                                child: TextField(
-                                                  onChanged: (value) =>
-                                                      setState(() {}),
-                                                  inputFormatters: [
-                                                    LengthLimitingTextInputFormatter(
-                                                        kPostTextMaxLength),
+                                          ),
+                                          widget.title != null &&
+                                                  widget.body != null
+                                              ? Column(
+                                                  children: [
+                                                    const SizedBox(
+                                                      height: 20,
+                                                    ),
+                                                    PreviewQuoteTile(
+                                                      body:
+                                                          widget.body as String,
+                                                      title: widget.title
+                                                          as String,
+                                                    ),
                                                   ],
-                                                  controller: bodyController,
-                                                  focusNode: bodyFocusNode,
-                                                  textCapitalization:
-                                                      TextCapitalization
-                                                          .sentences,
-                                                  keyboardType:
-                                                      TextInputType.multiline,
-                                                  maxLines: null,
-                                                  style: kBody.copyWith(
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .primary),
-                                                  decoration: InputDecoration(
-                                                    isCollapsed: true,
-                                                    border: InputBorder.none,
-                                                    hintMaxLines: 3,
-                                                    hintText: bodyHint,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            widget.title != null &&
-                                                    widget.body != null
-                                                ? Column(
-                                                    children: [
-                                                      const SizedBox(
-                                                        height: 20,
-                                                      ),
-                                                      PreviewQuoteTile(
-                                                        body: widget.body
-                                                            as String,
-                                                        title: widget.title
-                                                            as String,
-                                                      ),
-                                                    ],
-                                                  )
-                                                : Container(),
-                                            const SizedBox(
-                                              height: 30,
-                                            ), // Adds some padding to the bottom.
-                                          ],
-                                        ),
+                                                )
+                                              : Container(),
+                                          const SizedBox(
+                                            height: 30,
+                                          ), // Adds some padding to the bottom.
+                                        ],
                                       ),
                                     ),
                                   ),
                                 ),
-                              );
-                            },
-                          ),
+                              ),
+                            );
+                          },
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
-          ),
+              ),
+            ],
+          )),
         ),
       ),
     );

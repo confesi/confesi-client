@@ -125,7 +125,7 @@ class _CommentSheetState extends State<CommentSheet>
                                         onTap: () {
                                           // Clears text.
                                           commentController.clear();
-                                          // Pushes down keyboard (unfocus).
+                                          // Pushes down oard (unfocus).
                                           FocusScope.of(context).unfocus();
                                         },
                                       ),
@@ -169,13 +169,6 @@ class _CommentSheetState extends State<CommentSheet>
                 ),
               ],
             ),
-            // Positioned(
-            //   right: 0,
-            //   bottom: 50,
-            //   child: FloatingActionButton(
-            //     onPressed: () => print('tap'),
-            //   ),
-            // ),
           ],
         ),
       ),

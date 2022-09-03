@@ -124,108 +124,103 @@ class _DetailViewScreenState extends State<DetailViewScreen> {
       ),
       backgroundColor: Theme.of(context).colorScheme.background,
       resizeToAvoidBottomInset: true,
-      body: Stack(
-        children: [
-          SafeArea(
-            maintainBottomViewPadding: true,
-            child: FooterLayout(
-              footer: KeyboardAttachable(
-                child: CommentSheet(
-                  onSubmit: (comment) => print(comment),
-                  maxCharacters: kMaxCommentLength,
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  AppbarLayout(
-                    bottomBorder: false,
-                    centerWidget: Text(
-                      'Thread View',
-                      style: kTitle.copyWith(
-                          color: Theme.of(context).colorScheme.primary),
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.center,
-                    ),
-                    leftIconVisible: true,
-                    rightIcon: atTop ? null : CupertinoIcons.arrow_up_to_line,
-                    rightIconVisible: atTop ? false : true,
-                    rightIconOnPress: () {
-                      atTop ? null : controller.scrollToTop();
-                    },
-                  ),
-                  Expanded(
-                    child: Stack(
-                      children: [
-                        InfiniteList(
-                          controller: controller,
-                          refreshIndicatorBackgroundColor:
-                              Theme.of(context).colorScheme.secondary,
-                          // TODO: implement these widgets:
-                          fullPageLoading: const Text('full page loading'),
-                          fullPageError: const Text('full page error'),
-                          fullPageEmpty: const Text('full page empty'),
-                          feedLoading: const Text('feed loading'),
-                          feedError: const Text('feed error'),
-                          feedEmpty: const Text('feed empty'),
-                          itemBuilder: (context, index) {
-                            return CommentTile(
-                              likes: index,
-                              hates: index,
-                              text: 'dummy text here: $index',
-                              depth: CommentDepth.root,
-                            );
-                          },
-                          header: Column(
-                            children: [
-                              PostTile(
-                                badges: widget.badges,
-                                postChild: widget.postChild,
-                                icon: widget.icon,
-                                postView: PostView.detailView,
-                                university: widget.university,
-                                genre: widget.genre,
-                                time: widget.time,
-                                faculty: widget.faculty,
-                                text: widget.text,
-                                title: widget.title,
-                                likes: widget.likes,
-                                hates: widget.hates,
-                                comments: widget.comments,
-                                year: widget.year,
-                                universityFullName: widget.universityFullName,
-                              ),
-                              CommentDivider(
-                                comments: widget.comments,
-                              ),
-                            ],
-                          ),
-                        ),
-                        Positioned(
-                          right: 10,
-                          bottom: 10,
-                          child: KeyboardVisibilityBuilder(
-                            builder: (context, isKeyboardVisible) {
-                              return CircleCommentSwitcherButton(
-                                visible: !isKeyboardVisible,
-                                scrollToRootDirection:
-                                    ScrollToRootDirection.down,
-                                controller: controller,
-                              );
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  // Expanded(
-                  //   child:
-                  // ),
-                ],
-              ),
+      body: SafeArea(
+        maintainBottomViewPadding: true,
+        child: FooterLayout(
+          footer: KeyboardAttachable(
+            child: CommentSheet(
+              onSubmit: (comment) => print(comment),
+              maxCharacters: kMaxCommentLength,
             ),
           ),
-        ],
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AppbarLayout(
+                bottomBorder: false,
+                centerWidget: Text(
+                  'Thread View',
+                  style: kTitle.copyWith(
+                      color: Theme.of(context).colorScheme.primary),
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                ),
+                leftIconVisible: true,
+                rightIcon: atTop ? null : CupertinoIcons.arrow_up_to_line,
+                rightIconVisible: atTop ? false : true,
+                rightIconOnPress: () {
+                  atTop ? null : controller.scrollToTop();
+                },
+              ),
+              Expanded(
+                child: Stack(
+                  children: [
+                    InfiniteList(
+                      controller: controller,
+                      refreshIndicatorBackgroundColor:
+                          Theme.of(context).colorScheme.secondary,
+                      // TODO: implement these widgets:
+                      fullPageLoading: const Text('full page loading'),
+                      fullPageError: const Text('full page error'),
+                      fullPageEmpty: const Text('full page empty'),
+                      feedLoading: const Text('feed loading'),
+                      feedError: const Text('feed error'),
+                      feedEmpty: const Text('feed empty'),
+                      itemBuilder: (context, index) {
+                        return CommentTile(
+                          likes: index,
+                          hates: index,
+                          text: 'dummy text here: $index',
+                          depth: CommentDepth.root,
+                        );
+                      },
+                      header: Column(
+                        children: [
+                          PostTile(
+                            badges: widget.badges,
+                            postChild: widget.postChild,
+                            icon: widget.icon,
+                            postView: PostView.detailView,
+                            university: widget.university,
+                            genre: widget.genre,
+                            time: widget.time,
+                            faculty: widget.faculty,
+                            text: widget.text,
+                            title: widget.title,
+                            likes: widget.likes,
+                            hates: widget.hates,
+                            comments: widget.comments,
+                            year: widget.year,
+                            universityFullName: widget.universityFullName,
+                          ),
+                          CommentDivider(
+                            comments: widget.comments,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Positioned(
+                      right: 10,
+                      bottom: 10,
+                      child: KeyboardVisibilityBuilder(
+                        builder: (context, isKeyboardVisible) {
+                          return CircleCommentSwitcherButton(
+                            visible: !isKeyboardVisible,
+                            scrollToRootDirection: ScrollToRootDirection.down,
+                            controller: controller,
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              // Expanded(
+              //   child:
+              // ),
+            ],
+          ),
+        ),
       ),
     );
   }

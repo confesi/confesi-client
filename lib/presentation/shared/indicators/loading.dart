@@ -10,10 +10,9 @@ class LoadingIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 40,
-      height: 40,
-      padding: const EdgeInsets.all(10),
+    return SizedBox(
+      width: 20,
+      height: 20,
       child: CircularProgressIndicator(
         strokeWidth: 2.5,
         color: color ?? Theme.of(context).colorScheme.primary,

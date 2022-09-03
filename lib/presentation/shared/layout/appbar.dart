@@ -15,7 +15,6 @@ class AppbarLayout extends StatelessWidget {
     this.rightIconVisible = false,
     required this.centerWidget,
     this.centerWidgetFullWidth = false,
-    this.heroAnimEnabled = true,
     Key? key,
   }) : super(key: key);
 
@@ -28,7 +27,6 @@ class AppbarLayout extends StatelessWidget {
   final Function? leftIconOnPress;
   final IconData? rightIcon;
   final Function? rightIconOnPress;
-  final bool heroAnimEnabled;
 
   @override
   Widget build(BuildContext context) {
@@ -83,31 +81,33 @@ class AppbarLayout extends StatelessWidget {
             Flexible(
               child: centerWidget,
             ),
-            rightIconVisible
-                ? TouchableOpacity(
-                    onTap: () {
-                      if (rightIconOnPress != null) {
-                        rightIconOnPress!();
-                      }
-                    },
-                    child: Container(
-                      color: Colors.transparent,
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: AnimatedSwitcher(
-                          duration: const Duration(milliseconds: 300),
-                          child: Icon(
-                            rightIcon,
-                          ),
-                        ),
+            if (rightIconVisible)
+              TouchableOpacity(
+                onTap: () {
+                  if (rightIconOnPress != null) {
+                    rightIconOnPress!();
+                  }
+                },
+                child: Container(
+                  // Transparent hitbox trick.
+                  color: Colors.transparent,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 300),
+                      child: Icon(
+                        rightIcon,
                       ),
                     ),
-                  )
-                : Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Icon(rightIcon ?? CupertinoIcons.arrow_clockwise,
-                        color: Colors.transparent),
                   ),
+                ),
+              )
+            else
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: Icon(rightIcon ?? CupertinoIcons.arrow_clockwise,
+                    color: Colors.transparent),
+              ),
           ],
         ),
       ),

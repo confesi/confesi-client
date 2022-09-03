@@ -9,16 +9,27 @@ class TextLimitTracker extends StatelessWidget {
 
   final double value;
 
+  String getText() {
+    if (value >= 1) {
+      return "Limit reached";
+    } else if (value > .7) {
+      return "Slow down...";
+    } else {
+      return "Character limit";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(
           height: 16,
           width: 16,
           child: CircularProgressIndicator(
             strokeWidth: 3,
-            backgroundColor: Theme.of(context).colorScheme.shadow,
+            backgroundColor: Theme.of(context).colorScheme.onBackground,
             color: value >= 1
                 ? Theme.of(context).colorScheme.error
                 : Theme.of(context).colorScheme.primary,
@@ -26,26 +37,14 @@ class TextLimitTracker extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 10),
-        Expanded(
-          child: value >= 1
-              ? Text(
-                  'Limit reached!',
-                  key: const ValueKey('limit'),
-                  style: kDetail.copyWith(
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                  textAlign: TextAlign.left,
-                  overflow: TextOverflow.ellipsis,
-                )
-              : Text(
-                  'Character limit',
-                  key: const ValueKey('valid'),
-                  style: kDetail.copyWith(
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                  textAlign: TextAlign.left,
-                  overflow: TextOverflow.ellipsis,
-                ),
+        Text(
+          'Limit',
+          key: UniqueKey(),
+          style: kTitle.copyWith(
+            color: Theme.of(context).colorScheme.primary,
+          ),
+          textAlign: TextAlign.left,
+          overflow: TextOverflow.ellipsis,
         )
       ],
     );
