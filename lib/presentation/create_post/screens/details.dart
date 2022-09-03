@@ -1,23 +1,13 @@
-import 'package:Confessi/presentation/create_post/cubit/post_cubit.dart';
 import 'package:Confessi/presentation/create_post/widgets/disclaimer_text.dart';
-import 'package:Confessi/presentation/create_post/widgets/text_row.dart';
-import 'package:Confessi/presentation/shared/behaviours/touchable_opacity.dart';
-import 'package:Confessi/presentation/shared/buttons/action.dart';
+import 'package:Confessi/presentation/create_post/widgets/picker_sheet.dart';
 import 'package:Confessi/presentation/shared/buttons/long.dart';
-import 'package:Confessi/presentation/shared/buttons/option.dart';
-import 'package:Confessi/presentation/shared/buttons/pop.dart';
-import 'package:Confessi/presentation/shared/buttons/simple_text.dart';
-import 'package:Confessi/presentation/shared/buttons/single_text.dart';
-import 'package:Confessi/presentation/shared/buttons/touchable_text.dart';
 import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
 import 'package:Confessi/presentation/shared/text/spread_row.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/styles/typography.dart';
 import '../../shared/layout/appbar.dart';
-import '../../shared/layout/line.dart';
 
 class DetailsScreen extends StatefulWidget {
   const DetailsScreen({
@@ -94,7 +84,13 @@ class _DetailsScreenState extends State<DetailsScreen>
                     SpreadRowText(
                       leftText: 'University',
                       rightText: "UVic",
-                      onPress: () => print('tap'),
+                      onPress: () => showPickerSheet(
+                        context,
+                        ["item1", "item2", "item3"],
+                        0,
+                        "University",
+                        (index) => print(index),
+                      ),
                     ),
                     SpreadRowText(
                       leftText: 'Faculty',

@@ -1,3 +1,4 @@
+import 'package:Confessi/presentation/shared/buttons/long.dart';
 import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
 import 'package:Confessi/presentation/shared/layout/swipebar.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,63 +24,70 @@ Future<dynamic> showPickerSheet(BuildContext context, List<String> items,
             const SizedBox(height: 15),
             Text(
               header,
-              style:
-                  kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
+              style: kTitle.copyWith(
+                color: Theme.of(context).colorScheme.primary,
+              ),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 5),
             Text(
-              "Change your category",
+              "Selections save automatically",
               style: kBody.copyWith(
-                  color: Theme.of(context).colorScheme.onSurface),
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
               textAlign: TextAlign.center,
             ),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: ScrollableView(
-                  child: CupertinoPicker(
-                    scrollController:
-                        FixedExtentScrollController(initialItem: index),
-                    selectionOverlay: Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .surface
-                            .withOpacity(0.4),
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(10),
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: LayoutBuilder(builder: (context, constraints) {
+                    return ScrollableView(
+                      child: SizedBox(
+                        height: constraints.maxHeight,
+                        child: CupertinoPicker(
+                          scrollController:
+                              FixedExtentScrollController(initialItem: index),
+                          selectionOverlay: Container(
+                            decoration: BoxDecoration(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSurface
+                                  .withOpacity(0.15),
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(10),
+                              ),
+                            ),
+                          ),
+                          backgroundColor: Colors.transparent,
+                          looping: false,
+                          itemExtent: 40,
+                          onSelectedItemChanged: (newIndex) {
+                            HapticFeedback.lightImpact();
+                            updateState(newIndex);
+                          },
+                          children: items
+                              .map((item) => Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10),
+                                    child: Center(
+                                      child: Text(
+                                        item,
+                                        style: kBody.copyWith(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                        overflow: TextOverflow.ellipsis,
+                                        textScaleFactor: 1,
+                                      ),
+                                    ),
+                                  ))
+                              .toList(),
                         ),
                       ),
-                    ),
-                    backgroundColor: Colors.transparent,
-                    looping: false,
-                    itemExtent: 40,
-                    onSelectedItemChanged: (newIndex) {
-                      HapticFeedback.lightImpact();
-                      updateState(newIndex);
-                    },
-                    children: items
-                        .map((item) => Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 15),
-                              child: Center(
-                                child: Text(
-                                  item,
-                                  style: kBody.copyWith(
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                  overflow: TextOverflow.ellipsis,
-                                  textScaleFactor: 1,
-                                ),
-                              ),
-                            ))
-                        .toList(),
-                  ),
-                ),
-              ),
+                    );
+                  })),
             ),
           ],
         ),

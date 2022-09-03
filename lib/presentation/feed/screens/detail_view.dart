@@ -158,7 +158,9 @@ class _DetailViewScreenState extends State<DetailViewScreen> {
                     InfiniteList(
                       controller: controller,
                       refreshIndicatorBackgroundColor:
-                          Theme.of(context).colorScheme.secondary,
+                          Theme.of(context).colorScheme.background,
+                      refreshIndicatorColor:
+                          Theme.of(context).colorScheme.primary,
                       // TODO: implement these widgets:
                       fullPageLoading: const Text('full page loading'),
                       fullPageError: const Text('full page error'),

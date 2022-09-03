@@ -17,35 +17,38 @@ class LongButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TouchableOpacity(
-      onTap: () => onPress(),
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.primary,
-          borderRadius: const BorderRadius.all(
-            Radius.circular(10),
+    return IgnorePointer(
+      ignoring: isLoading ? true : false,
+      child: TouchableOpacity(
+        onTap: () => onPress(),
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.primary,
+            borderRadius: const BorderRadius.all(
+              Radius.circular(10),
+            ),
           ),
-        ),
-        child: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 250),
-          child: Container(
-            key: UniqueKey(),
-            constraints: const BoxConstraints(minHeight: 25),
-            child: Center(
-              child: isLoading
-                  ? LoadingIndicator(
-                      color: Theme.of(context).colorScheme.onPrimary,
-                    )
-                  : Text(
-                      'Submit Confession',
-                      style: kTitle.copyWith(
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 250),
+            child: Container(
+              key: UniqueKey(),
+              constraints: const BoxConstraints(minHeight: 25),
+              child: Center(
+                child: isLoading
+                    ? LoadingIndicator(
                         color: Theme.of(context).colorScheme.onPrimary,
+                      )
+                    : Text(
+                        'Submit Confession',
+                        style: kTitle.copyWith(
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      textAlign: TextAlign.center,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+              ),
             ),
           ),
         ),

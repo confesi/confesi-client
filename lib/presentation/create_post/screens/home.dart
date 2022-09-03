@@ -82,7 +82,7 @@ class _CreatePostHomeState extends State<CreatePostHome>
   @override
   void initState() {
     HintText hintText = getHint();
-    titleHint = '(optional) ${hintText.title}';
+    titleHint = '${hintText.title} (optional)';
     bodyHint = hintText.body;
     titleFocusNode.addListener(() {
       setNoFocus();

@@ -35,7 +35,7 @@ Future<dynamic> showInfoSheet(
             const SizedBox(height: 30),
             Flexible(
               child: ScrollableView(
-                horizontalPadding: 15,
+                horizontalPadding: 10,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,

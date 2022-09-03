@@ -1,4 +1,5 @@
 import 'package:Confessi/constants/shared/buttons.dart';
+import 'package:Confessi/presentation/create_post/widgets/text_limit_tracker.dart';
 import 'package:Confessi/presentation/shared/buttons/simple_text.dart';
 import 'package:flutter/material.dart';
 
@@ -114,8 +115,7 @@ class _CommentSheetState extends State<CommentSheet>
                                   padding:
                                       const EdgeInsets.only(bottom: 15, top: 5),
                                   child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       SimpleTextButton(
                                         tooltipLocation: TooltipLocation.above,
@@ -129,23 +129,17 @@ class _CommentSheetState extends State<CommentSheet>
                                           FocusScope.of(context).unfocus();
                                         },
                                       ),
-                                      const SizedBox(width: 5),
-                                      Flexible(
-                                        child: Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            '$commentLength/${widget.maxCharacters} char.',
-                                            textAlign: TextAlign.left,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: kDetail.copyWith(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .onSurface,
-                                            ),
-                                          ),
+                                      const SizedBox(width: 15),
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: TextLimitTracker(
+                                          noText: true,
+                                          value: commentLength /
+                                              widget.maxCharacters,
                                         ),
                                       ),
                                       const SizedBox(width: 5),
+                                      const Spacer(),
                                       SimpleTextButton(
                                         tapType: TapType.strongImpact,
                                         tooltipLocation: TooltipLocation.above,

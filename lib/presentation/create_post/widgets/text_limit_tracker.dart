@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 class TextLimitTracker extends StatelessWidget {
   const TextLimitTracker({
     required this.value,
+    this.noText = false,
     Key? key,
   }) : super(key: key);
 
   final double value;
+  final bool noText;
 
   String getText() {
     if (value >= 1) {
@@ -36,16 +38,22 @@ class TextLimitTracker extends StatelessWidget {
             value: value,
           ),
         ),
-        const SizedBox(width: 10),
-        Text(
-          'Limit',
-          key: UniqueKey(),
-          style: kTitle.copyWith(
-            color: Theme.of(context).colorScheme.primary,
-          ),
-          textAlign: TextAlign.left,
-          overflow: TextOverflow.ellipsis,
-        )
+        noText
+            ? Container()
+            : Row(
+                children: [
+                  const SizedBox(width: 10),
+                  Text(
+                    'Limit',
+                    key: UniqueKey(),
+                    style: kTitle.copyWith(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    textAlign: TextAlign.left,
+                    overflow: TextOverflow.ellipsis,
+                  )
+                ],
+              ),
       ],
     );
   }
