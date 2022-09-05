@@ -1,3 +1,4 @@
+import 'package:Confessi/presentation/create_post/cubit/post_cubit.dart';
 import 'package:Confessi/presentation/create_post/widgets/disclaimer_text.dart';
 import 'package:Confessi/presentation/create_post/widgets/picker_sheet.dart';
 import 'package:Confessi/presentation/shared/buttons/long.dart';
@@ -5,6 +6,7 @@ import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
 import 'package:Confessi/presentation/shared/text/spread_row.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/styles/typography.dart';
 import '../../shared/layout/appbar.dart';
@@ -108,9 +110,17 @@ class _DetailsScreenState extends State<DetailsScreen>
                             'Please be civil when posting, but have fun! All confessions are anonymous, excluding the details provided above.'),
                     const SizedBox(height: 30),
                     LongButton(
-                      onPress: () => setState(() {
-                        loading = !loading;
-                      }),
+                      text: 'Submit Confession',
+                      onPress: () async {
+                        setState(() {
+                          loading = true;
+                        });
+                        await context.read<CreatePostCubit>().uploadUserPost(
+                            widget.title, widget.body, widget.id);
+                        setState(() {
+                          loading = false;
+                        });
+                      },
                       isLoading: loading,
                     ),
                   ],

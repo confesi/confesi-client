@@ -9,10 +9,12 @@ class LongButton extends StatelessWidget {
   const LongButton({
     Key? key,
     this.isLoading = false,
+    required this.text,
     required this.onPress,
   }) : super(key: key);
 
   final bool isLoading;
+  final String text;
   final VoidCallback onPress;
 
   @override
@@ -25,7 +27,7 @@ class LongButton extends StatelessWidget {
           width: double.infinity,
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primary,
+            color: Theme.of(context).colorScheme.secondary,
             borderRadius: const BorderRadius.all(
               Radius.circular(10),
             ),
@@ -38,12 +40,12 @@ class LongButton extends StatelessWidget {
               child: Center(
                 child: isLoading
                     ? LoadingIndicator(
-                        color: Theme.of(context).colorScheme.onPrimary,
+                        color: Theme.of(context).colorScheme.onSecondary,
                       )
                     : Text(
-                        'Submit Confession',
-                        style: kTitle.copyWith(
-                          color: Theme.of(context).colorScheme.onPrimary,
+                        text,
+                        style: kBody.copyWith(
+                          color: Theme.of(context).colorScheme.onSecondary,
                         ),
                         textAlign: TextAlign.center,
                         overflow: TextOverflow.ellipsis,

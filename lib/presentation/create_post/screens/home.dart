@@ -180,7 +180,10 @@ class _CreatePostHomeState extends State<CreatePostHome>
                 },
                 leftIconVisible: true,
                 leftIcon: CupertinoIcons.xmark,
-                leftIconOnPress: () => print('left icon tapped'),
+                leftIconOnPress: () {
+                  clearTextfields();
+                  Navigator.popUntil(context, ModalRoute.withName('/home'));
+                },
               ),
               Expanded(
                 child: Container(

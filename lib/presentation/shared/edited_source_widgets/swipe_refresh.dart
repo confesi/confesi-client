@@ -5,6 +5,7 @@
 import 'dart:async';
 import 'dart:math' as math;
 
+import 'package:Confessi/presentation/shared/indicators/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -601,10 +602,8 @@ class SwipeRefreshState extends State<SwipeRefresh>
                                 Theme.of(context).colorScheme.background,
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(20))),
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2.5,
-                          color: widget.color ??
-                              Theme.of(context).colorScheme.onSecondary,
+                        child: LoadingIndicator(
+                          color: widget.color,
                         ),
                       );
                     },

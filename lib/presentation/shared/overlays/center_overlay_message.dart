@@ -77,19 +77,19 @@ class __OverlayItemState extends State<_OverlayItem>
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.background,
           borderRadius: const BorderRadius.all(
-            Radius.circular(10),
+            Radius.circular(5),
           ),
-          boxShadow: [
-            BoxShadow(
-              color: Theme.of(context).colorScheme.shadow.withOpacity(0.4),
-              blurRadius: 20,
-            ),
-          ],
+          // boxShadow: [
+          //   BoxShadow(
+          //     color: Theme.of(context).colorScheme.shadow.withOpacity(0.4),
+          //     blurRadius: 20,
+          //   ),
+          // ],
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+          padding: const EdgeInsets.all(10),
           child: Text(
-            'Posted successfully!',
+            'Posted',
             style: kBody.copyWith(
               color: Theme.of(context).colorScheme.primary,
             ),
