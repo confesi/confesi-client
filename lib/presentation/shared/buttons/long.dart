@@ -25,32 +25,74 @@ class LongButton extends StatelessWidget {
         onTap: () => onPress(),
         child: Container(
           width: double.infinity,
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.secondary,
             borderRadius: const BorderRadius.all(
               Radius.circular(10),
             ),
           ),
-          child: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 250),
-            child: Container(
-              key: UniqueKey(),
-              constraints: const BoxConstraints(minHeight: 25),
-              child: Center(
-                child: isLoading
-                    ? LoadingIndicator(
-                        color: Theme.of(context).colorScheme.onSecondary,
-                      )
-                    : Text(
-                        text,
-                        style: kBody.copyWith(
-                          color: Theme.of(context).colorScheme.onSecondary,
+          child: Center(
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 250),
+              child: isLoading
+                  ? Center(
+                      key: const ValueKey('indicator'),
+                      child: IntrinsicHeight(
+                        child: Stack(
+                          children: [
+                            Opacity(
+                              opacity: 0,
+                              child: Text(
+                                "text",
+                                style: kBody.copyWith(
+                                  color:
+                                      Theme.of(context).colorScheme.onSecondary,
+                                ),
+                                textAlign: TextAlign.center,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            Center(
+                              child: LoadingIndicator(
+                                color:
+                                    Theme.of(context).colorScheme.onSecondary,
+                              ),
+                            ),
+                          ],
                         ),
-                        textAlign: TextAlign.center,
-                        overflow: TextOverflow.ellipsis,
                       ),
-              ),
+                    )
+                  : Center(
+                      key: const ValueKey('text'),
+                      child: Stack(
+                        children: [
+                          Opacity(
+                            opacity: 0,
+                            child: Container(
+                              color: Colors.green.withOpacity(0.2),
+                              child: Center(
+                                child: LoadingIndicator(
+                                  color:
+                                      Theme.of(context).colorScheme.onSecondary,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Align(
+                            child: Text(
+                              text,
+                              style: kBody.copyWith(
+                                color:
+                                    Theme.of(context).colorScheme.onSecondary,
+                              ),
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
             ),
           ),
         ),

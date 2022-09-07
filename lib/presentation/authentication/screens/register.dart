@@ -10,7 +10,7 @@ import '../../shared/behaviours/keyboard_dismiss.dart';
 import '../../shared/layout/minimal_appbar.dart';
 import '../../shared/text/link.dart';
 import '../../shared/textfields/bulge.dart';
-import '../widgets/fade_size_text.dart';
+import '../../shared/text/fade_size_text.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);

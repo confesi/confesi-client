@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:Confessi/core/results/successes.dart';
 import '../../../core/authorization/http_client.dart';
 import '../../../core/results/exceptions.dart';
+import '../utils/error_message_to_exception.dart';
 
 abstract class ICreatePostDatasource {
   Future<Success> uploadPost(String title, String body, String id);
@@ -14,20 +17,23 @@ class CreatePostDatasource implements ICreatePostDatasource {
   @override
   Future<Success> uploadPost(String title, String body, String? id) async {
     final response = await api.req(
-        true,
-        Method.post,
-        {
-          'title': title,
-          'body': body,
-          '_id': id,
-        },
-        '/api/create/post',
-        dummyData: true,
-        dummyPath: 'api.create.post.json');
+      true,
+      Method.post,
+      {
+        'title': title,
+        'body': body,
+        '_id': id,
+      },
+      '/api/create/post',
+      dummyData: true,
+      dummyPath: 'api.create.post.json',
+      dummyErrorChance: 1,
+      dummyErrorMessage: 'no content',
+    );
     if (response.statusCode == 200 || response.statusCode == 201) {
       return ApiSuccess();
     } else {
-      throw ServerException();
+      throw errorMessageToException(jsonDecode(response.body));
     }
   }
 }

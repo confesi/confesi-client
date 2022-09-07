@@ -10,7 +10,7 @@ import '../../../domain/authenticatioin/usecases/logout.dart';
 import '../../../domain/authenticatioin/usecases/register.dart';
 import '../../../domain/authenticatioin/usecases/silent_authentication.dart';
 import '../utils/email_validation.dart';
-import '../utils/empty_validator.dart';
+import '../../shared/utils/empty_validator.dart';
 import '../utils/failure_to_message.dart';
 import '../utils/password_validation.dart';
 import '../utils/username_validation.dart';

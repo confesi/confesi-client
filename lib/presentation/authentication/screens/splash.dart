@@ -1,5 +1,7 @@
+import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
 import 'package:flutter/material.dart';
 
+import '../../../core/generators/intro_text_generator.dart';
 import '../../../core/styles/typography.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -10,37 +12,41 @@ class SplashScreen extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
-      body: SafeArea(
-        child: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Hero(
-                tag: "logo",
-                child: Image.asset(
-                  "assets/images/logo.jpg",
-                  width: width > 400 ? 400 : width * 2 / 3,
-                  fit: BoxFit.contain,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: SizedBox(
-                  width: width > 300 ? 300 : width * 2 / 3 - 100,
-                  child: Text(
-                    'This is a dummy tip on how to use the app. It should be short.',
-                    style: kBody.copyWith(
-                      color: Theme.of(context).colorScheme.onSurface,
+      body: SafeArea(child: LayoutBuilder(builder: (context, constraints) {
+        return Align(
+          child: ScrollableView(
+            child: SizedBox(
+              height: constraints.maxHeight,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Hero(
+                    tag: "logo",
+                    child: Image.asset(
+                      "assets/images/logo.jpg",
+                      width: width > 400 ? 400 : width * 2 / 3,
+                      fit: BoxFit.contain,
                     ),
-                    textAlign: TextAlign.center,
                   ),
-                ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: SizedBox(
+                      width: width > 300 ? 300 : width * 2 / 3 - 100,
+                      child: Text(
+                        getIntro().text,
+                        style: kBody.copyWith(
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      })),
     );
   }
 }

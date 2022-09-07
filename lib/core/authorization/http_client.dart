@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:Confessi/constants/shared/general.dart';
 import 'package:Confessi/core/results/exceptions.dart';
@@ -135,8 +136,19 @@ class ApiClient {
       bool isProtectedRoute, Method method, dynamic payload, String endpoint,
       {bool dummyData = false,
       String? dummyPath,
+
+      // Percentage change of there being an error thrown. Defaults to 0% (0.0).
+      double dummyErrorChance = 0.0,
+      int dummyErrorStatusCode = 400,
+      String dummyErrorMessage = 'default error',
       Duration dummyDelay = const Duration(milliseconds: 800),
       int dummyStatusCode = 200}) async {
+    // Random chance of returning error.
+    if (Random().nextInt(100) <= dummyErrorChance * 100) {
+      await Future.delayed(dummyDelay);
+      return http.Response(
+          "{'error': $dummyErrorMessage}", dummyErrorStatusCode);
+    }
     if (dummyData) {
       try {
         await Future.delayed(dummyDelay);

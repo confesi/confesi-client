@@ -13,7 +13,6 @@ import '../../presentation/authentication/screens/onboarding.dart';
 import '../../presentation/authentication/screens/open.dart';
 import '../../presentation/authentication/screens/register.dart';
 import '../../presentation/authentication/screens/splash.dart';
-import '../../presentation/create_post/cubit/post_cubit.dart';
 import '../../presentation/daily_hottest/cubit/hottest_cubit.dart';
 import '../../presentation/daily_hottest/cubit/leaderboard_cubit.dart';
 import '../../presentation/feed/cubit/recents_cubit.dart';

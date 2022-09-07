@@ -69,31 +69,41 @@ class __OverlayItemState extends State<_OverlayItem>
     });
   }
 
+  bool hasNavigated = false;
+
   @override
   Widget build(BuildContext context) {
-    return Opacity(
-      opacity: anim.value,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.background,
-          borderRadius: const BorderRadius.all(
-            Radius.circular(5),
-          ),
-          // boxShadow: [
-          //   BoxShadow(
-          //     color: Theme.of(context).colorScheme.shadow.withOpacity(0.4),
-          //     blurRadius: 20,
-          //   ),
-          // ],
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Text(
-            'Posted',
-            style: kBody.copyWith(
-              color: Theme.of(context).colorScheme.primary,
+    return WillPopScope(
+      onWillPop: () async {
+        setState(() {
+          hasNavigated = true;
+        });
+        return true;
+      },
+      child: Opacity(
+        opacity: hasNavigated == false ? anim.value : 0,
+        child: Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.background,
+            borderRadius: const BorderRadius.all(
+              Radius.circular(5),
             ),
-            textAlign: TextAlign.center,
+            // boxShadow: [
+            //   BoxShadow(
+            //     color: Theme.of(context).colorScheme.shadow.withOpacity(0.4),
+            //     blurRadius: 20,
+            //   ),
+            // ],
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Text(
+              'Posted',
+              style: kBody.copyWith(
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              textAlign: TextAlign.center,
+            ),
           ),
         ),
       ),

@@ -1,5 +1,3 @@
-// TODO: Should something as simple as this be put into business logic (domain) of the project? Surely not...?
-
 import 'dart:math';
 
 HintText getHint() => hintTexts[Random().nextInt(hintTexts.length)];

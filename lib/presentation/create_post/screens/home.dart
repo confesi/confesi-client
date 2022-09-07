@@ -1,5 +1,4 @@
 import 'package:Confessi/presentation/create_post/cubit/post_cubit.dart';
-import 'package:Confessi/presentation/create_post/utils/hint_text_generator.dart';
 import 'package:Confessi/presentation/create_post/widgets/text_limit_tracker.dart';
 import 'package:Confessi/presentation/daily_hottest/widgets/preview_quote_tile.dart';
 import 'package:Confessi/presentation/shared/behaviours/touchable_opacity.dart';
@@ -9,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../constants/create_post/constants.dart';
+import '../../../core/generators/hint_text_generator.dart';
 import '../../../core/styles/typography.dart';
 import '../../shared/behaviours/keyboard_dismiss.dart';
 import '../../shared/layout/appbar.dart';
