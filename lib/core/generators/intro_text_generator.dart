@@ -1,13 +1,12 @@
 import 'dart:math';
 
-IntroText getIntro() => introTexts[Random().nextInt(introTexts.length)];
+IntroText getIntro() => _introTexts[Random().nextInt(_introTexts.length)];
 
-List<IntroText> introTexts = [
+List<IntroText> _introTexts = [
   IntroText(text: "Confessions are always anonymous."),
-  IntroText(text: "Juicy confessions always rise to the top!"),
+  IntroText(text: "Juicy confessions often rise to the top!"),
   IntroText(
-      text:
-          "You can reply with a confession to a confession by clicking \"reply\"."),
+      text: "You can reply with a post to a confession by clicking \"reply\"."),
 ];
 
 class IntroText {

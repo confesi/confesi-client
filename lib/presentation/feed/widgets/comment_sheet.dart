@@ -1,4 +1,4 @@
-import 'package:Confessi/constants/shared/buttons.dart';
+import 'package:Confessi/core/constants/shared/buttons.dart';
 import 'package:Confessi/presentation/create_post/widgets/text_limit_tracker.dart';
 import 'package:Confessi/presentation/shared/buttons/simple_text.dart';
 import 'package:flutter/material.dart';

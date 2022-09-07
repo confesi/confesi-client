@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../constants/daily_hottest/constants.dart';
-import '../../../constants/shared/feed.dart';
+import '../../../core/constants/daily_hottest/constants.dart';
+import '../../../core/constants/shared/feed.dart';
 import '../../../core/styles/typography.dart';
 import '../../shared/indicators/alert.dart';
 import '../../shared/indicators/loading.dart';
@@ -42,6 +42,7 @@ class _HottestHomeState extends State<HottestHome>
             context,
             '/home/detail',
             arguments: {
+              'id': state.posts[currentIndex].id,
               'badges': state.posts[currentIndex].badges,
               'post_child': state.posts[currentIndex].child,
               'icon': state.posts[currentIndex].icon,

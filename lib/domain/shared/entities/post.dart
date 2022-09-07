@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 class Post extends Equatable {
+  final String id;
   final String universityImagePath;
   final String university;
   final String universityFullName;
@@ -22,6 +23,7 @@ class Post extends Equatable {
   final List<Badge> badges;
 
   const Post({
+    required this.id,
     required this.universityFullName,
     required this.universityImagePath,
     required this.badges,

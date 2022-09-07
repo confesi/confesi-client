@@ -1,9 +1,9 @@
 import 'dart:ui';
 
-import 'package:Confessi/constants/daily_hottest/constants.dart';
+import 'package:Confessi/core/constants/daily_hottest/constants.dart';
 import 'package:Confessi/core/styles/typography.dart';
-import 'package:Confessi/core/utils/is_plural.dart';
-import 'package:Confessi/core/utils/large_number_formatter.dart';
+import 'package:Confessi/core/utils/numbers/is_plural.dart';
+import 'package:Confessi/core/utils/numbers/large_number_formatter.dart';
 import 'package:Confessi/presentation/shared/behaviours/touchable_opacity.dart';
 import 'package:Confessi/presentation/shared/layout/line.dart';
 import 'package:flutter/cupertino.dart';

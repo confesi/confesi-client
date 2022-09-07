@@ -1,4 +1,4 @@
-import 'package:Confessi/constants/shared/buttons.dart';
+import 'package:Confessi/core/constants/shared/buttons.dart';
 import 'package:Confessi/core/styles/typography.dart';
 import 'package:Confessi/presentation/shared/behaviours/touchable_opacity.dart';
 import 'package:flutter/material.dart';

@@ -1,5 +1,5 @@
-import 'package:Confessi/constants/shared/buttons.dart';
-import 'package:Confessi/core/utils/add_commas_to_number.dart';
+import 'package:Confessi/core/constants/shared/buttons.dart';
+import 'package:Confessi/core/utils/numbers/add_commas_to_number.dart';
 import 'package:Confessi/presentation/shared/behaviours/overscroll.dart';
 import 'package:Confessi/presentation/shared/behaviours/touchable_opacity.dart';
 import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
 import '../../shared/layout/appbar.dart';
-import '../../../constants/feed/constants.dart';
+import '../../../core/constants/feed/constants.dart';
 import '../../shared/overlays/info_sheet.dart';
 
 class PostAdvancedDetailsScreen extends StatelessWidget {

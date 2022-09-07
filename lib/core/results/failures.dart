@@ -67,3 +67,17 @@ class PasswordInvalidFailure extends Failure {}
 
 /// For when the received token from secure storage is null/empty.
 class EmptyTokenFailure extends Failure {}
+
+//! Creating content
+
+/// For when title is too long.
+class TitleTooLongFailure extends Failure {}
+
+/// For when the body is too long.
+class BodyTooLongFailure extends Failure {}
+
+/// For when the title is invalid (inapropriate, formatting, etc.).
+class TitleInvalidFailure extends Failure {}
+
+/// For when the body is invalid (inapropriate, formatting, etc.).
+class BodyInvalidFailure extends Failure {}

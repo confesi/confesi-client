@@ -1,9 +1,9 @@
-import 'package:Confessi/constants/shared/buttons.dart';
+import 'package:Confessi/core/constants/shared/buttons.dart';
 import 'package:Confessi/core/styles/typography.dart';
 import 'package:Confessi/domain/shared/entities/post.dart';
 import 'package:Confessi/presentation/shared/behaviours/touchable_opacity.dart';
 import 'package:Confessi/presentation/shared/text/group.dart';
-import 'package:Confessi/constants/feed/constants.dart';
+import 'package:Confessi/core/constants/feed/constants.dart';
 import 'package:Confessi/domain/shared/entities/badge.dart';
 import 'package:Confessi/domain/feed/entities/post_child.dart';
 import 'package:Confessi/presentation/feed/widgets/badge_tile.dart';
@@ -13,8 +13,8 @@ import 'package:Confessi/presentation/feed/widgets/vote_tile_set.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../constants/shared/feed.dart';
-import '../../../core/utils/is_plural.dart';
+import '../../../core/constants/shared/feed.dart';
+import '../../../core/utils/numbers/is_plural.dart';
 import '../../shared/buttons/option.dart';
 import '../../shared/overlays/button_options_sheet.dart';
 
@@ -35,9 +35,11 @@ class PostTile extends StatelessWidget {
     required this.postChild,
     required this.badges,
     required this.universityFullName,
+    required this.id,
     Key? key,
   }) : super(key: key);
 
+  final String? id;
   final String universityFullName;
   final IconData icon;
   final String university;
@@ -91,6 +93,7 @@ class PostTile extends StatelessWidget {
               context,
               '/home/detail',
               arguments: {
+                'id': id,
                 'badges': badges,
                 'post_child': postChild,
                 'icon': icon,
@@ -169,6 +172,7 @@ class PostTile extends StatelessWidget {
                         arguments: {
                           'title': title,
                           'body': text,
+                          'id': id,
                         },
                       ),
                     ),

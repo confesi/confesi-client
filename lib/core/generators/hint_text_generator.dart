@@ -1,8 +1,8 @@
 import 'dart:math';
 
-HintText getHint() => hintTexts[Random().nextInt(hintTexts.length)];
+HintText getHint() => _hintTexts[Random().nextInt(_hintTexts.length)];
 
-List<HintText> hintTexts = [
+List<HintText> _hintTexts = [
   HintText(
       title: 'Catch our attention here', body: 'Then live up to it here...'),
   HintText(

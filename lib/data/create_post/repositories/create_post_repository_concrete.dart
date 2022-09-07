@@ -1,6 +1,7 @@
 import 'package:Confessi/core/network/connection_info.dart';
 import 'package:Confessi/core/results/successes.dart';
 import 'package:Confessi/core/results/failures.dart';
+import 'package:Confessi/data/create_post/utils/exception_to_failure.dart';
 import 'package:Confessi/domain/create_post/repositories/create_post_repository_interface.dart';
 import 'package:dartz/dartz.dart';
 
@@ -19,7 +20,7 @@ class CreatePostRepository implements ICreatePostRepository {
       try {
         return Right(await datasource.uploadPost(title, body, id));
       } catch (e) {
-        return Left(ServerFailure());
+        return Left(exceptionToFailure(e));
       }
     } else {
       return Left(ConnectionFailure());

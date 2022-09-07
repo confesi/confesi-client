@@ -5,8 +5,5 @@ const String kLeaderboardInfoHeader = 'Leaderboard';
 const String kLeaderboardInfoBody =
     'The university leaderboard shows how many times (points) each campus has reached the \'Daily Hottest\' page. Let\'s get some friendly competition started!';
 
-const String kConnectionError = 'Connection error.';
-const String kServerError = 'Unknown server error. Please try again later.';
-
 /// The maximum number of daily hottest posts that are displayed before being cut off.
 const int kMaxDisplayedHottestDailyPosts = 5;

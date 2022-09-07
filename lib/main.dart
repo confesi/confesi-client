@@ -4,7 +4,7 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'constants/shared/general.dart';
+import 'core/constants/shared/general.dart';
 import 'core/router/router.dart';
 import 'core/styles/themes.dart';
 import 'dependency_injection.dart';

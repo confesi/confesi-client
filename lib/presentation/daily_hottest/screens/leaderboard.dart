@@ -1,7 +1,6 @@
 import 'dart:math';
 
-import 'package:Confessi/core/utils/is_plural.dart';
-import 'package:Confessi/core/utils/number_postfix.dart';
+import 'package:Confessi/core/utils/numbers/is_plural.dart';
 import 'package:Confessi/presentation/shared/indicators/alert.dart';
 import 'package:Confessi/presentation/shared/indicators/loading.dart';
 import 'package:Confessi/presentation/shared/layout/appbar.dart';
@@ -13,9 +12,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../constants/daily_hottest/constants.dart';
+import '../../../core/constants/daily_hottest/constants.dart';
 import '../../../core/styles/typography.dart';
-import '../../../core/utils/large_number_formatter.dart';
+import '../../../core/utils/numbers/large_number_formatter.dart';
+import '../../../core/utils/numbers/number_postfix.dart';
 import '../../shared/overlays/info_sheet.dart';
 
 class LeaderboardScreen extends StatelessWidget {

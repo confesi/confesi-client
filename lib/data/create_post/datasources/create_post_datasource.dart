@@ -27,8 +27,9 @@ class CreatePostDatasource implements ICreatePostDatasource {
       '/api/create/post',
       dummyData: true,
       dummyPath: 'api.create.post.json',
-      dummyErrorChance: 1,
-      dummyErrorMessage: 'no content',
+      // dummyDelay: const Duration(seconds: 1),
+      // dummyErrorChance: 1,
+      // dummyErrorMessage: 'fields blank',
     );
     if (response.statusCode == 200 || response.statusCode == 201) {
       return ApiSuccess();

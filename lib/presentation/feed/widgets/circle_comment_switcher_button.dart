@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../../constants/feed/constants.dart';
+import '../../../core/constants/feed/constants.dart';
 
 class CircleCommentSwitcherButton extends StatefulWidget {
   const CircleCommentSwitcherButton({

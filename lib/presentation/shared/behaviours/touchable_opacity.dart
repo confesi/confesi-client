@@ -1,4 +1,4 @@
-import 'package:Confessi/constants/shared/buttons.dart';
+import 'package:Confessi/core/constants/shared/buttons.dart';
 import 'package:Confessi/presentation/shared/behaviours/tool_tip.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

@@ -1,4 +1,4 @@
-import 'package:Confessi/constants/shared/buttons.dart';
+import 'package:Confessi/core/constants/shared/buttons.dart';
 import 'package:Confessi/presentation/shared/buttons/option.dart';
 import 'package:Confessi/presentation/feed/widgets/comment_header_text.dart';
 import 'package:Confessi/presentation/feed/widgets/slidable_section.dart';
@@ -9,7 +9,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../../../core/styles/typography.dart';
 import '../../shared/behaviours/touchable_opacity.dart';
-import '../../../constants/feed/constants.dart';
+import '../../../core/constants/feed/constants.dart';
 import '../../shared/overlays/button_options_sheet.dart';
 
 class CommentTile extends StatelessWidget {

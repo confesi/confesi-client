@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../constants/shared/buttons.dart';
+import '../../../core/constants/shared/buttons.dart';
 import '../../../core/styles/typography.dart';
 
 class ToolTip extends StatelessWidget {

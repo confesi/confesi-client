@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
-import 'package:Confessi/constants/shared/general.dart';
+import 'package:Confessi/core/constants/shared/general.dart';
 import 'package:Confessi/core/results/exceptions.dart';
 import 'package:Confessi/core/results/failures.dart';
 import 'package:Confessi/core/results/successes.dart';
@@ -147,9 +147,11 @@ class ApiClient {
     if (Random().nextInt(100) <= dummyErrorChance * 100) {
       await Future.delayed(dummyDelay);
       return http.Response(
-          "{'error': $dummyErrorMessage}", dummyErrorStatusCode);
+          """{"error": "$dummyErrorMessage"}""", dummyErrorStatusCode);
     }
     if (dummyData) {
+      print(
+          "===> DUMMY api route used, endpoint: $endpoint, payload: $payload, ");
       try {
         await Future.delayed(dummyDelay);
         final String dummyResponse =

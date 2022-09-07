@@ -15,6 +15,7 @@ import '../utils/image_path_converter.dart';
 
 class PostModel extends Post {
   const PostModel({
+    required String id,
     required String universityImagePath,
     required String university,
     required String genre,
@@ -32,6 +33,7 @@ class PostModel extends Post {
     required List<Badge> badges,
     required String universityFullName,
   }) : super(
+          id: id,
           universityFullName: universityFullName,
           universityImagePath: universityImagePath,
           badges: badges,
@@ -52,6 +54,7 @@ class PostModel extends Post {
 
   factory PostModel.fromJson(Map<String, dynamic> json) {
     return PostModel(
+      id: json["_id"],
       universityImagePath: imagePathConverter(json['university']),
       icon: genreToIconConverter(json['genre']),
       university: universityNameConverter(json["university"]),

@@ -4,8 +4,16 @@ import '../../../core/results/exceptions.dart';
 Exception errorMessageToException(dynamic errorMessage) {
   if (errorMessage["error"].runtimeType != String) throw ServerException();
   switch (errorMessage["error"] as String) {
-    case "no content":
+    case "fields blank":
       return FieldsBlankException();
+    case "title invalid":
+      return TitleInvalidException();
+    case "body invalid":
+      return BodyInvalidException();
+    case "title too long":
+      return TitleTooLongException();
+    case "body too long":
+      return BodyTooLongException();
     default:
       return ServerException();
   }

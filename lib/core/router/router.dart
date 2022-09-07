@@ -79,6 +79,7 @@ class AppRouter {
             viewMethod: ViewMethod.separateScreen,
             title: args!['title'],
             body: args['body'],
+            id: args['id'],
           ),
         );
       // Detailed view for each post (thread view, has comments, fully expanded text, etc.).
@@ -87,6 +88,7 @@ class AppRouter {
           settings: routeSettings,
           builder: (_) => DetailViewScreen(
             genre: args!['genre'],
+            id: args['id'],
             badges: args['badges'],
             postChild: args['post_child'],
             icon: args['icon'],

@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../../constants/feed/constants.dart';
+import '../../../core/constants/feed/constants.dart';
 import '../../../domain/shared/entities/post.dart';
 import 'error_message.dart';
 
@@ -85,6 +85,7 @@ class _InfiniteScrollState extends State<InfiniteScroll> {
                   ? const EdgeInsets.all(0)
                   : const EdgeInsets.only(top: 16),
               child: PostTile(
+                id: widget.items[index].id,
                 universityFullName: widget.items[index].universityFullName,
                 badges: widget.items[index].badges,
                 postChild: widget.items[index].child,

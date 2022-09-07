@@ -1,6 +1,6 @@
-import 'package:Confessi/constants/shared/buttons.dart';
+import 'package:Confessi/core/constants/shared/buttons.dart';
 import 'package:Confessi/core/styles/typography.dart';
-import 'package:Confessi/core/utils/large_number_formatter.dart';
+import 'package:Confessi/core/utils/numbers/large_number_formatter.dart';
 import 'package:Confessi/presentation/feed/widgets/vote_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

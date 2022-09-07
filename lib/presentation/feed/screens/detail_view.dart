@@ -12,8 +12,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:keyboard_attachable/keyboard_attachable.dart';
 
-import '../../../constants/feed/constants.dart';
-import '../../../constants/shared/feed.dart';
+import '../../../core/constants/feed/constants.dart';
+import '../../../core/constants/shared/feed.dart';
 import '../../../domain/shared/entities/badge.dart';
 import '../widgets/infinite_list.dart';
 
@@ -41,8 +41,10 @@ class DetailViewScreen extends StatefulWidget {
     required this.postChild,
     required this.badges,
     required this.universityFullName,
+    required this.id,
   }) : super(key: key);
 
+  final String? id;
   final String universityFullName;
   final IconData icon;
   final String genre;
@@ -179,6 +181,7 @@ class _DetailViewScreenState extends State<DetailViewScreen> {
                       header: Column(
                         children: [
                           PostTile(
+                            id: widget.id,
                             badges: widget.badges,
                             postChild: widget.postChild,
                             icon: widget.icon,

@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 /// The message header for the error message that is shown in the middle of the page when there's a loading error.
 const String kErrorLoadingAnyHeader = "Error loading content";
 

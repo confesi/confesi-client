@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../constants/create_post/constants.dart';
+import '../../../core/constants/create_post/constants.dart';
 import '../../../core/generators/hint_text_generator.dart';
 import '../../../core/styles/typography.dart';
 import '../../shared/behaviours/keyboard_dismiss.dart';
@@ -33,12 +33,14 @@ class CreatePostHome extends StatefulWidget {
     required this.viewMethod,
     this.title,
     this.body,
+    this.id,
     Key? key,
   }) : super(key: key);
 
   final ViewMethod viewMethod;
   final String? title;
   final String? body;
+  final String? id;
 
   @override
   State<CreatePostHome> createState() => _CreatePostHomeState();
@@ -109,7 +111,6 @@ class _CreatePostHomeState extends State<CreatePostHome>
     titleController.clear();
     bodyController.clear();
     FocusScope.of(context).unfocus();
-    setState(() {});
   }
 
   Widget buildButton() => Row(
@@ -175,7 +176,7 @@ class _CreatePostHomeState extends State<CreatePostHome>
                       .pushNamed('/home/create_post/details', arguments: {
                     'title': titleController.text,
                     'body': bodyController.text,
-                    'id': "ADD LATER" // TODO: add the id later (can be null?)
+                    'id': widget.id, // TODO: add the id later (can be null?)
                   });
                 },
                 leftIconVisible: true,
