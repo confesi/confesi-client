@@ -165,7 +165,7 @@ class PostTile extends StatelessWidget {
                       onTap: () => print("tap"),
                     ),
                     OptionButton(
-                      text: "Reply",
+                      text: "Quote",
                       icon: CupertinoIcons.paperplane,
                       onTap: () => Navigator.of(context).pushNamed(
                         '/home/create_replied_post',
