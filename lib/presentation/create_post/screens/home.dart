@@ -147,6 +147,7 @@ class _CreatePostHomeState extends State<CreatePostHome>
         listener: (context, state) async {
           if (state is SuccessfullySubmitted) {
             clearTextfields();
+            setState(() {});
             Navigator.popUntil(context, ModalRoute.withName('/home'));
             CenterOverlay().show(context);
           }
@@ -191,7 +192,6 @@ class _CreatePostHomeState extends State<CreatePostHome>
                 leftIconVisible: true,
                 leftIcon: CupertinoIcons.xmark,
                 leftIconOnPress: () {
-                  // clearTextfields();
                   isEmpty()
                       ? Navigator.popUntil(
                           context, ModalRoute.withName('/home'))
