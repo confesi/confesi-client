@@ -25,7 +25,7 @@ class LongButton extends StatelessWidget {
         onTap: () => onPress(),
         child: Container(
           width: double.infinity,
-          padding: const EdgeInsets.all(10),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 13),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.secondary,
             borderRadius: const BorderRadius.all(
@@ -69,13 +69,10 @@ class LongButton extends StatelessWidget {
                         children: [
                           Opacity(
                             opacity: 0,
-                            child: Container(
-                              color: Colors.green.withOpacity(0.2),
-                              child: Center(
-                                child: LoadingIndicator(
-                                  color:
-                                      Theme.of(context).colorScheme.onSecondary,
-                                ),
+                            child: Center(
+                              child: LoadingIndicator(
+                                color:
+                                    Theme.of(context).colorScheme.onSecondary,
                               ),
                             ),
                           ),

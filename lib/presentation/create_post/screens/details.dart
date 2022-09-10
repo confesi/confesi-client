@@ -72,118 +72,113 @@ class _DetailsScreenState extends State<DetailsScreen>
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      // Disables you from navigating back while loading.
-      onWillPop: () async =>
-          context.watch<CreatePostCubit>().state is Loading ? false : true,
-      child: BlocListener<CreatePostCubit, CreatePostState>(
-        listener: (context, state) {
-          if (state is Error) {
-            showErrorMessage(state.message);
-          }
-        },
-        child: Scaffold(
-          backgroundColor: Theme.of(context).colorScheme.background,
-          body: SafeArea(
-            child: Column(
-              children: [
-                IgnorePointer(
-                  // Disables you from navigating back while loading.
-                  ignoring: context.watch<CreatePostCubit>().state is Loading
-                      ? true
-                      : false,
-                  child: AppbarLayout(
-                    bottomBorder: false,
-                    centerWidget: AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 250),
-                      child: Text(
-                        'Add Details',
+    return BlocListener<CreatePostCubit, CreatePostState>(
+      listener: (context, state) {
+        if (state is Error) {
+          showErrorMessage(state.message);
+        }
+      },
+      child: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.background,
+        body: SafeArea(
+          child: Column(
+            children: [
+              IgnorePointer(
+                // Disables you from navigating back while loading.
+                ignoring: context.watch<CreatePostCubit>().state is Loading
+                    ? true
+                    : false,
+                child: AppbarLayout(
+                  bottomBorder: false,
+                  centerWidget: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 250),
+                    child: Text(
+                      'Add Details',
+                      style: kTitle.copyWith(
+                          color: Theme.of(context).colorScheme.primary),
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: ScrollableView(
+                  horizontalPadding: 10,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 20),
+                      Text(
+                        'Post details',
                         style: kTitle.copyWith(
-                            color: Theme.of(context).colorScheme.primary),
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.center,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        textAlign: TextAlign.left,
                       ),
-                    ),
+                      const SizedBox(height: 7.5),
+                      SpreadRowText(
+                        leftText: 'Genre',
+                        rightText: "Politics",
+                        onPress: () => print('tap'),
+                      ),
+                      const SizedBox(height: 22.5),
+                      Text(
+                        'About the poster (you)',
+                        style: kTitle.copyWith(
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                      const SizedBox(height: 7.5),
+                      SpreadRowText(
+                        leftText: 'University',
+                        rightText: "UVic",
+                        onPress: () => showPickerSheet(
+                          context,
+                          ["item1", "item2", "item3"],
+                          0,
+                          "University",
+                          (index) => print(index),
+                        ),
+                      ),
+                      SpreadRowText(
+                        leftText: 'Faculty',
+                        rightText: "Engineering",
+                        onPress: () => print('tap'),
+                      ),
+                      SpreadRowText(
+                        leftText: 'Year of study',
+                        rightText: "2",
+                        onPress: () => print('tap'),
+                      ),
+                      const SizedBox(height: 7.5),
+                      const DisclaimerText(
+                          text:
+                              'Please be civil when posting, but have fun! All confessions are anonymous, excluding the details provided above.'),
+                      const SizedBox(height: 30),
+                      BlocBuilder<CreatePostCubit, CreatePostState>(
+                        // buildWhen: (previous, current) => true,
+                        builder: (context, state) {
+                          return LongButton(
+                            text: 'Submit Confession',
+                            onPress: () async => await context
+                                .read<CreatePostCubit>()
+                                .uploadUserPost(
+                                    widget.title, widget.body, widget.id),
+                            isLoading: state is Loading ? true : false,
+                          );
+                        },
+                      ),
+                      FadeSizeText(
+                        text: errorText,
+                        childController: errorAnimController,
+                      ),
+                    ],
                   ),
                 ),
-                Expanded(
-                  child: ScrollableView(
-                    horizontalPadding: 10,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 20),
-                        Text(
-                          'Post details',
-                          style: kTitle.copyWith(
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                          textAlign: TextAlign.left,
-                        ),
-                        const SizedBox(height: 7.5),
-                        SpreadRowText(
-                          leftText: 'Genre',
-                          rightText: "Politics",
-                          onPress: () => print('tap'),
-                        ),
-                        const SizedBox(height: 22.5),
-                        Text(
-                          'About the poster (you)',
-                          style: kTitle.copyWith(
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                          textAlign: TextAlign.left,
-                        ),
-                        const SizedBox(height: 7.5),
-                        SpreadRowText(
-                          leftText: 'University',
-                          rightText: "UVic",
-                          onPress: () => showPickerSheet(
-                            context,
-                            ["item1", "item2", "item3"],
-                            0,
-                            "University",
-                            (index) => print(index),
-                          ),
-                        ),
-                        SpreadRowText(
-                          leftText: 'Faculty',
-                          rightText: "Engineering",
-                          onPress: () => print('tap'),
-                        ),
-                        SpreadRowText(
-                          leftText: 'Year of study',
-                          rightText: "2",
-                          onPress: () => print('tap'),
-                        ),
-                        const SizedBox(height: 7.5),
-                        const DisclaimerText(
-                            text:
-                                'Please be civil when posting, but have fun! All confessions are anonymous, excluding the details provided above.'),
-                        const SizedBox(height: 30),
-                        BlocBuilder<CreatePostCubit, CreatePostState>(
-                          // buildWhen: (previous, current) => true,
-                          builder: (context, state) {
-                            return LongButton(
-                              text: 'Submit Confession',
-                              onPress: () async => await context
-                                  .read<CreatePostCubit>()
-                                  .uploadUserPost(
-                                      widget.title, widget.body, widget.id),
-                              isLoading: state is Loading ? true : false,
-                            );
-                          },
-                        ),
-                        FadeSizeText(
-                          text: errorText,
-                          childController: errorAnimController,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

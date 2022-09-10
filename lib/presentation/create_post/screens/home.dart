@@ -156,6 +156,7 @@ class _CreatePostHomeState extends State<CreatePostHome>
           body: SafeArea(
               child: Column(
             children: [
+              // Text(context.watch<CreatePostCubit>().state.toString()),
               AppbarLayout(
                 bottomBorder: false,
                 centerWidget: AnimatedSwitcher(
@@ -175,14 +176,18 @@ class _CreatePostHomeState extends State<CreatePostHome>
                 rightIconVisible: true,
                 rightIcon: CupertinoIcons.arrow_right,
                 rightIconOnPress: () {
-                  FocusScope.of(context).unfocus();
                   Navigator.of(context)
                       .pushNamed('/home/create_post/details', arguments: {
                     'title': titleController.text,
                     'body': bodyController.text,
                     'id': widget.id, // TODO: add the id later (can be null?)
                   });
+                  FocusScope.of(context).unfocus();
                 },
+                leftIconDisabled:
+                    isEmpty() && widget.viewMethod == ViewMethod.tabScreen
+                        ? true
+                        : false,
                 leftIconVisible: true,
                 leftIcon: CupertinoIcons.xmark,
                 leftIconOnPress: () {
@@ -194,12 +199,19 @@ class _CreatePostHomeState extends State<CreatePostHome>
                           context,
                           [
                             OptionButton(
-                              onTap: () => print('tap'),
+                              onTap: () {
+                                clearTextfields();
+                                Navigator.popUntil(
+                                    context, ModalRoute.withName('/home'));
+                                setState(() {});
+                              },
                               text: "Discard",
                               icon: CupertinoIcons.trash,
                             ),
                             OptionButton(
-                              onTap: () => print('tap'),
+                              onTap: () {
+                                print('save draft');
+                              },
                               text: "Save draft",
                               icon: CupertinoIcons.tray_arrow_down,
                             ),
