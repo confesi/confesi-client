@@ -8,12 +8,14 @@ class OptionButton extends StatelessWidget {
     required this.onTap,
     required this.text,
     required this.icon,
+    this.isRed = false,
     Key? key,
   }) : super(key: key);
 
   final String text;
   final IconData icon;
   final VoidCallback onTap;
+  final bool isRed;
 
   @override
   Widget build(BuildContext context) {
@@ -37,13 +39,18 @@ class OptionButton extends StatelessWidget {
               Icon(
                 icon,
                 size: 24,
-                color: Theme.of(context).colorScheme.primary,
+                color: isRed
+                    ? Theme.of(context).colorScheme.error
+                    : Theme.of(context).colorScheme.primary,
               ),
               const SizedBox(height: 10),
               Text(
                 text,
                 style: kDetail.copyWith(
-                    color: Theme.of(context).colorScheme.primary),
+                  color: isRed
+                      ? Theme.of(context).colorScheme.error
+                      : Theme.of(context).colorScheme.primary,
+                ),
                 textAlign: TextAlign.center,
                 overflow: TextOverflow.ellipsis,
               ),

@@ -2,6 +2,8 @@ import 'package:Confessi/presentation/create_post/cubit/post_cubit.dart';
 import 'package:Confessi/presentation/create_post/widgets/text_limit_tracker.dart';
 import 'package:Confessi/presentation/daily_hottest/widgets/preview_quote_tile.dart';
 import 'package:Confessi/presentation/shared/behaviours/touchable_opacity.dart';
+import 'package:Confessi/presentation/shared/buttons/option.dart';
+import 'package:Confessi/presentation/shared/overlays/button_options_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -107,6 +109,8 @@ class _CreatePostHomeState extends State<CreatePostHome>
     super.dispose();
   }
 
+  bool isEmpty() => titleController.text.isEmpty && bodyController.text.isEmpty;
+
   void clearTextfields() {
     titleController.clear();
     bodyController.clear();
@@ -182,8 +186,25 @@ class _CreatePostHomeState extends State<CreatePostHome>
                 leftIconVisible: true,
                 leftIcon: CupertinoIcons.xmark,
                 leftIconOnPress: () {
-                  clearTextfields();
-                  Navigator.popUntil(context, ModalRoute.withName('/home'));
+                  // clearTextfields();
+                  isEmpty()
+                      ? Navigator.popUntil(
+                          context, ModalRoute.withName('/home'))
+                      : showButtonOptionsSheet(
+                          context,
+                          [
+                            OptionButton(
+                              onTap: () => print('tap'),
+                              text: "Discard",
+                              icon: CupertinoIcons.trash,
+                            ),
+                            OptionButton(
+                              onTap: () => print('tap'),
+                              text: "Save draft",
+                              icon: CupertinoIcons.tray_arrow_down,
+                            ),
+                          ],
+                        );
                 },
               ),
               Expanded(
