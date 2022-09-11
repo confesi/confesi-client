@@ -62,7 +62,7 @@ Future<dynamic> showPickerSheet(BuildContext context, List<String> items,
                           looping: false,
                           itemExtent: 40,
                           onSelectedItemChanged: (newIndex) {
-                            HapticFeedback.lightImpact();
+                            HapticFeedback.selectionClick();
                             updateState(newIndex);
                           },
                           children: items

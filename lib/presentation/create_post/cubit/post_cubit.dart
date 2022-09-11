@@ -9,14 +9,14 @@ import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
-import '../../../core/utils/validators/empty_validator.dart';
-
 part 'post_state.dart';
 
 class CreatePostCubit extends Cubit<CreatePostState> {
   final UploadPost uploadPost;
 
   CreatePostCubit({required this.uploadPost}) : super(EnteringData());
+
+  void setUserEnteringData() => emit(EnteringData());
 
   Future<void> uploadUserPost(String title, String body, String? id) async {
     emit(Loading());

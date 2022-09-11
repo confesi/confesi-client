@@ -16,10 +16,14 @@ class AppbarLayout extends StatelessWidget {
     required this.centerWidget,
     this.centerWidgetFullWidth = false,
     this.leftIconDisabled = false,
+    this.leftIconIgnored = false,
+    this.leftIconTag,
     Key? key,
   }) : super(key: key);
 
+  final String? leftIconTag;
   final bool centerWidgetFullWidth;
+  final bool leftIconIgnored;
   final Widget centerWidget;
   final bool leftIconVisible;
   final bool rightIconVisible;
@@ -29,6 +33,40 @@ class AppbarLayout extends StatelessWidget {
   final IconData? rightIcon;
   final Function? rightIconOnPress;
   final bool leftIconDisabled;
+
+  Widget buildLeftWidget(BuildContext context) => IgnorePointer(
+        ignoring: leftIconDisabled || leftIconIgnored,
+        child: TouchableOpacity(
+          onTap: () {
+            if (leftIconOnPress != null) {
+              FocusScope.of(context).unfocus();
+              leftIconOnPress!();
+            } else {
+              FocusScope.of(context).unfocus();
+              Navigator.pop(context);
+            }
+          },
+          child: Container(
+            color: Colors.transparent,
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                child: Transform.translate(
+                  offset: const Offset(-4, 0),
+                  child: AnimatedOpacity(
+                    duration: const Duration(milliseconds: 250),
+                    opacity: leftIconDisabled ? 0.2 : 1,
+                    child: Icon(
+                      leftIcon ?? CupertinoIcons.back,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -50,39 +88,9 @@ class AppbarLayout extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             if (leftIconVisible)
-              IgnorePointer(
-                ignoring: leftIconDisabled,
-                child: TouchableOpacity(
-                  onTap: () {
-                    if (leftIconOnPress != null) {
-                      FocusScope.of(context).unfocus();
-                      leftIconOnPress!();
-                    } else {
-                      FocusScope.of(context).unfocus();
-                      Navigator.pop(context);
-                    }
-                  },
-                  child: Container(
-                    color: Colors.transparent,
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 300),
-                        child: Transform.translate(
-                          offset: const Offset(-4, 0),
-                          child: AnimatedOpacity(
-                            duration: const Duration(milliseconds: 250),
-                            opacity: leftIconDisabled ? 0.2 : 1,
-                            child: Icon(
-                              leftIcon ?? CupertinoIcons.back,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              )
+              leftIconTag != null
+                  ? Hero(tag: leftIconTag!, child: buildLeftWidget(context))
+                  : buildLeftWidget(context)
             else
               Padding(
                 padding: const EdgeInsets.all(10),

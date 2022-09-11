@@ -1,6 +1,5 @@
 import 'package:Confessi/core/constants/shared/buttons.dart';
 import 'package:Confessi/core/styles/typography.dart';
-import 'package:Confessi/domain/shared/entities/post.dart';
 import 'package:Confessi/presentation/shared/behaviours/touchable_opacity.dart';
 import 'package:Confessi/presentation/shared/text/group.dart';
 import 'package:Confessi/core/constants/feed/constants.dart';

@@ -1,4 +1,3 @@
-import 'package:Confessi/presentation/shared/behaviours/touchable_opacity.dart';
 import 'package:Confessi/presentation/feed/widgets/infinite_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

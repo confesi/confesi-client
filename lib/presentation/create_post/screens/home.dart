@@ -1,6 +1,7 @@
 import 'package:Confessi/presentation/create_post/cubit/post_cubit.dart';
 import 'package:Confessi/presentation/create_post/widgets/text_limit_tracker.dart';
 import 'package:Confessi/presentation/daily_hottest/widgets/preview_quote_tile.dart';
+import 'package:Confessi/presentation/shared/behaviours/touchable_burst.dart';
 import 'package:Confessi/presentation/shared/behaviours/touchable_opacity.dart';
 import 'package:Confessi/presentation/shared/buttons/option.dart';
 import 'package:Confessi/presentation/shared/overlays/button_options_sheet.dart';
@@ -89,10 +90,12 @@ class _CreatePostHomeState extends State<CreatePostHome>
     titleHint = '${hintText.title} (optional)';
     bodyHint = hintText.body;
     titleFocusNode.addListener(() {
+      context.read<CreatePostCubit>().setUserEnteringData();
       setNoFocus();
       if (titleFocusNode.hasFocus) setFocus(FocusedField.title);
     });
     bodyFocusNode.addListener(() {
+      context.read<CreatePostCubit>().setUserEnteringData();
       setNoFocus();
       if (bodyFocusNode.hasFocus) setFocus(FocusedField.body);
     });
@@ -157,67 +160,77 @@ class _CreatePostHomeState extends State<CreatePostHome>
           body: SafeArea(
               child: Column(
             children: [
-              // Text(context.watch<CreatePostCubit>().state.toString()),
-              AppbarLayout(
-                bottomBorder: false,
-                centerWidget: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 250),
-                  child: focusedField != FocusedField.none
-                      ? TextLimitTracker(
-                          value: getLimitPercent(),
-                        )
-                      : Text(
-                          'Create Confession',
-                          style: kTitle.copyWith(
-                              color: Theme.of(context).colorScheme.primary),
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.center,
-                        ),
+              // TouchableBurst(
+              //   onTap: () => print('tap'),
+              //   child: Text(
+              //     context.watch<CreatePostCubit>().state.toString(),
+              //     style: kTitle,
+              //   ),
+              // ),
+              Hero(
+                tag: 'create',
+                child: AppbarLayout(
+                  bottomBorder: false,
+                  centerWidget: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 250),
+                    child: focusedField != FocusedField.none
+                        ? TextLimitTracker(
+                            value: getLimitPercent(),
+                          )
+                        : Text(
+                            'Create Confession',
+                            style: kTitle.copyWith(
+                                color: Theme.of(context).colorScheme.primary),
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.center,
+                          ),
+                  ),
+                  rightIconVisible: true,
+                  rightIcon: CupertinoIcons.arrow_right,
+                  rightIconOnPress: () {
+                    context.read<CreatePostCubit>().setUserEnteringData();
+                    Navigator.of(context)
+                        .pushNamed('/home/create_post/details', arguments: {
+                      'title': titleController.text,
+                      'body': bodyController.text,
+                      'id': widget.id, // TODO: add the id later (can be null?)
+                    });
+                    FocusScope.of(context).unfocus();
+                  },
+                  leftIconDisabled:
+                      isEmpty() && widget.viewMethod == ViewMethod.tabScreen
+                          ? true
+                          : false,
+                  leftIconVisible: true,
+                  leftIcon: CupertinoIcons.xmark,
+                  leftIconOnPress: () {
+                    isEmpty()
+                        ? Navigator.popUntil(
+                            context, ModalRoute.withName('/home'))
+                        : showButtonOptionsSheet(
+                            context,
+                            [
+                              OptionButton(
+                                onTap: () {
+                                  clearTextfields();
+                                  Navigator.popUntil(
+                                      context, ModalRoute.withName('/home'));
+                                  setState(() {});
+                                },
+                                text: "Discard",
+                                icon: CupertinoIcons.trash,
+                              ),
+                              OptionButton(
+                                onTap: () {
+                                  print('save draft');
+                                },
+                                text: "Save draft",
+                                icon: CupertinoIcons.tray_arrow_down,
+                              ),
+                            ],
+                          );
+                  },
                 ),
-                rightIconVisible: true,
-                rightIcon: CupertinoIcons.arrow_right,
-                rightIconOnPress: () {
-                  Navigator.of(context)
-                      .pushNamed('/home/create_post/details', arguments: {
-                    'title': titleController.text,
-                    'body': bodyController.text,
-                    'id': widget.id, // TODO: add the id later (can be null?)
-                  });
-                  FocusScope.of(context).unfocus();
-                },
-                leftIconDisabled:
-                    isEmpty() && widget.viewMethod == ViewMethod.tabScreen
-                        ? true
-                        : false,
-                leftIconVisible: true,
-                leftIcon: CupertinoIcons.xmark,
-                leftIconOnPress: () {
-                  isEmpty()
-                      ? Navigator.popUntil(
-                          context, ModalRoute.withName('/home'))
-                      : showButtonOptionsSheet(
-                          context,
-                          [
-                            OptionButton(
-                              onTap: () {
-                                clearTextfields();
-                                Navigator.popUntil(
-                                    context, ModalRoute.withName('/home'));
-                                setState(() {});
-                              },
-                              text: "Discard",
-                              icon: CupertinoIcons.trash,
-                            ),
-                            OptionButton(
-                              onTap: () {
-                                print('save draft');
-                              },
-                              text: "Save draft",
-                              icon: CupertinoIcons.tray_arrow_down,
-                            ),
-                          ],
-                        );
-                },
               ),
               Expanded(
                 child: Container(
