@@ -75,6 +75,7 @@ class AppRouter {
       case "/home/create_replied_post":
         return MaterialPageRoute(
           settings: routeSettings,
+          fullscreenDialog: true,
           builder: (_) => CreatePostHome(
             viewMethod: ViewMethod.separateScreen,
             title: args!['title'],

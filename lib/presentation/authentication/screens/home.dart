@@ -106,8 +106,8 @@ class _HomeScreenState extends State<HomeScreen>
                     icon: const Icon(CupertinoIcons.add),
                   ),
                   Tab(
-                    text: Responsive.isTablet(context) ? "Search" : null,
-                    icon: const Icon(CupertinoIcons.search),
+                    text: Responsive.isTablet(context) ? "Archive" : null,
+                    icon: const Icon(CupertinoIcons.calendar),
                   ),
                   Tab(
                     text: Responsive.isTablet(context) ? "Profile" : null,

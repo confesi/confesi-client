@@ -77,15 +77,16 @@ class __ConfettiItemState extends State<_ConfettiItem> {
   @override
   Widget build(BuildContext context) {
     return ConfettiWidget(
-      emissionFrequency: 0.04,
+      numberOfParticles: 8,
       colors: [
         Theme.of(context).colorScheme.secondary,
         Theme.of(context).colorScheme.primary,
       ],
       // blastDirection: -pi / 2,
       blastDirectionality: BlastDirectionality.explosive,
-      minBlastForce: 20,
-      maxBlastForce: 40,
+      gravity: .2,
+      minBlastForce: 35,
+      maxBlastForce: 36,
       confettiController: widget.confettiItemController._confettiController,
     );
   }

@@ -136,18 +136,19 @@ class _DetailsScreenState extends State<DetailsScreen>
                         SpreadRowText(
                           leftText: 'University',
                           rightText: "UVic",
+                          // TODO: have each of these pickers (add pickers for all SpreadRowText's) actually show real data.
                           onPress: () => showPickerSheet(
                             context,
                             [
-                              "item1",
-                              "item2",
-                              "item3",
-                              "item4",
-                              "item5",
-                              "item6",
-                              "item7",
-                              "item8",
-                              "item9"
+                              "UVic",
+                              "UBC",
+                              "SFU",
+                              "TRU",
+                              "TWU",
+                              "UOM",
+                              "UOC",
+                              "UOO",
+                              "WAT"
                             ],
                             0,
                             "University",

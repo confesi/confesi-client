@@ -31,7 +31,7 @@ class SplashScreen extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 15),
                     child: SizedBox(
-                      width: width > 220 ? 220 : width * 1 / 3,
+                      width: width > 250 ? 250 : width * 1 / 2.75,
                       child: Text(
                         getIntro().text,
                         style: kBody.copyWith(

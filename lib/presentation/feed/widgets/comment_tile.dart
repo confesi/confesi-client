@@ -1,4 +1,5 @@
 import 'package:Confessi/core/constants/shared/buttons.dart';
+import 'package:Confessi/presentation/shared/behaviours/touchable_shrink.dart';
 import 'package:Confessi/presentation/shared/buttons/option.dart';
 import 'package:Confessi/presentation/feed/widgets/comment_header_text.dart';
 import 'package:Confessi/presentation/feed/widgets/slidable_section.dart';
@@ -153,10 +154,8 @@ class CommentTile extends StatelessWidget {
           ),
         ],
       ),
-      child: GestureDetector(
-        // onDoubleTap: () => showOptions(context),
+      child: TouchableShrink(
         onLongPress: () => showOptions(context),
-        // onTap: () => showOptions(context),
         child: Container(
           // Container hitbox trick.
           color: Colors.transparent,
