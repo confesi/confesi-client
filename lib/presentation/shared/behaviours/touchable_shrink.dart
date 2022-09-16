@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -7,11 +5,17 @@ class TouchableShrink extends StatefulWidget {
   const TouchableShrink({
     super.key,
     required this.onLongPress,
+    required this.onCompleteOrCancel,
     required this.child,
+    this.growBackground,
+    this.shrinkBackground,
   });
 
   final VoidCallback onLongPress;
+  final VoidCallback onCompleteOrCancel;
   final Widget child;
+  final VoidCallback? shrinkBackground;
+  final VoidCallback? growBackground;
 
   @override
   State<TouchableShrink> createState() => _TouchableShrinkState();
@@ -27,7 +31,7 @@ class _TouchableShrinkState extends State<TouchableShrink>
     animController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 500),
-      reverseDuration: const Duration(milliseconds: 250),
+      reverseDuration: const Duration(milliseconds: 500),
     );
     anim = CurvedAnimation(
         parent: animController,
@@ -38,6 +42,7 @@ class _TouchableShrinkState extends State<TouchableShrink>
   }
 
   void startAnim() async {
+    if (widget.shrinkBackground != null) widget.shrinkBackground!();
     animController.forward();
     animController.addListener(() {
       setState(() {});
@@ -45,6 +50,7 @@ class _TouchableShrinkState extends State<TouchableShrink>
   }
 
   void reverseAnim() {
+    if (widget.growBackground != null) widget.growBackground!();
     animController.reverse();
     animController.addListener(() {
       setState(() {});
@@ -60,8 +66,14 @@ class _TouchableShrinkState extends State<TouchableShrink>
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTapUp: (_) => reverseAnim(),
-      onTapCancel: () => reverseAnim(),
+      onTapUp: (_) {
+        reverseAnim();
+        widget.onCompleteOrCancel();
+      },
+      onTapCancel: () {
+        reverseAnim();
+        widget.onCompleteOrCancel();
+      },
       onTapDown: (_) => startAnim(),
       onLongPress: () {
         HapticFeedback.lightImpact();
@@ -69,7 +81,7 @@ class _TouchableShrinkState extends State<TouchableShrink>
         reverseAnim();
       },
       child: Transform.scale(
-        scale: -1 / 6 * anim.value + 1,
+        scale: -1 / 8 * anim.value + 1,
         child: widget.child,
       ),
     );

@@ -8,7 +8,7 @@ import '../buttons/option.dart';
 
 Future<dynamic> showButtonOptionsSheet(
     BuildContext context, List<OptionButton> buttons,
-    {String? text}) {
+    {String? text, VoidCallback? onComplete}) {
   return showModalBottomSheet(
     backgroundColor: Colors.transparent,
     context: context,
@@ -64,15 +64,11 @@ Future<dynamic> showButtonOptionsSheet(
                   ),
                 ),
               ),
-              // LongButton(
-              //   text: "Cancel",
-              //   onPress: () => Navigator.pop(context),
-              // ),
               const SizedBox(height: 7.5),
             ],
           ),
         ),
       ),
     ),
-  );
+  ).whenComplete(() => onComplete != null ? onComplete() : null);
 }

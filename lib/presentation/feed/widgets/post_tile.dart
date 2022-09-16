@@ -35,8 +35,10 @@ class PostTile extends StatelessWidget {
     required this.badges,
     required this.universityFullName,
     required this.id,
+
     Key? key,
   }) : super(key: key);
+
 
   final String? id;
   final String universityFullName;
@@ -152,56 +154,58 @@ class PostTile extends StatelessWidget {
                 TouchableOpacity(
                   tooltip: 'post options',
                   tooltipLocation: TooltipLocation.above,
-                  onTap: () => showButtonOptionsSheet(context, [
-                    OptionButton(
-                      text: "Report",
-                      icon: CupertinoIcons.flag,
-                      onTap: () => print("tap"),
-                    ),
-                    OptionButton(
-                      text: "Share",
-                      icon: CupertinoIcons.share,
-                      onTap: () => print("tap"),
-                    ),
-                    OptionButton(
-                      text: "Quote",
-                      icon: CupertinoIcons.paperplane,
-                      onTap: () => Navigator.of(context).pushNamed(
-                        '/home/create_replied_post',
-                        arguments: {
-                          'title': title,
-                          'body': text,
-                          'id': id,
-                        },
+                  onTap: () {
+                    showButtonOptionsSheet(context, [
+                      OptionButton(
+                        text: "Report",
+                        icon: CupertinoIcons.flag,
+                        onTap: () => print("tap"),
                       ),
-                    ),
-                    OptionButton(
-                      text: "Save",
-                      icon: CupertinoIcons.bookmark,
-                      onTap: () => print("tap"),
-                    ),
-                    OptionButton(
-                      text: "Details",
-                      icon: CupertinoIcons.info,
-                      onTap: () => Navigator.pushNamed(
-                        context,
-                        '/home/post/stats',
-                        arguments: {
-                          'comments': comments,
-                          'faculty': faculty,
-                          'genre': genre,
-                          'hates': hates,
-                          'likes': likes,
-                          // TODO: implement 'moderation_status' and 'saves'
-                          'moderation_status': 'IMPLEMENT THIS STILL',
-                          'saves': 999999,
-                          'university': university,
-                          'year': year,
-                          'university_full_name': universityFullName,
-                        },
+                      OptionButton(
+                        text: "Share",
+                        icon: CupertinoIcons.share,
+                        onTap: () => print("tap"),
                       ),
-                    ),
-                  ]),
+                      OptionButton(
+                        text: "Quote",
+                        icon: CupertinoIcons.paperplane,
+                        onTap: () => Navigator.of(context).pushNamed(
+                          '/home/create_replied_post',
+                          arguments: {
+                            'title': title,
+                            'body': text,
+                            'id': id,
+                          },
+                        ),
+                      ),
+                      OptionButton(
+                        text: "Save",
+                        icon: CupertinoIcons.bookmark,
+                        onTap: () => print("tap"),
+                      ),
+                      OptionButton(
+                        text: "Details",
+                        icon: CupertinoIcons.info,
+                        onTap: () => Navigator.pushNamed(
+                          context,
+                          '/home/post/stats',
+                          arguments: {
+                            'comments': comments,
+                            'faculty': faculty,
+                            'genre': genre,
+                            'hates': hates,
+                            'likes': likes,
+                            // TODO: implement 'moderation_status' and 'saves'
+                            'moderation_status': 'IMPLEMENT THIS STILL',
+                            'saves': 999999,
+                            'university': university,
+                            'year': year,
+                            'university_full_name': universityFullName,
+                          },
+                        ),
+                      ),
+                    ]);
+                  },
                   child: Container(
                     // Transparent container hitbox trick.
                     color: Colors.transparent,

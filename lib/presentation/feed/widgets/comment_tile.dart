@@ -19,9 +19,13 @@ class CommentTile extends StatelessWidget {
     required this.hates,
     required this.text,
     required this.depth,
+    required this.onCompleteOrCancelPress,
+    required this.onLongPress,
     Key? key,
   }) : super(key: key);
 
+  final VoidCallback onCompleteOrCancelPress;
+  final VoidCallback onLongPress;
   final String text;
   final int likes;
   final int hates;
@@ -96,7 +100,8 @@ class CommentTile extends StatelessWidget {
         ),
       ],
       text:
-          'Tip: swiping horizontally, or long pressing on a comment brings up actions.');
+          'Tip: swiping horizontally, or long pressing on a comment brings up actions.',
+      onComplete: () => onCompleteOrCancelPress());
 
   Widget addBars(BuildContext context) {
     List<Widget> bars = [];
@@ -155,7 +160,11 @@ class CommentTile extends StatelessWidget {
         ],
       ),
       child: TouchableShrink(
-        onLongPress: () => showOptions(context),
+        onCompleteOrCancel: () => onCompleteOrCancelPress(),
+        onLongPress: () {
+          onLongPress();
+          showOptions(context);
+        },
         child: Container(
           // Container hitbox trick.
           color: Colors.transparent,
@@ -208,7 +217,10 @@ class CommentTile extends StatelessWidget {
                               TouchableOpacity(
                                 tooltip: 'comment options',
                                 tooltipLocation: TooltipLocation.above,
-                                onTap: () => showOptions(context),
+                                onTap: () {
+                                  showOptions(context);
+                                  onLongPress();
+                                },
                                 child: Container(
                                   // Transparent container hitbox trick.
                                   color: Colors.transparent,

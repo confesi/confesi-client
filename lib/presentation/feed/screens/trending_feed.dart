@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/constants/feed/constants.dart';
+import '../../shared/behaviours/shrinking_view.dart';
 import '../../shared/overlays/snackbar.dart';
 import '../cubit/trending_cubit.dart';
 import '../widgets/error_message.dart';
@@ -16,7 +17,11 @@ class ExploreTrending extends StatefulWidget {
 }
 
 class _ExploreTrendingState extends State<ExploreTrending>
-    with AutomaticKeepAliveClientMixin {
+    with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
+  // Controller for the shrinking view.
+  late ShrinkingViewController shrinkingViewController =
+      ShrinkingViewController(this);
+
   Widget _buildFeed(TrendingState state, TrendingCubit trendingCubit) {
     if (state is ErrorLoadingAny) {
       return Center(

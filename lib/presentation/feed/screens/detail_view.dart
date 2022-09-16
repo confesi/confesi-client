@@ -1,4 +1,5 @@
 import 'package:Confessi/core/styles/typography.dart';
+import 'package:Confessi/presentation/shared/behaviours/shrinking_view.dart';
 import 'package:Confessi/presentation/shared/layout/appbar.dart';
 import 'package:Confessi/domain/feed/entities/post_child.dart';
 import 'package:Confessi/presentation/feed/widgets/circle_comment_switcher_button.dart';
@@ -8,6 +9,7 @@ import 'package:Confessi/presentation/feed/widgets/comment_tile.dart';
 import 'package:Confessi/presentation/feed/widgets/post_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:keyboard_attachable/keyboard_attachable.dart';
@@ -64,7 +66,12 @@ class DetailViewScreen extends StatefulWidget {
   State<DetailViewScreen> createState() => _DetailViewScreenState();
 }
 
-class _DetailViewScreenState extends State<DetailViewScreen> {
+class _DetailViewScreenState extends State<DetailViewScreen>
+    with TickerProviderStateMixin {
+  // Controller for the shrinking view.
+  late ShrinkingViewController shrinkingViewController =
+      ShrinkingViewController(this);
+
   // Is the scrollview at the very top?
   bool atTop = true;
 
@@ -126,104 +133,110 @@ class _DetailViewScreenState extends State<DetailViewScreen> {
       ),
       backgroundColor: Theme.of(context).colorScheme.background,
       resizeToAvoidBottomInset: true,
-      body: SafeArea(
-        maintainBottomViewPadding: true,
-        child: FooterLayout(
-          footer: KeyboardAttachable(
-            child: CommentSheet(
-              onSubmit: (comment) => print(comment),
-              maxCharacters: kMaxCommentLength,
-            ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AppbarLayout(
-                bottomBorder: false,
-                centerWidget: Text(
-                  'Thread View',
-                  style: kTitle.copyWith(
-                      color: Theme.of(context).colorScheme.primary),
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                ),
-                leftIconVisible: true,
-                rightIcon: atTop ? null : CupertinoIcons.arrow_up_to_line,
-                rightIconVisible: atTop ? false : true,
-                rightIconOnPress: () {
-                  atTop ? null : controller.scrollToTop();
-                },
+      body: ShrinkingView(
+        controller: shrinkingViewController,
+        child: SafeArea(
+          maintainBottomViewPadding: true,
+          child: FooterLayout(
+            footer: KeyboardAttachable(
+              child: CommentSheet(
+                onSubmit: (comment) => print(comment),
+                maxCharacters: kMaxCommentLength,
               ),
-              Expanded(
-                child: Stack(
-                  children: [
-                    InfiniteList(
-                      controller: controller,
-                      refreshIndicatorBackgroundColor:
-                          Theme.of(context).colorScheme.background,
-                      refreshIndicatorColor:
-                          Theme.of(context).colorScheme.primary,
-                      // TODO: implement these widgets:
-                      fullPageLoading: const Text('full page loading'),
-                      fullPageError: const Text('full page error'),
-                      fullPageEmpty: const Text('full page empty'),
-                      feedLoading: const Text('feed loading'),
-                      feedError: const Text('feed error'),
-                      feedEmpty: const Text('feed empty'),
-                      itemBuilder: (context, index) {
-                        return CommentTile(
-                          likes: index,
-                          hates: index,
-                          text: 'dummy text here: $index',
-                          depth: CommentDepth.root,
-                        );
-                      },
-                      header: Column(
-                        children: [
-                          PostTile(
-                            id: widget.id,
-                            badges: widget.badges,
-                            postChild: widget.postChild,
-                            icon: widget.icon,
-                            postView: PostView.detailView,
-                            university: widget.university,
-                            genre: widget.genre,
-                            time: widget.time,
-                            faculty: widget.faculty,
-                            text: widget.text,
-                            title: widget.title,
-                            likes: widget.likes,
-                            hates: widget.hates,
-                            comments: widget.comments,
-                            year: widget.year,
-                            universityFullName: widget.universityFullName,
-                          ),
-                          CommentDivider(
-                            comments: widget.comments,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Positioned(
-                      right: 10,
-                      bottom: 10,
-                      child: KeyboardVisibilityBuilder(
-                        builder: (context, isKeyboardVisible) {
-                          return CircleCommentSwitcherButton(
-                            visible: !isKeyboardVisible,
-                            scrollToRootDirection: ScrollToRootDirection.down,
-                            controller: controller,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AppbarLayout(
+                  bottomBorder: false,
+                  centerWidget: Text(
+                    'Thread View',
+                    style: kTitle.copyWith(
+                        color: Theme.of(context).colorScheme.primary),
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                  ),
+                  leftIconVisible: true,
+                  rightIcon: atTop ? null : CupertinoIcons.arrow_up_to_line,
+                  rightIconVisible: atTop ? false : true,
+                  rightIconOnPress: () {
+                    atTop ? null : controller.scrollToTop();
+                  },
+                ),
+                Expanded(
+                  child: Stack(
+                    children: [
+                      InfiniteList(
+                        controller: controller,
+                        refreshIndicatorBackgroundColor:
+                            Theme.of(context).colorScheme.background,
+                        refreshIndicatorColor:
+                            Theme.of(context).colorScheme.primary,
+                        // TODO: implement these widgets:
+                        fullPageLoading: const Text('full page loading'),
+                        fullPageError: const Text('full page error'),
+                        fullPageEmpty: const Text('full page empty'),
+                        feedLoading: const Text('feed loading'),
+                        feedError: const Text('feed error'),
+                        feedEmpty: const Text('feed empty'),
+                        itemBuilder: (context, index) {
+                          return CommentTile(
+                            onCompleteOrCancelPress: () =>
+                                shrinkingViewController.enlarge(),
+                            onLongPress: () => shrinkingViewController.shrink(),
+                            likes: index,
+                            hates: index,
+                            text: 'dummy text here: $index',
+                            depth: CommentDepth.root,
                           );
                         },
+                        header: Column(
+                          children: [
+                            PostTile(
+                              id: widget.id,
+                              badges: widget.badges,
+                              postChild: widget.postChild,
+                              icon: widget.icon,
+                              postView: PostView.detailView,
+                              university: widget.university,
+                              genre: widget.genre,
+                              time: widget.time,
+                              faculty: widget.faculty,
+                              text: widget.text,
+                              title: widget.title,
+                              likes: widget.likes,
+                              hates: widget.hates,
+                              comments: widget.comments,
+                              year: widget.year,
+                              universityFullName: widget.universityFullName,
+                            ),
+                            CommentDivider(
+                              comments: widget.comments,
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                      Positioned(
+                        right: 10,
+                        bottom: 10,
+                        child: KeyboardVisibilityBuilder(
+                          builder: (context, isKeyboardVisible) {
+                            return CircleCommentSwitcherButton(
+                              visible: !isKeyboardVisible,
+                              scrollToRootDirection: ScrollToRootDirection.down,
+                              controller: controller,
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              // Expanded(
-              //   child:
-              // ),
-            ],
+                // Expanded(
+                //   child:
+                // ),
+              ],
+            ),
           ),
         ),
       ),
