@@ -19,13 +19,9 @@ class CommentTile extends StatelessWidget {
     required this.hates,
     required this.text,
     required this.depth,
-    required this.onCompleteOrCancelPress,
-    required this.onLongPress,
     Key? key,
   }) : super(key: key);
 
-  final VoidCallback onCompleteOrCancelPress;
-  final VoidCallback onLongPress;
   final String text;
   final int likes;
   final int hates;
@@ -66,42 +62,42 @@ class CommentTile extends StatelessWidget {
   }
 
   void showOptions(BuildContext context) => showButtonOptionsSheet(
-      context,
-      [
-        OptionButton(
-          onTap: () => print('tap'),
-          text: 'Report',
-          icon: CupertinoIcons.flag,
-        ),
-        OptionButton(
-          onTap: () => print('tap'),
-          text: 'Copy Text',
-          icon: CupertinoIcons.collections,
-        ),
-        OptionButton(
-          onTap: () => print('tap'),
-          text: '195',
-          icon: CupertinoIcons.hand_thumbsup,
-        ),
-        OptionButton(
-          onTap: () => print('tap'),
-          text: 'Share',
-          icon: CupertinoIcons.share,
-        ),
-        OptionButton(
-          onTap: () => print('tap'),
-          text: 'Reply',
-          icon: CupertinoIcons.arrowshape_turn_up_right,
-        ),
-        OptionButton(
-          onTap: () => print('tap'),
-          text: '28.3k',
-          icon: CupertinoIcons.hand_thumbsdown,
-        ),
-      ],
-      text:
-          'Tip: swiping horizontally, or long pressing on a comment brings up actions.',
-      onComplete: () => onCompleteOrCancelPress());
+        context,
+        [
+          OptionButton(
+            onTap: () => print('tap'),
+            text: 'Report',
+            icon: CupertinoIcons.flag,
+          ),
+          OptionButton(
+            onTap: () => print('tap'),
+            text: 'Copy Text',
+            icon: CupertinoIcons.collections,
+          ),
+          OptionButton(
+            onTap: () => print('tap'),
+            text: '195',
+            icon: CupertinoIcons.hand_thumbsup,
+          ),
+          OptionButton(
+            onTap: () => print('tap'),
+            text: 'Share',
+            icon: CupertinoIcons.share,
+          ),
+          OptionButton(
+            onTap: () => print('tap'),
+            text: 'Reply',
+            icon: CupertinoIcons.arrowshape_turn_up_right,
+          ),
+          OptionButton(
+            onTap: () => print('tap'),
+            text: '28.3k',
+            icon: CupertinoIcons.hand_thumbsdown,
+          ),
+        ],
+        text:
+            'Tip: swiping horizontally, or long pressing on a comment brings up actions.',
+      );
 
   Widget addBars(BuildContext context) {
     List<Widget> bars = [];
@@ -160,11 +156,7 @@ class CommentTile extends StatelessWidget {
         ],
       ),
       child: TouchableShrink(
-        onCompleteOrCancel: () => onCompleteOrCancelPress(),
-        onLongPress: () {
-          onLongPress();
-          showOptions(context);
-        },
+        onLongPress: () => showOptions(context),
         child: Container(
           // Container hitbox trick.
           color: Colors.transparent,
@@ -217,10 +209,7 @@ class CommentTile extends StatelessWidget {
                               TouchableOpacity(
                                 tooltip: 'comment options',
                                 tooltipLocation: TooltipLocation.above,
-                                onTap: () {
-                                  showOptions(context);
-                                  onLongPress();
-                                },
+                                onTap: () => showOptions(context),
                                 child: Container(
                                   // Transparent container hitbox trick.
                                   color: Colors.transparent,

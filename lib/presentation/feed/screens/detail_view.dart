@@ -1,3 +1,4 @@
+import 'package:Confessi/core/cubit/scaffold_shrinker_cubit.dart';
 import 'package:Confessi/core/styles/typography.dart';
 import 'package:Confessi/presentation/shared/behaviours/shrinking_view.dart';
 import 'package:Confessi/presentation/shared/layout/appbar.dart';
@@ -11,6 +12,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:keyboard_attachable/keyboard_attachable.dart';
 
@@ -68,10 +70,6 @@ class DetailViewScreen extends StatefulWidget {
 
 class _DetailViewScreenState extends State<DetailViewScreen>
     with TickerProviderStateMixin {
-  // Controller for the shrinking view.
-  late ShrinkingViewController shrinkingViewController =
-      ShrinkingViewController(this);
-
   // Is the scrollview at the very top?
   bool atTop = true;
 
@@ -134,7 +132,6 @@ class _DetailViewScreenState extends State<DetailViewScreen>
       backgroundColor: Theme.of(context).colorScheme.background,
       resizeToAvoidBottomInset: true,
       body: ShrinkingView(
-        controller: shrinkingViewController,
         child: SafeArea(
           maintainBottomViewPadding: true,
           child: FooterLayout(
@@ -181,9 +178,6 @@ class _DetailViewScreenState extends State<DetailViewScreen>
                         feedEmpty: const Text('feed empty'),
                         itemBuilder: (context, index) {
                           return CommentTile(
-                            onCompleteOrCancelPress: () =>
-                                shrinkingViewController.enlarge(),
-                            onLongPress: () => shrinkingViewController.shrink(),
                             likes: index,
                             hates: index,
                             text: 'dummy text here: $index',

@@ -1,14 +1,16 @@
-import 'package:Confessi/presentation/shared/buttons/long.dart';
 import 'package:Confessi/presentation/shared/layout/swipebar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../core/cubit/scaffold_shrinker_cubit.dart';
 import '../../../core/styles/typography.dart';
 import '../buttons/option.dart';
 
 Future<dynamic> showButtonOptionsSheet(
     BuildContext context, List<OptionButton> buttons,
     {String? text, VoidCallback? onComplete}) {
+  context.read<ScaffoldShrinkerCubit>().setShrunk();
   return showModalBottomSheet(
     backgroundColor: Colors.transparent,
     context: context,
@@ -70,5 +72,8 @@ Future<dynamic> showButtonOptionsSheet(
         ),
       ),
     ),
-  ).whenComplete(() => onComplete != null ? onComplete() : null);
+  ).whenComplete(() {
+    onComplete != null ? onComplete() : null;
+    context.read<ScaffoldShrinkerCubit>().setExpanded();
+  });
 }

@@ -7,7 +7,6 @@ import 'package:flutter/services.dart';
 
 import '../../../core/constants/feed/constants.dart';
 import '../../../domain/shared/entities/post.dart';
-import '../../shared/behaviours/shrinking_view.dart';
 import 'error_message.dart';
 
 class InfiniteScroll extends StatefulWidget {
@@ -33,9 +32,6 @@ class _InfiniteScrollState extends State<InfiniteScroll>
   bool isRefreshing = false;
   late ScrollController scrollController;
   bool isLoading = false;
-
-  late ShrinkingViewController shrinkingViewController =
-      ShrinkingViewController(this);
 
   @override
   void initState() {

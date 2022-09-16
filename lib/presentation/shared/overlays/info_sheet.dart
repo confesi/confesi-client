@@ -1,11 +1,14 @@
 import 'package:Confessi/core/styles/typography.dart';
 import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../core/cubit/scaffold_shrinker_cubit.dart';
 import '../layout/swipebar.dart';
 
 Future<dynamic> showInfoSheet(
     BuildContext context, String header, String body) {
+  context.read<ScaffoldShrinkerCubit>().setShrunk();
   return showModalBottomSheet(
     backgroundColor: Colors.transparent,
     context: context,
@@ -56,5 +59,5 @@ Future<dynamic> showInfoSheet(
         ),
       ),
     ),
-  );
+  ).whenComplete(() => context.read<ScaffoldShrinkerCubit>().setExpanded());
 }

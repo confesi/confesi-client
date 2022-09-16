@@ -4,11 +4,14 @@ import 'package:Confessi/presentation/shared/layout/swipebar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../core/cubit/scaffold_shrinker_cubit.dart';
 import '../../../core/styles/typography.dart';
 
 Future<dynamic> showPickerSheet(BuildContext context, List<String> items,
     int index, String header, Function(int) updateState) {
+  context.read<ScaffoldShrinkerCubit>().setShrunk();
   return showModalBottomSheet(
     elevation: 0,
     backgroundColor: Colors.transparent,
@@ -93,5 +96,5 @@ Future<dynamic> showPickerSheet(BuildContext context, List<String> items,
         ),
       ),
     ),
-  );
+  ).whenComplete(() => context.read<ScaffoldShrinkerCubit>().setExpanded());
 }

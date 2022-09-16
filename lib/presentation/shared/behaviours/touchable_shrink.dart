@@ -5,14 +5,12 @@ class TouchableShrink extends StatefulWidget {
   const TouchableShrink({
     super.key,
     required this.onLongPress,
-    required this.onCompleteOrCancel,
     required this.child,
     this.growBackground,
     this.shrinkBackground,
   });
 
   final VoidCallback onLongPress;
-  final VoidCallback onCompleteOrCancel;
   final Widget child;
   final VoidCallback? shrinkBackground;
   final VoidCallback? growBackground;
@@ -31,7 +29,7 @@ class _TouchableShrinkState extends State<TouchableShrink>
     animController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 500),
-      reverseDuration: const Duration(milliseconds: 500),
+      reverseDuration: const Duration(milliseconds: 300),
     );
     anim = CurvedAnimation(
         parent: animController,
@@ -66,14 +64,8 @@ class _TouchableShrinkState extends State<TouchableShrink>
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTapUp: (_) {
-        reverseAnim();
-        widget.onCompleteOrCancel();
-      },
-      onTapCancel: () {
-        reverseAnim();
-        widget.onCompleteOrCancel();
-      },
+      onTapUp: (_) => reverseAnim(),
+      onTapCancel: () => reverseAnim(),
       onTapDown: (_) => startAnim(),
       onLongPress: () {
         HapticFeedback.lightImpact();

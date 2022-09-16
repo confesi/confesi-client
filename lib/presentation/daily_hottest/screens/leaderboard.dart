@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:Confessi/core/utils/numbers/is_plural.dart';
+import 'package:Confessi/presentation/shared/behaviours/shrinking_view.dart';
 import 'package:Confessi/presentation/shared/indicators/alert.dart';
 import 'package:Confessi/presentation/shared/indicators/loading.dart';
 import 'package:Confessi/presentation/shared/layout/appbar.dart';
@@ -148,37 +149,39 @@ class LeaderboardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
-      body: SafeArea(
-        bottom: false,
-        child: Container(
-          color: Theme.of(context).colorScheme.shadow,
-          child: Column(
-            children: [
-              AppbarLayout(
-                bottomBorder: false,
-                centerWidget: Text(
-                  'University Leaderboard',
-                  style: kTitle.copyWith(
-                      color: Theme.of(context).colorScheme.primary),
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
+      body: ShrinkingView(
+        child: SafeArea(
+          bottom: false,
+          child: Container(
+            color: Theme.of(context).colorScheme.shadow,
+            child: Column(
+              children: [
+                AppbarLayout(
+                  bottomBorder: false,
+                  centerWidget: Text(
+                    'University Leaderboard',
+                    style: kTitle.copyWith(
+                        color: Theme.of(context).colorScheme.primary),
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                  ),
+                  rightIcon: CupertinoIcons.info,
+                  rightIconVisible: true,
+                  rightIconOnPress: () => showInfoSheet(
+                      context, kLeaderboardInfoHeader, kLeaderboardInfoBody),
                 ),
-                rightIcon: CupertinoIcons.info,
-                rightIconVisible: true,
-                rightIconOnPress: () => showInfoSheet(
-                    context, kLeaderboardInfoHeader, kLeaderboardInfoBody),
-              ),
-              Expanded(
-                child: BlocBuilder<LeaderboardCubit, LeaderboardState>(
-                  builder: (context, state) {
-                    return AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 200),
-                      child: buildChild(context, state),
-                    );
-                  },
+                Expanded(
+                  child: BlocBuilder<LeaderboardCubit, LeaderboardState>(
+                    builder: (context, state) {
+                      return AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 200),
+                        child: buildChild(context, state),
+                      );
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

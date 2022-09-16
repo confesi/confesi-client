@@ -1,3 +1,4 @@
+import 'package:Confessi/presentation/shared/behaviours/shrinking_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -42,53 +43,55 @@ class _ExploreHomeState extends State<ExploreHome>
     return Scaffold(
       drawer: const ExploreDrawer(),
       backgroundColor: Theme.of(context).colorScheme.background,
-      body: SafeArea(
-        bottom: false,
-        child: Column(
-          children: [
-            Builder(builder: (context) {
-              return AppbarLayout(
-                bottomBorder: false,
-                centerWidget: Text(
-                  "University of Victoria",
-                  style: kTitle.copyWith(
-                      color: Theme.of(context).colorScheme.primary),
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                ),
-                leftIconVisible: true,
-                leftIcon: CupertinoIcons.slider_horizontal_3,
-                leftIconOnPress: () {
-                  Scaffold.of(context).openDrawer();
-                },
-                rightIconVisible: true,
-                rightIcon: CupertinoIcons.paperplane,
-              );
-            }),
-            Expanded(
-              child: Column(
-                children: [
-                  TopTabs(
-                    tabController: tabController,
+      body: ShrinkingView(
+        child: SafeArea(
+          bottom: false,
+          child: Column(
+            children: [
+              Builder(builder: (context) {
+                return AppbarLayout(
+                  bottomBorder: false,
+                  centerWidget: Text(
+                    "University of Victoria",
+                    style: kTitle.copyWith(
+                        color: Theme.of(context).colorScheme.primary),
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
                   ),
-                  Expanded(
-                    child: Container(
-                      color: Theme.of(context).colorScheme.shadow,
-                      child: TabBarView(
-                        physics: const ClampingScrollPhysics(),
-                        controller: tabController,
-                        dragStartBehavior: DragStartBehavior.down,
-                        children: const [
-                          ExploreRecents(),
-                          ExploreTrending(),
-                        ],
+                  leftIconVisible: true,
+                  leftIcon: CupertinoIcons.slider_horizontal_3,
+                  leftIconOnPress: () {
+                    Scaffold.of(context).openDrawer();
+                  },
+                  rightIconVisible: true,
+                  rightIcon: CupertinoIcons.paperplane,
+                );
+              }),
+              Expanded(
+                child: Column(
+                  children: [
+                    TopTabs(
+                      tabController: tabController,
+                    ),
+                    Expanded(
+                      child: Container(
+                        color: Theme.of(context).colorScheme.shadow,
+                        child: TabBarView(
+                          physics: const ClampingScrollPhysics(),
+                          controller: tabController,
+                          dragStartBehavior: DragStartBehavior.down,
+                          children: const [
+                            ExploreRecents(),
+                            ExploreTrending(),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

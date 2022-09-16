@@ -1,16 +1,15 @@
 import 'package:Confessi/presentation/create_post/cubit/post_cubit.dart';
-import 'package:Confessi/presentation/shared/overlays/center_overlay_message.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'core/constants/shared/general.dart';
+import 'core/cubit/scaffold_shrinker_cubit.dart';
 import 'core/router/router.dart';
 import 'core/styles/themes.dart';
 import 'dependency_injection.dart';
 import 'presentation/authentication/cubit/authentication_cubit.dart';
 import 'presentation/authentication/screens/splash.dart';
-import 'presentation/shared/overlays/snackbar.dart';
 
 void main() async {
   await init();
@@ -40,6 +39,10 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           lazy: false,
           create: (context) => sl<CreatePostCubit>(),
+        ),
+        BlocProvider(
+          lazy: false,
+          create: (context) => sl<ScaffoldShrinkerCubit>(),
         ),
       ],
       child: MaterialApp(

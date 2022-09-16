@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:Confessi/core/authorization/http_client.dart';
+import 'package:Confessi/core/cubit/scaffold_shrinker_cubit.dart';
 import 'package:Confessi/data/create_post/datasources/create_post_datasource.dart';
 import 'package:Confessi/data/create_post/repositories/create_post_repository_concrete.dart';
 import 'package:Confessi/data/daily_hottest/datasources/daily_hottest_datasource.dart';
@@ -51,6 +52,8 @@ Future<void> init() async {
   sl.registerFactory(() => HottestCubit(posts: sl()));
   // Registers the create post cubit.
   sl.registerFactory(() => CreatePostCubit(uploadPost: sl()));
+  // Registers the scaffold shrinker cubit.
+  sl.registerFactory(() => ScaffoldShrinkerCubit());
 
   //! Usecases
   // Registers the register usecase.
