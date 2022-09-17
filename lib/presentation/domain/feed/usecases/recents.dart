@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../core/results/failures.dart';
-import '../../../core/usecases/usecase.dart';
-import '../../../data/feed/repositories/feed_repository_concrete.dart';
+import '../../../../core/results/failures.dart';
+import '../../../../core/usecases/usecase.dart';
+import '../../../../data/feed/repositories/feed_repository_concrete.dart';
 import '../../shared/entities/post.dart';
 
 class Recents implements Usecase<List<Post>, RecentsParams> {

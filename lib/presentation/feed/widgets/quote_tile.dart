@@ -1,7 +1,7 @@
 import 'package:Confessi/core/constants/shared/buttons.dart';
 import 'package:Confessi/presentation/shared/behaviours/tool_tip.dart';
 import 'package:Confessi/core/constants/feed/constants.dart';
-import 'package:Confessi/domain/shared/entities/post.dart';
+import 'package:Confessi/presentation/domain/shared/entities/post.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

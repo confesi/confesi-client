@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:Confessi/core/authorization/http_client.dart';
 import 'package:Confessi/core/results/exceptions.dart';
 import 'package:Confessi/data/daily_hottest/models/leaderboard_item_model.dart';
-import 'package:Confessi/domain/daily_hottest/entities/leaderboard_item.dart';
+import 'package:Confessi/presentation/domain/daily_hottest/entities/leaderboard_item.dart';
 
 /// The interface for how the implementation of the leaderboard datasource should look.
 abstract class ILeaderboardDatasource {

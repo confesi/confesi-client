@@ -1,9 +1,9 @@
 import 'package:Confessi/core/authorization/http_client.dart';
 import 'package:dartz/dartz.dart';
 
-import '../../../core/results/failures.dart';
-import '../../../core/results/successes.dart';
-import '../../../core/usecases/usecase.dart';
+import '../../../../core/results/failures.dart';
+import '../../../../core/results/successes.dart';
+import '../../../../core/usecases/usecase.dart';
 
 class SilentAuthentication implements Usecase<Success, NoParams> {
   final ApiClient netClient;

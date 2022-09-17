@@ -5,6 +5,7 @@ import '../behaviours/touchable_opacity.dart';
 
 class OptionButton extends StatelessWidget {
   const OptionButton({
+    this.popContext = true,
     required this.onTap,
     required this.text,
     required this.icon,
@@ -12,6 +13,7 @@ class OptionButton extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
+  final bool popContext;
   final String text;
   final IconData icon;
   final VoidCallback onTap;
@@ -21,7 +23,7 @@ class OptionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TouchableOpacity(
       onTap: () {
-        Navigator.pop(context);
+        popContext ? Navigator.pop(context) : null;
         onTap();
       },
       child: Container(

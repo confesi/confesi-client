@@ -1,5 +1,5 @@
 import 'package:Confessi/data/shared/utils/university_full_%20name_converter.dart';
-import 'package:Confessi/domain/daily_hottest/entities/leaderboard_item.dart';
+import 'package:Confessi/presentation/domain/daily_hottest/entities/leaderboard_item.dart';
 
 import '../../shared/utils/image_path_converter.dart';
 

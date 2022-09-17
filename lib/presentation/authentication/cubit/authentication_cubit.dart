@@ -5,10 +5,10 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
 import '../../../core/usecases/usecase.dart';
-import '../../../domain/authenticatioin/usecases/login.dart';
-import '../../../domain/authenticatioin/usecases/logout.dart';
-import '../../../domain/authenticatioin/usecases/register.dart';
-import '../../../domain/authenticatioin/usecases/silent_authentication.dart';
+import '../../domain/authenticatioin/usecases/login.dart';
+import '../../domain/authenticatioin/usecases/logout.dart';
+import '../../domain/authenticatioin/usecases/register.dart';
+import '../../domain/authenticatioin/usecases/silent_authentication.dart';
 import '../utils/email_validation.dart';
 import '../../../core/utils/validators/empty_validator.dart';
 import '../utils/failure_to_message.dart';

@@ -3,22 +3,22 @@ import 'package:Confessi/core/results/successes.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../core/results/failures.dart';
-import '../../../core/usecases/usecase.dart';
-import '../../../data/authentication/repositories/authentication_repository_concrete.dart';
+import '../../../../core/results/failures.dart';
+import '../../../../core/usecases/usecase.dart';
+import '../../../../data/authentication/repositories/authentication_repository_concrete.dart';
 import '../entities/tokens.dart';
 
-class Register implements Usecase<Success, RegisterParams> {
+class Login implements Usecase<Success, LoginParams> {
   final AuthenticationRepository repository;
   final ApiClient netClient;
 
-  Register({required this.repository, required this.netClient});
+  Login({required this.repository, required this.netClient});
 
-  /// Registers the user.
+  /// Logs the user in.
   @override
-  Future<Either<Failure, Success>> call(RegisterParams params) async {
-    final tokens = await repository.register(
-        params.username, params.password, params.email);
+  Future<Either<Failure, Success>> call(LoginParams params) async {
+    final tokens =
+        await repository.login(params.usernameOrEmail, params.password);
     return tokens.fold(
       (failure) => Left(failure),
       (tokens) async {
@@ -35,14 +35,12 @@ class Register implements Usecase<Success, RegisterParams> {
   }
 }
 
-class RegisterParams extends Equatable {
-  final String username;
-  final String email;
+class LoginParams extends Equatable {
+  final String usernameOrEmail;
   final String password;
 
-  const RegisterParams(
-      {required this.username, required this.email, required this.password});
+  const LoginParams({required this.usernameOrEmail, required this.password});
 
   @override
-  List<Object?> get props => [username, email, password];
+  List<Object?> get props => [usernameOrEmail, password];
 }

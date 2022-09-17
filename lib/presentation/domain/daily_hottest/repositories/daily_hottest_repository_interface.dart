@@ -1,5 +1,5 @@
 import 'package:Confessi/core/results/failures.dart';
-import 'package:Confessi/domain/shared/entities/post.dart';
+import 'package:Confessi/presentation/domain/shared/entities/post.dart';
 import 'package:dartz/dartz.dart';
 
 /// The interface for how the implementation of the daily hottest repository should look.

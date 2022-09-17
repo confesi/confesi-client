@@ -151,14 +151,16 @@ class _CreatePostHomeState extends State<CreatePostHome>
         listener: (context, state) async {
           if (state is SuccessfullySubmitted) {
             clearTextfields();
-            setState(() {});
             Navigator.popUntil(context, ModalRoute.withName('/home'));
             CenterOverlay().show(context);
+            setState(() {});
           }
         },
         child: Scaffold(
+          resizeToAvoidBottomInset: false,
           backgroundColor: Theme.of(context).colorScheme.background,
           body: ShrinkingView(
+            // safeAreaBottom: true,
             child: Column(
               children: [
                 AppbarLayout(
@@ -197,12 +199,12 @@ class _CreatePostHomeState extends State<CreatePostHome>
                   leftIcon: CupertinoIcons.xmark,
                   leftIconOnPress: () {
                     isEmpty()
-                        ? Navigator.popUntil(
-                            context, ModalRoute.withName('/home'))
+                        ? Navigator.pop(context)
                         : showButtonOptionsSheet(
                             context,
                             [
                               OptionButton(
+                                popContext: false,
                                 onTap: () {
                                   clearTextfields();
                                   Navigator.popUntil(

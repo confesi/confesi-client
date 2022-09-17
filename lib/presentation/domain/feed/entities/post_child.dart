@@ -1,7 +1,7 @@
-import 'package:Confessi/domain/shared/entities/post.dart';
+import 'package:Confessi/presentation/domain/shared/entities/post.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../core/constants/feed/constants.dart';
+import '../../../../core/constants/feed/constants.dart';
 
 class PostChild extends Equatable {
   final ChildType childType;

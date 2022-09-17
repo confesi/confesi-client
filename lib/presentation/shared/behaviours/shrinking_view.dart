@@ -69,18 +69,24 @@ class _ShrinkingViewState extends State<ShrinkingView>
       },
       child: Container(
         color: Colors.black,
-        child: Center(
-          child: Transform.scale(
-            scale: -_anim.value * .09 + 1,
+        child: Transform.scale(
+          scale: -_anim.value * .05 + 1,
+          child: Transform.translate(
+            offset: Offset(
+                0, _anim.value * MediaQuery.of(context).size.height * .07),
             child: Container(
               decoration: BoxDecoration(
                 borderRadius:
-                    BorderRadius.all(Radius.circular(_anim.value * 40)),
+                    BorderRadius.all(Radius.circular(_anim.value * 50)),
                 color: Theme.of(context).colorScheme.background,
               ),
-              child: ClipRRect(
-                child: SafeArea(
-                  bottom: widget.safeAreaBottom,
+              child: SafeArea(
+                maintainBottomViewPadding: true,
+                bottom: widget.safeAreaBottom,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(_anim.value * 50),
+                      bottomRight: Radius.circular(_anim.value * 50)),
                   child: widget.child,
                 ),
               ),

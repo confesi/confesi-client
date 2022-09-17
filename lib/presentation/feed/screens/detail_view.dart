@@ -2,7 +2,7 @@ import 'package:Confessi/core/cubit/scaffold_shrinker_cubit.dart';
 import 'package:Confessi/core/styles/typography.dart';
 import 'package:Confessi/presentation/shared/behaviours/shrinking_view.dart';
 import 'package:Confessi/presentation/shared/layout/appbar.dart';
-import 'package:Confessi/domain/feed/entities/post_child.dart';
+import 'package:Confessi/presentation/domain/feed/entities/post_child.dart';
 import 'package:Confessi/presentation/feed/widgets/circle_comment_switcher_button.dart';
 import 'package:Confessi/presentation/feed/widgets/comment_divider.dart';
 import 'package:Confessi/presentation/feed/widgets/comment_sheet.dart';
@@ -18,7 +18,7 @@ import 'package:keyboard_attachable/keyboard_attachable.dart';
 
 import '../../../core/constants/feed/constants.dart';
 import '../../../core/constants/shared/feed.dart';
-import '../../../domain/shared/entities/badge.dart';
+import '../../domain/shared/entities/badge.dart';
 import '../widgets/infinite_list.dart';
 
 class Comment {

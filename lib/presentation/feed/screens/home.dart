@@ -60,11 +60,7 @@ class _ExploreHomeState extends State<ExploreHome>
                   ),
                   leftIconVisible: true,
                   leftIcon: CupertinoIcons.slider_horizontal_3,
-                  leftIconOnPress: () {
-                    Scaffold.of(context).openDrawer();
-                  },
-                  rightIconVisible: true,
-                  rightIcon: CupertinoIcons.paperplane,
+                  leftIconOnPress: () => Scaffold.of(context).openDrawer(),
                 );
               }),
               Expanded(

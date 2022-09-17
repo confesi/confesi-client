@@ -2,7 +2,7 @@ import 'package:Confessi/core/results/failures.dart';
 import 'package:Confessi/core/results/successes.dart';
 import 'package:Confessi/core/utils/validators/either_not_empty_validator.dart';
 import 'package:Confessi/core/utils/validators/multiple_empty_validator.dart';
-import 'package:Confessi/domain/create_post/usecases/upload_post.dart';
+import 'package:Confessi/presentation/domain/create_post/usecases/upload_post.dart';
 import 'package:Confessi/presentation/create_post/utils/failure_to_message.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';

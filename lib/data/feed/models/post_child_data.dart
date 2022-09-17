@@ -1,4 +1,4 @@
-import 'package:Confessi/domain/feed/entities/post_child.dart';
+import 'package:Confessi/presentation/domain/feed/entities/post_child.dart';
 
 import '../../../core/results/exceptions.dart';
 import '../../../core/constants/feed/constants.dart';

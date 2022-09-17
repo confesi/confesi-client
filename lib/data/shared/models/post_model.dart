@@ -4,11 +4,11 @@ import 'package:Confessi/data/shared/utils/genre_converter.dart';
 import 'package:Confessi/data/shared/utils/university_faculty_converter.dart';
 import 'package:Confessi/data/shared/utils/university_full_%20name_converter.dart';
 import 'package:Confessi/data/shared/utils/university_name_converter.dart';
-import 'package:Confessi/domain/shared/entities/badge.dart';
+import 'package:Confessi/presentation/domain/shared/entities/badge.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../domain/shared/entities/post.dart';
+import '../../../presentation/domain/shared/entities/post.dart';
 import '../../feed/models/post_child_data.dart';
 import '../utils/genre_to_icon_converter.dart';
 import '../utils/image_path_converter.dart';

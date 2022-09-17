@@ -1,10 +1,10 @@
 import 'package:Confessi/core/authorization/http_client.dart';
 import 'package:dartz/dartz.dart';
 
-import '../../../core/results/failures.dart';
-import '../../../core/results/successes.dart';
-import '../../../core/usecases/usecase.dart';
-import '../../../data/authentication/repositories/authentication_repository_concrete.dart';
+import '../../../../core/results/failures.dart';
+import '../../../../core/results/successes.dart';
+import '../../../../core/usecases/usecase.dart';
+import '../../../../data/authentication/repositories/authentication_repository_concrete.dart';
 
 class Logout implements Usecase<Success, NoParams> {
   final AuthenticationRepository repository;
