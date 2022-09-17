@@ -23,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   void initState() {
-    tabController = TabController(vsync: this, length: 5);
+    tabController = TabController(vsync: this, length: 4);
     super.initState();
   }
 
@@ -52,9 +52,7 @@ class _HomeScreenState extends State<HomeScreen>
                   const ExploreHome(),
                   const HottestHome(),
                   const CreatePostHome(viewMethod: ViewMethod.tabScreen),
-                  Container(
-                    color: Colors.orange,
-                  ),
+
                   Scaffold(
                     backgroundColor: Theme.of(context).colorScheme.background,
                     body: Center(
@@ -104,10 +102,6 @@ class _HomeScreenState extends State<HomeScreen>
                   Tab(
                     text: Responsive.isTablet(context) ? "Post" : null,
                     icon: const Icon(CupertinoIcons.add),
-                  ),
-                  Tab(
-                    text: Responsive.isTablet(context) ? "Archive" : null,
-                    icon: const Icon(CupertinoIcons.calendar),
                   ),
                   Tab(
                     text: Responsive.isTablet(context) ? "Profile" : null,

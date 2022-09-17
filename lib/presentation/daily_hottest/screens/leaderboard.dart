@@ -150,38 +150,36 @@ class LeaderboardScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: ShrinkingView(
-        child: SafeArea(
-          bottom: false,
-          child: Container(
-            color: Theme.of(context).colorScheme.shadow,
-            child: Column(
-              children: [
-                AppbarLayout(
-                  bottomBorder: false,
-                  centerWidget: Text(
-                    'University Leaderboard',
-                    style: kTitle.copyWith(
-                        color: Theme.of(context).colorScheme.primary),
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.center,
-                  ),
-                  rightIcon: CupertinoIcons.info,
-                  rightIconVisible: true,
-                  rightIconOnPress: () => showInfoSheet(
-                      context, kLeaderboardInfoHeader, kLeaderboardInfoBody),
+        safeAreaBottom: false,
+        child: Container(
+          color: Theme.of(context).colorScheme.shadow,
+          child: Column(
+            children: [
+              AppbarLayout(
+                bottomBorder: false,
+                centerWidget: Text(
+                  'University Leaderboard',
+                  style: kTitle.copyWith(
+                      color: Theme.of(context).colorScheme.primary),
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
                 ),
-                Expanded(
-                  child: BlocBuilder<LeaderboardCubit, LeaderboardState>(
-                    builder: (context, state) {
-                      return AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 200),
-                        child: buildChild(context, state),
-                      );
-                    },
-                  ),
+                rightIcon: CupertinoIcons.info,
+                rightIconVisible: true,
+                rightIconOnPress: () => showInfoSheet(
+                    context, kLeaderboardInfoHeader, kLeaderboardInfoBody),
+              ),
+              Expanded(
+                child: BlocBuilder<LeaderboardCubit, LeaderboardState>(
+                  builder: (context, state) {
+                    return AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 200),
+                      child: buildChild(context, state),
+                    );
+                  },
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

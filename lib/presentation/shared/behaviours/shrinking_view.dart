@@ -6,10 +6,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class ShrinkingView extends StatefulWidget {
   const ShrinkingView({
     required this.child,
+    this.safeAreaBottom = true,
     super.key,
   });
 
   final Widget child;
+  final bool safeAreaBottom;
 
   @override
   State<ShrinkingView> createState() => _ShrinkingViewState();
@@ -24,7 +26,7 @@ class _ShrinkingViewState extends State<ShrinkingView>
   void initState() {
     _animController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 350),
+      duration: const Duration(milliseconds: 250),
       reverseDuration: const Duration(milliseconds: 150),
     );
     _anim = CurvedAnimation(
@@ -65,10 +67,25 @@ class _ShrinkingViewState extends State<ShrinkingView>
           reverseAnim();
         }
       },
-      child: Center(
-        child: Transform.scale(
-          scale: -_anim.value * .085 + 1,
-          child: widget.child,
+      child: Container(
+        color: Colors.black,
+        child: Center(
+          child: Transform.scale(
+            scale: -_anim.value * .09 + 1,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius:
+                    BorderRadius.all(Radius.circular(_anim.value * 40)),
+                color: Theme.of(context).colorScheme.background,
+              ),
+              child: ClipRRect(
+                child: SafeArea(
+                  bottom: widget.safeAreaBottom,
+                  child: widget.child,
+                ),
+              ),
+            ),
+          ),
         ),
       ),
     );

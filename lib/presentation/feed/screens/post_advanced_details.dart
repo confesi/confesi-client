@@ -46,124 +46,122 @@ class PostAdvancedDetailsScreen extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
         body: ShrinkingView(
-          child: SafeArea(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                AppbarLayout(
-                  bottomBorder: false,
-                  leftIcon: CupertinoIcons.xmark,
-                  centerWidget: Text(
-                    "Advanced Details",
-                    style: kTitle.copyWith(
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.center,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AppbarLayout(
+                bottomBorder: false,
+                leftIcon: CupertinoIcons.xmark,
+                centerWidget: Text(
+                  "Advanced Details",
+                  style: kTitle.copyWith(
+                    color: Theme.of(context).colorScheme.primary,
                   ),
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
                 ),
-                Expanded(
-                  child: ScrollableView(
-                    horizontalPadding: 10,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 20),
-                        Text(
-                          'Quick stats',
-                          style: kTitle.copyWith(
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                          textAlign: TextAlign.left,
+              ),
+              Expanded(
+                child: ScrollableView(
+                  horizontalPadding: 10,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 20),
+                      Text(
+                        'Quick stats',
+                        style: kTitle.copyWith(
+                          color: Theme.of(context).colorScheme.primary,
                         ),
-                        const SizedBox(height: 7.5),
-                        SpreadRowText(
-                          leftText: 'Likes',
-                          rightText: addCommasToNumber(likes),
+                        textAlign: TextAlign.left,
+                      ),
+                      const SizedBox(height: 7.5),
+                      SpreadRowText(
+                        leftText: 'Likes',
+                        rightText: addCommasToNumber(likes),
+                      ),
+                      SpreadRowText(
+                        leftText: 'Hates',
+                        rightText: addCommasToNumber(hates),
+                      ),
+                      SpreadRowText(
+                        leftText: 'Comments',
+                        rightText: addCommasToNumber(comments),
+                      ),
+                      SpreadRowText(
+                        leftText: 'Saves',
+                        rightText: addCommasToNumber(saves),
+                      ),
+                      const SizedBox(height: 30),
+                      Text(
+                        'About the poster',
+                        style: kTitle.copyWith(
+                          color: Theme.of(context).colorScheme.primary,
                         ),
-                        SpreadRowText(
-                          leftText: 'Hates',
-                          rightText: addCommasToNumber(hates),
-                        ),
-                        SpreadRowText(
-                          leftText: 'Comments',
-                          rightText: addCommasToNumber(comments),
-                        ),
-                        SpreadRowText(
-                          leftText: 'Saves',
-                          rightText: addCommasToNumber(saves),
-                        ),
-                        const SizedBox(height: 30),
-                        Text(
-                          'About the poster',
-                          style: kTitle.copyWith(
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                          textAlign: TextAlign.left,
-                        ),
-                        const SizedBox(height: 7.5),
-                        SpreadRowText(
-                          leftText: 'University (abbr.)',
-                          rightText: university,
-                        ),
-                        SpreadRowText(
-                          leftText: 'University (full)',
-                          rightText: universityFullName,
-                        ),
-                        SpreadRowText(
-                          leftText: 'Faculty',
-                          rightText: faculty,
-                        ),
-                        SpreadRowText(
-                          leftText: 'Genre',
-                          rightText: genre,
-                        ),
-                        SpreadRowText(
-                          leftText: 'Year of study',
-                          rightText: year.toString(),
-                        ),
-                        const SizedBox(height: 30),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Moderation',
-                              style: kTitle.copyWith(
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
-                              textAlign: TextAlign.left,
+                        textAlign: TextAlign.left,
+                      ),
+                      const SizedBox(height: 7.5),
+                      SpreadRowText(
+                        leftText: 'University (abbr.)',
+                        rightText: university,
+                      ),
+                      SpreadRowText(
+                        leftText: 'University (full)',
+                        rightText: universityFullName,
+                      ),
+                      SpreadRowText(
+                        leftText: 'Faculty',
+                        rightText: faculty,
+                      ),
+                      SpreadRowText(
+                        leftText: 'Genre',
+                        rightText: genre,
+                      ),
+                      SpreadRowText(
+                        leftText: 'Year of study',
+                        rightText: year.toString(),
+                      ),
+                      const SizedBox(height: 30),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Moderation',
+                            style: kTitle.copyWith(
+                              color: Theme.of(context).colorScheme.primary,
                             ),
-                            const SizedBox(width: 5),
-                            Expanded(
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: TouchableOpacity(
-                                  tooltip: 'moderation info',
-                                  tooltipLocation: TooltipLocation.above,
-                                  onTap: () => showInfoSheet(
-                                    context,
-                                    kPostStatusTitle,
-                                    kPostStatusDescription,
-                                  ),
-                                  child: const Icon(
-                                    CupertinoIcons.info,
-                                    size: 20,
-                                  ),
+                            textAlign: TextAlign.left,
+                          ),
+                          const SizedBox(width: 5),
+                          Expanded(
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: TouchableOpacity(
+                                tooltip: 'moderation info',
+                                tooltipLocation: TooltipLocation.above,
+                                onTap: () => showInfoSheet(
+                                  context,
+                                  kPostStatusTitle,
+                                  kPostStatusDescription,
+                                ),
+                                child: const Icon(
+                                  CupertinoIcons.info,
+                                  size: 20,
                                 ),
                               ),
                             ),
-                          ],
-                        ),
-                        SpreadRowText(
-                          leftText: 'Post status',
-                          rightText: moderationStatus,
-                        ),
-                      ],
-                    ),
+                          ),
+                        ],
+                      ),
+                      SpreadRowText(
+                        leftText: 'Post status',
+                        rightText: moderationStatus,
+                      ),
+                    ],
                   ),
-                )
-              ],
-            ),
+                ),
+              )
+            ],
           ),
         ),
       ),

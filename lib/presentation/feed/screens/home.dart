@@ -44,8 +44,8 @@ class _ExploreHomeState extends State<ExploreHome>
       drawer: const ExploreDrawer(),
       backgroundColor: Theme.of(context).colorScheme.background,
       body: ShrinkingView(
-        child: SafeArea(
-          bottom: false,
+        child: Container(
+          color: Theme.of(context).colorScheme.background,
           child: Column(
             children: [
               Builder(builder: (context) {

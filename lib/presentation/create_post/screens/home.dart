@@ -159,81 +159,69 @@ class _CreatePostHomeState extends State<CreatePostHome>
         child: Scaffold(
           backgroundColor: Theme.of(context).colorScheme.background,
           body: ShrinkingView(
-            child: SafeArea(
-                child: Column(
+            child: Column(
               children: [
-                // TouchableBurst(
-                //   onTap: () => print('tap'),
-                //   child: Text(
-                //     context.watch<CreatePostCubit>().state.toString(),
-                //     style: kTitle,
-                //   ),
-                // ),
-                Hero(
-                  tag: 'create',
-                  child: AppbarLayout(
-                    bottomBorder: false,
-                    centerWidget: AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 250),
-                      child: focusedField != FocusedField.none
-                          ? TextLimitTracker(
-                              value: getLimitPercent(),
-                            )
-                          : Text(
-                              'Create Confession',
-                              style: kTitle.copyWith(
-                                  color: Theme.of(context).colorScheme.primary),
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                            ),
-                    ),
-                    rightIconVisible: true,
-                    rightIcon: CupertinoIcons.arrow_right,
-                    rightIconOnPress: () {
-                      context.read<CreatePostCubit>().setUserEnteringData();
-                      Navigator.of(context)
-                          .pushNamed('/home/create_post/details', arguments: {
-                        'title': titleController.text,
-                        'body': bodyController.text,
-                        'id':
-                            widget.id, // TODO: add the id later (can be null?)
-                      });
-                      FocusScope.of(context).unfocus();
-                    },
-                    leftIconDisabled:
-                        isEmpty() && widget.viewMethod == ViewMethod.tabScreen
-                            ? true
-                            : false,
-                    leftIconVisible: true,
-                    leftIcon: CupertinoIcons.xmark,
-                    leftIconOnPress: () {
-                      isEmpty()
-                          ? Navigator.popUntil(
-                              context, ModalRoute.withName('/home'))
-                          : showButtonOptionsSheet(
-                              context,
-                              [
-                                OptionButton(
-                                  onTap: () {
-                                    clearTextfields();
-                                    Navigator.popUntil(
-                                        context, ModalRoute.withName('/home'));
-                                    setState(() {});
-                                  },
-                                  text: "Discard",
-                                  icon: CupertinoIcons.trash,
-                                ),
-                                OptionButton(
-                                  onTap: () {
-                                    print('save draft');
-                                  },
-                                  text: "Save draft",
-                                  icon: CupertinoIcons.tray_arrow_down,
-                                ),
-                              ],
-                            );
-                    },
+                AppbarLayout(
+                  bottomBorder: false,
+                  centerWidget: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 250),
+                    child: focusedField != FocusedField.none
+                        ? TextLimitTracker(
+                            value: getLimitPercent(),
+                          )
+                        : Text(
+                            'Create Confession',
+                            style: kTitle.copyWith(
+                                color: Theme.of(context).colorScheme.primary),
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.center,
+                          ),
                   ),
+                  rightIconVisible: true,
+                  rightIcon: CupertinoIcons.arrow_right,
+                  rightIconOnPress: () {
+                    context.read<CreatePostCubit>().setUserEnteringData();
+                    Navigator.of(context)
+                        .pushNamed('/home/create_post/details', arguments: {
+                      'title': titleController.text,
+                      'body': bodyController.text,
+                      'id': widget.id, // TODO: add the id later (can be null?)
+                    });
+                    FocusScope.of(context).unfocus();
+                  },
+                  leftIconDisabled:
+                      isEmpty() && widget.viewMethod == ViewMethod.tabScreen
+                          ? true
+                          : false,
+                  leftIconVisible: true,
+                  leftIcon: CupertinoIcons.xmark,
+                  leftIconOnPress: () {
+                    isEmpty()
+                        ? Navigator.popUntil(
+                            context, ModalRoute.withName('/home'))
+                        : showButtonOptionsSheet(
+                            context,
+                            [
+                              OptionButton(
+                                onTap: () {
+                                  clearTextfields();
+                                  Navigator.popUntil(
+                                      context, ModalRoute.withName('/home'));
+                                  setState(() {});
+                                },
+                                text: "Discard",
+                                icon: CupertinoIcons.trash,
+                              ),
+                              OptionButton(
+                                onTap: () {
+                                  print('save draft');
+                                },
+                                text: "Save draft",
+                                icon: CupertinoIcons.tray_arrow_down,
+                              ),
+                            ],
+                          );
+                  },
                 ),
                 Expanded(
                   child: Container(
@@ -373,7 +361,7 @@ class _CreatePostHomeState extends State<CreatePostHome>
                   ),
                 ),
               ],
-            )),
+            ),
           ),
         ),
       ),
