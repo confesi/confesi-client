@@ -1,4 +1,5 @@
 import 'package:Confessi/presentation/authentication/cubit/authentication_cubit.dart';
+import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -78,96 +79,93 @@ class _RegisterScreenState extends State<RegisterScreen>
           child: Scaffold(
             resizeToAvoidBottomInset: true,
             backgroundColor: Theme.of(context).colorScheme.background,
-            body: SafeArea(
-              child: CupertinoScrollbar(
-                child: ScrollConfiguration(
-                  behavior: NoOverScrollSplash(),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        MinimalAppbarLayout(
-                          pressable: state is UserLoading ? false : true,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 30),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const SizedBox(height: 15),
-                              Text(
-                                "Let's get you started.",
-                                style: kDisplay.copyWith(
-                                    color:
-                                        Theme.of(context).colorScheme.primary),
-                                textAlign: TextAlign.left,
-                              ),
-                              SizedBox(height: heightFactor * 8),
-                              Column(
-                                children: [
-                                  BulgeTextField(
-                                    controller: emailController,
-                                    hintText: "Email",
-                                    bottomPadding: 10,
-                                  ),
-                                  BulgeTextField(
-                                    controller: usernameController,
-                                    hintText: "Username",
-                                    bottomPadding: 10,
-                                  ),
-                                  BulgeTextField(
-                                    controller: passwordController,
-                                    password: true,
-                                    hintText: "Password",
-                                  ),
-                                ],
-                              ),
-                              FadeSizeText(
-                                text: errorText,
-                                childController: errorAnimController,
-                              ),
-                              PopButton(
-                                loading: state is UserLoading ? true : false,
-                                justText: true,
-                                onPress: () async {
-                                  FocusScope.of(context).unfocus();
-                                  await context
-                                      .read<AuthenticationCubit>()
-                                      .registerUser(
-                                        usernameController.text,
-                                        passwordController.text,
-                                        emailController.text,
-                                      );
-                                },
-                                icon: CupertinoIcons.chevron_right,
-                                backgroundColor:
-                                    Theme.of(context).colorScheme.secondary,
-                                textColor:
-                                    Theme.of(context).colorScheme.onSecondary,
-                                text: "Register",
-                              ),
-                              const SizedBox(height: 10),
-                              Center(
-                                child: LinkText(
-                                  pressable:
-                                      state is UserLoading ? false : true,
-                                  onPress: () {
-                                    Navigator.of(context).pushNamed("/login");
-                                  },
-                                  linkText: "Tap here.",
-                                  text: "Already a user? ",
+            body:
+                SafeArea(child: LayoutBuilder(builder: (context, constraints) {
+              return SizedBox(
+                height: constraints.maxHeight,
+                child: ScrollableView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      MinimalAppbarLayout(
+                        pressable: state is UserLoading ? false : true,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 30),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 15),
+                            Text(
+                              "Let's get you started.",
+                              style: kDisplay.copyWith(
+                                  color: Theme.of(context).colorScheme.primary),
+                              textAlign: TextAlign.left,
+                            ),
+                            SizedBox(height: heightFactor * 8),
+                            Column(
+                              children: [
+                                BulgeTextField(
+                                  controller: emailController,
+                                  hintText: "Email",
+                                  bottomPadding: 10,
                                 ),
+                                BulgeTextField(
+                                  controller: usernameController,
+                                  hintText: "Username",
+                                  bottomPadding: 10,
+                                ),
+                                BulgeTextField(
+                                  controller: passwordController,
+                                  password: true,
+                                  hintText: "Password",
+                                ),
+                              ],
+                            ),
+                            FadeSizeText(
+                              text: errorText,
+                              childController: errorAnimController,
+                            ),
+                            PopButton(
+                              loading: state is UserLoading ? true : false,
+                              justText: true,
+                              onPress: () async {
+                                FocusScope.of(context).unfocus();
+                                await context
+                                    .read<AuthenticationCubit>()
+                                    .registerUser(
+                                      usernameController.text,
+                                      passwordController.text,
+                                      emailController.text,
+                                    );
+                              },
+                              icon: CupertinoIcons.chevron_right,
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.secondary,
+                              textColor:
+                                  Theme.of(context).colorScheme.onSecondary,
+                              text: "Register",
+                            ),
+                            const SizedBox(height: 10),
+                            Center(
+                              child: LinkText(
+                                pressable: state is UserLoading ? false : true,
+                                onPress: () {
+                                  Navigator.of(context).pushNamed("/login");
+                                },
+                                linkText: "Tap here.",
+                                text: "Already a user? ",
                               ),
-                              const SizedBox(height: 10),
-                            ],
-                          ),
+                            ),
+                            const SizedBox(height: 10),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
-              ),
-            ),
+              );
+            })),
           ),
         );
       },

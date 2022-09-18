@@ -1,9 +1,10 @@
 import 'package:Confessi/core/constants/shared/buttons.dart';
 import 'package:Confessi/presentation/create_post/widgets/text_limit_tracker.dart';
-import 'package:Confessi/presentation/shared/buttons/simple_text.dart';
+import 'package:Confessi/presentation/shared/buttons/animated_simple_text.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
+import '../../shared/buttons/simple_text.dart';
 import '../../shared/textfields/expandable.dart';
 
 class CommentSheet extends StatefulWidget {

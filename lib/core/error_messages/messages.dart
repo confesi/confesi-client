@@ -6,7 +6,7 @@ import '../constants/authentication/constants.dart';
 abstract class ErrorMessages {
   final String _connectionError = "Connection error.";
   final String _serverError = "Server error. Please try again later.";
-  final String _fieldsBlankError = "Fields cannot be blank";
+  final String _fieldsBlankError = "Fields cannot be blank.";
   // methods
   final String _passwordIncorrect = "Password incorrect.";
   final String _emailTooShort =

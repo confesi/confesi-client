@@ -28,7 +28,7 @@ class HeaderGroupText extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Expanded(
+        Flexible(
           child: Text(
             header,
             style: kDisplay.copyWith(

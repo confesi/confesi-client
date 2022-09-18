@@ -1,4 +1,4 @@
-import 'package:Confessi/presentation/shared/buttons/simple_text.dart';
+import 'package:Confessi/presentation/shared/buttons/animated_simple_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,12 +46,12 @@ Future<dynamic> showDatePickerSheet(BuildContext context) async {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SimpleTextButton(
+                    AnimatedSimpleTextButton(
                       onTap: () => Navigator.pop(context),
                       text: "Load today",
                     ),
                     const SizedBox(width: 15),
-                    SimpleTextButton(
+                    AnimatedSimpleTextButton(
                       onTap: () => Navigator.pop(context),
                       text: "Load selected day",
                     ),

@@ -1,3 +1,4 @@
+import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -76,12 +77,11 @@ class _LoginScreenState extends State<LoginScreen>
             resizeToAvoidBottomInset: true,
             backgroundColor: Theme.of(context).colorScheme.background,
             body: SafeArea(
-              child: CupertinoScrollbar(
-                child: ScrollConfiguration(
-                  behavior: NoOverScrollSplash(),
-                  child: SingleChildScrollView(
+              child: LayoutBuilder(builder: (context, constraints) {
+                return SizedBox(
+                  height: constraints.maxHeight,
+                  child: ScrollableView(
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         MinimalAppbarLayout(
                           pressable: state is UserLoading ? false : true,
@@ -100,19 +100,15 @@ class _LoginScreenState extends State<LoginScreen>
                                 textAlign: TextAlign.left,
                               ),
                               SizedBox(height: heightFactor * 8),
-                              Column(
-                                children: [
-                                  BulgeTextField(
-                                    controller: usernameEmailController,
-                                    hintText: "Email or username",
-                                    bottomPadding: 10,
-                                  ),
-                                  BulgeTextField(
-                                    controller: passwordController,
-                                    password: true,
-                                    hintText: "Password",
-                                  ),
-                                ],
+                              BulgeTextField(
+                                controller: usernameEmailController,
+                                hintText: "Email or username",
+                                bottomPadding: 10,
+                              ),
+                              BulgeTextField(
+                                controller: passwordController,
+                                password: true,
+                                hintText: "Password",
                               ),
                               FadeSizeText(
                                 text: errorText,
@@ -151,8 +147,8 @@ class _LoginScreenState extends State<LoginScreen>
                       ],
                     ),
                   ),
-                ),
-              ),
+                );
+              }),
             ),
           ),
         );

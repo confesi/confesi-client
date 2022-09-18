@@ -32,7 +32,7 @@ class AppTheme {
     colorScheme: const ColorScheme(
       surfaceVariant: Color.fromARGB(255, 23, 23, 23),
       brightness: Brightness.dark,
-      primary: Color(0xffd7dadc),
+      primary: Color.fromARGB(255, 238, 239, 240),
       onPrimary: Color(0xff333333),
       secondary: Color(0xfffde5b6),
       onSecondary: Color(0xff333333),

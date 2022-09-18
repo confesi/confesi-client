@@ -17,9 +17,8 @@ class OpenScreen extends StatelessWidget {
         resizeToAvoidBottomInset: false,
         backgroundColor: Theme.of(context).colorScheme.background,
         body: SafeArea(
+          maintainBottomViewPadding: true,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            mainAxisSize: MainAxisSize.max,
             children: [
               Expanded(
                 child: Container(
@@ -34,42 +33,48 @@ class OpenScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              Expanded(
+              Flexible(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 30),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      const HeaderGroupText(
-                        header: "Confessi",
-                        body:
-                            "Make sure you're in-the-know with the latest campus gossip. Fully anonymous.",
-                      ),
-                      const SizedBox(height: 30),
-                      Column(
-                        children: [
-                          PopButton(
-                            onPress: () =>
-                                Navigator.of(context).pushNamed("/register"),
-                            icon: CupertinoIcons.chevron_right,
-                            backgroundColor:
-                                Theme.of(context).colorScheme.secondary,
-                            textColor:
-                                Theme.of(context).colorScheme.onSecondary,
-                            text: "Create new account",
-                            bottomPadding: 20,
-                          ),
-                          PopButton(
-                            onPress: () =>
-                                Navigator.of(context).pushNamed("/login"),
-                            icon: CupertinoIcons.chevron_right,
-                            backgroundColor:
-                                Theme.of(context).colorScheme.primary,
-                            textColor: Theme.of(context).colorScheme.onPrimary,
-                            text: "Existing user login",
-                            bottomPadding: 30,
-                          ),
-                        ],
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            const HeaderGroupText(
+                              multiLine: true,
+                              onSecondaryColors: false,
+                              header: "Confesi",
+                              body:
+                                  "Make sure you're in-the-know with the latest campus gossip. Fully anonymous.",
+                            ),
+                            const SizedBox(height: 30),
+                            PopButton(
+                              onPress: () =>
+                                  Navigator.of(context).pushNamed("/register"),
+                              icon: CupertinoIcons.chevron_right,
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.secondary,
+                              textColor:
+                                  Theme.of(context).colorScheme.onSecondary,
+                              text: "Create new account",
+                              bottomPadding: 20,
+                            ),
+                            PopButton(
+                              onPress: () =>
+                                  Navigator.of(context).pushNamed("/login"),
+                              icon: CupertinoIcons.chevron_right,
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.primary,
+                              textColor:
+                                  Theme.of(context).colorScheme.onPrimary,
+                              text: "Existing user login",
+                              bottomPadding: 30,
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
