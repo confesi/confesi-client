@@ -59,7 +59,7 @@ class AnimatedSimpleTextButton extends StatelessWidget {
                   ),
                   child: Text(
                     text,
-                    key: UniqueKey(),
+                    key: ValueKey(text),
                     textAlign: TextAlign.center,
                     overflow: TextOverflow.ellipsis,
                     style: kTitle.copyWith(

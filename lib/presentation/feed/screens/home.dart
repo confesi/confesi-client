@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import '../../../core/styles/typography.dart';
 import '../../shared/layout/appbar.dart';
 import '../widgets/drawer.dart';
-import '../widgets/top_tabs.dart';
+import '../../shared/layout/top_tabs.dart';
 import 'recents_feed.dart';
 import 'trending_feed.dart';
 
@@ -68,6 +68,24 @@ class _ExploreHomeState extends State<ExploreHome>
                   children: [
                     TopTabs(
                       tabController: tabController,
+                      tabs: [
+                        Tab(
+                          child: Text(
+                            "Recents",
+                            style: kDetail.copyWith(
+                              color: Theme.of(context).colorScheme.onSurface,
+                            ),
+                          ),
+                        ),
+                        Tab(
+                          child: Text(
+                            "Trending",
+                            style: kDetail.copyWith(
+                              color: Theme.of(context).colorScheme.onSurface,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                     Expanded(
                       child: Container(

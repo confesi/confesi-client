@@ -9,6 +9,7 @@ class KeyboardDismissLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.translucent,
       onTap: () => FocusScope.of(context).unfocus(),
       onVerticalDragUpdate: (details) {
         if (details.delta.direction > 0 && details.delta.distance > 15) {

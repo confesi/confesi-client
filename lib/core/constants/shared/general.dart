@@ -5,7 +5,9 @@ const bool kPreviewMode = false;
 ///
 /// This local address will need to change
 /// depending on your operating system, and if you're running on a physical device or emulator.
-const String kDomain = "http://192.168.1.105:3000";
+// const String kDomain = "http://192.168.1.105:3000";
+const String kDomain = "http://localhost:3000";
+// const String kDomain = "http://127.0.0.1:3000";
 
 //! ADDRESSES FOR DIFFERENT SYSTEMS:
 

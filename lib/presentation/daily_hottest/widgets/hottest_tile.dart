@@ -126,6 +126,7 @@ class _HottestTileState extends State<HottestTile> {
                               Padding(
                                 padding: const EdgeInsets.all(20),
                                 child: HeaderGroupText(
+                                  expandsTopText: true,
                                   onSecondaryColors: false,
                                   multiLine: true,
                                   spaceBetween: 20,
