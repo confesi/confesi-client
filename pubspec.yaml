@@ -53,6 +53,7 @@ dependencies:
   flutter_slidable: ^2.0.0
   flutter_keyboard_visibility: ^5.3.0
   confetti: ^0.7.0
+  local_auth: ^2.1.2
   # confetti: ^0.7.0
 
 dev_dependencies:

@@ -1,4 +1,4 @@
-import '../../../presentation/domain/authenticatioin/entities/tokens.dart';
+import '../../../domain/authenticatioin/entities/tokens.dart';
 
 /// Model for access and refresh token.
 class TokensModel extends Tokens {

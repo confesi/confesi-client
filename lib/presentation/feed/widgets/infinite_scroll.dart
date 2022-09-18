@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../../core/constants/feed/constants.dart';
-import '../../domain/shared/entities/post.dart';
+import '../../../domain/shared/entities/post.dart';
 import 'error_message.dart';
 
 class InfiniteScroll extends StatefulWidget {

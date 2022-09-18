@@ -1,5 +1,7 @@
 import 'package:Confessi/presentation/create_post/screens/home.dart';
 import 'package:Confessi/presentation/daily_hottest/screens/home.dart';
+import 'package:Confessi/presentation/profile/screens/home.dart';
+import 'package:Confessi/presentation/profile/screens/profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -47,33 +49,11 @@ class _HomeScreenState extends State<HomeScreen>
               body: TabBarView(
                 physics: const NeverScrollableScrollPhysics(),
                 controller: tabController,
-                children: [
-                  // const ExploreHome(),
-                  const ExploreHome(),
-                  const HottestHome(),
-                  const CreatePostHome(viewMethod: ViewMethod.tabScreen),
-
-                  Scaffold(
-                    backgroundColor: Theme.of(context).colorScheme.background,
-                    body: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          TextButton(
-                            onPressed: () => context
-                                .read<AuthenticationCubit>()
-                                .logoutUser(),
-                            child: const Text("logout"),
-                          ),
-                          BlocBuilder<AuthenticationCubit, AuthenticationState>(
-                            builder: (context, state) {
-                              return Text("State: $state");
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                children: const [
+                  ExploreHome(),
+                  HottestHome(),
+                  CreatePostHome(viewMethod: ViewMethod.tabScreen),
+                  ProfileHome(),
                 ],
               ),
               bottomNavigationBar: TabBar(

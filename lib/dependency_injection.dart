@@ -8,29 +8,32 @@ import 'package:Confessi/data/daily_hottest/datasources/daily_hottest_datasource
 import 'package:Confessi/data/daily_hottest/datasources/leaderboard_datasource.dart';
 import 'package:Confessi/data/daily_hottest/repositories/daily_hottest_repository_concrete.dart';
 import 'package:Confessi/data/daily_hottest/repositories/leaderboard_repository_concrete.dart';
-import 'package:Confessi/presentation/domain/create_post/usecases/upload_post.dart';
-import 'package:Confessi/presentation/domain/daily_hottest/usecases/posts.dart';
-import 'package:Confessi/presentation/domain/daily_hottest/usecases/ranking.dart';
+import 'package:Confessi/domain/create_post/usecases/upload_post.dart';
+import 'package:Confessi/domain/daily_hottest/usecases/posts.dart';
+import 'package:Confessi/domain/daily_hottest/usecases/ranking.dart';
+import 'package:Confessi/domain/profile/usecases/biometric_authentication.dart';
 import 'package:Confessi/presentation/create_post/cubit/post_cubit.dart';
 import 'package:Confessi/presentation/daily_hottest/cubit/hottest_cubit.dart';
 import 'package:Confessi/presentation/daily_hottest/cubit/leaderboard_cubit.dart';
+import 'package:Confessi/presentation/profile/cubit/biometrics_cubit.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:local_auth/local_auth.dart';
 
 import 'core/network/connection_info.dart';
 import 'core/router/router.dart';
 import 'data/authentication/datasources/authentication_datasource.dart';
 import 'data/authentication/repositories/authentication_repository_concrete.dart';
-import 'presentation/domain/authenticatioin/usecases/login.dart';
-import 'presentation/domain/authenticatioin/usecases/logout.dart';
-import 'presentation/domain/authenticatioin/usecases/register.dart';
-import 'presentation/domain/authenticatioin/usecases/silent_authentication.dart';
+import 'domain/authenticatioin/usecases/login.dart';
+import 'domain/authenticatioin/usecases/logout.dart';
+import 'domain/authenticatioin/usecases/register.dart';
+import 'domain/authenticatioin/usecases/silent_authentication.dart';
 import 'presentation/authentication/cubit/authentication_cubit.dart';
 import 'data/feed/datasources/feed_datasource.dart';
 import 'data/feed/repositories/feed_repository_concrete.dart';
-import 'presentation/domain/feed/usecases/recents.dart';
-import 'presentation/domain/feed/usecases/trending.dart';
+import 'domain/feed/usecases/recents.dart';
+import 'domain/feed/usecases/trending.dart';
 import 'presentation/feed/cubit/recents_cubit.dart';
 import 'presentation/feed/cubit/trending_cubit.dart';
 
@@ -54,6 +57,8 @@ Future<void> init() async {
   sl.registerFactory(() => CreatePostCubit(uploadPost: sl()));
   // Registers the scaffold shrinker cubit.
   sl.registerFactory(() => ScaffoldShrinkerCubit());
+  // Registers the biometrics cubit.
+  sl.registerFactory(() => BiometricsCubit(biometricAuthentication: sl()));
 
   //! Usecases
   // Registers the register usecase.
@@ -74,6 +79,9 @@ Future<void> init() async {
   sl.registerLazySingleton(() => Posts(repository: sl()));
   // Registers the upload post usecase.
   sl.registerLazySingleton(() => UploadPost(repository: sl(), api: sl()));
+  // Registers the biometric authentication usecase.
+  sl.registerLazySingleton(
+      () => BiometricAuthentication(localAuthentication: sl()));
 
   //! Core
   // Registers custom connection checker class.
@@ -118,4 +126,6 @@ Future<void> init() async {
   sl.registerLazySingleton(() => InternetConnectionChecker());
   // Registers the secure storage package.
   sl.registerLazySingleton(() => const FlutterSecureStorage());
+  // Registers the package that allows us to use biometric authentication.
+  sl.registerLazySingleton(() => LocalAuthentication());
 }

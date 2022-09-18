@@ -35,7 +35,7 @@ Future<dynamic> showDatePickerSheet(BuildContext context) async {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 30, vertical: 15),
                     child: Text(
-                      "View the top confessions from any date.",
+                      "View the top confessions from any day.",
                       style: kTitle.copyWith(
                         color: Theme.of(context).colorScheme.primary,
                       ),

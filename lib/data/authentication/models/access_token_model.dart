@@ -1,4 +1,4 @@
-import '../../../presentation/domain/authenticatioin/entities/access_token.dart';
+import '../../../domain/authenticatioin/entities/access_token.dart';
 
 /// Model for access token.
 class AccessTokenModel extends AccessToken {

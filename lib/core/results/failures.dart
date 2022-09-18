@@ -81,3 +81,8 @@ class TitleInvalidFailure extends Failure {}
 
 /// For when the body is invalid (inapropriate, formatting, etc.).
 class BodyInvalidFailure extends Failure {}
+
+//! Biometric failures
+
+/// For when a biometric authentication attempt fails.
+class BiometricAuthFailure extends Failure {}

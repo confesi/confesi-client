@@ -2,8 +2,8 @@ import 'package:dartz/dartz.dart';
 
 import '../../../core/network/connection_info.dart';
 import '../../../core/results/failures.dart';
-import '../../../presentation/domain/shared/entities/post.dart';
-import '../../../presentation/domain/feed/repositories/feed_repository_interface.dart';
+import '../../../domain/shared/entities/post.dart';
+import '../../../domain/feed/repositories/feed_repository_interface.dart';
 import '../datasources/feed_datasource.dart';
 import '../utils/exception_to_failure.dart';
 

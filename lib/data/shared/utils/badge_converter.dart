@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 import '../../../core/results/exceptions.dart';
-import '../../../presentation/domain/shared/entities/badge.dart';
+import '../../../domain/shared/entities/badge.dart';
 
 List<Badge> badgeConverter(List badges) {
   List<Badge> badgesConverted = [];
