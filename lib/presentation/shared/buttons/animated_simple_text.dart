@@ -43,15 +43,15 @@ class AnimatedSimpleTextButton extends StatelessWidget {
         ),
         child: AnimatedSize(
           clipBehavior: Clip.antiAlias,
-          duration: const Duration(milliseconds: 200),
+          duration: const Duration(milliseconds: 150),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               AnimatedSwitcher(
-                duration: const Duration(milliseconds: 200),
+                duration: const Duration(milliseconds: 150),
                 child: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 200),
+                  duration: const Duration(milliseconds: 150),
                   transitionBuilder: (Widget child, Animation<double> anim) =>
                       ScaleTransition(
                     scale: anim,

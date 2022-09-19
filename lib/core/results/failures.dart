@@ -86,3 +86,9 @@ class BodyInvalidFailure extends Failure {}
 
 /// For when a biometric authentication attempt fails.
 class BiometricAuthFailure extends Failure {}
+
+/// For when too many attempts have been tried for biometric authentication.
+class BiometricAttemptsExausted extends Failure {}
+
+/// A general case for when a biometric operation fails.
+class BiometricFailure extends Failure {}

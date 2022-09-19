@@ -1,3 +1,5 @@
+// TODO: make this file into a "device specific" class
+
 // If true, it means the app will be viewed inside an emulated device on-screen.
 const bool kPreviewMode = false;
 
@@ -5,9 +7,11 @@ const bool kPreviewMode = false;
 ///
 /// This local address will need to change
 /// depending on your operating system, and if you're running on a physical device or emulator.
-// const String kDomain = "http://192.168.1.105:3000";
-const String kDomain = "http://localhost:3000";
-// const String kDomain = "http://127.0.0.1:3000";
+
+// const String kDomain = "http://10.0.0.173:3000"; // -> MacOS emulator
+// const String kDomain = "http://localhost:3000"; // -> iOS emulator
+const String kDomain =
+    "http://10.0.0.173:3000"; // -> Android & iOS physical device
 
 //! ADDRESSES FOR DIFFERENT SYSTEMS:
 

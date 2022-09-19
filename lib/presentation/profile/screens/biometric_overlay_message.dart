@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../shared/buttons/animated_simple_text.dart';
-import '../cubit/biometrics_cubit.dart';
+import '../../../core/cubit/biometrics_cubit.dart';
 
 class BiometricOverlayMessage extends StatelessWidget {
   const BiometricOverlayMessage({

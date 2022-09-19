@@ -29,6 +29,7 @@ class ScrollableView extends StatelessWidget {
         return true;
       },
       child: CupertinoScrollbar(
+        thickness: thumbVisible ? 3.0 : 0.0,
         thumbVisibility: thumbVisible,
         controller: controller,
         child: ScrollConfiguration(

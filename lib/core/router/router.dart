@@ -17,7 +17,7 @@ import '../../presentation/daily_hottest/cubit/hottest_cubit.dart';
 import '../../presentation/daily_hottest/cubit/leaderboard_cubit.dart';
 import '../../presentation/feed/cubit/recents_cubit.dart';
 import '../../presentation/feed/cubit/trending_cubit.dart';
-import '../../presentation/profile/cubit/biometrics_cubit.dart';
+import '../cubit/biometrics_cubit.dart';
 
 /// The application's routes (screens) manager.
 class AppRouter {

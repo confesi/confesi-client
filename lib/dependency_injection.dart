@@ -15,7 +15,7 @@ import 'package:Confessi/domain/profile/usecases/biometric_authentication.dart';
 import 'package:Confessi/presentation/create_post/cubit/post_cubit.dart';
 import 'package:Confessi/presentation/daily_hottest/cubit/hottest_cubit.dart';
 import 'package:Confessi/presentation/daily_hottest/cubit/leaderboard_cubit.dart';
-import 'package:Confessi/presentation/profile/cubit/biometrics_cubit.dart';
+import 'package:Confessi/core/cubit/biometrics_cubit.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';

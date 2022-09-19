@@ -50,121 +50,127 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
           });
           return true;
         },
-        child: CupertinoScrollbar(
-          controller: scrollController,
-          child: CustomScrollView(
-            physics: const ClampingScrollPhysics(),
-            controller: scrollController,
-            slivers: [
-              SliverAppBar(
-                pinned: true,
-                elevation: 0.0,
-                backgroundColor: Theme.of(context).colorScheme.background,
-                automaticallyImplyLeading: false,
-                expandedHeight: heightBreakpointFraction(context, 0.5, 300),
-                floating: true,
-                flexibleSpace: FlexibleSpaceBar(
-                  titlePadding: const EdgeInsets.all(0),
-                  expandedTitleScale: 1,
-                  title: Stack(
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: Opacity(
-                              opacity: 1 - scrollExtentBefore / 175 < 0
+        child: NestedScrollView(
+          floatHeaderSlivers: true,
+          physics: const ClampingScrollPhysics(),
+          body: NotificationListener<ScrollNotification>(
+            onNotification: (_) => true,
+            child: TabBarView(
+              physics: const ClampingScrollPhysics(),
+              controller: tabController,
+              dragStartBehavior: DragStartBehavior.down,
+              children: const [
+                ProfileTab(),
+                ProfileTab(),
+                ProfileTab(),
+              ],
+            ),
+          ),
+          headerSliverBuilder: (context, innerBoxIsScrolled) => [
+            SliverAppBar(
+              pinned: true,
+              elevation: 0.0,
+              backgroundColor: Theme.of(context).colorScheme.background,
+              automaticallyImplyLeading: false,
+              expandedHeight: heightBreakpointFraction(context, 0.5, 300),
+              floating: true,
+              flexibleSpace: FlexibleSpaceBar(
+                titlePadding: const EdgeInsets.all(0),
+                expandedTitleScale: 1,
+                title: Stack(
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Opacity(
+                            opacity: 1 - scrollExtentBefore / 175 < 0
+                                ? 0
+                                : 1 - scrollExtentBefore / 175,
+                            child: const FlexibleAppbar(),
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: TopTabs(
+                            tabController: tabController,
+                            tabs: [
+                              Tab(
+                                child: Text(
+                                  "Profile",
+                                  style: kDetail.copyWith(
+                                    color:
+                                        Theme.of(context).colorScheme.onSurface,
+                                  ),
+                                ),
+                              ),
+                              Tab(
+                                child: Text(
+                                  "Posts",
+                                  style: kDetail.copyWith(
+                                    color:
+                                        Theme.of(context).colorScheme.onSurface,
+                                  ),
+                                ),
+                              ),
+                              Tab(
+                                child: Text(
+                                  "Comments",
+                                  style: kDetail.copyWith(
+                                    color:
+                                        Theme.of(context).colorScheme.onSurface,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    IgnorePointer(
+                      ignoring: (1 - scrollExtentBefore / 175 < 0
                                   ? 0
-                                  : 1 - scrollExtentBefore / 175,
-                              child: const FlexibleAppbar(),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.bottomCenter,
-                            child: TopTabs(
-                              tabController: tabController,
-                              tabs: [
-                                Tab(
-                                  child: Text(
-                                    "Profile",
-                                    style: kDetail.copyWith(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onSurface,
-                                    ),
-                                  ),
-                                ),
-                                Tab(
-                                  child: Text(
-                                    "Posts",
-                                    style: kDetail.copyWith(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onSurface,
-                                    ),
-                                  ),
-                                ),
-                                Tab(
-                                  child: Text(
-                                    "Comments",
-                                    style: kDetail.copyWith(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onSurface,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      IgnorePointer(
-                        ignoring: (1 - scrollExtentBefore / 175 < 0
-                                    ? 0
-                                    : 1 - scrollExtentBefore / 175) <
-                                .5
-                            ? true
-                            : false,
-                        child: Opacity(
-                          opacity: 1 - scrollExtentBefore / 175 < 0
-                              ? 0
-                              : 1 - scrollExtentBefore / 175,
-                          child: TouchableOpacity(
-                            onTap: () => print("TAP"),
-                            child: Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: Align(
-                                alignment: Alignment.topLeft,
-                                child: Container(
-                                  // Transparent hitbox trick.
-                                  color: Colors.transparent,
-                                  child: Transform.scale(
-                                    scale: 1 - scrollExtentBefore / 175 < 0
-                                        ? 0
-                                        : 1 - scrollExtentBefore / 175,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Icon(
-                                          CupertinoIcons.gear,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onSurface,
-                                        ),
-                                        const SizedBox(width: 5),
-                                        Text(
-                                          "Settings",
-                                          style: kDetail.copyWith(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .onSurface),
-                                          textAlign: TextAlign.left,
-                                        ),
-                                      ],
-                                    ),
+                                  : 1 - scrollExtentBefore / 175) <
+                              .5
+                          ? true
+                          : false,
+                      child: Opacity(
+                        opacity: 1 - scrollExtentBefore / 175 < 0
+                            ? 0
+                            : 1 - scrollExtentBefore / 175,
+                        child: TouchableOpacity(
+                          onTap: () => print("TAP"),
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: Container(
+                                // Transparent hitbox trick.
+                                color: Colors.transparent,
+                                child: Transform.scale(
+                                  scale: 1 - scrollExtentBefore / 175 < 0
+                                      ? 0
+                                      : 1 - scrollExtentBefore / 175,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(
+                                        CupertinoIcons.gear,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSurface,
+                                      ),
+                                      const SizedBox(width: 5),
+                                      Text(
+                                        "Settings",
+                                        style: kDetail.copyWith(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSurface),
+                                        textAlign: TextAlign.left,
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
@@ -172,31 +178,12 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                           ),
                         ),
                       ),
-                    ],
-                  ),
-                ),
-              ),
-              NotificationListener<ScrollNotification>(
-                onNotification: (_) => true,
-                child: SliverFillRemaining(
-                  fillOverscroll: true,
-                  child: Container(
-                    color: Theme.of(context).colorScheme.onError,
-                    child: TabBarView(
-                      physics: const ClampingScrollPhysics(),
-                      controller: tabController,
-                      dragStartBehavior: DragStartBehavior.down,
-                      children: const [
-                        ProfileTab(),
-                        ProfileTab(),
-                        ProfileTab(),
-                      ],
                     ),
-                  ),
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

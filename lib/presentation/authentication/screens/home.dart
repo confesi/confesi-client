@@ -10,6 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/responsive/breakpoints.dart';
 import '../../../core/styles/typography.dart';
 import '../../feed/screens/home.dart';
+import '../../../core/cubit/biometrics_cubit.dart';
 import '../cubit/authentication_cubit.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -58,6 +59,9 @@ class _HomeScreenState extends State<HomeScreen>
               ),
               bottomNavigationBar: TabBar(
                 onTap: (tabIndex) {
+                  tabIndex != 3
+                      ? context.read<BiometricsCubit>().setNotAuthenticated()
+                      : null;
                   HapticFeedback.lightImpact();
                 },
                 isScrollable: false,

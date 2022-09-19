@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import '../../../core/styles/typography.dart';
 
 void showSnackbar(BuildContext context, String message,
-    {VoidCallback? onClosed}) async {
+    {VoidCallback? onClosed, bool stayLonger = false}) async {
   ScaffoldMessenger.of(context)
       .showSnackBar(
         SnackBar(
-          duration: const Duration(milliseconds: 2500),
+          duration: Duration(milliseconds: stayLonger ? 6000 : 2500),
           backgroundColor: Theme.of(context).colorScheme.error,
           content: Row(
             children: [

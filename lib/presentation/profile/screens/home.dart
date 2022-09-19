@@ -1,8 +1,10 @@
 import 'dart:ui';
 
-import 'package:Confessi/presentation/profile/cubit/biometrics_cubit.dart';
+import 'package:Confessi/core/cubit/biometrics_cubit.dart';
+import 'package:Confessi/core/results/failures.dart';
 import 'package:Confessi/presentation/profile/screens/biometric_overlay_message.dart';
 import 'package:Confessi/presentation/profile/screens/profile.dart';
+import 'package:Confessi/presentation/shared/overlays/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -14,12 +16,36 @@ class ProfileHome extends StatefulWidget {
 }
 
 class _ProfileHomeState extends State<ProfileHome>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   late AnimationController _animController;
   late Animation _anim;
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    switch (state) {
+      case AppLifecycleState.inactive:
+      case AppLifecycleState.detached:
+        context.read<BiometricsCubit>().setNotAuthenticated();
+        startBlurTimer();
+        break;
+      case AppLifecycleState.paused:
+        break;
+      case AppLifecycleState.resumed:
+        break;
+    }
+  }
+
+  Future<void> startBlurTimer() async {
+    Future.delayed(const Duration(milliseconds: 1500), () {
+      if (WidgetsBinding.instance.lifecycleState != AppLifecycleState.resumed) {
+        context.read<BiometricsCubit>().setNotAuthenticated();
+      }
+    });
+  }
+
+  @override
   void initState() {
+    WidgetsBinding.instance.addObserver(this);
     context.read<BiometricsCubit>().setNotAuthenticated();
     _animController = AnimationController(
       value: 1,
@@ -51,6 +77,7 @@ class _ProfileHomeState extends State<ProfileHome>
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _animController.dispose();
     super.dispose();
   }
@@ -58,7 +85,11 @@ class _ProfileHomeState extends State<ProfileHome>
   Widget buildChild(BiometricsState state) {
     if (state is! Authenticated) {
       return BiometricOverlayMessage(
-        message: state is AuthenticationError ? "Try again" : "Confirm ID",
+        message: state is AuthenticationError
+            ? "Try again"
+            : state is AuthenticationLoading
+                ? "Loading..."
+                : "Confirm ID",
       );
     } else {
       return Container();
@@ -72,12 +103,18 @@ class _ProfileHomeState extends State<ProfileHome>
     return SafeArea(
       child: BlocConsumer<BiometricsCubit, BiometricsState>(
         listener: (context, state) {
-          if (state is NotAuthenticated) {
-            startAnim();
-          } else if (state is AuthenticationError) {
-            startAnim();
-          } else {
+          // Start/reverse the blur animation.
+          if (state is Authenticated) {
             reverseAnim();
+          } else {
+            startAnim();
+          }
+          // Check when to show error snackbar.
+          if (state is AuthenticationError &&
+              state.biometricErrorType == BiometricErrorType.exausted) {
+            showSnackbar(context,
+                "Attempts exausted! Lock your entire device, login with the passcode, then open the app and try again.",
+                stayLonger: true);
           }
         },
         builder: (context, state) {
