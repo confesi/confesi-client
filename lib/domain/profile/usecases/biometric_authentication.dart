@@ -29,8 +29,7 @@ class BiometricAuthentication implements Usecase<bool, NoParams> {
         // ],
       );
       return Right(didAuthenticate);
-    } on PlatformException catch (e) {
-      print("ERROR IS: $e");
+    } on PlatformException {
       return Left(BiometricAttemptsExausted());
     } catch (e) {
       return Left(BiometricAuthFailure());

@@ -21,5 +21,3 @@ class AuthenticationError extends BiometricsState {
 
   final BiometricErrorType biometricErrorType;
 }
-
-class StopBiometric extends BiometricsState {}

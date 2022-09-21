@@ -1,3 +1,7 @@
+import 'package:Confessi/core/utils/sizing/width_fraction.dart';
+import 'package:Confessi/presentation/profile/widgets/achievement_tile.dart';
+import 'package:Confessi/presentation/profile/widgets/profile_pic_with_text.dart';
+import 'package:Confessi/presentation/shared/layout/line.dart';
 import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
 import 'package:flutter/material.dart';
 
@@ -17,27 +21,31 @@ class _ProfileTabState extends State<ProfileTab>
 
   @override
   Widget build(BuildContext context) {
-    return NotificationListener<ScrollNotification>(
-      onNotification: (_) => true,
-      child: SingleChildScrollView(
-        physics: const ClampingScrollPhysics(),
-        child: Column(
-          children: [
-            Container(
-              color: Theme.of(context).colorScheme.background,
-              height: 500,
+    super.build(context);
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SizedBox(
+          height: constraints.maxHeight,
+          child: SingleChildScrollView(
+            child: Wrap(
+              children: const [
+                AchievementTile(),
+                AchievementTile(),
+                AchievementTile(),
+                AchievementTile(),
+                AchievementTile(),
+                AchievementTile(),
+                AchievementTile(),
+                AchievementTile(),
+                AchievementTile(),
+                AchievementTile(),
+                AchievementTile(),
+                AchievementTile(),
+              ],
             ),
-            Container(
-              color: Colors.blue,
-              height: 500,
-            ),
-            Container(
-              color: Colors.green,
-              height: 500,
-            ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }

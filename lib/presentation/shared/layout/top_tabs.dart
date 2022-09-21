@@ -19,11 +19,14 @@ class TopTabs extends StatefulWidget {
 class _TopTabsState extends State<TopTabs> {
   @override
   Widget build(BuildContext context) {
-    return TabBar(
-      indicatorSize: TabBarIndicatorSize.tab,
-      indicatorColor: Theme.of(context).colorScheme.secondary,
-      controller: widget.tabController,
-      tabs: widget.tabs,
+    return Container(
+      color: Theme.of(context).colorScheme.error, // background
+      child: TabBar(
+        indicatorSize: TabBarIndicatorSize.tab,
+        indicatorColor: Theme.of(context).colorScheme.secondary,
+        controller: widget.tabController,
+        tabs: widget.tabs,
+      ),
     );
   }
 }

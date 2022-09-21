@@ -68,12 +68,12 @@ class _ShrinkingViewState extends State<ShrinkingView>
         }
       },
       child: Container(
-        color: Theme.of(context).colorScheme.shadow,
+        color: Colors.black, // Theme.of(context).colorScheme.shadow
         child: Transform.scale(
           scale: -_anim.value * .00 + 1,
           child: Transform.translate(
             offset: Offset(
-                0, _anim.value * MediaQuery.of(context).size.height * .04),
+                0, _anim.value * MediaQuery.of(context).size.height * .055),
             child: Container(
               decoration: BoxDecoration(
                 borderRadius:

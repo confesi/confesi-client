@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:Confessi/core/styles/typography.dart';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +17,7 @@ class CenterOverlay {
 
     confettiItemController.blastConfetti();
 
-    await Future.delayed(const Duration(seconds: 6));
+    await Future.delayed(const Duration(milliseconds: 5000));
 
     overlayEntry.remove();
   }
@@ -109,7 +107,7 @@ class __OverlayItemState extends State<_OverlayItem>
     animController = AnimationController(
         vsync: this,
         duration: Duration.zero,
-        reverseDuration: const Duration(milliseconds: 400));
+        reverseDuration: const Duration(milliseconds: 1300));
     anim = CurvedAnimation(
       parent: animController,
       curve: Curves.linear,
@@ -126,7 +124,7 @@ class __OverlayItemState extends State<_OverlayItem>
 
   void startAnim() async {
     animController.forward().then((value) async {
-      await Future.delayed(const Duration(seconds: 2));
+      await Future.delayed(const Duration(milliseconds: 1800));
       animController.reverse();
     });
     animController.addListener(() {

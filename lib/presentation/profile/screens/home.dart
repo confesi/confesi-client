@@ -26,32 +26,23 @@ class _ProfileHomeState extends State<ProfileHome>
       case AppLifecycleState.inactive:
       case AppLifecycleState.detached:
         context.read<BiometricsCubit>().setNotAuthenticated();
-        startBlurTimer();
         break;
       case AppLifecycleState.paused:
+        context.read<BiometricsCubit>().setNotAuthenticated();
         break;
       case AppLifecycleState.resumed:
         break;
     }
   }
 
-  Future<void> startBlurTimer() async {
-    Future.delayed(const Duration(milliseconds: 1500), () {
-      if (WidgetsBinding.instance.lifecycleState != AppLifecycleState.resumed) {
-        context.read<BiometricsCubit>().setNotAuthenticated();
-      }
-    });
-  }
-
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
-    context.read<BiometricsCubit>().setNotAuthenticated();
     _animController = AnimationController(
       value: 1,
       vsync: this,
-      duration: const Duration(milliseconds: 600),
-      reverseDuration: const Duration(milliseconds: 600),
+      duration: Duration.zero,
+      reverseDuration: const Duration(milliseconds: 300),
     );
     _anim = CurvedAnimation(
       parent: _animController,
@@ -88,7 +79,7 @@ class _ProfileHomeState extends State<ProfileHome>
         message: state is AuthenticationError
             ? "Try again"
             : state is AuthenticationLoading
-                ? "Loading..."
+                ? "Verifying..."
                 : "Confirm ID",
       );
     } else {
@@ -96,67 +87,66 @@ class _ProfileHomeState extends State<ProfileHome>
     }
   }
 
-  double getBlurValue() => _anim.value * 10;
+  double getBlurValue() => _anim.value * 7;
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: BlocConsumer<BiometricsCubit, BiometricsState>(
-        listener: (context, state) {
-          // Start/reverse the blur animation.
-          if (state is Authenticated) {
-            reverseAnim();
-          } else {
-            startAnim();
-          }
-          // Check when to show error snackbar.
-          if (state is AuthenticationError &&
-              state.biometricErrorType == BiometricErrorType.exausted) {
-            showSnackbar(context,
-                "Attempts exausted! Lock your entire device, login with the passcode, then open the app and try again.",
-                stayLonger: true);
-          }
-        },
-        builder: (context, state) {
-          return Stack(
-            alignment: Alignment.center,
-            children: <Widget>[
-              IgnorePointer(
-                ignoring: _anim.value == 0 ? false : true,
-                child: const Profile(),
+    return BlocConsumer<BiometricsCubit, BiometricsState>(
+      listener: (context, state) {
+        // Start/reverse the blur animation.
+        if (state is Authenticated) {
+          reverseAnim();
+        } else {
+          startAnim();
+        }
+        // Check when to show error snackbar.
+        if (state is AuthenticationError &&
+            state.biometricErrorType == BiometricErrorType.exausted) {
+          showSnackbar(context,
+              "Attempts exausted! Lock your entire device, login with the passcode, then open the app and try again.",
+              stayLonger: true);
+        }
+      },
+      builder: (context, state) {
+        return Stack(
+          children: <Widget>[
+            IgnorePointer(
+              ignoring: _anim.value == 0 ? false : true,
+              child: const SafeArea(
+                child: Profile(),
               ),
-              IgnorePointer(
-                ignoring: _anim.value != 1 ? true : false,
-                child: Opacity(
-                  opacity: _anim.value,
-                  child: ClipRect(
-                    child: BackdropFilter(
-                      filter: ImageFilter.blur(
-                          sigmaX: getBlurValue(), sigmaY: getBlurValue()),
-                      child: Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .background
-                              .withOpacity(_anim.value * .5),
-                        ),
-                        child: AnimatedSwitcher(
-                          duration: const Duration(milliseconds: 350),
-                          // transitionBuilder: (Widget child,
-                          //         Animation<double> animation) =>
-                          //     ScaleTransition(scale: animation, child: child),
-                          child: buildChild(state),
-                        ),
-                      ),
+            ),
+            IgnorePointer(
+              ignoring: _anim.value != 1 ? true : false,
+              child: ClipRect(
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(
+                      sigmaX: getBlurValue(), sigmaY: getBlurValue()),
+                  child: Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .background
+                          .withOpacity(_anim.value * .95),
+                    ),
+                    child: AnimatedSwitcher(
+                      duration: Duration.zero,
+                      reverseDuration: const Duration(milliseconds: 175),
+                      switchInCurve: Curves.easeInQuint,
+                      switchOutCurve: Curves.decelerate,
+                      transitionBuilder:
+                          (Widget child, Animation<double> animation) =>
+                              ScaleTransition(scale: animation, child: child),
+                      child: buildChild(state),
                     ),
                   ),
                 ),
               ),
-            ],
-          );
-        },
-      ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

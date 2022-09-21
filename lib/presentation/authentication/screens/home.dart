@@ -36,6 +36,8 @@ class _HomeScreenState extends State<HomeScreen>
     super.dispose();
   }
 
+  int currentSelectedTab = 0;
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -59,10 +61,11 @@ class _HomeScreenState extends State<HomeScreen>
               ),
               bottomNavigationBar: TabBar(
                 onTap: (tabIndex) {
-                  tabIndex != 3
+                  tabIndex == 3 && currentSelectedTab != 3
                       ? context.read<BiometricsCubit>().setNotAuthenticated()
                       : null;
                   HapticFeedback.lightImpact();
+                  currentSelectedTab = tabIndex;
                 },
                 isScrollable: false,
                 labelStyle: kBody.copyWith(
