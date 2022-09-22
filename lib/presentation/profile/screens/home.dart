@@ -1,153 +1,107 @@
-import 'dart:ui';
-
-import 'package:Confessi/core/cubit/biometrics_cubit.dart';
-import 'package:Confessi/core/results/failures.dart';
-import 'package:Confessi/presentation/profile/screens/biometric_overlay_message.dart';
-import 'package:Confessi/presentation/profile/screens/tabs_manager.dart';
-import 'package:Confessi/presentation/shared/overlays/snackbar.dart';
+import 'package:Confessi/core/utils/sizing/height_fraction.dart';
+import 'package:Confessi/core/utils/sizing/width_fraction.dart';
+import 'package:Confessi/presentation/shared/behaviours/touchable_burst.dart';
+import 'package:Confessi/presentation/shared/behaviours/touchable_opacity.dart';
+import 'package:Confessi/presentation/shared/behaviours/touchable_shrink.dart';
+import 'package:Confessi/presentation/shared/buttons/simple_text.dart';
+import 'package:Confessi/presentation/shared/edited_source_widgets/swipe_refresh.dart';
+import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
+import 'package:Confessi/presentation/shared/text/group.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ProfileHome extends StatefulWidget {
+class ProfileHome extends StatelessWidget {
   const ProfileHome({super.key});
 
   @override
-  State<ProfileHome> createState() => _ProfileHomeState();
-}
-
-class _ProfileHomeState extends State<ProfileHome>
-    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
-  late AnimationController _animController;
-  late Animation _anim;
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    switch (state) {
-      case AppLifecycleState.inactive:
-      case AppLifecycleState.detached:
-        context.read<BiometricsCubit>().setNotAuthenticated();
-        break;
-      case AppLifecycleState.paused:
-        context.read<BiometricsCubit>().setNotAuthenticated();
-        break;
-      case AppLifecycleState.resumed:
-        break;
-    }
-  }
-
-  @override
-  void initState() {
-    WidgetsBinding.instance.addObserver(this);
-    _animController = AnimationController(
-      value: 1,
-      vsync: this,
-      duration: Duration.zero,
-      reverseDuration: const Duration(milliseconds: 300),
-    );
-    _anim = CurvedAnimation(
-      parent: _animController,
-      curve: Curves.decelerate,
-      reverseCurve: Curves.linear,
-    );
-    super.initState();
-  }
-
-  void startAnim() async {
-    _animController.forward();
-    _animController.addListener(() {
-      setState(() {});
-    });
-  }
-
-  void reverseAnim() {
-    _animController.reverse();
-    _animController.addListener(() {
-      setState(() {});
-    });
-  }
-
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    _animController.dispose();
-    super.dispose();
-  }
-
-  Widget buildChild(BiometricsState state) {
-    if (state is! Authenticated) {
-      return BiometricOverlayMessage(
-        message: state is AuthenticationError
-            ? "Try again"
-            : state is AuthenticationLoading
-                ? "Verifying..."
-                : "Confirm ID",
-      );
-    } else {
-      return Container();
-    }
-  }
-
-  double getBlurValue() => _anim.value * 2;
-
-  @override
   Widget build(BuildContext context) {
-    return BlocConsumer<BiometricsCubit, BiometricsState>(
-      listener: (context, state) {
-        // Start/reverse the blur animation.
-        if (state is Authenticated) {
-          reverseAnim();
-        } else {
-          startAnim();
-        }
-        // Check when to show error snackbar.
-        if (state is AuthenticationError &&
-            state.biometricErrorType == BiometricErrorType.exausted) {
-          showSnackbar(context,
-              "Attempts exausted! Lock your entire device, login with the passcode, then open the app and try again.",
-              stayLonger: true);
-        }
-      },
-      builder: (context, state) {
-        return SafeArea(
-          child: Stack(
-            children: <Widget>[
-              IgnorePointer(
-                ignoring: _anim.value == 0 ? false : true,
-                child: const TabsManager(),
+    return SwipeRefresh(
+      onRefresh: () async => print("refresh"),
+      child: ScrollableView(
+        controller: ScrollController(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: heightFraction(context, .3),
+              child: Image.asset(
+                "assets/images/universities/ufv.jpeg",
+                width: double.infinity,
+                fit: BoxFit.cover,
               ),
-              IgnorePointer(
-                ignoring: _anim.value != 1 ? true : false,
-                child: ClipRect(
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(
-                        sigmaX: getBlurValue(), sigmaY: getBlurValue()),
-                    child: Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .background
-                            .withOpacity(_anim.value *
-                                1), // CHANGE THIS VALUE TO CHANGE OPACITY BASE (When not authenticated).
-                      ),
-                      child: AnimatedSwitcher(
-                        duration: Duration.zero,
-                        reverseDuration: const Duration(milliseconds: 75),
-                        switchInCurve: Curves.linear,
-                        switchOutCurve: Curves.linear,
-                        // transitionBuilder:
-                        //     (Widget child, Animation<double> animation) =>
-                        //         ScaleTransition(scale: animation, child: child),
-                        child: buildChild(state),
+            ),
+
+            Transform.translate(
+              offset: const Offset(0, -60),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      height: 120,
+                      width: 120,
+                      decoration: const BoxDecoration(
+                        color: Colors.redAccent,
+                        shape: BoxShape.circle,
                       ),
                     ),
-                  ),
+                    const SizedBox(height: 15),
+                    Row(
+                      children: [
+                        const Expanded(
+                          child: GroupText(
+                            leftAlign: true,
+                            small: true,
+                            header: "mattrlt",
+                            body: "University of Victoria",
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        TouchableOpacity(
+                          onTap: () => print("TAP"),
+                          child: const Icon(CupertinoIcons.gear),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                    SizedBox(
+                      width: widthFraction(context, 1),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: SimpleTextButton(
+                              onTap: () => print('tap'),
+                              text: "Comments",
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: SimpleTextButton(
+                              onTap: () => print('tap'),
+                              text: "Stats",
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: SimpleTextButton(
+                              onTap: () => print('tap'),
+                              text: "Posts",
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
-        );
-      },
+            ),
+            // Container(
+            //   color: Theme.of(context).colorScheme.background,
+            // ),
+          ],
+        ),
+      ),
     );
   }
 }

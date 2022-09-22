@@ -1,5 +1,6 @@
 import 'package:Confessi/core/styles/typography.dart';
 import 'package:Confessi/core/utils/sizing/height_fraction.dart';
+import 'package:Confessi/core/utils/sizing/width_breakpoint_fraction.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_enlarger.dart';
 import 'package:Confessi/presentation/shared/buttons/simple_text.dart';
 import 'package:flutter/material.dart';
@@ -51,25 +52,30 @@ Future<dynamic> showFeedbackSheet(BuildContext context) {
             ),
             Flexible(
               child: InitScale(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SimpleTextButton(
-                      onTap: () {
-                        Navigator.pop(context);
-                        Navigator.of(context).pushNamed("/feedback");
-                      },
-                      text: "Give us feedback",
-                    ),
-                    const SizedBox(height: 15),
-                    SimpleTextButton(
-                      isErrorText: true,
-                      onTap: () =>
-                          print("NOT YET IMPLEMENTED"), // TODO: implement
-                      text: "Disable shake for feedback",
-                    ),
-                  ],
+                child: SizedBox(
+                  width: widthBreakpointFraction(context, 2 / 3, 250),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SimpleTextButton(
+                        infiniteWidth: true,
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.of(context).pushNamed("/feedback");
+                        },
+                        text: "Give us feedback",
+                      ),
+                      const SizedBox(height: 15),
+                      SimpleTextButton(
+                        infiniteWidth: true,
+                        isErrorText: true,
+                        onTap: () =>
+                            print("NOT YET IMPLEMENTED"), // TODO: implement
+                        text: "Disable shake for feedback",
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

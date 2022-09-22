@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import '../behaviours/touchable_opacity.dart';
 
 /// If [leftIconOnPress] is null, defaults to popping current context.
-class AppbarLayout extends StatelessWidget {
+class AppbarLayout extends StatefulWidget {
   const AppbarLayout({
     this.leftIcon,
     this.rightIcon,
@@ -36,13 +36,18 @@ class AppbarLayout extends StatelessWidget {
   final Function? rightIconOnPress;
   final bool leftIconDisabled;
 
+  @override
+  State<AppbarLayout> createState() => _AppbarLayoutState();
+}
+
+class _AppbarLayoutState extends State<AppbarLayout> {
   Widget buildLeftWidget(BuildContext context) => IgnorePointer(
-        ignoring: leftIconDisabled || leftIconIgnored,
+        ignoring: widget.leftIconDisabled || widget.leftIconIgnored,
         child: TouchableOpacity(
           onTap: () {
-            if (leftIconOnPress != null) {
+            if (widget.leftIconOnPress != null) {
               FocusScope.of(context).unfocus();
-              leftIconOnPress!();
+              widget.leftIconOnPress!();
             } else {
               FocusScope.of(context).unfocus();
               Navigator.pop(context);
@@ -58,9 +63,9 @@ class AppbarLayout extends StatelessWidget {
                   offset: const Offset(-4, 0),
                   child: AnimatedOpacity(
                     duration: const Duration(milliseconds: 250),
-                    opacity: leftIconDisabled ? 0.2 : 1,
+                    opacity: widget.leftIconDisabled ? 0.2 : 1,
                     child: Icon(
-                      leftIcon ?? CupertinoIcons.back,
+                      widget.leftIcon ?? CupertinoIcons.back,
                     ),
                   ),
                 ),
@@ -79,7 +84,7 @@ class AppbarLayout extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border(
             bottom: BorderSide(
-              color: bottomBorder
+              color: widget.bottomBorder
                   ? Theme.of(context).colorScheme.shadow
                   : Colors.transparent,
               width: .7,
@@ -89,27 +94,26 @@ class AppbarLayout extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            if (leftIconVisible)
-              leftIconTag != null
-                  ? Hero(tag: leftIconTag!, child: buildLeftWidget(context))
+            if (widget.leftIconVisible)
+              widget.leftIconTag != null
+                  ? Hero(
+                      tag: widget.leftIconTag!, child: buildLeftWidget(context))
                   : buildLeftWidget(context)
             else
               Padding(
                 padding: const EdgeInsets.all(15),
-                child: Icon(rightIcon ?? CupertinoIcons.arrow_clockwise,
+                child: Icon(widget.rightIcon ?? CupertinoIcons.arrow_clockwise,
                     color: Colors.transparent),
               ),
             Flexible(
-              child: InitOpacity(
-                child: centerWidget,
-              ),
+              child: widget.centerWidget,
             ),
-            if (rightIconVisible)
+            if (widget.rightIconVisible)
               TouchableOpacity(
                 onTap: () {
-                  if (rightIconOnPress != null) {
+                  if (widget.rightIconOnPress != null) {
                     FocusScope.of(context).unfocus();
-                    rightIconOnPress!();
+                    widget.rightIconOnPress!();
                   }
                 },
                 child: Container(
@@ -120,7 +124,7 @@ class AppbarLayout extends StatelessWidget {
                     child: AnimatedSwitcher(
                       duration: const Duration(milliseconds: 300),
                       child: Icon(
-                        rightIcon,
+                        widget.rightIcon,
                       ),
                     ),
                   ),
@@ -129,7 +133,7 @@ class AppbarLayout extends StatelessWidget {
             else
               Padding(
                 padding: const EdgeInsets.all(15),
-                child: Icon(rightIcon ?? CupertinoIcons.arrow_clockwise,
+                child: Icon(widget.rightIcon ?? CupertinoIcons.arrow_clockwise,
                     color: Colors.transparent),
               ),
           ],

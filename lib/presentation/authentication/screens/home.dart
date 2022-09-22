@@ -1,20 +1,15 @@
 import 'package:Confessi/presentation/create_post/screens/home.dart';
 import 'package:Confessi/presentation/daily_hottest/screens/home.dart';
-import 'package:Confessi/presentation/profile/screens/home.dart';
-import 'package:Confessi/presentation/profile/screens/tabs_manager.dart';
-import 'package:Confessi/presentation/shared/overlays/center_overlay_message.dart';
-import 'package:Confessi/presentation/shared/overlays/feedback_sheet.dart';
+import 'package:Confessi/presentation/profile/screens/screen_obscuring_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shake/shake.dart';
 
 import '../../../core/responsive/breakpoints.dart';
 import '../../../core/styles/typography.dart';
 import '../../feed/screens/home.dart';
 import '../../../core/cubit/biometrics_cubit.dart';
-import '../cubit/authentication_cubit.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -60,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen>
                   ExploreHome(),
                   HottestHome(),
                   CreatePostHome(viewMethod: ViewMethod.tabScreen),
-                  ProfileHome(),
+                  ScreenObscuringManager(),
                 ],
               ),
               bottomNavigationBar: TabBar(
