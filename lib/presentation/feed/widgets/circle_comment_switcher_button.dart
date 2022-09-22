@@ -1,4 +1,7 @@
 import 'package:Confessi/presentation/feed/widgets/infinite_list.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_enlarger.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_opacity.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -65,43 +68,47 @@ class _CircleCommentSwitcherButtonState
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 400),
-      child: !widget.visible
-          ? Container()
-          : GestureDetector(
-              onTap: () {
-                HapticFeedback.lightImpact();
-                startAnim();
-                widget.scrollToRootDirection == ScrollToRootDirection.down
-                    ? widget.controller.scrollDownToRoot()
-                    : widget.controller.scrollUpToRoot();
-              },
-              child: Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Theme.of(context).colorScheme.background,
-                  boxShadow: [
-                    BoxShadow(
-                      color:
-                          Theme.of(context).colorScheme.shadow.withOpacity(0.5),
-                      blurRadius: 8,
+    return InitScale(
+      child: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 400),
+        child: !widget.visible
+            ? Container()
+            : GestureDetector(
+                onTap: () {
+                  HapticFeedback.lightImpact();
+                  startAnim();
+                  widget.scrollToRootDirection == ScrollToRootDirection.down
+                      ? widget.controller.scrollDownToRoot()
+                      : widget.controller.scrollUpToRoot();
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Theme.of(context).colorScheme.background,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .shadow
+                            .withOpacity(0.5),
+                        blurRadius: 8,
+                      ),
+                    ],
+                  ),
+                  child: Transform.scale(
+                    scale: anim.value / 4 + 1,
+                    child: Opacity(
+                      opacity: -anim.value * 0.8 + 1,
+                      child: Icon(widget.scrollToRootDirection ==
+                              ScrollToRootDirection.down
+                          ? CupertinoIcons.down_arrow
+                          : CupertinoIcons.up_arrow),
                     ),
-                  ],
-                ),
-                child: Transform.scale(
-                  scale: anim.value / 4 + 1,
-                  child: Opacity(
-                    opacity: -anim.value * 0.8 + 1,
-                    child: Icon(widget.scrollToRootDirection ==
-                            ScrollToRootDirection.down
-                        ? CupertinoIcons.down_arrow
-                        : CupertinoIcons.up_arrow),
                   ),
                 ),
               ),
-            ),
+      ),
     );
   }
 }

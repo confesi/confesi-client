@@ -1,4 +1,5 @@
 import 'package:Confessi/core/styles/typography.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_enlarger.dart';
 import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -43,12 +44,14 @@ Future<dynamic> showInfoSheet(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(
-                      body,
-                      style: kBody.copyWith(
-                        color: Theme.of(context).colorScheme.onSurface,
+                    InitScale(
+                      child: Text(
+                        body,
+                        style: kBody.copyWith(
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                      textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 45),
                   ],

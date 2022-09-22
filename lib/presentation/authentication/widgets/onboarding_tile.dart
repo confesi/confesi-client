@@ -1,3 +1,6 @@
+import 'package:Confessi/core/utils/sizing/height_fraction.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_enlarger.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:flutter/material.dart';
 
 import '../../shared/text/header_group.dart';
@@ -21,13 +24,14 @@ class ShowcaseItem extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.secondary,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30),
-          child: Column(
-            children: [
-              Expanded(
-                flex: 4,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 30),
+        child: Column(
+          children: [
+            Expanded(
+              flex: 4,
+              child: InitTransform(
+                magnitudeOfTransform: -heightFraction(context, 1),
                 child: Container(
                   color: Colors.transparent,
                   child: Center(
@@ -39,8 +43,10 @@ class ShowcaseItem extends StatelessWidget {
                   ),
                 ),
               ),
-              Expanded(
-                flex: 2,
+            ),
+            Expanded(
+              flex: 2,
+              child: InitScale(
                 child: Container(
                   color: Colors.transparent,
                   child: Align(
@@ -56,8 +62,8 @@ class ShowcaseItem extends StatelessWidget {
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

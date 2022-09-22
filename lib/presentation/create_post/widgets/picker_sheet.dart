@@ -1,3 +1,4 @@
+import 'package:Confessi/presentation/shared/behaviours/init_opacity.dart';
 import 'package:Confessi/presentation/shared/buttons/long.dart';
 import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
 import 'package:Confessi/presentation/shared/layout/swipebar.dart';
@@ -44,49 +45,51 @@ Future<dynamic> showPickerSheet(BuildContext context, List<String> items,
               child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: LayoutBuilder(builder: (context, constraints) {
-                    return ScrollableView(
-                      child: SizedBox(
-                        height: constraints.maxHeight,
-                        child: CupertinoPicker(
-                          scrollController:
-                              FixedExtentScrollController(initialItem: index),
-                          selectionOverlay: Container(
-                            decoration: BoxDecoration(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onSurface
-                                  .withOpacity(0.15),
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(10),
+                    return InitOpacity(
+                      child: ScrollableView(
+                        child: SizedBox(
+                          height: constraints.maxHeight,
+                          child: CupertinoPicker(
+                            scrollController:
+                                FixedExtentScrollController(initialItem: index),
+                            selectionOverlay: Container(
+                              decoration: BoxDecoration(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onSurface
+                                    .withOpacity(0.15),
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
                               ),
                             ),
-                          ),
-                          backgroundColor: Colors.transparent,
-                          looping: false,
-                          itemExtent: 40,
-                          onSelectedItemChanged: (newIndex) {
-                            HapticFeedback.selectionClick();
-                            updateState(newIndex);
-                          },
-                          children: items
-                              .map((item) => Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10),
-                                    child: Center(
-                                      child: Text(
-                                        item,
-                                        style: kBody.copyWith(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .primary,
+                            backgroundColor: Colors.transparent,
+                            looping: false,
+                            itemExtent: 40,
+                            onSelectedItemChanged: (newIndex) {
+                              HapticFeedback.selectionClick();
+                              updateState(newIndex);
+                            },
+                            children: items
+                                .map((item) => Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10),
+                                      child: Center(
+                                        child: Text(
+                                          item,
+                                          style: kBody.copyWith(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                          overflow: TextOverflow.ellipsis,
+                                          textScaleFactor: 1,
                                         ),
-                                        textAlign: TextAlign.center,
-                                        overflow: TextOverflow.ellipsis,
-                                        textScaleFactor: 1,
                                       ),
-                                    ),
-                                  ))
-                              .toList(),
+                                    ))
+                                .toList(),
+                          ),
                         ),
                       ),
                     );

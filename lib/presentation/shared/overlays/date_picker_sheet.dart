@@ -1,3 +1,5 @@
+import 'package:Confessi/presentation/shared/behaviours/init_enlarger.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:Confessi/presentation/shared/buttons/animated_simple_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -43,37 +45,53 @@ Future<dynamic> showDatePickerSheet(BuildContext context) async {
                     ),
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    AnimatedSimpleTextButton(
-                      onTap: () => Navigator.pop(context),
-                      text: "Load today",
-                    ),
-                    const SizedBox(width: 15),
-                    AnimatedSimpleTextButton(
-                      onTap: () => Navigator.pop(context),
-                      text: "Load selected day",
-                    ),
-                  ],
-                ),
                 Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 15),
-                    child: CupertinoTheme(
-                      data: CupertinoThemeData(
-                        textTheme: CupertinoTextThemeData(
-                          dateTimePickerTextStyle: kBody,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          InitTransform(
+                            transformDirection: TransformDirection.horizontal,
+                            child: AnimatedSimpleTextButton(
+                              onTap: () => Navigator.pop(context),
+                              text: "Load today",
+                            ),
+                          ),
+                          const SizedBox(width: 15),
+                          InitTransform(
+                            transformDirection: TransformDirection.horizontal,
+                            magnitudeOfTransform: -100,
+                            child: AnimatedSimpleTextButton(
+                              onTap: () => Navigator.pop(context),
+                              text: "Load selected day",
+                            ),
+                          ),
+                        ],
+                      ),
+                      Expanded(
+                        child: InitScale(
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom: 15),
+                            child: CupertinoTheme(
+                              data: CupertinoThemeData(
+                                textTheme: CupertinoTextThemeData(
+                                  dateTimePickerTextStyle: kBody,
+                                ),
+                              ),
+                              child: CupertinoDatePicker(
+                                initialDateTime: DateTime.now(),
+                                mode: CupertinoDatePickerMode.date,
+                                onDateTimeChanged: (DateTime date) {
+                                  print(date);
+                                },
+                              ),
+                            ),
+                          ),
                         ),
                       ),
-                      child: CupertinoDatePicker(
-                        initialDateTime: DateTime.now(),
-                        mode: CupertinoDatePickerMode.date,
-                        onDateTimeChanged: (DateTime date) {
-                          print(date);
-                        },
-                      ),
-                    ),
+                    ],
                   ),
                 ),
               ],

@@ -7,11 +7,15 @@ class ShrinkingView extends StatefulWidget {
   const ShrinkingView({
     required this.child,
     this.safeAreaBottom = true,
+    this.topLeftSquare = false,
+    this.topRightSquare = false,
     super.key,
   });
 
   final Widget child;
   final bool safeAreaBottom;
+  final bool topLeftSquare;
+  final bool topRightSquare;
 
   @override
   State<ShrinkingView> createState() => _ShrinkingViewState();
@@ -76,8 +80,11 @@ class _ShrinkingViewState extends State<ShrinkingView>
                 0, _anim.value * MediaQuery.of(context).size.height * .055),
             child: Container(
               decoration: BoxDecoration(
-                borderRadius:
-                    BorderRadius.all(Radius.circular(_anim.value * 50)),
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(
+                        widget.topLeftSquare ? 0 : _anim.value * 50),
+                    topRight: Radius.circular(
+                        widget.topRightSquare ? 0 : _anim.value * 50)),
                 color: Theme.of(context).colorScheme.background,
               ),
               child: SafeArea(

@@ -1,3 +1,6 @@
+import 'package:Confessi/presentation/shared/behaviours/init_enlarger.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_opacity.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -91,22 +94,29 @@ class _LoginScreenState extends State<LoginScreen>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const SizedBox(height: 15),
-                            Text(
-                              "Let's log you in.",
-                              style: kDisplay.copyWith(
-                                  color: Theme.of(context).colorScheme.primary),
-                              textAlign: TextAlign.left,
+                            InitOpacity(
+                              child: Text(
+                                "Let's log you in.",
+                                style: kDisplay.copyWith(
+                                    color:
+                                        Theme.of(context).colorScheme.primary),
+                                textAlign: TextAlign.left,
+                              ),
                             ),
                             SizedBox(height: heightFactor * 8),
-                            BulgeTextField(
-                              controller: usernameEmailController,
-                              hintText: "Email or username",
-                              bottomPadding: 10,
+                            InitScale(
+                              child: BulgeTextField(
+                                controller: usernameEmailController,
+                                hintText: "Email or username",
+                                bottomPadding: 10,
+                              ),
                             ),
-                            BulgeTextField(
-                              controller: passwordController,
-                              password: true,
-                              hintText: "Password",
+                            InitScale(
+                              child: BulgeTextField(
+                                controller: passwordController,
+                                password: true,
+                                hintText: "Password",
+                              ),
                             ),
                             FadeSizeText(
                               text: errorText,
@@ -133,10 +143,12 @@ class _LoginScreenState extends State<LoginScreen>
                             ),
                             const SizedBox(height: 10),
                             Center(
-                              child: LinkText(
-                                  onPress: () {},
-                                  linkText: "Tap here.",
-                                  text: "Forgot password? "),
+                              child: InitTransform(
+                                child: LinkText(
+                                    onPress: () {},
+                                    linkText: "Tap here.",
+                                    text: "Forgot password? "),
+                              ),
                             ),
                             const SizedBox(height: 10),
                           ],

@@ -21,13 +21,6 @@ import '../../../core/constants/shared/feed.dart';
 import '../../../domain/shared/entities/badge.dart';
 import '../widgets/infinite_list.dart';
 
-class Comment {
-  final String data;
-  final bool isRoot;
-
-  Comment({required this.data, required this.isRoot});
-}
-
 class DetailViewScreen extends StatefulWidget {
   const DetailViewScreen({
     Key? key,

@@ -1,3 +1,4 @@
+import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:Confessi/presentation/shared/behaviours/touchable_opacity.dart';
 import 'package:Confessi/presentation/shared/indicators/loading.dart';
 import 'package:flutter/cupertino.dart';

@@ -52,17 +52,20 @@ class PopButton extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(20),
               child: Row(
-                mainAxisAlignment:
-                    justText ? MainAxisAlignment.center : MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: justText
+                    ? MainAxisAlignment.center
+                    : MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
                     child: SizedBox(
                       height: 24,
                       child: Align(
-                        alignment: justText ? Alignment.center : Alignment.centerLeft,
+                        alignment:
+                            justText ? Alignment.center : Alignment.centerLeft,
                         child: AnimatedSwitcher(
                           duration: const Duration(milliseconds: 200),
-                          transitionBuilder: (Widget child, Animation<double> animation) =>
+                          transitionBuilder: (Widget child,
+                                  Animation<double> animation) =>
                               FadeTransition(opacity: animation, child: child),
                           child: loading
                               ? Padding(
@@ -77,7 +80,9 @@ class PopButton extends StatelessWidget {
                                   style: kTitle.copyWith(
                                     color: textColor,
                                   ),
-                                  textAlign: justText ? TextAlign.center : TextAlign.left,
+                                  textAlign: justText
+                                      ? TextAlign.center
+                                      : TextAlign.left,
                                   overflow: TextOverflow.ellipsis,
                                 ),
                         ),

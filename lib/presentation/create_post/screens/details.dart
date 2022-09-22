@@ -1,6 +1,7 @@
 import 'package:Confessi/presentation/create_post/cubit/post_cubit.dart';
 import 'package:Confessi/presentation/create_post/widgets/disclaimer_text.dart';
 import 'package:Confessi/presentation/create_post/widgets/picker_sheet.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_enlarger.dart';
 import 'package:Confessi/presentation/shared/behaviours/shrinking_view.dart';
 import 'package:Confessi/presentation/shared/buttons/long.dart';
 import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';

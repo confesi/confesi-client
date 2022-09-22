@@ -1,6 +1,8 @@
 import 'dart:math';
 
 import 'package:Confessi/core/utils/numbers/is_plural.dart';
+import 'package:Confessi/core/utils/sizing/width_fraction.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:Confessi/presentation/shared/behaviours/shrinking_view.dart';
 import 'package:Confessi/presentation/shared/indicators/alert.dart';
 import 'package:Confessi/presentation/shared/indicators/loading.dart';
@@ -22,50 +24,56 @@ import '../../shared/overlays/info_sheet.dart';
 class LeaderboardScreen extends StatelessWidget {
   const LeaderboardScreen({Key? key}) : super(key: key);
 
-  List<Widget> getCircleRanks(Data data) {
+  List<Widget> getCircleRanks(Data data, BuildContext context) {
     return [
       data.rankings.length >= 2
           ? Flexible(
-              child: LeaderboardCircleTile(
-                universityImagePath: data.rankings[1].universityImagePath,
-                minSize: 90,
-                placing:
-                    '${data.rankings[1].placing}${numberPostfix(data.rankings[1].placing)}',
-                universityFullName: data.rankings[1].universityFullName,
-                universityName: data.rankings[1].universityName,
-                points: isPlural(data.rankings[1].points)
-                    ? '${largeNumberFormatter(data.rankings[1].points)} pts'
-                    : '${largeNumberFormatter(data.rankings[1].points)} pt',
+              child: InitTransform(
+                child: LeaderboardCircleTile(
+                  universityImagePath: data.rankings[1].universityImagePath,
+                  minSize: 90,
+                  placing:
+                      '${data.rankings[1].placing}${numberPostfix(data.rankings[1].placing)}',
+                  universityFullName: data.rankings[1].universityFullName,
+                  universityName: data.rankings[1].universityName,
+                  points: isPlural(data.rankings[1].points)
+                      ? '${largeNumberFormatter(data.rankings[1].points)} pts'
+                      : '${largeNumberFormatter(data.rankings[1].points)} pt',
+                ),
               ),
             )
           : Container(),
       data.rankings.isNotEmpty
           ? Flexible(
-              child: LeaderboardCircleTile(
-                universityImagePath: data.rankings[0].universityImagePath,
-                minSize: 120,
-                placing:
-                    '${data.rankings[0].placing}${numberPostfix(data.rankings[0].placing)}',
-                universityFullName: data.rankings[0].universityFullName,
-                universityName: data.rankings[0].universityName,
-                points: isPlural(data.rankings[0].points)
-                    ? '${largeNumberFormatter(data.rankings[0].points)} pts'
-                    : '${largeNumberFormatter(data.rankings[0].points)} pt',
+              child: InitTransform(
+                child: LeaderboardCircleTile(
+                  universityImagePath: data.rankings[0].universityImagePath,
+                  minSize: 120,
+                  placing:
+                      '${data.rankings[0].placing}${numberPostfix(data.rankings[0].placing)}',
+                  universityFullName: data.rankings[0].universityFullName,
+                  universityName: data.rankings[0].universityName,
+                  points: isPlural(data.rankings[0].points)
+                      ? '${largeNumberFormatter(data.rankings[0].points)} pts'
+                      : '${largeNumberFormatter(data.rankings[0].points)} pt',
+                ),
               ),
             )
           : Container(),
       data.rankings.length >= 3
           ? Flexible(
-              child: LeaderboardCircleTile(
-                universityImagePath: data.rankings[2].universityImagePath,
-                minSize: 90,
-                placing:
-                    '${data.rankings[2].placing}${numberPostfix(data.rankings[2].placing)}',
-                universityFullName: data.rankings[2].universityFullName,
-                universityName: data.rankings[2].universityName,
-                points: isPlural(data.rankings[2].points)
-                    ? '${largeNumberFormatter(data.rankings[2].points)} pts'
-                    : '${largeNumberFormatter(data.rankings[2].points)} pt',
+              child: InitTransform(
+                child: LeaderboardCircleTile(
+                  universityImagePath: data.rankings[2].universityImagePath,
+                  minSize: 90,
+                  placing:
+                      '${data.rankings[2].placing}${numberPostfix(data.rankings[2].placing)}',
+                  universityFullName: data.rankings[2].universityFullName,
+                  universityName: data.rankings[2].universityName,
+                  points: isPlural(data.rankings[2].points)
+                      ? '${largeNumberFormatter(data.rankings[2].points)} pts'
+                      : '${largeNumberFormatter(data.rankings[2].points)} pt',
+                ),
               ),
             )
           : Container(),
@@ -94,7 +102,7 @@ class LeaderboardScreen extends StatelessWidget {
                     children: [
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: getCircleRanks(state),
+                        children: getCircleRanks(state, context),
                       ),
                       // HERE
                       LineLayout(
@@ -103,25 +111,27 @@ class LeaderboardScreen extends StatelessWidget {
                         color: Theme.of(context).colorScheme.onBackground,
                       ),
                       Expanded(
-                        child: ListView.builder(
-                          itemBuilder: (context, index) {
-                            if (index == 0) {
-                              return const SizedBox(height: 30);
-                            } else if (index >= 3) {
-                              return LeaderboardRectangleTile(
-                                placing:
-                                    '${state.rankings[index].placing}${numberPostfix(state.rankings[index].placing)}',
-                                points: isPlural(state.rankings[index].points)
-                                    ? '${largeNumberFormatter(state.rankings[index].points)} pts'
-                                    : '${largeNumberFormatter(state.rankings[index].points)} pt',
-                                university:
-                                    state.rankings[index].universityFullName,
-                              );
-                            } else {
-                              return Container();
-                            }
-                          },
-                          itemCount: state.rankings.length,
+                        child: InitTransform(
+                          child: ListView.builder(
+                            itemBuilder: (context, index) {
+                              if (index == 0) {
+                                return const SizedBox(height: 30);
+                              } else if (index >= 3) {
+                                return LeaderboardRectangleTile(
+                                  placing:
+                                      '${state.rankings[index].placing}${numberPostfix(state.rankings[index].placing)}',
+                                  points: isPlural(state.rankings[index].points)
+                                      ? '${largeNumberFormatter(state.rankings[index].points)} pts'
+                                      : '${largeNumberFormatter(state.rankings[index].points)} pt',
+                                  university:
+                                      state.rankings[index].universityFullName,
+                                );
+                              } else {
+                                return Container();
+                              }
+                            },
+                            itemCount: state.rankings.length,
+                          ),
                         ),
                       ),
                     ],

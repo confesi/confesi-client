@@ -1,4 +1,5 @@
 import 'package:Confessi/core/constants/shared/buttons.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_enlarger.dart';
 import 'package:Confessi/presentation/shared/behaviours/tool_tip.dart';
 import 'package:Confessi/core/constants/feed/constants.dart';
 import 'package:Confessi/domain/shared/entities/post.dart';
@@ -51,11 +52,13 @@ class QuoteTile extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Replying to:',
-              style: kDetail.copyWith(
-                  color: Theme.of(context).colorScheme.onSurface),
-              textAlign: TextAlign.left,
+            InitScale(
+              child: Text(
+                'Replying to:',
+                style: kDetail.copyWith(
+                    color: Theme.of(context).colorScheme.onSurface),
+                textAlign: TextAlign.left,
+              ),
             ),
             const SizedBox(height: 15),
             Container(

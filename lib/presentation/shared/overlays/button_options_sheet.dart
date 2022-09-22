@@ -1,3 +1,4 @@
+import 'package:Confessi/presentation/shared/behaviours/init_enlarger.dart';
 import 'package:Confessi/presentation/shared/layout/swipebar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

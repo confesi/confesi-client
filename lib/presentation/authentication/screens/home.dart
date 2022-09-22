@@ -1,11 +1,14 @@
 import 'package:Confessi/presentation/create_post/screens/home.dart';
 import 'package:Confessi/presentation/daily_hottest/screens/home.dart';
 import 'package:Confessi/presentation/profile/screens/home.dart';
-import 'package:Confessi/presentation/profile/screens/profile.dart';
+import 'package:Confessi/presentation/profile/screens/tabs_manager.dart';
+import 'package:Confessi/presentation/shared/overlays/center_overlay_message.dart';
+import 'package:Confessi/presentation/shared/overlays/feedback_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shake/shake.dart';
 
 import '../../../core/responsive/breakpoints.dart';
 import '../../../core/styles/typography.dart';
@@ -23,6 +26,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   late TabController tabController;
+  bool shakeSheetOpen = false;
 
   @override
   void initState() {

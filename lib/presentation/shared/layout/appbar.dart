@@ -1,3 +1,5 @@
+import 'package:Confessi/presentation/shared/behaviours/init_opacity.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -49,7 +51,7 @@ class AppbarLayout extends StatelessWidget {
           child: Container(
             color: Colors.transparent,
             child: Padding(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(15),
               child: AnimatedSwitcher(
                 duration: const Duration(milliseconds: 300),
                 child: Transform.translate(
@@ -93,12 +95,14 @@ class AppbarLayout extends StatelessWidget {
                   : buildLeftWidget(context)
             else
               Padding(
-                padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.all(15),
                 child: Icon(rightIcon ?? CupertinoIcons.arrow_clockwise,
                     color: Colors.transparent),
               ),
             Flexible(
-              child: centerWidget,
+              child: InitOpacity(
+                child: centerWidget,
+              ),
             ),
             if (rightIconVisible)
               TouchableOpacity(
@@ -112,7 +116,7 @@ class AppbarLayout extends StatelessWidget {
                   // Transparent hitbox trick.
                   color: Colors.transparent,
                   child: Padding(
-                    padding: const EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(15),
                     child: AnimatedSwitcher(
                       duration: const Duration(milliseconds: 300),
                       child: Icon(
@@ -124,7 +128,7 @@ class AppbarLayout extends StatelessWidget {
               )
             else
               Padding(
-                padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.all(15),
                 child: Icon(rightIcon ?? CupertinoIcons.arrow_clockwise,
                     color: Colors.transparent),
               ),

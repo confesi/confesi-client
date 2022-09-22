@@ -49,9 +49,9 @@ class AnimatedSimpleTextButton extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               AnimatedSwitcher(
-                duration: const Duration(milliseconds: 250),
+                duration: const Duration(milliseconds: 200),
                 child: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 250),
+                  duration: const Duration(milliseconds: 200),
                   transitionBuilder: (Widget child, Animation<double> anim) =>
                       ScaleTransition(
                     scale: anim,

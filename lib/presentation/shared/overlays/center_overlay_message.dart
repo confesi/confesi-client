@@ -105,9 +105,10 @@ class __OverlayItemState extends State<_OverlayItem>
   @override
   void initState() {
     animController = AnimationController(
-        vsync: this,
-        duration: Duration.zero,
-        reverseDuration: const Duration(milliseconds: 1300));
+      vsync: this,
+      duration: Duration.zero,
+      reverseDuration: const Duration(milliseconds: 750),
+    );
     anim = CurvedAnimation(
       parent: animController,
       curve: Curves.linear,
@@ -124,7 +125,7 @@ class __OverlayItemState extends State<_OverlayItem>
 
   void startAnim() async {
     animController.forward().then((value) async {
-      await Future.delayed(const Duration(milliseconds: 1800));
+      await Future.delayed(const Duration(milliseconds: 250));
       animController.reverse();
     });
     animController.addListener(() {

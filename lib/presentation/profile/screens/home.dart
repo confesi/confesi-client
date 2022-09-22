@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:Confessi/core/cubit/biometrics_cubit.dart';
 import 'package:Confessi/core/results/failures.dart';
 import 'package:Confessi/presentation/profile/screens/biometric_overlay_message.dart';
-import 'package:Confessi/presentation/profile/screens/profile.dart';
+import 'package:Confessi/presentation/profile/screens/tabs_manager.dart';
 import 'package:Confessi/presentation/shared/overlays/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -87,7 +87,7 @@ class _ProfileHomeState extends State<ProfileHome>
     }
   }
 
-  double getBlurValue() => _anim.value * 7;
+  double getBlurValue() => _anim.value * 2;
 
   @override
   Widget build(BuildContext context) {
@@ -108,43 +108,44 @@ class _ProfileHomeState extends State<ProfileHome>
         }
       },
       builder: (context, state) {
-        return Stack(
-          children: <Widget>[
-            IgnorePointer(
-              ignoring: _anim.value == 0 ? false : true,
-              child: const SafeArea(
-                child: Profile(),
+        return SafeArea(
+          child: Stack(
+            children: <Widget>[
+              IgnorePointer(
+                ignoring: _anim.value == 0 ? false : true,
+                child: const TabsManager(),
               ),
-            ),
-            IgnorePointer(
-              ignoring: _anim.value != 1 ? true : false,
-              child: ClipRect(
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(
-                      sigmaX: getBlurValue(), sigmaY: getBlurValue()),
-                  child: Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .background
-                          .withOpacity(_anim.value * .95),
-                    ),
-                    child: AnimatedSwitcher(
-                      duration: Duration.zero,
-                      reverseDuration: const Duration(milliseconds: 175),
-                      switchInCurve: Curves.easeInQuint,
-                      switchOutCurve: Curves.decelerate,
-                      transitionBuilder:
-                          (Widget child, Animation<double> animation) =>
-                              ScaleTransition(scale: animation, child: child),
-                      child: buildChild(state),
+              IgnorePointer(
+                ignoring: _anim.value != 1 ? true : false,
+                child: ClipRect(
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(
+                        sigmaX: getBlurValue(), sigmaY: getBlurValue()),
+                    child: Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .background
+                            .withOpacity(_anim.value *
+                                1), // CHANGE THIS VALUE TO CHANGE OPACITY BASE (When not authenticated).
+                      ),
+                      child: AnimatedSwitcher(
+                        duration: Duration.zero,
+                        reverseDuration: const Duration(milliseconds: 75),
+                        switchInCurve: Curves.linear,
+                        switchOutCurve: Curves.linear,
+                        // transitionBuilder:
+                        //     (Widget child, Animation<double> animation) =>
+                        //         ScaleTransition(scale: animation, child: child),
+                        child: buildChild(state),
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         );
       },
     );

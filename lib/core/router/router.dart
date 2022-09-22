@@ -3,6 +3,7 @@ import 'package:Confessi/presentation/create_post/screens/home.dart';
 import 'package:Confessi/presentation/daily_hottest/screens/leaderboard.dart';
 import 'package:Confessi/presentation/feed/screens/detail_view.dart';
 import 'package:Confessi/presentation/feed/screens/post_advanced_details.dart';
+import 'package:Confessi/presentation/feedback/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -25,7 +26,8 @@ class AppRouter {
   bool isFullScreen(RouteSettings routeSettings) {
     List<String> fullScreenDialogRoutes = [
       "/home/post/stats",
-      "/home/create_replied_post"
+      "/home/create_replied_post",
+      "/feedback"
     ];
     return fullScreenDialogRoutes.contains(routeSettings.name) ? true : false;
   }
@@ -131,6 +133,9 @@ class AppRouter {
           create: (context) => sl<LeaderboardCubit>()..loadRankings(),
           child: const LeaderboardScreen(),
         );
+        break;
+      case "/feedback":
+        page = const FeedbackHome();
         break;
       case "/settings":
         page = const Text("Settings");

@@ -1,5 +1,7 @@
 import 'package:Confessi/core/constants/shared/buttons.dart';
 import 'package:Confessi/core/styles/typography.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_enlarger.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:Confessi/presentation/shared/behaviours/touchable_opacity.dart';
 import 'package:Confessi/presentation/shared/text/group.dart';
 import 'package:Confessi/core/constants/feed/constants.dart';
@@ -35,10 +37,8 @@ class PostTile extends StatelessWidget {
     required this.badges,
     required this.universityFullName,
     required this.id,
-
     Key? key,
   }) : super(key: key);
-
 
   final String? id;
   final String universityFullName;
