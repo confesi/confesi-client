@@ -1,4 +1,5 @@
 import 'package:Confessi/application/create_post/post_cubit.dart';
+import 'package:Confessi/presentation/authentication/screens/home.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -67,6 +68,10 @@ class MyApp extends StatelessWidget {
                 previous is! UserError;
           },
           listener: (context, state) {
+            if (devMode) {
+              Navigator.of(context).pushNamed("/home");
+              return;
+            }
             if (state is NoUser) {
               Navigator.of(context).pushNamed("/open");
             } else if (state is User) {
@@ -77,7 +82,7 @@ class MyApp extends StatelessWidget {
               }
             }
           },
-          child: const SplashScreen(),
+          child: devMode ? const HomeScreen() : const SplashScreen(),
         ),
       ),
     );
