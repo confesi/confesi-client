@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
+import '../../constants/feed/enums.dart';
 import '../../core/usecases/usecase.dart';
 import '../../constants/feed/general.dart';
 import '../../domain/shared/entities/post.dart';

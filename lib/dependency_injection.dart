@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:Confessi/core/http/http_client.dart';
+import 'package:Confessi/core/network/http_client.dart';
 import 'package:Confessi/application/shared/scaffold_shrinker_cubit.dart';
 import 'package:Confessi/data/create_post/datasources/create_post_datasource.dart';
 import 'package:Confessi/data/create_post/repositories/create_post_repository_concrete.dart';

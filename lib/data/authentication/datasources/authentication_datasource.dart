@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:Confessi/core/http/http_client.dart';
+import 'package:Confessi/core/network/http_client.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../../../core/results/exceptions.dart';

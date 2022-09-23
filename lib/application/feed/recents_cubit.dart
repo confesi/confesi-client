@@ -28,10 +28,11 @@ class RecentsCubit extends Cubit<RecentsState> {
       emit(InitialState());
     } else if (state is HasPosts) {
       final hasPosts = state as HasPosts;
-      emit(HasPosts(posts: hasPosts.posts, feedState: FeedState.loadingMore));
+      emit(HasPosts(
+          posts: hasPosts.posts, feedState: FeedDisplayState.loadingMore));
     }
-    final failureOrPosts =
-        await recents(RecentsParams(lastSeenPostId: lastSeenPostId, token: token));
+    final failureOrPosts = await recents(
+        RecentsParams(lastSeenPostId: lastSeenPostId, token: token));
     failureOrPosts.fold(
       (failure) => print("Failure... $failure"),
       (posts) {
@@ -43,11 +44,11 @@ class RecentsCubit extends Cubit<RecentsState> {
             HasPosts(posts: [
               ...posts,
               ...hasPosts.posts,
-            ], feedState: FeedState.stagnant),
+            ], feedState: FeedDisplayState.stagnant),
           );
         } else {
           emit(
-            HasPosts(posts: posts, feedState: FeedState.stagnant),
+            HasPosts(posts: posts, feedState: FeedDisplayState.stagnant),
           );
         }
       },

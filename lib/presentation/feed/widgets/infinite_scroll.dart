@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../../constants/feed/enums.dart';
 import '../../../constants/feed/general.dart';
 import '../../../domain/shared/entities/post.dart';
 import 'error_message.dart';

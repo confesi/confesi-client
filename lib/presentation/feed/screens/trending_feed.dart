@@ -2,6 +2,7 @@ import 'package:Confessi/constants/shared/error_messages.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../constants/feed/enums.dart';
 import '../../../constants/feed/general.dart';
 import '../../shared/overlays/snackbar.dart';
 import '../../../application/feed/trending_cubit.dart';

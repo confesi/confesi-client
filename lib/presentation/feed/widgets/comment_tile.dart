@@ -7,6 +7,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
+import '../../../constants/feed/enums.dart';
 import '../../../constants/shared/enums.dart';
 import '../../../core/styles/typography.dart';
 import '../../shared/behaviours/touchable_opacity.dart';

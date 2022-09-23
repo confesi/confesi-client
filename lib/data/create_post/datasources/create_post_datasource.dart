@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:Confessi/core/results/successes.dart';
-import '../../../core/http/http_client.dart';
+import '../../../core/network/http_client.dart';
 import '../../../core/results/exceptions.dart';
 import '../utils/error_message_to_exception.dart';
 

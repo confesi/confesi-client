@@ -16,6 +16,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:keyboard_attachable/keyboard_attachable.dart';
 
+import '../../../constants/feed/enums.dart';
 import '../../../constants/feed/general.dart';
 import '../../../constants/shared/enums.dart';
 import '../../../domain/shared/entities/badge.dart';

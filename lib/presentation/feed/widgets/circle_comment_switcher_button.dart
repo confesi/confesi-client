@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../../constants/feed/enums.dart';
 import '../../../constants/feed/general.dart';
 
 class CircleCommentSwitcherButton extends StatefulWidget {

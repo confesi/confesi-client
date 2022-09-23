@@ -13,6 +13,7 @@ import 'package:Confessi/presentation/feed/widgets/vote_tile_set.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../constants/feed/enums.dart';
 import '../../../constants/shared/enums.dart';
 import '../../../core/utils/numbers/is_plural.dart';
 import '../../shared/buttons/option.dart';

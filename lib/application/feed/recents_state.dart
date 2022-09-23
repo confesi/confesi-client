@@ -1,6 +1,6 @@
 part of 'recents_cubit.dart';
 
-enum FeedState {
+enum FeedDisplayState {
   stagnant, // Feed has posts.
   loadingMore, // Currently loading more posts to feed.
   errorLoadingMore, // Error loading more posts to feed.
@@ -22,7 +22,7 @@ class LoadingAll extends RecentsState {}
 /// Posts are in the feed.
 class HasPosts extends RecentsState {
   final List<Post> posts;
-  final FeedState feedState;
+  final FeedDisplayState feedState;
 
   HasPosts({required this.posts, required this.feedState});
 
