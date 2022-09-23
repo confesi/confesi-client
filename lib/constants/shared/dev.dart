@@ -1,6 +1,9 @@
 // If true, it means the app will be viewed inside an emulated device on-screen.
 const bool kPreviewMode = false;
 
+// Developer mode. MUST BE OFF ON RELEASE. THIS IS A DANGEROUS BOOL.
+const bool devMode = true;
+
 /// The root endpoint (domain) for all api calls.
 ///
 /// This local address will need to change

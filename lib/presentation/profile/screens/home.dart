@@ -1,10 +1,12 @@
 import 'dart:math';
 
+import 'package:Confessi/application/authentication/authentication_cubit.dart';
 import 'package:Confessi/core/utils/numbers/number_until_limit.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
 import 'package:Confessi/presentation/shared/edited_source_widgets/swipe_refresh.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 // TODO: make custom AMAZING loading indicator

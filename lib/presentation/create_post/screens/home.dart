@@ -174,7 +174,7 @@ class _CreatePostHomeState extends State<CreatePostHome>
                             value: getLimitPercent(),
                           )
                         : Text(
-                            'Create Confession',
+                            'Confess Anonymously',
                             style: kTitle.copyWith(
                                 color: Theme.of(context).colorScheme.primary),
                             overflow: TextOverflow.ellipsis,
