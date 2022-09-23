@@ -4,7 +4,7 @@ import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../core/cubit/scaffold_shrinker_cubit.dart';
+import '../../../application/shared/scaffold_shrinker_cubit.dart';
 import '../layout/swipebar.dart';
 
 Future<dynamic> showInfoSheet(
@@ -21,7 +21,7 @@ Future<dynamic> showInfoSheet(
       ),
       child: Container(
         constraints:
-            BoxConstraints(minHeight: MediaQuery.of(context).size.height / 2),
+            BoxConstraints(minHeight: MediaQuery.of(context).size.height / 3),
         padding: const EdgeInsets.only(bottom: 15),
         color: Theme.of(context).colorScheme.background,
         child: Column(

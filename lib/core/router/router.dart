@@ -1,10 +1,10 @@
 import 'package:Confessi/presentation/create_post/screens/details.dart';
 import 'package:Confessi/presentation/create_post/screens/home.dart';
 import 'package:Confessi/presentation/daily_hottest/screens/leaderboard.dart';
-import 'package:Confessi/presentation/easter_eggs/overscroll.dart';
+import 'package:Confessi/presentation/easter_eggs/screens/overscroll.dart';
 import 'package:Confessi/presentation/feed/screens/detail_view.dart';
 import 'package:Confessi/presentation/feed/screens/post_advanced_details.dart';
-import 'package:Confessi/presentation/feedback/home.dart';
+import 'package:Confessi/presentation/feedback/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,11 +15,11 @@ import '../../presentation/authentication/screens/onboarding.dart';
 import '../../presentation/authentication/screens/open.dart';
 import '../../presentation/authentication/screens/register.dart';
 import '../../presentation/authentication/screens/splash.dart';
-import '../../presentation/daily_hottest/cubit/hottest_cubit.dart';
-import '../../presentation/daily_hottest/cubit/leaderboard_cubit.dart';
-import '../../presentation/feed/cubit/recents_cubit.dart';
-import '../../presentation/feed/cubit/trending_cubit.dart';
-import '../cubit/biometrics_cubit.dart';
+import '../../application/daily_hottest/hottest_cubit.dart';
+import '../../application/daily_hottest/leaderboard_cubit.dart';
+import '../../application/feed/recents_cubit.dart';
+import '../../application/feed/trending_cubit.dart';
+import '../../application/shared/biometrics_cubit.dart';
 
 /// The application's routes (screens) manager.
 class AppRouter {

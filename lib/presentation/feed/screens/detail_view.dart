@@ -1,4 +1,4 @@
-import 'package:Confessi/core/cubit/scaffold_shrinker_cubit.dart';
+import 'package:Confessi/application/shared/scaffold_shrinker_cubit.dart';
 import 'package:Confessi/core/styles/typography.dart';
 import 'package:Confessi/presentation/shared/behaviours/shrinking_view.dart';
 import 'package:Confessi/presentation/shared/layout/appbar.dart';
@@ -16,8 +16,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:keyboard_attachable/keyboard_attachable.dart';
 
-import '../../../core/constants/feed/constants.dart';
-import '../../../core/constants/shared/feed.dart';
+import '../../../constants/feed/general.dart';
+import '../../../constants/shared/enums.dart';
 import '../../../domain/shared/entities/badge.dart';
 import '../widgets/infinite_list.dart';
 

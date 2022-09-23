@@ -1,4 +1,4 @@
-import 'package:Confessi/core/cubit/scaffold_shrinker_cubit.dart';
+import 'package:Confessi/application/shared/scaffold_shrinker_cubit.dart';
 import 'package:Confessi/core/curves/bounce_back.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

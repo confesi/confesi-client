@@ -1,4 +1,4 @@
-import 'package:Confessi/presentation/daily_hottest/cubit/hottest_cubit.dart';
+import 'package:Confessi/application/daily_hottest/hottest_cubit.dart';
 import 'package:Confessi/presentation/daily_hottest/widgets/hottest_tile.dart';
 import 'package:Confessi/presentation/shared/behaviours/shrinking_view.dart';
 import 'package:Confessi/presentation/shared/overlays/date_picker_sheet.dart';
@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../core/constants/daily_hottest/constants.dart';
-import '../../../core/constants/shared/feed.dart';
+import '../../../constants/daily_hottest/general.dart';
+import '../../../constants/shared/enums.dart';
 import '../../../core/styles/typography.dart';
 import '../../shared/indicators/alert.dart';
 import '../../shared/indicators/loading.dart';

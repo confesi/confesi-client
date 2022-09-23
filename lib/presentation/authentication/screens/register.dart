@@ -1,4 +1,4 @@
-import 'package:Confessi/presentation/authentication/cubit/authentication_cubit.dart';
+import 'package:Confessi/application/authentication/authentication_cubit.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_opacity.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';

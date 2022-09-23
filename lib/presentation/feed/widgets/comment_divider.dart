@@ -1,4 +1,3 @@
-import 'package:Confessi/core/constants/shared/buttons.dart';
 import 'package:Confessi/core/styles/typography.dart';
 import 'package:Confessi/core/utils/numbers/large_number_formatter.dart';
 import 'package:Confessi/core/utils/sizing/width_fraction.dart';
@@ -9,6 +8,7 @@ import 'package:Confessi/presentation/shared/behaviours/touchable_opacity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../constants/shared/enums.dart';
 import '../../shared/overlays/button_options_sheet.dart';
 
 class CommentDivider extends StatelessWidget {

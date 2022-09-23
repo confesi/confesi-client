@@ -1,4 +1,4 @@
-import 'package:Confessi/core/constants/create_post/messages.dart';
+import 'package:Confessi/constants/create_post/error_messages.dart';
 import 'package:Confessi/core/error_messages/messages.dart';
 
 import '../../../core/results/failures.dart';

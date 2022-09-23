@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/constants/shared/buttons.dart';
+import '../../../constants/shared/enums.dart';
 import '../../../core/styles/typography.dart';
 import '../behaviours/touchable_opacity.dart';
 

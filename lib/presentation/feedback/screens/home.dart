@@ -1,5 +1,4 @@
-import 'package:Confessi/core/constants/feedback/text.dart';
-import 'package:Confessi/core/constants/shared/buttons.dart';
+import 'package:Confessi/constants/feedback/text.dart';
 import 'package:Confessi/core/utils/sizing/width_fraction.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
@@ -10,10 +9,11 @@ import 'package:Confessi/presentation/shared/textfields/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../core/constants/feedback/constants.dart';
-import '../../core/styles/typography.dart';
-import '../shared/other/text_limit_tracker.dart';
-import '../shared/layout/appbar.dart';
+import '../../../constants/feedback/general.dart';
+import '../../../constants/shared/enums.dart';
+import '../../../core/styles/typography.dart';
+import '../../shared/other/text_limit_tracker.dart';
+import '../../shared/layout/appbar.dart';
 
 class FeedbackHome extends StatefulWidget {
   const FeedbackHome({super.key});

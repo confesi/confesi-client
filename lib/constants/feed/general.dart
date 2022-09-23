@@ -1,3 +1,9 @@
+/// The text length of the posts displayed inside the feed before truncating.
+const int kPreviewQuotePostTextLength = 75;
+
+/// The text length of the posts displayed inside the feed before truncating.
+const int kPreviewQuotePostTitleLength = 75;
+
 /// The message header for the error message that is shown in the middle of the page when there's a loading error.
 const String kErrorLoadingAnyHeader = "Error loading content";
 

@@ -4,16 +4,16 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
-import '../../../core/usecases/usecase.dart';
-import '../../../domain/authenticatioin/usecases/login.dart';
-import '../../../domain/authenticatioin/usecases/logout.dart';
-import '../../../domain/authenticatioin/usecases/register.dart';
-import '../../../domain/authenticatioin/usecases/silent_authentication.dart';
-import '../utils/email_validation.dart';
-import '../../../core/utils/validators/empty_validator.dart';
-import '../utils/failure_to_message.dart';
-import '../utils/password_validation.dart';
-import '../utils/username_validation.dart';
+import '../../core/usecases/usecase.dart';
+import '../../domain/authenticatioin/usecases/login.dart';
+import '../../domain/authenticatioin/usecases/logout.dart';
+import '../../domain/authenticatioin/usecases/register.dart';
+import '../../domain/authenticatioin/usecases/silent_authentication.dart';
+import '../../presentation/authentication/utils/email_validation.dart';
+import '../../core/utils/validators/empty_validator.dart';
+import '../../presentation/authentication/utils/failure_to_message.dart';
+import '../../presentation/authentication/utils/password_validation.dart';
+import '../../presentation/authentication/utils/username_validation.dart';
 
 part 'authentication_state.dart';
 

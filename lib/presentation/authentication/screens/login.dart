@@ -13,7 +13,7 @@ import '../../shared/behaviours/keyboard_dismiss.dart';
 import '../../shared/layout/minimal_appbar.dart';
 import '../../shared/text/link.dart';
 import '../../shared/textfields/bulge.dart';
-import '../cubit/authentication_cubit.dart';
+import '../../../application/authentication/authentication_cubit.dart';
 import '../../shared/text/fade_size_text.dart';
 
 class LoginScreen extends StatefulWidget {

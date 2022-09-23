@@ -1,6 +1,3 @@
-import 'package:Confessi/core/constants/shared/buttons.dart';
-import 'package:Confessi/core/utils/sizing/width_fraction.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:Confessi/presentation/shared/behaviours/touchable_shrink.dart';
 import 'package:Confessi/presentation/shared/buttons/option.dart';
 import 'package:Confessi/presentation/feed/widgets/comment_header_text.dart';
@@ -10,9 +7,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
+import '../../../constants/shared/enums.dart';
 import '../../../core/styles/typography.dart';
 import '../../shared/behaviours/touchable_opacity.dart';
-import '../../../core/constants/feed/constants.dart';
+import '../../../constants/feed/general.dart';
 import '../../shared/overlays/button_options_sheet.dart';
 
 class CommentTile extends StatelessWidget {

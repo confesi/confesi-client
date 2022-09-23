@@ -3,9 +3,9 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
-import '../../../core/usecases/usecase.dart';
-import '../../../domain/daily_hottest/usecases/posts.dart';
-import '../utils/failure_to_message.dart';
+import '../../core/usecases/usecase.dart';
+import '../../domain/daily_hottest/usecases/posts.dart';
+import '../../presentation/daily_hottest/utils/failure_to_message.dart';
 
 part 'hottest_state.dart';
 

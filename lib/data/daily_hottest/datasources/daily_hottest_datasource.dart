@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:Confessi/data/shared/models/post_model.dart';
 import 'package:Confessi/domain/shared/entities/post.dart';
 
-import '../../../core/authorization/http_client.dart';
+import '../../../core/http/http_client.dart';
 import '../../../core/results/exceptions.dart';
 
 abstract class IDailyHottestDatasource {

@@ -1,4 +1,4 @@
-import 'package:Confessi/core/constants/authentication/messages.dart';
+import 'package:Confessi/constants/authentication/error_messages.dart';
 
 import '../../../core/error_messages/messages.dart';
 import '../../../core/results/failures.dart';

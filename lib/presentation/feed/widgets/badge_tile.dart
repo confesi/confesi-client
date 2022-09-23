@@ -1,5 +1,5 @@
 import 'package:Confessi/core/results/exceptions.dart';
-import 'package:Confessi/core/constants/feed/constants.dart';
+import 'package:Confessi/constants/feed/general.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

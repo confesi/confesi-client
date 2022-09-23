@@ -5,7 +5,7 @@ import 'package:Confessi/data/create_post/repositories/create_post_repository_co
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../core/authorization/http_client.dart';
+import '../../../core/http/http_client.dart';
 
 class UploadPost implements Usecase<Success, UploadPostParams> {
   final CreatePostRepository repository;

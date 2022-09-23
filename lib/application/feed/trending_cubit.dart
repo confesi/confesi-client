@@ -2,10 +2,10 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
-import '../../../core/usecases/usecase.dart';
-import '../../../core/constants/feed/constants.dart';
-import '../../../domain/shared/entities/post.dart';
-import '../../../domain/feed/usecases/trending.dart';
+import '../../core/usecases/usecase.dart';
+import '../../constants/feed/general.dart';
+import '../../domain/shared/entities/post.dart';
+import '../../domain/feed/usecases/trending.dart';
 
 part 'trending_state.dart';
 

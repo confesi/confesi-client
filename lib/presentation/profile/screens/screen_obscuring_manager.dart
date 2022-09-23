@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:Confessi/core/cubit/biometrics_cubit.dart';
+import 'package:Confessi/application/shared/biometrics_cubit.dart';
 import 'package:Confessi/presentation/profile/screens/home.dart';
 import 'package:Confessi/presentation/profile/screens/biometric_overlay_message.dart';
 import 'package:Confessi/presentation/shared/overlays/snackbar.dart';

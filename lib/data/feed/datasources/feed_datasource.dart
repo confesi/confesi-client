@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 
-import '../../../core/authorization/http_client.dart';
+import '../../../core/http/http_client.dart';
 import '../../../core/results/exceptions.dart';
 import '../../../domain/shared/entities/post.dart';
 import '../../shared/models/post_model.dart';

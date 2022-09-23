@@ -1,13 +1,11 @@
 // TODO !!!!!!!! => move the constants from here into the shared constants folder
 
-import 'package:Confessi/core/constants/shared/buttons.dart';
 import 'package:Confessi/presentation/shared/behaviours/tool_tip.dart';
-import 'package:Confessi/core/constants/feed/constants.dart';
+import 'package:Confessi/constants/feed/general.dart';
 import 'package:Confessi/domain/shared/entities/post.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../core/constants/shared/feed.dart';
 import '../../../core/styles/typography.dart';
 
 class PreviewQuoteTile extends StatelessWidget {

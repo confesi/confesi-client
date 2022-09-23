@@ -1,10 +1,9 @@
-import 'package:Confessi/core/constants/shared/buttons.dart';
 import 'package:Confessi/core/styles/typography.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:Confessi/presentation/shared/behaviours/touchable_opacity.dart';
 import 'package:Confessi/presentation/shared/text/group.dart';
-import 'package:Confessi/core/constants/feed/constants.dart';
+import 'package:Confessi/constants/feed/general.dart';
 import 'package:Confessi/domain/shared/entities/badge.dart';
 import 'package:Confessi/domain/feed/entities/post_child.dart';
 import 'package:Confessi/presentation/feed/widgets/badge_tile.dart';
@@ -14,7 +13,7 @@ import 'package:Confessi/presentation/feed/widgets/vote_tile_set.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../core/constants/shared/feed.dart';
+import '../../../constants/shared/enums.dart';
 import '../../../core/utils/numbers/is_plural.dart';
 import '../../shared/buttons/option.dart';
 import '../../shared/overlays/button_options_sheet.dart';
