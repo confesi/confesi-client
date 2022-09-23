@@ -1,4 +1,6 @@
+import 'package:Confessi/presentation/create_post/screens/home.dart';
 import 'package:Confessi/presentation/daily_hottest/screens/home.dart';
+import 'package:Confessi/presentation/profile/screens/screen_obscuring_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,7 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/responsive/breakpoints.dart';
 import '../../../core/styles/typography.dart';
 import '../../feed/screens/home.dart';
-import '../cubit/authentication_cubit.dart';
+import '../../../application/shared/biometrics_cubit.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -19,10 +21,11 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   late TabController tabController;
+  bool shakeSheetOpen = false;
 
   @override
   void initState() {
-    tabController = TabController(vsync: this, length: 5);
+    tabController = TabController(vsync: this, length: 4);
     super.initState();
   }
 
@@ -32,11 +35,14 @@ class _HomeScreenState extends State<HomeScreen>
     super.dispose();
   }
 
+  int currentSelectedTab = 0;
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => false, // disables back button
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         body: Container(
           color: Theme.of(context).colorScheme.background,
           child: SafeArea(
@@ -45,42 +51,20 @@ class _HomeScreenState extends State<HomeScreen>
               body: TabBarView(
                 physics: const NeverScrollableScrollPhysics(),
                 controller: tabController,
-                children: [
-                  // const ExploreHome(),
-                  const ExploreHome(),
-                  const HottestHome(),
-                  Container(
-                    color: Colors.red,
-                  ),
-                  Container(
-                    color: Colors.orange,
-                  ),
-                  Scaffold(
-                    backgroundColor: Theme.of(context).colorScheme.background,
-                    body: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          TextButton(
-                            onPressed: () => context
-                                .read<AuthenticationCubit>()
-                                .logoutUser(),
-                            child: const Text("logout"),
-                          ),
-                          BlocBuilder<AuthenticationCubit, AuthenticationState>(
-                            builder: (context, state) {
-                              return Text("State: $state");
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                children: const [
+                  ExploreHome(),
+                  HottestHome(),
+                  CreatePostHome(viewMethod: ViewMethod.tabScreen),
+                  ScreenObscuringManager(),
                 ],
               ),
               bottomNavigationBar: TabBar(
                 onTap: (tabIndex) {
+                  tabIndex == 3 && currentSelectedTab != 3
+                      ? context.read<BiometricsCubit>().setNotAuthenticated()
+                      : null;
                   HapticFeedback.lightImpact();
+                  currentSelectedTab = tabIndex;
                 },
                 isScrollable: false,
                 labelStyle: kBody.copyWith(
@@ -104,10 +88,6 @@ class _HomeScreenState extends State<HomeScreen>
                   Tab(
                     text: Responsive.isTablet(context) ? "Post" : null,
                     icon: const Icon(CupertinoIcons.add),
-                  ),
-                  Tab(
-                    text: Responsive.isTablet(context) ? "Search" : null,
-                    icon: const Icon(CupertinoIcons.search),
                   ),
                   Tab(
                     text: Responsive.isTablet(context) ? "Profile" : null,

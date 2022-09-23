@@ -29,6 +29,7 @@ class AuthenticationRepository implements IAuthenticationRepository {
       try {
         return Right(await datasource.login(usernameOrEmail, password));
       } catch (e) {
+        print("CONRETEEEEEEEEEEEEEEEEEEE $e");
         return Left(exceptionToFailure(e));
       }
     } else {

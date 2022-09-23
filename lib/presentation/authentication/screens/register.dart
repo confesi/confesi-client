@@ -1,4 +1,8 @@
-import 'package:Confessi/presentation/authentication/cubit/authentication_cubit.dart';
+import 'package:Confessi/application/authentication/authentication_cubit.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_opacity.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
+import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,7 +14,7 @@ import '../../shared/behaviours/keyboard_dismiss.dart';
 import '../../shared/layout/minimal_appbar.dart';
 import '../../shared/text/link.dart';
 import '../../shared/textfields/bulge.dart';
-import '../widgets/fade_size_text.dart';
+import '../../shared/text/fade_size_text.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -74,14 +78,15 @@ class _RegisterScreenState extends State<RegisterScreen>
         }
       },
       builder: (context, state) {
-        return KeyboardDismissLayout(
-          child: Scaffold(
-            resizeToAvoidBottomInset: true,
-            backgroundColor: Theme.of(context).colorScheme.background,
-            body: SafeArea(
-              child: CupertinoScrollbar(
-                child: ScrollConfiguration(
-                  behavior: NoOverScrollSplash(),
+        return Scaffold(
+          resizeToAvoidBottomInset: true,
+          backgroundColor: Theme.of(context).colorScheme.background,
+          body: SafeArea(
+            maintainBottomViewPadding: true,
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                return SizedBox(
+                  height: constraints.maxHeight,
                   child: SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,30 +100,39 @@ class _RegisterScreenState extends State<RegisterScreen>
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const SizedBox(height: 15),
-                              Text(
-                                "Let's get you started.",
-                                style: kDisplay.copyWith(
-                                    color:
-                                        Theme.of(context).colorScheme.primary),
-                                textAlign: TextAlign.left,
+                              InitOpacity(
+                                child: Text(
+                                  "Let's get you started.",
+                                  style: kDisplay.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .primary),
+                                  textAlign: TextAlign.left,
+                                ),
                               ),
                               SizedBox(height: heightFactor * 8),
                               Column(
                                 children: [
-                                  BulgeTextField(
-                                    controller: emailController,
-                                    hintText: "Email",
-                                    bottomPadding: 10,
+                                  InitScale(
+                                    child: BulgeTextField(
+                                      controller: emailController,
+                                      hintText: "Email",
+                                      bottomPadding: 10,
+                                    ),
                                   ),
-                                  BulgeTextField(
-                                    controller: usernameController,
-                                    hintText: "Username",
-                                    bottomPadding: 10,
+                                  InitScale(
+                                    child: BulgeTextField(
+                                      controller: usernameController,
+                                      hintText: "Username",
+                                      bottomPadding: 10,
+                                    ),
                                   ),
-                                  BulgeTextField(
-                                    controller: passwordController,
-                                    password: true,
-                                    hintText: "Password",
+                                  InitScale(
+                                    child: BulgeTextField(
+                                      controller: passwordController,
+                                      password: true,
+                                      hintText: "Password",
+                                    ),
                                   ),
                                 ],
                               ),
@@ -148,14 +162,16 @@ class _RegisterScreenState extends State<RegisterScreen>
                               ),
                               const SizedBox(height: 10),
                               Center(
-                                child: LinkText(
-                                  pressable:
-                                      state is UserLoading ? false : true,
-                                  onPress: () {
-                                    Navigator.of(context).pushNamed("/login");
-                                  },
-                                  linkText: "Tap here.",
-                                  text: "Already a user? ",
+                                child: InitTransform(
+                                  child: LinkText(
+                                    pressable:
+                                        state is UserLoading ? false : true,
+                                    onPress: () {
+                                      Navigator.of(context).pushNamed("/login");
+                                    },
+                                    linkText: "Tap here.",
+                                    text: "Already a user? ",
+                                  ),
                                 ),
                               ),
                               const SizedBox(height: 10),
@@ -165,8 +181,8 @@ class _RegisterScreenState extends State<RegisterScreen>
                       ],
                     ),
                   ),
-                ),
-              ),
+                );
+              },
             ),
           ),
         );

@@ -7,3 +7,6 @@ abstract class Success extends Equatable {
 
 /// Returned upon a successful API call/execution.
 class ApiSuccess extends Success {}
+
+/// Returned upon successfully completing a biometric operation.
+class BiometricSuccess extends Success {}

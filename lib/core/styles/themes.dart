@@ -7,9 +7,10 @@ class AppTheme {
     highlightColor: Colors.transparent,
     splashColor: Colors.transparent,
     colorScheme: const ColorScheme(
+      onSurfaceVariant: Colors.white,
       brightness: Brightness.light,
       primary: Color(0xff333333),
-      onPrimary: Colors.white,
+      onPrimary: Color.fromARGB(255, 244, 244, 244),
       secondary: Color(0xfffde5b6),
       onSecondary: Color(0xff333333),
       error: Color(0xffEB5353),
@@ -30,9 +31,10 @@ class AppTheme {
     highlightColor: Colors.transparent,
     splashColor: Colors.transparent,
     colorScheme: const ColorScheme(
+      onSurfaceVariant: Colors.white,
       surfaceVariant: Color.fromARGB(255, 23, 23, 23),
       brightness: Brightness.dark,
-      primary: Color(0xffd7dadc),
+      primary: Color.fromARGB(255, 238, 239, 240),
       onPrimary: Color(0xff333333),
       secondary: Color(0xfffde5b6),
       onSecondary: Color(0xff333333),

@@ -1,11 +1,11 @@
-import 'package:Confessi/constants/shared/buttons.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
 import 'package:Confessi/presentation/shared/behaviours/tool_tip.dart';
-import 'package:Confessi/constants/feed/constants.dart';
+import 'package:Confessi/constants/feed/general.dart';
 import 'package:Confessi/domain/shared/entities/post.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../constants/shared/feed.dart';
+import '../../../constants/shared/enums.dart';
 import '../../../core/styles/typography.dart';
 
 class QuoteTile extends StatelessWidget {
@@ -43,7 +43,8 @@ class QuoteTile extends StatelessWidget {
               'comments': post.comments,
               'year': post.year,
               'university': post.university,
-              'postView': PostView.detailView
+              'postView': PostView.detailView,
+              'university_full_name': post.universityFullName,
             },
           );
         },
@@ -69,17 +70,21 @@ class QuoteTile extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    post.title.length > kPreviewQuotePostTitleLength &&
-                            postView == PostView.feedView
-                        ? "${post.title.substring(0, kPreviewQuotePostTitleLength)}..."
-                        : post.title,
-                    style: kTitle.copyWith(
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                  const SizedBox(height: 5),
+                  post.title.isNotEmpty
+                      ? Text(
+                          post.title.length > kPreviewQuotePostTitleLength &&
+                                  postView == PostView.feedView
+                              ? "${post.title.substring(0, kPreviewQuotePostTitleLength)}..."
+                              : post.title,
+                          style: kTitle.copyWith(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          textAlign: TextAlign.left,
+                        )
+                      : Container(),
+                  post.title.isNotEmpty
+                      ? const SizedBox(height: 5)
+                      : Container(),
                   Text(
                     post.text.length > kPreviewQuotePostTextLength &&
                             postView == PostView.feedView

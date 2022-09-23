@@ -10,15 +10,29 @@ class HeaderGroupText extends StatelessWidget {
     this.spaceBetween = 5,
     required this.header,
     required this.body,
+    this.expandsTopText = false,
     Key? key,
   }) : super(key: key);
 
+  final bool expandsTopText;
   final String header;
   final String body;
   final bool left;
   final bool multiLine;
   final bool onSecondaryColors;
   final double spaceBetween;
+
+  Widget buildTopText(BuildContext context) => Text(
+        header,
+        style: kDisplay.copyWith(
+          color: onSecondaryColors
+              ? Theme.of(context).colorScheme.onSecondary
+              : Theme.of(context).colorScheme.primary,
+        ),
+        textAlign: left ? TextAlign.left : TextAlign.center,
+        overflow: TextOverflow.ellipsis,
+        maxLines: multiLine ? 5 : null,
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -28,19 +42,9 @@ class HeaderGroupText extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Expanded(
-          child: Text(
-            header,
-            style: kDisplay.copyWith(
-              color: onSecondaryColors
-                  ? Theme.of(context).colorScheme.onSecondary
-                  : Theme.of(context).colorScheme.primary,
-            ),
-            textAlign: left ? TextAlign.left : TextAlign.center,
-            overflow: TextOverflow.ellipsis,
-            maxLines: multiLine ? 5 : null,
-          ),
-        ),
+        expandsTopText
+            ? Expanded(child: buildTopText(context))
+            : Flexible(child: buildTopText(context)),
         SizedBox(height: spaceBetween),
         Text(
           body,

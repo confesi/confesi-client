@@ -1,11 +1,11 @@
-import 'package:Confessi/constants/shared/buttons.dart';
 import 'package:Confessi/core/styles/typography.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:Confessi/presentation/shared/behaviours/touchable_opacity.dart';
 import 'package:Confessi/presentation/shared/text/group.dart';
-import 'package:Confessi/constants/feed/constants.dart';
-import 'package:Confessi/domain/feed/entities/badge.dart';
+import 'package:Confessi/constants/feed/general.dart';
+import 'package:Confessi/domain/shared/entities/badge.dart';
 import 'package:Confessi/domain/feed/entities/post_child.dart';
-import 'package:Confessi/presentation/shared/sheets/button_options_sheet.dart';
 import 'package:Confessi/presentation/feed/widgets/badge_tile.dart';
 import 'package:Confessi/presentation/feed/widgets/badge_tile_set.dart';
 import 'package:Confessi/presentation/feed/widgets/quote_tile.dart';
@@ -13,9 +13,11 @@ import 'package:Confessi/presentation/feed/widgets/vote_tile_set.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../constants/shared/feed.dart';
-import '../../../core/utils/is_plural.dart';
+import '../../../constants/feed/enums.dart';
+import '../../../constants/shared/enums.dart';
+import '../../../core/utils/numbers/is_plural.dart';
 import '../../shared/buttons/option.dart';
+import '../../shared/overlays/button_options_sheet.dart';
 
 class PostTile extends StatelessWidget {
   const PostTile({
@@ -33,9 +35,13 @@ class PostTile extends StatelessWidget {
     this.postView = PostView.feedView,
     required this.postChild,
     required this.badges,
+    required this.universityFullName,
+    required this.id,
     Key? key,
   }) : super(key: key);
 
+  final String? id;
+  final String universityFullName;
   final IconData icon;
   final String university;
   final String genre;
@@ -88,6 +94,7 @@ class PostTile extends StatelessWidget {
               context,
               '/home/detail',
               arguments: {
+                'id': id,
                 'badges': badges,
                 'post_child': postChild,
                 'icon': icon,
@@ -101,6 +108,7 @@ class PostTile extends StatelessWidget {
                 'comments': comments,
                 'year': year,
                 'university': university,
+                'university_full_name': universityFullName,
                 'postView': PostView.detailView
               },
             )
@@ -146,34 +154,58 @@ class PostTile extends StatelessWidget {
                 TouchableOpacity(
                   tooltip: 'post options',
                   tooltipLocation: TooltipLocation.above,
-                  onTap: () => showButtonOptionsSheet(context, [
-                    OptionButton(
-                      text: "Report",
-                      icon: CupertinoIcons.flag,
-                      onTap: () => print("tap"),
-                    ),
-                    OptionButton(
-                      text: "Share",
-                      icon: CupertinoIcons.share,
-                      onTap: () => print("tap"),
-                    ),
-                    OptionButton(
-                      text: "Reply",
-                      icon: CupertinoIcons.paperplane,
-                      onTap: () => print("tap"),
-                    ),
-                    OptionButton(
-                      text: "Save",
-                      icon: CupertinoIcons.bookmark,
-                      onTap: () => print("tap"),
-                    ),
-                    OptionButton(
-                      text: "Details",
-                      icon: CupertinoIcons.info,
-                      onTap: () =>
-                          Navigator.pushNamed(context, '/home/post/stats'),
-                    ),
-                  ]),
+                  onTap: () {
+                    showButtonOptionsSheet(context, [
+                      OptionButton(
+                        text: "Report",
+                        icon: CupertinoIcons.flag,
+                        onTap: () => print("tap"),
+                      ),
+                      OptionButton(
+                        text: "Share",
+                        icon: CupertinoIcons.share,
+                        onTap: () => print("tap"),
+                      ),
+                      OptionButton(
+                        text: "Quote",
+                        icon: CupertinoIcons.paperplane,
+                        onTap: () => Navigator.of(context).pushNamed(
+                          '/home/create_replied_post',
+                          arguments: {
+                            'title': title,
+                            'body': text,
+                            'id': id,
+                          },
+                        ),
+                      ),
+                      OptionButton(
+                        text: "Save",
+                        icon: CupertinoIcons.bookmark,
+                        onTap: () => print("tap"),
+                      ),
+                      OptionButton(
+                        text: "Details",
+                        icon: CupertinoIcons.info,
+                        onTap: () => Navigator.pushNamed(
+                          context,
+                          '/home/post/stats',
+                          arguments: {
+                            'comments': comments,
+                            'faculty': faculty,
+                            'genre': genre,
+                            'hates': hates,
+                            'likes': likes,
+                            // TODO: implement 'moderation_status' and 'saves'
+                            'moderation_status': 'IMPLEMENT THIS STILL',
+                            'saves': 999999,
+                            'university': university,
+                            'year': year,
+                            'university_full_name': universityFullName,
+                          },
+                        ),
+                      ),
+                    ]);
+                  },
                   child: Container(
                     // Transparent container hitbox trick.
                     color: Colors.transparent,
@@ -188,7 +220,7 @@ class PostTile extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 30),
+            SizedBox(height: title.isEmpty ? 15 : 30),
             //! Title row
             Text(
               title.length > kPreviewPostTitleLength &&
@@ -199,11 +231,13 @@ class PostTile extends StatelessWidget {
                 color: Theme.of(context).colorScheme.primary,
               ),
             ),
-            const SizedBox(height: 2),
+            title.isEmpty || getBadges().isEmpty
+                ? Container()
+                : const SizedBox(height: 2),
             BadgeTileSet(
               badges: getBadges(),
             ),
-            const SizedBox(height: 30),
+            SizedBox(height: title.isEmpty ? 15 : 30),
             //! Middle row
             Text(
               text.length > kPreviewPostTextLength &&
@@ -220,28 +254,18 @@ class PostTile extends StatelessWidget {
             //! Bottom row
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                VoteTileSet(
-                  likes: likes,
-                  hates: hates,
+                Expanded(
+                  child: VoteTileSet(
+                    postView: postView,
+                    comments: comments,
+                    animateTiles:
+                        postView == PostView.detailView ? true : false,
+                    likes: likes,
+                    hates: hates,
+                  ),
                 ),
-                postView == PostView.feedView
-                    ? Flexible(
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: Text(
-                            isPlural(comments) == true
-                                ? "$comments comments"
-                                : "$comments comment",
-                            style: kDetail.copyWith(
-                              color: Theme.of(context).colorScheme.onSurface,
-                            ),
-                            textAlign: TextAlign.left,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      )
-                    : Container(),
               ],
             ),
           ],

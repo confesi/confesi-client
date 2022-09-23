@@ -1,7 +1,8 @@
-import 'package:Confessi/constants/shared/buttons.dart';
 import 'package:Confessi/presentation/shared/behaviours/tool_tip.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import '../../../constants/shared/enums.dart';
 
 class TouchableOpacity extends StatefulWidget {
   const TouchableOpacity({
@@ -32,7 +33,6 @@ class _TouchableOpacityState extends State<TouchableOpacity>
 
   @override
   void initState() {
-    super.initState();
     animController = AnimationController(
         vsync: this,
         duration: const Duration(milliseconds: 0),
@@ -41,6 +41,7 @@ class _TouchableOpacityState extends State<TouchableOpacity>
         parent: animController,
         curve: Curves.linear,
         reverseCurve: Curves.linear);
+    super.initState();
   }
 
   @override

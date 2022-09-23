@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../constants/shared/buttons.dart';
+import '../../../constants/shared/enums.dart';
 import '../../../core/styles/typography.dart';
 import '../behaviours/touchable_opacity.dart';
 
@@ -12,39 +12,59 @@ class SimpleTextButton extends StatelessWidget {
     this.isErrorText = false,
     this.tooltipLocation,
     this.tapType = TapType.none,
+    this.infiniteWidth = false,
+    this.horizontalPadding = 0,
+    this.secondaryColors = false,
+    this.thirdColors = false,
     Key? key,
   }) : super(key: key);
 
+  final bool secondaryColors;
+  final bool thirdColors;
+  final double horizontalPadding;
   final Function onTap;
   final String? tooltip;
   final String text;
   final bool isErrorText;
   final TooltipLocation? tooltipLocation;
   final TapType tapType;
+  final bool infiniteWidth;
 
   @override
   Widget build(BuildContext context) {
-    return TouchableOpacity(
-      tapType: tapType,
-      tooltip: tooltip,
-      tooltipLocation: tooltipLocation,
-      onTap: () => onTap(),
-      child: Container(
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
-          borderRadius: const BorderRadius.all(
-            Radius.circular(10),
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+      child: TouchableOpacity(
+        tapType: tapType,
+        tooltip: tooltip,
+        tooltipLocation: tooltipLocation,
+        onTap: () => onTap(),
+        child: Container(
+          width: infiniteWidth ? double.infinity : null,
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: secondaryColors
+                ? Theme.of(context).colorScheme.secondary
+                : thirdColors
+                    ? Theme.of(context).colorScheme.onSecondary
+                    : Theme.of(context).colorScheme.surface,
+            borderRadius: const BorderRadius.all(
+              Radius.circular(10),
+            ),
           ),
-        ),
-        child: Text(
-          text,
-          textAlign: TextAlign.center,
-          overflow: TextOverflow.ellipsis,
-          style: kBody.copyWith(
-            color: isErrorText
-                ? Theme.of(context).colorScheme.error
-                : Theme.of(context).colorScheme.primary,
+          child: Text(
+            text,
+            textAlign: TextAlign.center,
+            overflow: TextOverflow.ellipsis,
+            style: kBody.copyWith(
+              color: isErrorText
+                  ? Theme.of(context).colorScheme.error
+                  : secondaryColors
+                      ? Theme.of(context).colorScheme.onSecondary
+                      : thirdColors
+                          ? Theme.of(context).colorScheme.onSurfaceVariant
+                          : Theme.of(context).colorScheme.primary,
+            ),
           ),
         ),
       ),

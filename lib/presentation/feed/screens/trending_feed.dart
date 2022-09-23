@@ -1,10 +1,11 @@
-import 'package:Confessi/constants/shared/messages.dart';
-import 'package:Confessi/presentation/shared/sheets/snackbar.dart';
+import 'package:Confessi/constants/shared/error_messages.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../constants/feed/constants.dart';
-import '../cubit/trending_cubit.dart';
+import '../../../constants/feed/enums.dart';
+import '../../../constants/feed/general.dart';
+import '../../shared/overlays/snackbar.dart';
+import '../../../application/feed/trending_cubit.dart';
 import '../widgets/error_message.dart';
 import '../widgets/infinite_scroll.dart';
 
@@ -62,7 +63,7 @@ class _ExploreTrendingState extends State<ExploreTrending>
         }
       },
       listener: (context, state) {
-        showSnackbar(context, kSnackbarConnectionError);
+        showSnackbar(context, SharedErrorMessages().getConnectionError());
       },
     );
   }

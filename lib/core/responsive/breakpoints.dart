@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../constants/shared/sizing.dart';
+import '../../constants/shared/general.dart';
 
 // ignore: must_be_immutable
 class Responsive extends StatelessWidget {

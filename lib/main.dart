@@ -1,21 +1,28 @@
+import 'package:Confessi/application/create_post/post_cubit.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sensors_plus/sensors_plus.dart';
 
-import 'constants/shared/general.dart';
+import 'constants/shared/dev.dart';
+import 'application/shared/scaffold_shrinker_cubit.dart';
 import 'core/router/router.dart';
 import 'core/styles/themes.dart';
 import 'dependency_injection.dart';
-import 'presentation/authentication/cubit/authentication_cubit.dart';
+import 'application/authentication/authentication_cubit.dart';
 import 'presentation/authentication/screens/splash.dart';
 
 void main() async {
   await init();
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(
-    DevicePreview(
-      enabled: kPreviewMode,
-      builder: (context) => MyApp(appRouter: sl()),
+  // Locks the application to portait mode (facing up).
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then(
+    (value) => runApp(
+      DevicePreview(
+        enabled: kPreviewMode,
+        builder: (context) => MyApp(appRouter: sl()),
+      ),
     ),
   );
 }
@@ -27,10 +34,22 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      lazy: false,
-      create: (context) =>
-          sl<AuthenticationCubit>()..silentlyAuthenticateUser(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          lazy: false,
+          create: (context) =>
+              sl<AuthenticationCubit>()..silentlyAuthenticateUser(),
+        ),
+        BlocProvider(
+          lazy: false,
+          create: (context) => sl<CreatePostCubit>(),
+        ),
+        BlocProvider(
+          lazy: false,
+          create: (context) => sl<ScaffoldShrinkerCubit>(),
+        ),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         useInheritedMediaQuery: kPreviewMode,

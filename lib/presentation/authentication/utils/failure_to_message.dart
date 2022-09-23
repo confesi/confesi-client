@@ -1,42 +1,45 @@
+import 'package:Confessi/constants/authentication/error_messages.dart';
+
+import '../../../core/error_messages/messages.dart';
 import '../../../core/results/failures.dart';
-import '../../../constants/authentication/constants.dart';
 
 /// Switches through all the possible [Failure]s, and returns their corresponding error message.
 String failureToMessage(Failure failure) {
+  ErrorMessages message = AuthenticationErrorMessages();
   switch (failure.runtimeType) {
     case ConnectionFailure:
-      return kConnectionError;
+      return message.getConnectionError();
     case FieldsBlankFailure:
-      return kFieldsBlank;
+      return message.getFieldsBlankError();
     case PasswordIncorrectFailure:
-      return kPasswordIncorrect;
+      return message.getPasswordIncorrect();
     case EmailTooShortFailure:
-      return kEmailTooShort;
+      return message.getEmailTooShort();
     case EmailTooLongFailure:
-      return kEmailTooLong;
+      return message.getEmailTooLong();
     case UsernameTooShortFailure:
-      return kUsernameTooShort;
+      return message.getUsernameTooShort();
     case UsernameTooLongFailure:
-      return kUsernameTooLong;
+      return message.getUsernameTooLong();
     case PasswordTooShortFailure:
-      return kPasswordTooShort;
+      return message.getPasswordTooShort();
     case PasswordTooLongFailure:
-      return kPasswordTooLong;
+      return message.getPasswordTooLong();
     case UsernameAndEmailTakenFailure:
-      return kUsernameAndEmailTaken;
+      return message.getUsernameAndEmailTaken();
     case EmailTakenFailure:
-      return kEmailTaken;
+      return message.getEmailTaken();
     case UsernameTakenFailure:
-      return kUsernameTaken;
+      return message.getUsernameTaken();
     case UsernameInvalidFailure:
-      return kUsernameInvalid;
+      return message.getUsernameInvalid();
     case EmailInvalidFailure:
-      return kEmailInvalid;
+      return message.getEmailInvalid();
     case PasswordInvalidFailure:
-      return kPasswordInvalid;
+      return message.getPasswordInvalid();
     case AccountDoesNotExistFailure:
-      return kAccountDoesNotExist;
+      return message.getAccountDoesNotExist();
     default:
-      return kServerError;
+      return message.getServerError();
   }
 }

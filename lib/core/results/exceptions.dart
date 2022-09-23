@@ -55,3 +55,17 @@ class EmptyTokenException implements Exception {}
 
 /// Thrown when the account that's trying to be accesed doesn't exist.
 class AccountDoesNotExistException implements Exception {}
+
+//! Creating content
+
+/// Thrown when the title length is too long.
+class TitleTooLongException implements Exception {}
+
+/// Thrown when the body length is too long.
+class BodyTooLongException implements Exception {}
+
+/// Thrown when the title isn't valid.
+class TitleInvalidException implements Exception {}
+
+/// Thrown when the body isn't valid.
+class BodyInvalidException implements Exception {}

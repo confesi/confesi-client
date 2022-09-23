@@ -1,3 +1,4 @@
+import 'package:Confessi/presentation/shared/behaviours/touchable_burst.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../behaviours/touchable_opacity.dart';
@@ -8,11 +9,9 @@ class EmblemButton extends StatelessWidget {
       required this.icon,
       required this.onPress,
       required this.iconColor,
-      this.loading = false,
       Key? key})
       : super(key: key);
 
-  final bool loading;
   final VoidCallback onPress;
   final IconData icon;
   final Color backgroundColor;
@@ -21,7 +20,7 @@ class EmblemButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TouchableOpacity(
-      onTap: onPress,
+      onTap: () => onPress(),
       child: Container(
         decoration: BoxDecoration(
           color: backgroundColor,
@@ -31,23 +30,9 @@ class EmblemButton extends StatelessWidget {
         ),
         child: Padding(
           padding: const EdgeInsets.all(9),
-          child: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 200),
-            transitionBuilder: (Widget child, Animation<double> animation) =>
-                ScaleTransition(scale: animation, child: child),
-            child: loading
-                ? Padding(
-                    padding: const EdgeInsets.all(2),
-                    child: CupertinoActivityIndicator(
-                      radius: 8,
-                      color: iconColor,
-                    ),
-                  )
-                : Icon(
-                    icon,
-                    color: iconColor,
-                    size: 20,
-                  ),
+          child: Icon(
+            icon,
+            color: iconColor,
           ),
         ),
       ),

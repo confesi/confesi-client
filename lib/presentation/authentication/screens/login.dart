@@ -1,3 +1,7 @@
+import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_opacity.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
+import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,8 +13,8 @@ import '../../shared/behaviours/keyboard_dismiss.dart';
 import '../../shared/layout/minimal_appbar.dart';
 import '../../shared/text/link.dart';
 import '../../shared/textfields/bulge.dart';
-import '../cubit/authentication_cubit.dart';
-import '../widgets/fade_size_text.dart';
+import '../../../application/authentication/authentication_cubit.dart';
+import '../../shared/text/fade_size_text.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -71,89 +75,90 @@ class _LoginScreenState extends State<LoginScreen>
         }
       },
       builder: (context, state) {
-        return KeyboardDismissLayout(
-          child: Scaffold(
-            resizeToAvoidBottomInset: true,
-            backgroundColor: Theme.of(context).colorScheme.background,
-            body: SafeArea(
-              child: CupertinoScrollbar(
-                child: ScrollConfiguration(
-                  behavior: NoOverScrollSplash(),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        MinimalAppbarLayout(
-                          pressable: state is UserLoading ? false : true,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 30),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const SizedBox(height: 15),
-                              Text(
+        return Scaffold(
+          resizeToAvoidBottomInset: true,
+          backgroundColor: Theme.of(context).colorScheme.background,
+          body: SafeArea(
+            child: LayoutBuilder(builder: (context, constraints) {
+              return SizedBox(
+                height: constraints.maxHeight,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      MinimalAppbarLayout(
+                        pressable: state is UserLoading ? false : true,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 30),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 15),
+                            InitOpacity(
+                              child: Text(
                                 "Let's log you in.",
                                 style: kDisplay.copyWith(
                                     color:
                                         Theme.of(context).colorScheme.primary),
                                 textAlign: TextAlign.left,
                               ),
-                              SizedBox(height: heightFactor * 8),
-                              Column(
-                                children: [
-                                  BulgeTextField(
-                                    controller: usernameEmailController,
-                                    hintText: "Email or username",
-                                    bottomPadding: 10,
-                                  ),
-                                  BulgeTextField(
-                                    controller: passwordController,
-                                    password: true,
-                                    hintText: "Password",
-                                  ),
-                                ],
+                            ),
+                            SizedBox(height: heightFactor * 8),
+                            InitScale(
+                              child: BulgeTextField(
+                                controller: usernameEmailController,
+                                hintText: "Email or username",
+                                bottomPadding: 10,
                               ),
-                              FadeSizeText(
-                                text: errorText,
-                                childController: errorAnimController,
+                            ),
+                            InitScale(
+                              child: BulgeTextField(
+                                controller: passwordController,
+                                password: true,
+                                hintText: "Password",
                               ),
-                              PopButton(
-                                loading: state is UserLoading ? true : false,
-                                justText: true,
-                                onPress: () async {
-                                  FocusScope.of(context).unfocus();
-                                  await context
-                                      .read<AuthenticationCubit>()
-                                      .loginUser(
-                                        usernameEmailController.text,
-                                        passwordController.text,
-                                      );
-                                },
-                                icon: CupertinoIcons.chevron_right,
-                                backgroundColor:
-                                    Theme.of(context).colorScheme.primary,
-                                textColor:
-                                    Theme.of(context).colorScheme.onPrimary,
-                                text: "Login",
-                              ),
-                              const SizedBox(height: 10),
-                              Center(
+                            ),
+                            FadeSizeText(
+                              text: errorText,
+                              childController: errorAnimController,
+                            ),
+                            PopButton(
+                              loading: state is UserLoading ? true : false,
+                              justText: true,
+                              onPress: () async {
+                                FocusScope.of(context).unfocus();
+                                await context
+                                    .read<AuthenticationCubit>()
+                                    .loginUser(
+                                      usernameEmailController.text,
+                                      passwordController.text,
+                                    );
+                              },
+                              icon: CupertinoIcons.chevron_right,
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.primary,
+                              textColor:
+                                  Theme.of(context).colorScheme.onPrimary,
+                              text: "Login",
+                            ),
+                            const SizedBox(height: 10),
+                            Center(
+                              child: InitTransform(
                                 child: LinkText(
                                     onPress: () {},
                                     linkText: "Tap here.",
                                     text: "Forgot password? "),
                               ),
-                              const SizedBox(height: 10),
-                            ],
-                          ),
+                            ),
+                            const SizedBox(height: 10),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
-              ),
-            ),
+              );
+            }),
           ),
         );
       },

@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../core/results/failures.dart';
-import '../../../constants/authentication/constants.dart';
+import '../../../constants/authentication/general.dart';
 
 /// Ensures a passed [password] is valid. Else, returns a [Failure].
 Either<Failure, String> passwordValidator(String password) {

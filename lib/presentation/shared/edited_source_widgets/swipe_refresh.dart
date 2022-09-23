@@ -5,7 +5,9 @@
 import 'dart:async';
 import 'dart:math' as math;
 
+import 'package:Confessi/presentation/shared/indicators/loading.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
 // The over-scroll distance that moves the indicator to its maximum
@@ -483,6 +485,7 @@ class SwipeRefreshState extends State<SwipeRefresh>
         });
 
         final Future<void> refreshResult = widget.onRefresh();
+        HapticFeedback.lightImpact();
         assert(() {
           if (refreshResult == null)
             FlutterError.reportError(FlutterErrorDetails(
@@ -601,10 +604,8 @@ class SwipeRefreshState extends State<SwipeRefresh>
                                 Theme.of(context).colorScheme.background,
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(20))),
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2.5,
-                          color: widget.color ??
-                              Theme.of(context).colorScheme.primary,
+                        child: LoadingIndicator(
+                          color: widget.color,
                         ),
                       );
                     },

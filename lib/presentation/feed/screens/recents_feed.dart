@@ -1,4 +1,4 @@
-import 'package:Confessi/constants/feed/constants.dart';
+import 'package:Confessi/constants/feed/general.dart';
 import 'package:Confessi/presentation/feed/widgets/post_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

@@ -1,3 +1,7 @@
+import 'package:Confessi/core/utils/sizing/width_fraction.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
+import 'package:Confessi/presentation/shared/behaviours/touchable_opacity.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
@@ -6,40 +10,85 @@ class SpreadRowText extends StatelessWidget {
   const SpreadRowText({
     required this.leftText,
     required this.rightText,
+    this.onPress,
+    this.animateRows = false,
     Key? key,
   }) : super(key: key);
 
+  final bool animateRows;
+  final VoidCallback? onPress;
   final String leftText;
   final String rightText;
 
+  Widget buildRightText(BuildContext context) => Text(
+        rightText,
+        maxLines: 5,
+        style: kBody.copyWith(
+          color: Theme.of(context).colorScheme.onSurface,
+        ),
+        overflow: TextOverflow.ellipsis,
+        textAlign: TextAlign.right,
+      );
+
+  Widget buildLeftText(BuildContext context) => Text(
+        leftText,
+        style: kBody.copyWith(
+          color: Theme.of(context).colorScheme.onSurface,
+        ),
+        overflow: TextOverflow.ellipsis,
+        textAlign: TextAlign.left,
+      );
+
+  Widget buildContent(BuildContext context) => Padding(
+        padding: const EdgeInsets.symmetric(vertical: 7.5),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            animateRows
+                ? InitTransform(
+                    transformDirection: TransformDirection.horizontal,
+                    magnitudeOfTransform: widthFraction(context, 1),
+                    child: buildLeftText(context),
+                  )
+                : buildLeftText(context),
+            onPress != null
+                ? Row(
+                    children: [
+                      const SizedBox(width: 5),
+                      Icon(
+                        CupertinoIcons.pen,
+                        color: Theme.of(context).colorScheme.onSurface,
+                        size: 16,
+                      ),
+                    ],
+                  )
+                : Container(),
+            const SizedBox(width: 15),
+            Expanded(
+              child: animateRows
+                  ? InitTransform(
+                      transformDirection: TransformDirection.horizontal,
+                      magnitudeOfTransform: -widthFraction(context, 1),
+                      child: buildRightText(context),
+                    )
+                  : buildRightText(context),
+            ),
+          ],
+        ),
+      );
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 15),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            leftText,
-            style: kBody.copyWith(
-              color: Theme.of(context).colorScheme.onSurface,
+    return onPress != null
+        ? TouchableOpacity(
+            child: Container(
+              // Transparent hitbox trick.
+              color: Colors.transparent,
+              child: buildContent(context),
             ),
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.left,
-          ),
-          const SizedBox(width: 15),
-          Flexible(
-            child: Text(
-              rightText,
-              style: kBody.copyWith(
-                color: Theme.of(context).colorScheme.onSurface,
-              ),
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.right,
-            ),
-          ),
-        ],
-      ),
-    );
+            onTap: () => onPress!(),
+          )
+        : buildContent(context);
   }
 }

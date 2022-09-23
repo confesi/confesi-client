@@ -1,12 +1,7 @@
-import 'dart:ui';
-
-import 'package:Confessi/constants/daily_hottest/constants.dart';
 import 'package:Confessi/core/styles/typography.dart';
-import 'package:Confessi/core/utils/is_plural.dart';
-import 'package:Confessi/core/utils/large_number_formatter.dart';
-import 'package:Confessi/presentation/shared/behaviours/touchable_opacity.dart';
-import 'package:Confessi/presentation/shared/layout/line.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:Confessi/core/utils/numbers/is_plural.dart';
+import 'package:Confessi/core/utils/numbers/large_number_formatter.dart';
+
 import 'package:flutter/material.dart';
 
 import '../../shared/text/header_group.dart';
@@ -19,6 +14,7 @@ class HottestTile extends StatefulWidget {
     required this.hates,
     required this.likes,
     required this.title,
+    required this.text,
     required this.university,
     required this.universityImagePath,
     required this.year,
@@ -31,6 +27,7 @@ class HottestTile extends StatefulWidget {
   final int likes;
   final int hates;
   final String title;
+  final String text;
   final String university;
   final String universityImagePath;
   final int year;
@@ -124,12 +121,13 @@ class _HottestTileState extends State<HottestTile> {
                               Padding(
                                 padding: const EdgeInsets.all(20),
                                 child: HeaderGroupText(
+                                  expandsTopText: true,
                                   onSecondaryColors: false,
                                   multiLine: true,
                                   spaceBetween: 20,
                                   left: true,
                                   header: widget.title.isEmpty
-                                      ? kNoTitleProvided
+                                      ? widget.text
                                       : widget.title,
                                   body:
                                       '${widget.university}, Year ${widget.year}',

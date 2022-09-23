@@ -1,7 +1,8 @@
 import 'package:Confessi/domain/feed/entities/post_child.dart';
 
+import '../../../constants/feed/enums.dart';
 import '../../../core/results/exceptions.dart';
-import '../../../constants/feed/constants.dart';
+import '../../../constants/feed/general.dart';
 import '../../shared/models/post_model.dart';
 
 class PostChildDataModel extends PostChild {

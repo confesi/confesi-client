@@ -1,19 +1,18 @@
-import 'package:Confessi/constants/shared/buttons.dart';
-import 'package:Confessi/core/utils/large_number_formatter.dart';
+import 'package:Confessi/presentation/shared/behaviours/touchable_shrink.dart';
 import 'package:Confessi/presentation/shared/buttons/option.dart';
-import 'package:Confessi/presentation/shared/sheets/button_options_sheet.dart';
 import 'package:Confessi/presentation/feed/widgets/comment_header_text.dart';
-import 'package:Confessi/presentation/authentication/screens/open.dart';
 import 'package:Confessi/presentation/feed/widgets/slidable_section.dart';
-import 'package:Confessi/presentation/feed/widgets/vote_tile_set.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
+import '../../../constants/feed/enums.dart';
+import '../../../constants/shared/enums.dart';
 import '../../../core/styles/typography.dart';
 import '../../shared/behaviours/touchable_opacity.dart';
-import '../../../constants/feed/constants.dart';
+import '../../../constants/feed/general.dart';
+import '../../shared/overlays/button_options_sheet.dart';
 
 class CommentTile extends StatelessWidget {
   const CommentTile({
@@ -64,41 +63,42 @@ class CommentTile extends StatelessWidget {
   }
 
   void showOptions(BuildContext context) => showButtonOptionsSheet(
-      context,
-      [
-        OptionButton(
-          onTap: () => print('tap'),
-          text: 'Report',
-          icon: CupertinoIcons.flag,
-        ),
-        OptionButton(
-          onTap: () => print('tap'),
-          text: 'Copy Text',
-          icon: CupertinoIcons.collections,
-        ),
-        OptionButton(
-          onTap: () => print('tap'),
-          text: '195',
-          icon: CupertinoIcons.hand_thumbsup,
-        ),
-        OptionButton(
-          onTap: () => print('tap'),
-          text: 'Share',
-          icon: CupertinoIcons.share,
-        ),
-        OptionButton(
-          onTap: () => print('tap'),
-          text: 'Reply',
-          icon: CupertinoIcons.arrowshape_turn_up_right,
-        ),
-        OptionButton(
-          onTap: () => print('tap'),
-          text: '28.3k',
-          icon: CupertinoIcons.hand_thumbsdown,
-        ),
-      ],
-      text:
-          'Tip: swiping horizontally, or long pressing on a comment brings up actions.');
+        context,
+        [
+          OptionButton(
+            onTap: () => print('tap'),
+            text: 'Report',
+            icon: CupertinoIcons.flag,
+          ),
+          OptionButton(
+            onTap: () => print('tap'),
+            text: 'Copy Text',
+            icon: CupertinoIcons.collections,
+          ),
+          OptionButton(
+            onTap: () => print('tap'),
+            text: '195',
+            icon: CupertinoIcons.hand_thumbsup,
+          ),
+          OptionButton(
+            onTap: () => print('tap'),
+            text: 'Share',
+            icon: CupertinoIcons.share,
+          ),
+          OptionButton(
+            onTap: () => print('tap'),
+            text: 'Reply',
+            icon: CupertinoIcons.arrowshape_turn_up_right,
+          ),
+          OptionButton(
+            onTap: () => print('tap'),
+            text: '28.3k',
+            icon: CupertinoIcons.hand_thumbsdown,
+          ),
+        ],
+        text:
+            'Tip: swiping horizontally, or long pressing on a comment brings up actions.',
+      );
 
   Widget addBars(BuildContext context) {
     List<Widget> bars = [];
@@ -156,10 +156,8 @@ class CommentTile extends StatelessWidget {
           ),
         ],
       ),
-      child: GestureDetector(
-        // onDoubleTap: () => showOptions(context),
+      child: TouchableShrink(
         onLongPress: () => showOptions(context),
-        // onTap: () => showOptions(context),
         child: Container(
           // Container hitbox trick.
           color: Colors.transparent,

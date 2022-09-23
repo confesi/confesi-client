@@ -7,9 +7,11 @@ class ExpandableTextfield extends StatefulWidget {
   const ExpandableTextfield({
     required this.controller,
     required this.onChanged,
+    required this.hintText,
     this.maxCharacters,
     this.minLines,
     this.maxLines,
+    this.focusNode,
     Key? key,
   }) : super(key: key);
 
@@ -18,6 +20,8 @@ class ExpandableTextfield extends StatefulWidget {
   final int? maxCharacters;
   final int? minLines;
   final int? maxLines;
+  final String hintText;
+  final FocusNode? focusNode;
 
   @override
   State<ExpandableTextfield> createState() => _ExpandableTextfieldState();
@@ -43,7 +47,11 @@ class _ExpandableTextfieldState extends State<ExpandableTextfield> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => focusNode.requestFocus(),
+      onTap: () {
+        widget.focusNode != null
+            ? widget.focusNode?.requestFocus()
+            : focusNode.requestFocus();
+      },
       child: Container(
         margin: const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
         decoration: BoxDecoration(
@@ -63,13 +71,13 @@ class _ExpandableTextfieldState extends State<ExpandableTextfield> {
               maxLines: widget.maxLines,
               minLines: widget.minLines,
               keyboardType: TextInputType.multiline,
-              focusNode: focusNode,
+              focusNode: widget.focusNode ?? focusNode,
               controller: widget.controller,
               style: kBody.copyWith(
                 color: Theme.of(context).colorScheme.primary,
               ),
               decoration: InputDecoration.collapsed(
-                hintText: "What's your take?",
+                hintText: widget.hintText,
                 hintStyle: kBody.copyWith(
                   color: Theme.of(context).colorScheme.onSurface,
                 ),

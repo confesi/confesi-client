@@ -12,9 +12,11 @@ class BulgeTextField extends StatefulWidget {
       this.topPadding = 0.0,
       this.horizontalPadding = 0.0,
       this.password = false,
+      this.autoCorrect = false,
       Key? key})
       : super(key: key);
 
+  final bool autoCorrect;
   final bool password;
   final IconData icon;
   final double bottomPadding;
@@ -77,6 +79,8 @@ class _BulgeTextFieldState extends State<BulgeTextField> {
                   height: 24,
                   child: Center(
                     child: TextField(
+                      enableSuggestions: false,
+                      autocorrect: widget.autoCorrect,
                       obscureText: widget.password,
                       // scrollPadding: const EdgeInsets.all(0),
                       focusNode: focusNode,

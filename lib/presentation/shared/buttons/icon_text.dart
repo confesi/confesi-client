@@ -46,7 +46,8 @@ class IconTextButton extends StatelessWidget {
               Expanded(
                 child: Text(
                   text,
-                  style: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
+                  style: kBody.copyWith(
+                      color: Theme.of(context).colorScheme.primary),
                   textAlign: TextAlign.left,
                   overflow: TextOverflow.ellipsis,
                 ),

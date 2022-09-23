@@ -1,4 +1,4 @@
-import 'package:Confessi/core/authorization/http_client.dart';
+import 'package:Confessi/core/network/http_client.dart';
 import 'package:Confessi/core/results/successes.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
