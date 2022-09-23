@@ -1,0 +1,154 @@
+{
+    "posts": [
+      {
+        "_id": "62dcaaf09a4cce309d8e567c",
+        "badges": ["LOVED"],
+        "rank": 30.145533333333333,
+        "university": "UBC",
+        "genre": "POLITICS",
+        "year": 2,
+        "faculty": "COMPUTER_SCIENCE",
+        "reports": 11,
+        "text": "post-fix",
+        "title": "An interesting title, a way to escape, or so I'd argue",
+        "comment_count": 62,
+        "likes": 312221,
+        "hates": 1892,
+        "created_date": "2022-07-21T02:14:08.632Z",
+        "child_data": {
+          "child_type": "no child",
+          "child_id": null,
+          "child": null
+        },
+        "__v": 0
+      },
+      {
+        "_id": "62dcbef19a4cce309d8e5e9f",
+        "badges": ["HATED", "ENGAGING"],
+        "rank": 0,
+        "university": "TWU",
+        "genre": "GENERAL",
+        "year": 1,
+        "faculty": "MEDICAL",
+        "reports": 93,
+        "text": "This is a post (top level parent of 3 deep chain)",
+        "title": "Super interesting dog info here! I just found it all out you guys. Let's see if we can make this long enough to truncate. Wow this is definitely quite a large limit. Maybe it'll have to be shortened later I guess.",
+        "comment_count": 81,
+        "likes": 43290,
+        "hates": 12122,
+        "created_date": "2022-07-24T03:39:29.371Z",
+        "child_data": {
+          "child_type": "has child",
+          "child_id": "62dcaaf09a4cce309d8e567c",
+          "child": {
+            "_id": "62dcaaf09a4cce309d8e567c",
+            "badges": ["FIRE"],
+            "rank": 30.145533333333333,
+            "university": "UVIC",
+            "genre": "RELATIONSHIPS",
+            "year": 6,
+            "faculty": "SOCIAL_SCIENCES",
+            "reports": 0,
+            "text": "This is a really long post. Hopefully it just includes a bunch of random interesting information that will allow me to test the sizing limits of posts and quoted posts.",
+            "title": "cool info; more below",
+            "comment_count": 0,
+            "likes": 19302,
+            "hates": 1242,
+            "created_date": "2022-07-24T02:14:08.632Z",
+            "child_data": {
+              "child_type": "child needs loading",
+              "child_id": "62dcaaf09a4cce309d8e567c",
+              "child": null
+            },
+            "__v": 0
+          }
+        }
+      },
+      {
+        "_id": "62dcbef19a4cce309d8e5e9f",
+        "badges": [],
+        "rank": 0,
+        "university": "UFV",
+        "genre": "CLASSES",
+        "year": 6,
+        "faculty": "LAW",
+        "reports": 0,
+        "text": "replying to actual post",
+        "title": "University scandal: just found it out lmao",
+        "comment_count": 1,
+        "likes": 82126,
+        "hates": 7481,
+        "created_date": "2022-07-24T03:39:29.371Z",
+        "child_data": {
+          "child_type": "has child",
+          "child_id": "62dcaaf09a4cce309d8e567c",
+          "child": {
+            "_id": "62dcaaf09a4cce309d8e567c",
+            "badges": ["LOVED", "HATED"],
+            "rank": 30.145533333333333,
+            "university": "UVIC",
+            "genre": "RELATIONSHIPS",
+            "year": 6,
+            "faculty": "SOCIAL_SCIENCES",
+            "reports": 0,
+            "text": "post-fix",
+            "title": "My PYSCH 120A class is nuts! It is truly an insane class. Sometimes I wish I could just drop it right now if it wasn't a part of my degree I totally would!!",
+            "comment_count": 0,
+            "likes": 10923,
+            "hates": 91232,
+            "created_date": "2022-07-24T02:14:08.632Z",
+            "child_data": {
+              "child_type": "no child",
+              "child_id": null,
+              "child": null
+            },
+            "__v": 0
+          }
+        }
+      },
+      {
+        "_id": "62dcaaf09a4cce309d8e567c",
+        "badges": ["LOVED"],
+        "rank": 30.145533333333333,
+        "university": "UVIC",
+        "genre": "POLITICS",
+        "year": 2,
+        "faculty": "COMPUTER_SCIENCE",
+        "reports": 11,
+        "text": "post-fix",
+        "title": "Please click this, I spent so long writing it!!!!",
+        "comment_count": 62,
+        "likes": 312221,
+        "hates": 1892,
+        "created_date": "2022-07-21T02:14:08.632Z",
+        "child_data": {
+          "child_type": "no child",
+          "child_id": null,
+          "child": null
+        },
+        "__v": 0
+      },
+      {
+        "_id": "62dcc0349a4cce309d8e5f39",
+        "badges": ["CONTROVERSIAL"],
+        "rank": 0,
+        "university": "SFU",
+        "genre": "RELATIONSHIPS",
+        "year": 1,
+        "faculty": "COMPUTER_SCIENCE",
+        "reports": 0,
+        "text": "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32. The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from de Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.",
+        "title": null,
+        "comment_count": 0,
+        "likes": 109098325,
+        "hates": 103942302,
+        "created_date": "2022-07-24T03:44:52.204Z",
+        "child_data": {
+          "child_type": "no child",
+          "child_id": null,
+          "child": null
+        },
+        "__v": 0
+      }
+    ]
+  }

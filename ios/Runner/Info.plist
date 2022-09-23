@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict>
+<dict> 
+	<!-- [START] Lines added for biometric auth -->
+	<key>NSFaceIDUsageDescription</key>
+	<string>Confesi uses biometric authentication to keep your private info hidden from prying eyes!</string>
+	<!-- [END] Lines added for biometric auth -->
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>

@@ -1,53 +1,84 @@
-import 'package:Confessi/constants/general.dart';
-import 'package:flutter/material.dart';
+import 'package:Confessi/application/create_post/post_cubit.dart';
 import 'package:device_preview/device_preview.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:stacked_themes/stacked_themes.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sensors_plus/sensors_plus.dart';
 
-import 'constants/themes.dart';
-import 'screens/start/initial_load.dart';
+import 'constants/shared/dev.dart';
+import 'application/shared/scaffold_shrinker_cubit.dart';
+import 'core/router/router.dart';
+import 'core/styles/themes.dart';
+import 'dependency_injection.dart';
+import 'application/authentication/authentication_cubit.dart';
+import 'presentation/authentication/screens/splash.dart';
 
 void main() async {
+  await init();
   WidgetsFlutterBinding.ensureInitialized();
-  await ThemeManager.initialise();
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarColor: Colors.transparent, // status bar color
-  ));
-  final double screenWidth = MediaQueryData.fromWindow(WidgetsBinding.instance.window).size.width;
-  if (screenWidth < kTabletBreakpoint) {
-    await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  }
-  runApp(
-    DevicePreview(
-      enabled: !kProductionBuild, // set to release mode constant
-      builder: (context) => const ProviderScope(
-        child: MyApp(),
+  // Locks the application to portait mode (facing up).
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then(
+    (value) => runApp(
+      DevicePreview(
+        enabled: kPreviewMode,
+        builder: (context) => MyApp(appRouter: sl()),
       ),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({required this.appRouter, Key? key}) : super(key: key);
+
+  final AppRouter appRouter;
+
   @override
   Widget build(BuildContext context) {
-    return ThemeBuilder(
-      // statusBarColorBuilder: (theme) => theme?.backgroundColor,
-      defaultThemeMode:
-          ThemeMode.system, // change to "ThemeMode.light/dark" to default to one or the other
-      lightTheme: themesList[0],
-      darkTheme: themesList[1],
-      builder: (context, regularTheme, darkTheme, themeMode) => MaterialApp(
-        title: "Confessi",
-        theme: regularTheme,
-        darkTheme: darkTheme,
-        themeMode: themeMode,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          lazy: false,
+          create: (context) =>
+              sl<AuthenticationCubit>()..silentlyAuthenticateUser(),
+        ),
+        BlocProvider(
+          lazy: false,
+          create: (context) => sl<CreatePostCubit>(),
+        ),
+        BlocProvider(
+          lazy: false,
+          create: (context) => sl<ScaffoldShrinkerCubit>(),
+        ),
+      ],
+      child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        useInheritedMediaQuery: true,
-        locale: DevicePreview.locale(context),
+        useInheritedMediaQuery: kPreviewMode,
+        title: "Confesi",
+        onGenerateRoute: appRouter.onGenerateRoute,
+        theme: AppTheme.lightTheme,
+        darkTheme: AppTheme.darkTheme,
+        themeMode: ThemeMode.system,
         builder: DevicePreview.appBuilder,
-        home: const InitialLoad(), // CupertinoNav()
+
+        /// Manages navigating to new screens if the authentication state switches to certain values.
+        home: BlocListener<AuthenticationCubit, AuthenticationState>(
+          listenWhen: (previous, current) {
+            return (previous.runtimeType != current.runtimeType) &&
+                previous is! UserError;
+          },
+          listener: (context, state) {
+            if (state is NoUser) {
+              Navigator.of(context).pushNamed("/open");
+            } else if (state is User) {
+              if (state.justRegistered) {
+                Navigator.of(context).pushNamed("/onboarding");
+              } else {
+                Navigator.of(context).pushNamed("/home");
+              }
+            }
+          },
+          child: const SplashScreen(),
+        ),
       ),
     );
   }

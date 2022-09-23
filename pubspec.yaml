@@ -37,17 +37,27 @@ dependencies:
   google_fonts: ^3.0.1
   http: ^0.13.4
   flutter_secure_storage: ^5.0.2
-  provider: ^6.0.3
-  flutter_riverpod: ^1.0.4
-  stacked_themes: ^0.3.8+1
-  page_transition: ^2.0.5
-  modal_bottom_sheet: ^2.0.1
   custom_refresh_indicator: ^1.2.1
-  visibility_detector: ^0.3.3
-  infinite_scroll_pagination: ^3.2.0
+  # visibility_detector: ^0.3.3
+  # infinite_scroll_pagination: ^3.2.0
   scrollable_positioned_list: ^0.3.2
-  dio: ^4.0.6
-  mongo_dart: ^0.7.4+1
+  # dio: ^4.0.6
+  # mongo_dart: ^0.7.4+1
+  equatable: ^2.0.3
+  internet_connection_checker: ^0.0.1+4
+  get_it: ^7.2.0
+  flutter_bloc: ^8.0.1
+  dartz: ^0.10.1
+  jwt_decode: ^0.3.1
+  keyboard_attachable: ^2.1.0
+  flutter_slidable: ^2.0.0
+  flutter_keyboard_visibility: ^5.3.0
+  confetti: ^0.7.0
+  local_auth: ^2.1.2
+  sticky_headers: ^0.3.0+2
+  shake: ^2.1.0
+  flutter_staggered_grid_view: ^0.6.2
+  # flutter_sticky_header: ^0.6.4
 
 dev_dependencies:
   flutter_test:
@@ -75,6 +85,8 @@ flutter:
     - assets/images/
     - assets/images/showcase/
     - assets/images/universities/
+    - assets/images/achievements/
+    - assets/dummy_json/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

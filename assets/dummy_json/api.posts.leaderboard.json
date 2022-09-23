@@ -1,0 +1,43 @@
+{
+    "rankings" : [
+        {
+            "university": "SFU",
+            "placing": 1,
+            "points": 489123
+        },
+        {
+            "university": "TWU",
+            "placing": 2,
+            "points": 14123
+        },
+        {
+            "university": "UBC",
+            "placing": 3,
+            "points": 331
+        },
+        {
+            "university": "UVIC",
+            "placing": 4,
+            "points": 212
+        },
+        {
+            "university": "UFV",
+            "placing": 5,
+            "points": 194
+        },
+        {
+            "university": "UBC",
+            "placing": 6,
+            "points": 34
+        },
+        {
+            "university": "UVIC",
+            "placing": 7,
+            "points": 12
+        },{
+            "university": "SFU",
+            "placing": 8,
+            "points": 1
+        }
+    ]
+}
