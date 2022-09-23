@@ -46,6 +46,13 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
       ShowcaseItem(
         pageIndex: pageIndex,
         imgPath: "assets/images/showcase/lamp.png",
+        header: "Your eyes only",
+        body:
+            "Your profile can only be seen by you. It is for you to keep track of your posts, comments, and saves. Nobody else's prying eyes can see it!",
+      ),
+      ShowcaseItem(
+        pageIndex: pageIndex,
+        imgPath: "assets/images/showcase/lamp.png",
         header: "Darkmode",
         body:
             "I asked my friends the top 3 things they valued in an app. They were security, privacy, and darkmode. This blew me away! Hence, darkmode was born.",

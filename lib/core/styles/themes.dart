@@ -7,6 +7,7 @@ class AppTheme {
     highlightColor: Colors.transparent,
     splashColor: Colors.transparent,
     colorScheme: const ColorScheme(
+      onSurfaceVariant: Colors.white,
       brightness: Brightness.light,
       primary: Color(0xff333333),
       onPrimary: Color.fromARGB(255, 244, 244, 244),
@@ -30,6 +31,7 @@ class AppTheme {
     highlightColor: Colors.transparent,
     splashColor: Colors.transparent,
     colorScheme: const ColorScheme(
+      onSurfaceVariant: Colors.white,
       surfaceVariant: Color.fromARGB(255, 23, 23, 23),
       brightness: Brightness.dark,
       primary: Color.fromARGB(255, 238, 239, 240),

@@ -1,6 +1,8 @@
 import 'package:Confessi/core/utils/sizing/width_breakpoint_fraction.dart';
+import 'package:Confessi/presentation/authentication/cubit/authentication_cubit.dart';
 import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shake/shake.dart';
 
 import '../../../core/generators/intro_text_generator.dart';
@@ -14,7 +16,8 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends State<SplashScreen>
+    with SingleTickerProviderStateMixin {
   bool shakeSheetOpen = false;
 
   @override
@@ -36,7 +39,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: SafeArea(child: LayoutBuilder(builder: (context, constraints) {

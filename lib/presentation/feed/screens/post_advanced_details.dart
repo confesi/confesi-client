@@ -77,18 +77,22 @@ class PostAdvancedDetailsScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 7.5),
                       SpreadRowText(
+                        animateRows: true,
                         leftText: 'Likes',
                         rightText: addCommasToNumber(likes),
                       ),
                       SpreadRowText(
+                        animateRows: true,
                         leftText: 'Hates',
                         rightText: addCommasToNumber(hates),
                       ),
                       SpreadRowText(
+                        animateRows: true,
                         leftText: 'Comments',
                         rightText: addCommasToNumber(comments),
                       ),
                       SpreadRowText(
+                        animateRows: true,
                         leftText: 'Saves',
                         rightText: addCommasToNumber(saves),
                       ),
@@ -102,22 +106,27 @@ class PostAdvancedDetailsScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 7.5),
                       SpreadRowText(
+                        animateRows: true,
                         leftText: 'University (abbr.)',
                         rightText: university,
                       ),
                       SpreadRowText(
+                        animateRows: true,
                         leftText: 'University (full)',
                         rightText: universityFullName,
                       ),
                       SpreadRowText(
+                        animateRows: true,
                         leftText: 'Faculty',
                         rightText: faculty,
                       ),
                       SpreadRowText(
+                        animateRows: true,
                         leftText: 'Genre',
                         rightText: genre,
                       ),
                       SpreadRowText(
+                        animateRows: true,
                         leftText: 'Year of study',
                         rightText: year.toString(),
                       ),
@@ -154,6 +163,7 @@ class PostAdvancedDetailsScreen extends StatelessWidget {
                         ],
                       ),
                       SpreadRowText(
+                        animateRows: true,
                         leftText: 'Post status',
                         rightText: moderationStatus,
                       ),

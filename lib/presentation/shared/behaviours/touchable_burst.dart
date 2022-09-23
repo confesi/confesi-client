@@ -31,8 +31,8 @@ class _TouchableBurstState extends State<TouchableBurst>
         reverseDuration: const Duration(milliseconds: 200));
     anim = CurvedAnimation(
         parent: animController,
-        curve: Curves.linear,
-        reverseCurve: Curves.easeInOutCubic);
+        curve: Curves.decelerate,
+        reverseCurve: Curves.decelerate);
   }
 
   void startAnim() async {
@@ -66,9 +66,9 @@ class _TouchableBurstState extends State<TouchableBurst>
         widget.onTap();
       },
       child: Transform.scale(
-        scale: anim.value / 4 + 1,
+        scale: anim.value / 5 + 1,
         child: Opacity(
-          opacity: -anim.value * 0.8 + 1,
+          opacity: -anim.value * 0.3 + 1,
           child: widget.child,
         ),
       ),

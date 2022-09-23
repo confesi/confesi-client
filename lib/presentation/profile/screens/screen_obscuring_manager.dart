@@ -1,8 +1,8 @@
 import 'dart:ui';
 
 import 'package:Confessi/core/cubit/biometrics_cubit.dart';
-import 'package:Confessi/presentation/profile/screens/biometric_overlay_message.dart';
 import 'package:Confessi/presentation/profile/screens/home.dart';
+import 'package:Confessi/presentation/profile/screens/biometric_overlay_message.dart';
 import 'package:Confessi/presentation/shared/overlays/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -111,7 +111,7 @@ class _ScreenObscuringManagerState extends State<ScreenObscuringManager>
           children: <Widget>[
             IgnorePointer(
               ignoring: _anim.value == 0 ? false : true,
-              child: const ProfileHome(),
+              child: const ProfileHome(), // ProfileHome()
             ),
             IgnorePointer(
               ignoring: _anim.value != 1 ? true : false,

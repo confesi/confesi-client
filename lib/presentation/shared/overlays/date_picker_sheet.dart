@@ -1,4 +1,4 @@
-import 'package:Confessi/presentation/shared/behaviours/init_enlarger.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:Confessi/presentation/shared/buttons/animated_simple_text.dart';
 import 'package:flutter/cupertino.dart';

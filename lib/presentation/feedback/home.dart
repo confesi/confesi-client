@@ -1,7 +1,7 @@
 import 'package:Confessi/core/constants/feedback/text.dart';
 import 'package:Confessi/core/constants/shared/buttons.dart';
 import 'package:Confessi/core/utils/sizing/width_fraction.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_enlarger.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:Confessi/presentation/shared/behaviours/keyboard_dismiss.dart';
 import 'package:Confessi/presentation/shared/buttons/simple_text.dart';

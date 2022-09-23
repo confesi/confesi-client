@@ -40,6 +40,7 @@ class _ExploreHomeState extends State<ExploreHome>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       drawer: const ExploreDrawer(),
       backgroundColor: Theme.of(context).colorScheme.background,

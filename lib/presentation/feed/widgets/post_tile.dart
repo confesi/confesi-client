@@ -1,6 +1,6 @@
 import 'package:Confessi/core/constants/shared/buttons.dart';
 import 'package:Confessi/core/styles/typography.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_enlarger.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:Confessi/presentation/shared/behaviours/touchable_opacity.dart';
 import 'package:Confessi/presentation/shared/text/group.dart';
@@ -254,15 +254,12 @@ class PostTile extends StatelessWidget {
             //! Bottom row
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                VoteTileSet(
-                  likes: likes,
-                  hates: hates,
-                ),
                 postView == PostView.feedView
                     ? Flexible(
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 15),
+                          padding: const EdgeInsets.only(right: 15),
                           child: Text(
                             isPlural(comments) == true
                                 ? "$comments comments"
@@ -276,6 +273,14 @@ class PostTile extends StatelessWidget {
                         ),
                       )
                     : Container(),
+                Expanded(
+                  child: VoteTileSet(
+                    animateTiles:
+                        postView == PostView.detailView ? true : false,
+                    likes: likes,
+                    hates: hates,
+                  ),
+                ),
               ],
             ),
           ],

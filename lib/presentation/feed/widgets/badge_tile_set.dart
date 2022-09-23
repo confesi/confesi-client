@@ -1,5 +1,5 @@
 import 'package:Confessi/presentation/feed/widgets/badge_tile.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_enlarger.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
 import 'package:flutter/material.dart';
 
 class BadgeTileSet extends StatelessWidget {

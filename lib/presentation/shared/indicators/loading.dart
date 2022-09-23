@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:Confessi/presentation/shared/behaviours/init_enlarger.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
 import 'package:flutter/material.dart';
 
 class LoadingIndicator extends StatelessWidget {

@@ -1,5 +1,7 @@
 import 'package:Confessi/core/constants/shared/buttons.dart';
 import 'package:Confessi/core/styles/typography.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:Confessi/presentation/shared/behaviours/touchable_opacity.dart';
 import 'package:flutter/material.dart';
 
@@ -30,24 +32,32 @@ class VoteTile extends StatelessWidget {
       tooltipLocation: tooltipLocation,
       onTap: () => onTap(),
       child: Container(
-        // Transparent hitbox trick.
-        color: Colors.transparent,
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: isActive
+              ? Theme.of(context).colorScheme.secondary
+              : Theme.of(context).colorScheme.surface,
+          borderRadius: const BorderRadius.all(
+            Radius.circular(10),
+          ),
+        ),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
               icon,
               size: 15,
               color: isActive
-                  ? Theme.of(context).colorScheme.primary
-                  : Theme.of(context).colorScheme.onSurface,
+                  ? Theme.of(context).colorScheme.onSecondary
+                  : Theme.of(context).colorScheme.primary,
             ),
             const SizedBox(width: 5),
             Text(
               largeNumberFormatter(value),
               style: kDetail.copyWith(
                 color: isActive
-                    ? Theme.of(context).colorScheme.primary
-                    : Theme.of(context).colorScheme.onSurface,
+                    ? Theme.of(context).colorScheme.onSecondary
+                    : Theme.of(context).colorScheme.primary,
               ),
             ),
           ],
