@@ -256,25 +256,10 @@ class PostTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                postView == PostView.feedView
-                    ? Flexible(
-                        child: Padding(
-                          padding: const EdgeInsets.only(right: 15),
-                          child: Text(
-                            isPlural(comments) == true
-                                ? "$comments comments"
-                                : "$comments comment",
-                            style: kDetail.copyWith(
-                              color: Theme.of(context).colorScheme.onSurface,
-                            ),
-                            textAlign: TextAlign.left,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      )
-                    : Container(),
                 Expanded(
                   child: VoteTileSet(
+                    postView: postView,
+                    comments: comments,
                     animateTiles:
                         postView == PostView.detailView ? true : false,
                     likes: likes,

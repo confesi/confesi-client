@@ -21,7 +21,7 @@ Future<dynamic> showInfoSheet(
       ),
       child: Container(
         constraints:
-            BoxConstraints(minHeight: MediaQuery.of(context).size.height / 4),
+            BoxConstraints(minHeight: MediaQuery.of(context).size.height / 2),
         padding: const EdgeInsets.only(bottom: 15),
         color: Theme.of(context).colorScheme.background,
         child: Column(

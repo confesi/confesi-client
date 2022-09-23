@@ -80,9 +80,7 @@ class _FeedbackHomeState extends State<FeedbackHome> {
                 child: ScrollableView(
                   child: Column(
                     children: [
-                      InitTransform(
-                        transformDirection: TransformDirection.horizontal,
-                        magnitudeOfTransform: widthFraction(context, .5),
+                      InitScale(
                         child: ExpandableTextfield(
                           focusNode: textFocusNode,
                           maxLines: 8,
@@ -95,9 +93,7 @@ class _FeedbackHomeState extends State<FeedbackHome> {
                           },
                         ),
                       ),
-                      InitTransform(
-                        transformDirection: TransformDirection.horizontal,
-                        magnitudeOfTransform: -widthFraction(context, .5),
+                      InitScale(
                         child: SimpleTextButton(
                           secondaryColors: true,
                           tapType: TapType.lightImpact,

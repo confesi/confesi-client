@@ -1,3 +1,4 @@
+import 'package:Confessi/presentation/shared/behaviours/touchable_burst.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../behaviours/touchable_opacity.dart';
@@ -19,7 +20,7 @@ class EmblemButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TouchableOpacity(
-      onTap: onPress,
+      onTap: () => onPress(),
       child: Container(
         decoration: BoxDecoration(
           color: backgroundColor,

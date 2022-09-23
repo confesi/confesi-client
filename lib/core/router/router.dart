@@ -1,6 +1,7 @@
 import 'package:Confessi/presentation/create_post/screens/details.dart';
 import 'package:Confessi/presentation/create_post/screens/home.dart';
 import 'package:Confessi/presentation/daily_hottest/screens/leaderboard.dart';
+import 'package:Confessi/presentation/easter_eggs/overscroll.dart';
 import 'package:Confessi/presentation/feed/screens/detail_view.dart';
 import 'package:Confessi/presentation/feed/screens/post_advanced_details.dart';
 import 'package:Confessi/presentation/feedback/home.dart';
@@ -136,6 +137,9 @@ class AppRouter {
         break;
       case "/feedback":
         page = const FeedbackHome();
+        break;
+      case "/easterEggs/overscroll":
+        page = const OverscrollEasterEgg();
         break;
       case "/settings":
         page = const Text("Settings");

@@ -86,7 +86,7 @@ class _ScreenObscuringManagerState extends State<ScreenObscuringManager>
     }
   }
 
-  double getBlurValue() => _anim.value * 2;
+  double getBlurValue() => _anim.value * 0;
 
   @override
   Widget build(BuildContext context) {

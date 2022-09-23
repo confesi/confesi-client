@@ -15,10 +15,12 @@ class SimpleTextButton extends StatelessWidget {
     this.infiniteWidth = false,
     this.horizontalPadding = 0,
     this.secondaryColors = false,
+    this.thirdColors = false,
     Key? key,
   }) : super(key: key);
 
   final bool secondaryColors;
+  final bool thirdColors;
   final double horizontalPadding;
   final Function onTap;
   final String? tooltip;
@@ -43,7 +45,9 @@ class SimpleTextButton extends StatelessWidget {
           decoration: BoxDecoration(
             color: secondaryColors
                 ? Theme.of(context).colorScheme.secondary
-                : Theme.of(context).colorScheme.surface,
+                : thirdColors
+                    ? Theme.of(context).colorScheme.onSecondary
+                    : Theme.of(context).colorScheme.surface,
             borderRadius: const BorderRadius.all(
               Radius.circular(10),
             ),
@@ -57,7 +61,9 @@ class SimpleTextButton extends StatelessWidget {
                   ? Theme.of(context).colorScheme.error
                   : secondaryColors
                       ? Theme.of(context).colorScheme.onSecondary
-                      : Theme.of(context).colorScheme.primary,
+                      : thirdColors
+                          ? Theme.of(context).colorScheme.onSurfaceVariant
+                          : Theme.of(context).colorScheme.primary,
             ),
           ),
         ),

@@ -10,13 +10,11 @@ class StatTile extends StatelessWidget {
   const StatTile({
     required this.leftNumber,
     required this.leftDescription,
-    required this.leftTap,
     required this.centerNumber,
     required this.centerDescription,
-    required this.centerTap,
     required this.rightNumber,
     required this.rightDescription,
-    required this.rightTap,
+    required this.onTap,
     super.key,
   });
 
@@ -26,24 +24,22 @@ class StatTile extends StatelessWidget {
   final String centerDescription;
   final int rightNumber;
   final String rightDescription;
-  final VoidCallback leftTap;
-  final VoidCallback centerTap;
-  final VoidCallback rightTap;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        borderRadius: const BorderRadius.all(
-          Radius.circular(10),
+    return TouchableOpacity(
+      onTap: () => onTap(),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
+          borderRadius: const BorderRadius.all(
+            Radius.circular(10),
+          ),
         ),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: TouchableOpacity(
-              onTap: () => leftTap(),
+        child: Row(
+          children: [
+            Expanded(
               child: Container(
                 // Transparent hitbox trick.
                 color: Colors.transparent,
@@ -72,11 +68,8 @@ class StatTile extends StatelessWidget {
                 ),
               ),
             ),
-          ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: TouchableOpacity(
-              onTap: () => centerTap(),
+            const SizedBox(width: 10),
+            Expanded(
               child: Container(
                 // Transparent hitbox trick.
                 color: Colors.transparent,
@@ -105,11 +98,8 @@ class StatTile extends StatelessWidget {
                 ),
               ),
             ),
-          ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: TouchableOpacity(
-              onTap: () => rightTap(),
+            const SizedBox(width: 10),
+            Expanded(
               child: Container(
                 // Transparent hitbox trick.
                 color: Colors.transparent,
@@ -138,8 +128,8 @@ class StatTile extends StatelessWidget {
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
