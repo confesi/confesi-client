@@ -28,52 +28,46 @@ class LeaderboardScreen extends StatelessWidget {
     return [
       data.rankings.length >= 2
           ? Flexible(
-              child: InitTransform(
-                child: LeaderboardCircleTile(
-                  universityImagePath: data.rankings[1].universityImagePath,
-                  minSize: 90,
-                  placing:
-                      '${data.rankings[1].placing}${numberPostfix(data.rankings[1].placing)}',
-                  universityFullName: data.rankings[1].universityFullName,
-                  universityName: data.rankings[1].universityName,
-                  points: isPlural(data.rankings[1].points)
-                      ? '${largeNumberFormatter(data.rankings[1].points)} pts'
-                      : '${largeNumberFormatter(data.rankings[1].points)} pt',
-                ),
+              child: LeaderboardCircleTile(
+                universityImagePath: data.rankings[1].universityImagePath,
+                minSize: 90,
+                placing:
+                    '${data.rankings[1].placing}${numberPostfix(data.rankings[1].placing)}',
+                universityFullName: data.rankings[1].universityFullName,
+                universityName: data.rankings[1].universityName,
+                points: isPlural(data.rankings[1].points)
+                    ? '${largeNumberFormatter(data.rankings[1].points)} pts'
+                    : '${largeNumberFormatter(data.rankings[1].points)} pt',
               ),
             )
           : Container(),
       data.rankings.isNotEmpty
           ? Flexible(
-              child: InitTransform(
-                child: LeaderboardCircleTile(
-                  universityImagePath: data.rankings[0].universityImagePath,
-                  minSize: 120,
-                  placing:
-                      '${data.rankings[0].placing}${numberPostfix(data.rankings[0].placing)}',
-                  universityFullName: data.rankings[0].universityFullName,
-                  universityName: data.rankings[0].universityName,
-                  points: isPlural(data.rankings[0].points)
-                      ? '${largeNumberFormatter(data.rankings[0].points)} pts'
-                      : '${largeNumberFormatter(data.rankings[0].points)} pt',
-                ),
+              child: LeaderboardCircleTile(
+                universityImagePath: data.rankings[0].universityImagePath,
+                minSize: 120,
+                placing:
+                    '${data.rankings[0].placing}${numberPostfix(data.rankings[0].placing)}',
+                universityFullName: data.rankings[0].universityFullName,
+                universityName: data.rankings[0].universityName,
+                points: isPlural(data.rankings[0].points)
+                    ? '${largeNumberFormatter(data.rankings[0].points)} pts'
+                    : '${largeNumberFormatter(data.rankings[0].points)} pt',
               ),
             )
           : Container(),
       data.rankings.length >= 3
           ? Flexible(
-              child: InitTransform(
-                child: LeaderboardCircleTile(
-                  universityImagePath: data.rankings[2].universityImagePath,
-                  minSize: 90,
-                  placing:
-                      '${data.rankings[2].placing}${numberPostfix(data.rankings[2].placing)}',
-                  universityFullName: data.rankings[2].universityFullName,
-                  universityName: data.rankings[2].universityName,
-                  points: isPlural(data.rankings[2].points)
-                      ? '${largeNumberFormatter(data.rankings[2].points)} pts'
-                      : '${largeNumberFormatter(data.rankings[2].points)} pt',
-                ),
+              child: LeaderboardCircleTile(
+                universityImagePath: data.rankings[2].universityImagePath,
+                minSize: 90,
+                placing:
+                    '${data.rankings[2].placing}${numberPostfix(data.rankings[2].placing)}',
+                universityFullName: data.rankings[2].universityFullName,
+                universityName: data.rankings[2].universityName,
+                points: isPlural(data.rankings[2].points)
+                    ? '${largeNumberFormatter(data.rankings[2].points)} pts'
+                    : '${largeNumberFormatter(data.rankings[2].points)} pt',
               ),
             )
           : Container(),

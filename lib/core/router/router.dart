@@ -5,6 +5,7 @@ import 'package:Confessi/presentation/easter_eggs/screens/overscroll.dart';
 import 'package:Confessi/presentation/feed/screens/detail_view.dart';
 import 'package:Confessi/presentation/feed/screens/post_advanced_details.dart';
 import 'package:Confessi/presentation/feedback/screens/home.dart';
+import 'package:Confessi/presentation/settings/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -142,7 +143,7 @@ class AppRouter {
         page = const OverscrollEasterEgg();
         break;
       case "/settings":
-        page = const Text("Settings");
+        page = const SettingsHome();
         break;
       case "/settings/watchedUniversities":
         page = const Text("Watched universities");

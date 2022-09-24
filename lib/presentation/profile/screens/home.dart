@@ -111,7 +111,7 @@ class _ProfileHomeState extends State<ProfileHome> {
                                   onPress: () => showInfoSheet(
                                       context,
                                       "Privacy is Key",
-                                      "This profile is only visible to you - hence the biometric authentication. This can be disabled in settings."),
+                                      "This profile is only visible to you, hence the biometric authentication. This extra layer of security can be disabled in settings."),
                                   iconColor:
                                       Theme.of(context).colorScheme.onSurface,
                                 ),
@@ -119,7 +119,8 @@ class _ProfileHomeState extends State<ProfileHome> {
                                   backgroundColor:
                                       Theme.of(context).colorScheme.background,
                                   icon: CupertinoIcons.gear,
-                                  onPress: () => print("tap"),
+                                  onPress: () => Navigator.of(context)
+                                      .pushNamed("/settings"),
                                   iconColor:
                                       Theme.of(context).colorScheme.onSurface,
                                 ),
@@ -185,7 +186,9 @@ class _ProfileHomeState extends State<ProfileHome> {
                                       const SizedBox(width: 10),
                                       Expanded(
                                         child: SimpleTextButton(
-                                          onTap: () => print('tap'),
+                                          onTap: () => context
+                                              .read<AuthenticationCubit>()
+                                              .logoutUser(),
                                           text: "Posts",
                                         ),
                                       ),

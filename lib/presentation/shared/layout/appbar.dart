@@ -12,7 +12,7 @@ class AppbarLayout extends StatefulWidget {
     this.rightIcon,
     this.leftIconOnPress,
     this.rightIconOnPress,
-    this.bottomBorder = true,
+    this.bottomBorder = false,
     this.leftIconVisible = true,
     this.rightIconVisible = false,
     required this.centerWidget,
