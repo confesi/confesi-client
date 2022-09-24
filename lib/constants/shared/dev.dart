@@ -2,7 +2,7 @@
 const bool kPreviewMode = false;
 
 // Developer mode. MUST BE OFF ON RELEASE. THIS IS A DANGEROUS BOOL.
-const bool devMode = true;
+const bool devMode = false;
 
 /// The root endpoint (domain) for all api calls.
 ///
