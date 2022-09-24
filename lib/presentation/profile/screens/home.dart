@@ -111,7 +111,7 @@ class _ProfileHomeState extends State<ProfileHome> {
                                   onPress: () => showInfoSheet(
                                       context,
                                       "Privacy is Key",
-                                      "This profile is only visible to you - hence the biometric authentication. No prying eyes will see it!"),
+                                      "This profile is only visible to you - hence the biometric authentication. This can be disabled in settings."),
                                   iconColor:
                                       Theme.of(context).colorScheme.onSurface,
                                 ),

@@ -1,6 +1,7 @@
 import 'package:Confessi/core/utils/numbers/number_until_limit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_shake_animated/flutter_shake_animated.dart';
 
 class BottomOverscrollScrollToTop extends StatefulWidget {
@@ -42,6 +43,7 @@ class _BottomOverscrollScrollToTopState
         }
         if (overscrollValue > 175 && !isAnimatingScroll && atBottom) {
           isAnimatingScroll = true;
+          HapticFeedback.lightImpact();
           widget.scrollController
               .animateTo(0,
                   duration: const Duration(milliseconds: 400),
