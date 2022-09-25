@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:Confessi/application/shared/themes_cubit.dart';
 import 'package:Confessi/core/network/http_client.dart';
 import 'package:Confessi/application/shared/scaffold_shrinker_cubit.dart';
 import 'package:Confessi/data/create_post/datasources/create_post_datasource.dart';
@@ -59,6 +60,8 @@ Future<void> init() async {
   sl.registerFactory(() => ScaffoldShrinkerCubit());
   // Registers the biometrics cubit.
   sl.registerFactory(() => BiometricsCubit(biometricAuthentication: sl()));
+  // Registers the themes cubit.
+  sl.registerFactory(() => ThemesCubit());
 
   //! Usecases
   // Registers the register usecase.

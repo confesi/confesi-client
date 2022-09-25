@@ -26,7 +26,7 @@ class SettingTile extends StatelessWidget {
         width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
+          color: Theme.of(context).colorScheme.background,
           borderRadius: const BorderRadius.all(
             Radius.circular(10),
           ),
@@ -39,21 +39,25 @@ class SettingTile extends StatelessWidget {
             Expanded(
               child: Row(
                 children: [
-                  Text(
-                    text,
-                    style: kTitle.copyWith(
-                      color: Theme.of(context).colorScheme.primary,
+                  Expanded(
+                    child: Text(
+                      text,
+                      style: kTitle.copyWith(
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    overflow: TextOverflow.ellipsis,
                   ),
-                  const Spacer(),
                   secondaryText != null
-                      ? Text(
-                          secondaryText!,
-                          style: kTitle.copyWith(
-                            color: Theme.of(context).colorScheme.onSurface,
+                      ? Expanded(
+                          child: Text(
+                            secondaryText!,
+                            textAlign: TextAlign.right,
+                            style: kTitle.copyWith(
+                              color: Theme.of(context).colorScheme.onSurface,
+                            ),
+                            overflow: TextOverflow.ellipsis,
                           ),
-                          overflow: TextOverflow.ellipsis,
                         )
                       : Container(),
                   secondaryText != null
@@ -62,10 +66,7 @@ class SettingTile extends StatelessWidget {
                 ],
               ),
             ),
-            Icon(
-              CupertinoIcons.arrow_right,
-              color: Theme.of(context).colorScheme.onSurface,
-            ),
+            const Icon(CupertinoIcons.arrow_right),
           ],
         ),
       ),

@@ -19,6 +19,7 @@ import '../../../constants/daily_hottest/general.dart';
 import '../../../core/styles/typography.dart';
 import '../../../core/utils/numbers/large_number_formatter.dart';
 import '../../../core/utils/numbers/number_postfix.dart';
+import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/overlays/info_sheet.dart';
 
 class LeaderboardScreen extends StatelessWidget {
@@ -151,39 +152,41 @@ class LeaderboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
-      body: ShrinkingView(
-        safeAreaBottom: false,
-        child: Container(
-          color: Theme.of(context).colorScheme.shadow,
-          child: Column(
-            children: [
-              AppbarLayout(
-                bottomBorder: false,
-                centerWidget: Text(
-                  'University Leaderboard',
-                  style: kTitle.copyWith(
-                      color: Theme.of(context).colorScheme.primary),
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
+    return ThemedStatusBar(
+      child: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.background,
+        body: ShrinkingView(
+          safeAreaBottom: false,
+          child: Container(
+            color: Theme.of(context).colorScheme.shadow,
+            child: Column(
+              children: [
+                AppbarLayout(
+                  bottomBorder: false,
+                  centerWidget: Text(
+                    'University Leaderboard',
+                    style: kTitle.copyWith(
+                        color: Theme.of(context).colorScheme.primary),
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                  ),
+                  rightIcon: CupertinoIcons.info,
+                  rightIconVisible: true,
+                  rightIconOnPress: () => showInfoSheet(
+                      context, kLeaderboardInfoHeader, kLeaderboardInfoBody),
                 ),
-                rightIcon: CupertinoIcons.info,
-                rightIconVisible: true,
-                rightIconOnPress: () => showInfoSheet(
-                    context, kLeaderboardInfoHeader, kLeaderboardInfoBody),
-              ),
-              Expanded(
-                child: BlocBuilder<LeaderboardCubit, LeaderboardState>(
-                  builder: (context, state) {
-                    return AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 200),
-                      child: buildChild(context, state),
-                    );
-                  },
+                Expanded(
+                  child: BlocBuilder<LeaderboardCubit, LeaderboardState>(
+                    builder: (context, state) {
+                      return AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 200),
+                        child: buildChild(context, state),
+                      );
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

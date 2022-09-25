@@ -4,8 +4,8 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sensors_plus/sensors_plus.dart';
 
+import 'application/shared/themes_cubit.dart';
 import 'constants/shared/dev.dart';
 import 'application/shared/scaffold_shrinker_cubit.dart';
 import 'core/router/router.dart';
@@ -33,6 +33,16 @@ class MyApp extends StatelessWidget {
 
   final AppRouter appRouter;
 
+  ThemeMode getTheme(ThemesState state) {
+    if (state is Dark) {
+      return ThemeMode.dark;
+    } else if (state is Light) {
+      return ThemeMode.light;
+    } else {
+      return ThemeMode.system;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -50,41 +60,51 @@ class MyApp extends StatelessWidget {
           lazy: false,
           create: (context) => sl<ScaffoldShrinkerCubit>(),
         ),
-      ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        useInheritedMediaQuery: kPreviewMode,
-        title: "Confesi",
-        onGenerateRoute: appRouter.onGenerateRoute,
-        theme: AppTheme.lightTheme,
-        darkTheme: AppTheme.darkTheme,
-        themeMode: ThemeMode.system,
-        builder: DevicePreview.appBuilder,
-
-        /// Manages navigating to new screens if the authentication state switches to certain values.
-        home: BlocListener<AuthenticationCubit, AuthenticationState>(
-          listenWhen: (previous, current) {
-            return (previous.runtimeType != current.runtimeType) &&
-                previous is! UserError;
-          },
-          listener: (context, state) {
-            if (devMode) {
-              Navigator.of(context).pushNamed("/home");
-              return;
-            }
-            if (state is NoUser) {
-              Navigator.of(context).pushNamed("/open");
-            } else if (state is User) {
-              if (state.justRegistered) {
-                Navigator.of(context).pushNamed("/onboarding");
-              } else {
-                Navigator.of(context).pushNamed("/home");
-              }
-            }
-          },
-          child: devMode ? const HomeScreen() : const SplashScreen(),
+        BlocProvider(
+          lazy: false,
+          create: (context) => sl<ThemesCubit>(),
         ),
-      ),
+      ],
+      child: Builder(builder: (context) {
+        return BlocBuilder<ThemesCubit, ThemesState>(
+          builder: (context, state) {
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              useInheritedMediaQuery: kPreviewMode,
+              title: "Confesi",
+              onGenerateRoute: appRouter.onGenerateRoute,
+              theme: AppTheme.lightTheme,
+              darkTheme: AppTheme.darkTheme,
+              themeMode: getTheme(state),
+              builder: DevicePreview.appBuilder,
+
+              /// Manages navigating to new screens if the authentication state switches to certain values.
+              home: BlocListener<AuthenticationCubit, AuthenticationState>(
+                listenWhen: (previous, current) {
+                  return (previous.runtimeType != current.runtimeType) &&
+                      previous is! UserError;
+                },
+                listener: (context, state) {
+                  if (devMode) {
+                    Navigator.of(context).pushNamed("/home");
+                    return;
+                  }
+                  if (state is NoUser) {
+                    Navigator.of(context).pushNamed("/open");
+                  } else if (state is User) {
+                    if (state.justRegistered) {
+                      Navigator.of(context).pushNamed("/onboarding");
+                    } else {
+                      Navigator.of(context).pushNamed("/home");
+                    }
+                  }
+                },
+                child: devMode ? const HomeScreen() : const SplashScreen(),
+              ),
+            );
+          },
+        );
+      }),
     );
   }
 }

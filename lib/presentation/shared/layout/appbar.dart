@@ -20,6 +20,7 @@ class AppbarLayout extends StatefulWidget {
     this.leftIconDisabled = false,
     this.leftIconIgnored = false,
     this.leftIconTag,
+    this.backgroundColor,
     Key? key,
   }) : super(key: key);
 
@@ -35,6 +36,7 @@ class AppbarLayout extends StatefulWidget {
   final IconData? rightIcon;
   final Function? rightIconOnPress;
   final bool leftIconDisabled;
+  final Color? backgroundColor;
 
   @override
   State<AppbarLayout> createState() => _AppbarLayoutState();
@@ -78,7 +80,7 @@ class _AppbarLayoutState extends State<AppbarLayout> {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Theme.of(context).colorScheme.background,
+      color: widget.backgroundColor ?? Theme.of(context).colorScheme.background,
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(

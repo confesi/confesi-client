@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict> 
+	<!-- [START] Enabling status bar theme to be changed by UI -->
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<true/>
+	<!-- [END] Enabling status bar theme to be changed by UI -->
 	<!-- [START] Lines added for biometric auth -->
 	<key>NSFaceIDUsageDescription</key>
 	<string>Confesi uses biometric authentication to keep your private info hidden from prying eyes!</string>
