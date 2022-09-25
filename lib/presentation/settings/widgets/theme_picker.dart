@@ -1,4 +1,5 @@
-import 'package:Confessi/application/shared/themes_cubit.dart';
+import 'package:Confessi/application/settings/appearance_cubit.dart';
+import 'package:Confessi/application/settings/theme_cubit.dart';
 import 'package:Confessi/presentation/settings/widgets/theme_sample_circle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,7 +22,10 @@ class _ThemePickerState extends State<ThemePicker> {
 
   @override
   void initState() {
-    pageController = PageController(viewportFraction: .4);
+    pageController = PageController(
+        viewportFraction: .33,
+        initialPage:
+            context.read<ThemeCubit>().getThemeNumericRepresentation());
     super.initState();
   }
 
@@ -36,78 +40,78 @@ class _ThemePickerState extends State<ThemePicker> {
   void animateToIndex(int index) => pageController.animateToPage(index,
       duration: const Duration(milliseconds: 250), curve: Curves.decelerate);
 
+  void setTheme(int index, BuildContext context) {
+    if (index == 0) {
+      context.read<ThemeCubit>().setThemeClassic();
+    } else if (index == 1) {
+      context.read<ThemeCubit>().setThemeElegant();
+    } else if (index == 2) {
+      context.read<ThemeCubit>().setThemeSalmon();
+    } else if (index == 3) {
+      context.read<ThemeCubit>().setThemeSciFi();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 10),
-          child: Text(
-            "Theme",
-            style:
-                kTitle.copyWith(color: Theme.of(context).colorScheme.onSurface),
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.center,
-          ),
+    return Container(
+      height: 180,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.secondary,
+        borderRadius: const BorderRadius.all(
+          Radius.circular(10),
         ),
-        Container(
-          height: 180,
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.secondary,
-            borderRadius: const BorderRadius.all(
-              Radius.circular(10),
-            ),
-          ),
-          child: PageView(
-            controller: pageController,
-            onPageChanged: (newIndex) {
-              HapticFeedback.selectionClick();
-              if (newIndex == 0) {
-                context.read<ThemesCubit>().setThemeSystem();
-              } else if (newIndex == 1) {
-                context.read<ThemesCubit>().setThemeDark();
-              } else if (newIndex == 2) {
-                context.read<ThemesCubit>().setThemeLight();
-              }
-              setState(() {
-                selectedIndex = newIndex;
-              });
-            },
-            children: [
-              ThemeSampleCircle(
-                onTap: (index) => animateToIndex(index),
-                name: "System (${themeName(context)})",
-                index: 0,
-                selectedIndex: selectedIndex,
-                colors: [Colors.yellow, Colors.orange],
-              ),
-              ThemeSampleCircle(
-                onTap: (index) => animateToIndex(index),
-                name: "Dark",
-                index: 1,
-                selectedIndex: selectedIndex,
-                colors: [Colors.black, Colors.black],
-              ),
-              ThemeSampleCircle(
-                onTap: (index) => animateToIndex(index),
-                name: "Light",
-                index: 2,
-                selectedIndex: selectedIndex,
-                colors: [Colors.white, Colors.white],
-              ),
-              ThemeSampleCircle(
-                onTap: (index) => animateToIndex(index),
-                name: "Rainbow",
-                index: 3,
-                selectedIndex: selectedIndex,
-                colors: [Colors.pink, Colors.blue, Colors.green, Colors.orange],
-              ),
+      ),
+      child: PageView(
+        controller: pageController,
+        onPageChanged: (newIndex) {
+          HapticFeedback.selectionClick();
+          setState(() {
+            selectedIndex = newIndex;
+          });
+          setTheme(newIndex, context);
+        },
+        children: [
+          ThemeSampleCircle(
+            isActive: context.watch<ThemeCubit>().state is ClassicTheme,
+            onTap: (index) => animateToIndex(index),
+            name: "Classic",
+            index: 0,
+            colors: const [
+              Color(0xfffde5b6),
+              Color.fromARGB(255, 255, 191, 63),
             ],
           ),
-        ),
-      ],
+          ThemeSampleCircle(
+            onTap: (index) => animateToIndex(index),
+            name: "Elegant",
+            index: 1,
+            isActive: context.watch<ThemeCubit>().state is ElegantTheme,
+            colors: const [
+              Color(0xff937DC2),
+              Color.fromARGB(255, 104, 39, 245),
+            ],
+          ),
+          ThemeSampleCircle(
+            onTap: (index) => animateToIndex(index),
+            name: "Salmon",
+            index: 2,
+            isActive: context.watch<ThemeCubit>().state is SalmonTheme,
+            colors: const [Color(0xffFA7070), Color.fromARGB(255, 246, 79, 79)],
+          ),
+          ThemeSampleCircle(
+            onTap: (index) => animateToIndex(index),
+            name: "Sci-fi",
+            index: 3,
+            isActive: context.watch<ThemeCubit>().state is SciFiTheme,
+            colors: const [
+              Color(0xffABD9FF),
+              Color.fromARGB(255, 42, 154, 245)
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

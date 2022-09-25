@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:Confessi/application/authentication/authentication_cubit.dart';
-import 'package:Confessi/application/shared/themes_cubit.dart';
+import 'package:Confessi/application/settings/appearance_cubit.dart';
 import 'package:Confessi/core/utils/numbers/number_until_limit.dart';
 import 'package:Confessi/presentation/shared/behaviours/bottom_overscroll_scroll_to_top.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';

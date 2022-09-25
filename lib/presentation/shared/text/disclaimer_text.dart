@@ -33,7 +33,7 @@ class DisclaimerText extends StatelessWidget {
             Expanded(
               child: Padding(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                 child: Text(
                   text,
                   style: kBody.copyWith(

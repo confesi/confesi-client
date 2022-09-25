@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import '../../../core/styles/typography.dart';
 
@@ -7,46 +6,47 @@ class ThemeSampleCircle extends StatelessWidget {
   const ThemeSampleCircle({
     super.key,
     required this.index,
-    required this.selectedIndex,
     required this.name,
     required this.colors,
     required this.onTap,
+    required this.isActive,
   });
 
   final int index;
-  final int selectedIndex;
+  final bool isActive;
   final String name;
   final List<Color> colors;
   final Function(int) onTap;
-
-  bool get isActive => selectedIndex == index;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        AnimatedPadding(
-          duration: const Duration(milliseconds: 150),
-          padding: EdgeInsets.only(top: index == selectedIndex ? 0 : 5),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20),
-            child: GestureDetector(
-              onTap: () {
-                HapticFeedback.lightImpact();
-                onTap(index);
-              },
+        GestureDetector(
+          onTap: () => onTap(index),
+          child: Container(
+            // Transparent hitbox trick.
+            color: Colors.transparent,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20),
               child: Column(
                 children: [
                   AnimatedContainer(
                     duration: const Duration(milliseconds: 150),
-                    height: selectedIndex == index ? 100 : 85,
-                    width: selectedIndex == index ? 100 : 85,
+                    height: isActive ? 100 : 85,
+                    width: isActive ? 100 : 85,
                     decoration: BoxDecoration(
                       border: Border.all(
                           color: Theme.of(context).colorScheme.onSecondary,
                           width: 3),
                       shape: BoxShape.circle,
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 30,
+                        )
+                      ],
                       gradient: LinearGradient(
                         colors: colors,
                         begin: Alignment.bottomLeft,

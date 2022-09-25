@@ -1,5 +1,4 @@
 import 'package:Confessi/core/styles/typography.dart';
-import 'package:Confessi/presentation/settings/widgets/theme_picker.dart';
 import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
 import 'package:Confessi/presentation/shared/text/disclaimer_text.dart';
 import 'package:Confessi/presentation/settings/widgets/setting_tile.dart';
@@ -8,7 +7,6 @@ import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../core/utils/styles/theme_name.dart';
 import '../../shared/layout/appbar.dart';
 
 class SettingsHome extends StatelessWidget {
@@ -46,8 +44,8 @@ class SettingsHome extends StatelessWidget {
                             SettingTile(
                               icon: CupertinoIcons.color_filter,
                               text: "Appearance",
-                              secondaryText: "System (${themeName(context)})",
-                              onTap: () => print("tap"),
+                              onTap: () => Navigator.of(context)
+                                  .pushNamed("/settings/appearance"),
                             ),
                             SettingTile(
                               icon: CupertinoIcons.map,
@@ -77,11 +75,10 @@ class SettingsHome extends StatelessWidget {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 15),
-                        const ThemePicker(),
+                        const SizedBox(height: 5),
                         const DisclaimerText(
                             text:
-                                "Settings are synced between devices when online."),
+                                "Settings are synced between devices when online, unless otherwise mentioned."),
                       ],
                     ),
                   ),
