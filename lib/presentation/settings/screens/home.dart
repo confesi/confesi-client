@@ -18,6 +18,7 @@ class SettingsHome extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.shadow,
         body: SafeArea(
+          bottom: false,
           child: Column(
             children: [
               AppbarLayout(
@@ -36,10 +37,32 @@ class SettingsHome extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 15),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 15),
                         SettingTileGroup(
                           text: "General",
+                          settingTiles: [
+                            SettingTile(
+                              icon: CupertinoIcons.rocket,
+                              text: "Watched Universities",
+                              onTap: () => print("tap"),
+                            ),
+                            SettingTile(
+                              icon: CupertinoIcons.map,
+                              text: "Language",
+                              onTap: () => print("tap"),
+                            ),
+                            SettingTile(
+                              icon: CupertinoIcons.pen,
+                              text: "Feedback",
+                              onTap: () => print("tap"),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 15),
+                        SettingTileGroup(
+                          text: "Personalization",
                           settingTiles: [
                             SettingTile(
                               icon: CupertinoIcons.color_filter,
@@ -48,8 +71,36 @@ class SettingsHome extends StatelessWidget {
                                   .pushNamed("/settings/appearance"),
                             ),
                             SettingTile(
-                              icon: CupertinoIcons.map,
-                              text: "Language",
+                              icon: CupertinoIcons.cube_box,
+                              text: "UI Adjustments",
+                              onTap: () => print("tap"),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 15),
+                        SettingTileGroup(
+                          text: "Account",
+                          settingTiles: [
+                            SettingTile(
+                              icon: CupertinoIcons.shield,
+                              text: "Biometric Profile Lock",
+                              onTap: () => print("tap"),
+                            ),
+                            SettingTile(
+                              icon: CupertinoIcons.profile_circled,
+                              text: "Account Details",
+                              onTap: () => print("tap"),
+                            ),
+                            SettingTile(
+                              icon: CupertinoIcons.mail,
+                              text:
+                                  "Student Email Perks", // TODO: gives you a list of perks? Some incentive to prove it? mandatory (or not cuz then easier to ban)?
+                              onTap: () => print("tap"),
+                            ),
+                            SettingTile(
+                              isRedText: true,
+                              icon: CupertinoIcons.square_arrow_right,
+                              text: "Logout",
                               onTap: () => print("tap"),
                             ),
                           ],
@@ -73,12 +124,47 @@ class SettingsHome extends StatelessWidget {
                               text: "High Contrast",
                               onTap: () => print("tap"),
                             ),
+                            SettingTile(
+                              icon:
+                                  CupertinoIcons.textformat_abc_dottedunderline,
+                              text: "Tool Tips",
+                              onTap: () => print("tap"),
+                            ),
                           ],
                         ),
-                        const SizedBox(height: 5),
+                        const SizedBox(height: 15),
+                        SettingTileGroup(
+                          text: "Legal",
+                          settingTiles: [
+                            SettingTile(
+                              icon: CupertinoIcons.doc,
+                              text: "Terms of Service",
+                              onTap: () => print("tap"),
+                            ),
+                            SettingTile(
+                              icon: CupertinoIcons.doc,
+                              text: "Privacy Statement",
+                              onTap: () => print("tap"),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 15),
+                        SettingTileGroup(
+                          text: "Danger Zone",
+                          settingTiles: [
+                            SettingTile(
+                              isRedText: true,
+                              icon: CupertinoIcons.xmark,
+                              text: "Delete Account",
+                              onTap: () => print("tap"),
+                            ),
+                          ],
+                        ),
                         const DisclaimerText(
+                            verticalPadding: 15,
                             text:
                                 "Settings are synced between devices when online, unless otherwise mentioned."),
+                        SizedBox(height: MediaQuery.of(context).padding.bottom),
                       ],
                     ),
                   ),

@@ -23,7 +23,7 @@ class _ThemePickerState extends State<ThemePicker> {
   @override
   void initState() {
     pageController = PageController(
-        viewportFraction: .33,
+        viewportFraction: .4,
         initialPage:
             context.read<ThemeCubit>().getThemeNumericRepresentation());
     super.initState();

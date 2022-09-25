@@ -6,8 +6,8 @@ import '../../../core/styles/typography.dart';
 class SettingTileGroup extends StatelessWidget {
   const SettingTileGroup({
     super.key,
-    required this.settingTiles,
     required this.text,
+    required this.settingTiles,
   });
 
   final List<SettingTile> settingTiles;
@@ -20,10 +20,11 @@ class SettingTileGroup extends StatelessWidget {
       children: [
         Text(
           text,
-          style:
-              kTitle.copyWith(color: Theme.of(context).colorScheme.onSurface),
+          style: kTitle.copyWith(
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
           overflow: TextOverflow.ellipsis,
-          textAlign: TextAlign.center,
+          textAlign: TextAlign.left,
         ),
         ...settingTiles,
       ],

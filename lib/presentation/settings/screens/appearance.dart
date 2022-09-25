@@ -80,10 +80,11 @@ class AppearanceScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 5),
                       const DisclaimerText(
+                          verticalPadding: 15,
                           text:
                               "These preferences are saved locally to this device."),
+                      SizedBox(height: MediaQuery.of(context).padding.bottom),
                     ],
                   ),
                 ),

@@ -10,8 +10,10 @@ class SettingTile extends StatelessWidget {
     required this.text,
     required this.onTap,
     this.secondaryText,
+    this.isRedText = false,
   });
 
+  final bool isRedText;
   final IconData icon;
   final String text;
   final String? secondaryText;
@@ -34,7 +36,12 @@ class SettingTile extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Icon(icon),
+            Icon(
+              icon,
+              color: isRedText
+                  ? Theme.of(context).colorScheme.error
+                  : Theme.of(context).colorScheme.primary,
+            ),
             const SizedBox(width: 15),
             Expanded(
               child: Row(
@@ -43,7 +50,9 @@ class SettingTile extends StatelessWidget {
                     child: Text(
                       text,
                       style: kTitle.copyWith(
-                        color: Theme.of(context).colorScheme.primary,
+                        color: isRedText
+                            ? Theme.of(context).colorScheme.error
+                            : Theme.of(context).colorScheme.primary,
                       ),
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -60,13 +69,16 @@ class SettingTile extends StatelessWidget {
                           ),
                         )
                       : Container(),
-                  secondaryText != null
-                      ? const SizedBox(width: 10)
-                      : Container(),
+                  const SizedBox(width: 10),
                 ],
               ),
             ),
-            const Icon(CupertinoIcons.arrow_right),
+            Icon(
+              CupertinoIcons.arrow_right,
+              color: isRedText
+                  ? Theme.of(context).colorScheme.error
+                  : Theme.of(context).colorScheme.primary,
+            ),
           ],
         ),
       ),
