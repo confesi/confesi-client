@@ -50,7 +50,7 @@ final GetIt sl = GetIt.instance;
 
 /// Injects the needed dependencies for the app to run.
 Future<void> init() async {
-  //! Initializing
+  //! Initializing stuff
   // Registering Hive.
   await Hive.initFlutter();
   // Opening Hive preferences box.
