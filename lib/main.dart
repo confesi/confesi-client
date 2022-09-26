@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'application/settings/appearance_cubit.dart';
+import 'application/settings/biometrics_enabled_cubit.dart';
 import 'constants/shared/dev.dart';
 import 'application/shared/scaffold_shrinker_cubit.dart';
 import 'core/router/router.dart';
@@ -98,7 +99,11 @@ class MyApp extends StatelessWidget {
           lazy: false,
           create: (context) => sl<ThemeCubit>()
             ..setThemeClassic(), // TODO: switch this eventually for loading from user storage?
-        )
+        ),
+        BlocProvider(
+          lazy: false,
+          create: (context) => sl<BiometricsEnabledCubit>()..loadSetting(),
+        ),
       ],
       child: Builder(builder: (context) {
         return BlocBuilder<AppearanceCubit, AppearanceState>(

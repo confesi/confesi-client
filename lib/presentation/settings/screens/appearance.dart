@@ -5,6 +5,7 @@ import 'package:Confessi/presentation/settings/widgets/bool_selection_group.dart
 import 'package:Confessi/presentation/settings/widgets/header_text.dart';
 import 'package:Confessi/presentation/settings/widgets/bool_selection_tile.dart';
 import 'package:Confessi/presentation/settings/widgets/setting_tile.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
 import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
 import 'package:Confessi/presentation/shared/text/disclaimer_text.dart';
@@ -13,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/styles/typography.dart';
+import '../../shared/behaviours/simulated_bottom_safe_area.dart';
 import '../../shared/layout/appbar.dart';
 import '../widgets/theme_picker.dart';
 
@@ -83,8 +85,8 @@ class AppearanceScreen extends StatelessWidget {
                       const DisclaimerText(
                           verticalPadding: 15,
                           text:
-                              "These preferences are saved locally to this device."),
-                      SizedBox(height: MediaQuery.of(context).padding.bottom),
+                              "These preferences are saved locally to your device."),
+                      const SimulatedBottomSafeArea(),
                     ],
                   ),
                 ),

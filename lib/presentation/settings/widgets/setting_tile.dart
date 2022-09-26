@@ -11,9 +11,11 @@ class SettingTile extends StatelessWidget {
     required this.onTap,
     this.secondaryText,
     this.isRedText = false,
+    this.isLink = false,
   });
 
   final bool isRedText;
+  final bool isLink;
   final IconData icon;
   final String text;
   final String? secondaryText;
@@ -22,6 +24,7 @@ class SettingTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TouchableOpacity(
+      // fadeSplashOut: false,
       onTap: () => onTap(),
       child: Container(
         margin: const EdgeInsets.only(top: 10),
@@ -74,7 +77,7 @@ class SettingTile extends StatelessWidget {
               ),
             ),
             Icon(
-              CupertinoIcons.arrow_right,
+              isLink ? CupertinoIcons.link : CupertinoIcons.arrow_right,
               color: isRedText
                   ? Theme.of(context).colorScheme.error
                   : Theme.of(context).colorScheme.primary,

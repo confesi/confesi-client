@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:Confessi/application/authentication/authentication_cubit.dart';
 import 'package:Confessi/application/settings/appearance_cubit.dart';
+import 'package:Confessi/application/settings/biometrics_enabled_cubit.dart';
 import 'package:Confessi/core/utils/numbers/number_until_limit.dart';
 import 'package:Confessi/presentation/shared/behaviours/bottom_overscroll_scroll_to_top.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
@@ -179,24 +180,27 @@ class _ProfileHomeState extends State<ProfileHome> {
                                       children: [
                                         Expanded(
                                           child: SimpleTextButton(
-                                            onTap: () => showFeedbackSheet(
-                                                context), // TODO: temp patch for shaker not working on dev mode
+                                            onTap: () => print(context
+                                                .read<BiometricsEnabledCubit>()
+                                                .updateBiometricSetting(false)),
                                             text: "Comments",
                                           ),
                                         ),
                                         const SizedBox(width: 10),
                                         Expanded(
                                           child: SimpleTextButton(
-                                            onTap: () => print("saved tapped"),
+                                            onTap: () => context
+                                                .read<BiometricsEnabledCubit>()
+                                                .loadSetting(),
                                             text: "Saved",
                                           ),
                                         ),
                                         const SizedBox(width: 10),
                                         Expanded(
                                           child: SimpleTextButton(
-                                            onTap: () => context
-                                                .read<AuthenticationCubit>()
-                                                .logoutUser(),
+                                            onTap: () => print(context
+                                                .read<BiometricsEnabledCubit>()
+                                                .updateBiometricSetting(true)),
                                             text: "Posts",
                                           ),
                                         ),

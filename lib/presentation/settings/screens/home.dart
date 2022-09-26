@@ -1,4 +1,7 @@
 import 'package:Confessi/core/styles/typography.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_opacity.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
 import 'package:Confessi/presentation/shared/text/disclaimer_text.dart';
 import 'package:Confessi/presentation/settings/widgets/setting_tile.dart';
@@ -7,6 +10,7 @@ import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../shared/behaviours/simulated_bottom_safe_area.dart';
 import '../../shared/layout/appbar.dart';
 
 class SettingsHome extends StatelessWidget {
@@ -58,6 +62,12 @@ class SettingsHome extends StatelessWidget {
                               text: "Feedback",
                               onTap: () => print("tap"),
                             ),
+                            SettingTile(
+                              icon: CupertinoIcons.question_circle,
+                              text: "FAQ",
+                              onTap: () => Navigator.of(context)
+                                  .pushNamed("/settings/faq"),
+                            ),
                           ],
                         ),
                         const SizedBox(height: 15),
@@ -72,7 +82,7 @@ class SettingsHome extends StatelessWidget {
                             ),
                             SettingTile(
                               icon: CupertinoIcons.cube_box,
-                              text: "UI Adjustments",
+                              text: "Interface Adjustments",
                               onTap: () => print("tap"),
                             ),
                           ],
@@ -115,6 +125,11 @@ class SettingsHome extends StatelessWidget {
                               onTap: () => print("tap"),
                             ),
                             SettingTile(
+                              icon: CupertinoIcons.hand_draw,
+                              text: "Haptic Feedback",
+                              onTap: () => print("tap"),
+                            ),
+                            SettingTile(
                               icon: CupertinoIcons.text_cursor,
                               text: "Text Size",
                               onTap: () => print("tap"),
@@ -137,11 +152,13 @@ class SettingsHome extends StatelessWidget {
                           text: "Legal",
                           settingTiles: [
                             SettingTile(
+                              isLink: true,
                               icon: CupertinoIcons.doc,
                               text: "Terms of Service",
                               onTap: () => print("tap"),
                             ),
                             SettingTile(
+                              isLink: true,
                               icon: CupertinoIcons.doc,
                               text: "Privacy Statement",
                               onTap: () => print("tap"),
@@ -163,8 +180,8 @@ class SettingsHome extends StatelessWidget {
                         const DisclaimerText(
                             verticalPadding: 15,
                             text:
-                                "Settings are synced between devices when online, unless otherwise mentioned."),
-                        SizedBox(height: MediaQuery.of(context).padding.bottom),
+                                "Some settings are synced between multiple devices, others are just local for this device."),
+                        const SimulatedBottomSafeArea(),
                       ],
                     ),
                   ),
