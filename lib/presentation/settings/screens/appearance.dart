@@ -52,34 +52,24 @@ class AppearanceScreen extends StatelessWidget {
                         text: "Choose appearance",
                         selectionTiles: [
                           BoolSelectionTile(
-                            topRounded: true,
-                            isActive: context.watch<AppearanceCubit>().state
-                                is System,
-                            icon: CupertinoIcons.device_laptop,
-                            text: "System (currently ${themeName(context)})",
-                            onTap: () => context
-                                .read<AppearanceCubit>()
-                                .setAppearanceSystem(),
-                          ),
+                              topRounded: true,
+                              isActive:
+                                  false, // context.watch<AppearanceCubit>().state
+                              icon: CupertinoIcons.device_laptop,
+                              text: "System (currently ${themeName(context)})",
+                              onTap: () => print("set system")),
                           BoolSelectionTile(
-                            isActive:
-                                context.watch<AppearanceCubit>().state is Light,
+                            isActive: false,
                             icon: CupertinoIcons.sun_min,
                             text: "Light",
-                            onTap: () => context
-                                .read<AppearanceCubit>()
-                                .setAppearanceLight(),
+                            onTap: () => print("set light"),
                           ),
                           BoolSelectionTile(
-                            bottomRounded: true,
-                            isActive:
-                                context.watch<AppearanceCubit>().state is Dark,
-                            icon: CupertinoIcons.moon,
-                            text: "Dark",
-                            onTap: () => context
-                                .read<AppearanceCubit>()
-                                .setAppearanceDark(),
-                          ),
+                              bottomRounded: true,
+                              isActive: false,
+                              icon: CupertinoIcons.moon,
+                              text: "Dark",
+                              onTap: () => print("set dark")),
                         ],
                       ),
                       const DisclaimerText(

@@ -1,6 +1,5 @@
 part of 'prefs_cubit.dart';
 
-@immutable
 abstract class PrefsState extends Equatable {
   @override
   List<Object?> get props => [];

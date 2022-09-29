@@ -1,26 +1,33 @@
+import 'package:Confessi/constants/hive_boxe_names.dart';
 import 'package:Confessi/core/results/successes.dart';
-import 'package:Confessi/data/settings/models/prefs_model.dart';
-import 'package:Confessi/domain/settings/entities/prefs.dart';
 import 'package:hive/hive.dart';
 
+import '../../../core/utils/enums/enum_name.dart';
+import '../../../core/utils/enums/enum_to_string.dart';
+import '../../../core/utils/enums/string_to_enum.dart';
+
 abstract class IPrefsDatasource {
-  Future<Success> setPref(String key, value);
-  Future<Prefs> loadPrefs();
+  // Load pref.
+  Future<T> loadPref<T extends Enum>(T enumData);
+  // Set pref.
+  Future<Success> setPref(Enum enumData);
 }
 
 class PrefsDatasource implements IPrefsDatasource {
   @override
-  Future<Prefs> loadPrefs() async {
-    return PrefsModel(
-      biometricAuthEnum:
-          await Hive.box("preferences").get("biometric_auth_setting"),
-      appearanceEnum: await Hive.box("preferences").get("appearance_setting"),
+  Future<T> loadPref<T extends Enum>(T enumData) async {
+    return stringToEnum<T>(
+      await Hive.box(preferencesBox).get(
+        getLowercaseEnumName(enumData),
+      ),
+      (enumData as dynamic).values,
     );
   }
 
   @override
-  Future<Success> setPref(String key, value) async {
-    await Hive.box("preferences").put(key, value);
+  Future<Success> setPref(Enum enumData) async {
+    await Hive.box(preferencesBox)
+        .put(getLowercaseEnumName(enumData), enumToString<Enum>(enumData));
     return SettingSuccess();
   }
 }

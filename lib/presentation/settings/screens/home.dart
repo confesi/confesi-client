@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 
 import '../../shared/behaviours/simulated_bottom_safe_area.dart';
 import '../../shared/layout/appbar.dart';
+import '../../shared/overlays/feedback_sheet.dart';
 
 class SettingsHome extends StatelessWidget {
   const SettingsHome({super.key});
@@ -58,15 +59,22 @@ class SettingsHome extends StatelessWidget {
                               onTap: () => print("tap"),
                             ),
                             SettingTile(
-                              icon: CupertinoIcons.pen,
-                              text: "Feedback",
-                              onTap: () => print("tap"),
+                              icon: CupertinoIcons.chat_bubble,
+                              text: "Contact Confesi",
+                              onTap: () =>
+                                  Navigator.of(context).pushNamed("/feedback"),
                             ),
                             SettingTile(
                               icon: CupertinoIcons.question_circle,
                               text: "FAQ",
                               onTap: () => Navigator.of(context)
                                   .pushNamed("/settings/faq"),
+                            ),
+                            SettingTile(
+                              isLink: true,
+                              icon: CupertinoIcons.sidebar_left,
+                              text: "Our Website",
+                              onTap: () => print("tap"),
                             ),
                           ],
                         ),

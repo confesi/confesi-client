@@ -2,7 +2,8 @@ import 'dart:ui';
 
 import 'package:Confessi/application/shared/biometrics_cubit.dart';
 import 'package:Confessi/presentation/profile/screens/home.dart';
-import 'package:Confessi/presentation/profile/screens/biometric_overlay_message.dart';
+import 'package:Confessi/presentation/profile/widgets/biometric_overlay_message.dart';
+import 'package:Confessi/presentation/shared/behaviours/shrinking_view.dart';
 import 'package:Confessi/presentation/shared/overlays/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

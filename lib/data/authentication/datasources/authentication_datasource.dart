@@ -24,17 +24,17 @@ abstract class IAuthenticationDatasource {
 /// Throws exceptions when things go wrong.
 class AuthenticationDatasource implements IAuthenticationDatasource {
   final FlutterSecureStorage secureStorage;
-  final ApiClient netClient;
+  final ApiClient api;
 
   AuthenticationDatasource({
     required this.secureStorage,
-    required this.netClient,
+    required this.api,
   });
 
   /// Logs the user in. Returns access and refresh tokens upon being successful.
   @override
   Future<TokensModel> login(String usernameOrEmail, String password) async {
-    final response = await netClient.req(
+    final response = await api.req(
       false,
       Method.post,
       {
@@ -52,7 +52,7 @@ class AuthenticationDatasource implements IAuthenticationDatasource {
 
   @override
   Future<Success> logout(String refreshToken) async {
-    final response = await netClient.req(
+    final response = await api.req(
         false, Method.delete, {'token': refreshToken}, "/api/user/logout");
     if (response.statusCode == 200 || response.statusCode == 201) {
       return ApiSuccess();
@@ -65,7 +65,7 @@ class AuthenticationDatasource implements IAuthenticationDatasource {
   @override
   Future<TokensModel> register(
       String username, String password, String email) async {
-    final response = await netClient.req(
+    final response = await api.req(
         false,
         Method.post,
         {"username": username, "password": password, "email": email},
@@ -80,7 +80,7 @@ class AuthenticationDatasource implements IAuthenticationDatasource {
   /// Gets an access token given a refresh token.
   @override
   Future<AccessTokenModel> getAccessToken(String refreshToken) async {
-    final response = await netClient.req(
+    final response = await api.req(
         false,
         Method.post,
         {

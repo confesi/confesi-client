@@ -9,10 +9,12 @@ class ShrinkingView extends StatefulWidget {
     this.safeAreaBottom = true,
     this.topLeftSquare = false,
     this.topRightSquare = false,
+    this.safeAreaTop = true,
     super.key,
   });
 
   final Widget child;
+  final bool safeAreaTop;
   final bool safeAreaBottom;
   final bool topLeftSquare;
   final bool topRightSquare;
@@ -88,6 +90,7 @@ class _ShrinkingViewState extends State<ShrinkingView>
                 color: Theme.of(context).colorScheme.background,
               ),
               child: SafeArea(
+                top: widget.safeAreaTop,
                 maintainBottomViewPadding: true,
                 bottom: widget.safeAreaBottom,
                 child: ClipRRect(

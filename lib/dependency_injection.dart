@@ -1,8 +1,9 @@
 import 'dart:async';
 
 import 'package:Confessi/application/settings/appearance_cubit.dart';
-import 'package:Confessi/application/settings/biometrics_enabled_cubit.dart';
+import 'package:Confessi/application/settings/prefs_cubit.dart';
 import 'package:Confessi/application/settings/theme_cubit.dart';
+import 'package:Confessi/constants/hive_boxe_names.dart';
 import 'package:Confessi/core/network/http_client.dart';
 import 'package:Confessi/application/shared/scaffold_shrinker_cubit.dart';
 import 'package:Confessi/data/create_post/datasources/create_post_datasource.dart';
@@ -11,8 +12,8 @@ import 'package:Confessi/data/daily_hottest/datasources/daily_hottest_datasource
 import 'package:Confessi/data/daily_hottest/datasources/leaderboard_datasource.dart';
 import 'package:Confessi/data/daily_hottest/repositories/daily_hottest_repository_concrete.dart';
 import 'package:Confessi/data/daily_hottest/repositories/leaderboard_repository_concrete.dart';
-import 'package:Confessi/data/settings/datasources/update_biometric_setting_datasource.dart';
-import 'package:Confessi/data/settings/repositories/update_biometric_setting_concrete.dart';
+import 'package:Confessi/data/settings/datasources/prefs_datasource.dart';
+import 'package:Confessi/data/settings/repositories/prefs_repository_concrete.dart';
 import 'package:Confessi/domain/create_post/usecases/upload_post.dart';
 import 'package:Confessi/domain/daily_hottest/usecases/posts.dart';
 import 'package:Confessi/domain/daily_hottest/usecases/ranking.dart';
@@ -21,11 +22,9 @@ import 'package:Confessi/application/create_post/post_cubit.dart';
 import 'package:Confessi/application/daily_hottest/hottest_cubit.dart';
 import 'package:Confessi/application/daily_hottest/leaderboard_cubit.dart';
 import 'package:Confessi/application/shared/biometrics_cubit.dart';
-import 'package:Confessi/domain/settings/usecases/get_biometric_setting.dart';
-import 'package:Confessi/domain/settings/usecases/update_biometric_setting.dart';
+import 'package:Confessi/domain/settings/usecases/appearance.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:local_auth/local_auth.dart';
@@ -54,7 +53,7 @@ Future<void> init() async {
   // Registering Hive.
   await Hive.initFlutter();
   // Opening Hive preferences box.
-  await Hive.openBox("preferences");
+  await Hive.openBox(preferencesBox);
 
   //! State (BLoC or Cubit)
   // Registers the authentication cubit.
@@ -74,13 +73,8 @@ Future<void> init() async {
   sl.registerFactory(() => ScaffoldShrinkerCubit());
   // Registers the biometrics cubit.
   sl.registerFactory(() => BiometricsCubit(biometricAuthentication: sl()));
-  // Registers the appearances cubit.
-  sl.registerFactory(() => AppearanceCubit());
-  // Registers the themes cubit.
-  sl.registerFactory(() => ThemeCubit());
-  // Registers the biometric auth enabled setting cubit.
-  sl.registerFactory(() => BiometricsEnabledCubit(
-      updateBiometricSetting: sl(), getBiometricSetting: sl()));
+  // Registers the prefs cubit.
+  sl.registerFactory(() => PrefsCubit(appearance: sl()));
 
   //! Usecases
   // Registers the register usecase.
@@ -104,10 +98,8 @@ Future<void> init() async {
   // Registers the biometric authentication usecase.
   sl.registerLazySingleton(
       () => BiometricAuthentication(localAuthentication: sl()));
-  // Registers the update biometric enabled setting usecase.
-  sl.registerLazySingleton(() => UpdateBiometricSetting(repository: sl()));
-  // Registers the get biometric enabled setting usecase
-  sl.registerLazySingleton(() => GetBiometricSetting(repository: sl()));
+  // Registers the appearance usecase.
+  sl.registerLazySingleton(() => Appearance(repository: sl()));
 
   //! Core
   // Registers custom connection checker class.
@@ -133,14 +125,13 @@ Future<void> init() async {
   // Registers the create post repository.
   sl.registerLazySingleton(
       () => CreatePostRepository(networkInfo: sl(), datasource: sl()));
-  // Registers the biometric setting repository.
-  sl.registerLazySingleton(
-      () => UpdateBiometricSettingRepository(datasource: sl()));
+  // Registers the prefs repository.
+  sl.registerLazySingleton(() => PrefsRepository(datasource: sl()));
 
   //! Data sources
   // Registers the authentication datasource.
   sl.registerLazySingleton(
-      () => AuthenticationDatasource(secureStorage: sl(), netClient: sl()));
+      () => AuthenticationDatasource(secureStorage: sl(), api: sl()));
   // Registers the feed datasource.
   sl.registerLazySingleton(() => FeedDatasource(api: sl()));
   // Registers the leaderboard datasource.
@@ -149,9 +140,8 @@ Future<void> init() async {
   sl.registerLazySingleton(() => DailyHottestDatasource(api: sl()));
   // Registers the create post datasource.
   sl.registerLazySingleton(() => CreatePostDatasource(api: sl()));
-  // Registers the biometric setting datasource.
-  sl.registerLazySingleton(
-      () => UpdateBiometricSettingDatasource(secureStorage: sl()));
+  // Registers the prefs datasource.
+  sl.registerLazySingleton(() => PrefsDatasource());
 
   //! External
   // Registers connection checker package.
