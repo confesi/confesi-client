@@ -3,7 +3,8 @@ import 'package:dartz/dartz.dart';
 
 import '../../../core/results/failures.dart';
 import '../../../core/results/successes.dart';
-import '../../../core/usecases/usecase.dart';
+import '../../../core/usecases/no_params.dart';
+import '../../../core/usecases/single_usecase.dart';
 
 class SilentAuthentication implements Usecase<Success, NoParams> {
   final ApiClient netClient;

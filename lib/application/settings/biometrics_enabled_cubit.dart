@@ -1,9 +1,10 @@
-import 'package:Confessi/core/usecases/usecase.dart';
+import 'package:Confessi/core/usecases/single_usecase.dart';
 import 'package:Confessi/domain/settings/usecases/get_biometric_setting.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
+import '../../core/usecases/no_params.dart';
 import '../../domain/settings/usecases/update_biometric_setting.dart';
 
 part 'biometrics_enabled_state.dart';

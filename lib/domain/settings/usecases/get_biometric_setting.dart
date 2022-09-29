@@ -1,7 +1,9 @@
 import 'package:Confessi/core/results/failures.dart';
-import 'package:Confessi/core/usecases/usecase.dart';
+import 'package:Confessi/core/usecases/single_usecase.dart';
 import 'package:Confessi/data/settings/repositories/update_biometric_setting_concrete.dart';
 import 'package:dartz/dartz.dart';
+
+import '../../../core/usecases/no_params.dart';
 
 class GetBiometricSetting implements Usecase<bool, NoParams> {
   final UpdateBiometricSettingRepository repository;

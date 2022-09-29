@@ -1,9 +1,10 @@
-import 'package:Confessi/core/usecases/usecase.dart';
+import 'package:Confessi/core/usecases/single_usecase.dart';
 import 'package:Confessi/presentation/daily_hottest/utils/failure_to_message.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
+import '../../core/usecases/no_params.dart';
 import '../../domain/daily_hottest/entities/leaderboard_item.dart';
 import '../../domain/daily_hottest/usecases/ranking.dart';
 

@@ -4,7 +4,7 @@ import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../core/results/failures.dart';
-import '../../../core/usecases/usecase.dart';
+import '../../../core/usecases/single_usecase.dart';
 import '../../../data/authentication/repositories/authentication_repository_concrete.dart';
 import '../entities/tokens.dart';
 

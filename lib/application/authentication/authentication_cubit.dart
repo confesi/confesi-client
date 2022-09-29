@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../core/usecases/usecase.dart';
+import '../../core/usecases/no_params.dart';
 import '../../domain/authenticatioin/usecases/login.dart';
 import '../../domain/authenticatioin/usecases/logout.dart';
 import '../../domain/authenticatioin/usecases/register.dart';

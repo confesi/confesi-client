@@ -1,8 +1,10 @@
 import 'package:Confessi/core/results/failures.dart';
-import 'package:Confessi/core/usecases/usecase.dart';
+import 'package:Confessi/core/usecases/single_usecase.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
+
+import '../../../core/usecases/no_params.dart';
 
 class BiometricAuthentication implements Usecase<bool, NoParams> {
   final LocalAuthentication localAuthentication;

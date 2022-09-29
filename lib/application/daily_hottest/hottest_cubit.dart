@@ -3,7 +3,8 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
-import '../../core/usecases/usecase.dart';
+import '../../core/usecases/no_params.dart';
+import '../../core/usecases/single_usecase.dart';
 import '../../domain/daily_hottest/usecases/posts.dart';
 import '../../presentation/daily_hottest/utils/failure_to_message.dart';
 
