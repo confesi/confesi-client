@@ -4,5 +4,5 @@ import 'package:flutter/foundation.dart';
 ///
 /// Ex: "heads" -> Coin.heads.
 /// Can throw exceptions.
-T stringToEnum<T>(String matcher, List<T> enumValues) =>
+T stringToEnum<T>(String matcher, List enumValues) =>
     enumValues.firstWhere((i) => describeEnum(i.toString()) == matcher);

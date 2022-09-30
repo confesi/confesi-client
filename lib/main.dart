@@ -1,10 +1,12 @@
 import 'package:Confessi/application/create_post/post_cubit.dart';
 import 'package:Confessi/application/settings/prefs_cubit.dart';
-import 'package:Confessi/presentation/authentication/screens/home.dart';
+import 'package:Confessi/constants/enums_that_are_local_keys.dart';
+import 'package:Confessi/error_loading_prefs_screen.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 
 import 'constants/shared/dev.dart';
 import 'application/shared/scaffold_shrinker_cubit.dart';
@@ -20,9 +22,11 @@ void main() async {
   // Locks the application to portait mode (facing up).
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then(
     (value) => runApp(
-      DevicePreview(
-        enabled: kPreviewMode,
-        builder: (context) => MyApp(appRouter: sl()),
+      Phoenix(
+        child: DevicePreview(
+          enabled: kPreviewMode,
+          builder: (context) => MyApp(appRouter: sl()),
+        ),
       ),
     ),
   );
@@ -32,16 +36,6 @@ class MyApp extends StatelessWidget {
   const MyApp({required this.appRouter, Key? key}) : super(key: key);
 
   final AppRouter appRouter;
-
-  // ThemeMode getAppearance(AppearanceState state) {
-  //   if (state is Dark) {
-  //     return ThemeMode.dark;
-  //   } else if (state is Light) {
-  //     return ThemeMode.light;
-  //   } else {
-  //     return ThemeMode.system;
-  //   }
-  // }
 
   // ThemeData getLightTheme(ThemeState state) {
   //   if (state is ClassicTheme) {
@@ -71,6 +65,53 @@ class MyApp extends StatelessWidget {
   //   }
   // }
 
+  ThemeMode getAppearance(AppearanceEnum state) {
+    if (state == AppearanceEnum.dark) {
+      return ThemeMode.dark;
+    } else if (state == AppearanceEnum.light) {
+      return ThemeMode.light;
+    } else {
+      return ThemeMode.system;
+    }
+  }
+
+  Widget buildApp(BuildContext context, PrefsState state) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      useInheritedMediaQuery: kPreviewMode,
+      title: "Confesi",
+      onGenerateRoute: appRouter.onGenerateRoute,
+      theme: AppTheme.classicLight,
+      darkTheme: AppTheme.classicDark,
+      themeMode: context.watch<PrefsCubit>().isLoaded
+          ? getAppearance(
+              context.watch<PrefsCubit>().prefs.appearanceEnum,
+            )
+          : ThemeMode.system,
+      builder: DevicePreview.appBuilder,
+      home: state is PrefsLoaded
+          ? BlocListener<AuthenticationCubit, AuthenticationState>(
+              listenWhen: (previous, current) {
+                return (previous.runtimeType != current.runtimeType) &&
+                    previous is! UserError;
+              },
+              listener: (context, state) {
+                if (state is NoUser) {
+                  Navigator.of(context).pushNamed("/open");
+                } else if (state is User) {
+                  if (state.justRegistered) {
+                    Navigator.of(context).pushNamed("/onboarding");
+                  } else {
+                    Navigator.of(context).pushNamed("/home");
+                  }
+                }
+              },
+              child: const SplashScreen(),
+            )
+          : const ErrorLoadingPrefsScreen(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -90,45 +131,16 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           lazy: false,
-          create: (context) => sl<PrefsCubit>()..loadAllPrefs(),
+          create: (context) => sl<PrefsCubit>()..loadInitialPrefs(),
         ),
       ],
-      child: Builder(builder: (context) {
-        return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          useInheritedMediaQuery: kPreviewMode,
-          title: "Confesi",
-          onGenerateRoute: appRouter.onGenerateRoute,
-          theme: AppTheme.classicLight,
-          darkTheme: AppTheme.classicDark,
-          themeMode: ThemeMode.system,
-          builder: DevicePreview.appBuilder,
-
-          /// Manages navigating to new screens if the authentication state switches to certain values.
-          home: BlocListener<AuthenticationCubit, AuthenticationState>(
-            listenWhen: (previous, current) {
-              return (previous.runtimeType != current.runtimeType) &&
-                  previous is! UserError;
-            },
-            listener: (context, state) {
-              if (devMode) {
-                Navigator.of(context).pushNamed("/home");
-                return;
-              }
-              if (state is NoUser) {
-                Navigator.of(context).pushNamed("/open");
-              } else if (state is User) {
-                if (state.justRegistered) {
-                  Navigator.of(context).pushNamed("/onboarding");
-                } else {
-                  Navigator.of(context).pushNamed("/home");
-                }
-              }
-            },
-            child: devMode ? const HomeScreen() : const SplashScreen(),
-          ),
-        );
-      }),
+      child: Builder(
+        builder: (context) {
+          return context.watch<PrefsCubit>().state is PrefsLoading
+              ? Container()
+              : buildApp(context, context.watch<PrefsCubit>().state);
+        },
+      ),
     );
   }
 }

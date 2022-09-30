@@ -1,4 +1,5 @@
 import 'package:Confessi/constants/enums_that_are_local_keys.dart';
+import 'package:Confessi/core/results/exceptions.dart';
 import 'package:Confessi/core/results/successes.dart';
 import 'package:Confessi/core/results/failures.dart';
 import 'package:Confessi/data/settings/datasources/prefs_datasource.dart';
@@ -12,42 +13,45 @@ class PrefsRepository implements IPrefsRepository {
 
   @override
   Future<Either<Failure, AppearanceEnum>> loadAppearance(
-      AppearanceEnum settingValue) async {
+      List enumValues, Type enumType) async {
     try {
-      return Right(await datasource.loadPref(settingValue));
+      return Right(await datasource.loadPref(enumValues, enumType));
+    } on DBDefaultException {
+      return Left(DBDefaultFailure());
     } catch (e) {
-      print("ERROR IS: $e");
-      return Left(SettingFailure());
+      return Left(LocalDBFailure());
     }
   }
 
   @override
   Future<Either<Failure, ReducedAnimationsEnum>> loadReducedAnimations(
-      ReducedAnimationsEnum settingValue) async {
+      List enumValues, Type enumType) async {
     try {
-      return Right(await datasource.loadPref(settingValue));
+      return Right(await datasource.loadPref(enumValues, enumType));
+    } on DBDefaultException {
+      return Left(DBDefaultFailure());
     } catch (e) {
-      return Left(SettingFailure());
+      return Left(LocalDBFailure());
     }
   }
 
   @override
   Future<Either<Failure, Success>> setAppearance(
-      AppearanceEnum settingValue) async {
+      AppearanceEnum settingValue, Type enumType) async {
     try {
-      return Right(await datasource.setPref(settingValue));
+      return Right(await datasource.setPref(settingValue, enumType));
     } catch (e) {
-      return Left(SettingFailure());
+      return Left(LocalDBFailure());
     }
   }
 
   @override
   Future<Either<Failure, Success>> setReducedAnimations(
-      ReducedAnimationsEnum settingValue) async {
+      ReducedAnimationsEnum settingValue, Type enumType) async {
     try {
-      return Right(await datasource.setPref(settingValue));
+      return Right(await datasource.setPref(settingValue, enumType));
     } catch (e) {
-      return Left(SettingFailure());
+      return Left(LocalDBFailure());
     }
   }
 }

@@ -16,9 +16,11 @@ class SimpleTextButton extends StatelessWidget {
     this.horizontalPadding = 0,
     this.secondaryColors = false,
     this.thirdColors = false,
+    this.maxLines = 1,
     Key? key,
   }) : super(key: key);
 
+  final int maxLines;
   final bool secondaryColors;
   final bool thirdColors;
   final double horizontalPadding;
@@ -56,6 +58,7 @@ class SimpleTextButton extends StatelessWidget {
             text,
             textAlign: TextAlign.center,
             overflow: TextOverflow.ellipsis,
+            maxLines: maxLines,
             style: kBody.copyWith(
               color: isErrorText
                   ? Theme.of(context).colorScheme.error

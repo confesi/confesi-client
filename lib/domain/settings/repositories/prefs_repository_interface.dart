@@ -5,15 +5,16 @@ import 'package:dartz/dartz.dart';
 
 abstract class IPrefsRepository {
   //! Appearance prefs.
-  Future<Either<Failure, Success>> setAppearance(AppearanceEnum settingValue);
+  Future<Either<Failure, Success>> setAppearance(
+      AppearanceEnum settingValue, Type enumType);
 
   Future<Either<Failure, AppearanceEnum>> loadAppearance(
-      AppearanceEnum settingValue);
+      List enumValues, Type enumType);
 
   //! Reduced animation prefs.
   Future<Either<Failure, Success>> setReducedAnimations(
-      ReducedAnimationsEnum settingValue);
+      ReducedAnimationsEnum settingValue, Type enumType);
 
   Future<Either<Failure, ReducedAnimationsEnum>> loadReducedAnimations(
-      ReducedAnimationsEnum settingValue);
+      List enumValues, Type enumType);
 }

@@ -1,5 +1,7 @@
 import 'package:Confessi/application/settings/appearance_cubit.dart';
-import 'package:Confessi/core/utils/styles/theme_name.dart';
+import 'package:Confessi/application/settings/prefs_cubit.dart';
+import 'package:Confessi/constants/enums_that_are_local_keys.dart';
+import 'package:Confessi/core/utils/styles/appearance_name.dart';
 import 'package:Confessi/presentation/settings/screens/home.dart';
 import 'package:Confessi/presentation/settings/widgets/bool_selection_group.dart';
 import 'package:Confessi/presentation/settings/widgets/header_text.dart';
@@ -52,24 +54,44 @@ class AppearanceScreen extends StatelessWidget {
                         text: "Choose appearance",
                         selectionTiles: [
                           BoolSelectionTile(
-                              topRounded: true,
-                              isActive:
-                                  false, // context.watch<AppearanceCubit>().state
-                              icon: CupertinoIcons.device_laptop,
-                              text: "System (currently ${themeName(context)})",
-                              onTap: () => print("set system")),
-                          BoolSelectionTile(
-                            isActive: false,
-                            icon: CupertinoIcons.sun_min,
-                            text: "Light",
-                            onTap: () => print("set light"),
+                            topRounded: true,
+                            isActive: context
+                                    .watch<PrefsCubit>()
+                                    .prefs
+                                    .appearanceEnum ==
+                                AppearanceEnum.system,
+                            icon: CupertinoIcons.device_laptop,
+                            text:
+                                "System (currently ${appearanceName(context)})",
+                            onTap: () => context
+                                .read<PrefsCubit>()
+                                .setAppearance(AppearanceEnum.system),
                           ),
                           BoolSelectionTile(
-                              bottomRounded: true,
-                              isActive: false,
-                              icon: CupertinoIcons.moon,
-                              text: "Dark",
-                              onTap: () => print("set dark")),
+                            isActive: context
+                                    .watch<PrefsCubit>()
+                                    .prefs
+                                    .appearanceEnum ==
+                                AppearanceEnum.light,
+                            icon: CupertinoIcons.sun_min,
+                            text: "Light",
+                            onTap: () => context
+                                .read<PrefsCubit>()
+                                .setAppearance(AppearanceEnum.light),
+                          ),
+                          BoolSelectionTile(
+                            bottomRounded: true,
+                            isActive: context
+                                    .watch<PrefsCubit>()
+                                    .prefs
+                                    .appearanceEnum ==
+                                AppearanceEnum.dark,
+                            icon: CupertinoIcons.moon,
+                            text: "Dark",
+                            onTap: () => context
+                                .read<PrefsCubit>()
+                                .setAppearance(AppearanceEnum.dark),
+                          ),
                         ],
                       ),
                       const DisclaimerText(

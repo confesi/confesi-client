@@ -5,16 +5,25 @@ abstract class PrefsState extends Equatable {
   List<Object?> get props => [];
 }
 
+// TODO: revamp all these states lmao
+
 class PrefsLoading extends PrefsState {}
 
 class PrefsLoaded extends PrefsState {
-  final BiometricAuthEnum biometricAuthEnum;
   final AppearanceEnum appearanceEnum;
 
-  PrefsLoaded({required this.biometricAuthEnum, required this.appearanceEnum});
+  PrefsLoaded({required this.appearanceEnum});
+
+  PrefsLoaded copyWith({
+    AppearanceEnum? appearanceEnum,
+  }) {
+    return PrefsLoaded(
+      appearanceEnum: appearanceEnum ?? this.appearanceEnum,
+    );
+  }
 
   @override
-  List<Object?> get props => [biometricAuthEnum, appearanceEnum];
+  List<Object?> get props => [appearanceEnum];
 }
 
 class PrefsError extends PrefsState {}

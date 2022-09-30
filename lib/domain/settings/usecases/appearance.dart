@@ -6,25 +6,31 @@ import 'package:dartz/dartz.dart';
 import '../../../constants/enums_that_are_local_keys.dart';
 import '../../../core/results/successes.dart';
 
-class Appearance implements GetSetUsecase<AppearanceEnum> {
+class Appearance implements GetSetUsecase<AppearanceEnum, List> {
   final PrefsRepository repository;
 
   const Appearance({required this.repository});
 
   @override
   Future<Either<Failure, AppearanceEnum>> get(
-      AppearanceEnum appearanceEnum) async {
+      List enumValues, Type enumType) async {
     final failureOrAppearanceEnum =
-        await repository.loadAppearance(appearanceEnum);
+        await repository.loadAppearance(enumValues, enumType);
     return failureOrAppearanceEnum.fold(
-      (failure) => Left(failure),
+      (failure) {
+        if (failure is DBDefaultFailure) {
+          return const Right(AppearanceEnum.system); // Default choice.
+        }
+        return Left(failure);
+      },
       (appearanceEnum) => Right(appearanceEnum),
     );
   }
 
   @override
-  Future<Either<Failure, Success>> set(AppearanceEnum params) async {
-    final failureOrSuccess = await repository.setAppearance(params);
+  Future<Either<Failure, Success>> set(
+      AppearanceEnum enumData, Type enumType) async {
+    final failureOrSuccess = await repository.setAppearance(enumData, enumType);
     return failureOrSuccess.fold(
       (failure) => Left(failure),
       (success) => Right(SettingSuccess()),

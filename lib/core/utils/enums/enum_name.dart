@@ -2,4 +2,4 @@
 ///
 /// Ex: TestEnum test = TestEnum.hello;
 /// print(getLowercaseEnumName(TestEnum)); -> "testenum".
-String getLowercaseEnumName(Enum value) => value.toString().toLowerCase();
+String getLowercaseEnumName(Type value) => value.toString().toLowerCase();

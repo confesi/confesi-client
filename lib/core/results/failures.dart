@@ -93,10 +93,10 @@ class BiometricAttemptsExausted extends Failure {}
 /// A general case for when a biometric operation fails.
 class BiometricFailure extends Failure {}
 
-//! Setting failure
+//! Local db failure
 
 /// A failure for when updating a setting fails.
-class SettingFailure extends Failure {}
+class LocalDBFailure extends Failure {}
 
 /// A failure for when a setting is unwritten locally, meaning, it's default.
-class SettingDefaultFailure extends Failure {}
+class DBDefaultFailure extends Failure {}

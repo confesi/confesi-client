@@ -1,33 +1,31 @@
-import 'package:Confessi/constants/hive_boxe_names.dart';
+import 'package:Confessi/constants/enums_that_are_local_keys.dart';
+import 'package:Confessi/constants/hive_box_names.dart';
+import 'package:Confessi/core/clients/hive_get_client.dart';
+import 'package:Confessi/core/results/exceptions.dart';
 import 'package:Confessi/core/results/successes.dart';
+import 'package:Confessi/core/utils/enums/string_to_enum.dart';
 import 'package:hive/hive.dart';
 
 import '../../../core/utils/enums/enum_name.dart';
 import '../../../core/utils/enums/enum_to_string.dart';
-import '../../../core/utils/enums/string_to_enum.dart';
 
 abstract class IPrefsDatasource {
   // Load pref.
-  Future<T> loadPref<T extends Enum>(T enumData);
+  Future loadPref(List enumValues, Type enumType);
   // Set pref.
-  Future<Success> setPref(Enum enumData);
+  Future<Success> setPref(Enum enumData, Type enumType);
 }
 
 class PrefsDatasource implements IPrefsDatasource {
   @override
-  Future<T> loadPref<T extends Enum>(T enumData) async {
-    return stringToEnum<T>(
-      await Hive.box(preferencesBox).get(
-        getLowercaseEnumName(enumData),
-      ),
-      (enumData as dynamic).values,
-    );
-  }
+  Future loadPref(List enumValues, Type enumType) async => stringToEnum(
+      await hiveGet(preferencesBox, getLowercaseEnumName(enumType)),
+      enumValues);
 
   @override
-  Future<Success> setPref(Enum enumData) async {
+  Future<Success> setPref(Enum enumData, Type enumType) async {
     await Hive.box(preferencesBox)
-        .put(getLowercaseEnumName(enumData), enumToString<Enum>(enumData));
+        .put(getLowercaseEnumName(enumType), enumToString(enumData));
     return SettingSuccess();
   }
 }

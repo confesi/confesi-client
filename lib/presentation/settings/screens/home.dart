@@ -183,6 +183,12 @@ class SettingsHome extends StatelessWidget {
                               text: "Delete Account",
                               onTap: () => print("tap"),
                             ),
+                            SettingTile(
+                              isRedText: true,
+                              icon: CupertinoIcons.refresh_thin,
+                              text: "Reset local preferences",
+                              onTap: () => print("reset"),
+                            ),
                           ],
                         ),
                         const DisclaimerText(
