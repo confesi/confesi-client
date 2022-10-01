@@ -24,6 +24,7 @@ class PrefsCubit extends Cubit<PrefsState> {
 
   /// Get all prefs.
   Future<PrefsState> loadInitialPrefs() async {
+    // await Future.delayed(const Duration(milliseconds: 2000));
     return (await appearance.get(AppearanceEnum.values, AppearanceEnum)).fold(
       (failure) {
         emit(PrefsError());

@@ -31,6 +31,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   }) : super(UnknownUserStatus());
 
   Future<void> silentlyAuthenticateUser() async {
+    // await Future.delayed(const Duration(milliseconds: 250)); // TODO: Remove; just for testing.
     final failureOrSuccess = await silentAuthentication(NoParams());
     failureOrSuccess.fold(
       (failure) {
@@ -43,8 +44,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   }
 
   /// Registers the user. Upon error, returns [UserError].
-  Future<void> registerUser(
-      String username, String password, String email) async {
+  Future<void> registerUser(String username, String password, String email) async {
     emit(UserLoading());
     final usernameEither = usernameValidator(username);
     final passwordEither = passwordValidator(password);
@@ -64,8 +64,8 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
                 emit(UserError(message: failureToMessage(failure)));
               },
               (email) async {
-                final failureOrSuccess = await register(RegisterParams(
-                    username: username, email: email, password: password));
+                final failureOrSuccess =
+                    await register(RegisterParams(username: username, email: email, password: password));
                 failureOrSuccess.fold(
                   (failure) {
                     emit(UserError(message: failureToMessage(failure)));
@@ -97,8 +97,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
             emit(UserError(message: failureToMessage(failure)));
           },
           (password) async {
-            final failureOrSuccess = await login(LoginParams(
-                usernameOrEmail: usernameOrEmail, password: password));
+            final failureOrSuccess = await login(LoginParams(usernameOrEmail: usernameOrEmail, password: password));
             failureOrSuccess.fold(
               (failure) {
                 emit(UserError(message: failureToMessage(failure)));

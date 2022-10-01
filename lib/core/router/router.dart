@@ -1,3 +1,4 @@
+import 'package:Confessi/error_loading_prefs_screen.dart';
 import 'package:Confessi/presentation/create_post/screens/details.dart';
 import 'package:Confessi/presentation/create_post/screens/home.dart';
 import 'package:Confessi/presentation/daily_hottest/screens/leaderboard.dart';
@@ -10,6 +11,7 @@ import 'package:Confessi/presentation/settings/screens/faq.dart';
 import 'package:Confessi/presentation/settings/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:page_transition/page_transition.dart';
 
 import '../../dependency_injection.dart';
 import '../../presentation/authentication/screens/home.dart';
@@ -31,9 +33,18 @@ class AppRouter {
     List<String> fullScreenDialogRoutes = [
       "/home/post/stats",
       "/home/create_replied_post",
-      "/feedback"
+      "/feedback",
     ];
     return fullScreenDialogRoutes.contains(routeSettings.name) ? true : false;
+  }
+
+  // Checks which routes show as a fade animation.
+  bool isFadeAnim(RouteSettings routeSettings) {
+    List<String> fadeAnimDialogRoutes = [
+      "/home",
+      // "/prefsError",
+    ];
+    return fadeAnimDialogRoutes.contains(routeSettings.name) ? true : false;
   }
 
   /// Converts: navigating to a named route -> that actual route.
@@ -156,13 +167,27 @@ class AppRouter {
       case "/settings/watchedUniversities":
         page = const Text("Watched universities");
         break;
+      case "/prefsError":
+        page = const ErrorLoadingPrefsScreen();
+        break;
       default:
         throw Exception("Named route ${routeSettings.name} not defined");
     }
-    return MaterialPageRoute(
-      fullscreenDialog: isFullScreen(routeSettings),
-      settings: routeSettings,
-      builder: (_) => page,
-    );
+    if (isFadeAnim(routeSettings)) {
+      return PageTransition(
+        child: page,
+        alignment: Alignment.center,
+        type: PageTransitionType.fade,
+        duration: const Duration(
+          milliseconds: 250,
+        ),
+      );
+    } else {
+      return MaterialPageRoute(
+        fullscreenDialog: isFullScreen(routeSettings),
+        settings: routeSettings,
+        builder: (_) => page,
+      );
+    }
   }
 }
