@@ -1,4 +1,3 @@
-import 'package:Confessi/error_loading_prefs_screen.dart';
 import 'package:Confessi/presentation/create_post/screens/details.dart';
 import 'package:Confessi/presentation/create_post/screens/home.dart';
 import 'package:Confessi/presentation/daily_hottest/screens/leaderboard.dart';
@@ -6,6 +5,7 @@ import 'package:Confessi/presentation/easter_eggs/screens/overscroll.dart';
 import 'package:Confessi/presentation/feed/screens/detail_view.dart';
 import 'package:Confessi/presentation/feed/screens/post_advanced_details.dart';
 import 'package:Confessi/presentation/feedback/screens/home.dart';
+import 'package:Confessi/presentation/initialization/screens/critical_error.dart';
 import 'package:Confessi/presentation/settings/screens/appearance.dart';
 import 'package:Confessi/presentation/settings/screens/faq.dart';
 import 'package:Confessi/presentation/settings/screens/home.dart';
@@ -19,7 +19,6 @@ import '../../presentation/authentication/screens/login.dart';
 import '../../presentation/authentication/screens/onboarding.dart';
 import '../../presentation/authentication/screens/open.dart';
 import '../../presentation/authentication/screens/register.dart';
-import '../../presentation/authentication/screens/splash.dart';
 import '../../application/daily_hottest/hottest_cubit.dart';
 import '../../application/daily_hottest/leaderboard_cubit.dart';
 import '../../application/feed/recents_cubit.dart';
@@ -34,16 +33,14 @@ class AppRouter {
       "/home/post/stats",
       "/home/create_replied_post",
       "/feedback",
+      "/prefsError",
     ];
     return fullScreenDialogRoutes.contains(routeSettings.name) ? true : false;
   }
 
   // Checks which routes show as a fade animation.
   bool isFadeAnim(RouteSettings routeSettings) {
-    List<String> fadeAnimDialogRoutes = [
-      "/home",
-      // "/prefsError",
-    ];
+    List<String> fadeAnimDialogRoutes = [];
     return fadeAnimDialogRoutes.contains(routeSettings.name) ? true : false;
   }
 
@@ -53,9 +50,6 @@ class AppRouter {
     Widget page;
     final args = routeSettings.arguments as Map<String, dynamic>?;
     switch (routeSettings.name) {
-      case "/splash":
-        page = const SplashScreen();
-        break;
       case "/open":
         page = const OpenScreen();
         break;
@@ -168,7 +162,7 @@ class AppRouter {
         page = const Text("Watched universities");
         break;
       case "/prefsError":
-        page = const ErrorLoadingPrefsScreen();
+        page = const CriticalErrorScreen();
         break;
       default:
         throw Exception("Named route ${routeSettings.name} not defined");

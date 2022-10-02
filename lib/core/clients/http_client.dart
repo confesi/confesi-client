@@ -41,20 +41,16 @@ class ApiClient {
     }
   }
 
-  void _setHeaderToken(String accessToken) =>
-      _headers['Authorization'] = "Bearer $accessToken";
+  void _setHeaderToken(String accessToken) => _headers['Authorization'] = "Bearer $accessToken";
 
   void _removeAuthHeader() => _headers.remove('Authorization');
 
   bool get _validToken {
-    if (_accessToken == null ||
-        _accessToken!.isEmpty ||
-        Jwt.isExpired(_accessToken!)) return false;
+    if (_accessToken == null || _accessToken!.isEmpty || Jwt.isExpired(_accessToken!)) return false;
     return true;
   }
 
-  Future<Response> _makeApiCall(
-      Method method, dynamic payload, String endpoint, bool retryable) async {
+  Future<Response> _makeApiCall(Method method, dynamic payload, String endpoint, bool retryable) async {
     final Uri url = Uri.parse("$kDomain$endpoint");
     final String body = jsonEncode(payload);
     const Duration timeout = Duration(seconds: 2);
@@ -62,26 +58,19 @@ class ApiClient {
     late Response response;
     switch (method) {
       case Method.post:
-        response = await http
-            .post(url, body: body, headers: _headers)
-            .timeout(timeout);
+        response = await http.post(url, body: body, headers: _headers).timeout(timeout);
         break;
       case Method.get:
         response = await http.get(url, headers: _headers).timeout(timeout);
         break;
       case Method.delete:
-        response = await http
-            .delete(url, body: body, headers: _headers)
-            .timeout(timeout);
+        response = await http.delete(url, body: body, headers: _headers).timeout(timeout);
         break;
       case Method.patch:
-        response = await http
-            .patch(url, body: body, headers: _headers)
-            .timeout(timeout);
+        response = await http.patch(url, body: body, headers: _headers).timeout(timeout);
         break;
       case Method.put:
-        response =
-            await http.put(url, body: body, headers: _headers).timeout(timeout);
+        response = await http.put(url, body: body, headers: _headers).timeout(timeout);
         break;
       default:
         throw UnimplementedError("API verb doesn't exit");
@@ -92,8 +81,7 @@ class ApiClient {
       if (refreshToken == null || refreshToken.isEmpty) {
         throw EmptyTokenException();
       }
-      final tokenResponse = await _makeApiCall(
-          Method.post, {'token': refreshToken}, "/api/user/token", false);
+      final tokenResponse = await _makeApiCall(Method.post, {'token': refreshToken}, "/api/user/token", false);
       if (tokenResponse.statusCode == 201 || tokenResponse.statusCode == 200) {
         _setHeaderToken(jsonDecode(tokenResponse.body)['accessToken']);
         return await _makeApiCall(method, payload, endpoint, false);
@@ -117,8 +105,7 @@ class ApiClient {
       if (refreshToken == null || refreshToken.isEmpty) {
         throw EmptyTokenException();
       }
-      final tokenResponse = await _makeApiCall(
-          Method.post, {'token': refreshToken}, "/api/user/token", false);
+      final tokenResponse = await _makeApiCall(Method.post, {'token': refreshToken}, "/api/user/token", false);
       if (tokenResponse.statusCode == 201 || tokenResponse.statusCode == 200) {
         _setHeaderToken(jsonDecode(tokenResponse.body)['accessToken']);
         return Right(ApiSuccess());
@@ -132,13 +119,12 @@ class ApiClient {
     }
   }
 
-  Future<Response> req(
-      bool isProtectedRoute, Method method, dynamic payload, String endpoint,
+  Future<Response> req(bool isProtectedRoute, Method method, dynamic payload, String endpoint,
       {bool dummyData = false,
       String? dummyPath,
 
-      // Percentage change of there being an error thrown. Defaults to 0% (0.0).
-      double dummyErrorChance = 0.0,
+      // Percentage change of there being an error thrown.
+      double dummyErrorChance = 0.05,
       int dummyErrorStatusCode = 400,
       String dummyErrorMessage = 'default error',
       Duration dummyDelay = const Duration(milliseconds: 800),
@@ -146,16 +132,13 @@ class ApiClient {
     // Random chance of returning error.
     if (Random().nextInt(100) <= dummyErrorChance * 100) {
       await Future.delayed(dummyDelay);
-      return http.Response(
-          """{"error": "$dummyErrorMessage"}""", dummyErrorStatusCode);
+      return http.Response("""{"error": "$dummyErrorMessage"}""", dummyErrorStatusCode);
     }
     if (dummyData) {
-      print(
-          "===> DUMMY api route used, endpoint: $endpoint, payload: $payload, ");
+      print("===> DUMMY api route used, endpoint: $endpoint, payload: $payload, ");
       try {
         await Future.delayed(dummyDelay);
-        final String dummyResponse =
-            await rootBundle.loadString('assets/dummy_json/$dummyPath');
+        final String dummyResponse = await rootBundle.loadString('assets/dummy_json/$dummyPath');
         return http.Response(dummyResponse, dummyStatusCode);
       } catch (e) {
         print(
@@ -166,14 +149,12 @@ class ApiClient {
     if (isProtectedRoute) {
       if (!_validToken) {
         // refresh access token variable
-        final String? refreshToken =
-            await secureStorage.read(key: 'refreshToken');
+        final String? refreshToken = await secureStorage.read(key: 'refreshToken');
         if (refreshToken == null || refreshToken.isEmpty) {
           throw EmptyTokenException();
         }
         try {
-          final response = await _makeApiCall(
-              Method.post, {'token': refreshToken}, "/api/user/token", true);
+          final response = await _makeApiCall(Method.post, {'token': refreshToken}, "/api/user/token", true);
           if (response.statusCode == 200 || response.statusCode == 201) {
             _setHeaderToken(jsonDecode(response.body)['accessToken']);
             return await _makeApiCall(method, payload, endpoint, true);

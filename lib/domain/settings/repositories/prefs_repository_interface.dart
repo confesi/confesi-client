@@ -4,17 +4,21 @@ import 'package:Confessi/core/results/successes.dart';
 import 'package:dartz/dartz.dart';
 
 abstract class IPrefsRepository {
-  //! Appearance prefs.
-  Future<Either<Failure, Success>> setAppearance(
-      AppearanceEnum settingValue, Type enumType);
+  //! Load refresh token.
+  Future<Either<Failure, String>> loadRefreshToken();
 
-  Future<Either<Failure, AppearanceEnum>> loadAppearance(
-      List enumValues, Type enumType);
+  //! Appearance prefs.
+  Future<Either<Failure, Success>> setAppearance(AppearanceEnum settingValue, Type enumType);
+
+  Future<Either<Failure, AppearanceEnum>> loadAppearance(List enumValues, Type enumType);
 
   //! Reduced animation prefs.
-  Future<Either<Failure, Success>> setReducedAnimations(
-      ReducedAnimationsEnum settingValue, Type enumType);
+  Future<Either<Failure, Success>> setReducedAnimations(ReducedAnimationsEnum settingValue, Type enumType);
 
-  Future<Either<Failure, ReducedAnimationsEnum>> loadReducedAnimations(
-      List enumValues, Type enumType);
+  Future<Either<Failure, ReducedAnimationsEnum>> loadReducedAnimations(List enumValues, Type enumType);
+
+  //! First time prefs.
+  Future<Either<Failure, Success>> setFirstTime(FirstTimeEnum settingValue, Type enumType);
+
+  Future<Either<Failure, FirstTimeEnum>> loadFirstTime(List enumValues, Type enumType);
 }

@@ -12,8 +12,20 @@ class PrefsRepository implements IPrefsRepository {
   const PrefsRepository({required this.datasource});
 
   @override
-  Future<Either<Failure, AppearanceEnum>> loadAppearance(
-      List enumValues, Type enumType) async {
+  Future<Either<Failure, String>> loadRefreshToken() async {
+    try {
+      return Right(await datasource.loadRefreshToken());
+    } catch (e) {
+      if (e is EmptyTokenException) {
+        return Left(EmptyTokenFailure());
+      } else {
+        return Left(LocalDBFailure());
+      }
+    }
+  }
+
+  @override
+  Future<Either<Failure, AppearanceEnum>> loadAppearance(List enumValues, Type enumType) async {
     try {
       return Right(await datasource.loadPref(enumValues, enumType));
     } on DBDefaultException {
@@ -24,8 +36,7 @@ class PrefsRepository implements IPrefsRepository {
   }
 
   @override
-  Future<Either<Failure, ReducedAnimationsEnum>> loadReducedAnimations(
-      List enumValues, Type enumType) async {
+  Future<Either<Failure, ReducedAnimationsEnum>> loadReducedAnimations(List enumValues, Type enumType) async {
     try {
       return Right(await datasource.loadPref(enumValues, enumType));
     } on DBDefaultException {
@@ -36,8 +47,7 @@ class PrefsRepository implements IPrefsRepository {
   }
 
   @override
-  Future<Either<Failure, Success>> setAppearance(
-      AppearanceEnum settingValue, Type enumType) async {
+  Future<Either<Failure, Success>> setAppearance(AppearanceEnum settingValue, Type enumType) async {
     try {
       return Right(await datasource.setPref(settingValue, enumType));
     } catch (e) {
@@ -46,8 +56,27 @@ class PrefsRepository implements IPrefsRepository {
   }
 
   @override
-  Future<Either<Failure, Success>> setReducedAnimations(
-      ReducedAnimationsEnum settingValue, Type enumType) async {
+  Future<Either<Failure, Success>> setReducedAnimations(ReducedAnimationsEnum settingValue, Type enumType) async {
+    try {
+      return Right(await datasource.setPref(settingValue, enumType));
+    } catch (e) {
+      return Left(LocalDBFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, FirstTimeEnum>> loadFirstTime(List enumValues, Type enumType) async {
+    try {
+      return Right(await datasource.loadPref(enumValues, enumType));
+    } on DBDefaultException {
+      return Left(DBDefaultFailure());
+    } catch (e) {
+      return Left(LocalDBFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, Success>> setFirstTime(FirstTimeEnum settingValue, Type enumType) async {
     try {
       return Right(await datasource.setPref(settingValue, enumType));
     } catch (e) {

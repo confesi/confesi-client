@@ -36,5 +36,5 @@ class User extends AuthenticationState {
 /// No authenticated user exists.
 class NoUser extends AuthenticationState {}
 
-/// User is currently being registered or signed in.
+/// User is currently being registered or logged in.
 class UserLoading extends AuthenticationState {}

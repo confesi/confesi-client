@@ -1,4 +1,3 @@
-import 'package:Confessi/application/settings/appearance_cubit.dart';
 import 'package:Confessi/application/settings/prefs_cubit.dart';
 import 'package:Confessi/constants/enums_that_are_local_keys.dart';
 import 'package:Confessi/core/utils/styles/appearance_name.dart';
@@ -35,8 +34,7 @@ class AppearanceScreen extends StatelessWidget {
                 backgroundColor: Theme.of(context).colorScheme.shadow,
                 centerWidget: Text(
                   'Appearance',
-                  style: kTitle.copyWith(
-                      color: Theme.of(context).colorScheme.primary),
+                  style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
                 ),
@@ -55,49 +53,28 @@ class AppearanceScreen extends StatelessWidget {
                         selectionTiles: [
                           BoolSelectionTile(
                             topRounded: true,
-                            isActive: context
-                                    .watch<PrefsCubit>()
-                                    .prefs
-                                    .appearanceEnum ==
-                                AppearanceEnum.system,
+                            isActive: context.watch<PrefsCubit>().prefs.appearanceEnum == AppearanceEnum.system,
                             icon: CupertinoIcons.device_laptop,
-                            text:
-                                "System (currently ${appearanceName(context)})",
-                            onTap: () => context
-                                .read<PrefsCubit>()
-                                .setAppearance(AppearanceEnum.system),
+                            text: "System (currently ${appearanceName(context)})",
+                            onTap: () => context.read<PrefsCubit>().setAppearance(AppearanceEnum.system),
                           ),
                           BoolSelectionTile(
-                            isActive: context
-                                    .watch<PrefsCubit>()
-                                    .prefs
-                                    .appearanceEnum ==
-                                AppearanceEnum.light,
+                            isActive: context.watch<PrefsCubit>().prefs.appearanceEnum == AppearanceEnum.light,
                             icon: CupertinoIcons.sun_min,
                             text: "Light",
-                            onTap: () => context
-                                .read<PrefsCubit>()
-                                .setAppearance(AppearanceEnum.light),
+                            onTap: () => context.read<PrefsCubit>().setAppearance(AppearanceEnum.light),
                           ),
                           BoolSelectionTile(
                             bottomRounded: true,
-                            isActive: context
-                                    .watch<PrefsCubit>()
-                                    .prefs
-                                    .appearanceEnum ==
-                                AppearanceEnum.dark,
+                            isActive: context.watch<PrefsCubit>().prefs.appearanceEnum == AppearanceEnum.dark,
                             icon: CupertinoIcons.moon,
                             text: "Dark",
-                            onTap: () => context
-                                .read<PrefsCubit>()
-                                .setAppearance(AppearanceEnum.dark),
+                            onTap: () => context.read<PrefsCubit>().setAppearance(AppearanceEnum.dark),
                           ),
                         ],
                       ),
                       const DisclaimerText(
-                          verticalPadding: 15,
-                          text:
-                              "These preferences are saved locally to your device."),
+                          verticalPadding: 15, text: "These preferences are saved locally to your device."),
                       const SimulatedBottomSafeArea(),
                     ],
                   ),

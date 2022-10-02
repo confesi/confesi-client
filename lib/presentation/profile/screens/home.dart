@@ -1,27 +1,17 @@
-import 'dart:math';
-
-import 'package:Confessi/application/authentication/authentication_cubit.dart';
-import 'package:Confessi/application/settings/appearance_cubit.dart';
-import 'package:Confessi/core/utils/numbers/number_until_limit.dart';
 import 'package:Confessi/presentation/shared/behaviours/bottom_overscroll_scroll_to_top.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
 import 'package:Confessi/presentation/shared/behaviours/shrinking_view.dart';
 import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
-import 'package:Confessi/presentation/shared/behaviours/visibility_change_pop.dart';
 import 'package:Confessi/presentation/shared/edited_source_widgets/swipe_refresh.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 // TODO: make custom AMAZING loading indicator
 import '../../../core/styles/typography.dart';
-import '../../../core/utils/numbers/add_commas_to_number.dart';
 import '../../../core/utils/sizing/height_fraction.dart';
 import '../../../core/utils/sizing/width_fraction.dart';
 import '../../shared/buttons/emblem.dart';
 import '../../shared/buttons/simple_text.dart';
-import '../../shared/overlays/feedback_sheet.dart';
 import '../../shared/overlays/info_sheet.dart';
 import '../../shared/text/group.dart';
 import '../widgets/stat_tile.dart';
@@ -79,9 +69,7 @@ class _ProfileHomeState extends State<ProfileHome> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Transform.scale(
-                        scale: (1 - extraHeight / 700) > .8
-                            ? (1 - extraHeight / 700)
-                            : .8,
+                        scale: (1 - extraHeight / 700) > .8 ? (1 - extraHeight / 700) : .8,
                         child: ClipRRect(
                           borderRadius: BorderRadius.all(
                             Radius.circular(40 + extraHeight / 7),
@@ -105,36 +93,23 @@ class _ProfileHomeState extends State<ProfileHome> {
                               height: 120,
                               width: double.infinity,
                               child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 10),
+                                padding: const EdgeInsets.symmetric(horizontal: 10),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.end,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     EmblemButton(
-                                      backgroundColor: Theme.of(context)
-                                          .colorScheme
-                                          .background,
+                                      backgroundColor: Theme.of(context).colorScheme.background,
                                       icon: CupertinoIcons.lock,
-                                      onPress: () => showInfoSheet(
-                                          context,
-                                          "Privacy is Key",
+                                      onPress: () => showInfoSheet(context, "Privacy is Key",
                                           "This profile is only visible to you, hence the biometric authentication. This extra layer of security can be disabled in settings."),
-                                      iconColor: Theme.of(context)
-                                          .colorScheme
-                                          .onSurface,
+                                      iconColor: Theme.of(context).colorScheme.onSurface,
                                     ),
                                     EmblemButton(
-                                      backgroundColor: Theme.of(context)
-                                          .colorScheme
-                                          .background,
+                                      backgroundColor: Theme.of(context).colorScheme.background,
                                       icon: CupertinoIcons.gear,
-                                      onPress: () => Navigator.of(context)
-                                          .pushNamed("/settings"),
-                                      iconColor: Theme.of(context)
-                                          .colorScheme
-                                          .onSurface,
+                                      onPress: () => Navigator.of(context).pushNamed("/settings"),
+                                      iconColor: Theme.of(context).colorScheme.onSurface,
                                     ),
                                   ],
                                 ),
@@ -148,8 +123,7 @@ class _ProfileHomeState extends State<ProfileHome> {
                                 shape: BoxShape.circle,
                                 border: Border.all(
                                   strokeAlign: StrokeAlign.outside,
-                                  color:
-                                      Theme.of(context).colorScheme.background,
+                                  color: Theme.of(context).colorScheme.background,
                                   width: 5,
                                 ),
                               ),
@@ -173,8 +147,7 @@ class _ProfileHomeState extends State<ProfileHome> {
                             Transform.translate(
                               offset: const Offset(0, 60),
                               child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 15),
+                                padding: const EdgeInsets.symmetric(horizontal: 15),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -185,8 +158,7 @@ class _ProfileHomeState extends State<ProfileHome> {
                                         children: [
                                           Expanded(
                                             child: SimpleTextButton(
-                                              onTap: () =>
-                                                  print("tap comments"),
+                                              onTap: () => print("tap comments"),
                                               text: "Comments",
                                             ),
                                           ),
@@ -232,22 +204,16 @@ class _ProfileHomeState extends State<ProfileHome> {
                                           child: Text(
                                             "Your achievements (rarest first)",
                                             style: kTitle.copyWith(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .primary,
+                                              color: Theme.of(context).colorScheme.primary,
                                             ),
                                           ),
                                         ),
                                         const SizedBox(width: 10),
                                         EmblemButton(
-                                          backgroundColor: Theme.of(context)
-                                              .colorScheme
-                                              .background,
+                                          backgroundColor: Theme.of(context).colorScheme.background,
                                           icon: CupertinoIcons.ellipsis,
                                           onPress: () => print("tap"),
-                                          iconColor: Theme.of(context)
-                                              .colorScheme
-                                              .onSurface,
+                                          iconColor: Theme.of(context).colorScheme.onSurface,
                                         ),
                                       ],
                                     ),
@@ -261,8 +227,7 @@ class _ProfileHomeState extends State<ProfileHome> {
                                         StaggeredGridTile.count(
                                           crossAxisCellCount: 2,
                                           mainAxisCellCount: 2,
-                                          child:
-                                              Container(color: Colors.purple),
+                                          child: Container(color: Colors.purple),
                                         ),
                                         StaggeredGridTile.count(
                                           crossAxisCellCount: 2,
@@ -272,8 +237,7 @@ class _ProfileHomeState extends State<ProfileHome> {
                                         StaggeredGridTile.count(
                                           crossAxisCellCount: 1,
                                           mainAxisCellCount: 1,
-                                          child:
-                                              Container(color: Colors.yellow),
+                                          child: Container(color: Colors.yellow),
                                         ),
                                         StaggeredGridTile.count(
                                           crossAxisCellCount: 1,
@@ -283,14 +247,12 @@ class _ProfileHomeState extends State<ProfileHome> {
                                         StaggeredGridTile.count(
                                           crossAxisCellCount: 2,
                                           mainAxisCellCount: 2,
-                                          child:
-                                              Container(color: Colors.orange),
+                                          child: Container(color: Colors.orange),
                                         ),
                                         StaggeredGridTile.count(
                                           crossAxisCellCount: 2,
                                           mainAxisCellCount: 2,
-                                          child:
-                                              Container(color: Colors.purple),
+                                          child: Container(color: Colors.purple),
                                         ),
                                         StaggeredGridTile.count(
                                           crossAxisCellCount: 1,
@@ -307,8 +269,7 @@ class _ProfileHomeState extends State<ProfileHome> {
                                         StaggeredGridTile.count(
                                           crossAxisCellCount: 2,
                                           mainAxisCellCount: 2,
-                                          child:
-                                              Container(color: Colors.purple),
+                                          child: Container(color: Colors.purple),
                                         ),
                                         StaggeredGridTile.count(
                                           crossAxisCellCount: 2,
@@ -318,8 +279,7 @@ class _ProfileHomeState extends State<ProfileHome> {
                                         StaggeredGridTile.count(
                                           crossAxisCellCount: 1,
                                           mainAxisCellCount: 1,
-                                          child:
-                                              Container(color: Colors.yellow),
+                                          child: Container(color: Colors.yellow),
                                         ),
                                         StaggeredGridTile.count(
                                           crossAxisCellCount: 1,
@@ -329,14 +289,12 @@ class _ProfileHomeState extends State<ProfileHome> {
                                         StaggeredGridTile.count(
                                           crossAxisCellCount: 2,
                                           mainAxisCellCount: 2,
-                                          child:
-                                              Container(color: Colors.orange),
+                                          child: Container(color: Colors.orange),
                                         ),
                                         StaggeredGridTile.count(
                                           crossAxisCellCount: 2,
                                           mainAxisCellCount: 2,
-                                          child:
-                                              Container(color: Colors.purple),
+                                          child: Container(color: Colors.purple),
                                         ),
                                         StaggeredGridTile.count(
                                           crossAxisCellCount: 1,

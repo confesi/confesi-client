@@ -24,3 +24,13 @@ enum AppearanceEnum {
   light,
   system,
 }
+
+enum RefreshTokenEnum {
+  hasOne,
+  doesntHaveOne,
+}
+
+enum FirstTimeEnum {
+  firstTime,
+  notFirstTime,
+}
