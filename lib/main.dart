@@ -1,5 +1,5 @@
 import 'package:Confessi/application/create_post/post_cubit.dart';
-import 'package:Confessi/application/settings/prefs_cubit.dart';
+import 'package:Confessi/application/shared/prefs_cubit.dart';
 import 'package:Confessi/constants/enums_that_are_local_keys.dart';
 import 'package:Confessi/presentation/initialization/screens/splash.dart';
 import 'package:device_preview/device_preview.dart';

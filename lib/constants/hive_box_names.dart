@@ -6,4 +6,4 @@
 
 // ***** IMPORTANT *****
 
-const String preferencesBox = "prefs";
+const String preferencesBox = "prefs1";

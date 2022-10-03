@@ -16,7 +16,7 @@ import 'package:page_transition/page_transition.dart';
 import '../../dependency_injection.dart';
 import '../../presentation/authentication/screens/home.dart';
 import '../../presentation/authentication/screens/login.dart';
-import '../../presentation/authentication/screens/onboarding.dart';
+import '../../presentation/initialization/screens/onboarding.dart';
 import '../../presentation/authentication/screens/open.dart';
 import '../../presentation/authentication/screens/register.dart';
 import '../../application/daily_hottest/hottest_cubit.dart';
@@ -39,9 +39,17 @@ class AppRouter {
   }
 
   // Checks which routes show as a fade animation.
+  bool isSizeAnim(RouteSettings routeSettings) {
+    List<String> sizeAnimDialogRoutes = [
+      "/home",
+    ];
+    return sizeAnimDialogRoutes.contains(routeSettings.name) ? true : false;
+  }
+
+  // Checks which routes show as a fade animation.
   bool isFadeAnim(RouteSettings routeSettings) {
     List<String> fadeAnimDialogRoutes = [
-      "/home",
+      "/onboarding",
     ];
     return fadeAnimDialogRoutes.contains(routeSettings.name) ? true : false;
   }
@@ -169,7 +177,7 @@ class AppRouter {
       default:
         throw Exception("Named route ${routeSettings.name} not defined");
     }
-    if (isFadeAnim(routeSettings)) {
+    if (isSizeAnim(routeSettings)) {
       return PageTransition(
         child: page,
         alignment: Alignment.center,
@@ -177,6 +185,16 @@ class AppRouter {
         curve: Curves.decelerate,
         duration: const Duration(
           milliseconds: 750,
+        ),
+      );
+    } else if (isFadeAnim(routeSettings)) {
+      return PageTransition(
+        child: page,
+        alignment: Alignment.center,
+        type: PageTransitionType.fade,
+        curve: Curves.decelerate,
+        duration: const Duration(
+          milliseconds: 250,
         ),
       );
     } else {

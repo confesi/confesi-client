@@ -1,4 +1,4 @@
-import 'package:Confessi/application/settings/prefs_cubit.dart';
+import 'package:Confessi/application/shared/prefs_cubit.dart';
 import 'package:Confessi/constants/enums_that_are_local_keys.dart';
 import 'package:Confessi/core/utils/styles/appearance_name.dart';
 import 'package:Confessi/presentation/settings/screens/home.dart';

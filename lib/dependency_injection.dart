@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:Confessi/application/settings/prefs_cubit.dart';
+import 'package:Confessi/application/shared/prefs_cubit.dart';
 import 'package:Confessi/constants/hive_box_names.dart';
 import 'package:Confessi/core/clients/http_client.dart';
 import 'package:Confessi/application/shared/scaffold_shrinker_cubit.dart';

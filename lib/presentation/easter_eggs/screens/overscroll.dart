@@ -1,9 +1,7 @@
 import 'package:Confessi/core/styles/typography.dart';
-import 'package:Confessi/core/utils/sizing/width_fraction.dart';
 import 'package:Confessi/presentation/shared/buttons/simple_text.dart';
 import 'package:flutter/material.dart';
-
-import '../../shared/behaviours/themed_status_bar.dart';
+import 'package:flutter/services.dart';
 
 class OverscrollEasterEgg extends StatelessWidget {
   const OverscrollEasterEgg({super.key});
@@ -12,7 +10,8 @@ class OverscrollEasterEgg extends StatelessWidget {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => false,
-      child: ThemedStatusBar(
+      child: AnnotatedRegion(
+        value: SystemUiOverlayStyle.dark,
         child: Scaffold(
           backgroundColor: Theme.of(context).colorScheme.secondary,
           body: Center(

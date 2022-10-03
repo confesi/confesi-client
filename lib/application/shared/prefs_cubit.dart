@@ -37,16 +37,22 @@ class PrefsCubit extends Cubit<PrefsState> {
       (failure) {
         emit(PrefsError());
       },
-      (refreshTokenResults) async {
+      (refreshTokenEnum) async {
         (await appearance.get(AppearanceEnum.values, AppearanceEnum)).fold(
           (failure) {
             emit(PrefsError());
           },
-          (appearanceEnum) {
-            // At the last step in the chain, emit the full state, using the variables from each step.
-            emit(PrefsLoaded(
-                hasRefreshToken: refreshTokenResults == RefreshTokenEnum.doesntHaveOne ? false : true,
-                appearanceEnum: appearanceEnum));
+          (appearanceEnum) async {
+            (await firstTime.get(FirstTimeEnum.values, FirstTimeEnum)).fold(
+              (failure) {
+                emit(PrefsError());
+              },
+              (firstTimeEnum) async {
+                // At the last step in the chain, emit the full state, using the variables from each step.
+                emit(PrefsLoaded(
+                    refreshTokenEnum: refreshTokenEnum, appearanceEnum: appearanceEnum, firstTimeEnum: firstTimeEnum));
+              },
+            );
           },
         );
       },
@@ -54,9 +60,18 @@ class PrefsCubit extends Cubit<PrefsState> {
   }
 
   /// Set appearance.
-  void setAppearance(AppearanceEnum appearanceEnum) async {
+  Future<void> setAppearance(AppearanceEnum appearanceEnum) async {
     emit(prefs.copyWith(appearanceEnum: appearanceEnum));
     (await appearance.set(appearanceEnum, AppearanceEnum)).fold(
+      (failure) => null, // show error message... scaffold messenger?
+      (success) => null, // do nothing
+    );
+  }
+
+  /// Set appearance.
+  Future<void> setFirstTime(FirstTimeEnum firstTimeEnum) async {
+    emit(prefs.copyWith(firstTimeEnum: firstTimeEnum));
+    (await firstTime.set(firstTimeEnum, FirstTimeEnum)).fold(
       (failure) => null, // show error message... scaffold messenger?
       (success) => null, // do nothing
     );

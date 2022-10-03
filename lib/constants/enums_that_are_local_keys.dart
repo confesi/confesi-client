@@ -26,8 +26,8 @@ enum AppearanceEnum {
 }
 
 enum RefreshTokenEnum {
-  hasOne,
-  doesntHaveOne,
+  hasRefreshToken,
+  noRefreshToken,
 }
 
 enum FirstTimeEnum {

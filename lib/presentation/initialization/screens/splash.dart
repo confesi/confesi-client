@@ -1,6 +1,7 @@
 import 'dart:math';
 
-import 'package:Confessi/application/settings/prefs_cubit.dart';
+import 'package:Confessi/application/shared/prefs_cubit.dart';
+import 'package:Confessi/constants/enums_that_are_local_keys.dart';
 import 'package:Confessi/core/styles/typography.dart';
 import 'package:Confessi/core/utils/sizing/height_fraction.dart';
 import 'package:Confessi/core/utils/sizing/width_fraction.dart';
@@ -77,11 +78,12 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
       listener: (context, state) {
         if (state is PrefsError) Navigator.of(context).pushNamed("/prefsError");
         if (state is PrefsLoaded) {
-          if (state.hasRefreshToken) Navigator.of(context).pushNamed("/home");
-          if (!state.hasRefreshToken) {
-            // FIRST TIME LOGIC
-            if (state.hasRefreshToken) Navigator.of(context).pushNamed("/home");
-            if (state.hasRefreshToken) Navigator.of(context).pushNamed("/home");
+          if (state.refreshTokenEnum != RefreshTokenEnum.hasRefreshToken) {
+            Navigator.of(context).pushNamed("/home");
+          } else {
+            // first time logic
+            if (state.firstTimeEnum == FirstTimeEnum.firstTime) Navigator.of(context).pushNamed("/onboarding");
+            if (state.firstTimeEnum == FirstTimeEnum.notFirstTime) Navigator.of(context).pushNamed("/open");
           }
         }
       },
@@ -107,8 +109,11 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                                 child: SizedBox(
                                   // width: widthBreakpointFraction(context, .5, 250),
                                   height: widthBreakpointFraction(context, .5, 250),
-                                  child: Image.asset(
-                                    "assets/images/logo2.png",
+                                  child: Hero(
+                                    tag: "logo",
+                                    child: Image.asset(
+                                      "assets/images/logo2.png",
+                                    ),
                                   ),
                                 ),
                               ),
