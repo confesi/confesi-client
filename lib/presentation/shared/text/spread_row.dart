@@ -45,13 +45,7 @@ class SpreadRowText extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            animateRows
-                ? InitTransform(
-                    transformDirection: TransformDirection.horizontal,
-                    magnitudeOfTransform: widthFraction(context, 1),
-                    child: buildLeftText(context),
-                  )
-                : buildLeftText(context),
+            animateRows ? buildLeftText(context) : buildLeftText(context),
             onPress != null
                 ? Row(
                     children: [
@@ -68,8 +62,8 @@ class SpreadRowText extends StatelessWidget {
             Expanded(
               child: animateRows
                   ? InitTransform(
+                      magnitudeOfTransform: widthFraction(context, .5),
                       transformDirection: TransformDirection.horizontal,
-                      magnitudeOfTransform: -widthFraction(context, 1),
                       child: buildRightText(context),
                     )
                   : buildRightText(context),

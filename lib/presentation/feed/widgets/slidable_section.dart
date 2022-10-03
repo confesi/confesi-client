@@ -24,36 +24,34 @@ class SlidableSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Flexible(
-      child: InitScale(
-        child: Container(
-          // Transparent hitbox trick.
-          color: Colors.transparent,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5),
-            child: TouchableOpacity(
-              tooltipLocation: TooltipLocation.above,
-              tooltip: tooltip,
-              onTap: () {
-                Slidable.of(context)?.close();
-                onPress();
-              },
-              child: Container(
-                // Transparent container hitbox trick.
-                color: Colors.transparent,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(icon),
-                    const SizedBox(height: 5),
-                    Text(
-                      text,
-                      style: kDetail.copyWith(
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                      textAlign: TextAlign.center,
-                    )
-                  ],
-                ),
+      child: Container(
+        // Transparent hitbox trick.
+        color: Colors.transparent,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5),
+          child: TouchableOpacity(
+            tooltipLocation: TooltipLocation.above,
+            tooltip: tooltip,
+            onTap: () {
+              Slidable.of(context)?.close();
+              onPress();
+            },
+            child: Container(
+              // Transparent container hitbox trick.
+              color: Colors.transparent,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(icon),
+                  const SizedBox(height: 5),
+                  Text(
+                    text,
+                    style: kDetail.copyWith(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    textAlign: TextAlign.center,
+                  )
+                ],
               ),
             ),
           ),

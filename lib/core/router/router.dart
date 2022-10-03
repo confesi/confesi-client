@@ -40,7 +40,9 @@ class AppRouter {
 
   // Checks which routes show as a fade animation.
   bool isFadeAnim(RouteSettings routeSettings) {
-    List<String> fadeAnimDialogRoutes = [];
+    List<String> fadeAnimDialogRoutes = [
+      "/home",
+    ];
     return fadeAnimDialogRoutes.contains(routeSettings.name) ? true : false;
   }
 
@@ -171,9 +173,10 @@ class AppRouter {
       return PageTransition(
         child: page,
         alignment: Alignment.center,
-        type: PageTransitionType.fade,
+        type: PageTransitionType.scale,
+        curve: Curves.decelerate,
         duration: const Duration(
-          milliseconds: 250,
+          milliseconds: 750,
         ),
       );
     } else {

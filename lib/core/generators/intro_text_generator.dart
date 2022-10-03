@@ -11,7 +11,8 @@ List<IntroText> _introTexts = [
   IntroText(text: "Share funny confessions with friends"),
   IntroText(text: "Get in on campus gossip"),
   IntroText(text: "Running out of ideas for this..."),
-  IntroText(text: "Made with love"),
+  IntroText(text: "Made with love and grit"),
+  IntroText(text: "It's not a bug, it's a feature"),
 ];
 
 class IntroText {

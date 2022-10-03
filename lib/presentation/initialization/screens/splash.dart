@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'package:Confessi/application/settings/prefs_cubit.dart';
 import 'package:Confessi/core/styles/typography.dart';
+import 'package:Confessi/core/utils/sizing/height_fraction.dart';
+import 'package:Confessi/core/utils/sizing/width_fraction.dart';
 import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -33,11 +35,11 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     introText = getIntro().text;
     _animController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: 650),
     );
     _anim = CurvedAnimation(
       parent: _animController,
-      curve: Curves.linear,
+      curve: Curves.easeOutBack,
     );
     startAnim();
     // Opens the feedback sheet when the phone is shook. Implemented on the [Splash] screen because it is only shown once per app run. Otherwise, mutliple shake listeners would be created.
@@ -56,11 +58,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   }
 
   void startAnim() async {
-    await Future.delayed(const Duration(milliseconds: 350));
-    _animController.forward().then((value) {
-      HapticFeedback.lightImpact();
-      _animController.reverse();
-    });
+    _animController.forward().then((value) => HapticFeedback.lightImpact());
     _animController.addListener(() {
       setState(() {});
     });
@@ -94,37 +92,44 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
           body: SafeArea(
             child: Center(
               child: ScrollableView(
-                child: Transform.scale(
-                  scale: (1 + 0.25 * _anim.value),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          width: widthBreakpointFraction(context, 1 / 4, 250),
-                          child: Text(
-                            "Confesi",
-                            style: kDisplay.copyWith(
-                              color: AppTheme.classicLight.colorScheme.onSecondary,
-                              fontSize: 50,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Column(
+                    children: [
+                      Transform.scale(
+                        scale: _anim.value,
+                        child: Column(
+                          children: [
+                            Transform.translate(
+                              offset: Offset(0, (200 - (200 * _anim.value)).toDouble()),
+                              child: Transform.rotate(
+                                angle: (2 * pi) - _anim.value * (2 * pi),
+                                child: SizedBox(
+                                  // width: widthBreakpointFraction(context, .5, 250),
+                                  height: widthBreakpointFraction(context, .5, 250),
+                                  child: Image.asset(
+                                    "assets/images/logo2.png",
+                                  ),
+                                ),
+                              ),
                             ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        const SizedBox(height: 30),
-                        SizedBox(
-                          width: widthBreakpointFraction(context, 1 / 4, 250),
-                          child: Text(
-                            introText,
-                            style: kBody.copyWith(
-                              color: AppTheme.classicLight.colorScheme.onSecondary,
+                            SizedBox(
+                              height: heightFraction(context, .3),
                             ),
-                            textAlign: TextAlign.center,
-                          ),
+                            SizedBox(
+                              width: widthBreakpointFraction(context, 1 / 4, 250),
+                              child: Text(
+                                introText,
+                                style: kBody.copyWith(
+                                  color: AppTheme.classicLight.colorScheme.onSecondary,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),

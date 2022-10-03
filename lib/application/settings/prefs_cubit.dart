@@ -32,7 +32,7 @@ class PrefsCubit extends Cubit<PrefsState> {
 
   /// Get all prefs and refresh token.
   Future<void> loadInitialPrefsAndTokens() async {
-    await Future.delayed(const Duration(milliseconds: 1000));
+    await Future.delayed(const Duration(milliseconds: 1200)); // TODO: put back to 1000?
     await (await loadRefreshToken.call(NoParams())).fold(
       (failure) {
         emit(PrefsError());
