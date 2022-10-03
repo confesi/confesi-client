@@ -8,10 +8,10 @@
 
 // ***** IMPORTANT *****
 
-enum BiometricAuthEnum {
-  on,
-  off,
-}
+// enum BiometricAuthEnum {
+//   on,
+//   off,
+// }
 
 enum ReducedAnimationsEnum {
   minimum,

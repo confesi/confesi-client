@@ -1,5 +1,7 @@
 import 'package:Confessi/core/utils/sizing/height_fraction.dart';
 import 'package:Confessi/core/utils/sizing/width_breakpoint_fraction.dart';
+import 'package:Confessi/core/utils/sizing/width_fraction.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
 import 'package:Confessi/presentation/shared/text/link.dart';
@@ -18,12 +20,12 @@ class OpenScreen extends StatefulWidget {
 }
 
 class _OpenScreenState extends State<OpenScreen> {
-  double? h;
+  double? bottomHeightToOffsetKeyboard;
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      h = MediaQuery.of(context).padding.bottom;
+      bottomHeightToOffsetKeyboard = MediaQuery.of(context).padding.bottom;
     });
     super.initState();
   }
@@ -43,10 +45,9 @@ class _OpenScreenState extends State<OpenScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Column(
                 children: [
-                  SizedBox(
-                    height: heightWithoutTopSafeArea(context) * .5,
-                    child: Hero(
-                      tag: "logo",
+                  InitScale(
+                    child: SizedBox(
+                      height: heightWithoutTopSafeArea(context) * .5,
                       child: Image.asset(
                         "assets/images/logo.jpg",
                         width: widthBreakpointFraction(context, 2 / 3, 250),
@@ -66,29 +67,43 @@ class _OpenScreenState extends State<OpenScreen> {
                           body: "Make sure you're in-the-know with the latest campus gossip. Fully anonymous.",
                         ),
                         const SizedBox(height: 30),
-                        PopButton(
-                          onPress: () => Navigator.of(context).pushNamed("/register"),
-                          icon: CupertinoIcons.chevron_right,
-                          backgroundColor: Theme.of(context).colorScheme.secondary,
-                          textColor: Theme.of(context).colorScheme.onSecondary,
-                          text: "Create new account",
-                          bottomPadding: 20,
+                        InitTransform(
+                          durationInMilliseconds: 1100,
+                          curve: Curves.bounceOut,
+                          transformDirection: TransformDirection.horizontal,
+                          magnitudeOfTransform: widthFraction(context, 1),
+                          child: PopButton(
+                            onPress: () => Navigator.of(context).pushNamed("/register"),
+                            icon: CupertinoIcons.chevron_right,
+                            backgroundColor: Theme.of(context).colorScheme.secondary,
+                            textColor: Theme.of(context).colorScheme.onSecondary,
+                            text: "Create new account",
+                            bottomPadding: 20,
+                          ),
                         ),
-                        PopButton(
-                          onPress: () => Navigator.of(context).pushNamed("/login"),
-                          icon: CupertinoIcons.chevron_right,
-                          backgroundColor: Theme.of(context).colorScheme.primary,
-                          textColor: Theme.of(context).colorScheme.onPrimary,
-                          text: "Existing user login",
+                        InitTransform(
+                          durationInMilliseconds: 1100,
+                          curve: Curves.bounceOut,
+                          transformDirection: TransformDirection.horizontal,
+                          magnitudeOfTransform: -widthFraction(context, 1),
+                          child: PopButton(
+                            onPress: () => Navigator.of(context).pushNamed("/login"),
+                            icon: CupertinoIcons.chevron_right,
+                            backgroundColor: Theme.of(context).colorScheme.primary,
+                            textColor: Theme.of(context).colorScheme.onPrimary,
+                            text: "Existing user login",
+                          ),
                         ),
                         const SizedBox(height: 10),
-                        LinkText(
-                          onPress: () => Navigator.of(context).pushNamed("/onboarding"),
-                          linkText: "Tap here.",
-                          text: "View tips again? ",
+                        InitTransform(
+                          child: LinkText(
+                            onPress: () => Navigator.of(context).pushNamed("/onboarding"),
+                            linkText: "Tap here.",
+                            text: "View tips again? ",
+                          ),
                         ),
                         SizedBox(
-                          height: h ?? MediaQuery.of(context).padding.bottom,
+                          height: bottomHeightToOffsetKeyboard ?? MediaQuery.of(context).padding.bottom,
                         ),
                       ],
                     ),

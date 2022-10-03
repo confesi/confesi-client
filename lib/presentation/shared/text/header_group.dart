@@ -11,9 +11,11 @@ class HeaderGroupText extends StatelessWidget {
     required this.header,
     required this.body,
     this.expandsTopText = false,
+    this.small = false,
     Key? key,
   }) : super(key: key);
 
+  final bool small;
   final bool expandsTopText;
   final String header;
   final String body;
@@ -25,9 +27,8 @@ class HeaderGroupText extends StatelessWidget {
   Widget buildTopText(BuildContext context) => Text(
         header,
         style: kDisplay.copyWith(
-          color: onSecondaryColors
-              ? Theme.of(context).colorScheme.onSecondary
-              : Theme.of(context).colorScheme.primary,
+          color: onSecondaryColors ? Theme.of(context).colorScheme.onSecondary : Theme.of(context).colorScheme.primary,
+          fontSize: small ? 26 : 34,
         ),
         textAlign: left ? TextAlign.left : TextAlign.center,
         overflow: TextOverflow.ellipsis,
@@ -37,21 +38,17 @@ class HeaderGroupText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment:
-          left ? CrossAxisAlignment.start : CrossAxisAlignment.center,
+      crossAxisAlignment: left ? CrossAxisAlignment.start : CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        expandsTopText
-            ? Expanded(child: buildTopText(context))
-            : Flexible(child: buildTopText(context)),
+        expandsTopText ? Expanded(child: buildTopText(context)) : Flexible(child: buildTopText(context)),
         SizedBox(height: spaceBetween),
         Text(
           body,
           style: kTitle.copyWith(
-            color: onSecondaryColors
-                ? Theme.of(context).colorScheme.onSecondary
-                : Theme.of(context).colorScheme.primary,
+            color:
+                onSecondaryColors ? Theme.of(context).colorScheme.onSecondary : Theme.of(context).colorScheme.primary,
           ),
           textAlign: left ? TextAlign.left : TextAlign.center,
           overflow: TextOverflow.ellipsis,

@@ -1,16 +1,13 @@
 import 'package:Confessi/application/authentication/authentication_cubit.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_opacity.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
-import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/styles/typography.dart';
-import '../../shared/behaviours/overscroll.dart';
 import '../../shared/buttons/pop.dart';
-import '../../shared/behaviours/keyboard_dismiss.dart';
 import '../../shared/layout/minimal_appbar.dart';
 import '../../shared/text/link.dart';
 import '../../shared/textfields/bulge.dart';
@@ -23,8 +20,7 @@ class RegisterScreen extends StatefulWidget {
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen>
-    with SingleTickerProviderStateMixin {
+class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProviderStateMixin {
   late AnimationController errorAnimController;
   TextEditingController usernameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -35,8 +31,7 @@ class _RegisterScreenState extends State<RegisterScreen>
 
   @override
   void initState() {
-    errorAnimController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 400));
+    errorAnimController = AnimationController(vsync: this, duration: const Duration(milliseconds: 400));
     super.initState();
   }
 
@@ -88,6 +83,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                 return SizedBox(
                   height: constraints.maxHeight,
                   child: SingleChildScrollView(
+                    physics: const ClampingScrollPhysics(),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -100,15 +96,19 @@ class _RegisterScreenState extends State<RegisterScreen>
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const SizedBox(height: 15),
-                              InitOpacity(
-                                child: Text(
-                                  "Let's get you started.",
-                                  style: kDisplay.copyWith(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .primary),
-                                  textAlign: TextAlign.left,
-                                ),
+                              AnimatedTextKit(
+                                displayFullTextOnTap: true,
+                                pause: const Duration(milliseconds: 200),
+                                totalRepeatCount: 1,
+                                animatedTexts: [
+                                  TypewriterAnimatedText(
+                                    "Let's get you started.",
+                                    textStyle: kDisplay.copyWith(color: Theme.of(context).colorScheme.primary),
+                                    speed: const Duration(
+                                      milliseconds: 100,
+                                    ),
+                                  ),
+                                ],
                               ),
                               SizedBox(height: heightFactor * 8),
                               Column(
@@ -145,27 +145,22 @@ class _RegisterScreenState extends State<RegisterScreen>
                                 justText: true,
                                 onPress: () async {
                                   FocusScope.of(context).unfocus();
-                                  await context
-                                      .read<AuthenticationCubit>()
-                                      .registerUser(
+                                  await context.read<AuthenticationCubit>().registerUser(
                                         usernameController.text,
                                         passwordController.text,
                                         emailController.text,
                                       );
                                 },
                                 icon: CupertinoIcons.chevron_right,
-                                backgroundColor:
-                                    Theme.of(context).colorScheme.secondary,
-                                textColor:
-                                    Theme.of(context).colorScheme.onSecondary,
+                                backgroundColor: Theme.of(context).colorScheme.secondary,
+                                textColor: Theme.of(context).colorScheme.onSecondary,
                                 text: "Register",
                               ),
                               const SizedBox(height: 10),
                               Center(
                                 child: InitTransform(
                                   child: LinkText(
-                                    pressable:
-                                        state is UserLoading ? false : true,
+                                    pressable: state is UserLoading ? false : true,
                                     onPress: () {
                                       Navigator.of(context).pushNamed("/login");
                                     },

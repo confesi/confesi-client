@@ -48,9 +48,7 @@ class AppRouter {
 
   // Checks which routes show as a fade animation.
   bool isFadeAnim(RouteSettings routeSettings) {
-    List<String> fadeAnimDialogRoutes = [
-      "/onboarding",
-    ];
+    List<String> fadeAnimDialogRoutes = ["/onboarding", "/open"];
     return fadeAnimDialogRoutes.contains(routeSettings.name) ? true : false;
   }
 

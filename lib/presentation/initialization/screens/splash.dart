@@ -107,13 +107,9 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                               child: Transform.rotate(
                                 angle: (2 * pi) - _anim.value * (2 * pi),
                                 child: SizedBox(
-                                  // width: widthBreakpointFraction(context, .5, 250),
                                   height: widthBreakpointFraction(context, .5, 250),
-                                  child: Hero(
-                                    tag: "logo",
-                                    child: Image.asset(
-                                      "assets/images/logo2.png",
-                                    ),
+                                  child: Image.asset(
+                                    "assets/images/logo2.png",
                                   ),
                                 ),
                               ),

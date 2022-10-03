@@ -4,6 +4,7 @@ import 'package:Confessi/domain/settings/usecases/first_time.dart';
 import 'package:Confessi/domain/settings/usecases/load_refresh_token.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 
 import '../../constants/enums_that_are_local_keys.dart';
 
@@ -32,7 +33,7 @@ class PrefsCubit extends Cubit<PrefsState> {
 
   /// Get all prefs and refresh token.
   Future<void> loadInitialPrefsAndTokens() async {
-    await Future.delayed(const Duration(milliseconds: 1200)); // TODO: put back to 1000?
+    await Future.delayed(const Duration(milliseconds: 1200));
     await (await loadRefreshToken.call(NoParams())).fold(
       (failure) {
         emit(PrefsError());

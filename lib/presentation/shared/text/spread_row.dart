@@ -11,11 +11,9 @@ class SpreadRowText extends StatelessWidget {
     required this.leftText,
     required this.rightText,
     this.onPress,
-    this.animateRows = false,
     Key? key,
   }) : super(key: key);
 
-  final bool animateRows;
   final VoidCallback? onPress;
   final String leftText;
   final String rightText;
@@ -45,7 +43,7 @@ class SpreadRowText extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            animateRows ? buildLeftText(context) : buildLeftText(context),
+            buildLeftText(context),
             onPress != null
                 ? Row(
                     children: [
@@ -60,13 +58,7 @@ class SpreadRowText extends StatelessWidget {
                 : Container(),
             const SizedBox(width: 15),
             Expanded(
-              child: animateRows
-                  ? InitTransform(
-                      magnitudeOfTransform: widthFraction(context, .5),
-                      transformDirection: TransformDirection.horizontal,
-                      child: buildRightText(context),
-                    )
-                  : buildRightText(context),
+              child: buildRightText(context),
             ),
           ],
         ),
