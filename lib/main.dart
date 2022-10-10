@@ -115,7 +115,7 @@ class MyApp extends StatelessWidget {
             //     return const SplashScreen();
             //   },
             // ),
-            home: OnboardingDetailsScreen(),
+            home: const SplashScreen(),
           );
         },
       ),
