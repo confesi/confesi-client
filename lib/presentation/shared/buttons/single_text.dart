@@ -27,11 +27,8 @@ class SingleTextButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(
-          left: horizontalPadding,
-          right: horizontalPadding,
-          top: topPadding,
-          bottom: bottomPadding),
+      padding:
+          EdgeInsets.only(left: horizontalPadding, right: horizontalPadding, top: topPadding, bottom: bottomPadding),
       child: TouchableOpacity(
         onTap: () => onPress(),
         child: Container(

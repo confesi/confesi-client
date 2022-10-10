@@ -67,9 +67,7 @@ class _HottestTileState extends State<HottestTile> {
                     width: double.infinity,
                     duration: const Duration(milliseconds: 250),
                     curve: Curves.easeInOut,
-                    height: isSelected
-                        ? constraints.maxHeight
-                        : constraints.maxHeight * .8,
+                    height: isSelected ? constraints.maxHeight : constraints.maxHeight * .8,
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.background,
                     ),
@@ -110,10 +108,7 @@ class _HottestTileState extends State<HottestTile> {
                                   child: Text(
                                     '0${widget.thisIndex + 1}',
                                     style: kFaded.copyWith(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onBackground
-                                          .withOpacity(0.2),
+                                      color: Theme.of(context).colorScheme.onBackground.withOpacity(0.2),
                                     ),
                                   ),
                                 ),
@@ -121,16 +116,14 @@ class _HottestTileState extends State<HottestTile> {
                               Padding(
                                 padding: const EdgeInsets.all(20),
                                 child: HeaderGroupText(
+                                  small: true,
                                   expandsTopText: true,
                                   onSecondaryColors: false,
                                   multiLine: true,
                                   spaceBetween: 20,
                                   left: true,
-                                  header: widget.title.isEmpty
-                                      ? widget.text
-                                      : widget.title,
-                                  body:
-                                      '${widget.university}, Year ${widget.year}',
+                                  header: widget.title.isEmpty ? widget.text : widget.title,
+                                  body: '${widget.university}, Year ${widget.year}',
                                 ),
                               ),
                             ],

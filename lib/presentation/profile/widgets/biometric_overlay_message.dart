@@ -4,6 +4,7 @@ import 'package:Confessi/core/utils/sizing/width_breakpoint_fraction.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_opacity.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -23,20 +24,23 @@ class BiometricOverlayMessage extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        SizedBox(
-          width: widthBreakpointFraction(context, .3, 325),
-          child: Text(
-            "Authenticate with biometrics to access your private profile.",
-            style:
-                kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
-            textAlign: TextAlign.center,
+        InitScale(
+          delayDurationInMilliseconds: 450,
+          addedToScale: .3,
+          child: InitTransform(
+            magnitudeOfTransform: -200,
+            child: Icon(
+              CupertinoIcons.lock,
+              color: Theme.of(context).colorScheme.primary,
+              size: 30,
+            ),
           ),
         ),
-        const SizedBox(height: 15),
+        const SizedBox(height: 30),
         SizedBox(
-          width: widthBreakpointFraction(context, .3, 325),
+          width: widthBreakpointFraction(context, .3, 350),
           child: Text(
-            "This can be disabled in settings.", // Allow no password, auto-password, or default
+            "Authenticate with biometrics to access your private profile.", // Allow no password, auto-password, or default
             style:
                 kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
             textAlign: TextAlign.center,

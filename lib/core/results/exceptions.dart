@@ -69,3 +69,8 @@ class TitleInvalidException implements Exception {}
 
 /// Thrown when the body isn't valid.
 class BodyInvalidException implements Exception {}
+
+//! Local db exceptions
+
+/// An exception for when a setting is unwritten locally, meaning, it's default.
+class DBDefaultException implements Exception {}

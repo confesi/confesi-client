@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../application/shared/scaffold_shrinker_cubit.dart';
 import '../../../core/styles/typography.dart';
+import '../../shared/behaviours/themed_status_bar.dart';
 
 Future<dynamic> showPickerSheet(BuildContext context, List<String> items,
     int index, String header, Function(int) updateState) {
@@ -20,82 +21,84 @@ Future<dynamic> showPickerSheet(BuildContext context, List<String> items,
     builder: (context) => ClipRRect(
       borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(20), topRight: Radius.circular(20)),
-      child: Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.onPrimary,
-        body: Column(
-          children: [
-            const SwipebarLayout(),
-            const SizedBox(height: 15),
-            Text(
-              header,
-              style: kTitle.copyWith(
-                color: Theme.of(context).colorScheme.primary,
+      child: ThemedStatusBar(
+        child: Scaffold(
+          backgroundColor: Theme.of(context).colorScheme.onPrimary,
+          body: Column(
+            children: [
+              const SwipebarLayout(),
+              const SizedBox(height: 15),
+              Text(
+                header,
+                style: kTitle.copyWith(
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                textAlign: TextAlign.center,
               ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 5),
-            Text(
-              "Selections save automatically",
-              style: kBody.copyWith(
-                color: Theme.of(context).colorScheme.onSurface,
+              const SizedBox(height: 5),
+              Text(
+                "Selections save automatically",
+                style: kBody.copyWith(
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+                textAlign: TextAlign.center,
               ),
-              textAlign: TextAlign.center,
-            ),
-            Expanded(
-              child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: LayoutBuilder(builder: (context, constraints) {
-                    return InitOpacity(
-                      child: ScrollableView(
-                        child: SizedBox(
-                          height: constraints.maxHeight,
-                          child: CupertinoPicker(
-                            scrollController:
-                                FixedExtentScrollController(initialItem: index),
-                            selectionOverlay: Container(
-                              decoration: BoxDecoration(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onSurface
-                                    .withOpacity(0.15),
-                                borderRadius: const BorderRadius.all(
-                                  Radius.circular(10),
+              Expanded(
+                child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: LayoutBuilder(builder: (context, constraints) {
+                      return InitOpacity(
+                        child: ScrollableView(
+                          child: SizedBox(
+                            height: constraints.maxHeight,
+                            child: CupertinoPicker(
+                              scrollController: FixedExtentScrollController(
+                                  initialItem: index),
+                              selectionOverlay: Container(
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSurface
+                                      .withOpacity(0.15),
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(10),
+                                  ),
                                 ),
                               ),
-                            ),
-                            backgroundColor: Colors.transparent,
-                            looping: false,
-                            itemExtent: 40,
-                            onSelectedItemChanged: (newIndex) {
-                              HapticFeedback.selectionClick();
-                              updateState(newIndex);
-                            },
-                            children: items
-                                .map((item) => Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10),
-                                      child: Center(
-                                        child: Text(
-                                          item,
-                                          style: kBody.copyWith(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .primary,
+                              backgroundColor: Colors.transparent,
+                              looping: false,
+                              itemExtent: 40,
+                              onSelectedItemChanged: (newIndex) {
+                                HapticFeedback.selectionClick();
+                                updateState(newIndex);
+                              },
+                              children: items
+                                  .map((item) => Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10),
+                                        child: Center(
+                                          child: Text(
+                                            item,
+                                            style: kBody.copyWith(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .primary,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                            overflow: TextOverflow.ellipsis,
+                                            textScaleFactor: 1,
                                           ),
-                                          textAlign: TextAlign.center,
-                                          overflow: TextOverflow.ellipsis,
-                                          textScaleFactor: 1,
                                         ),
-                                      ),
-                                    ))
-                                .toList(),
+                                      ))
+                                  .toList(),
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  })),
-            ),
-          ],
+                      );
+                    })),
+              ),
+            ],
+          ),
         ),
       ),
     ),

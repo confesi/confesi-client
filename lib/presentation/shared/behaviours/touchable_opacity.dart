@@ -12,10 +12,12 @@ class TouchableOpacity extends StatefulWidget {
     this.tooltip,
     this.tapType,
     this.tooltipLocation,
+    this.fadeSplashOut = true,
     Key? key,
   }) : super(key: key);
 
   final Widget child;
+  final bool fadeSplashOut;
   final Function onTap;
   final bool tappable;
   final String? tooltip;
@@ -51,8 +53,8 @@ class _TouchableOpacityState extends State<TouchableOpacity>
   }
 
   void startAnim() async {
-    animController.forward().then((value) async {
-      animController.reverse();
+    animController.forward().then((value) {
+      if (widget.fadeSplashOut) animController.reverse();
     });
     animController.addListener(() {
       setState(() {});
@@ -97,7 +99,7 @@ class _TouchableOpacityState extends State<TouchableOpacity>
                 startAnim();
               },
               child: Opacity(
-                opacity: -anim.value * 0.8 + 1,
+                opacity: -anim.value * 0.65 + 1,
                 child: widget.child,
               ),
             )

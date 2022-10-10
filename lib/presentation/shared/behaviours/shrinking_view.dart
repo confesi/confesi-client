@@ -9,10 +9,12 @@ class ShrinkingView extends StatefulWidget {
     this.safeAreaBottom = true,
     this.topLeftSquare = false,
     this.topRightSquare = false,
+    this.safeAreaTop = true,
     super.key,
   });
 
   final Widget child;
+  final bool safeAreaTop;
   final bool safeAreaBottom;
   final bool topLeftSquare;
   final bool topRightSquare;
@@ -21,8 +23,7 @@ class ShrinkingView extends StatefulWidget {
   State<ShrinkingView> createState() => _ShrinkingViewState();
 }
 
-class _ShrinkingViewState extends State<ShrinkingView>
-    with SingleTickerProviderStateMixin {
+class _ShrinkingViewState extends State<ShrinkingView> with SingleTickerProviderStateMixin {
   late AnimationController _animController;
   late Animation _anim;
 
@@ -74,26 +75,23 @@ class _ShrinkingViewState extends State<ShrinkingView>
       child: Container(
         color: Colors.black, // Theme.of(context).colorScheme.shadow
         child: Transform.scale(
-          scale: -_anim.value * .00 + 1,
+          scale: -_anim.value * .03 + 1,
           child: Transform.translate(
-            offset: Offset(
-                0, _anim.value * MediaQuery.of(context).size.height * .055),
+            offset: Offset(0, _anim.value * MediaQuery.of(context).size.height * .055),
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(
-                        widget.topLeftSquare ? 0 : _anim.value * 50),
-                    topRight: Radius.circular(
-                        widget.topRightSquare ? 0 : _anim.value * 50)),
+                    topLeft: Radius.circular(widget.topLeftSquare ? 0 : _anim.value * 50),
+                    topRight: Radius.circular(widget.topRightSquare ? 0 : _anim.value * 50)),
                 color: Theme.of(context).colorScheme.background,
               ),
               child: SafeArea(
+                top: widget.safeAreaTop,
                 maintainBottomViewPadding: true,
                 bottom: widget.safeAreaBottom,
                 child: ClipRRect(
                   borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(_anim.value * 50),
-                      bottomRight: Radius.circular(_anim.value * 50)),
+                      bottomLeft: Radius.circular(_anim.value * 50), bottomRight: Radius.circular(_anim.value * 50)),
                   child: widget.child,
                 ),
               ),

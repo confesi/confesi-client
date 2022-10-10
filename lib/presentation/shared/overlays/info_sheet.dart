@@ -1,4 +1,7 @@
 import 'package:Confessi/core/styles/typography.dart';
+import 'package:Confessi/core/utils/numbers/number_until_limit.dart';
+import 'package:Confessi/core/utils/sizing/width_fraction.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_opacity.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
 import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
 import 'package:flutter/material.dart';
@@ -39,18 +42,21 @@ Future<dynamic> showInfoSheet(
             const SizedBox(height: 30),
             Flexible(
               child: ScrollableView(
-                horizontalPadding: 10,
+                horizontalPadding:
+                    numberUntilLimit(widthFraction(context, .1), 50),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    InitScale(
+                    InitOpacity(
+                      defaultOpacity: 0.2,
+                      durationInMilliseconds: 2500,
                       child: Text(
                         body,
                         style: kBody.copyWith(
                           color: Theme.of(context).colorScheme.onSurface,
                         ),
-                        textAlign: TextAlign.center,
+                        textAlign: TextAlign.justify,
                       ),
                     ),
                     const SizedBox(height: 45),

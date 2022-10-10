@@ -10,3 +10,6 @@ class ApiSuccess extends Success {}
 
 /// Returned upon successfully completing a biometric operation.
 class BiometricSuccess extends Success {}
+
+/// Returned upon a setting being properly updated.
+class SettingSuccess extends Success {}

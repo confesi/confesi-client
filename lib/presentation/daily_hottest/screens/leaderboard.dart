@@ -19,6 +19,7 @@ import '../../../constants/daily_hottest/general.dart';
 import '../../../core/styles/typography.dart';
 import '../../../core/utils/numbers/large_number_formatter.dart';
 import '../../../core/utils/numbers/number_postfix.dart';
+import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/overlays/info_sheet.dart';
 
 class LeaderboardScreen extends StatelessWidget {
@@ -28,52 +29,46 @@ class LeaderboardScreen extends StatelessWidget {
     return [
       data.rankings.length >= 2
           ? Flexible(
-              child: InitTransform(
-                child: LeaderboardCircleTile(
-                  universityImagePath: data.rankings[1].universityImagePath,
-                  minSize: 90,
-                  placing:
-                      '${data.rankings[1].placing}${numberPostfix(data.rankings[1].placing)}',
-                  universityFullName: data.rankings[1].universityFullName,
-                  universityName: data.rankings[1].universityName,
-                  points: isPlural(data.rankings[1].points)
-                      ? '${largeNumberFormatter(data.rankings[1].points)} pts'
-                      : '${largeNumberFormatter(data.rankings[1].points)} pt',
-                ),
+              child: LeaderboardCircleTile(
+                universityImagePath: data.rankings[1].universityImagePath,
+                minSize: 90,
+                placing:
+                    '${data.rankings[1].placing}${numberPostfix(data.rankings[1].placing)}',
+                universityFullName: data.rankings[1].universityFullName,
+                universityName: data.rankings[1].universityName,
+                points: isPlural(data.rankings[1].points)
+                    ? '${largeNumberFormatter(data.rankings[1].points)} pts'
+                    : '${largeNumberFormatter(data.rankings[1].points)} pt',
               ),
             )
           : Container(),
       data.rankings.isNotEmpty
           ? Flexible(
-              child: InitTransform(
-                child: LeaderboardCircleTile(
-                  universityImagePath: data.rankings[0].universityImagePath,
-                  minSize: 120,
-                  placing:
-                      '${data.rankings[0].placing}${numberPostfix(data.rankings[0].placing)}',
-                  universityFullName: data.rankings[0].universityFullName,
-                  universityName: data.rankings[0].universityName,
-                  points: isPlural(data.rankings[0].points)
-                      ? '${largeNumberFormatter(data.rankings[0].points)} pts'
-                      : '${largeNumberFormatter(data.rankings[0].points)} pt',
-                ),
+              child: LeaderboardCircleTile(
+                universityImagePath: data.rankings[0].universityImagePath,
+                minSize: 120,
+                placing:
+                    '${data.rankings[0].placing}${numberPostfix(data.rankings[0].placing)}',
+                universityFullName: data.rankings[0].universityFullName,
+                universityName: data.rankings[0].universityName,
+                points: isPlural(data.rankings[0].points)
+                    ? '${largeNumberFormatter(data.rankings[0].points)} pts'
+                    : '${largeNumberFormatter(data.rankings[0].points)} pt',
               ),
             )
           : Container(),
       data.rankings.length >= 3
           ? Flexible(
-              child: InitTransform(
-                child: LeaderboardCircleTile(
-                  universityImagePath: data.rankings[2].universityImagePath,
-                  minSize: 90,
-                  placing:
-                      '${data.rankings[2].placing}${numberPostfix(data.rankings[2].placing)}',
-                  universityFullName: data.rankings[2].universityFullName,
-                  universityName: data.rankings[2].universityName,
-                  points: isPlural(data.rankings[2].points)
-                      ? '${largeNumberFormatter(data.rankings[2].points)} pts'
-                      : '${largeNumberFormatter(data.rankings[2].points)} pt',
-                ),
+              child: LeaderboardCircleTile(
+                universityImagePath: data.rankings[2].universityImagePath,
+                minSize: 90,
+                placing:
+                    '${data.rankings[2].placing}${numberPostfix(data.rankings[2].placing)}',
+                universityFullName: data.rankings[2].universityFullName,
+                universityName: data.rankings[2].universityName,
+                points: isPlural(data.rankings[2].points)
+                    ? '${largeNumberFormatter(data.rankings[2].points)} pts'
+                    : '${largeNumberFormatter(data.rankings[2].points)} pt',
               ),
             )
           : Container(),
@@ -157,39 +152,41 @@ class LeaderboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
-      body: ShrinkingView(
-        safeAreaBottom: false,
-        child: Container(
-          color: Theme.of(context).colorScheme.shadow,
-          child: Column(
-            children: [
-              AppbarLayout(
-                bottomBorder: false,
-                centerWidget: Text(
-                  'University Leaderboard',
-                  style: kTitle.copyWith(
-                      color: Theme.of(context).colorScheme.primary),
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
+    return ThemedStatusBar(
+      child: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.background,
+        body: ShrinkingView(
+          safeAreaBottom: false,
+          child: Container(
+            color: Theme.of(context).colorScheme.shadow,
+            child: Column(
+              children: [
+                AppbarLayout(
+                  bottomBorder: false,
+                  centerWidget: Text(
+                    'University Leaderboard',
+                    style: kTitle.copyWith(
+                        color: Theme.of(context).colorScheme.primary),
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                  ),
+                  rightIcon: CupertinoIcons.info,
+                  rightIconVisible: true,
+                  rightIconOnPress: () => showInfoSheet(
+                      context, kLeaderboardInfoHeader, kLeaderboardInfoBody),
                 ),
-                rightIcon: CupertinoIcons.info,
-                rightIconVisible: true,
-                rightIconOnPress: () => showInfoSheet(
-                    context, kLeaderboardInfoHeader, kLeaderboardInfoBody),
-              ),
-              Expanded(
-                child: BlocBuilder<LeaderboardCubit, LeaderboardState>(
-                  builder: (context, state) {
-                    return AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 200),
-                      child: buildChild(context, state),
-                    );
-                  },
+                Expanded(
+                  child: BlocBuilder<LeaderboardCubit, LeaderboardState>(
+                    builder: (context, state) {
+                      return AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 200),
+                        child: buildChild(context, state),
+                      );
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

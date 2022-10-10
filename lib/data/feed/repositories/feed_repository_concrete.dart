@@ -20,7 +20,6 @@ class FeedRepository implements IFeedRepository {
       try {
         return Right(await datasource.fetchRecents(lastSeenPostId, token));
       } catch (e) {
-        print("error here ig: $e");
         return Left(exceptionToFailure(e));
       }
     } else {
@@ -38,7 +37,6 @@ class FeedRepository implements IFeedRepository {
   Future<Either<Failure, List<Post>>> fetchTrending(
       String lastSeenPostId, String token) async {
     if (await networkInfo.isConnected) {
-      print("connected!");
       try {
         return Right(await datasource.fetchTrending(lastSeenPostId, token));
       } catch (e) {

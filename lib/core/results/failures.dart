@@ -5,7 +5,7 @@ abstract class Failure extends Equatable {
   List<Object> get props => [];
 }
 
-// Failures usually have a 1-1 relationship with exceptions.
+// Failures usually have a 1-1 mapping with exceptions.
 
 //! General failures
 
@@ -65,9 +65,6 @@ class EmailInvalidFailure extends Failure {}
 /// For when password is invalid (formatting).
 class PasswordInvalidFailure extends Failure {}
 
-/// For when the received token from secure storage is null/empty.
-class EmptyTokenFailure extends Failure {}
-
 //! Creating content
 
 /// For when title is too long.
@@ -92,3 +89,14 @@ class BiometricAttemptsExausted extends Failure {}
 
 /// A general case for when a biometric operation fails.
 class BiometricFailure extends Failure {}
+
+//! Local db failure
+
+/// A failure for when updating/getting a setting or local db value fails.
+class LocalDBFailure extends Failure {}
+
+/// A failure for when a setting is unwritten locally, meaning, it's default.
+class DBDefaultFailure extends Failure {}
+
+/// For when the received token from secure storage is null/empty.
+class EmptyTokenFailure extends Failure {}

@@ -12,18 +12,21 @@ class InitTransform extends StatefulWidget {
     required this.child,
     this.magnitudeOfTransform = 100,
     this.transformDirection = TransformDirection.vertical,
+    this.curve = Curves.decelerate,
+    this.durationInMilliseconds = 450,
   });
 
+  final Curve curve;
   final Widget child;
   final double magnitudeOfTransform;
   final TransformDirection transformDirection;
+  final int durationInMilliseconds;
 
   @override
   State<InitTransform> createState() => InitTransformState();
 }
 
-class InitTransformState extends State<InitTransform>
-    with SingleTickerProviderStateMixin {
+class InitTransformState extends State<InitTransform> with SingleTickerProviderStateMixin {
   late AnimationController _animController;
   late Animation _anim;
 
@@ -31,11 +34,11 @@ class InitTransformState extends State<InitTransform>
   void initState() {
     _animController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 450),
+      duration: Duration(milliseconds: widget.durationInMilliseconds),
     );
     _anim = CurvedAnimation(
       parent: _animController,
-      curve: Curves.decelerate,
+      curve: widget.curve,
     );
     startAnim();
     super.initState();
@@ -54,17 +57,13 @@ class InitTransformState extends State<InitTransform>
     super.dispose();
   }
 
-  double offSet() => (widget.magnitudeOfTransform -
-          (_anim.value * widget.magnitudeOfTransform))
-      .toDouble();
+  double offSet() => (widget.magnitudeOfTransform - (_anim.value * widget.magnitudeOfTransform)).toDouble();
 
   @override
   Widget build(BuildContext context) {
     return Transform.translate(
       offset: Offset(
-        widget.transformDirection == TransformDirection.horizontal
-            ? offSet()
-            : 0,
+        widget.transformDirection == TransformDirection.horizontal ? offSet() : 0,
         widget.transformDirection == TransformDirection.vertical ? offSet() : 0,
       ),
       child: widget.child,

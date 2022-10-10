@@ -1,7 +1,8 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../core/results/failures.dart';
-import '../../../core/usecases/usecase.dart';
+import '../../../core/usecases/no_params.dart';
+import '../../../core/usecases/single_usecase.dart';
 import '../../../data/feed/repositories/feed_repository_concrete.dart';
 import '../../shared/entities/post.dart';
 

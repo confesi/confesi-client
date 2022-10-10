@@ -3,6 +3,7 @@ import 'package:Confessi/core/utils/sizing/width_fraction.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:Confessi/presentation/shared/behaviours/keyboard_dismiss.dart';
+import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
 import 'package:Confessi/presentation/shared/buttons/simple_text.dart';
 import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
 import 'package:Confessi/presentation/shared/textfields/expandable.dart';
@@ -52,62 +53,64 @@ class _FeedbackHomeState extends State<FeedbackHome> {
   @override
   Widget build(BuildContext context) {
     return KeyboardDismissLayout(
-      child: Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.background,
-        body: SafeArea(
-          child: Column(
-            children: [
-              AppbarLayout(
-                bottomBorder: false,
-                centerWidget: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 250),
-                  child: isTextFocused
-                      ? TextLimitTracker(
-                          value: textEditingController.text.length /
-                              maxFeedbackTextCharacterLimit,
-                        )
-                      : Text(
-                          pageTitle,
-                          style: kTitle.copyWith(
-                              color: Theme.of(context).colorScheme.primary),
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.center,
-                        ),
+      child: ThemedStatusBar(
+        child: Scaffold(
+          backgroundColor: Theme.of(context).colorScheme.background,
+          body: SafeArea(
+            child: Column(
+              children: [
+                AppbarLayout(
+                  bottomBorder: false,
+                  centerWidget: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 250),
+                    child: isTextFocused
+                        ? TextLimitTracker(
+                            value: textEditingController.text.length /
+                                maxFeedbackTextCharacterLimit,
+                          )
+                        : Text(
+                            pageTitle,
+                            style: kTitle.copyWith(
+                                color: Theme.of(context).colorScheme.primary),
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.center,
+                          ),
+                  ),
+                  leftIcon: CupertinoIcons.xmark,
                 ),
-                leftIcon: CupertinoIcons.xmark,
-              ),
-              Expanded(
-                child: ScrollableView(
-                  child: Column(
-                    children: [
-                      InitScale(
-                        child: ExpandableTextfield(
-                          focusNode: textFocusNode,
-                          maxLines: 8,
-                          maxCharacters: maxFeedbackTextCharacterLimit,
-                          hintText: textFieldHint,
-                          controller: textEditingController,
-                          onChanged: (newValue) {
-                            print(newValue);
-                            setState(() {});
-                          },
+                Expanded(
+                  child: ScrollableView(
+                    child: Column(
+                      children: [
+                        InitScale(
+                          child: ExpandableTextfield(
+                            focusNode: textFocusNode,
+                            maxLines: 8,
+                            maxCharacters: maxFeedbackTextCharacterLimit,
+                            hintText: textFieldHint,
+                            controller: textEditingController,
+                            onChanged: (newValue) {
+                              print(newValue);
+                              setState(() {});
+                            },
+                          ),
                         ),
-                      ),
-                      InitScale(
-                        child: SimpleTextButton(
-                          secondaryColors: true,
-                          tapType: TapType.lightImpact,
-                          horizontalPadding: 10,
-                          infiniteWidth: true,
-                          onTap: () => print("tap"),
-                          text: submitButtonText,
+                        InitScale(
+                          child: SimpleTextButton(
+                            secondaryColors: true,
+                            tapType: TapType.lightImpact,
+                            horizontalPadding: 10,
+                            infiniteWidth: true,
+                            onTap: () => print("tap"),
+                            text: submitButtonText,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

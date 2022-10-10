@@ -1,6 +1,8 @@
 import 'dart:async';
 
-import 'package:Confessi/core/network/http_client.dart';
+import 'package:Confessi/application/shared/prefs_cubit.dart';
+import 'package:Confessi/constants/hive_box_names.dart';
+import 'package:Confessi/core/clients/http_client.dart';
 import 'package:Confessi/application/shared/scaffold_shrinker_cubit.dart';
 import 'package:Confessi/data/create_post/datasources/create_post_datasource.dart';
 import 'package:Confessi/data/create_post/repositories/create_post_repository_concrete.dart';
@@ -8,6 +10,8 @@ import 'package:Confessi/data/daily_hottest/datasources/daily_hottest_datasource
 import 'package:Confessi/data/daily_hottest/datasources/leaderboard_datasource.dart';
 import 'package:Confessi/data/daily_hottest/repositories/daily_hottest_repository_concrete.dart';
 import 'package:Confessi/data/daily_hottest/repositories/leaderboard_repository_concrete.dart';
+import 'package:Confessi/data/settings/datasources/prefs_datasource.dart';
+import 'package:Confessi/data/settings/repositories/prefs_repository_concrete.dart';
 import 'package:Confessi/domain/create_post/usecases/upload_post.dart';
 import 'package:Confessi/domain/daily_hottest/usecases/posts.dart';
 import 'package:Confessi/domain/daily_hottest/usecases/ranking.dart';
@@ -16,8 +20,12 @@ import 'package:Confessi/application/create_post/post_cubit.dart';
 import 'package:Confessi/application/daily_hottest/hottest_cubit.dart';
 import 'package:Confessi/application/daily_hottest/leaderboard_cubit.dart';
 import 'package:Confessi/application/shared/biometrics_cubit.dart';
+import 'package:Confessi/domain/settings/usecases/appearance.dart';
+import 'package:Confessi/domain/settings/usecases/first_time.dart';
+import 'package:Confessi/domain/settings/usecases/load_refresh_token.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:local_auth/local_auth.dart';
 
@@ -41,10 +49,15 @@ final GetIt sl = GetIt.instance;
 
 /// Injects the needed dependencies for the app to run.
 Future<void> init() async {
+  //! Initializing stuff
+  // Registering Hive.
+  await Hive.initFlutter();
+  // Opening Hive preferences box.
+  await Hive.openBox(preferencesBox);
+
   //! State (BLoC or Cubit)
   // Registers the authentication cubit.
-  sl.registerFactory(() => AuthenticationCubit(
-      register: sl(), login: sl(), logout: sl(), silentAuthentication: sl()));
+  sl.registerFactory(() => AuthenticationCubit(register: sl(), login: sl(), logout: sl(), silentAuthentication: sl()));
   // Registers the recents cubit.
   sl.registerFactory(() => RecentsCubit(recents: sl()));
   // Registers the trending cubit.
@@ -59,6 +72,8 @@ Future<void> init() async {
   sl.registerFactory(() => ScaffoldShrinkerCubit());
   // Registers the biometrics cubit.
   sl.registerFactory(() => BiometricsCubit(biometricAuthentication: sl()));
+  // Registers the prefs cubit.
+  sl.registerFactory(() => PrefsCubit(appearance: sl(), loadRefreshToken: sl(), firstTime: sl()));
 
   //! Usecases
   // Registers the register usecase.
@@ -80,8 +95,13 @@ Future<void> init() async {
   // Registers the upload post usecase.
   sl.registerLazySingleton(() => UploadPost(repository: sl(), api: sl()));
   // Registers the biometric authentication usecase.
-  sl.registerLazySingleton(
-      () => BiometricAuthentication(localAuthentication: sl()));
+  sl.registerLazySingleton(() => BiometricAuthentication(localAuthentication: sl()));
+  // Registers the appearance usecase.
+  sl.registerLazySingleton(() => Appearance(repository: sl()));
+  // Registeres the load refresh token usecase.
+  sl.registerLazySingleton(() => LoadRefreshToken(repository: sl()));
+  // Registers the first time usecase (check if it's a user's first time on the app).
+  sl.registerLazySingleton(() => FirstTime(repository: sl()));
 
   //! Core
   // Registers custom connection checker class.
@@ -93,25 +113,21 @@ Future<void> init() async {
 
   //! Repositories
   // Registers the authentication repository.
-  sl.registerLazySingleton(
-      () => AuthenticationRepository(networkInfo: sl(), datasource: sl()));
+  sl.registerLazySingleton(() => AuthenticationRepository(networkInfo: sl(), datasource: sl()));
   // Registers the feed repository.
-  sl.registerLazySingleton(
-      () => FeedRepository(networkInfo: sl(), datasource: sl()));
+  sl.registerLazySingleton(() => FeedRepository(networkInfo: sl(), datasource: sl()));
   // Registers the leaderboard repository.
-  sl.registerLazySingleton(
-      () => LeaderboardRepository(networkInfo: sl(), datasource: sl()));
+  sl.registerLazySingleton(() => LeaderboardRepository(networkInfo: sl(), datasource: sl()));
   // Registers the daily hottest repository.
-  sl.registerLazySingleton(
-      () => DailyHottestRepository(networkInfo: sl(), datasource: sl()));
+  sl.registerLazySingleton(() => DailyHottestRepository(networkInfo: sl(), datasource: sl()));
   // Registers the create post repository.
-  sl.registerLazySingleton(
-      () => CreatePostRepository(networkInfo: sl(), datasource: sl()));
+  sl.registerLazySingleton(() => CreatePostRepository(networkInfo: sl(), datasource: sl()));
+  // Registers the prefs repository.
+  sl.registerLazySingleton(() => PrefsRepository(datasource: sl()));
 
   //! Data sources
   // Registers the authentication datasource.
-  sl.registerLazySingleton(
-      () => AuthenticationDatasource(secureStorage: sl(), netClient: sl()));
+  sl.registerLazySingleton(() => AuthenticationDatasource(secureStorage: sl(), api: sl()));
   // Registers the feed datasource.
   sl.registerLazySingleton(() => FeedDatasource(api: sl()));
   // Registers the leaderboard datasource.
@@ -120,6 +136,8 @@ Future<void> init() async {
   sl.registerLazySingleton(() => DailyHottestDatasource(api: sl()));
   // Registers the create post datasource.
   sl.registerLazySingleton(() => CreatePostDatasource(api: sl()));
+  // Registers the prefs datasource.
+  sl.registerLazySingleton(() => PrefsDatasource(secureStorage: sl()));
 
   //! External
   // Registers connection checker package.

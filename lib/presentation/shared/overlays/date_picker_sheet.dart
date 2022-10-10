@@ -34,8 +34,7 @@ Future<dynamic> showDatePickerSheet(BuildContext context) async {
                   // This infinite width ensure it is presented on its own row inside the Wrap widget.
                   width: double.infinity,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 30, vertical: 15),
+                    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                     child: Text(
                       "View the top confessions from any day.",
                       style: kTitle.copyWith(
@@ -77,7 +76,7 @@ Future<dynamic> showDatePickerSheet(BuildContext context) async {
                             child: CupertinoTheme(
                               data: CupertinoThemeData(
                                 textTheme: CupertinoTextThemeData(
-                                  dateTimePickerTextStyle: kBody,
+                                  dateTimePickerTextStyle: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
                                 ),
                               ),
                               child: CupertinoDatePicker(

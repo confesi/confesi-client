@@ -10,6 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../constants/daily_hottest/general.dart';
 import '../../../constants/shared/enums.dart';
 import '../../../core/styles/typography.dart';
+import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/indicators/alert.dart';
 import '../../shared/indicators/loading.dart';
 import '../../shared/layout/appbar.dart';
@@ -110,51 +111,53 @@ class _HottestHomeState extends State<HottestHome>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Theme.of(context).colorScheme.background,
-      body: ShrinkingView(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            return Container(
-                color: Theme.of(context).colorScheme.shadow,
-                child: SingleChildScrollView(
-                  child: SizedBox(
-                    height: constraints.maxHeight,
-                    child: Column(
-                      children: [
-                        AppbarLayout(
-                          centerWidget: Text(
-                            'Hottest Today',
-                            style: kTitle.copyWith(
-                                color: Theme.of(context).colorScheme.primary),
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.center,
+    return ThemedStatusBar(
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: Theme.of(context).colorScheme.background,
+        body: ShrinkingView(
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return Container(
+                  color: Theme.of(context).colorScheme.shadow,
+                  child: SingleChildScrollView(
+                    child: SizedBox(
+                      height: constraints.maxHeight,
+                      child: Column(
+                        children: [
+                          AppbarLayout(
+                            centerWidget: Text(
+                              'Hottest Today',
+                              style: kTitle.copyWith(
+                                  color: Theme.of(context).colorScheme.primary),
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center,
+                            ),
+                            rightIconVisible: true,
+                            rightIcon: CupertinoIcons.chart_bar,
+                            rightIconOnPress: () => Navigator.of(context)
+                                .pushNamed('/hottest/leaderboard'),
+                            leftIconVisible: true,
+                            leftIcon: CupertinoIcons.calendar,
+                            leftIconOnPress: () => showDatePickerSheet(context),
                           ),
-                          rightIconVisible: true,
-                          rightIcon: CupertinoIcons.chart_bar,
-                          rightIconOnPress: () => Navigator.of(context)
-                              .pushNamed('/hottest/leaderboard'),
-                          leftIconVisible: true,
-                          leftIcon: CupertinoIcons.calendar,
-                          leftIconOnPress: () => showDatePickerSheet(context),
-                        ),
-                        Expanded(
-                          child: BlocBuilder<HottestCubit, HottestState>(
-                            builder: (context, state) {
-                              return AnimatedSwitcher(
-                                duration: const Duration(milliseconds: 200),
-                                child: buildChild(context, state),
-                              );
-                            },
-                            // listenWhen: ,
+                          Expanded(
+                            child: BlocBuilder<HottestCubit, HottestState>(
+                              builder: (context, state) {
+                                return AnimatedSwitcher(
+                                  duration: const Duration(milliseconds: 200),
+                                  child: buildChild(context, state),
+                                );
+                              },
+                              // listenWhen: ,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ));
-          },
+                  ));
+            },
+          ),
         ),
       ),
     );

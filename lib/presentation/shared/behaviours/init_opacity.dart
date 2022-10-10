@@ -1,3 +1,4 @@
+import 'package:Confessi/core/utils/numbers/number_until_limit.dart';
 import 'package:flutter/material.dart';
 
 class InitOpacity extends StatefulWidget {
@@ -5,9 +6,13 @@ class InitOpacity extends StatefulWidget {
   const InitOpacity({
     super.key,
     required this.child,
+    this.defaultOpacity = 0.0,
+    this.durationInMilliseconds = 1000,
   });
 
   final Widget child;
+  final double defaultOpacity;
+  final int durationInMilliseconds;
 
   @override
   State<InitOpacity> createState() => InitOpacityState();
@@ -22,7 +27,7 @@ class InitOpacityState extends State<InitOpacity>
   void initState() {
     _animController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1000),
+      duration: Duration(milliseconds: widget.durationInMilliseconds),
     );
     _anim = CurvedAnimation(
       parent: _animController,
@@ -48,7 +53,7 @@ class InitOpacityState extends State<InitOpacity>
   @override
   Widget build(BuildContext context) {
     return Opacity(
-      opacity: _anim.value,
+      opacity: numberUntilLimit(_anim.value + widget.defaultOpacity, 1),
       child: widget.child,
     );
   }

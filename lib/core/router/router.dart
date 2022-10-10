@@ -5,16 +5,21 @@ import 'package:Confessi/presentation/easter_eggs/screens/overscroll.dart';
 import 'package:Confessi/presentation/feed/screens/detail_view.dart';
 import 'package:Confessi/presentation/feed/screens/post_advanced_details.dart';
 import 'package:Confessi/presentation/feedback/screens/home.dart';
+import 'package:Confessi/presentation/initialization/screens/critical_error.dart';
+import 'package:Confessi/presentation/settings/screens/appearance.dart';
+import 'package:Confessi/presentation/settings/screens/faq.dart';
+import 'package:Confessi/presentation/settings/screens/home.dart';
+import 'package:Confessi/presentation/settings/screens/text_size.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:page_transition/page_transition.dart';
 
 import '../../dependency_injection.dart';
 import '../../presentation/authentication/screens/home.dart';
 import '../../presentation/authentication/screens/login.dart';
-import '../../presentation/authentication/screens/onboarding.dart';
+import '../../presentation/initialization/screens/onboarding.dart';
 import '../../presentation/authentication/screens/open.dart';
 import '../../presentation/authentication/screens/register.dart';
-import '../../presentation/authentication/screens/splash.dart';
 import '../../application/daily_hottest/hottest_cubit.dart';
 import '../../application/daily_hottest/leaderboard_cubit.dart';
 import '../../application/feed/recents_cubit.dart';
@@ -28,9 +33,22 @@ class AppRouter {
     List<String> fullScreenDialogRoutes = [
       "/home/post/stats",
       "/home/create_replied_post",
-      "/feedback"
+      "/feedback",
+      "/prefsError",
     ];
     return fullScreenDialogRoutes.contains(routeSettings.name) ? true : false;
+  }
+
+  // Checks which routes show as a fade animation.
+  bool isSizeAnim(RouteSettings routeSettings) {
+    List<String> sizeAnimDialogRoutes = [];
+    return sizeAnimDialogRoutes.contains(routeSettings.name) ? true : false;
+  }
+
+  // Checks which routes show as a fade animation.
+  bool isFadeAnim(RouteSettings routeSettings) {
+    List<String> fadeAnimDialogRoutes = ["/onboarding", "/open", "/home"];
+    return fadeAnimDialogRoutes.contains(routeSettings.name) ? true : false;
   }
 
   /// Converts: navigating to a named route -> that actual route.
@@ -39,9 +57,6 @@ class AppRouter {
     Widget page;
     final args = routeSettings.arguments as Map<String, dynamic>?;
     switch (routeSettings.name) {
-      case "/splash":
-        page = const SplashScreen();
-        break;
       case "/open":
         page = const OpenScreen();
         break;
@@ -142,18 +157,52 @@ class AppRouter {
         page = const OverscrollEasterEgg();
         break;
       case "/settings":
-        page = const Text("Settings");
+        page = const SettingsHome();
+        break;
+      case "/settings/appearance":
+        page = const AppearanceScreen();
+        break;
+      case "/settings/faq":
+        page = const FAQScreen();
+        break;
+      case "/settings/textSize":
+        page = const TextSizeScreen();
         break;
       case "/settings/watchedUniversities":
         page = const Text("Watched universities");
         break;
+      case "/prefsError":
+        page = const CriticalErrorScreen();
+        break;
       default:
         throw Exception("Named route ${routeSettings.name} not defined");
     }
-    return MaterialPageRoute(
-      fullscreenDialog: isFullScreen(routeSettings),
-      settings: routeSettings,
-      builder: (_) => page,
-    );
+    if (isSizeAnim(routeSettings)) {
+      return PageTransition(
+        child: page,
+        alignment: Alignment.center,
+        type: PageTransitionType.scale,
+        curve: Curves.decelerate,
+        duration: const Duration(
+          milliseconds: 750,
+        ),
+      );
+    } else if (isFadeAnim(routeSettings)) {
+      return PageTransition(
+        child: page,
+        alignment: Alignment.center,
+        type: PageTransitionType.fade,
+        curve: Curves.decelerate,
+        duration: const Duration(
+          milliseconds: 175,
+        ),
+      );
+    } else {
+      return MaterialPageRoute(
+        fullscreenDialog: isFullScreen(routeSettings),
+        settings: routeSettings,
+        builder: (_) => page,
+      );
+    }
   }
 }

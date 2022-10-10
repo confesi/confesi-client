@@ -1,12 +1,11 @@
-import 'package:Confessi/core/network/http_client.dart';
+import 'package:Confessi/core/clients/http_client.dart';
 import 'package:Confessi/core/results/successes.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../core/results/failures.dart';
-import '../../../core/usecases/usecase.dart';
+import '../../../core/usecases/single_usecase.dart';
 import '../../../data/authentication/repositories/authentication_repository_concrete.dart';
-import '../entities/tokens.dart';
 
 class Login implements Usecase<Success, LoginParams> {
   final AuthenticationRepository repository;

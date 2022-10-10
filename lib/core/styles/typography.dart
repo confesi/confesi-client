@@ -8,7 +8,7 @@ var kFaded = GoogleFonts.inter(
 
 /// Largest text style - meant for BOLD DISPLAY!
 var kDisplay = GoogleFonts.dmSerifDisplay(
-  textStyle: const TextStyle(fontSize: 24, fontWeight: FontWeight.normal),
+  textStyle: const TextStyle(fontSize: 34, fontWeight: FontWeight.normal),
 );
 
 /// Very big text style.

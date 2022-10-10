@@ -5,9 +5,15 @@ class InitScale extends StatefulWidget {
   const InitScale({
     super.key,
     required this.child,
+    this.durationOfScaleInMilliseconds = 450,
+    this.delayDurationInMilliseconds = 0,
+    this.addedToScale = 0,
   });
 
   final Widget child;
+  final int durationOfScaleInMilliseconds;
+  final int delayDurationInMilliseconds;
+  final double addedToScale;
 
   @override
   State<InitScale> createState() => InitScaleState();
@@ -22,7 +28,7 @@ class InitScaleState extends State<InitScale>
   void initState() {
     _animController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 450),
+      duration: Duration(milliseconds: widget.durationOfScaleInMilliseconds),
     );
     _anim = CurvedAnimation(
       parent: _animController,
@@ -33,6 +39,10 @@ class InitScaleState extends State<InitScale>
   }
 
   void startAnim() async {
+    widget.delayDurationInMilliseconds == 0
+        ? null
+        : await Future.delayed(
+            Duration(milliseconds: widget.delayDurationInMilliseconds));
     _animController.forward();
     _animController.addListener(() {
       setState(() {});
@@ -48,7 +58,7 @@ class InitScaleState extends State<InitScale>
   @override
   Widget build(BuildContext context) {
     return Transform.scale(
-      scale: _anim.value,
+      scale: _anim.value + widget.addedToScale,
       child: widget.child,
     );
   }

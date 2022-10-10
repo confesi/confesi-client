@@ -1,9 +1,12 @@
+import 'package:Confessi/application/shared/prefs_cubit.dart';
+import 'package:Confessi/constants/enums_that_are_local_keys.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../shared/behaviours/overscroll.dart';
 import '../../shared/buttons/single_text.dart';
 import '../widgets/onboarding_tile.dart';
-import '../widgets/scroll_dots.dart';
+import '../../authentication/widgets/scroll_dots.dart';
 
 class ShowcaseScreen extends StatefulWidget {
   const ShowcaseScreen({Key? key}) : super(key: key);
@@ -61,6 +64,11 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
     super.initState();
   }
 
+  void navToOpenAndSetPref() {
+    context.read<PrefsCubit>().setFirstTime(FirstTimeEnum.notFirstTime);
+    Navigator.pushNamed(context, "/open");
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -103,24 +111,18 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
                         children: [
                           SingleTextButton(
                             backgroundColor: Colors.transparent,
-                            textColor:
-                                Theme.of(context).colorScheme.onSecondary,
+                            textColor: Theme.of(context).colorScheme.onSecondary,
                             text: "Skip",
-                            onPress: () =>
-                                Navigator.pushNamed(context, "/home"),
+                            onPress: () => navToOpenAndSetPref(),
                           ),
                           SingleTextButton(
-                            backgroundColor:
-                                Theme.of(context).colorScheme.onError,
-                            textColor:
-                                Theme.of(context).colorScheme.onSecondary,
-                            text:
-                                pageIndex + 1 == pages.length ? "Done" : "Next",
+                            backgroundColor: Theme.of(context).colorScheme.onError,
+                            textColor: Theme.of(context).colorScheme.onSecondary,
+                            text: pageIndex + 1 == pages.length ? "Done" : "Next",
                             onPress: () => pageIndex + 1 == pages.length
-                                ? Navigator.pushNamed(context, "/home")
+                                ? navToOpenAndSetPref()
                                 : controller.animateToPage(pageIndex + 1,
-                                    duration: const Duration(milliseconds: 400),
-                                    curve: Curves.easeInOutSine),
+                                    duration: const Duration(milliseconds: 400), curve: Curves.easeInOutSine),
                           ),
                         ],
                       ),

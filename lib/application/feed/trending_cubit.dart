@@ -3,7 +3,8 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
 import '../../constants/feed/enums.dart';
-import '../../core/usecases/usecase.dart';
+import '../../core/usecases/no_params.dart';
+import '../../core/usecases/single_usecase.dart';
 import '../../constants/feed/general.dart';
 import '../../domain/shared/entities/post.dart';
 import '../../domain/feed/usecases/trending.dart';
