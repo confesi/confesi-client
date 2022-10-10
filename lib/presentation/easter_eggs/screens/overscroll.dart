@@ -25,6 +25,7 @@ class OverscrollEasterEgg extends StatelessWidget {
                     "Congrats, you found me.",
                     style: kDisplay.copyWith(
                       color: Theme.of(context).colorScheme.onSecondary,
+                      fontSize: 26,
                     ),
                     textAlign: TextAlign.center,
                   ),

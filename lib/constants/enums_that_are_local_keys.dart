@@ -13,6 +13,13 @@
 //   off,
 // }
 
+// enum TextScaleFactorEnum { // TODO: save as double?
+//   pointFive,
+//   one,
+//   onePointFive,
+//   two
+// }
+
 enum ReducedAnimationsEnum {
   minimum,
   few,

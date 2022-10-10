@@ -1,3 +1,4 @@
+import 'package:Confessi/core/utils/sizing/height_fraction.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_opacity.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
@@ -109,14 +110,16 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                               ],
                             ),
                             SizedBox(height: heightFactor * 8),
-                            InitScale(
+                            InitOpacity(
+                              durationInMilliseconds: 1250,
                               child: BulgeTextField(
                                 controller: usernameEmailController,
                                 hintText: "Email or username",
                                 bottomPadding: 10,
                               ),
                             ),
-                            InitScale(
+                            InitOpacity(
+                              durationInMilliseconds: 1250,
                               child: BulgeTextField(
                                 controller: passwordController,
                                 password: true,
@@ -145,6 +148,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                             const SizedBox(height: 10),
                             Center(
                               child: InitTransform(
+                                magnitudeOfTransform: heightFraction(context, .5),
                                 child: LinkText(onPress: () {}, linkText: "Tap here.", text: "Forgot password? "),
                               ),
                             ),

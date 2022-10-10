@@ -1,6 +1,5 @@
 import 'package:Confessi/presentation/settings/widgets/setting_tile.dart';
 import 'package:Confessi/presentation/settings/widgets/stepper_tile.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_opacity.dart';
 import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
 import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
 import 'package:flutter/cupertino.dart';
@@ -34,8 +33,7 @@ class _FAQScreenState extends State<FAQScreen> {
               backgroundColor: Theme.of(context).colorScheme.shadow,
               centerWidget: Text(
                 'FAQ',
-                style: kTitle.copyWith(
-                    color: Theme.of(context).colorScheme.primary),
+                style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
               ),
@@ -103,16 +101,14 @@ class _FAQScreenState extends State<FAQScreen> {
                       ),
                       const SizedBox(height: 10),
                       const StepperTile(
-                        question:
-                            "<Some message about general privacy of the app and how it works.>",
+                        question: "<Some message about general privacy of the app and how it works.>",
                         answer: "ABC",
                       ),
                       const SizedBox(height: 10),
                       const HeaderText(text: "Development"),
                       const StepperTile(
                         question: "Who made Confesi?",
-                        answer:
-                            "Confesi was built by University of Victoria students over the span of about a year.",
+                        answer: "Confesi was built by University of Victoria students over the span of about a year.",
                       ),
                       const SizedBox(height: 10),
                       const StepperTile(

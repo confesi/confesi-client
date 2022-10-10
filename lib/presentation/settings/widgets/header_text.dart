@@ -7,10 +7,12 @@ class HeaderText extends StatelessWidget {
     super.key,
     required this.text,
     this.verticalPadding = true,
+    this.textFactor1 = false,
   });
 
   final String text;
   final bool verticalPadding;
+  final bool textFactor1;
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +21,7 @@ class HeaderText extends StatelessWidget {
       child: Text(
         text,
         style: kTitle.copyWith(color: Theme.of(context).colorScheme.onSurface),
+        textScaleFactor: textFactor1 ? 1 : null,
         overflow: TextOverflow.ellipsis,
         maxLines: 3,
         textAlign: TextAlign.left,

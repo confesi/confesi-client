@@ -9,6 +9,7 @@ import 'package:Confessi/presentation/initialization/screens/critical_error.dart
 import 'package:Confessi/presentation/settings/screens/appearance.dart';
 import 'package:Confessi/presentation/settings/screens/faq.dart';
 import 'package:Confessi/presentation/settings/screens/home.dart';
+import 'package:Confessi/presentation/settings/screens/text_size.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
@@ -40,15 +41,13 @@ class AppRouter {
 
   // Checks which routes show as a fade animation.
   bool isSizeAnim(RouteSettings routeSettings) {
-    List<String> sizeAnimDialogRoutes = [
-      "/home",
-    ];
+    List<String> sizeAnimDialogRoutes = [];
     return sizeAnimDialogRoutes.contains(routeSettings.name) ? true : false;
   }
 
   // Checks which routes show as a fade animation.
   bool isFadeAnim(RouteSettings routeSettings) {
-    List<String> fadeAnimDialogRoutes = ["/onboarding", "/open"];
+    List<String> fadeAnimDialogRoutes = ["/onboarding", "/open", "/home"];
     return fadeAnimDialogRoutes.contains(routeSettings.name) ? true : false;
   }
 
@@ -166,6 +165,9 @@ class AppRouter {
       case "/settings/faq":
         page = const FAQScreen();
         break;
+      case "/settings/textSize":
+        page = const TextSizeScreen();
+        break;
       case "/settings/watchedUniversities":
         page = const Text("Watched universities");
         break;
@@ -192,7 +194,7 @@ class AppRouter {
         type: PageTransitionType.fade,
         curve: Curves.decelerate,
         duration: const Duration(
-          milliseconds: 250,
+          milliseconds: 175,
         ),
       );
     } else {

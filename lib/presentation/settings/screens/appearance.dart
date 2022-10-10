@@ -1,12 +1,9 @@
 import 'package:Confessi/application/shared/prefs_cubit.dart';
 import 'package:Confessi/constants/enums_that_are_local_keys.dart';
 import 'package:Confessi/core/utils/styles/appearance_name.dart';
-import 'package:Confessi/presentation/settings/screens/home.dart';
 import 'package:Confessi/presentation/settings/widgets/bool_selection_group.dart';
 import 'package:Confessi/presentation/settings/widgets/header_text.dart';
 import 'package:Confessi/presentation/settings/widgets/bool_selection_tile.dart';
-import 'package:Confessi/presentation/settings/widgets/setting_tile.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
 import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
 import 'package:Confessi/presentation/shared/text/disclaimer_text.dart';

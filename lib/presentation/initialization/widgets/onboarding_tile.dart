@@ -1,4 +1,5 @@
 import 'package:Confessi/core/utils/sizing/height_fraction.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:flutter/material.dart';
 
@@ -33,8 +34,7 @@ class _ShowcaseItemState extends State<ShowcaseItem> with AutomaticKeepAliveClie
           children: [
             Expanded(
               flex: 4,
-              child: InitTransform(
-                magnitudeOfTransform: -heightFraction(context, 1),
+              child: InitScale(
                 child: Container(
                   color: Colors.transparent,
                   child: Center(

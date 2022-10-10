@@ -1,16 +1,16 @@
-import 'package:Confessi/core/utils/sizing/height_fraction.dart';
 import 'package:Confessi/core/utils/sizing/width_breakpoint_fraction.dart';
 import 'package:Confessi/core/utils/sizing/width_fraction.dart';
+import 'package:Confessi/presentation/authentication/widgets/text_with_button.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
-import 'package:Confessi/presentation/shared/text/link.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/utils/sizing/height_without_safe_area.dart';
 import '../../shared/buttons/pop.dart';
 import '../../shared/text/header_group.dart';
+import '../../shared/text/link.dart';
 
 class OpenScreen extends StatefulWidget {
   const OpenScreen({Key? key}) : super(key: key);
@@ -25,7 +25,7 @@ class _OpenScreenState extends State<OpenScreen> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      bottomHeightToOffsetKeyboard = MediaQuery.of(context).padding.bottom;
+      bottomHeightToOffsetKeyboard = MediaQuery.of(context).padding.bottom * 1.5;
     });
     super.initState();
   }
@@ -42,7 +42,7 @@ class _OpenScreenState extends State<OpenScreen> {
           maintainBottomViewPadding: false,
           child: ScrollableView(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 30),
               child: Column(
                 children: [
                   InitScale(
@@ -60,16 +60,11 @@ class _OpenScreenState extends State<OpenScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        const HeaderGroupText(
-                          multiLine: true,
-                          onSecondaryColors: false,
-                          header: "Confesi",
-                          body: "Make sure you're in-the-know with the latest campus gossip. Fully anonymous.",
-                        ),
-                        const SizedBox(height: 30),
+                        const TextWithButton(header: "Confesi"),
+                        const SizedBox(height: 20),
                         InitTransform(
-                          durationInMilliseconds: 1100,
-                          curve: Curves.bounceOut,
+                          durationInMilliseconds: 650,
+                          curve: Curves.decelerate,
                           transformDirection: TransformDirection.horizontal,
                           magnitudeOfTransform: widthFraction(context, 1),
                           child: PopButton(
@@ -82,8 +77,8 @@ class _OpenScreenState extends State<OpenScreen> {
                           ),
                         ),
                         InitTransform(
-                          durationInMilliseconds: 1100,
-                          curve: Curves.bounceOut,
+                          durationInMilliseconds: 650,
+                          curve: Curves.decelerate,
                           transformDirection: TransformDirection.horizontal,
                           magnitudeOfTransform: -widthFraction(context, 1),
                           child: PopButton(
@@ -92,18 +87,11 @@ class _OpenScreenState extends State<OpenScreen> {
                             backgroundColor: Theme.of(context).colorScheme.primary,
                             textColor: Theme.of(context).colorScheme.onPrimary,
                             text: "Existing user login",
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        InitTransform(
-                          child: LinkText(
-                            onPress: () => Navigator.of(context).pushNamed("/onboarding"),
-                            linkText: "Tap here.",
-                            text: "View tips again? ",
+                            bottomPadding: 20,
                           ),
                         ),
                         SizedBox(
-                          height: bottomHeightToOffsetKeyboard ?? MediaQuery.of(context).padding.bottom,
+                          height: bottomHeightToOffsetKeyboard ?? MediaQuery.of(context).padding.bottom * 1.5,
                         ),
                       ],
                     ),

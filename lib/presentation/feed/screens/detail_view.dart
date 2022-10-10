@@ -1,4 +1,3 @@
-import 'package:Confessi/application/shared/scaffold_shrinker_cubit.dart';
 import 'package:Confessi/core/styles/typography.dart';
 import 'package:Confessi/presentation/shared/behaviours/shrinking_view.dart';
 import 'package:Confessi/presentation/shared/layout/appbar.dart';
@@ -10,9 +9,7 @@ import 'package:Confessi/presentation/feed/widgets/comment_tile.dart';
 import 'package:Confessi/presentation/feed/widgets/post_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:keyboard_attachable/keyboard_attachable.dart';
 
@@ -63,8 +60,7 @@ class DetailViewScreen extends StatefulWidget {
   State<DetailViewScreen> createState() => _DetailViewScreenState();
 }
 
-class _DetailViewScreenState extends State<DetailViewScreen>
-    with TickerProviderStateMixin {
+class _DetailViewScreenState extends State<DetailViewScreen> with TickerProviderStateMixin {
   // Is the scrollview at the very top?
   bool atTop = true;
 
@@ -142,8 +138,7 @@ class _DetailViewScreenState extends State<DetailViewScreen>
                   bottomBorder: false,
                   centerWidget: Text(
                     'Thread View',
-                    style: kTitle.copyWith(
-                        color: Theme.of(context).colorScheme.primary),
+                    style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
                   ),
@@ -159,10 +154,8 @@ class _DetailViewScreenState extends State<DetailViewScreen>
                     children: [
                       InfiniteList(
                         controller: controller,
-                        refreshIndicatorBackgroundColor:
-                            Theme.of(context).colorScheme.background,
-                        refreshIndicatorColor:
-                            Theme.of(context).colorScheme.primary,
+                        refreshIndicatorBackgroundColor: Theme.of(context).colorScheme.background,
+                        refreshIndicatorColor: Theme.of(context).colorScheme.primary,
                         // TODO: implement these widgets:
                         fullPageLoading: const Text('full page loading'),
                         fullPageError: const Text('full page error'),

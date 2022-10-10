@@ -19,8 +19,7 @@ class ExploreHome extends StatefulWidget {
   State<ExploreHome> createState() => _ExploreHomeState();
 }
 
-class _ExploreHomeState extends State<ExploreHome>
-    with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
+class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
   @override
   bool get wantKeepAlive => true;
 
@@ -30,7 +29,7 @@ class _ExploreHomeState extends State<ExploreHome>
 
   @override
   void initState() {
-    tabController = TabController(vsync: this, length: 2);
+    tabController = TabController(vsync: this, length: 2, initialIndex: 1);
     super.initState();
   }
 
@@ -57,8 +56,7 @@ class _ExploreHomeState extends State<ExploreHome>
                     bottomBorder: false,
                     centerWidget: Text(
                       "University of Victoria",
-                      style: kTitle.copyWith(
-                          color: Theme.of(context).colorScheme.primary),
+                      style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.center,
                     ),

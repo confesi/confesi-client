@@ -31,8 +31,7 @@ class SettingsHome extends StatelessWidget {
                 bottomBorder: false,
                 centerWidget: Text(
                   'Settings',
-                  style: kTitle.copyWith(
-                      color: Theme.of(context).colorScheme.primary),
+                  style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
                 ),
@@ -61,14 +60,12 @@ class SettingsHome extends StatelessWidget {
                             SettingTile(
                               icon: CupertinoIcons.chat_bubble,
                               text: "Contact Confesi",
-                              onTap: () =>
-                                  Navigator.of(context).pushNamed("/feedback"),
+                              onTap: () => Navigator.of(context).pushNamed("/feedback"),
                             ),
                             SettingTile(
                               icon: CupertinoIcons.question_circle,
                               text: "FAQ",
-                              onTap: () => Navigator.of(context)
-                                  .pushNamed("/settings/faq"),
+                              onTap: () => Navigator.of(context).pushNamed("/settings/faq"),
                             ),
                             SettingTile(
                               isLink: true,
@@ -85,8 +82,7 @@ class SettingsHome extends StatelessWidget {
                             SettingTile(
                               icon: CupertinoIcons.color_filter,
                               text: "Appearance",
-                              onTap: () => Navigator.of(context)
-                                  .pushNamed("/settings/appearance"),
+                              onTap: () => Navigator.of(context).pushNamed("/settings/appearance"),
                             ),
                             SettingTile(
                               icon: CupertinoIcons.cube_box,
@@ -140,7 +136,7 @@ class SettingsHome extends StatelessWidget {
                             SettingTile(
                               icon: CupertinoIcons.text_cursor,
                               text: "Text Size",
-                              onTap: () => print("tap"),
+                              onTap: () => Navigator.of(context).pushNamed("/settings/textSize"),
                             ),
                             SettingTile(
                               icon: CupertinoIcons.light_max,
@@ -148,9 +144,13 @@ class SettingsHome extends StatelessWidget {
                               onTap: () => print("tap"),
                             ),
                             SettingTile(
-                              icon:
-                                  CupertinoIcons.textformat_abc_dottedunderline,
+                              icon: CupertinoIcons.textformat_abc_dottedunderline,
                               text: "Tool Tips",
+                              onTap: () => print("tap"),
+                            ),
+                            SettingTile(
+                              icon: CupertinoIcons.time,
+                              text: "Full Boomer Mode",
                               onTap: () => print("tap"),
                             ),
                           ],

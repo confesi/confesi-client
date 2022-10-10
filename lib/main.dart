@@ -1,6 +1,8 @@
 import 'package:Confessi/application/create_post/post_cubit.dart';
 import 'package:Confessi/application/shared/prefs_cubit.dart';
 import 'package:Confessi/constants/enums_that_are_local_keys.dart';
+import 'package:Confessi/presentation/authentication/screens/select_university.dart';
+import 'package:Confessi/presentation/feedback/screens/home.dart';
 import 'package:Confessi/presentation/initialization/screens/splash.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
@@ -13,18 +15,14 @@ import 'core/router/router.dart';
 import 'core/styles/themes.dart';
 import 'dependency_injection.dart';
 import 'application/authentication/authentication_cubit.dart';
+import 'presentation/authentication/screens/onboarding_details.dart';
 
 void main() async {
   await init();
   WidgetsFlutterBinding.ensureInitialized();
   // Locks the application to portait mode (facing up).
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then(
-    (value) => runApp(
-      DevicePreview(
-        enabled: kPreviewMode,
-        builder: (context) => MyApp(appRouter: sl()),
-      ),
-    ),
+    (value) => runApp(MyApp(appRouter: sl())),
   );
 }
 
@@ -96,7 +94,6 @@ class MyApp extends StatelessWidget {
         builder: (context) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
-            useInheritedMediaQuery: kPreviewMode,
             title: "Confesi",
             onGenerateRoute: appRouter.onGenerateRoute,
             theme: AppTheme.classicLight,
@@ -106,8 +103,19 @@ class MyApp extends StatelessWidget {
                     context.watch<PrefsCubit>().prefs.appearanceEnum,
                   )
                 : ThemeMode.system,
-            builder: DevicePreview.appBuilder,
-            home: const SplashScreen(),
+            builder: (BuildContext context, Widget? child) {
+              final MediaQueryData data = MediaQuery.of(context);
+              return MediaQuery(
+                data: data.copyWith(textScaleFactor: 1),
+                child: child!,
+              );
+            },
+            // home: Builder(
+            //   builder: (context) {
+            //     return const SplashScreen();
+            //   },
+            // ),
+            home: OnboardingDetailsScreen(),
           );
         },
       ),

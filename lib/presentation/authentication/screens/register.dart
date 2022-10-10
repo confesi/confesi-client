@@ -1,5 +1,5 @@
 import 'package:Confessi/application/authentication/authentication_cubit.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_opacity.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/styles/typography.dart';
+import '../../../core/utils/sizing/height_fraction.dart';
 import '../../shared/buttons/pop.dart';
 import '../../shared/layout/minimal_appbar.dart';
 import '../../shared/text/link.dart';
@@ -113,21 +114,24 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                               SizedBox(height: heightFactor * 8),
                               Column(
                                 children: [
-                                  InitScale(
+                                  InitOpacity(
+                                    durationInMilliseconds: 1250,
                                     child: BulgeTextField(
                                       controller: emailController,
                                       hintText: "Email",
                                       bottomPadding: 10,
                                     ),
                                   ),
-                                  InitScale(
+                                  InitOpacity(
+                                    durationInMilliseconds: 1250,
                                     child: BulgeTextField(
                                       controller: usernameController,
                                       hintText: "Username",
                                       bottomPadding: 10,
                                     ),
                                   ),
-                                  InitScale(
+                                  InitOpacity(
+                                    durationInMilliseconds: 1250,
                                     child: BulgeTextField(
                                       controller: passwordController,
                                       password: true,
@@ -159,6 +163,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                               const SizedBox(height: 10),
                               Center(
                                 child: InitTransform(
+                                  magnitudeOfTransform: heightFraction(context, .5),
                                   child: LinkText(
                                     pressable: state is UserLoading ? false : true,
                                     onPress: () {

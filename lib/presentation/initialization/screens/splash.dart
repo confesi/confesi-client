@@ -78,10 +78,9 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
       listener: (context, state) {
         if (state is PrefsError) Navigator.of(context).pushNamed("/prefsError");
         if (state is PrefsLoaded) {
-          if (state.refreshTokenEnum != RefreshTokenEnum.hasRefreshToken) {
+          if (state.refreshTokenEnum == RefreshTokenEnum.hasRefreshToken) {
             Navigator.of(context).pushNamed("/home");
           } else {
-            // first time logic
             if (state.firstTimeEnum == FirstTimeEnum.firstTime) Navigator.of(context).pushNamed("/onboarding");
             if (state.firstTimeEnum == FirstTimeEnum.notFirstTime) Navigator.of(context).pushNamed("/open");
           }
@@ -114,20 +113,20 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                                 ),
                               ),
                             ),
-                            SizedBox(
-                              height: heightFraction(context, .3),
-                            ),
-                            SizedBox(
-                              width: widthBreakpointFraction(context, 1 / 4, 250),
-                              child: Text(
-                                introText,
-                                style: kBody.copyWith(
-                                  color: AppTheme.classicLight.colorScheme.onSecondary,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
                           ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: heightFraction(context, .3),
+                      ),
+                      SizedBox(
+                        width: widthBreakpointFraction(context, 1 / 4, 250),
+                        child: Text(
+                          introText,
+                          style: kBody.copyWith(
+                            color: AppTheme.classicLight.colorScheme.onSecondary,
+                          ),
+                          textAlign: TextAlign.center,
                         ),
                       ),
                     ],
