@@ -4,6 +4,7 @@ import 'package:Confessi/presentation/shared/behaviours/init_opacity.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
 import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
+import 'package:Confessi/presentation/shared/overlays/top_chip.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -26,44 +27,15 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStateMixin {
-  late AnimationController errorAnimController;
+class _LoginScreenState extends State<LoginScreen> {
   TextEditingController usernameEmailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  // What to show as error message.
-  String errorText = "";
-
-  @override
-  void initState() {
-    errorAnimController = AnimationController(vsync: this, duration: const Duration(milliseconds: 400));
-    super.initState();
-  }
-
   @override
   void dispose() {
-    errorAnimController.dispose();
     usernameEmailController.dispose();
     passwordController.dispose();
     super.dispose();
-  }
-
-  void showErrorMessage(String textToDisplay) async {
-    errorAnimController.reverse().then((value) async {
-      errorText = textToDisplay;
-      errorAnimController.forward();
-    });
-    errorAnimController.addListener(() {
-      setState(() {});
-    });
-  }
-
-  void hideErrorMessage() {
-    errorAnimController.reverse();
-    errorText = "";
-    errorAnimController.addListener(() {
-      setState(() {});
-    });
   }
 
   @override
@@ -71,9 +43,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
     double heightFactor = MediaQuery.of(context).size.height / 100;
     return BlocConsumer<AuthenticationCubit, AuthenticationState>(
       listener: (context, state) {
-        if (state is UserError) {
-          showErrorMessage(state.message);
-        }
+        if (state is UserError) showTopChip(context, state.message);
       },
       builder: (context, state) {
         return ThemedStatusBar(
@@ -122,10 +92,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                                 password: true,
                                 hintText: "Password",
                               ),
-                              FadeSizeText(
-                                text: errorText,
-                                childController: errorAnimController,
-                              ),
+                              const SizedBox(height: 45),
                               PopButton(
                                 loading: state is UserLoading ? true : false,
                                 justText: true,

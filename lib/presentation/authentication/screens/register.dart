@@ -13,7 +13,6 @@ import '../../shared/buttons/pop.dart';
 import '../../shared/layout/minimal_appbar.dart';
 import '../../shared/text/link.dart';
 import '../../shared/textfields/bulge.dart';
-import '../../shared/text/fade_size_text.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -22,47 +21,17 @@ class RegisterScreen extends StatefulWidget {
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProviderStateMixin {
-  late AnimationController errorAnimController;
+class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  // What to show as error message.
-  String errorText = "";
-
-  @override
-  void initState() {
-    errorAnimController = AnimationController(vsync: this, duration: const Duration(milliseconds: 400));
-    super.initState();
-  }
-
   @override
   void dispose() {
-    errorAnimController.dispose();
     usernameController.dispose();
     passwordController.dispose();
     emailController.dispose();
     super.dispose();
-  }
-
-  void showErrorMessage(String textToDisplay) async {
-    errorAnimController.reverse().then((value) async {
-      // await Future.delayed(const Duration(milliseconds: 200));
-      errorText = textToDisplay;
-      errorAnimController.forward();
-    });
-    errorAnimController.addListener(() {
-      setState(() {});
-    });
-  }
-
-  void hideErrorMessage() {
-    errorAnimController.reverse();
-    errorText = "";
-    errorAnimController.addListener(() {
-      setState(() {});
-    });
   }
 
   @override
@@ -70,9 +39,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
     double heightFactor = MediaQuery.of(context).size.height / 100;
     return BlocConsumer<AuthenticationCubit, AuthenticationState>(
       listener: (context, state) {
-        if (state is UserError) {
-          showErrorMessage(state.message);
-        }
+        if (state is UserError) showTopChip(context, state.message);
       },
       builder: (context, state) {
         return ThemedStatusBar(
@@ -133,10 +100,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                                     ),
                                   ],
                                 ),
-                                FadeSizeText(
-                                  text: errorText,
-                                  childController: errorAnimController,
-                                ),
+                                const SizedBox(height: 45),
                                 PopButton(
                                   loading: state is UserLoading ? true : false,
                                   justText: true,

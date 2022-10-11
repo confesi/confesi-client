@@ -86,18 +86,19 @@ class __OverlayItemState extends State<_OverlayItem> with SingleTickerProviderSt
     return Transform.translate(
       offset: Offset(0, -(1 - translateAnim.value) * heightFraction(context, .25)),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 25),
         child: Container(
           constraints: BoxConstraints(maxHeight: heightFraction(context, .2)),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.error,
             borderRadius: const BorderRadius.all(
-              Radius.circular(10),
+              Radius.circular(5),
             ),
             boxShadow: [
               BoxShadow(
-                color: Theme.of(context).colorScheme.error.withOpacity(0.4),
-                blurRadius: 10,
+                spreadRadius: 5,
+                color: Theme.of(context).colorScheme.error.withOpacity(0.2),
+                blurRadius: 20,
                 offset: const Offset(0, 2),
               ),
             ],
