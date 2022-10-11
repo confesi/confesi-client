@@ -5,8 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../shared/behaviours/overscroll.dart';
 import '../../shared/buttons/single_text.dart';
-import '../widgets/onboarding_tile.dart';
-import '../../authentication/widgets/scroll_dots.dart';
+import '../widgets/showcase_item.dart';
+import '../widgets/scroll_dots.dart';
 
 class ShowcaseScreen extends StatefulWidget {
   const ShowcaseScreen({Key? key}) : super(key: key);

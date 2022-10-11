@@ -166,9 +166,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                                   magnitudeOfTransform: heightFraction(context, .5),
                                   child: LinkText(
                                     pressable: state is UserLoading ? false : true,
-                                    onPress: () {
-                                      Navigator.of(context).pushNamed("/login");
-                                    },
+                                    onPress: () => Navigator.of(context).pushNamed("/login"),
                                     linkText: "Tap here.",
                                     text: "Already a user? ",
                                   ),

@@ -1,9 +1,9 @@
 import 'package:Confessi/application/create_post/post_cubit.dart';
 import 'package:Confessi/application/shared/prefs_cubit.dart';
 import 'package:Confessi/constants/enums_that_are_local_keys.dart';
-import 'package:Confessi/presentation/authentication/screens/select_university.dart';
+import 'package:Confessi/presentation/primary/widgets/onboarding_university_select.dart';
 import 'package:Confessi/presentation/feedback/screens/home.dart';
-import 'package:Confessi/presentation/initialization/screens/splash.dart';
+import 'package:Confessi/presentation/primary/screens/splash.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,7 +15,7 @@ import 'core/router/router.dart';
 import 'core/styles/themes.dart';
 import 'dependency_injection.dart';
 import 'application/authentication/authentication_cubit.dart';
-import 'presentation/authentication/screens/onboarding_details.dart';
+import 'presentation/primary/screens/onboarding_details.dart';
 
 void main() async {
   await init();

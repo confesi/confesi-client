@@ -1,11 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
 import '../../shared/text/link.dart';
 
-class TextWithButton extends StatelessWidget {
-  const TextWithButton({
+class HeaderWithLinkText extends StatelessWidget {
+  const HeaderWithLinkText({
     super.key,
     required this.header,
   });

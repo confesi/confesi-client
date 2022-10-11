@@ -9,7 +9,9 @@ import 'package:Confessi/presentation/settings/widgets/setting_tile_group.dart';
 import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../application/authentication/authentication_cubit.dart';
 import '../../shared/behaviours/simulated_bottom_safe_area.dart';
 import '../../shared/layout/appbar.dart';
 import '../../shared/overlays/feedback_sheet.dart';
@@ -115,7 +117,7 @@ class SettingsHome extends StatelessWidget {
                               isRedText: true,
                               icon: CupertinoIcons.square_arrow_right,
                               text: "Logout",
-                              onTap: () => print("tap"),
+                              onTap: () => context.read<AuthenticationCubit>().logoutUser(),
                             ),
                           ],
                         ),

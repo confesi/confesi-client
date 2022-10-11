@@ -1,6 +1,6 @@
 import 'package:Confessi/core/utils/sizing/width_breakpoint_fraction.dart';
 import 'package:Confessi/core/utils/sizing/width_fraction.dart';
-import 'package:Confessi/presentation/authentication/widgets/text_with_button.dart';
+import 'package:Confessi/presentation/primary/widgets/header_with_link_text.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
@@ -60,7 +60,7 @@ class _OpenScreenState extends State<OpenScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        const TextWithButton(header: "Confesi"),
+                        const HeaderWithLinkText(header: "Confesi"),
                         const SizedBox(height: 20),
                         InitTransform(
                           durationInMilliseconds: 650,
