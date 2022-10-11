@@ -20,14 +20,10 @@ class UserError extends AuthenticationState {
 }
 
 /// An authenticated user.
-///
-/// Has a [justRegistered] field to show if this is their first time on their account.
 class User extends AuthenticationState {
   final bool justRegistered;
 
-  User({
-    this.justRegistered = false,
-  });
+  User({this.justRegistered = false});
 
   @override
   List<Object?> get props => [justRegistered];

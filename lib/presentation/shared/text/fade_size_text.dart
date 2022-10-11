@@ -3,11 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../core/styles/typography.dart';
 
 class FadeSizeText extends StatefulWidget {
-  const FadeSizeText(
-      {this.verticalPadding = 20.0,
-      required this.text,
-      required this.childController,
-      Key? key})
+  const FadeSizeText({this.verticalPadding = 20.0, required this.text, required this.childController, Key? key})
       : super(key: key);
 
   final String text;
@@ -18,15 +14,13 @@ class FadeSizeText extends StatefulWidget {
   State<FadeSizeText> createState() => _FadeSizeTextState();
 }
 
-class _FadeSizeTextState extends State<FadeSizeText>
-    with SingleTickerProviderStateMixin {
+class _FadeSizeTextState extends State<FadeSizeText> with SingleTickerProviderStateMixin {
   late Animation anim;
 
   @override
   void initState() {
     super.initState();
-    anim =
-        CurvedAnimation(parent: widget.childController, curve: Curves.linear);
+    anim = CurvedAnimation(parent: widget.childController, curve: Curves.linear);
   }
 
   @override
@@ -45,10 +39,7 @@ class _FadeSizeTextState extends State<FadeSizeText>
               child: Text(
                 widget.text,
                 style: kBody.copyWith(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .error
-                      .withOpacity(anim.value ?? 0),
+                  color: Theme.of(context).colorScheme.error.withOpacity(anim.value ?? 0),
                 ),
                 textAlign: TextAlign.left,
               ),

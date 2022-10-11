@@ -2,7 +2,9 @@ import 'package:Confessi/core/utils/sizing/height_fraction.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_opacity.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
+import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
 import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
+import 'package:Confessi/presentation/shared/overlays/top_chip.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,44 +27,15 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStateMixin {
-  late AnimationController errorAnimController;
+class _LoginScreenState extends State<LoginScreen> {
   TextEditingController usernameEmailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  // What to show as error message.
-  String errorText = "";
-
-  @override
-  void initState() {
-    errorAnimController = AnimationController(vsync: this, duration: const Duration(milliseconds: 400));
-    super.initState();
-  }
-
   @override
   void dispose() {
-    errorAnimController.dispose();
     usernameEmailController.dispose();
     passwordController.dispose();
     super.dispose();
-  }
-
-  void showErrorMessage(String textToDisplay) async {
-    errorAnimController.reverse().then((value) async {
-      errorText = textToDisplay;
-      errorAnimController.forward();
-    });
-    errorAnimController.addListener(() {
-      setState(() {});
-    });
-  }
-
-  void hideErrorMessage() {
-    errorAnimController.reverse();
-    errorText = "";
-    errorAnimController.addListener(() {
-      setState(() {});
-    });
   }
 
   @override
@@ -70,97 +43,88 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
     double heightFactor = MediaQuery.of(context).size.height / 100;
     return BlocConsumer<AuthenticationCubit, AuthenticationState>(
       listener: (context, state) {
-        if (state is UserError) {
-          showErrorMessage(state.message);
-        }
+        if (state is UserError) showTopChip(context, state.message);
       },
       builder: (context, state) {
-        return Scaffold(
-          resizeToAvoidBottomInset: true,
-          backgroundColor: Theme.of(context).colorScheme.background,
-          body: SafeArea(
-            child: LayoutBuilder(builder: (context, constraints) {
-              return SizedBox(
-                height: constraints.maxHeight,
-                child: SingleChildScrollView(
-                  physics: const ClampingScrollPhysics(),
-                  child: Column(
-                    children: [
-                      MinimalAppbarLayout(
-                        pressable: state is UserLoading ? false : true,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 30),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(height: 15),
-                            AnimatedTextKit(
-                              displayFullTextOnTap: true,
-                              pause: const Duration(milliseconds: 200),
-                              totalRepeatCount: 1,
-                              animatedTexts: [
-                                TypewriterAnimatedText(
-                                  "Let's log you in.",
-                                  textStyle: kDisplay.copyWith(color: Theme.of(context).colorScheme.primary),
-                                  speed: const Duration(
-                                    milliseconds: 100,
+        return ThemedStatusBar(
+          child: Scaffold(
+            resizeToAvoidBottomInset: true,
+            backgroundColor: Theme.of(context).colorScheme.background,
+            body: SafeArea(
+              child: LayoutBuilder(builder: (context, constraints) {
+                return SizedBox(
+                  height: constraints.maxHeight,
+                  child: SingleChildScrollView(
+                    physics: const ClampingScrollPhysics(),
+                    child: Column(
+                      children: [
+                        MinimalAppbarLayout(
+                          pressable: state is UserLoading ? false : true,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 30),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(height: 15),
+                              AnimatedTextKit(
+                                displayFullTextOnTap: true,
+                                pause: const Duration(milliseconds: 200),
+                                totalRepeatCount: 1,
+                                animatedTexts: [
+                                  TypewriterAnimatedText(
+                                    "Let's log you in.",
+                                    textStyle: kDisplay.copyWith(color: Theme.of(context).colorScheme.primary),
+                                    speed: const Duration(
+                                      milliseconds: 75,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: heightFactor * 8),
-                            InitOpacity(
-                              durationInMilliseconds: 1250,
-                              child: BulgeTextField(
+                                ],
+                              ),
+                              SizedBox(height: heightFactor * 8),
+                              BulgeTextField(
                                 controller: usernameEmailController,
                                 hintText: "Email or username",
                                 bottomPadding: 10,
                               ),
-                            ),
-                            InitOpacity(
-                              durationInMilliseconds: 1250,
-                              child: BulgeTextField(
+                              BulgeTextField(
                                 controller: passwordController,
                                 password: true,
                                 hintText: "Password",
                               ),
-                            ),
-                            FadeSizeText(
-                              text: errorText,
-                              childController: errorAnimController,
-                            ),
-                            PopButton(
-                              loading: state is UserLoading ? true : false,
-                              justText: true,
-                              onPress: () async {
-                                FocusScope.of(context).unfocus();
-                                await context.read<AuthenticationCubit>().loginUser(
-                                      usernameEmailController.text,
-                                      passwordController.text,
-                                    );
-                              },
-                              icon: CupertinoIcons.chevron_right,
-                              backgroundColor: Theme.of(context).colorScheme.primary,
-                              textColor: Theme.of(context).colorScheme.onPrimary,
-                              text: "Login",
-                            ),
-                            const SizedBox(height: 10),
-                            Center(
-                              child: InitTransform(
-                                magnitudeOfTransform: heightFraction(context, .5),
-                                child: LinkText(onPress: () {}, linkText: "Tap here.", text: "Forgot password? "),
+                              const SizedBox(height: 45),
+                              PopButton(
+                                loading: state is UserLoading ? true : false,
+                                justText: true,
+                                onPress: () async {
+                                  FocusScope.of(context).unfocus();
+                                  await context.read<AuthenticationCubit>().loginUser(
+                                        usernameEmailController.text,
+                                        passwordController.text,
+                                      );
+                                },
+                                icon: CupertinoIcons.chevron_right,
+                                backgroundColor: Theme.of(context).colorScheme.primary,
+                                textColor: Theme.of(context).colorScheme.onPrimary,
+                                text: "Login",
                               ),
-                            ),
-                            const SizedBox(height: 10),
-                          ],
+                              const SizedBox(height: 10),
+                              Center(
+                                child: InitTransform(
+                                  magnitudeOfTransform: heightFraction(context, .5),
+                                  child: LinkText(onPress: () {}, linkText: "Tap here.", text: "Forgot password? "),
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              );
-            }),
+                );
+              }),
+            ),
           ),
         );
       },

@@ -68,13 +68,14 @@ class _BulgeTextFieldState extends State<BulgeTextField> {
             onTap: () => focusNode.requestFocus(),
             child: Container(
               decoration: BoxDecoration(
+                // border: Border.all(
+                //   width: 2,
+                //   color: Theme.of(context).colorScheme.onSecondary,
+                // ),
                 color: Theme.of(context).colorScheme.surface,
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(20),
-                ),
               ),
               child: Padding(
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(15),
                 child: SizedBox(
                   height: 24,
                   child: Center(
@@ -91,7 +92,7 @@ class _BulgeTextFieldState extends State<BulgeTextField> {
                       decoration: InputDecoration.collapsed(
                         hintText: "...",
                         hintStyle: kBody.copyWith(
-                          color: Theme.of(context).colorScheme.onSurface,
+                          color: Theme.of(context).colorScheme.primary,
                         ),
                       ),
                     ),

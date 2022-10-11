@@ -1,11 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
 import '../../shared/text/link.dart';
 
-class TextWithButton extends StatelessWidget {
-  const TextWithButton({
+class HeaderWithLinkText extends StatelessWidget {
+  const HeaderWithLinkText({
     super.key,
     required this.header,
   });
@@ -26,8 +25,9 @@ class TextWithButton extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
           maxLines: 5,
         ),
-        const SizedBox(height: 5),
         LinkText(
+          topPadding: 5,
+          bottomPadding: 15,
           onPress: () => Navigator.of(context).pushNamed("/onboarding"),
           linkText: "Tap here.",
           text: "View tips again? ",

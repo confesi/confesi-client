@@ -1,10 +1,12 @@
+import 'package:Confessi/presentation/shared/behaviours/init_opacity.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
 
-void showSnackbar(BuildContext context, String message,
-    {VoidCallback? onClosed, bool stayLonger = false}) async {
+void showSnackbar(BuildContext context, String message, {VoidCallback? onClosed, bool stayLonger = false}) async {
+  ScaffoldMessenger.of(context).clearSnackBars();
   ScaffoldMessenger.of(context)
       .showSnackBar(
         SnackBar(
@@ -21,8 +23,7 @@ void showSnackbar(BuildContext context, String message,
               Expanded(
                 child: Text(
                   message,
-                  style: kBody.copyWith(
-                      color: Theme.of(context).colorScheme.background),
+                  style: kBody.copyWith(color: Theme.of(context).colorScheme.background),
                 ),
               ),
             ],

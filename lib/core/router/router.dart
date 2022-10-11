@@ -5,7 +5,7 @@ import 'package:Confessi/presentation/easter_eggs/screens/overscroll.dart';
 import 'package:Confessi/presentation/feed/screens/detail_view.dart';
 import 'package:Confessi/presentation/feed/screens/post_advanced_details.dart';
 import 'package:Confessi/presentation/feedback/screens/home.dart';
-import 'package:Confessi/presentation/initialization/screens/critical_error.dart';
+import 'package:Confessi/presentation/primary/screens/critical_error.dart';
 import 'package:Confessi/presentation/settings/screens/appearance.dart';
 import 'package:Confessi/presentation/settings/screens/faq.dart';
 import 'package:Confessi/presentation/settings/screens/home.dart';
@@ -15,9 +15,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
 
 import '../../dependency_injection.dart';
-import '../../presentation/authentication/screens/home.dart';
+import '../../presentation/primary/screens/home.dart';
 import '../../presentation/authentication/screens/login.dart';
-import '../../presentation/initialization/screens/onboarding.dart';
+import '../../presentation/primary/screens/onboarding_details.dart';
+import '../../presentation/primary/screens/showcase.dart';
 import '../../presentation/authentication/screens/open.dart';
 import '../../presentation/authentication/screens/register.dart';
 import '../../application/daily_hottest/hottest_cubit.dart';
@@ -150,6 +151,9 @@ class AppRouter {
           child: const LeaderboardScreen(),
         );
         break;
+      case "/onboardingDetails":
+        page = const OnboardingDetailsScreen();
+        break;
       case "/feedback":
         page = const FeedbackHome();
         break;
@@ -194,7 +198,7 @@ class AppRouter {
         type: PageTransitionType.fade,
         curve: Curves.decelerate,
         duration: const Duration(
-          milliseconds: 175,
+          milliseconds: 225,
         ),
       );
     } else {

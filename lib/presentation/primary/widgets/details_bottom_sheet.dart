@@ -5,8 +5,8 @@ import 'package:Confessi/presentation/shared/text/link.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class BottomButtonSheet extends StatelessWidget {
-  const BottomButtonSheet({super.key});
+class OnboardingDetailsBottomSheet extends StatelessWidget {
+  const OnboardingDetailsBottomSheet({super.key});
 
   @override
   Widget build(BuildContext context) {

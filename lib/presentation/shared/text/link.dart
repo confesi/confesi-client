@@ -10,6 +10,9 @@ class LinkText extends StatelessWidget {
       required this.text,
       this.widthMultiplier = 100,
       this.pressable = true,
+      this.topPadding = 10,
+      this.bottomPadding = 10,
+      this.horizontalPadding = 10,
       Key? key})
       : super(key: key);
 
@@ -18,6 +21,9 @@ class LinkText extends StatelessWidget {
   final String linkText;
   final VoidCallback onPress;
   final bool pressable;
+  final double topPadding;
+  final double bottomPadding;
+  final double horizontalPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -32,21 +38,17 @@ class LinkText extends StatelessWidget {
             // transparent hitbox trick
             color: Colors.transparent,
             child: Padding(
-              padding: const EdgeInsets.all(10),
+              padding: EdgeInsets.only(
+                  left: horizontalPadding, right: horizontalPadding, top: topPadding, bottom: bottomPadding),
               child: RichText(
                 textAlign: TextAlign.center,
                 text: TextSpan(
-                  style: kBody.copyWith(
-                      color: Theme.of(context).colorScheme.onSurface),
+                  style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
                   children: <TextSpan>[
-                    TextSpan(
-                        text: text,
-                        style: kBody.copyWith(
-                            color: Theme.of(context).colorScheme.onSurface)),
+                    TextSpan(text: text, style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface)),
                     TextSpan(
                       text: linkText,
-                      style: kTitle.copyWith(
-                          color: Theme.of(context).colorScheme.primary),
+                      style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
                     ),
                   ],
                 ),

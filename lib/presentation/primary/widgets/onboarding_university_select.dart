@@ -1,17 +1,11 @@
-import 'package:Confessi/core/styles/typography.dart';
-import 'package:Confessi/presentation/authentication/widgets/university_chip.dart';
+import 'package:Confessi/presentation/primary/widgets/university_chip.dart';
 import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
-import 'package:Confessi/presentation/shared/layout/appbar.dart';
-import 'package:Confessi/presentation/shared/layout/bottom_button_sheet.dart';
 import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
 import 'package:Confessi/presentation/shared/layout/text_separator.dart';
-import 'package:Confessi/presentation/shared/overlays/info_sheet.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:keyboard_attachable/keyboard_attachable.dart';
 
-class SelectUniversityScreen extends StatelessWidget {
-  const SelectUniversityScreen({super.key});
+class OnboardingUniversitySelect extends StatelessWidget {
+  const OnboardingUniversitySelect({super.key});
 
   @override
   Widget build(BuildContext context) {

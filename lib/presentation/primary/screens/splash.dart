@@ -1,13 +1,11 @@
 import 'dart:math';
 
+import 'package:Confessi/application/authentication/authentication_cubit.dart';
 import 'package:Confessi/application/shared/prefs_cubit.dart';
 import 'package:Confessi/constants/enums_that_are_local_keys.dart';
 import 'package:Confessi/core/styles/typography.dart';
 import 'package:Confessi/core/utils/sizing/height_fraction.dart';
-import 'package:Confessi/core/utils/sizing/width_fraction.dart';
-import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shake/shake.dart';
@@ -30,6 +28,9 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   late AnimationController _animController;
   late Animation _anim;
   late String introText;
+
+  // When prefs are loaded.
+  bool prefsLoaded = false;
 
   @override
   void initState() {
@@ -78,6 +79,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
       listener: (context, state) {
         if (state is PrefsError) Navigator.of(context).pushNamed("/prefsError");
         if (state is PrefsLoaded) {
+          prefsLoaded = true;
           if (state.refreshTokenEnum == RefreshTokenEnum.hasRefreshToken) {
             Navigator.of(context).pushNamed("/home");
           } else {
@@ -86,50 +88,63 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
           }
         }
       },
-      child: AnnotatedRegion(
-        value: SystemUiOverlayStyle.dark,
-        child: Scaffold(
-          backgroundColor: AppTheme.classicLight.colorScheme.secondary,
-          body: SafeArea(
-            child: Center(
-              child: ScrollableView(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: Column(
-                    children: [
-                      Transform.scale(
-                        scale: _anim.value,
-                        child: Column(
-                          children: [
-                            Transform.translate(
-                              offset: Offset(0, (200 - (200 * _anim.value)).toDouble()),
-                              child: Transform.rotate(
-                                angle: (2 * pi) - _anim.value * (2 * pi),
-                                child: SizedBox(
-                                  height: widthBreakpointFraction(context, .5, 250),
-                                  child: Image.asset(
-                                    "assets/images/logo2.png",
+      child: BlocListener<AuthenticationCubit, AuthenticationState>(
+        listenWhen: (previous, current) {
+          return (previous.runtimeType != current.runtimeType) && previous is! UserError && prefsLoaded;
+        },
+        listener: (context, state) {
+          if (state is NoUser) {
+            Navigator.of(context).pushNamed("/open");
+          } else if (state is User) {
+            if (state.justRegistered) Navigator.of(context).pushNamed("/onboardingDetails");
+            if (!state.justRegistered) Navigator.of(context).pushNamed("/home");
+          }
+        },
+        child: AnnotatedRegion(
+          value: SystemUiOverlayStyle.dark,
+          child: Scaffold(
+            backgroundColor: AppTheme.classicLight.colorScheme.secondary,
+            body: SafeArea(
+              child: Center(
+                child: ScrollableView(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: Column(
+                      children: [
+                        Transform.scale(
+                          scale: _anim.value,
+                          child: Column(
+                            children: [
+                              Transform.translate(
+                                offset: Offset(0, (200 - (200 * _anim.value)).toDouble()),
+                                child: Transform.rotate(
+                                  angle: (2 * pi) - _anim.value * (2 * pi),
+                                  child: SizedBox(
+                                    height: widthBreakpointFraction(context, .5, 250),
+                                    child: Image.asset(
+                                      "assets/images/logo2.png",
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: heightFraction(context, .3),
-                      ),
-                      SizedBox(
-                        width: widthBreakpointFraction(context, 1 / 4, 250),
-                        child: Text(
-                          introText,
-                          style: kBody.copyWith(
-                            color: AppTheme.classicLight.colorScheme.onSecondary,
+                            ],
                           ),
-                          textAlign: TextAlign.center,
                         ),
-                      ),
-                    ],
+                        SizedBox(
+                          height: heightFraction(context, .3),
+                        ),
+                        SizedBox(
+                          width: widthBreakpointFraction(context, 1 / 4, 250),
+                          child: Text(
+                            introText,
+                            style: kBody.copyWith(
+                              color: AppTheme.classicLight.colorScheme.onSecondary,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
