@@ -198,7 +198,7 @@ class AppRouter {
         type: PageTransitionType.fade,
         curve: Curves.decelerate,
         duration: const Duration(
-          milliseconds: 175,
+          milliseconds: 225,
         ),
       );
     } else {

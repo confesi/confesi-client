@@ -23,7 +23,6 @@ import 'package:Confessi/application/shared/biometrics_cubit.dart';
 import 'package:Confessi/domain/settings/usecases/appearance.dart';
 import 'package:Confessi/domain/settings/usecases/first_time.dart';
 import 'package:Confessi/domain/settings/usecases/load_refresh_token.dart';
-import 'package:Confessi/presentation/shared/overlays/top_snackbar_overlay.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/adapters.dart';

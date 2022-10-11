@@ -42,61 +42,59 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => false, // disables back button
-      child: InitBorderRadius(
-        child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          body: Container(
-            color: Theme.of(context).colorScheme.background,
-            child: SafeArea(
-              top: false,
-              child: Scaffold(
-                body: TabBarView(
-                  physics: const NeverScrollableScrollPhysics(),
-                  controller: tabController,
-                  children: const [
-                    ExploreHome(),
-                    HottestHome(),
-                    CreatePostHome(viewMethod: ViewMethod.tabScreen),
-                    ScreenObscuringManager(),
-                  ],
-                ),
-                bottomNavigationBar: TabBar(
-                  onTap: (tabIndex) {
-                    tabIndex == 3 && currentSelectedTab != 3
-                        ? context.read<BiometricsCubit>().setNotAuthenticated()
-                        : null;
-                    HapticFeedback.lightImpact();
-                    currentSelectedTab = tabIndex;
-                  },
-                  isScrollable: false,
-                  labelStyle: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
-                  unselectedLabelColor: Theme.of(context).colorScheme.onBackground,
-                  labelColor: Theme.of(context).colorScheme.primary,
-                  indicatorSize: TabBarIndicatorSize.tab,
-                  indicatorColor: Colors.transparent,
-                  controller: tabController,
-                  enableFeedback: true,
-                  tabs: [
-                    Tab(
-                      text: Responsive.isTablet(context) ? "Explore" : null,
-                      icon: const Icon(CupertinoIcons.compass),
-                    ),
-                    Tab(
-                      text: Responsive.isTablet(context) ? "Hot" : null,
-                      icon: const Icon(CupertinoIcons.flame),
-                    ),
-                    Tab(
-                      text: Responsive.isTablet(context) ? "Post" : null,
-                      icon: const Icon(CupertinoIcons.add),
-                    ),
-                    Tab(
-                      text: Responsive.isTablet(context) ? "Profile" : null,
-                      icon: const Icon(CupertinoIcons.profile_circled),
-                    )
-                  ],
-                ),
-                backgroundColor: Theme.of(context).colorScheme.background,
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: Container(
+          color: Theme.of(context).colorScheme.background,
+          child: SafeArea(
+            top: false,
+            child: Scaffold(
+              body: TabBarView(
+                physics: const NeverScrollableScrollPhysics(),
+                controller: tabController,
+                children: const [
+                  ExploreHome(),
+                  HottestHome(),
+                  CreatePostHome(viewMethod: ViewMethod.tabScreen),
+                  ScreenObscuringManager(),
+                ],
               ),
+              bottomNavigationBar: TabBar(
+                onTap: (tabIndex) {
+                  tabIndex == 3 && currentSelectedTab != 3
+                      ? context.read<BiometricsCubit>().setNotAuthenticated()
+                      : null;
+                  HapticFeedback.lightImpact();
+                  currentSelectedTab = tabIndex;
+                },
+                isScrollable: false,
+                labelStyle: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
+                unselectedLabelColor: Theme.of(context).colorScheme.onBackground,
+                labelColor: Theme.of(context).colorScheme.primary,
+                indicatorSize: TabBarIndicatorSize.tab,
+                indicatorColor: Colors.transparent,
+                controller: tabController,
+                enableFeedback: true,
+                tabs: [
+                  Tab(
+                    text: Responsive.isTablet(context) ? "Explore" : null,
+                    icon: const Icon(CupertinoIcons.compass),
+                  ),
+                  Tab(
+                    text: Responsive.isTablet(context) ? "Hot" : null,
+                    icon: const Icon(CupertinoIcons.flame),
+                  ),
+                  Tab(
+                    text: Responsive.isTablet(context) ? "Post" : null,
+                    icon: const Icon(CupertinoIcons.add),
+                  ),
+                  Tab(
+                    text: Responsive.isTablet(context) ? "Profile" : null,
+                    icon: const Icon(CupertinoIcons.profile_circled),
+                  )
+                ],
+              ),
+              backgroundColor: Theme.of(context).colorScheme.background,
             ),
           ),
         ),

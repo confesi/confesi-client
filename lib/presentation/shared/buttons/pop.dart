@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
 import '../behaviours/touchable_opacity.dart';
@@ -45,9 +46,16 @@ class PopButton extends StatelessWidget {
               borderRadius: const BorderRadius.all(
                 Radius.circular(10),
               ),
+              boxShadow: [
+                BoxShadow(
+                  color: backgroundColor.withOpacity(0.8),
+                  blurRadius: 20,
+                  offset: const Offset(2, 2),
+                ),
+              ],
             ),
             child: Padding(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(15),
               child: Row(
                 mainAxisAlignment: justText ? MainAxisAlignment.center : MainAxisAlignment.spaceBetween,
                 children: [

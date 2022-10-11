@@ -2,7 +2,6 @@ import 'package:Confessi/presentation/shared/behaviours/bottom_overscroll_scroll
 import 'package:Confessi/presentation/shared/behaviours/shrinking_view.dart';
 import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
 import 'package:Confessi/presentation/shared/edited_source_widgets/swipe_refresh.dart';
-import 'package:Confessi/presentation/shared/overlays/top_snackbar_overlay.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -163,7 +162,7 @@ class _ProfileHomeState extends State<ProfileHome> {
                                         children: [
                                           Expanded(
                                             child: SimpleTextButton(
-                                              onTap: () => TopSnackbarOverlay().show(context, "Something went wrong!"),
+                                              onTap: () => print("comments tapped"),
                                               text: "Comments",
                                             ),
                                           ),

@@ -25,8 +25,9 @@ class HeaderWithLinkText extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
           maxLines: 5,
         ),
-        const SizedBox(height: 5),
         LinkText(
+          topPadding: 5,
+          bottomPadding: 15,
           onPress: () => Navigator.of(context).pushNamed("/onboarding"),
           linkText: "Tap here.",
           text: "View tips again? ",
