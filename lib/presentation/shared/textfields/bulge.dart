@@ -68,11 +68,14 @@ class _BulgeTextFieldState extends State<BulgeTextField> {
             onTap: () => focusNode.requestFocus(),
             child: Container(
               decoration: BoxDecoration(
-                // border: Border.all(
-                //   width: 2,
-                //   color: Theme.of(context).colorScheme.onSecondary,
-                // ),
+                border: Border.all(
+                  width: .5,
+                  color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
+                ),
                 color: Theme.of(context).colorScheme.surface,
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(10),
+                ),
               ),
               child: Padding(
                 padding: const EdgeInsets.all(15),

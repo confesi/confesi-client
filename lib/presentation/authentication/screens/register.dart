@@ -120,6 +120,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 const SizedBox(height: 10),
                                 Center(
                                   child: InitTransform(
+                                    durationInMilliseconds: 1000,
                                     magnitudeOfTransform: heightFraction(context, .5),
                                     child: LinkText(
                                       pressable: state is UserLoading ? false : true,

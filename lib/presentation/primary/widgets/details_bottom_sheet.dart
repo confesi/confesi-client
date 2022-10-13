@@ -1,3 +1,4 @@
+import 'package:Confessi/core/styles/typography.dart';
 import 'package:Confessi/core/utils/sizing/width_fraction.dart';
 import 'package:Confessi/presentation/shared/buttons/pop.dart';
 import 'package:Confessi/presentation/shared/buttons/simple_text.dart';
@@ -11,15 +12,8 @@ class OnboardingDetailsBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(left: 30, right: 30, top: 15),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.background,
-        // border: Border(
-        //   top: BorderSide(
-        //     color: Theme.of(context).colorScheme.onBackground,
-        //   ),
-        // ),
-      ),
+      padding: const EdgeInsets.only(left: 15, right: 15, top: 15),
+      color: Theme.of(context).colorScheme.background,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -32,11 +26,13 @@ class OnboardingDetailsBottomSheet extends StatelessWidget {
             icon: CupertinoIcons.chevron_forward,
           ),
           const SizedBox(height: 15),
-          LinkText(
-            onPress: () => print("tap"),
-            linkText: "Skip for now",
-            text: "",
-          ),
+          Text(
+            "Tap the blanks to edit them",
+            textAlign: TextAlign.center,
+            style: kTitle.copyWith(
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
+          )
         ],
       ),
     );

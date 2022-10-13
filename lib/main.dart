@@ -1,6 +1,7 @@
 import 'package:Confessi/application/create_post/post_cubit.dart';
 import 'package:Confessi/application/shared/prefs_cubit.dart';
 import 'package:Confessi/constants/enums_that_are_local_keys.dart';
+import 'package:Confessi/presentation/primary/screens/account_details.dart';
 import 'package:Confessi/presentation/primary/widgets/onboarding_university_select.dart';
 import 'package:Confessi/presentation/feedback/screens/home.dart';
 import 'package:Confessi/presentation/primary/screens/splash.dart';
@@ -9,13 +10,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'constants/shared/dev.dart';
 import 'application/shared/scaffold_shrinker_cubit.dart';
 import 'core/router/router.dart';
 import 'core/styles/themes.dart';
 import 'dependency_injection.dart';
 import 'application/authentication/authentication_cubit.dart';
-import 'presentation/primary/screens/onboarding_details.dart';
 
 void main() async {
   await init();
@@ -115,7 +114,7 @@ class MyApp extends StatelessWidget {
             //     return const SplashScreen();
             //   },
             // ),
-            home: const SplashScreen(),
+            home: const AccountDetails(), // TODO: Change back to SplashScreen()
           );
         },
       ),

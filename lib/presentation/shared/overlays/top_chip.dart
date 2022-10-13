@@ -96,9 +96,8 @@ class __OverlayItemState extends State<_OverlayItem> with SingleTickerProviderSt
             ),
             boxShadow: [
               BoxShadow(
-                spreadRadius: 5,
-                color: Theme.of(context).colorScheme.error.withOpacity(0.2),
-                blurRadius: 20,
+                color: Theme.of(context).colorScheme.error.withOpacity(0.1),
+                blurRadius: 5,
                 offset: const Offset(0, 2),
               ),
             ],

@@ -48,8 +48,8 @@ class PopButton extends StatelessWidget {
               ),
               boxShadow: [
                 BoxShadow(
-                  color: backgroundColor.withOpacity(0.8),
-                  blurRadius: 20,
+                  color: backgroundColor.withOpacity(0.2),
+                  blurRadius: 5,
                   offset: const Offset(2, 2),
                 ),
               ],
@@ -78,6 +78,7 @@ class PopButton extends StatelessWidget {
                                 )
                               : Text(
                                   text,
+                                  textScaleFactor: 1,
                                   style: kTitle.copyWith(
                                     color: textColor,
                                   ),

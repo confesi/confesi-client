@@ -111,6 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               const SizedBox(height: 10),
                               Center(
                                 child: InitTransform(
+                                  durationInMilliseconds: 1000,
                                   magnitudeOfTransform: heightFraction(context, .5),
                                   child: LinkText(onPress: () {}, linkText: "Tap here.", text: "Forgot password? "),
                                 ),
