@@ -1,5 +1,6 @@
 import 'package:Confessi/application/shared/prefs_cubit.dart';
 import 'package:Confessi/constants/enums_that_are_local_keys.dart';
+import 'package:Confessi/presentation/shared/behaviours/one_theme_status_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -73,66 +74,69 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => false, // disables back button
-      child: Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.secondary,
-        body: SafeArea(
-          child: Center(
-              child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Expanded(
-                child: ScrollConfiguration(
-                  behavior: NoOverScrollSplash(),
-                  child: PageView(
-                    physics: const ClampingScrollPhysics(),
-                    controller: controller,
-                    onPageChanged: (newPageIndex) {
-                      setState(() {
-                        pageIndex = newPageIndex;
-                      });
-                    },
-                    children: pages,
+      child: OneThemeStatusBar(
+        brightness: Brightness.light,
+        child: Scaffold(
+          backgroundColor: Theme.of(context).colorScheme.secondary,
+          body: SafeArea(
+            child: Center(
+                child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Expanded(
+                  child: ScrollConfiguration(
+                    behavior: NoOverScrollSplash(),
+                    child: PageView(
+                      physics: const ClampingScrollPhysics(),
+                      controller: controller,
+                      onPageChanged: (newPageIndex) {
+                        setState(() {
+                          pageIndex = newPageIndex;
+                        });
+                      },
+                      children: pages,
+                    ),
                   ),
                 ),
-              ),
-              Container(
-                color: Theme.of(context).colorScheme.secondary,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 30),
-                  child: Column(
-                    children: [
-                      ScrollDots(
-                        verticalPadding: 40,
-                        pageIndex: pageIndex,
-                        pageLength: pages.length,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SingleTextButton(
-                            backgroundColor: Colors.transparent,
-                            textColor: Theme.of(context).colorScheme.onSecondary,
-                            text: "Skip",
-                            onPress: () => navToOpenAndSetPref(),
-                          ),
-                          SingleTextButton(
-                            backgroundColor: Theme.of(context).colorScheme.onError,
-                            textColor: Theme.of(context).colorScheme.onSecondary,
-                            text: pageIndex + 1 == pages.length ? "Done" : "Next",
-                            onPress: () => pageIndex + 1 == pages.length
-                                ? navToOpenAndSetPref()
-                                : controller.animateToPage(pageIndex + 1,
-                                    duration: const Duration(milliseconds: 400), curve: Curves.easeInOutSine),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                    ],
+                Container(
+                  color: Theme.of(context).colorScheme.secondary,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: Column(
+                      children: [
+                        ScrollDots(
+                          verticalPadding: 40,
+                          pageIndex: pageIndex,
+                          pageLength: pages.length,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SingleTextButton(
+                              backgroundColor: Colors.transparent,
+                              textColor: Theme.of(context).colorScheme.onSecondary,
+                              text: "Skip",
+                              onPress: () => navToOpenAndSetPref(),
+                            ),
+                            SingleTextButton(
+                              backgroundColor: Theme.of(context).colorScheme.onError,
+                              textColor: Theme.of(context).colorScheme.onSecondary,
+                              text: pageIndex + 1 == pages.length ? "Done" : "Next",
+                              onPress: () => pageIndex + 1 == pages.length
+                                  ? navToOpenAndSetPref()
+                                  : controller.animateToPage(pageIndex + 1,
+                                      duration: const Duration(milliseconds: 400), curve: Curves.easeInOutSine),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
-          )),
+              ],
+            )),
+          ),
         ),
       ),
     );

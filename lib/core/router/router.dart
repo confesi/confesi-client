@@ -17,7 +17,6 @@ import 'package:page_transition/page_transition.dart';
 import '../../dependency_injection.dart';
 import '../../presentation/primary/screens/home.dart';
 import '../../presentation/authentication/screens/login.dart';
-import '../../presentation/primary/screens/onboarding_details.dart';
 import '../../presentation/primary/screens/showcase.dart';
 import '../../presentation/authentication/screens/open.dart';
 import '../../presentation/authentication/screens/register.dart';
@@ -150,9 +149,6 @@ class AppRouter {
           create: (context) => sl<LeaderboardCubit>()..loadRankings(),
           child: const LeaderboardScreen(),
         );
-        break;
-      case "/onboardingDetails":
-        page = const OnboardingDetailsScreen();
         break;
       case "/feedback":
         page = const FeedbackHome();

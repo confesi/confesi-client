@@ -26,7 +26,7 @@ class ScrollableView extends StatelessWidget {
         if (keyboardDismiss && notification.metrics.pixels < -15) {
           FocusScope.of(context).unfocus();
         }
-        return true;
+        return false;
       },
       child: CupertinoScrollbar(
         thickness: thumbVisible ? 3.0 : 0.0,
