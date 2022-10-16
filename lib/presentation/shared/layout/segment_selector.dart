@@ -37,10 +37,22 @@ class SegmentSelector extends StatefulWidget {
     super.key,
     required this.controller,
     required this.onTap,
+    required this.text1,
+    required this.text2,
+    required this.text3,
+    required this.backgroundColor,
+    required this.selectedColor,
+    required this.textColor,
   });
 
   final SegementSelectorController controller;
   final Function(int) onTap;
+  final String text1;
+  final String text2;
+  final String text3;
+  final Color backgroundColor;
+  final Color selectedColor;
+  final Color textColor;
 
   @override
   State<SegmentSelector> createState() => _SegmentSelectorState();
@@ -55,36 +67,60 @@ class _SegmentSelectorState extends State<SegmentSelector> {
     super.initState();
   }
 
+  double horizontalDragDelta = 0.0;
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20),
+    return GestureDetector(
+      onHorizontalDragUpdate: (details) {
+        horizontalDragDelta = details.delta.dx;
+      },
+      onHorizontalDragEnd: (details) {
+        if (horizontalDragDelta > 0) {
+          if (widget.controller.value > .5) {
+            widget.controller.toTwo();
+          } else if (widget.controller.value > 0) {
+            widget.controller.toOne();
+          }
+        }
+        if (horizontalDragDelta < 0) {
+          if (widget.controller.value < .5) {
+            widget.controller.toTwo();
+          } else if (widget.controller.value <= 0.5) {
+            widget.controller.toThree();
+          }
+        }
+        horizontalDragDelta = 0.0;
+        widget.onTap(widget.controller.valueToPage());
+      },
       child: Container(
         width: double.infinity,
         height: 45,
-        decoration: const BoxDecoration(
-          color: Color(0xffF3F3F3),
-          borderRadius: BorderRadius.all(Radius.circular(10)),
+        decoration: BoxDecoration(
+          color: widget.backgroundColor,
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
         ),
         child: Stack(
           children: [
             LayoutBuilder(builder: (context, constraints) {
               return Row(
                 children: [
-                  AnimatedContainer(
-                    curve: Curves.decelerate,
-                    duration: const Duration(milliseconds: 350),
-                    margin: EdgeInsets.only(left: (2 * constraints.maxWidth / 3) * widget.controller.value),
-                    width: constraints.maxWidth / 3,
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.all(Radius.circular(10)),
-                      color: const Color(0xff333333),
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0xff333333).withOpacity(0.4),
-                          blurRadius: 15,
-                        ),
-                      ],
+                  Center(
+                    child: AnimatedContainer(
+                      curve: Curves.decelerate,
+                      duration: const Duration(milliseconds: 350),
+                      margin: EdgeInsets.only(left: (2 * constraints.maxWidth / 3) * widget.controller.value),
+                      width: constraints.maxWidth / 3,
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.all(Radius.circular(10)),
+                        color: widget.selectedColor,
+                        boxShadow: [
+                          BoxShadow(
+                            color: widget.selectedColor.withOpacity(0.4),
+                            blurRadius: 15,
+                          ),
+                        ],
+                      ),
                     ),
                   )
                 ],
@@ -109,19 +145,19 @@ class _SegmentSelectorState extends State<SegmentSelector> {
                             duration: const Duration(milliseconds: 350),
                             child: widget.controller.valueToPage() == 0
                                 ? Text(
-                                    "School",
+                                    widget.text1,
                                     key: const ValueKey("1-1"),
                                     style: kTitle.copyWith(
-                                      color: const Color(0xffffffff),
+                                      color: widget.textColor,
                                     ),
                                     overflow: TextOverflow.ellipsis,
                                     textAlign: TextAlign.center,
                                   )
                                 : Text(
-                                    "School",
+                                    widget.text1,
                                     key: const ValueKey("1-2"),
                                     style: kTitle.copyWith(
-                                      color: const Color(0xff333333),
+                                      color: widget.selectedColor,
                                     ),
                                     overflow: TextOverflow.ellipsis,
                                     textAlign: TextAlign.center,
@@ -147,19 +183,19 @@ class _SegmentSelectorState extends State<SegmentSelector> {
                             duration: const Duration(milliseconds: 350),
                             child: widget.controller.valueToPage() == 1
                                 ? Text(
-                                    "Year",
+                                    widget.text2,
                                     key: const ValueKey("2-1"),
                                     style: kTitle.copyWith(
-                                      color: const Color(0xffffffff),
+                                      color: widget.textColor,
                                     ),
                                     overflow: TextOverflow.ellipsis,
                                     textAlign: TextAlign.center,
                                   )
                                 : Text(
-                                    "Year",
+                                    widget.text2,
                                     key: const ValueKey("2-2"),
                                     style: kTitle.copyWith(
-                                      color: const Color(0xff333333),
+                                      color: widget.selectedColor,
                                     ),
                                     overflow: TextOverflow.ellipsis,
                                     textAlign: TextAlign.center,
@@ -185,19 +221,19 @@ class _SegmentSelectorState extends State<SegmentSelector> {
                             duration: const Duration(milliseconds: 350),
                             child: widget.controller.valueToPage() == 2
                                 ? Text(
-                                    "Faculty",
+                                    widget.text3,
                                     key: const ValueKey("3-1"),
                                     style: kTitle.copyWith(
-                                      color: const Color(0xffffffff),
+                                      color: widget.textColor,
                                     ),
                                     overflow: TextOverflow.ellipsis,
                                     textAlign: TextAlign.center,
                                   )
                                 : Text(
-                                    "Faculty",
+                                    widget.text3,
                                     key: const ValueKey("3-2"),
                                     style: kTitle.copyWith(
-                                      color: const Color(0xff333333),
+                                      color: widget.selectedColor,
                                     ),
                                     overflow: TextOverflow.ellipsis,
                                     textAlign: TextAlign.center,

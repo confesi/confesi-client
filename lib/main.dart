@@ -1,7 +1,7 @@
 import 'package:Confessi/application/create_post/post_cubit.dart';
 import 'package:Confessi/application/shared/prefs_cubit.dart';
 import 'package:Confessi/constants/enums_that_are_local_keys.dart';
-import 'package:Confessi/presentation/primary/screens/account_details.dart';
+import 'package:Confessi/presentation/primary/screens/account_details_tab_manager.dart';
 import 'package:Confessi/presentation/feedback/screens/home.dart';
 import 'package:Confessi/presentation/primary/screens/splash.dart';
 import 'package:device_preview/device_preview.dart';
@@ -113,7 +113,7 @@ class MyApp extends StatelessWidget {
             //     return const SplashScreen();
             //   },
             // ),
-            home: const AccountDetails(), // TODO: Change back to SplashScreen()
+            home: const AccountDetailsTabManager(), // TODO: Change back to SplashScreen()
           );
         },
       ),
