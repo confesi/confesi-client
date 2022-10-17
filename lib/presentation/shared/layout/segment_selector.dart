@@ -76,14 +76,14 @@ class _SegmentSelectorState extends State<SegmentSelector> {
         horizontalDragDelta = details.delta.dx;
       },
       onHorizontalDragEnd: (details) {
-        if (horizontalDragDelta > 0) {
+        if (horizontalDragDelta < 0) {
           if (widget.controller.value > .5) {
             widget.controller.toTwo();
           } else if (widget.controller.value > 0) {
             widget.controller.toOne();
           }
         }
-        if (horizontalDragDelta < 0) {
+        if (horizontalDragDelta > 0) {
           if (widget.controller.value < .5) {
             widget.controller.toTwo();
           } else if (widget.controller.value <= 0.5) {

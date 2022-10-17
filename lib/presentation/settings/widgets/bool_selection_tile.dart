@@ -12,6 +12,9 @@ class BoolSelectionTile extends StatefulWidget {
     this.topRounded = false,
     this.bottomRounded = false,
     this.isActive = false,
+    this.backgroundColor,
+    this.foregroundColor,
+    this.secondaryColor,
   });
 
   final IconData icon;
@@ -21,6 +24,9 @@ class BoolSelectionTile extends StatefulWidget {
   final bool topRounded;
   final bool bottomRounded;
   final bool isActive;
+  final Color? backgroundColor;
+  final Color? foregroundColor;
+  final Color? secondaryColor;
 
   @override
   State<BoolSelectionTile> createState() => _BoolSelectionTileState();
@@ -34,7 +40,7 @@ class _BoolSelectionTileState extends State<BoolSelectionTile> {
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.background,
+          color: widget.backgroundColor ?? Theme.of(context).colorScheme.background,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(widget.topRounded ? 10 : 0),
             topRight: Radius.circular(widget.topRounded ? 10 : 0),
@@ -47,8 +53,7 @@ class _BoolSelectionTileState extends State<BoolSelectionTile> {
           children: [
             Expanded(
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                 child: Row(
                   children: [
                     Icon(widget.icon),
@@ -57,7 +62,7 @@ class _BoolSelectionTileState extends State<BoolSelectionTile> {
                       child: Text(
                         widget.text,
                         style: kTitle.copyWith(
-                          color: Theme.of(context).colorScheme.primary,
+                          color: widget.foregroundColor ?? Theme.of(context).colorScheme.primary,
                         ),
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -68,15 +73,13 @@ class _BoolSelectionTileState extends State<BoolSelectionTile> {
                               widget.secondaryText!,
                               textAlign: TextAlign.right,
                               style: kTitle.copyWith(
-                                color: Theme.of(context).colorScheme.onSurface,
+                                color: widget.secondaryColor ?? Theme.of(context).colorScheme.onSurface,
                               ),
                               overflow: TextOverflow.ellipsis,
                             ),
                           )
                         : Container(),
-                    widget.secondaryText != null
-                        ? const SizedBox(width: 10)
-                        : Container(),
+                    widget.secondaryText != null ? const SizedBox(width: 10) : Container(),
                   ],
                 ),
               ),
@@ -86,8 +89,7 @@ class _BoolSelectionTileState extends State<BoolSelectionTile> {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: Colors.transparent,
-                border: Border.all(
-                    color: Theme.of(context).colorScheme.primary, width: 3),
+                border: Border.all(color: widget.foregroundColor ?? Theme.of(context).colorScheme.primary, width: 3),
               ),
               height: 20,
               width: 20,
@@ -96,8 +98,8 @@ class _BoolSelectionTileState extends State<BoolSelectionTile> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: widget.isActive
-                      ? Theme.of(context).colorScheme.primary
-                      : Theme.of(context).colorScheme.background,
+                      ? widget.foregroundColor ?? Theme.of(context).colorScheme.primary
+                      : widget.backgroundColor ?? Theme.of(context).colorScheme.background,
                 ),
               ),
             ),

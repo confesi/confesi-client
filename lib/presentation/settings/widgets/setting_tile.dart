@@ -41,9 +41,7 @@ class SettingTile extends StatelessWidget {
           children: [
             Icon(
               icon,
-              color: isRedText
-                  ? Theme.of(context).colorScheme.error
-                  : Theme.of(context).colorScheme.primary,
+              color: isRedText ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.primary,
             ),
             const SizedBox(width: 15),
             Expanded(
@@ -53,9 +51,7 @@ class SettingTile extends StatelessWidget {
                     child: Text(
                       text,
                       style: kTitle.copyWith(
-                        color: isRedText
-                            ? Theme.of(context).colorScheme.error
-                            : Theme.of(context).colorScheme.primary,
+                        color: isRedText ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.primary,
                       ),
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -78,9 +74,7 @@ class SettingTile extends StatelessWidget {
             ),
             Icon(
               isLink ? CupertinoIcons.link : CupertinoIcons.arrow_right,
-              color: isRedText
-                  ? Theme.of(context).colorScheme.error
-                  : Theme.of(context).colorScheme.primary,
+              color: isRedText ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.primary,
             ),
           ],
         ),

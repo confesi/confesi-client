@@ -9,6 +9,7 @@ class ScrollableView extends StatelessWidget {
     this.controller,
     this.keyboardDismiss = false,
     this.thumbVisible = true,
+    this.scrollDirection = Axis.vertical,
     Key? key,
   }) : super(key: key);
 
@@ -17,6 +18,7 @@ class ScrollableView extends StatelessWidget {
   final Widget child;
   final double horizontalPadding;
   final ScrollPhysics? physics;
+  final Axis scrollDirection;
   final ScrollController? controller;
 
   @override
@@ -35,6 +37,7 @@ class ScrollableView extends StatelessWidget {
         child: ScrollConfiguration(
           behavior: NoOverScrollSplash(),
           child: SingleChildScrollView(
+            scrollDirection: scrollDirection,
             controller: controller,
             physics: physics,
             child: Padding(

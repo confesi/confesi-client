@@ -6,8 +6,8 @@ import '../../../core/styles/typography.dart';
 class BoolSelectionGroup extends StatelessWidget {
   const BoolSelectionGroup({
     super.key,
-    required this.selectionTiles,
     required this.text,
+    required this.selectionTiles,
   });
 
   final List<BoolSelectionTile> selectionTiles;
@@ -20,8 +20,7 @@ class BoolSelectionGroup extends StatelessWidget {
       children: [
         Text(
           text,
-          style:
-              kTitle.copyWith(color: Theme.of(context).colorScheme.onSurface),
+          style: kTitle.copyWith(color: Theme.of(context).colorScheme.onSurface),
           overflow: TextOverflow.ellipsis,
           textAlign: TextAlign.center,
         ),
