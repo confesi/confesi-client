@@ -104,7 +104,8 @@ class MyApp extends StatelessWidget {
             builder: (BuildContext context, Widget? child) {
               final MediaQueryData data = MediaQuery.of(context);
               return MediaQuery(
-                data: data.copyWith(textScaleFactor: 1),
+                // data: data.copyWith(textScaleFactor: 1),
+                data: data,
                 child: child!,
               );
             },

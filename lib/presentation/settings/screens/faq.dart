@@ -1,5 +1,5 @@
-import 'package:Confessi/presentation/settings/widgets/setting_tile.dart';
-import 'package:Confessi/presentation/settings/widgets/stepper_tile.dart';
+import 'package:Confessi/presentation/shared/selection_groups/setting_tile.dart';
+import 'package:Confessi/presentation/shared/selection_groups/stepper_tile.dart';
 import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
 import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
 import 'package:flutter/cupertino.dart';
