@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
-import '../behaviours/touchable_opacity.dart';
+import '../button_touch_effects/touchable_opacity.dart';
 
 class MinimalAppbarLayout extends StatelessWidget {
   const MinimalAppbarLayout(

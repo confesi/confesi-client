@@ -97,68 +97,66 @@ class __OverlayItemState extends State<_OverlayItem> with TickerProviderStateMix
 
   @override
   Widget build(BuildContext context) {
-    return InitOpacity(
-      child: Transform.translate(
-        offset: Offset(0, -(1 - translateAnim.value) * heightFraction(context, .25)),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
-          child: Container(
-            width: double.infinity,
-            constraints: BoxConstraints(maxHeight: heightFraction(context, .2)),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.error,
-              borderRadius: const BorderRadius.all(
-                Radius.circular(10),
-              ),
+    return Transform.translate(
+      offset: Offset(0, -(1 - translateAnim.value) * heightFraction(context, .25)),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
+        child: Container(
+          width: double.infinity,
+          constraints: BoxConstraints(maxHeight: heightFraction(context, .2)),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.error,
+            borderRadius: const BorderRadius.all(
+              Radius.circular(10),
             ),
-            child: ClipRRect(
-              borderRadius: const BorderRadius.all(
-                Radius.circular(10),
-              ),
-              child: Stack(
-                clipBehavior: Clip.hardEdge,
-                children: [
-                  Positioned.fill(
-                    child: ClipRRect(
-                      clipBehavior: Clip.hardEdge,
-                      child: FittedBox(
-                        alignment: Alignment.centerLeft,
-                        fit: BoxFit.contain,
-                        child: Transform.translate(
-                          offset: const Offset(-3, -3),
-                          child: Icon(
-                            CupertinoIcons.hammer,
-                            color: Theme.of(context).colorScheme.onSecondary.withOpacity(0.15),
-                          ),
+          ),
+          child: ClipRRect(
+            borderRadius: const BorderRadius.all(
+              Radius.circular(10),
+            ),
+            child: Stack(
+              clipBehavior: Clip.hardEdge,
+              children: [
+                Positioned.fill(
+                  child: ClipRRect(
+                    clipBehavior: Clip.hardEdge,
+                    child: FittedBox(
+                      alignment: Alignment.centerLeft,
+                      fit: BoxFit.contain,
+                      child: Transform.translate(
+                        offset: const Offset(-3, -3),
+                        child: Icon(
+                          CupertinoIcons.hammer,
+                          color: Theme.of(context).colorScheme.onSecondary.withOpacity(0.15),
                         ),
                       ),
                     ),
                   ),
-                  Stack(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(15),
-                        child: Text(
-                          widget.text,
-                          style: kTitle.copyWith(
-                            color: Theme.of(context).colorScheme.onError,
-                          ),
-                          maxLines: 5,
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.center,
+                ),
+                Stack(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(15),
+                      child: Text(
+                        widget.text,
+                        style: kTitle.copyWith(
+                          color: Theme.of(context).colorScheme.onError,
                         ),
+                        maxLines: 5,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
                       ),
-                      Container(
-                        height: 5,
-                        width: timeAnim.value * widthFraction(context, 1),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.onError.withOpacity(0.4),
-                        ),
+                    ),
+                    Container(
+                      height: 5,
+                      width: timeAnim.value * widthFraction(context, 1),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.onError.withOpacity(0.4),
                       ),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         ),

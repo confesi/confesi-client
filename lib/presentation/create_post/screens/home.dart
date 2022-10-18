@@ -5,8 +5,8 @@ import 'package:Confessi/presentation/daily_hottest/widgets/preview_quote_tile.d
 import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:Confessi/presentation/shared/behaviours/shrinking_view.dart';
-import 'package:Confessi/presentation/shared/behaviours/touchable_burst.dart';
-import 'package:Confessi/presentation/shared/behaviours/touchable_opacity.dart';
+import 'package:Confessi/presentation/shared/button_touch_effects/touchable_burst.dart';
+import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:Confessi/presentation/shared/buttons/option.dart';
 import 'package:Confessi/presentation/shared/overlays/button_options_sheet.dart';
 import 'package:flutter/cupertino.dart';

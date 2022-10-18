@@ -3,7 +3,7 @@ import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../behaviours/touchable_opacity.dart';
+import '../button_touch_effects/touchable_opacity.dart';
 
 /// If [leftIconOnPress] is null, defaults to popping current context.
 class AppbarLayout extends StatefulWidget {

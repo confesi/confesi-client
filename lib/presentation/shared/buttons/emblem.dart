@@ -1,7 +1,7 @@
-import 'package:Confessi/presentation/shared/behaviours/touchable_burst.dart';
+import 'package:Confessi/presentation/shared/button_touch_effects/touchable_burst.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../behaviours/touchable_opacity.dart';
+import '../button_touch_effects/touchable_opacity.dart';
 
 class EmblemButton extends StatelessWidget {
   const EmblemButton(

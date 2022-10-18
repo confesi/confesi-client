@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_shake_animated/flutter_shake_animated.dart';
 import '../../../constants/shared/enums.dart';
 import '../../../core/styles/typography.dart';
-import '../behaviours/touchable_opacity.dart';
+import '../button_touch_effects/touchable_opacity.dart';
 
 class AnimatedSimpleTextButton extends StatelessWidget {
   const AnimatedSimpleTextButton({

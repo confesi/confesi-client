@@ -1,8 +1,10 @@
+import 'package:Confessi/constants/shared/enums.dart';
+import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
-import '../behaviours/touchable_opacity.dart';
+import '../button_touch_effects/touchable_opacity.dart';
 
 class PopButton extends StatelessWidget {
   const PopButton(
@@ -38,6 +40,7 @@ class PopButton extends StatelessWidget {
       child: IgnorePointer(
         ignoring: loading ? true : false,
         child: TouchableOpacity(
+          tapType: TapType.lightImpact,
           onTap: () => onPress(),
           child: Container(
             width: double.infinity,
