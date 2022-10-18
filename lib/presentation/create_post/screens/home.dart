@@ -1,4 +1,4 @@
-import 'package:Confessi/application/create_post/post_cubit.dart';
+import 'package:Confessi/application/create_post/cubit/post_cubit.dart';
 import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
 import 'package:Confessi/presentation/shared/other/text_limit_tracker.dart';
 import 'package:Confessi/presentation/daily_hottest/widgets/preview_quote_tile.dart';

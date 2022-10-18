@@ -86,7 +86,6 @@ class _BulgeTextFieldState extends State<BulgeTextField> {
                       enableSuggestions: false,
                       autocorrect: widget.autoCorrect,
                       obscureText: widget.password,
-                      // scrollPadding: const EdgeInsets.all(0),
                       focusNode: focusNode,
                       controller: widget.controller,
                       style: kBody.copyWith(

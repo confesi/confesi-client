@@ -1,9 +1,8 @@
 import 'dart:async';
 
-import 'package:Confessi/application/shared/prefs_cubit.dart';
+import 'package:Confessi/application/shared/cubit/prefs_cubit.dart';
 import 'package:Confessi/constants/hive_box_names.dart';
 import 'package:Confessi/core/clients/http_client.dart';
-import 'package:Confessi/application/shared/scaffold_shrinker_cubit.dart';
 import 'package:Confessi/data/create_post/datasources/create_post_datasource.dart';
 import 'package:Confessi/data/create_post/repositories/create_post_repository_concrete.dart';
 import 'package:Confessi/data/daily_hottest/datasources/daily_hottest_datasource.dart';
@@ -16,10 +15,10 @@ import 'package:Confessi/domain/create_post/usecases/upload_post.dart';
 import 'package:Confessi/domain/daily_hottest/usecases/posts.dart';
 import 'package:Confessi/domain/daily_hottest/usecases/ranking.dart';
 import 'package:Confessi/domain/profile/usecases/biometric_authentication.dart';
-import 'package:Confessi/application/create_post/post_cubit.dart';
-import 'package:Confessi/application/daily_hottest/hottest_cubit.dart';
-import 'package:Confessi/application/daily_hottest/leaderboard_cubit.dart';
-import 'package:Confessi/application/shared/biometrics_cubit.dart';
+import 'package:Confessi/application/create_post/cubit/post_cubit.dart';
+import 'package:Confessi/application/daily_hottest/cubit/hottest_cubit.dart';
+import 'package:Confessi/application/daily_hottest/cubit/leaderboard_cubit.dart';
+import 'package:Confessi/application/shared/cubit/biometrics_cubit.dart';
 import 'package:Confessi/domain/settings/usecases/appearance.dart';
 import 'package:Confessi/domain/settings/usecases/first_time.dart';
 import 'package:Confessi/domain/settings/usecases/load_refresh_token.dart';
@@ -29,6 +28,7 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:local_auth/local_auth.dart';
 
+import 'application/shared/cubit/scaffold_shrinker_cubit.dart';
 import 'core/network/connection_info.dart';
 import 'core/router/router.dart';
 import 'data/authentication/datasources/authentication_datasource.dart';
@@ -37,13 +37,13 @@ import 'domain/authenticatioin/usecases/login.dart';
 import 'domain/authenticatioin/usecases/logout.dart';
 import 'domain/authenticatioin/usecases/register.dart';
 import 'domain/authenticatioin/usecases/silent_authentication.dart';
-import 'application/authentication/authentication_cubit.dart';
+import 'application/authentication/cubit/authentication_cubit.dart';
 import 'data/feed/datasources/feed_datasource.dart';
 import 'data/feed/repositories/feed_repository_concrete.dart';
 import 'domain/feed/usecases/recents.dart';
 import 'domain/feed/usecases/trending.dart';
-import 'application/feed/recents_cubit.dart';
-import 'application/feed/trending_cubit.dart';
+import 'application/feed/cubit/recents_cubit.dart';
+import 'application/feed/cubit/trending_cubit.dart';
 
 final GetIt sl = GetIt.instance;
 

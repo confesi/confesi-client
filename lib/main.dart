@@ -1,16 +1,16 @@
-import 'package:Confessi/application/create_post/post_cubit.dart';
-import 'package:Confessi/application/shared/prefs_cubit.dart';
+import 'package:Confessi/application/create_post/cubit/post_cubit.dart';
+import 'package:Confessi/application/shared/cubit/prefs_cubit.dart';
 import 'package:Confessi/constants/enums_that_are_local_keys.dart';
 import 'package:Confessi/presentation/primary/screens/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'application/shared/scaffold_shrinker_cubit.dart';
+import 'application/shared/cubit/scaffold_shrinker_cubit.dart';
 import 'core/router/router.dart';
 import 'core/styles/themes.dart';
 import 'dependency_injection.dart';
-import 'application/authentication/authentication_cubit.dart';
+import 'application/authentication/cubit/authentication_cubit.dart';
 
 void main() async {
   await init();

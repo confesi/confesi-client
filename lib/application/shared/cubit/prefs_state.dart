@@ -1,4 +1,4 @@
-part of '../shared/prefs_cubit.dart';
+part of 'prefs_cubit.dart';
 
 abstract class PrefsState extends Equatable {
   @override

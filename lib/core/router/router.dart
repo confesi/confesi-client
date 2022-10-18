@@ -20,11 +20,11 @@ import '../../presentation/primary/screens/home.dart';
 import '../../presentation/authentication/screens/login.dart';
 import '../../presentation/primary/screens/showcase.dart';
 import '../../presentation/authentication/screens/open.dart';
-import '../../application/daily_hottest/hottest_cubit.dart';
-import '../../application/daily_hottest/leaderboard_cubit.dart';
-import '../../application/feed/recents_cubit.dart';
-import '../../application/feed/trending_cubit.dart';
-import '../../application/shared/biometrics_cubit.dart';
+import '../../application/daily_hottest/cubit/hottest_cubit.dart';
+import '../../application/daily_hottest/cubit/leaderboard_cubit.dart';
+import '../../application/feed/cubit/recents_cubit.dart';
+import '../../application/feed/cubit/trending_cubit.dart';
+import '../../application/shared/cubit/biometrics_cubit.dart';
 
 /// The application's routes (screens) manager.
 class AppRouter {

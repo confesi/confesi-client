@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:Confessi/application/authentication/authentication_cubit.dart';
-import 'package:Confessi/application/shared/prefs_cubit.dart';
+import 'package:Confessi/application/authentication/cubit/authentication_cubit.dart';
+import 'package:Confessi/application/shared/cubit/prefs_cubit.dart';
 import 'package:Confessi/constants/enums_that_are_local_keys.dart';
 import 'package:Confessi/core/styles/typography.dart';
 import 'package:Confessi/core/utils/sizing/height_fraction.dart';

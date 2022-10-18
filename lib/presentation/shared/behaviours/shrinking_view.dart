@@ -1,7 +1,7 @@
-import 'package:Confessi/application/shared/scaffold_shrinker_cubit.dart';
-import 'package:Confessi/core/curves/bounce_back.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../application/shared/cubit/scaffold_shrinker_cubit.dart';
 
 class ShrinkingView extends StatefulWidget {
   const ShrinkingView({
@@ -75,14 +75,14 @@ class _ShrinkingViewState extends State<ShrinkingView> with SingleTickerProvider
       child: Container(
         color: Colors.black, // Theme.of(context).colorScheme.shadow
         child: Transform.scale(
-          scale: -_anim.value * .03 + 1,
+          scale: -_anim.value * .05 + 1,
           child: Transform.translate(
             offset: Offset(0, _anim.value * MediaQuery.of(context).size.height * .055),
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(widget.topLeftSquare ? 0 : _anim.value * 50),
-                    topRight: Radius.circular(widget.topRightSquare ? 0 : _anim.value * 50)),
+                    topLeft: Radius.circular(widget.topLeftSquare ? 0 : _anim.value * 30),
+                    topRight: Radius.circular(widget.topRightSquare ? 0 : _anim.value * 30)),
                 color: Theme.of(context).colorScheme.background,
               ),
               child: SafeArea(

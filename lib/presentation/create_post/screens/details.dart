@@ -1,4 +1,4 @@
-import 'package:Confessi/application/create_post/post_cubit.dart';
+import 'package:Confessi/application/create_post/cubit/post_cubit.dart';
 import 'package:Confessi/presentation/shared/text/disclaimer_text.dart';
 import 'package:Confessi/presentation/create_post/widgets/picker_sheet.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';

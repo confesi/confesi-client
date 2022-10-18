@@ -11,7 +11,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../application/authentication/authentication_cubit.dart';
+import '../../../application/authentication/cubit/authentication_cubit.dart';
 import '../../shared/behaviours/simulated_bottom_safe_area.dart';
 import '../../shared/layout/appbar.dart';
 import '../../shared/overlays/feedback_sheet.dart';

@@ -1,4 +1,5 @@
 import 'package:Confessi/presentation/authentication/tabs/register.dart';
+import 'package:Confessi/presentation/shared/behaviours/shrinking_view.dart';
 import 'package:flutter/material.dart';
 
 import '../tabs/account_details.dart';
@@ -28,6 +29,7 @@ class _RegisterTabManagerState extends State<RegisterTabManager> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       body: PageView(
         controller: pageController,
         physics: const NeverScrollableScrollPhysics(),

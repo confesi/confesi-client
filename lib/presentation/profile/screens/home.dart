@@ -10,7 +10,7 @@ import 'package:Confessi/dependency_injection.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 // TODO: make custom AMAZING loading indicator
-import '../../../application/authentication/authentication_cubit.dart';
+import '../../../application/authentication/cubit/authentication_cubit.dart';
 import '../../../core/styles/typography.dart';
 import '../../../core/utils/sizing/height_fraction.dart';
 import '../../../core/utils/sizing/width_fraction.dart';

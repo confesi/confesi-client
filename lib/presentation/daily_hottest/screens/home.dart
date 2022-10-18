@@ -1,4 +1,4 @@
-import 'package:Confessi/application/daily_hottest/hottest_cubit.dart';
+import 'package:Confessi/application/daily_hottest/cubit/hottest_cubit.dart';
 import 'package:Confessi/presentation/daily_hottest/widgets/hottest_tile.dart';
 import 'package:Confessi/presentation/shared/behaviours/shrinking_view.dart';
 import 'package:Confessi/presentation/shared/overlays/date_picker_sheet.dart';

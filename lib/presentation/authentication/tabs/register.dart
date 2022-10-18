@@ -1,4 +1,5 @@
-import 'package:Confessi/application/authentication/authentication_cubit.dart';
+import 'package:Confessi/application/authentication/cubit/authentication_cubit.dart';
+import 'package:Confessi/presentation/shared/behaviours/shrinking_view.dart';
 import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
 import 'package:Confessi/presentation/shared/overlays/top_chip.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';

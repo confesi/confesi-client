@@ -8,7 +8,7 @@ import 'package:Confessi/presentation/shared/indicators/alert.dart';
 import 'package:Confessi/presentation/shared/indicators/loading.dart';
 import 'package:Confessi/presentation/shared/layout/appbar.dart';
 import 'package:Confessi/presentation/shared/layout/line.dart';
-import 'package:Confessi/application/daily_hottest/leaderboard_cubit.dart';
+import 'package:Confessi/application/daily_hottest/cubit/leaderboard_cubit.dart';
 import 'package:Confessi/presentation/daily_hottest/widgets/leaderboard_circle_tile.dart';
 import 'package:Confessi/presentation/daily_hottest/widgets/leaderboard_rectangle_tile.dart';
 import 'package:flutter/cupertino.dart';

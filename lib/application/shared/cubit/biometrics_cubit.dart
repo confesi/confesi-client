@@ -8,7 +8,7 @@ import 'package:equatable/equatable.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:meta/meta.dart';
 
-import '../../core/usecases/no_params.dart';
+import '../../../core/usecases/no_params.dart';
 
 part 'biometrics_state.dart';
 

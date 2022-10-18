@@ -1,5 +1,5 @@
-import 'package:Confessi/application/authentication/authentication_cubit.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
+import 'package:Confessi/application/authentication/cubit/authentication_cubit.dart';
+import 'package:Confessi/presentation/authentication/widgets/item_selector.dart';
 import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
 import 'package:Confessi/presentation/shared/overlays/top_chip.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
@@ -8,11 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/styles/typography.dart';
-import '../../../core/utils/sizing/height_fraction.dart';
 import '../../shared/buttons/pop.dart';
 import '../../shared/layout/minimal_appbar.dart';
-import '../../shared/text/link.dart';
-import '../../shared/textfields/bulge.dart';
 
 class AccountDetails extends StatefulWidget {
   const AccountDetails({
@@ -91,19 +88,20 @@ class _AccountDetailsState extends State<AccountDetails> with AutomaticKeepAlive
                                 SizedBox(height: heightFactor * 8),
                                 Column(
                                   children: [
-                                    BulgeTextField(
-                                      controller: emailController,
-                                      hintText: "University or college",
+                                    ItemSelector(
+                                      text: "University or college",
                                       bottomPadding: 10,
+                                      onTap: () => print(""),
                                     ),
-                                    BulgeTextField(
-                                      controller: usernameController,
-                                      hintText: "Year of study",
+                                    ItemSelector(
+                                      text: "Year of study",
                                       bottomPadding: 10,
+                                      onTap: () => print("tap"),
                                     ),
-                                    BulgeTextField(
-                                      controller: passwordController,
-                                      hintText: "Faculty (optional)",
+                                    ItemSelector(
+                                      text: "Faculty (optional)",
+                                      bottomPadding: 10,
+                                      onTap: () => print("tap"),
                                     ),
                                   ],
                                 ),
