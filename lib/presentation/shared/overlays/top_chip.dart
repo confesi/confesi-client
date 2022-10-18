@@ -1,6 +1,9 @@
+import 'package:Confessi/core/utils/sizing/width_fraction.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_opacity.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import '../../../core/styles/typography.dart';
 import '../../../core/utils/sizing/height_fraction.dart';
@@ -9,11 +12,8 @@ dynamic showTopChip(BuildContext context, String text) {
   OverlayEntry? overlay;
   overlay = OverlayEntry(
     builder: (context) {
-      return GestureDetector(
-        onTap: () {
-          HapticFeedback.selectionClick();
-          overlay?.remove();
-        },
+      return IgnorePointer(
+        ignoring: true,
         child: Align(
           alignment: Alignment.topCenter,
           child: Material(
@@ -43,9 +43,12 @@ class _OverlayItem extends StatefulWidget {
   State<_OverlayItem> createState() => __OverlayItemState();
 }
 
-class __OverlayItemState extends State<_OverlayItem> with SingleTickerProviderStateMixin {
+class __OverlayItemState extends State<_OverlayItem> with TickerProviderStateMixin {
   late AnimationController translateAnimController;
   late Animation translateAnim;
+
+  late AnimationController timeAnimController;
+  late Animation timeAnim;
 
   @override
   void initState() {
@@ -59,6 +62,14 @@ class __OverlayItemState extends State<_OverlayItem> with SingleTickerProviderSt
       curve: Curves.decelerate,
       reverseCurve: Curves.decelerate,
     );
+    timeAnimController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 3500),
+    );
+    timeAnim = CurvedAnimation(
+      parent: timeAnimController,
+      curve: Curves.linear,
+    );
     startAnim();
     super.initState();
   }
@@ -66,12 +77,14 @@ class __OverlayItemState extends State<_OverlayItem> with SingleTickerProviderSt
   @override
   void dispose() {
     translateAnimController.dispose();
+    timeAnimController.dispose();
     super.dispose();
   }
 
   void startAnim() async {
+    timeAnimController.forward();
     translateAnimController.forward().then((value) async {
-      await Future.delayed(const Duration(milliseconds: 3000));
+      await Future.delayed(const Duration(milliseconds: 2500));
       if (mounted) {
         translateAnimController.reverse().then((_) {
           if (widget.overlay != null) widget.overlay!.remove();
@@ -79,55 +92,52 @@ class __OverlayItemState extends State<_OverlayItem> with SingleTickerProviderSt
       }
     });
     translateAnimController.addListener(() => setState(() {}));
+    timeAnimController.addListener(() => setState(() {}));
   }
 
   @override
   Widget build(BuildContext context) {
-    return Transform.translate(
-      offset: Offset(0, -(1 - translateAnim.value) * heightFraction(context, .25)),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 25),
-        child: Container(
-          constraints: BoxConstraints(maxHeight: heightFraction(context, .2)),
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.error,
-            borderRadius: const BorderRadius.all(
-              Radius.circular(5),
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Theme.of(context).colorScheme.error.withOpacity(0.1),
-                blurRadius: 5,
-                offset: const Offset(0, 2),
+    return InitOpacity(
+      child: Transform.translate(
+        offset: Offset(0, -(1 - translateAnim.value) * heightFraction(context, .25)),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
+          child: Container(
+            width: double.infinity,
+            constraints: BoxConstraints(maxHeight: heightFraction(context, .2)),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.error,
+              borderRadius: const BorderRadius.all(
+                Radius.circular(10),
               ),
-            ],
-          ),
-          child: Stack(
-            clipBehavior: Clip.hardEdge,
-            children: [
-              Positioned.fill(
-                child: FittedBox(
-                  alignment: Alignment.centerLeft,
-                  fit: BoxFit.fitHeight,
-                  child: ClipRRect(
-                    child: Transform.translate(
-                      offset: const Offset(-3, -3),
-                      child: Icon(
-                        CupertinoIcons.hammer,
-                        color: Theme.of(context).colorScheme.onSecondary.withOpacity(0.2),
+            ),
+            child: ClipRRect(
+              borderRadius: const BorderRadius.all(
+                Radius.circular(10),
+              ),
+              child: Stack(
+                clipBehavior: Clip.hardEdge,
+                children: [
+                  Positioned.fill(
+                    child: ClipRRect(
+                      clipBehavior: Clip.hardEdge,
+                      child: FittedBox(
+                        alignment: Alignment.centerLeft,
+                        fit: BoxFit.contain,
+                        child: Transform.translate(
+                          offset: const Offset(-3, -3),
+                          child: Icon(
+                            CupertinoIcons.hammer,
+                            color: Theme.of(context).colorScheme.onSecondary.withOpacity(0.15),
+                          ),
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: FractionallySizedBox(
-                        widthFactor: .9,
+                  Stack(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(15),
                         child: Text(
                           widget.text,
                           style: kTitle.copyWith(
@@ -135,19 +145,21 @@ class __OverlayItemState extends State<_OverlayItem> with SingleTickerProviderSt
                           ),
                           maxLines: 5,
                           overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.left,
+                          textAlign: TextAlign.center,
                         ),
                       ),
-                    ),
-                    const SizedBox(width: 15),
-                    Icon(
-                      CupertinoIcons.xmark,
-                      color: Theme.of(context).colorScheme.onError,
-                    ),
-                  ],
-                ),
+                      Container(
+                        height: 5,
+                        width: timeAnim.value * widthFraction(context, 1),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.onError.withOpacity(0.4),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),

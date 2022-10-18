@@ -12,6 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/styles/typography.dart';
 import '../../shared/behaviours/overscroll.dart';
+import '../../shared/behaviours/touchable_opacity.dart';
 import '../../shared/buttons/pop.dart';
 import '../../shared/behaviours/keyboard_dismiss.dart';
 import '../../shared/layout/minimal_appbar.dart';
@@ -74,7 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 animatedTexts: [
                                   TypewriterAnimatedText(
                                     "Let's log you in.",
-                                    textStyle: kDisplay.copyWith(color: Theme.of(context).colorScheme.primary),
+                                    textStyle: kSansSerifDisplay.copyWith(color: Theme.of(context).colorScheme.primary),
                                     speed: const Duration(
                                       milliseconds: 75,
                                     ),
@@ -94,6 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                               const SizedBox(height: 45),
                               PopButton(
+                                bottomPadding: 15,
                                 loading: state is UserLoading ? true : false,
                                 justText: true,
                                 onPress: () async {
@@ -104,19 +106,31 @@ class _LoginScreenState extends State<LoginScreen> {
                                       );
                                 },
                                 icon: CupertinoIcons.chevron_right,
-                                backgroundColor: Theme.of(context).colorScheme.primary,
-                                textColor: Theme.of(context).colorScheme.onPrimary,
+                                backgroundColor: Theme.of(context).colorScheme.secondary,
+                                textColor: Theme.of(context).colorScheme.onSecondary,
                                 text: "Login",
                               ),
-                              const SizedBox(height: 10),
-                              Center(
-                                child: InitTransform(
-                                  durationInMilliseconds: 1000,
-                                  magnitudeOfTransform: heightFraction(context, .5),
-                                  child: LinkText(onPress: () {}, linkText: "Tap here.", text: "Forgot password? "),
+                              TouchableOpacity(
+                                onTap: () => {},
+                                child: Container(
+                                  // Transparent hitbox trick.
+                                  color: Colors.transparent,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "I forgot my password",
+                                        style: kTitle.copyWith(
+                                          color: Theme.of(context).colorScheme.onSurface,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                              const SizedBox(height: 10),
+                              const SizedBox(height: 15),
                             ],
                           ),
                         ),

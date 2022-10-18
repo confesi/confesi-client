@@ -5,6 +5,7 @@ import 'package:Confessi/application/shared/prefs_cubit.dart';
 import 'package:Confessi/constants/enums_that_are_local_keys.dart';
 import 'package:Confessi/core/styles/typography.dart';
 import 'package:Confessi/core/utils/sizing/height_fraction.dart';
+import 'package:Confessi/presentation/shared/behaviours/one_theme_status_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -100,10 +101,10 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
             if (!state.justRegistered) Navigator.of(context).pushNamed("/home");
           }
         },
-        child: AnnotatedRegion(
-          value: SystemUiOverlayStyle.dark,
+        child: OneThemeStatusBar(
+          brightness: Brightness.light,
           child: Scaffold(
-            backgroundColor: AppTheme.classicLight.colorScheme.secondary,
+            backgroundColor: AppTheme.classicLight.colorScheme.background,
             body: SafeArea(
               child: Center(
                 child: ScrollableView(
@@ -122,7 +123,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                                   child: SizedBox(
                                     height: widthBreakpointFraction(context, .5, 250),
                                     child: Image.asset(
-                                      "assets/images/logo2.png",
+                                      "assets/images/logo.jpg",
                                     ),
                                   ),
                                 ),

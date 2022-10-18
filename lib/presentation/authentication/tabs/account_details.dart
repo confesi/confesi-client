@@ -14,18 +14,25 @@ import '../../shared/layout/minimal_appbar.dart';
 import '../../shared/text/link.dart';
 import '../../shared/textfields/bulge.dart';
 
-class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({Key? key}) : super(key: key);
+class AccountDetails extends StatefulWidget {
+  const AccountDetails({
+    Key? key,
+    required this.nextScreen,
+  }) : super(key: key);
+
+  final VoidCallback nextScreen;
 
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+  State<AccountDetails> createState() => _AccountDetailsState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _AccountDetailsState extends State<AccountDetails> with AutomaticKeepAliveClientMixin {
   TextEditingController usernameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+  @override
+  bool get wantKeepAlive => true;
   @override
   void dispose() {
     usernameController.dispose();
@@ -73,7 +80,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   animatedTexts: [
                                     TypewriterAnimatedText(
                                       "Let's get you started.",
-                                      textStyle: kDisplay.copyWith(color: Theme.of(context).colorScheme.primary),
+                                      textStyle:
+                                          kSansSerifDisplay.copyWith(color: Theme.of(context).colorScheme.primary),
                                       speed: const Duration(
                                         milliseconds: 75,
                                       ),
@@ -85,18 +93,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   children: [
                                     BulgeTextField(
                                       controller: emailController,
-                                      hintText: "Email",
+                                      hintText: "University or college",
                                       bottomPadding: 10,
                                     ),
                                     BulgeTextField(
                                       controller: usernameController,
-                                      hintText: "Username",
+                                      hintText: "Year of study",
                                       bottomPadding: 10,
                                     ),
                                     BulgeTextField(
                                       controller: passwordController,
-                                      password: true,
-                                      hintText: "Password",
+                                      hintText: "Faculty (optional)",
                                     ),
                                   ],
                                 ),
@@ -105,32 +112,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   loading: state is UserLoading ? true : false,
                                   justText: true,
                                   onPress: () async {
-                                    FocusScope.of(context).unfocus();
-                                    await context.read<AuthenticationCubit>().registerUser(
-                                          usernameController.text,
-                                          passwordController.text,
-                                          emailController.text,
-                                        );
+                                    widget.nextScreen();
+                                    // FocusScope.of(context).unfocus();
+                                    // await context.read<AuthenticationCubit>().registerUser(
+                                    //       usernameController.text,
+                                    //       passwordController.text,
+                                    //       emailController.text,
+                                    //     );
                                   },
                                   icon: CupertinoIcons.chevron_right,
                                   backgroundColor: Theme.of(context).colorScheme.secondary,
                                   textColor: Theme.of(context).colorScheme.onSecondary,
-                                  text: "Register",
+                                  text: "Continue",
                                 ),
-                                const SizedBox(height: 10),
-                                Center(
-                                  child: InitTransform(
-                                    durationInMilliseconds: 1000,
-                                    magnitudeOfTransform: heightFraction(context, .5),
-                                    child: LinkText(
-                                      pressable: state is UserLoading ? false : true,
-                                      onPress: () => Navigator.of(context).pushNamed("/login"),
-                                      linkText: "Tap here.",
-                                      text: "Already a user? ",
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(height: 10),
+                                const SizedBox(height: 30),
                               ],
                             ),
                           ),

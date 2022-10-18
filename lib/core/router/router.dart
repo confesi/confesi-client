@@ -1,3 +1,4 @@
+import 'package:Confessi/presentation/authentication/tabs/account_details.dart';
 import 'package:Confessi/presentation/create_post/screens/details.dart';
 import 'package:Confessi/presentation/create_post/screens/home.dart';
 import 'package:Confessi/presentation/daily_hottest/screens/leaderboard.dart';
@@ -15,11 +16,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
 
 import '../../dependency_injection.dart';
+import '../../presentation/authentication/screens/register_tab_manager.dart';
 import '../../presentation/primary/screens/home.dart';
 import '../../presentation/authentication/screens/login.dart';
 import '../../presentation/primary/screens/showcase.dart';
 import '../../presentation/authentication/screens/open.dart';
-import '../../presentation/authentication/screens/register.dart';
+import '../../presentation/authentication/tabs/register.dart';
 import '../../application/daily_hottest/hottest_cubit.dart';
 import '../../application/daily_hottest/leaderboard_cubit.dart';
 import '../../application/feed/recents_cubit.dart';
@@ -66,8 +68,8 @@ class AppRouter {
       case "/login":
         page = const LoginScreen();
         break;
-      case "/register":
-        page = const RegisterScreen();
+      case "/registerTabManager":
+        page = const RegisterTabManager();
         break;
       case "/home": //! Most of the (main) screens are tabs under the /home named route. Thus, should have their BLoC/Cubit providers here.
         page = MultiBlocProvider(
