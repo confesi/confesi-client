@@ -85,13 +85,13 @@ class _LoginScreenState extends State<LoginScreen> {
                               SizedBox(height: heightFactor * 8),
                               BulgeTextField(
                                 controller: usernameEmailController,
-                                hintText: "Email or username",
+                                topText: "Email or username",
                                 bottomPadding: 10,
                               ),
                               BulgeTextField(
                                 controller: passwordController,
                                 password: true,
-                                hintText: "Password",
+                                topText: "Password",
                               ),
                               const SizedBox(height: 45),
                               PopButton(

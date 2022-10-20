@@ -1,6 +1,8 @@
 import 'package:Confessi/application/authentication/cubit/authentication_cubit.dart';
+import 'package:Confessi/presentation/shared/behaviours/keyboard_dismiss.dart';
 import 'package:Confessi/presentation/shared/behaviours/shrinking_view.dart';
 import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
+import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
 import 'package:Confessi/presentation/shared/overlays/top_chip.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/cupertino.dart';
@@ -26,15 +28,23 @@ class _RegisterScreenState extends State<RegisterScreen> with AutomaticKeepAlive
   TextEditingController usernameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  late ScrollController scrollController;
 
   @override
   bool get wantKeepAlive => true;
+
+  @override
+  void initState() {
+    scrollController = ScrollController();
+    super.initState();
+  }
 
   @override
   void dispose() {
     usernameController.dispose();
     passwordController.dispose();
     emailController.dispose();
+    scrollController.dispose();
     super.dispose();
   }
 
@@ -56,8 +66,10 @@ class _RegisterScreenState extends State<RegisterScreen> with AutomaticKeepAlive
                 builder: (context, constraints) {
                   return SizedBox(
                     height: constraints.maxHeight,
-                    child: SingleChildScrollView(
-                      physics: const ClampingScrollPhysics(),
+                    child: ScrollableView(
+                      thumbVisible: false,
+                      controller: scrollController,
+                      keyboardDismiss: true,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -90,18 +102,18 @@ class _RegisterScreenState extends State<RegisterScreen> with AutomaticKeepAlive
                                   children: [
                                     BulgeTextField(
                                       controller: emailController,
-                                      hintText: "Email",
+                                      topText: "Email",
                                       bottomPadding: 10,
                                     ),
                                     BulgeTextField(
                                       controller: usernameController,
-                                      hintText: "Username",
+                                      topText: "Username",
                                       bottomPadding: 10,
                                     ),
                                     BulgeTextField(
                                       controller: passwordController,
                                       password: true,
-                                      hintText: "Password",
+                                      topText: "Password",
                                     ),
                                   ],
                                 ),

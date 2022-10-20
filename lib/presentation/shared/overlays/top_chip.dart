@@ -117,22 +117,22 @@ class __OverlayItemState extends State<_OverlayItem> with TickerProviderStateMix
             child: Stack(
               clipBehavior: Clip.hardEdge,
               children: [
-                Positioned.fill(
-                  child: ClipRRect(
-                    clipBehavior: Clip.hardEdge,
-                    child: FittedBox(
-                      alignment: Alignment.centerLeft,
-                      fit: BoxFit.contain,
-                      child: Transform.translate(
-                        offset: const Offset(-3, -3),
-                        child: Icon(
-                          CupertinoIcons.hammer,
-                          color: Theme.of(context).colorScheme.onSecondary.withOpacity(0.15),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                // Positioned.fill(
+                //   child: ClipRRect(
+                //     clipBehavior: Clip.hardEdge,
+                //     child: FittedBox(
+                //       alignment: Alignment.centerLeft,
+                //       fit: BoxFit.contain,
+                //       child: Transform.translate(
+                //         offset: const Offset(-3, -3),
+                //         child: Icon(
+                //           CupertinoIcons.hammer,
+                //           color: Theme.of(context).colorScheme.onSecondary.withOpacity(0.15),
+                //         ),
+                //       ),
+                //     ),
+                //   ),
+                // ),
                 Stack(
                   children: [
                     Padding(
@@ -151,7 +151,7 @@ class __OverlayItemState extends State<_OverlayItem> with TickerProviderStateMix
                       height: 5,
                       width: timeAnim.value * widthFraction(context, 1),
                       decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.onError.withOpacity(0.4),
+                        color: Theme.of(context).colorScheme.onError.withOpacity(0.75),
                       ),
                     ),
                   ],

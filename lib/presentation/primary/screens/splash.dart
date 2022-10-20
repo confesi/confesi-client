@@ -5,6 +5,7 @@ import 'package:Confessi/application/shared/cubit/prefs_cubit.dart';
 import 'package:Confessi/constants/enums_that_are_local_keys.dart';
 import 'package:Confessi/core/styles/typography.dart';
 import 'package:Confessi/core/utils/sizing/height_fraction.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_opacity.dart';
 import 'package:Confessi/presentation/shared/behaviours/one_theme_status_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -26,8 +27,6 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMixin {
   bool shakeSheetOpen = false;
-  late AnimationController _animController;
-  late Animation _anim;
   late String introText;
 
   // When prefs are loaded.
@@ -36,15 +35,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   @override
   void initState() {
     introText = getIntro().text;
-    _animController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 650),
-    );
-    _anim = CurvedAnimation(
-      parent: _animController,
-      curve: Curves.easeOutBack,
-    );
-    startAnim();
+
     // Opens the feedback sheet when the phone is shook. Implemented on the [Splash] screen because it is only shown once per app run. Otherwise, mutliple shake listeners would be created.
     ShakeDetector.autoStart(
       onPhoneShake: () {
@@ -58,19 +49,6 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
       minimumShakeCount: 3,
     );
     super.initState();
-  }
-
-  void startAnim() async {
-    _animController.forward().then((value) => HapticFeedback.lightImpact());
-    _animController.addListener(() {
-      setState(() {});
-    });
-  }
-
-  @override
-  void dispose() {
-    _animController.dispose();
-    super.dispose();
   }
 
   @override
@@ -105,47 +83,13 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
           brightness: Brightness.light,
           child: Scaffold(
             backgroundColor: AppTheme.classicLight.colorScheme.background,
-            body: SafeArea(
+            body: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Center(
-                child: ScrollableView(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: Column(
-                      children: [
-                        Transform.scale(
-                          scale: _anim.value,
-                          child: Column(
-                            children: [
-                              Transform.translate(
-                                offset: Offset(0, (200 - (200 * _anim.value)).toDouble()),
-                                child: Transform.rotate(
-                                  angle: (2 * pi) - _anim.value * (2 * pi),
-                                  child: SizedBox(
-                                    height: widthBreakpointFraction(context, .5, 250),
-                                    child: Image.asset(
-                                      "assets/images/logo.jpg",
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: heightFraction(context, .3),
-                        ),
-                        SizedBox(
-                          width: widthBreakpointFraction(context, 1 / 4, 250),
-                          child: Text(
-                            introText,
-                            style: kBody.copyWith(
-                              color: AppTheme.classicLight.colorScheme.onSecondary,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ],
-                    ),
+                child: SizedBox(
+                  height: widthBreakpointFraction(context, .5, 250),
+                  child: Image.asset(
+                    "assets/images/logo.jpg",
                   ),
                 ),
               ),

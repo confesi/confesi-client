@@ -1,6 +1,9 @@
 import 'package:Confessi/application/authentication/cubit/authentication_cubit.dart';
 import 'package:Confessi/presentation/authentication/widgets/item_selector.dart';
+import 'package:Confessi/presentation/shared/behaviours/keyboard_dismiss.dart';
+import 'package:Confessi/presentation/shared/behaviours/shrinking_view.dart';
 import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
+import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
 import 'package:Confessi/presentation/shared/overlays/top_chip.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,6 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/styles/typography.dart';
 import '../../shared/buttons/pop.dart';
 import '../../shared/layout/minimal_appbar.dart';
+import '../widgets/search_items_sheet.dart';
 
 class AccountDetails extends StatefulWidget {
   const AccountDetails({
@@ -28,13 +32,23 @@ class _AccountDetailsState extends State<AccountDetails> with AutomaticKeepAlive
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+  late ScrollController scrollController;
+
   @override
   bool get wantKeepAlive => true;
+
+  @override
+  void initState() {
+    scrollController = ScrollController();
+    super.initState();
+  }
+
   @override
   void dispose() {
     usernameController.dispose();
     passwordController.dispose();
     emailController.dispose();
+    scrollController.dispose();
     super.dispose();
   }
 
@@ -56,8 +70,10 @@ class _AccountDetailsState extends State<AccountDetails> with AutomaticKeepAlive
                 builder: (context, constraints) {
                   return SizedBox(
                     height: constraints.maxHeight,
-                    child: SingleChildScrollView(
-                      physics: const ClampingScrollPhysics(),
+                    child: ScrollableView(
+                      thumbVisible: false,
+                      controller: scrollController,
+                      keyboardDismiss: true,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -91,7 +107,7 @@ class _AccountDetailsState extends State<AccountDetails> with AutomaticKeepAlive
                                     ItemSelector(
                                       text: "University or college",
                                       bottomPadding: 10,
-                                      onTap: () => print(""),
+                                      onTap: () => showSearchItemsSheet(context),
                                     ),
                                     ItemSelector(
                                       text: "Year of study",

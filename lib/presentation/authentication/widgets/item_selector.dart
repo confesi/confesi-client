@@ -47,20 +47,17 @@ class ItemSelector extends StatelessWidget {
                   ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(15),
-                  child: SizedBox(
-                    height: 24,
-                    child: Center(
-                      child: TextField(
-                        enableSuggestions: false,
-                        style: kBody.copyWith(
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                        decoration: InputDecoration.collapsed(
-                          hintText: "...",
-                          hintStyle: kBody.copyWith(
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
+                  padding: const EdgeInsets.all(17.5),
+                  child: Center(
+                    child: TextField(
+                      enableSuggestions: false,
+                      style: kBody.copyWith(
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      decoration: InputDecoration.collapsed(
+                        hintText: "...",
+                        hintStyle: kBody.copyWith(
+                          color: Theme.of(context).colorScheme.onSurface,
                         ),
                       ),
                     ),

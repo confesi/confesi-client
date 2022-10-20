@@ -29,7 +29,7 @@ class _RegisterTabManagerState extends State<RegisterTabManager> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
+      // resizeToAvoidBottomInset: false,
       body: PageView(
         controller: pageController,
         physics: const NeverScrollableScrollPhysics(),

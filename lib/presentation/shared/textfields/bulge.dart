@@ -1,3 +1,4 @@
+import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -5,7 +6,7 @@ import '../../../core/styles/typography.dart';
 
 class BulgeTextField extends StatefulWidget {
   const BulgeTextField(
-      {this.hintText = "Search",
+      {this.topText = "Search",
       required this.controller,
       this.icon = CupertinoIcons.search,
       this.bottomPadding = 0.0,
@@ -13,14 +14,20 @@ class BulgeTextField extends StatefulWidget {
       this.horizontalPadding = 0.0,
       this.password = false,
       this.autoCorrect = false,
+      this.showTopText = true,
+      this.hintText,
+      this.onFocusChange,
       Key? key})
       : super(key: key);
 
+  final Function(bool)? onFocusChange;
+  final String? hintText;
+  final bool showTopText;
   final bool autoCorrect;
   final bool password;
   final IconData icon;
   final double bottomPadding;
-  final String hintText;
+  final String topText;
   final double topPadding;
   final double horizontalPadding;
   final TextEditingController controller;
@@ -35,6 +42,15 @@ class _BulgeTextFieldState extends State<BulgeTextField> {
   @override
   void initState() {
     widget.controller.clear();
+    widget.controller.addListener(() => setState(() {}));
+    focusNode.addListener(() {
+      if (widget.onFocusChange == null) return;
+      if (focusNode.hasFocus) {
+        widget.onFocusChange!(true);
+      } else {
+        widget.onFocusChange!(false);
+      }
+    });
     super.initState();
   }
 
@@ -56,52 +72,89 @@ class _BulgeTextFieldState extends State<BulgeTextField> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            widget.hintText,
-            style: kBody.copyWith(
-              color: Theme.of(context).colorScheme.onSurface,
-            ),
-            textAlign: TextAlign.left,
-          ),
-          const SizedBox(height: 10),
-          GestureDetector(
-            onTap: () => focusNode.requestFocus(),
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  width: .5,
-                  color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
-                ),
-                color: Theme.of(context).colorScheme.surface,
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(10),
+          widget.showTopText
+              ? Column(
+                  children: [
+                    Text(
+                      widget.topText,
+                      style: kBody.copyWith(
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+                    const SizedBox(height: 10),
+                  ],
+                )
+              : Container(),
+          Row(
+            children: [
+              Expanded(
+                child: GestureDetector(
+                  onTap: () => focusNode.requestFocus(),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        width: .5,
+                        color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
+                      ),
+                      color: Theme.of(context).colorScheme.surface,
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(10),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(17.5),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              enableSuggestions: false,
+                              autocorrect: widget.autoCorrect,
+                              obscureText: widget.password,
+                              focusNode: focusNode,
+                              controller: widget.controller,
+                              style: kBody.copyWith(
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                              decoration: InputDecoration.collapsed(
+                                hintText: widget.hintText ?? "...",
+                                hintStyle: kBody.copyWith(
+                                  color: Theme.of(context).colorScheme.onSurface,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(15),
-                child: SizedBox(
-                  height: 24,
-                  child: Center(
-                    child: TextField(
-                      enableSuggestions: false,
-                      autocorrect: widget.autoCorrect,
-                      obscureText: widget.password,
-                      focusNode: focusNode,
-                      controller: widget.controller,
-                      style: kBody.copyWith(
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                      decoration: InputDecoration.collapsed(
-                        hintText: "...",
-                        hintStyle: kBody.copyWith(
-                          color: Theme.of(context).colorScheme.primary,
+              TouchableOpacity(
+                onTap: () => widget.controller.clear(),
+                child: Container(
+                  // Transparent hitbox trick.
+                  height: 48,
+                  color: Colors.transparent,
+                  child: AnimatedSize(
+                    curve: Curves.decelerate,
+                    duration: const Duration(milliseconds: 175),
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    child: Padding(
+                      padding: EdgeInsets.only(left: widget.controller.text.isEmpty ? 0 : 15),
+                      child: Center(
+                        child: Text(
+                          widget.controller.text.isEmpty ? "" : "Clear",
+                          style: kTitle.copyWith(
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
+            ],
           ),
         ],
       ),

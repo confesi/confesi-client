@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
 class KeyboardDismissLayout extends StatelessWidget {
-  const KeyboardDismissLayout({required this.child, Key? key})
-      : super(key: key);
+  const KeyboardDismissLayout({required this.child, Key? key}) : super(key: key);
 
   final Widget child;
 
@@ -11,12 +10,15 @@ class KeyboardDismissLayout extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () => FocusScope.of(context).unfocus(),
-      onVerticalDragUpdate: (details) {
-        if (details.delta.direction > 0 && details.delta.distance > 15) {
-          FocusScope.of(context).unfocus();
-        }
-      },
-      child: child,
+      child: NotificationListener<ScrollNotification>(
+        onNotification: (notification) {
+          if (notification is ScrollStartNotification) {
+            FocusScope.of(context).unfocus();
+          }
+          return false;
+        },
+        child: child,
+      ),
     );
   }
 }

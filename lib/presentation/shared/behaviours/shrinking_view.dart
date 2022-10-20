@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -74,26 +76,24 @@ class _ShrinkingViewState extends State<ShrinkingView> with SingleTickerProvider
       },
       child: Container(
         color: Colors.black, // Theme.of(context).colorScheme.shadow
-        child: Transform.scale(
-          scale: -_anim.value * .05 + 1,
-          child: Transform.translate(
-            offset: Offset(0, _anim.value * MediaQuery.of(context).size.height * .055),
-            child: Container(
-              decoration: BoxDecoration(
+        child: Transform.translate(
+          offset: Offset(0, _anim.value * MediaQuery.of(context).size.height * .055),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(widget.topLeftSquare ? 0 : sqrt(_anim.value) * 20),
+                  topRight: Radius.circular(widget.topRightSquare ? 0 : sqrt(_anim.value) * 20)),
+              color: Theme.of(context).colorScheme.background,
+            ),
+            child: SafeArea(
+              top: widget.safeAreaTop,
+              maintainBottomViewPadding: true,
+              bottom: widget.safeAreaBottom,
+              child: ClipRRect(
                 borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(widget.topLeftSquare ? 0 : _anim.value * 30),
-                    topRight: Radius.circular(widget.topRightSquare ? 0 : _anim.value * 30)),
-                color: Theme.of(context).colorScheme.background,
-              ),
-              child: SafeArea(
-                top: widget.safeAreaTop,
-                maintainBottomViewPadding: true,
-                bottom: widget.safeAreaBottom,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(_anim.value * 50), bottomRight: Radius.circular(_anim.value * 50)),
-                  child: widget.child,
-                ),
+                    bottomLeft: Radius.circular(sqrt(_anim.value) * 20),
+                    bottomRight: Radius.circular(sqrt(_anim.value) * 20)),
+                child: widget.child,
               ),
             ),
           ),
