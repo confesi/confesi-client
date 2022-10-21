@@ -8,18 +8,15 @@ import 'package:Confessi/presentation/shared/overlays/top_chip.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/styles/typography.dart';
-import '../../shared/behaviours/overscroll.dart';
 import '../../shared/button_touch_effects/touchable_opacity.dart';
 import '../../shared/buttons/pop.dart';
-import '../../shared/behaviours/keyboard_dismiss.dart';
 import '../../shared/layout/minimal_appbar.dart';
-import '../../shared/text/link.dart';
 import '../../shared/textfields/bulge.dart';
 import '../../../application/authentication/cubit/authentication_cubit.dart';
-import '../../shared/text/fade_size_text.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -31,11 +28,19 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController usernameEmailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  late ScrollController scrollController;
+
+  @override
+  void initState() {
+    scrollController = ScrollController();
+    super.initState();
+  }
 
   @override
   void dispose() {
     usernameEmailController.dispose();
     passwordController.dispose();
+    scrollController.dispose();
     super.dispose();
   }
 
@@ -55,8 +60,10 @@ class _LoginScreenState extends State<LoginScreen> {
               child: LayoutBuilder(builder: (context, constraints) {
                 return SizedBox(
                   height: constraints.maxHeight,
-                  child: SingleChildScrollView(
-                    physics: const ClampingScrollPhysics(),
+                  child: ScrollableView(
+                    thumbVisible: false,
+                    controller: scrollController,
+                    keyboardDismiss: true,
                     child: Column(
                       children: [
                         MinimalAppbarLayout(

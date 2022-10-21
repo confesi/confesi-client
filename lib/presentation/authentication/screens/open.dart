@@ -6,9 +6,11 @@ import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opac
 import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../../core/styles/typography.dart';
 import '../../shared/buttons/pop.dart';
+import '../widgets/item_row_tile.dart';
 
 class OpenScreen extends StatefulWidget {
   const OpenScreen({Key? key}) : super(key: key);

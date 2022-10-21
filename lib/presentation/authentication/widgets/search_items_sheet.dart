@@ -1,10 +1,13 @@
+import 'package:Confessi/constants/shared/enums.dart';
 import 'package:Confessi/core/utils/sizing/height_fraction.dart';
 import 'package:Confessi/presentation/authentication/widgets/item_row_tile.dart';
 import 'package:Confessi/presentation/shared/behaviours/simulated_bottom_safe_area.dart';
 import 'package:Confessi/presentation/shared/layout/line.dart';
 import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
 import 'package:Confessi/presentation/shared/textfields/bulge.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../application/shared/cubit/scaffold_shrinker_cubit.dart';
@@ -68,36 +71,44 @@ class __SheetBodyState extends State<_SheetBody> {
             children: [
               Expanded(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const SwipebarLayout(),
-                    const SizedBox(height: 15),
+                    AnimatedSize(
+                      duration: const Duration(milliseconds: 450),
+                      curve: Curves.linearToEaseOut,
+                      child: textFieldFocused
+                          ? Container()
+                          : const Padding(
+                              padding: EdgeInsets.only(bottom: 15),
+                              child: SwipebarLayout(),
+                            ),
+                    ),
                     Row(
                       children: [
-                        TouchableOpacity(
-                          onTap: () => Navigator.pop(context),
-                          child: Container(
-                            // Transparent hitbox trick.
-                            height: 48,
-                            color: Colors.transparent,
-                            child: AnimatedSize(
-                              curve: Curves.decelerate,
-                              duration: const Duration(milliseconds: 175),
-                              clipBehavior: Clip.antiAliasWithSaveLayer,
-                              child: Padding(
-                                padding: EdgeInsets.only(right: !textFieldFocused ? 0 : 15),
-                                child: Center(
-                                  child: Text(
-                                    !textFieldFocused ? "" : "Close",
-                                    style: kTitle.copyWith(
-                                      color: Theme.of(context).colorScheme.onSurface,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
+                        // TouchableOpacity(
+                        //   onTap: () => Navigator.pop(context),
+                        //   child: Container(
+                        //     // Transparent hitbox trick.
+                        //     height: 48,
+                        //     color: Colors.transparent,
+                        //     child: AnimatedSize(
+                        //       curve: Curves.decelerate,
+                        //       duration: const Duration(milliseconds: 175),
+                        //       clipBehavior: Clip.antiAliasWithSaveLayer,
+                        //       child: Padding(
+                        //         padding: EdgeInsets.only(right: !textFieldFocused ? 0 : 15),
+                        //         child: Center(
+                        //           child: Text(
+                        //             !textFieldFocused ? "" : "Close",
+                        //             style: kTitle.copyWith(
+                        //               color: Theme.of(context).colorScheme.onSurface,
+                        //             ),
+                        //           ),
+                        //         ),
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
                         Expanded(
                           child: BulgeTextField(
                             onFocusChange: (focusStatus) {
@@ -117,6 +128,7 @@ class __SheetBodyState extends State<_SheetBody> {
                     LineLayout(color: Theme.of(context).colorScheme.surface),
                     Expanded(
                       child: ScrollableView(
+                        controller: ScrollController(),
                         keyboardDismiss: true,
                         thumbVisible: false,
                         child: Column(
