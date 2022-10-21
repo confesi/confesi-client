@@ -31,7 +31,6 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   }) : super(UnknownUserStatus());
 
   Future<void> silentlyAuthenticateUser() async {
-    // await Future.delayed(const Duration(milliseconds: 250)); // TODO: Remove; just for testing.
     final failureOrSuccess = await silentAuthentication(NoParams());
     failureOrSuccess.fold(
       (failure) {

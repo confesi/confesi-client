@@ -1,14 +1,10 @@
-import 'package:Confessi/core/utils/sizing/height_fraction.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_opacity.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
 import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
 import 'package:Confessi/presentation/shared/overlays/top_chip.dart';
+import 'package:Confessi/presentation/shared/text/fade_message_text.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/styles/typography.dart';
@@ -30,9 +26,11 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController usernameEmailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   late ScrollController scrollController;
+  late FadeMessageTextController fadeMessageTextController;
 
   @override
   void initState() {
+    fadeMessageTextController = FadeMessageTextController();
     scrollController = ScrollController();
     super.initState();
   }
@@ -42,6 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
     usernameEmailController.dispose();
     passwordController.dispose();
     scrollController.dispose();
+    fadeMessageTextController.dispose();
     super.dispose();
   }
 
@@ -56,6 +55,21 @@ class _LoginScreenState extends State<LoginScreen> {
         return ThemedStatusBar(
           child: KeyboardDismissLayout(
             child: Scaffold(
+              floatingActionButton: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  FloatingActionButton(onPressed: () {
+                    fadeMessageTextController.hide();
+                  }),
+                  FloatingActionButton(onPressed: () {
+                    fadeMessageTextController
+                        .show("This is the first error message. It is very cool and unique I promise.");
+                  }),
+                  FloatingActionButton(onPressed: () {
+                    fadeMessageTextController.show("Another problem just occured.");
+                  }),
+                ],
+              ),
               resizeToAvoidBottomInset: true,
               backgroundColor: Theme.of(context).colorScheme.background,
               body: SafeArea(
@@ -102,7 +116,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                   password: true,
                                   topText: "Password",
                                 ),
-                                const SizedBox(height: 45),
+                                const SizedBox(height: 15),
+                                FadeMessageText(
+                                  controller: fadeMessageTextController,
+                                ),
+                                const SizedBox(height: 30),
                                 PopButton(
                                   bottomPadding: 15,
                                   loading: state is UserLoading ? true : false,
