@@ -57,113 +57,114 @@ class _RegisterScreenState extends State<RegisterScreen> with AutomaticKeepAlive
       },
       builder: (context, state) {
         return ThemedStatusBar(
-          child: Scaffold(
-            resizeToAvoidBottomInset: true,
-            backgroundColor: Theme.of(context).colorScheme.background,
-            body: SafeArea(
-              maintainBottomViewPadding: true,
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  return SizedBox(
-                    height: constraints.maxHeight,
-                    child: ScrollableView(
-                      thumbVisible: false,
-                      controller: scrollController,
-                      keyboardDismiss: true,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          MinimalAppbarLayout(
-                            pressable: state is UserLoading ? false : true,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 30),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const SizedBox(height: 15),
-                                AnimatedTextKit(
-                                  displayFullTextOnTap: true,
-                                  pause: const Duration(milliseconds: 200),
-                                  totalRepeatCount: 1,
-                                  animatedTexts: [
-                                    TypewriterAnimatedText(
-                                      "Almost done.",
-                                      textStyle:
-                                          kSansSerifDisplay.copyWith(color: Theme.of(context).colorScheme.primary),
-                                      speed: const Duration(
-                                        milliseconds: 75,
+          child: KeyboardDismissLayout(
+            child: Scaffold(
+              resizeToAvoidBottomInset: true,
+              backgroundColor: Theme.of(context).colorScheme.background,
+              body: SafeArea(
+                maintainBottomViewPadding: true,
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    return SizedBox(
+                      height: constraints.maxHeight,
+                      child: ScrollableView(
+                        thumbVisible: false,
+                        controller: scrollController,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            MinimalAppbarLayout(
+                              pressable: state is UserLoading ? false : true,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 30),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(height: 15),
+                                  AnimatedTextKit(
+                                    displayFullTextOnTap: true,
+                                    pause: const Duration(milliseconds: 200),
+                                    totalRepeatCount: 1,
+                                    animatedTexts: [
+                                      TypewriterAnimatedText(
+                                        "Almost done.",
+                                        textStyle:
+                                            kSansSerifDisplay.copyWith(color: Theme.of(context).colorScheme.primary),
+                                        speed: const Duration(
+                                          milliseconds: 75,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: heightFactor * 8),
+                                  Column(
+                                    children: [
+                                      BulgeTextField(
+                                        controller: emailController,
+                                        topText: "Email",
+                                        bottomPadding: 10,
+                                      ),
+                                      BulgeTextField(
+                                        controller: usernameController,
+                                        topText: "Username",
+                                        bottomPadding: 10,
+                                      ),
+                                      BulgeTextField(
+                                        controller: passwordController,
+                                        password: true,
+                                        topText: "Password",
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 45),
+                                  PopButton(
+                                    bottomPadding: 15,
+                                    loading: state is UserLoading ? true : false,
+                                    justText: true,
+                                    onPress: () async {
+                                      FocusScope.of(context).unfocus();
+                                      await context.read<AuthenticationCubit>().registerUser(
+                                            usernameController.text,
+                                            passwordController.text,
+                                            emailController.text,
+                                          );
+                                    },
+                                    icon: CupertinoIcons.chevron_right,
+                                    backgroundColor: Theme.of(context).colorScheme.secondary,
+                                    textColor: Theme.of(context).colorScheme.onSecondary,
+                                    text: "Complete Registration",
+                                  ),
+                                  TouchableOpacity(
+                                    onTap: () => widget.previousScreen(),
+                                    child: Container(
+                                      // Transparent hitbox trick.
+                                      color: Colors.transparent,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            "Go back",
+                                            style: kTitle.copyWith(
+                                              color: Theme.of(context).colorScheme.onSurface,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                  ],
-                                ),
-                                SizedBox(height: heightFactor * 8),
-                                Column(
-                                  children: [
-                                    BulgeTextField(
-                                      controller: emailController,
-                                      topText: "Email",
-                                      bottomPadding: 10,
-                                    ),
-                                    BulgeTextField(
-                                      controller: usernameController,
-                                      topText: "Username",
-                                      bottomPadding: 10,
-                                    ),
-                                    BulgeTextField(
-                                      controller: passwordController,
-                                      password: true,
-                                      topText: "Password",
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 45),
-                                PopButton(
-                                  bottomPadding: 15,
-                                  loading: state is UserLoading ? true : false,
-                                  justText: true,
-                                  onPress: () async {
-                                    FocusScope.of(context).unfocus();
-                                    await context.read<AuthenticationCubit>().registerUser(
-                                          usernameController.text,
-                                          passwordController.text,
-                                          emailController.text,
-                                        );
-                                  },
-                                  icon: CupertinoIcons.chevron_right,
-                                  backgroundColor: Theme.of(context).colorScheme.secondary,
-                                  textColor: Theme.of(context).colorScheme.onSecondary,
-                                  text: "Complete Registration",
-                                ),
-                                TouchableOpacity(
-                                  onTap: () => widget.previousScreen(),
-                                  child: Container(
-                                    // Transparent hitbox trick.
-                                    color: Colors.transparent,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "Go back",
-                                          style: kTitle.copyWith(
-                                            color: Theme.of(context).colorScheme.onSurface,
-                                          ),
-                                          textAlign: TextAlign.center,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ],
-                                    ),
                                   ),
-                                ),
-                                const SizedBox(height: 15),
-                              ],
+                                  const SizedBox(height: 15),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
             ),
           ),

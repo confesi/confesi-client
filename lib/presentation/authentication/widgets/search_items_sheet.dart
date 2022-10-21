@@ -111,6 +111,9 @@ class __SheetBodyState extends State<_SheetBody> {
                         // ),
                         Expanded(
                           child: BulgeTextField(
+                            rightButtonOnTap: () => Navigator.pop(context),
+                            rightButtonText: "Close",
+                            hasRightButton: textFieldFocused,
                             onFocusChange: (focusStatus) {
                               if (!focusStatus) return;
                               setState(() {

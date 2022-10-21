@@ -1,4 +1,5 @@
 import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opacity.dart';
+import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -17,6 +18,9 @@ class BulgeTextField extends StatefulWidget {
       this.showTopText = true,
       this.hintText,
       this.onFocusChange,
+      this.hasRightButton = false,
+      this.rightButtonOnTap,
+      this.rightButtonText,
       Key? key})
       : super(key: key);
 
@@ -31,6 +35,9 @@ class BulgeTextField extends StatefulWidget {
   final double topPadding;
   final double horizontalPadding;
   final TextEditingController controller;
+  final bool hasRightButton;
+  final VoidCallback? rightButtonOnTap;
+  final String? rightButtonText;
 
   @override
   State<BulgeTextField> createState() => _BulgeTextFieldState();
@@ -102,11 +109,11 @@ class _BulgeTextFieldState extends State<BulgeTextField> {
                         Radius.circular(10),
                       ),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(17.5),
-                      child: Row(
-                        children: [
-                          Expanded(
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            padding: const EdgeInsets.only(top: 17.5, bottom: 17.5, left: 17.5),
                             child: TextField(
                               enableSuggestions: false,
                               autocorrect: widget.autoCorrect,
@@ -124,14 +131,33 @@ class _BulgeTextFieldState extends State<BulgeTextField> {
                               ),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                        TouchableOpacity(
+                          onTap: () {
+                            widget.controller.clear();
+                            FocusScope.of(context).unfocus();
+                          },
+                          child: Container(
+                            // Transparent hitbox trick.
+                            color: Colors.transparent,
+                            padding: const EdgeInsets.all(17.5),
+                            child: Icon(
+                              CupertinoIcons.xmark,
+                              color: Theme.of(context).colorScheme.onSurface,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
               ),
               TouchableOpacity(
-                onTap: () => widget.controller.clear(),
+                onTap: () {
+                  if (widget.rightButtonOnTap != null) {
+                    widget.rightButtonOnTap!();
+                  }
+                },
                 child: Container(
                   // Transparent hitbox trick.
                   height: 48,
@@ -141,10 +167,14 @@ class _BulgeTextFieldState extends State<BulgeTextField> {
                     duration: const Duration(milliseconds: 175),
                     clipBehavior: Clip.antiAliasWithSaveLayer,
                     child: Padding(
-                      padding: EdgeInsets.only(left: widget.controller.text.isEmpty ? 0 : 15),
+                      padding: EdgeInsets.only(left: widget.hasRightButton ? 15 : 0),
                       child: Center(
                         child: Text(
-                          widget.controller.text.isEmpty ? "" : "Clear",
+                          widget.hasRightButton
+                              ? widget.rightButtonText != null
+                                  ? widget.rightButtonText!
+                                  : throw "Please enter right button text."
+                              : "",
                           style: kTitle.copyWith(
                             color: Theme.of(context).colorScheme.onSurface,
                           ),
@@ -153,7 +183,7 @@ class _BulgeTextFieldState extends State<BulgeTextField> {
                     ),
                   ),
                 ),
-              ),
+              )
             ],
           ),
         ],
