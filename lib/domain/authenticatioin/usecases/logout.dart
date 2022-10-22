@@ -1,5 +1,6 @@
 import 'package:Confessi/core/clients/http_client.dart';
 import 'package:dartz/dartz.dart';
+import 'package:hive/hive.dart';
 
 import '../../../core/results/failures.dart';
 import '../../../core/results/successes.dart';
@@ -7,7 +8,7 @@ import '../../../core/usecases/no_params.dart';
 import '../../../core/usecases/single_usecase.dart';
 import '../../../data/authentication/repositories/authentication_repository_concrete.dart';
 
-class Logout implements Usecase<Success, NoParams> {
+class Logout implements Usecase<Success, String> {
   final AuthenticationRepository repository;
   final ApiClient netClient;
 
@@ -15,7 +16,8 @@ class Logout implements Usecase<Success, NoParams> {
 
   /// Logs the user out.
   @override
-  Future<Either<Failure, Success>> call(NoParams noParams) async {
+  Future<Either<Failure, Success>> call(String userID) async {
+    Hive.box(userID).clear(); // TODO: Maybe move this to a deeper level?
     final failureOrRefreshToken = await repository.getRefreshToken();
     print('TOP LEVEL: $failureOrRefreshToken');
     return failureOrRefreshToken.fold(

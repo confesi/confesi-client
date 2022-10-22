@@ -1,3 +1,4 @@
+import 'package:Confessi/application/authentication/cubit/user_cubit.dart';
 import 'package:Confessi/core/styles/typography.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_opacity.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
@@ -117,7 +118,7 @@ class SettingsHome extends StatelessWidget {
                               isRedText: true,
                               icon: CupertinoIcons.square_arrow_right,
                               text: "Logout",
-                              onTap: () => context.read<AuthenticationCubit>().logoutUser(),
+                              onTap: () => context.read<UserCubit>().logoutUser(),
                             ),
                           ],
                         ),

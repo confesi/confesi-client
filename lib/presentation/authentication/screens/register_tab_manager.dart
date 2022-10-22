@@ -1,6 +1,9 @@
+import 'package:Confessi/application/authentication/cubit/register_cubit.dart';
 import 'package:Confessi/presentation/authentication/tabs/register.dart';
+import 'package:Confessi/presentation/shared/behaviours/nav_blocker.dart';
 import 'package:Confessi/presentation/shared/behaviours/shrinking_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../tabs/account_details.dart';
 
@@ -28,29 +31,33 @@ class _RegisterTabManagerState extends State<RegisterTabManager> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // resizeToAvoidBottomInset: false,
-      body: PageView(
-        controller: pageController,
-        physics: const NeverScrollableScrollPhysics(),
-        scrollDirection: Axis.vertical,
-        children: [
-          AccountDetails(
-            nextScreen: () => pageController.animateToPage(
-              1,
-              duration: const Duration(milliseconds: 850),
-              curve: Curves.linearToEaseOut,
-            ),
+    return BlocBuilder<RegisterCubit, RegisterState>(
+      builder: (context, state) {
+        return NavBlocker(
+          blocking: state is RegisterLoading, // TODO: Change to bloc builder
+          child: PageView(
+            controller: pageController,
+            physics: const NeverScrollableScrollPhysics(),
+            scrollDirection: Axis.vertical,
+            children: [
+              AccountDetails(
+                nextScreen: () => pageController.animateToPage(
+                  1,
+                  duration: const Duration(milliseconds: 850),
+                  curve: Curves.linearToEaseOut,
+                ),
+              ),
+              RegisterScreen(
+                previousScreen: () => pageController.animateToPage(
+                  0,
+                  duration: const Duration(milliseconds: 850),
+                  curve: Curves.linearToEaseOut,
+                ),
+              ),
+            ],
           ),
-          RegisterScreen(
-            previousScreen: () => pageController.animateToPage(
-              0,
-              duration: const Duration(milliseconds: 850),
-              curve: Curves.linearToEaseOut,
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

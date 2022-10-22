@@ -25,9 +25,9 @@ class PrefsRepository implements IPrefsRepository {
   }
 
   @override
-  Future<Either<Failure, AppearanceEnum>> loadAppearance(List enumValues, Type enumType) async {
+  Future<Either<Failure, AppearanceEnum>> loadAppearance(List enumValues, Type enumType, String userID) async {
     try {
-      return Right(await datasource.loadPref(enumValues, enumType));
+      return Right(await datasource.loadPref(enumValues, enumType, userID));
     } on DBDefaultException {
       return Left(DBDefaultFailure());
     } catch (e) {
@@ -36,9 +36,10 @@ class PrefsRepository implements IPrefsRepository {
   }
 
   @override
-  Future<Either<Failure, ReducedAnimationsEnum>> loadReducedAnimations(List enumValues, Type enumType) async {
+  Future<Either<Failure, ReducedAnimationsEnum>> loadReducedAnimations(
+      List enumValues, Type enumType, String userID) async {
     try {
-      return Right(await datasource.loadPref(enumValues, enumType));
+      return Right(await datasource.loadPref(enumValues, enumType, userID));
     } on DBDefaultException {
       return Left(DBDefaultFailure());
     } catch (e) {
@@ -47,27 +48,28 @@ class PrefsRepository implements IPrefsRepository {
   }
 
   @override
-  Future<Either<Failure, Success>> setAppearance(AppearanceEnum settingValue, Type enumType) async {
+  Future<Either<Failure, Success>> setAppearance(AppearanceEnum settingValue, Type enumType, String userID) async {
     try {
-      return Right(await datasource.setPref(settingValue, enumType));
+      return Right(await datasource.setPref(settingValue, enumType, userID));
     } catch (e) {
       return Left(LocalDBFailure());
     }
   }
 
   @override
-  Future<Either<Failure, Success>> setReducedAnimations(ReducedAnimationsEnum settingValue, Type enumType) async {
+  Future<Either<Failure, Success>> setReducedAnimations(
+      ReducedAnimationsEnum settingValue, Type enumType, String userID) async {
     try {
-      return Right(await datasource.setPref(settingValue, enumType));
+      return Right(await datasource.setPref(settingValue, enumType, userID));
     } catch (e) {
       return Left(LocalDBFailure());
     }
   }
 
   @override
-  Future<Either<Failure, FirstTimeEnum>> loadFirstTime(List enumValues, Type enumType) async {
+  Future<Either<Failure, FirstTimeEnum>> loadFirstTime(List enumValues, Type enumType, String userID) async {
     try {
-      return Right(await datasource.loadPref(enumValues, enumType));
+      return Right(await datasource.loadPref(enumValues, enumType, userID));
     } on DBDefaultException {
       return Left(DBDefaultFailure());
     } catch (e) {
@@ -76,9 +78,9 @@ class PrefsRepository implements IPrefsRepository {
   }
 
   @override
-  Future<Either<Failure, Success>> setFirstTime(FirstTimeEnum settingValue, Type enumType) async {
+  Future<Either<Failure, Success>> setFirstTime(FirstTimeEnum settingValue, Type enumType, String userID) async {
     try {
-      return Right(await datasource.setPref(settingValue, enumType));
+      return Right(await datasource.setPref(settingValue, enumType, userID));
     } catch (e) {
       return Left(LocalDBFailure());
     }

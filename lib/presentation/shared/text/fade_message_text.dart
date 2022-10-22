@@ -1,69 +1,83 @@
-import 'package:Confessi/core/styles/typography.dart';
-import 'package:Confessi/presentation/shared/behaviours/animated_cliprrect.dart';
-import 'package:flutter/material.dart';
+// import 'package:Confessi/core/styles/typography.dart';
+// import 'package:Confessi/presentation/shared/behaviours/animated_cliprrect.dart';
+// import 'package:flutter/material.dart';
 
-class FadeMessageTextController extends ChangeNotifier {
-  bool isShown = false;
-  String message = "";
-  bool isHiding = false;
+// class FadeMessageTextController extends ChangeNotifier {
+//   final TickerProvider tickerProvider;
+//   late AnimationController animController;
+//   String message = "";
 
-  void show(String text) async {
-    if (isShown || isHiding) await hide();
-    if (isHiding) return;
-    isShown = true;
-    message = text;
-    if (!isHiding) notifyListeners();
-  }
+//   FadeMessageTextController({required this.tickerProvider}) {
+//     animController = AnimationController(
+//       vsync: tickerProvider,
+//       duration: const Duration(milliseconds: 350),
+//     );
+//   }
 
-  Future<void> hide() async {
-    isHiding = true;
-    isShown = false;
-    notifyListeners();
-    await Future.delayed(const Duration(milliseconds: 350));
-    isHiding = false;
-  }
-}
+//   void hide() {
+//     message = "";
+//     notifyListeners();
+//     animController.reverse();
+//     animController.addListener(() {
+//       notifyListeners();
+//     });
+//   }
 
-class FadeMessageText extends StatefulWidget {
-  const FadeMessageText({
-    super.key,
-    required this.controller,
-  });
+//   void show(String text) {
+//     message = text;
+//     notifyListeners();
+//     animController.reverse().then((_) {
+//       animController.forward();
+//       animController.addListener(() {
+//         notifyListeners();
+//       });
+//     });
+//   }
+// }
 
-  final FadeMessageTextController controller;
+// class FadeMessageText extends StatefulWidget {
+//   const FadeMessageText({
+//     super.key,
+//     required this.controller,
+//   });
 
-  @override
-  State<FadeMessageText> createState() => _FadeMessageTextState();
-}
+//   final FadeMessageTextController controller;
 
-class _FadeMessageTextState extends State<FadeMessageText> with SingleTickerProviderStateMixin {
-  @override
-  void initState() {
-    widget.controller.addListener(() => setState(() {}));
-    super.initState();
-  }
+//   @override
+//   State<FadeMessageText> createState() => _FadeMessageTextState();
+// }
 
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: AnimatedClipRect(
-        alignment: Alignment.topLeft,
-        open: widget.controller.isShown,
-        duration: const Duration(milliseconds: 350),
-        curve: Curves.decelerate,
-        reverseCurve: Curves.decelerate,
-        child: Align(
-          alignment: Alignment.topLeft,
-          child: Text(
-            widget.controller.message,
-            style: kBody.copyWith(
-              color: Theme.of(context).colorScheme.error,
-            ),
-            textAlign: TextAlign.left,
-          ),
-        ),
-      ),
-    );
-  }
-}
+// class _FadeMessageTextState extends State<FadeMessageText> {
+//   @override
+//   void initState() {
+//     widget.controller.addListener(() => setState(() {}));
+//     super.initState();
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return AnimatedSize(
+//       clipBehavior: Clip.antiAlias,
+//       duration: const Duration(milliseconds: 350),
+//       child: Stack(
+//         children: [
+//           Align(
+//             alignment: Alignment.topLeft,
+//             child: Text(
+//               widget.controller.message,
+//               style: kBody.copyWith(
+//                 color: Theme.of(context).colorScheme.error.withOpacity(widget.controller.animController.value),
+//               ),
+//               textAlign: TextAlign.left,
+//             ),
+//           ),
+//           Positioned.fill(
+//             child: Container(
+//               color: Colors.blue.withOpacity(1 - widget.controller.animController.value),
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }

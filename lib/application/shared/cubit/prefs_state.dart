@@ -1,37 +1,37 @@
-part of 'prefs_cubit.dart';
+// part of 'prefs_cubit.dart';
 
-abstract class PrefsState extends Equatable {
-  @override
-  List<Object?> get props => [];
-}
+// abstract class PrefsState extends Equatable {
+//   @override
+//   List<Object?> get props => [];
+// }
 
-class PrefsLoading extends PrefsState {}
+// class PrefsLoading extends PrefsState {}
 
-class PrefsLoaded extends PrefsState {
-  final AppearanceEnum appearanceEnum;
-  final RefreshTokenEnum refreshTokenEnum;
-  final FirstTimeEnum firstTimeEnum;
+// class PrefsLoaded extends PrefsState {
+//   final AppearanceEnum appearanceEnum;
+//   final RefreshTokenEnum refreshTokenEnum;
+//   final FirstTimeEnum firstTimeEnum;
 
-  PrefsLoaded({
-    required this.firstTimeEnum,
-    required this.refreshTokenEnum,
-    required this.appearanceEnum,
-  });
+//   PrefsLoaded({
+//     required this.firstTimeEnum,
+//     required this.refreshTokenEnum,
+//     required this.appearanceEnum,
+//   });
 
-  PrefsLoaded copyWith({
-    AppearanceEnum? appearanceEnum,
-    RefreshTokenEnum? refreshTokenEnum,
-    FirstTimeEnum? firstTimeEnum,
-  }) {
-    return PrefsLoaded(
-      refreshTokenEnum: refreshTokenEnum ?? this.refreshTokenEnum,
-      appearanceEnum: appearanceEnum ?? this.appearanceEnum,
-      firstTimeEnum: firstTimeEnum ?? this.firstTimeEnum,
-    );
-  }
+//   PrefsLoaded copyWith({
+//     AppearanceEnum? appearanceEnum,
+//     RefreshTokenEnum? refreshTokenEnum,
+//     FirstTimeEnum? firstTimeEnum,
+//   }) {
+//     return PrefsLoaded(
+//       refreshTokenEnum: refreshTokenEnum ?? this.refreshTokenEnum,
+//       appearanceEnum: appearanceEnum ?? this.appearanceEnum,
+//       firstTimeEnum: firstTimeEnum ?? this.firstTimeEnum,
+//     );
+//   }
 
-  @override
-  List<Object?> get props => [appearanceEnum, firstTimeEnum, appearanceEnum];
-}
+//   @override
+//   List<Object?> get props => [appearanceEnum, firstTimeEnum, appearanceEnum];
+// }
 
-class PrefsError extends PrefsState {}
+// class PrefsError extends PrefsState {}

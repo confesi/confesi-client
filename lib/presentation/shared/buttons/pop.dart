@@ -1,5 +1,6 @@
 import 'package:Confessi/constants/shared/enums.dart';
 import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
+import 'package:Confessi/presentation/shared/indicators/loading.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -74,10 +75,7 @@ class PopButton extends StatelessWidget {
                           child: loading
                               ? Padding(
                                   padding: const EdgeInsets.only(top: 2),
-                                  child: CupertinoActivityIndicator(
-                                    radius: 10,
-                                    color: textColor,
-                                  ),
+                                  child: LoadingIndicator(color: textColor),
                                 )
                               : Text(
                                   text,

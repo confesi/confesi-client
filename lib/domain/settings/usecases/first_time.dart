@@ -12,8 +12,8 @@ class FirstTime implements GetSetUsecase<FirstTimeEnum, List> {
   const FirstTime({required this.repository});
 
   @override
-  Future<Either<Failure, FirstTimeEnum>> get(List enumValues, Type enumType) async {
-    final failureOrFirstTimeEnum = await repository.loadFirstTime(enumValues, enumType);
+  Future<Either<Failure, FirstTimeEnum>> get(List enumValues, Type enumType, String userID) async {
+    final failureOrFirstTimeEnum = await repository.loadFirstTime(enumValues, enumType, userID);
     return failureOrFirstTimeEnum.fold(
       (failure) {
         if (failure is DBDefaultFailure) {
@@ -26,8 +26,8 @@ class FirstTime implements GetSetUsecase<FirstTimeEnum, List> {
   }
 
   @override
-  Future<Either<Failure, Success>> set(FirstTimeEnum enumData, Type enumType) async {
-    final failureOrSuccess = await repository.setFirstTime(enumData, enumType);
+  Future<Either<Failure, Success>> set(FirstTimeEnum enumData, Type enumType, String userID) async {
+    final failureOrSuccess = await repository.setFirstTime(enumData, enumType, userID);
     return failureOrSuccess.fold(
       (failure) => Left(failure),
       (success) => Right(SettingSuccess()),

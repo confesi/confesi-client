@@ -6,4 +6,5 @@
 
 // ***** IMPORTANT *****
 
-const String preferencesBox = "prefs3";
+// const String kPreferencesBox = "prefs3";
+const String kRefreshToken = "refreshToken";

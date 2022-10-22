@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:Confessi/presentation/shared/behaviours/init_opacity.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
 import 'package:flutter/material.dart';
 
@@ -14,6 +15,7 @@ class LoadingIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InitScale(
+      durationOfScaleInMilliseconds: 250,
       child: FittedBox(
         fit: BoxFit.scaleDown,
         child: Container(
@@ -31,8 +33,7 @@ class LoadingIndicator extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(5),
                 child: Transform.rotate(
-                  angle: pi /
-                      2, // Gives the inner spinner a 90 degree offset relative to the parent.
+                  angle: pi / 2, // Gives the inner spinner a 90 degree offset relative to the parent.
                   child: CircularProgressIndicator(
                     strokeWidth: 2.5,
                     color: color ?? Theme.of(context).colorScheme.primary,

@@ -8,17 +8,18 @@ abstract class IPrefsRepository {
   Future<Either<Failure, String>> loadRefreshToken();
 
   //! Appearance prefs.
-  Future<Either<Failure, Success>> setAppearance(AppearanceEnum settingValue, Type enumType);
+  Future<Either<Failure, Success>> setAppearance(AppearanceEnum settingValue, Type enumType, String userID);
 
-  Future<Either<Failure, AppearanceEnum>> loadAppearance(List enumValues, Type enumType);
+  Future<Either<Failure, AppearanceEnum>> loadAppearance(List enumValues, Type enumType, String userID);
 
   //! Reduced animation prefs.
-  Future<Either<Failure, Success>> setReducedAnimations(ReducedAnimationsEnum settingValue, Type enumType);
+  Future<Either<Failure, Success>> setReducedAnimations(
+      ReducedAnimationsEnum settingValue, Type enumType, String userID);
 
-  Future<Either<Failure, ReducedAnimationsEnum>> loadReducedAnimations(List enumValues, Type enumType);
+  Future<Either<Failure, ReducedAnimationsEnum>> loadReducedAnimations(List enumValues, Type enumType, String userID);
 
   //! First time prefs.
-  Future<Either<Failure, Success>> setFirstTime(FirstTimeEnum settingValue, Type enumType);
+  Future<Either<Failure, Success>> setFirstTime(FirstTimeEnum settingValue, Type enumType, String userID);
 
-  Future<Either<Failure, FirstTimeEnum>> loadFirstTime(List enumValues, Type enumType);
+  Future<Either<Failure, FirstTimeEnum>> loadFirstTime(List enumValues, Type enumType, String userID);
 }

@@ -1,7 +1,10 @@
 import 'dart:async';
 
+import 'package:Confessi/application/authentication/cubit/login_cubit.dart';
+import 'package:Confessi/application/authentication/cubit/register_cubit.dart';
+import 'package:Confessi/application/authentication/cubit/user_cubit.dart';
 import 'package:Confessi/application/shared/cubit/prefs_cubit.dart';
-import 'package:Confessi/constants/hive_box_names.dart';
+import 'package:Confessi/constants/local_storage_keys.dart';
 import 'package:Confessi/core/clients/http_client.dart';
 import 'package:Confessi/data/create_post/datasources/create_post_datasource.dart';
 import 'package:Confessi/data/create_post/repositories/create_post_repository_concrete.dart';
@@ -52,12 +55,10 @@ Future<void> init() async {
   //! Initializing stuff
   // Registering Hive.
   await Hive.initFlutter();
-  // Opening Hive preferences box.
-  await Hive.openBox(preferencesBox);
 
   //! State (BLoC or Cubit)
-  // Registers the authentication cubit.
-  sl.registerFactory(() => AuthenticationCubit(register: sl(), login: sl(), logout: sl(), silentAuthentication: sl()));
+  // // Registers the authentication cubit.
+  // sl.registerFactory(() => AuthenticationCubit(register: sl(), login: sl(), logout: sl(), silentAuthentication: sl()));
   // Registers the recents cubit.
   sl.registerFactory(() => RecentsCubit(recents: sl()));
   // Registers the trending cubit.
@@ -73,7 +74,14 @@ Future<void> init() async {
   // Registers the biometrics cubit.
   sl.registerFactory(() => BiometricsCubit(biometricAuthentication: sl()));
   // Registers the prefs cubit.
-  sl.registerFactory(() => PrefsCubit(appearance: sl(), loadRefreshToken: sl(), firstTime: sl()));
+  // sl.registerFactory(() => PrefsCubit(appearance: sl(), loadRefreshToken: sl(), firstTime: sl()));
+  // Registers the login cubit.
+  sl.registerFactory(() => LoginCubit(login: sl()));
+  // Registers the registration cubit.
+  sl.registerFactory(() => RegisterCubit(register: sl()));
+  // Registers the user cubit.
+  sl.registerFactory(() =>
+      UserCubit(logout: sl(), silentAuthentication: sl(), appearance: sl(), firstTime: sl(), loadRefreshToken: sl()));
 
   //! Usecases
   // Registers the register usecase.

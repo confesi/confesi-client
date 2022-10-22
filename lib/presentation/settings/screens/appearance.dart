@@ -1,3 +1,4 @@
+import 'package:Confessi/application/authentication/cubit/user_cubit.dart';
 import 'package:Confessi/application/shared/cubit/prefs_cubit.dart';
 import 'package:Confessi/constants/enums_that_are_local_keys.dart';
 import 'package:Confessi/core/utils/styles/appearance_name.dart';
@@ -50,23 +51,23 @@ class AppearanceScreen extends StatelessWidget {
                         selectionTiles: [
                           BoolSelectionTile(
                             topRounded: true,
-                            isActive: context.watch<PrefsCubit>().prefs.appearanceEnum == AppearanceEnum.system,
+                            isActive: context.watch<UserCubit>().stateAsUser.appearanceEnum == AppearanceEnum.system,
                             icon: CupertinoIcons.device_laptop,
                             text: "System (currently ${appearanceName(context)})",
-                            onTap: () => context.read<PrefsCubit>().setAppearance(AppearanceEnum.system),
+                            onTap: () => context.read<UserCubit>().setAppearance(AppearanceEnum.system, context),
                           ),
                           BoolSelectionTile(
-                            isActive: context.watch<PrefsCubit>().prefs.appearanceEnum == AppearanceEnum.light,
+                            isActive: context.watch<UserCubit>().stateAsUser.appearanceEnum == AppearanceEnum.light,
                             icon: CupertinoIcons.sun_min,
                             text: "Light",
-                            onTap: () => context.read<PrefsCubit>().setAppearance(AppearanceEnum.light),
+                            onTap: () => context.read<UserCubit>().setAppearance(AppearanceEnum.light, context),
                           ),
                           BoolSelectionTile(
                             bottomRounded: true,
-                            isActive: context.watch<PrefsCubit>().prefs.appearanceEnum == AppearanceEnum.dark,
+                            isActive: context.watch<UserCubit>().stateAsUser.appearanceEnum == AppearanceEnum.dark,
                             icon: CupertinoIcons.moon,
                             text: "Dark",
-                            onTap: () => context.read<PrefsCubit>().setAppearance(AppearanceEnum.dark),
+                            onTap: () => context.read<UserCubit>().setAppearance(AppearanceEnum.dark, context),
                           ),
                         ],
                       ),

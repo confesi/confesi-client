@@ -1,3 +1,4 @@
+import 'package:Confessi/application/authentication/cubit/user_cubit.dart';
 import 'package:Confessi/application/shared/cubit/prefs_cubit.dart';
 import 'package:Confessi/constants/enums_that_are_local_keys.dart';
 import 'package:Confessi/presentation/shared/behaviours/one_theme_status_bar.dart';
@@ -66,7 +67,7 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
   }
 
   void navToOpenAndSetPref() {
-    context.read<PrefsCubit>().setFirstTime(FirstTimeEnum.notFirstTime);
+    context.read<UserCubit>().setFirstTime(FirstTimeEnum.notFirstTime, context);
     Navigator.pushNamed(context, "/open");
   }
 

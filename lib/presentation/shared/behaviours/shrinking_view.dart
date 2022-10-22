@@ -76,13 +76,16 @@ class _ShrinkingViewState extends State<ShrinkingView> with SingleTickerProvider
       },
       child: Container(
         color: Colors.black, // Theme.of(context).colorScheme.shadow
-        child: Transform.translate(
-          offset: Offset(0, _anim.value * MediaQuery.of(context).size.height * .055),
+        child: Transform.scale(
+          scale: (1 - _anim.value * 0.1).toDouble(),
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(widget.topLeftSquare ? 0 : sqrt(_anim.value) * 20),
-                  topRight: Radius.circular(widget.topRightSquare ? 0 : sqrt(_anim.value) * 20)),
+                topLeft: Radius.circular(widget.topLeftSquare ? 0 : sqrt(_anim.value) * 50),
+                topRight: Radius.circular(widget.topRightSquare ? 0 : sqrt(_anim.value) * 50),
+                bottomLeft: Radius.circular(sqrt(_anim.value) * 50),
+                bottomRight: Radius.circular(sqrt(_anim.value) * 50),
+              ),
               color: Theme.of(context).colorScheme.background,
             ),
             child: SafeArea(
