@@ -1,18 +1,13 @@
-import 'package:Confessi/constants/shared/enums.dart';
 import 'package:Confessi/core/utils/sizing/height_fraction.dart';
 import 'package:Confessi/presentation/authentication/widgets/item_row_tile.dart';
 import 'package:Confessi/presentation/shared/behaviours/simulated_bottom_safe_area.dart';
 import 'package:Confessi/presentation/shared/layout/line.dart';
 import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
 import 'package:Confessi/presentation/shared/textfields/bulge.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../application/shared/cubit/scaffold_shrinker_cubit.dart';
-import '../../../core/styles/typography.dart';
-import '../../shared/button_touch_effects/touchable_opacity.dart';
 import '../../shared/layout/swipebar.dart';
 
 Future<dynamic> showSearchItemsSheet(BuildContext context) {

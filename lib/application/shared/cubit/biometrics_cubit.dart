@@ -1,11 +1,6 @@
-import 'dart:io';
-
 import 'package:Confessi/core/results/failures.dart';
-import 'package:Confessi/core/usecases/single_usecase.dart';
 import 'package:Confessi/domain/profile/usecases/biometric_authentication.dart';
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
-import 'package:local_auth/local_auth.dart';
 import 'package:meta/meta.dart';
 
 import '../../../core/usecases/no_params.dart';
@@ -38,9 +33,7 @@ class BiometricsCubit extends Cubit<BiometricsState> {
         }
       },
       (authenticationStatus) async {
-        authenticationStatus
-            ? emit(Authenticated())
-            : emit(AuthenticationError(BiometricErrorType.incorrect));
+        authenticationStatus ? emit(Authenticated()) : emit(AuthenticationError(BiometricErrorType.incorrect));
       },
     );
   }

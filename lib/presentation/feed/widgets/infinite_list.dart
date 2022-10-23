@@ -1,12 +1,10 @@
 import 'package:Confessi/presentation/shared/behaviours/keyboard_dismiss.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:collection/collection.dart';
 
 import '../../../constants/feed/enums.dart';
 import '../../shared/edited_source_widgets/swipe_refresh.dart';
-import '../../../constants/feed/general.dart';
 
 /// Controller for the [InfiniteList].
 class InfiniteController extends ChangeNotifier {
@@ -69,8 +67,7 @@ class InfiniteController extends ChangeNotifier {
   final ItemScrollController itemScrollController = ItemScrollController();
 
   /// Controller 2 for [ScrollablePositionedList].
-  final ItemPositionsListener itemPositionsListener =
-      ItemPositionsListener.create();
+  final ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
 
   //! Listeners
 
@@ -79,10 +76,7 @@ class InfiniteController extends ChangeNotifier {
       // At top logic.
       if (itemPositionsListener.itemPositions.value.isNotEmpty &&
           itemPositionsListener.itemPositions.value.toList()[0].index == 0 &&
-          itemPositionsListener.itemPositions.value
-                  .toList()[0]
-                  .itemLeadingEdge ==
-              0 &&
+          itemPositionsListener.itemPositions.value.toList()[0].itemLeadingEdge == 0 &&
           atTop != null) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           atTop!(true);
@@ -93,9 +87,7 @@ class InfiniteController extends ChangeNotifier {
         });
       }
       // Loading more/animate to root logic.
-      List<int> visibleIndexes = itemPositionsListener.itemPositions.value
-          .map((item) => item.index)
-          .toList();
+      List<int> visibleIndexes = itemPositionsListener.itemPositions.value.map((item) => item.index).toList();
       if (visibleIndexes.isNotEmpty) {
         lastVisibleIndex = visibleIndexes.last;
         firstVisibleIndex = itemPositionsListener.itemPositions.value
@@ -104,9 +96,7 @@ class InfiniteController extends ChangeNotifier {
             .index;
         notifyListeners();
       }
-      if (items.length - lastVisibleIndex < preloadBy &&
-          !isLoadingMore &&
-          feedState == InfiniteListState.feedLoading) {
+      if (items.length - lastVisibleIndex < preloadBy && !isLoadingMore && feedState == InfiniteListState.feedLoading) {
         isLoadingMore = true;
         await onLoad();
         isLoadingMore = false;
@@ -135,8 +125,7 @@ class InfiniteController extends ChangeNotifier {
   /// Scroll down to the closest root.
   void scrollDownToRoot() async {
     if (items.isEmpty) return;
-    int? result =
-        rootIndexes.firstWhereOrNull((element) => element > firstVisibleIndex);
+    int? result = rootIndexes.firstWhereOrNull((element) => element > firstVisibleIndex);
     if (result != null && result < items.length) {
       itemScrollController.scrollTo(
         curve: Curves.easeInOutCubic,
@@ -157,8 +146,7 @@ class InfiniteController extends ChangeNotifier {
   /// Scroll up to the closest root.
   void scrollUpToRoot() async {
     if (items.isEmpty) return;
-    int? result = rootIndexes.reversed
-        .firstWhereOrNull((element) => element < firstVisibleIndex);
+    int? result = rootIndexes.reversed.firstWhereOrNull((element) => element < firstVisibleIndex);
     if (result != null && result < items.length) {
       itemScrollController.scrollTo(
         curve: Curves.easeInOutCubic,
@@ -240,8 +228,7 @@ class _InfiniteListState extends State<InfiniteList> {
       case InfiniteListState.feedError:
         return Container(key: UniqueKey(), child: widget.feedError);
       default:
-        throw UnimplementedError(
-            'Feedstate ${widget.controller.feedState} not implemented');
+        throw UnimplementedError('Feedstate ${widget.controller.feedState} not implemented');
     }
   }
 

@@ -1,7 +1,6 @@
 import 'package:Confessi/application/authentication/cubit/register_cubit.dart';
 import 'package:Confessi/presentation/authentication/tabs/register.dart';
 import 'package:Confessi/presentation/shared/behaviours/nav_blocker.dart';
-import 'package:Confessi/presentation/shared/behaviours/shrinking_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

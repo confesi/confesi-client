@@ -4,13 +4,9 @@ import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
 import 'package:Confessi/presentation/shared/edited_source_widgets/swipe_refresh.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:Confessi/dependency_injection.dart';
 
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
-// TODO: make custom AMAZING loading indicator
-import '../../../application/authentication/cubit/authentication_cubit.dart';
 import '../../../core/styles/typography.dart';
 import '../../../core/utils/sizing/height_fraction.dart';
 import '../../../core/utils/sizing/width_fraction.dart';

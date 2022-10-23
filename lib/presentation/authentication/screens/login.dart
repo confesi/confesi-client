@@ -1,10 +1,7 @@
 import 'package:Confessi/application/authentication/cubit/login_cubit.dart';
-import 'package:Confessi/application/authentication/cubit/user_cubit.dart';
 import 'package:Confessi/presentation/shared/behaviours/nav_blocker.dart';
 import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
 import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
-import 'package:Confessi/presentation/shared/overlays/bottom_chip.dart';
-import 'package:Confessi/presentation/shared/text/fade_message_text.dart';
 import 'package:Confessi/presentation/shared/text_animations/typewriter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +13,6 @@ import '../../shared/button_touch_effects/touchable_opacity.dart';
 import '../../shared/buttons/pop.dart';
 import '../../shared/layout/minimal_appbar.dart';
 import '../../shared/textfields/bulge.dart';
-import '../../../application/authentication/cubit/authentication_cubit.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);

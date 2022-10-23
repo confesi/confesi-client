@@ -10,7 +10,6 @@ import '../../../constants/feed/enums.dart';
 import '../../../constants/shared/enums.dart';
 import '../../../core/styles/typography.dart';
 import '../../shared/button_touch_effects/touchable_opacity.dart';
-import '../../../constants/feed/general.dart';
 import '../../shared/button_touch_effects/touchable_shrink.dart';
 import '../../shared/overlays/button_options_sheet.dart';
 

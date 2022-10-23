@@ -1,9 +1,6 @@
 // TODO !!!!!!!! => move the constants from here into the shared constants folder
 
-import 'package:Confessi/presentation/shared/behaviours/tool_tip.dart';
 import 'package:Confessi/constants/feed/general.dart';
-import 'package:Confessi/domain/shared/entities/post.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
@@ -34,8 +31,7 @@ class PreviewQuoteTile extends StatelessWidget {
         children: [
           Text(
             'Replying to:',
-            style: kDetail.copyWith(
-                color: Theme.of(context).colorScheme.onSurface),
+            style: kDetail.copyWith(color: Theme.of(context).colorScheme.onSurface),
             textAlign: TextAlign.left,
           ),
           const SizedBox(height: 20),
@@ -52,9 +48,7 @@ class PreviewQuoteTile extends StatelessWidget {
               : Container(),
           title.isNotEmpty ? const SizedBox(height: 5) : Container(),
           Text(
-            body.length > kPreviewQuotePostTextLength
-                ? "${body.substring(0, kPreviewQuotePostTextLength)}..."
-                : body,
+            body.length > kPreviewQuotePostTextLength ? "${body.substring(0, kPreviewQuotePostTextLength)}..." : body,
             style: kBody.copyWith(
               color: Theme.of(context).colorScheme.primary,
             ),

@@ -1,12 +1,9 @@
 import 'package:Confessi/application/authentication/cubit/login_cubit.dart';
 import 'package:Confessi/application/authentication/cubit/register_cubit.dart';
 import 'package:Confessi/application/authentication/cubit/user_cubit.dart';
-import 'package:Confessi/application/shared/cubit/prefs_cubit.dart';
-import 'package:Confessi/constants/enums_that_are_local_keys.dart';
 import 'package:Confessi/presentation/shared/behaviours/one_theme_status_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jwt_decode/jwt_decode.dart';
 import 'package:shake/shake.dart';
 
 import '../../../core/generators/intro_text_generator.dart';

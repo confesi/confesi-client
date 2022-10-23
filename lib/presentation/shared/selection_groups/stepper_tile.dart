@@ -1,4 +1,3 @@
-import 'package:Confessi/core/curves/bounce_back.dart';
 import 'package:Confessi/core/styles/typography.dart';
 import 'package:Confessi/presentation/shared/behaviours/animated_cliprrect.dart';
 import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opacity.dart';
@@ -46,8 +45,7 @@ class _StepperTileState extends State<StepperTile> {
               children: [
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 10, horizontal: 15),
+                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                     child: Row(
                       children: [
                         Icon(

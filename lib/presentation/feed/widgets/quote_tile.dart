@@ -1,8 +1,6 @@
-import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
 import 'package:Confessi/presentation/shared/behaviours/tool_tip.dart';
 import 'package:Confessi/constants/feed/general.dart';
 import 'package:Confessi/domain/shared/entities/post.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants/shared/enums.dart';
@@ -53,8 +51,7 @@ class QuoteTile extends StatelessWidget {
           children: [
             Text(
               'Replying to:',
-              style: kDetail.copyWith(
-                  color: Theme.of(context).colorScheme.onSurface),
+              style: kDetail.copyWith(color: Theme.of(context).colorScheme.onSurface),
               textAlign: TextAlign.left,
             ),
             const SizedBox(height: 15),
@@ -72,8 +69,7 @@ class QuoteTile extends StatelessWidget {
                 children: [
                   post.title.isNotEmpty
                       ? Text(
-                          post.title.length > kPreviewQuotePostTitleLength &&
-                                  postView == PostView.feedView
+                          post.title.length > kPreviewQuotePostTitleLength && postView == PostView.feedView
                               ? "${post.title.substring(0, kPreviewQuotePostTitleLength)}..."
                               : post.title,
                           style: kTitle.copyWith(
@@ -82,12 +78,9 @@ class QuoteTile extends StatelessWidget {
                           textAlign: TextAlign.left,
                         )
                       : Container(),
-                  post.title.isNotEmpty
-                      ? const SizedBox(height: 5)
-                      : Container(),
+                  post.title.isNotEmpty ? const SizedBox(height: 5) : Container(),
                   Text(
-                    post.text.length > kPreviewQuotePostTextLength &&
-                            postView == PostView.feedView
+                    post.text.length > kPreviewQuotePostTextLength && postView == PostView.feedView
                         ? "${post.text.substring(0, kPreviewQuotePostTextLength)}..."
                         : post.text,
                     style: kBody.copyWith(

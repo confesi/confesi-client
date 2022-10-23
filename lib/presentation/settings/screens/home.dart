@@ -1,8 +1,5 @@
 import 'package:Confessi/application/authentication/cubit/user_cubit.dart';
 import 'package:Confessi/core/styles/typography.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_opacity.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
 import 'package:Confessi/presentation/shared/text/disclaimer_text.dart';
 import 'package:Confessi/presentation/shared/selection_groups/setting_tile.dart';
@@ -12,10 +9,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../application/authentication/cubit/authentication_cubit.dart';
 import '../../shared/behaviours/simulated_bottom_safe_area.dart';
 import '../../shared/layout/appbar.dart';
-import '../../shared/overlays/feedback_sheet.dart';
 
 class SettingsHome extends StatelessWidget {
   const SettingsHome({super.key});

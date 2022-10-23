@@ -1,7 +1,5 @@
 import 'package:Confessi/constants/feedback/text.dart';
-import 'package:Confessi/core/utils/sizing/width_fraction.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:Confessi/presentation/shared/behaviours/keyboard_dismiss.dart';
 import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
 import 'package:Confessi/presentation/shared/buttons/simple_text.dart';
@@ -65,13 +63,11 @@ class _FeedbackHomeState extends State<FeedbackHome> {
                     duration: const Duration(milliseconds: 250),
                     child: isTextFocused
                         ? TextLimitTracker(
-                            value: textEditingController.text.length /
-                                maxFeedbackTextCharacterLimit,
+                            value: textEditingController.text.length / maxFeedbackTextCharacterLimit,
                           )
                         : Text(
                             pageTitle,
-                            style: kTitle.copyWith(
-                                color: Theme.of(context).colorScheme.primary),
+                            style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.center,
                           ),

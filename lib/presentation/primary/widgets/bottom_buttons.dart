@@ -1,5 +1,3 @@
-import 'package:Confessi/core/styles/typography.dart';
-import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:flutter/material.dart';
 
 class BottomButtons extends StatelessWidget {

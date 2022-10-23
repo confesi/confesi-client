@@ -1,7 +1,6 @@
 import 'package:Confessi/presentation/settings/widgets/theme_sample_circle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ThemePicker extends StatefulWidget {
   const ThemePicker({
@@ -29,8 +28,8 @@ class _ThemePickerState extends State<ThemePicker> {
     super.dispose();
   }
 
-  void animateToIndex(int index) => pageController.animateToPage(index,
-      duration: const Duration(milliseconds: 250), curve: Curves.decelerate);
+  void animateToIndex(int index) =>
+      pageController.animateToPage(index, duration: const Duration(milliseconds: 250), curve: Curves.decelerate);
 
   // void setTheme(int index, BuildContext context) {
   //   if (index == 0) {
@@ -67,8 +66,7 @@ class _ThemePickerState extends State<ThemePicker> {
         },
         children: [
           ThemeSampleCircle(
-            isActive:
-                false, // context.watch<ThemeCubit>().state is ClassicTheme
+            isActive: false, // context.watch<ThemeCubit>().state is ClassicTheme
             onTap: (index) => animateToIndex(index),
             name: "Classic",
             index: 0,
@@ -99,10 +97,7 @@ class _ThemePickerState extends State<ThemePicker> {
             name: "Sci-fi",
             index: 3,
             isActive: false,
-            colors: const [
-              Color(0xffABD9FF),
-              Color.fromARGB(255, 42, 154, 245)
-            ],
+            colors: const [Color(0xffABD9FF), Color.fromARGB(255, 42, 154, 245)],
           ),
         ],
       ),

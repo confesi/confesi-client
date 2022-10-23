@@ -1,5 +1,4 @@
 import 'package:Confessi/core/utils/tokens/user_id_from_jwt.dart';
-import 'package:Confessi/domain/authenticatioin/entities/refresh_token.dart';
 import 'package:Confessi/domain/authenticatioin/usecases/silent_authentication.dart';
 import 'package:Confessi/presentation/shared/overlays/bottom_chip.dart';
 import 'package:bloc/bloc.dart';
@@ -12,7 +11,6 @@ import '../../../constants/enums_that_are_local_keys.dart';
 import '../../../core/usecases/no_params.dart';
 import '../../../domain/authenticatioin/usecases/logout.dart';
 import '../../../domain/settings/usecases/appearance.dart';
-import '../../../domain/settings/usecases/first_time.dart';
 import '../../../domain/settings/usecases/load_refresh_token.dart';
 
 part 'user_state.dart';
@@ -72,7 +70,7 @@ class UserCubit extends Cubit<UserState> {
           return;
         }
         // Decrypt JWT to get userID (mongo _id).
-        userIDFromJWT(refreshToken.token).fold(
+        userIdFromJwt(refreshToken.token).fold(
           (failure) => emit(LocalDataError()),
           (userID) async {
             print("opening this box: $userID");

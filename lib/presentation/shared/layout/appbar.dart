@@ -1,5 +1,3 @@
-import 'package:Confessi/presentation/shared/behaviours/init_opacity.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -86,9 +84,7 @@ class _AppbarLayoutState extends State<AppbarLayout> {
         decoration: BoxDecoration(
           border: Border(
             bottom: BorderSide(
-              color: widget.bottomBorder
-                  ? Theme.of(context).colorScheme.shadow
-                  : Colors.transparent,
+              color: widget.bottomBorder ? Theme.of(context).colorScheme.shadow : Colors.transparent,
               width: .7,
             ),
           ),
@@ -98,14 +94,12 @@ class _AppbarLayoutState extends State<AppbarLayout> {
           children: [
             if (widget.leftIconVisible)
               widget.leftIconTag != null
-                  ? Hero(
-                      tag: widget.leftIconTag!, child: buildLeftWidget(context))
+                  ? Hero(tag: widget.leftIconTag!, child: buildLeftWidget(context))
                   : buildLeftWidget(context)
             else
               Padding(
                 padding: const EdgeInsets.all(15),
-                child: Icon(widget.rightIcon ?? CupertinoIcons.arrow_clockwise,
-                    color: Colors.transparent),
+                child: Icon(widget.rightIcon ?? CupertinoIcons.arrow_clockwise, color: Colors.transparent),
               ),
             Flexible(
               child: widget.centerWidget,
@@ -135,8 +129,7 @@ class _AppbarLayoutState extends State<AppbarLayout> {
             else
               Padding(
                 padding: const EdgeInsets.all(15),
-                child: Icon(widget.rightIcon ?? CupertinoIcons.arrow_clockwise,
-                    color: Colors.transparent),
+                child: Icon(widget.rightIcon ?? CupertinoIcons.arrow_clockwise, color: Colors.transparent),
               ),
           ],
         ),

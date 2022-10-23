@@ -1,6 +1,4 @@
 import 'package:Confessi/core/styles/typography.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:Confessi/presentation/shared/text/group.dart';
 import 'package:Confessi/constants/feed/general.dart';
@@ -15,7 +13,6 @@ import 'package:flutter/material.dart';
 
 import '../../../constants/feed/enums.dart';
 import '../../../constants/shared/enums.dart';
-import '../../../core/utils/numbers/is_plural.dart';
 import '../../shared/buttons/option.dart';
 import '../../shared/overlays/button_options_sheet.dart';
 

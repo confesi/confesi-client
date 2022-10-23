@@ -1,9 +1,5 @@
-import 'package:Confessi/application/authentication/cubit/user_cubit.dart';
-import 'package:Confessi/application/shared/cubit/prefs_cubit.dart';
-import 'package:Confessi/constants/enums_that_are_local_keys.dart';
 import 'package:Confessi/presentation/shared/behaviours/one_theme_status_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../shared/behaviours/overscroll.dart';
 import '../../shared/buttons/single_text.dart';

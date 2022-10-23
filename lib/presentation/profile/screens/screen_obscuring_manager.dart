@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:Confessi/application/shared/cubit/biometrics_cubit.dart';
 import 'package:Confessi/presentation/profile/screens/home.dart';
 import 'package:Confessi/presentation/profile/widgets/biometric_overlay_message.dart';
-import 'package:Confessi/presentation/shared/behaviours/shrinking_view.dart';
 import 'package:Confessi/presentation/shared/overlays/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -100,8 +99,7 @@ class _ScreenObscuringManagerState extends State<ScreenObscuringManager>
           startAnim();
         }
         // Check when to show error snackbar.
-        if (state is AuthenticationError &&
-            state.biometricErrorType == BiometricErrorType.exausted) {
+        if (state is AuthenticationError && state.biometricErrorType == BiometricErrorType.exausted) {
           showSnackbar(context,
               "Attempts exausted! Lock your entire device, login with the passcode, then open the app and try again.",
               stayLonger: true);
@@ -125,11 +123,8 @@ class _ScreenObscuringManagerState extends State<ScreenObscuringManager>
                   child: Container(
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .background
-                          .withOpacity(_anim.value *
-                              1), // CHANGE THIS VALUE TO CHANGE OPACITY BASE (When not authenticated).
+                      color: Theme.of(context).colorScheme.background.withOpacity(
+                          _anim.value * 1), // CHANGE THIS VALUE TO CHANGE OPACITY BASE (When not authenticated).
                     ),
                     child: AnimatedSwitcher(
                       duration: Duration.zero,

@@ -1,5 +1,10 @@
 part of 'register_cubit.dart';
 
+enum RegistrationPage {
+  register, // username, email, password
+  details, // university, year, faculty
+}
+
 @immutable
 abstract class RegisterState extends Equatable {
   @override
@@ -9,9 +14,11 @@ abstract class RegisterState extends Equatable {
 class EnteringRegisterData extends RegisterState {
   final bool hasError;
   final String errorMessage;
-  // TODO: Maybe add a page field here?
 
-  EnteringRegisterData({this.hasError = false, this.errorMessage = ""});
+  EnteringRegisterData({
+    this.hasError = false,
+    this.errorMessage = "",
+  });
 
   @override
   List<Object?> get props => [hasError, errorMessage];

@@ -1,11 +1,7 @@
 import 'package:Confessi/presentation/shared/other/text_limit_tracker.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
-import 'package:Confessi/presentation/shared/buttons/animated_simple_text.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants/shared/enums.dart';
-import '../../../core/styles/typography.dart';
 import '../../shared/buttons/simple_text.dart';
 import '../../shared/textfields/expandable.dart';
 

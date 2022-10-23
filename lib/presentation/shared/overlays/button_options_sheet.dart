@@ -1,4 +1,3 @@
-import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
 import 'package:Confessi/presentation/shared/layout/swipebar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,8 +7,7 @@ import '../../../application/shared/cubit/scaffold_shrinker_cubit.dart';
 import '../../../core/styles/typography.dart';
 import '../buttons/option.dart';
 
-Future<dynamic> showButtonOptionsSheet(
-    BuildContext context, List<OptionButton> buttons,
+Future<dynamic> showButtonOptionsSheet(BuildContext context, List<OptionButton> buttons,
     {String? text, VoidCallback? onComplete}) {
   context.read<ScaffoldShrinkerCubit>().setShrunk();
   return showModalBottomSheet(
@@ -43,13 +41,11 @@ Future<dynamic> showButtonOptionsSheet(
                               // This infinite width ensure it is presented on its own row inside the Wrap widget.
                               width: double.infinity,
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 30, vertical: 15),
+                                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                                 child: Text(
                                   text,
                                   style: kBody.copyWith(
-                                    color:
-                                        Theme.of(context).colorScheme.onSurface,
+                                    color: Theme.of(context).colorScheme.onSurface,
                                   ),
                                   textAlign: TextAlign.center,
                                 ),

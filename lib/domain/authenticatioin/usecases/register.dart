@@ -6,7 +6,6 @@ import 'package:equatable/equatable.dart';
 import '../../../core/results/failures.dart';
 import '../../../core/usecases/single_usecase.dart';
 import '../../../data/authentication/repositories/authentication_repository_concrete.dart';
-import '../entities/tokens.dart';
 
 class Register implements Usecase<Success, RegisterParams> {
   final AuthenticationRepository repository;
@@ -17,8 +16,7 @@ class Register implements Usecase<Success, RegisterParams> {
   /// Registers the user.
   @override
   Future<Either<Failure, Success>> call(RegisterParams params) async {
-    final tokens = await repository.register(
-        params.username, params.password, params.email);
+    final tokens = await repository.register(params.username, params.password, params.email);
     return tokens.fold(
       (failure) => Left(failure),
       (tokens) async {
@@ -40,8 +38,7 @@ class RegisterParams extends Equatable {
   final String email;
   final String password;
 
-  const RegisterParams(
-      {required this.username, required this.email, required this.password});
+  const RegisterParams({required this.username, required this.email, required this.password});
 
   @override
   List<Object?> get props => [username, email, password];

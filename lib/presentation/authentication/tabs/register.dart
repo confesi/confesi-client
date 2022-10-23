@@ -111,7 +111,7 @@ class _RegisterScreenState extends State<RegisterScreen> with AutomaticKeepAlive
                                 justText: true,
                                 onPress: () async {
                                   FocusScope.of(context).unfocus();
-                                  context.read<RegisterCubit>().registerUser(
+                                  context.read<RegisterCubit>().page2Submit(
                                       usernameController.text, passwordController.text, emailController.text);
                                 },
                                 icon: CupertinoIcons.chevron_right,

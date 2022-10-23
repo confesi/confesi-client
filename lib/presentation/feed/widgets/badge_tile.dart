@@ -1,6 +1,3 @@
-import 'package:Confessi/core/results/exceptions.dart';
-import 'package:Confessi/constants/feed/general.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
@@ -25,8 +22,7 @@ class BadgeTile extends StatelessWidget {
         borderRadius: const BorderRadius.all(
           Radius.circular(20),
         ),
-        border: Border.all(
-            color: Theme.of(context).colorScheme.primaryContainer, width: .7),
+        border: Border.all(color: Theme.of(context).colorScheme.primaryContainer, width: .7),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -39,9 +35,7 @@ class BadgeTile extends StatelessWidget {
           const SizedBox(width: 4),
           Text(
             text,
-            style: kDetail.copyWith(
-                color: Theme.of(context).colorScheme.secondaryContainer,
-                fontSize: 12),
+            style: kDetail.copyWith(color: Theme.of(context).colorScheme.secondaryContainer, fontSize: 12),
           ),
         ],
       ),

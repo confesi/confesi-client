@@ -1,4 +1,3 @@
-import 'package:Confessi/core/usecases/single_usecase.dart';
 import 'package:Confessi/presentation/daily_hottest/utils/failure_to_message.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';

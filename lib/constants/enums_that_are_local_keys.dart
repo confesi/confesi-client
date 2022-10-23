@@ -8,18 +8,6 @@
 
 // ***** IMPORTANT *****
 
-// enum BiometricAuthEnum {
-//   on,
-//   off,
-// }
-
-// enum TextScaleFactorEnum { // TODO: save as double?
-//   pointFive,
-//   one,
-//   onePointFive,
-//   two
-// }
-
 enum ReducedAnimationsEnum {
   minimum,
   few,
@@ -36,8 +24,3 @@ enum RefreshTokenEnum {
   hasRefreshToken,
   noRefreshToken,
 }
-
-// enum FirstTimeEnum {
-//   firstTime,
-//   notFirstTime,
-// }

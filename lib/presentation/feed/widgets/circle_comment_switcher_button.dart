@@ -1,13 +1,10 @@
 import 'package:Confessi/presentation/feed/widgets/infinite_list.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_opacity.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../../constants/feed/enums.dart';
-import '../../../constants/feed/general.dart';
 
 class CircleCommentSwitcherButton extends StatefulWidget {
   const CircleCommentSwitcherButton({
@@ -22,13 +19,10 @@ class CircleCommentSwitcherButton extends StatefulWidget {
   final bool visible;
 
   @override
-  State<CircleCommentSwitcherButton> createState() =>
-      _CircleCommentSwitcherButtonState();
+  State<CircleCommentSwitcherButton> createState() => _CircleCommentSwitcherButtonState();
 }
 
-class _CircleCommentSwitcherButtonState
-    extends State<CircleCommentSwitcherButton>
-    with SingleTickerProviderStateMixin {
+class _CircleCommentSwitcherButtonState extends State<CircleCommentSwitcherButton> with SingleTickerProviderStateMixin {
   late AnimationController animController;
   late Animation anim;
 
@@ -36,13 +30,8 @@ class _CircleCommentSwitcherButtonState
   void initState() {
     super.initState();
     animController = AnimationController(
-        vsync: this,
-        duration: const Duration(milliseconds: 0),
-        reverseDuration: const Duration(milliseconds: 200));
-    anim = CurvedAnimation(
-        parent: animController,
-        curve: Curves.linear,
-        reverseCurve: Curves.easeInOutCubic);
+        vsync: this, duration: const Duration(milliseconds: 0), reverseDuration: const Duration(milliseconds: 200));
+    anim = CurvedAnimation(parent: animController, curve: Curves.linear, reverseCurve: Curves.easeInOutCubic);
   }
 
   void startAnim() async {
@@ -89,10 +78,7 @@ class _CircleCommentSwitcherButtonState
                     color: Theme.of(context).colorScheme.background,
                     boxShadow: [
                       BoxShadow(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .shadow
-                            .withOpacity(0.5),
+                        color: Theme.of(context).colorScheme.shadow.withOpacity(0.5),
                         blurRadius: 8,
                       ),
                     ],
@@ -101,8 +87,7 @@ class _CircleCommentSwitcherButtonState
                     scale: anim.value / 4 + 1,
                     child: Opacity(
                       opacity: -anim.value * 0.8 + 1,
-                      child: Icon(widget.scrollToRootDirection ==
-                              ScrollToRootDirection.down
+                      child: Icon(widget.scrollToRootDirection == ScrollToRootDirection.down
                           ? CupertinoIcons.down_arrow
                           : CupertinoIcons.up_arrow),
                     ),

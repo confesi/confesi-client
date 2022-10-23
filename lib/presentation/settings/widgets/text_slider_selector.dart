@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:Confessi/core/styles/typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

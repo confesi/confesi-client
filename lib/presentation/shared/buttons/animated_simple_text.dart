@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_shake_animated/flutter_shake_animated.dart';
 import '../../../constants/shared/enums.dart';
 import '../../../core/styles/typography.dart';
 import '../button_touch_effects/touchable_opacity.dart';
@@ -34,9 +33,7 @@ class AnimatedSimpleTextButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-          color: useSecondaryColors
-              ? Theme.of(context).colorScheme.secondary
-              : Theme.of(context).colorScheme.surface,
+          color: useSecondaryColors ? Theme.of(context).colorScheme.secondary : Theme.of(context).colorScheme.surface,
           borderRadius: const BorderRadius.all(
             Radius.circular(10),
           ),
@@ -52,8 +49,7 @@ class AnimatedSimpleTextButton extends StatelessWidget {
                 duration: const Duration(milliseconds: 200),
                 child: AnimatedSwitcher(
                   duration: const Duration(milliseconds: 200),
-                  transitionBuilder: (Widget child, Animation<double> anim) =>
-                      ScaleTransition(
+                  transitionBuilder: (Widget child, Animation<double> anim) => ScaleTransition(
                     scale: anim,
                     child: child,
                   ),
