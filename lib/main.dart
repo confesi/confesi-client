@@ -80,7 +80,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
           lazy: false,
-          create: (context) => sl<UserCubit>()..silentlyAuthenticateUser(),
+          create: (context) => sl<UserCubit>()..silentlyAuthenticateUser(AuthenticationType.silent),
         ),
         BlocProvider(
           lazy: false,

@@ -13,7 +13,7 @@ import '../../../core/generators/intro_text_generator.dart';
 import '../../../core/styles/themes.dart';
 import '../../../core/utils/sizing/width_breakpoint_fraction.dart';
 import '../../shared/overlays/feedback_sheet.dart';
-import '../../shared/overlays/top_chip.dart';
+import '../../shared/overlays/bottom_chip.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -50,8 +50,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     return BlocListener<UserCubit, UserState>(
       listener: (context, state) {
         if (state is User) {
-          if (state.firstTimeEnum == FirstTimeEnum.firstTime) {
-            context.read<UserCubit>().setFirstTime(FirstTimeEnum.notFirstTime, context);
+          if (state.justRegistered) {
             Navigator.of(context).pushNamed("/onboarding");
           } else {
             Navigator.of(context).pushNamed("/home");
@@ -65,17 +64,18 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
       child: BlocListener<RegisterCubit, RegisterState>(
         listener: (context, state) {
           if (state is EnteringRegisterData && state.hasError) {
-            showTopChip(context, state.errorMessage);
+            showBottomChip(context, state.errorMessage);
           } else if (state is RegisterSuccess) {
-            context.read<UserCubit>().silentlyAuthenticateUser();
+            context.read<UserCubit>().silentlyAuthenticateUser(AuthenticationType.register);
           }
         },
         child: BlocListener<LoginCubit, LoginState>(
           listener: (context, state) {
+            print(state);
             if (state is EnteringLoginData && state.hasError) {
-              showTopChip(context, state.errorMessage);
+              showBottomChip(context, state.errorMessage);
             } else if (state is LoginSuccess) {
-              context.read<UserCubit>().silentlyAuthenticateUser();
+              context.read<UserCubit>().silentlyAuthenticateUser(AuthenticationType.login);
             }
           },
           child: OneThemeStatusBar(

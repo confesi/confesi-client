@@ -17,9 +17,4 @@ abstract class IPrefsRepository {
       ReducedAnimationsEnum settingValue, Type enumType, String userID);
 
   Future<Either<Failure, ReducedAnimationsEnum>> loadReducedAnimations(List enumValues, Type enumType, String userID);
-
-  //! First time prefs.
-  Future<Either<Failure, Success>> setFirstTime(FirstTimeEnum settingValue, Type enumType, String userID);
-
-  Future<Either<Failure, FirstTimeEnum>> loadFirstTime(List enumValues, Type enumType, String userID);
 }

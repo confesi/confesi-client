@@ -1,21 +1,17 @@
 import 'package:Confessi/core/utils/sizing/width_fraction.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_opacity.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
 import '../../../core/utils/sizing/height_fraction.dart';
 
-dynamic showTopChip(BuildContext context, String text) {
+dynamic showBottomChip(BuildContext context, String text) {
   OverlayEntry? overlay;
   overlay = OverlayEntry(
     builder: (context) {
       return IgnorePointer(
         ignoring: true,
         child: Align(
-          alignment: Alignment.topCenter,
+          alignment: Alignment.bottomCenter,
           child: Material(
             color: Colors.transparent,
             child: SafeArea(
@@ -98,7 +94,7 @@ class __OverlayItemState extends State<_OverlayItem> with TickerProviderStateMix
   @override
   Widget build(BuildContext context) {
     return Transform.translate(
-      offset: Offset(0, -(1 - translateAnim.value) * heightFraction(context, .25)),
+      offset: Offset(0, (1 - translateAnim.value) * heightFraction(context, .25)),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
         child: Container(
@@ -117,22 +113,6 @@ class __OverlayItemState extends State<_OverlayItem> with TickerProviderStateMix
             child: Stack(
               clipBehavior: Clip.hardEdge,
               children: [
-                // Positioned.fill(
-                //   child: ClipRRect(
-                //     clipBehavior: Clip.hardEdge,
-                //     child: FittedBox(
-                //       alignment: Alignment.centerLeft,
-                //       fit: BoxFit.contain,
-                //       child: Transform.translate(
-                //         offset: const Offset(-3, -3),
-                //         child: Icon(
-                //           CupertinoIcons.hammer,
-                //           color: Theme.of(context).colorScheme.onSecondary.withOpacity(0.15),
-                //         ),
-                //       ),
-                //     ),
-                //   ),
-                // ),
                 Stack(
                   children: [
                     Padding(

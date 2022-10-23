@@ -100,6 +100,7 @@ class _RegisterScreenState extends State<RegisterScreen> with AutomaticKeepAlive
                                     controller: passwordController,
                                     password: true,
                                     topText: "Password",
+                                    bottomPadding: 10,
                                   ),
                                 ],
                               ),

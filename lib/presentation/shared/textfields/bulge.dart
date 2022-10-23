@@ -48,8 +48,7 @@ class _BulgeTextFieldState extends State<BulgeTextField> {
 
   @override
   void initState() {
-    widget.controller.clear();
-    widget.controller.addListener(() => setState(() {}));
+    // widget.controller.clear();
     focusNode.addListener(() {
       if (widget.onFocusChange == null) return;
       if (focusNode.hasFocus) {
@@ -133,10 +132,7 @@ class _BulgeTextFieldState extends State<BulgeTextField> {
                           ),
                         ),
                         TouchableOpacity(
-                          onTap: () {
-                            widget.controller.clear();
-                            FocusScope.of(context).unfocus();
-                          },
+                          onTap: () => widget.controller.clear(),
                           child: Container(
                             // Transparent hitbox trick.
                             color: Colors.transparent,

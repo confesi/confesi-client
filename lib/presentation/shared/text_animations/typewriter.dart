@@ -4,6 +4,7 @@ class TypewriterController extends ChangeNotifier {
   final String fullText;
   final int durationInMilliseconds;
   String _animatingText = "";
+  bool mounted = true;
 
   TypewriterController({required this.fullText, this.durationInMilliseconds = 1500});
 
@@ -11,8 +12,15 @@ class TypewriterController extends ChangeNotifier {
     for (var i = 0; i < fullText.length; i++) {
       await Future.delayed(Duration(milliseconds: (durationInMilliseconds / fullText.length).round()));
       _animatingText = "${fullText.substring(0, i + 1)}${i + 1 == fullText.length ? "" : "_"}";
+      if (!mounted) break;
       notifyListeners();
     }
+  }
+
+  @override
+  void dispose() {
+    mounted = false;
+    super.dispose();
   }
 }
 

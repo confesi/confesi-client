@@ -65,24 +65,4 @@ class PrefsRepository implements IPrefsRepository {
       return Left(LocalDBFailure());
     }
   }
-
-  @override
-  Future<Either<Failure, FirstTimeEnum>> loadFirstTime(List enumValues, Type enumType, String userID) async {
-    try {
-      return Right(await datasource.loadPref(enumValues, enumType, userID));
-    } on DBDefaultException {
-      return Left(DBDefaultFailure());
-    } catch (e) {
-      return Left(LocalDBFailure());
-    }
-  }
-
-  @override
-  Future<Either<Failure, Success>> setFirstTime(FirstTimeEnum settingValue, Type enumType, String userID) async {
-    try {
-      return Right(await datasource.setPref(settingValue, enumType, userID));
-    } catch (e) {
-      return Left(LocalDBFailure());
-    }
-  }
 }

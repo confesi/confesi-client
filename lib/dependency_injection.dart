@@ -80,8 +80,8 @@ Future<void> init() async {
   // Registers the registration cubit.
   sl.registerFactory(() => RegisterCubit(register: sl()));
   // Registers the user cubit.
-  sl.registerFactory(() =>
-      UserCubit(logout: sl(), silentAuthentication: sl(), appearance: sl(), firstTime: sl(), loadRefreshToken: sl()));
+  sl.registerFactory(
+      () => UserCubit(logout: sl(), silentAuthentication: sl(), appearance: sl(), loadRefreshToken: sl()));
 
   //! Usecases
   // Registers the register usecase.
@@ -108,8 +108,6 @@ Future<void> init() async {
   sl.registerLazySingleton(() => Appearance(repository: sl()));
   // Registeres the load refresh token usecase.
   sl.registerLazySingleton(() => LoadRefreshToken(repository: sl()));
-  // Registers the first time usecase (check if it's a user's first time on the app).
-  sl.registerLazySingleton(() => FirstTime(repository: sl()));
 
   //! Core
   // Registers custom connection checker class.

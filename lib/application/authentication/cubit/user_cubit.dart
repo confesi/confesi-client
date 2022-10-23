@@ -1,7 +1,7 @@
 import 'package:Confessi/core/utils/tokens/user_id_from_jwt.dart';
 import 'package:Confessi/domain/authenticatioin/entities/refresh_token.dart';
 import 'package:Confessi/domain/authenticatioin/usecases/silent_authentication.dart';
-import 'package:Confessi/presentation/shared/overlays/top_chip.dart';
+import 'package:Confessi/presentation/shared/overlays/bottom_chip.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +17,8 @@ import '../../../domain/settings/usecases/load_refresh_token.dart';
 
 part 'user_state.dart';
 
+enum AuthenticationType { silent, register, login } // How the user got authenticated.
+
 // TODO: Ensure logging out erases storage as well
 
 class UserCubit extends Cubit<UserState> {
@@ -24,13 +26,11 @@ class UserCubit extends Cubit<UserState> {
   final SilentAuthentication silentAuthentication;
   final Appearance appearance;
   final LoadRefreshToken loadRefreshToken;
-  final FirstTime firstTime;
 
   UserCubit(
       {required this.logout,
       required this.silentAuthentication,
       required this.appearance,
-      required this.firstTime,
       required this.loadRefreshToken})
       : super(NoUser());
 
@@ -49,7 +49,7 @@ class UserCubit extends Cubit<UserState> {
 
   /// Logs out the user. Upon error, currently does nothing, as the user will still be logged in.
   void logoutUser() async {
-    final failureOrSuccess = await logout.call((state as User).userID);
+    final failureOrSuccess = await logout.call(stateAsUser.userID);
     failureOrSuccess.fold(
       (failure) {
         print("failure to log out...");
@@ -61,8 +61,7 @@ class UserCubit extends Cubit<UserState> {
   }
 
   // TODO: Merge with loadInitialPrefsAndTokens
-  Future<void> silentlyAuthenticateUser() async {
-    await Future.delayed(const Duration(milliseconds: 1200));
+  Future<void> silentlyAuthenticateUser(AuthenticationType authenticationType) async {
     await (await loadRefreshToken.call(NoParams())).fold(
       (failure) {
         emit(LocalDataError());
@@ -76,6 +75,7 @@ class UserCubit extends Cubit<UserState> {
         userIDFromJWT(refreshToken.token).fold(
           (failure) => emit(LocalDataError()),
           (userID) async {
+            print("opening this box: $userID");
             // Opening Hive preferences box.
             await Hive.openBox(userID);
             (await appearance.get(AppearanceEnum.values, AppearanceEnum, userID)).fold(
@@ -83,18 +83,12 @@ class UserCubit extends Cubit<UserState> {
                 emit(LocalDataError());
               },
               (appearanceEnum) async {
-                (await firstTime.get(FirstTimeEnum.values, FirstTimeEnum, userID)).fold(
-                  (failure) => emit(LocalDataError()),
-                  (firstTimeEnum) async {
-                    // At the last step in the chain, emit the full state, using the variables from each step.
-                    emit(
-                      User(
-                          refreshToken: refreshToken.token, // Refresh token
-                          userID: userID, // Unique user ID (used for storage box location with Hive)
-                          firstTimeEnum: firstTimeEnum, // Preference
-                          appearanceEnum: appearanceEnum), // Preference
-                    );
-                  },
+                emit(
+                  User(
+                      refreshToken: refreshToken.token, // Refresh token
+                      userID: userID, // Unique user ID (used for storage box location with Hive)
+                      justRegistered: authenticationType == AuthenticationType.register ? true : false, // Preference
+                      appearanceEnum: appearanceEnum), // Preference
                 );
               },
             );
@@ -106,24 +100,11 @@ class UserCubit extends Cubit<UserState> {
 
   Future<void> setAppearance(AppearanceEnum appearanceEnum, BuildContext context) async {
     if (state is! User) {
-      showTopChip(context, "Error saving appearance.");
+      showBottomChip(context, "Error saving appearance.");
       return;
     }
     emit((state as User).copyWith(appearanceEnum: appearanceEnum));
-    (await appearance.set(appearanceEnum, AppearanceEnum, (state as User).userID)).fold(
-      (failure) => null, // show error message... scaffold messenger?
-      (success) => null, // do nothing
-    );
-  }
-
-  /// Set appearance.
-  Future<void> setFirstTime(FirstTimeEnum firstTimeEnum, BuildContext context) async {
-    if (state is! User) {
-      showTopChip(context, "Error saving tutorial progress.");
-      return;
-    }
-    emit((state as User).copyWith(firstTimeEnum: firstTimeEnum));
-    (await firstTime.set(firstTimeEnum, FirstTimeEnum, (state as User).userID)).fold(
+    (await appearance.set(appearanceEnum, AppearanceEnum, stateAsUser.userID)).fold(
       (failure) => null, // show error message... scaffold messenger?
       (success) => null, // do nothing
     );

@@ -3,7 +3,7 @@ import 'package:Confessi/application/authentication/cubit/user_cubit.dart';
 import 'package:Confessi/presentation/shared/behaviours/nav_blocker.dart';
 import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
 import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
-import 'package:Confessi/presentation/shared/overlays/top_chip.dart';
+import 'package:Confessi/presentation/shared/overlays/bottom_chip.dart';
 import 'package:Confessi/presentation/shared/text/fade_message_text.dart';
 import 'package:Confessi/presentation/shared/text_animations/typewriter.dart';
 import 'package:flutter/cupertino.dart';
@@ -61,87 +61,81 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                 resizeToAvoidBottomInset: true,
                 backgroundColor: Theme.of(context).colorScheme.background,
                 body: SafeArea(
-                  child: LayoutBuilder(builder: (context, constraints) {
-                    return SizedBox(
-                      height: constraints.maxHeight,
-                      child: ScrollableView(
-                        thumbVisible: false,
-                        controller: scrollController,
-                        child: Column(
-                          children: [
-                            MinimalAppbarLayout(
-                              pressable: state is! LoginLoading, // state is UserLoading ? false : true
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 30),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(height: 15),
-                                  TypewriterText(
-                                    textStyle: kSansSerifDisplay.copyWith(color: Theme.of(context).colorScheme.primary),
-                                    controller: typewriterController,
-                                  ),
-                                  SizedBox(height: heightFactor * 8),
-                                  BulgeTextField(
-                                    controller: usernameEmailController,
-                                    topText: "Email or username",
-                                    bottomPadding: 10,
-                                  ),
-                                  BulgeTextField(
-                                    controller: passwordController,
-                                    password: true,
-                                    topText: "Password",
-                                  ),
-                                  const SizedBox(height: 15),
-                                  const SizedBox(height: 30),
-                                  PopButton(
-                                    bottomPadding: 15,
-                                    loading: state is LoginLoading, // state is UserLoading ? true : false
-                                    justText: true,
-                                    onPress: () async {
-                                      FocusScope.of(context).unfocus();
-                                      context.read<LoginCubit>().loginUser(
-                                            usernameEmailController.text,
-                                            passwordController.text,
-                                          );
-                                    },
-                                    icon: CupertinoIcons.chevron_right,
-                                    backgroundColor: Theme.of(context).colorScheme.secondary,
-                                    textColor: Theme.of(context).colorScheme.onSecondary,
-                                    text: "Login",
-                                  ),
-                                  TouchableOpacity(
-                                    onTap: () => {},
-                                    child: Container(
-                                      // Transparent hitbox trick.
-                                      color: Colors.transparent,
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Expanded(
-                                            child: Text(
-                                              "I forgot my password",
-                                              style: kTitle.copyWith(
-                                                color: Theme.of(context).colorScheme.onSurface,
-                                              ),
-                                              textAlign: TextAlign.center,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 15),
-                                ],
-                              ),
-                            ),
-                          ],
+                  child: ScrollableView(
+                    thumbVisible: false,
+                    controller: scrollController,
+                    child: Column(
+                      children: [
+                        MinimalAppbarLayout(
+                          pressable: state is! LoginLoading, // state is UserLoading ? false : true
                         ),
-                      ),
-                    );
-                  }),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 30),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(height: 15),
+                              TypewriterText(
+                                textStyle: kSansSerifDisplay.copyWith(color: Theme.of(context).colorScheme.primary),
+                                controller: typewriterController,
+                              ),
+                              SizedBox(height: heightFactor * 8),
+                              BulgeTextField(
+                                controller: usernameEmailController,
+                                topText: "Email or username",
+                                bottomPadding: 10,
+                              ),
+                              BulgeTextField(
+                                controller: passwordController,
+                                password: true,
+                                topText: "Password",
+                                bottomPadding: 10,
+                              ),
+                              const SizedBox(height: 45),
+                              PopButton(
+                                bottomPadding: 15,
+                                loading: state is LoginLoading, // state is UserLoading ? true : false
+                                justText: true,
+                                onPress: () async {
+                                  FocusScope.of(context).unfocus();
+                                  context
+                                      .read<LoginCubit>()
+                                      .loginUser(usernameEmailController.text, passwordController.text);
+                                },
+                                icon: CupertinoIcons.chevron_right,
+                                backgroundColor: Theme.of(context).colorScheme.secondary,
+                                textColor: Theme.of(context).colorScheme.onSecondary,
+                                text: "Login",
+                              ),
+                              TouchableOpacity(
+                                onTap: () => {}, // TODO: Implement
+                                child: Container(
+                                  // Transparent hitbox trick.
+                                  color: Colors.transparent,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          "I forgot my password",
+                                          style: kTitle.copyWith(
+                                            color: Theme.of(context).colorScheme.onSurface,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 15),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ),

@@ -1,11 +1,9 @@
 import 'package:Confessi/constants/shared/enums.dart';
-import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
-import 'package:Confessi/presentation/shared/indicators/loading.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
 import '../button_touch_effects/touchable_opacity.dart';
+import '../indicators/loading.dart';
 
 class PopButton extends StatelessWidget {
   const PopButton(
@@ -47,9 +45,7 @@ class PopButton extends StatelessWidget {
             width: double.infinity,
             decoration: BoxDecoration(
               color: backgroundColor,
-              borderRadius: const BorderRadius.all(
-                Radius.circular(10),
-              ),
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
               boxShadow: [
                 BoxShadow(
                   color: backgroundColor.withOpacity(0.2),
@@ -69,14 +65,10 @@ class PopButton extends StatelessWidget {
                       child: Align(
                         alignment: justText ? Alignment.center : Alignment.centerLeft,
                         child: AnimatedSwitcher(
-                          duration: const Duration(milliseconds: 200),
-                          transitionBuilder: (Widget child, Animation<double> animation) =>
-                              FadeTransition(opacity: animation, child: child),
+                          duration: const Duration(milliseconds: 250),
                           child: loading
                               ? Padding(
-                                  padding: const EdgeInsets.only(top: 2),
-                                  child: LoadingIndicator(color: textColor),
-                                )
+                                  padding: const EdgeInsets.only(top: 2), child: LoadingIndicator(color: textColor))
                               : Text(
                                   text,
                                   textScaleFactor: 1,

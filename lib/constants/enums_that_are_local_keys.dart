@@ -37,7 +37,7 @@ enum RefreshTokenEnum {
   noRefreshToken,
 }
 
-enum FirstTimeEnum {
-  firstTime,
-  notFirstTime,
-}
+// enum FirstTimeEnum {
+//   firstTime,
+//   notFirstTime,
+// }

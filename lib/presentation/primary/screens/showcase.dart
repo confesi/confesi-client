@@ -66,11 +66,6 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
     super.initState();
   }
 
-  void navToOpenAndSetPref() {
-    context.read<UserCubit>().setFirstTime(FirstTimeEnum.notFirstTime, context);
-    Navigator.pushNamed(context, "/open");
-  }
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -117,14 +112,14 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
                               backgroundColor: Colors.transparent,
                               textColor: Theme.of(context).colorScheme.onSecondary,
                               text: "Skip",
-                              onPress: () => navToOpenAndSetPref(),
+                              onPress: () => Navigator.pushNamed(context, "/home"),
                             ),
                             SingleTextButton(
                               backgroundColor: Theme.of(context).colorScheme.onError,
                               textColor: Theme.of(context).colorScheme.onSecondary,
                               text: pageIndex + 1 == pages.length ? "Done" : "Next",
                               onPress: () => pageIndex + 1 == pages.length
-                                  ? navToOpenAndSetPref()
+                                  ? Navigator.pushNamed(context, "/home")
                                   : controller.animateToPage(pageIndex + 1,
                                       duration: const Duration(milliseconds: 400), curve: Curves.easeInOutSine),
                             ),

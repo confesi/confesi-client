@@ -10,12 +10,12 @@ class User extends UserState {
   final String refreshToken;
   final String userID;
   final AppearanceEnum appearanceEnum;
-  final FirstTimeEnum firstTimeEnum;
+  final bool justRegistered;
 
   User({
+    this.justRegistered = false,
     required this.refreshToken,
     required this.userID,
-    required this.firstTimeEnum,
     required this.appearanceEnum,
   });
 
@@ -23,14 +23,13 @@ class User extends UserState {
     String? refreshToken,
     String? userID,
     AppearanceEnum? appearanceEnum,
-    FirstTimeEnum? firstTimeEnum,
+    bool? justRegistered,
   }) {
     return User(
-      refreshToken: refreshToken ?? this.refreshToken,
-      userID: userID ?? this.userID,
-      appearanceEnum: appearanceEnum ?? this.appearanceEnum,
-      firstTimeEnum: firstTimeEnum ?? this.firstTimeEnum,
-    );
+        refreshToken: refreshToken ?? this.refreshToken,
+        userID: userID ?? this.userID,
+        appearanceEnum: appearanceEnum ?? this.appearanceEnum,
+        justRegistered: justRegistered ?? this.justRegistered);
   }
 
   @override
