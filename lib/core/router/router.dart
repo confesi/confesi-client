@@ -186,6 +186,7 @@ class AppRouter {
     if (isSizeAnim(routeSettings)) {
       return PageTransition(
         child: page,
+        settings: routeSettings,
         alignment: Alignment.center,
         type: PageTransitionType.scale,
         curve: Curves.decelerate,
@@ -195,6 +196,7 @@ class AppRouter {
       );
     } else if (isFadeAnim(routeSettings)) {
       return PageTransition(
+        settings: routeSettings,
         child: page,
         alignment: Alignment.center,
         type: PageTransitionType.fade,

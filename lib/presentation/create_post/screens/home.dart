@@ -100,6 +100,8 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
       setNoFocus();
       if (bodyFocusNode.hasFocus) setFocus(FocusedField.body);
     });
+    titleController.addListener(() => setState(() {}));
+    bodyController.addListener(() => setState(() {}));
     super.initState();
   }
 
@@ -154,7 +156,6 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
               clearTextfields();
               Navigator.popUntil(context, ModalRoute.withName('/home'));
               CenterOverlay().show(context);
-              setState(() {});
             }
           },
           child: ThemedStatusBar(
@@ -205,7 +206,6 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                                     onTap: () {
                                       clearTextfields();
                                       Navigator.popUntil(context, ModalRoute.withName('/home'));
-                                      setState(() {});
                                     },
                                     text: "Discard",
                                     icon: CupertinoIcons.trash,
