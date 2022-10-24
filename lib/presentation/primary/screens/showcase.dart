@@ -7,9 +7,13 @@ import '../widgets/showcase_item.dart';
 import '../widgets/scroll_dots.dart';
 
 class ShowcaseScreen extends StatefulWidget {
-  const ShowcaseScreen({Key? key}) : super(key: key);
+  const ShowcaseScreen({
+    Key? key,
+    this.isRewatching = false,
+  }) : super(key: key);
 
   final startingPageIndex = 0;
+  final bool isRewatching;
 
   @override
   State<ShowcaseScreen> createState() => _ShowcaseScreenState();
@@ -62,6 +66,14 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
     super.initState();
   }
 
+  void navigate() {
+    if (widget.isRewatching) {
+      Navigator.pop(context);
+    } else {
+      Navigator.pushNamed(context, "/home");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -108,14 +120,14 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
                               backgroundColor: Colors.transparent,
                               textColor: Theme.of(context).colorScheme.onSecondary,
                               text: "Skip",
-                              onPress: () => Navigator.pushNamed(context, "/home"),
+                              onPress: () => navigate(),
                             ),
                             SingleTextButton(
                               backgroundColor: Theme.of(context).colorScheme.onError,
                               textColor: Theme.of(context).colorScheme.onSecondary,
                               text: pageIndex + 1 == pages.length ? "Done" : "Next",
                               onPress: () => pageIndex + 1 == pages.length
-                                  ? Navigator.pushNamed(context, "/home")
+                                  ? navigate()
                                   : controller.animateToPage(pageIndex + 1,
                                       duration: const Duration(milliseconds: 400), curve: Curves.easeInOutSine),
                             ),

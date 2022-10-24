@@ -45,11 +45,11 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   @override
   Widget build(BuildContext context) {
     return BlocListener<UserCubit, UserState>(
-      listenWhen: (previous, current) => previous.runtimeType != current.runtimeType,
+      listenWhen: (previous, current) => (previous.runtimeType != current.runtimeType || current is NoUser),
       listener: (context, state) {
         if (state is User) {
           if (state.justRegistered) {
-            Navigator.of(context).pushNamed("/onboarding");
+            Navigator.of(context).pushNamed("/onboarding", arguments: {"isRewatching": false});
           } else {
             Navigator.of(context).pushNamed("/home");
           }

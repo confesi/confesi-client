@@ -36,7 +36,7 @@ class SpreadRowText extends StatelessWidget {
       );
 
   Widget buildContent(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 7.5),
+        padding: const EdgeInsets.symmetric(vertical: 5),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,

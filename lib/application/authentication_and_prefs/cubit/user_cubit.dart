@@ -60,6 +60,9 @@ class UserCubit extends Cubit<UserState> {
 
   // TODO: Merge with loadInitialPrefsAndTokens
   Future<void> silentlyAuthenticateUser(AuthenticationType authenticationType) async {
+    if (authenticationType == AuthenticationType.silent) {
+      await Future.delayed(const Duration(milliseconds: 750));
+    } // Artificial delay as to not cause jank in the splash screen.
     await (await loadRefreshToken.call(NoParams())).fold(
       (failure) {
         emit(LocalDataError());

@@ -67,6 +67,12 @@ class SettingsHome extends StatelessWidget {
                               onTap: () => Navigator.of(context).pushNamed("/settings/faq"),
                             ),
                             SettingTile(
+                              icon: CupertinoIcons.sparkles,
+                              text: kSettingsRewatchTutorialLabel,
+                              onTap: () =>
+                                  Navigator.pushNamed(context, '/onboarding', arguments: {"isRewatching": true}),
+                            ),
+                            SettingTile(
                               isLink: true,
                               icon: CupertinoIcons.sidebar_left,
                               text: kSettingsOurWebsiteLinkLabel,

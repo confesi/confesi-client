@@ -1,5 +1,6 @@
 import 'package:Confessi/core/styles/typography.dart';
 import 'package:Confessi/core/utils/numbers/number_until_limit.dart';
+import 'package:Confessi/core/utils/sizing/height_fraction.dart';
 import 'package:Confessi/core/utils/sizing/width_fraction.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_opacity.dart';
 import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
@@ -12,6 +13,7 @@ import '../layout/swipebar.dart';
 Future<dynamic> showInfoSheet(BuildContext context, String header, String body) {
   context.read<ScaffoldShrinkerCubit>().setShrunk();
   return showModalBottomSheet(
+    isScrollControlled: true,
     backgroundColor: Colors.transparent,
     context: context,
     // Optionally, you can change this BorderRadius... it's kinda preference.

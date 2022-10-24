@@ -117,14 +117,21 @@ class __OverlayItemState extends State<_OverlayItem> with TickerProviderStateMix
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(15),
-                      child: Text(
-                        widget.text,
-                        style: kTitle.copyWith(
-                          color: Theme.of(context).colorScheme.onError,
-                        ),
-                        maxLines: 5,
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.center,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              widget.text,
+                              style: kTitle.copyWith(
+                                color: Theme.of(context).colorScheme.onError,
+                              ),
+                              maxLines: 5,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     Container(

@@ -1,5 +1,6 @@
 import 'package:Confessi/application/create_post/cubit/post_cubit.dart';
 import 'package:Confessi/core/utils/sizing/width_fraction.dart';
+import 'package:Confessi/presentation/create_post/widgets/genre_group.dart';
 import 'package:Confessi/presentation/shared/behaviours/nav_blocker.dart';
 import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
 import 'package:Confessi/presentation/shared/overlays/bottom_chip.dart';
@@ -39,12 +40,14 @@ class _DetailsScreenState extends State<DetailsScreen> with AutomaticKeepAliveCl
   @override
   bool get wantKeepAlive => true;
 
-  Widget buildBody() => BlocListener<CreatePostCubit, CreatePostState>(
-        listener: (context, state) {
-          if (state is Error) {
-            showBottomChip(context, state.message);
-          }
-        },
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<CreatePostCubit, CreatePostState>(
+      listener: (context, state) {
+        if (state is Error) showBottomChip(context, state.message);
+      },
+      child: NavBlocker(
+        blocking: context.watch<CreatePostCubit>().state is Loading,
         child: ThemedStatusBar(
           child: Scaffold(
             backgroundColor: Theme.of(context).colorScheme.background,
@@ -68,56 +71,50 @@ class _DetailsScreenState extends State<DetailsScreen> with AutomaticKeepAliveCl
                       leftIconIgnored: context.watch<CreatePostCubit>().state is Loading,
                       rightIcon: CupertinoIcons.info,
                       rightIconVisible: true,
-                      rightIconOnPress: () => showInfoSheet(context, "Privacy/be a good person notice", "body"),
+                      rightIconOnPress: () => showInfoSheet(context, "Confessing",
+                          "Please be civil when posting, but have fun! All confessions are anonymous, excluding the details provided here."),
                     ),
                   ),
                   Expanded(
                     child: ScrollableView(
-                      horizontalPadding: 10,
+                      horizontalPadding: 15,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 15),
                           Text(
-                            'Post details',
-                            style: kTitle.copyWith(
+                            "Select the genre",
+                            style: kBody.copyWith(
                               color: Theme.of(context).colorScheme.primary,
                             ),
+                            overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.left,
                           ),
-                          const SizedBox(height: 7.5),
-                          SpreadRowText(
-                            leftText: 'Genre',
-                            rightText: "Politics",
-                            onPress: () => print('tap'),
-                          ),
-                          const SizedBox(height: 22.5),
+                          const SizedBox(height: 15),
+                          const GenreGroup(),
+                          const SizedBox(height: 25),
                           Text(
-                            'About the confessor',
-                            style: kTitle.copyWith(
+                            "Auto-populated from account",
+                            style: kBody.copyWith(
                               color: Theme.of(context).colorScheme.primary,
                             ),
+                            overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.left,
                           ),
-                          const SizedBox(height: 7.5),
+                          const SizedBox(height: 10),
                           const SpreadRowText(
                             leftText: 'University',
                             rightText: "UVic",
                           ),
                           const SpreadRowText(
-                            leftText: 'Faculty',
-                            rightText: "Hidden",
-                          ),
-                          const SpreadRowText(
                             leftText: 'Year of study',
                             rightText: "2",
                           ),
-                          const SizedBox(height: 30),
-                          // const DisclaimerText(
-                          //   text:
-                          //       'Please be civil when posting, but have fun! All confessions are anonymous, excluding the details provided above.',
-                          // ),
-                          // const SizedBox(height: 45),
+                          const SpreadRowText(
+                            leftText: 'Faculty (optional)',
+                            rightText: "Hidden",
+                          ),
+                          const SizedBox(height: 25),
                           BlocBuilder<CreatePostCubit, CreatePostState>(
                             // buildWhen: (previous, current) => true,
                             builder: (context, state) {
@@ -139,7 +136,7 @@ class _DetailsScreenState extends State<DetailsScreen> with AutomaticKeepAliveCl
                                 // Transparent hitbox trick.
                                 color: Colors.transparent,
                                 child: Center(
-                                  child: Container(
+                                  child: SizedBox(
                                     width: widthFraction(context, 2 / 3),
                                     child: Text(
                                       "Edit university, faculty, and year details in settings",
@@ -162,10 +159,7 @@ class _DetailsScreenState extends State<DetailsScreen> with AutomaticKeepAliveCl
             ),
           ),
         ),
-      );
-
-  @override
-  Widget build(BuildContext context) => context.watch<CreatePostCubit>().state is Loading
-      ? WillPopScope(child: buildBody(), onWillPop: () async => false)
-      : buildBody();
+      ),
+    );
+  }
 }

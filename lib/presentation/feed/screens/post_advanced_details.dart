@@ -68,7 +68,7 @@ class PostAdvancedDetailsScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 15),
                         Text(
                           'Quick stats',
                           style: kTitle.copyWith(
@@ -76,7 +76,7 @@ class PostAdvancedDetailsScreen extends StatelessWidget {
                           ),
                           textAlign: TextAlign.left,
                         ),
-                        const SizedBox(height: 7.5),
+                        const SizedBox(height: 5),
                         SpreadRowText(
                           leftText: 'Likes',
                           rightText: addCommasToNumber(likes),
@@ -95,13 +95,13 @@ class PostAdvancedDetailsScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 30),
                         Text(
-                          'About the poster',
+                          'About the confesser',
                           style: kTitle.copyWith(
                             color: Theme.of(context).colorScheme.primary,
                           ),
                           textAlign: TextAlign.left,
                         ),
-                        const SizedBox(height: 7.5),
+                        const SizedBox(height: 5),
                         SpreadRowText(
                           leftText: 'University (abbr.)',
                           rightText: university,
@@ -154,6 +154,7 @@ class PostAdvancedDetailsScreen extends StatelessWidget {
                             ),
                           ],
                         ),
+                        const SizedBox(height: 5),
                         SpreadRowText(
                           leftText: 'Post status',
                           rightText: moderationStatus,

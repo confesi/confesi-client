@@ -129,6 +129,8 @@ const String kSettingsInterfaceAdjustmentsLabel = "Interface Adjustments";
 
 const String kSettingsBiometricProfileLockLabel = "Biometric Profile Lock";
 
+const String kSettingsRewatchTutorialLabel = "Rewatch Onboarding Slides";
+
 const String kSettingsAccountDetailsLabel = "Account Details";
 
 const String kSettingsStudentEmailPerksLabel = "Student Email Perks";
