@@ -1,11 +1,11 @@
-import 'package:Confessi/application/authentication/cubit/login_cubit.dart';
-import 'package:Confessi/application/authentication/cubit/register_cubit.dart';
-import 'package:Confessi/application/authentication/cubit/user_cubit.dart';
 import 'package:Confessi/presentation/shared/behaviours/one_theme_status_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shake/shake.dart';
 
+import '../../../application/authentication_and_prefs/cubit/login_cubit.dart';
+import '../../../application/authentication_and_prefs/cubit/register_cubit.dart';
+import '../../../application/authentication_and_prefs/cubit/user_cubit.dart';
 import '../../../core/generators/intro_text_generator.dart';
 import '../../../core/styles/themes.dart';
 import '../../../core/utils/sizing/width_breakpoint_fraction.dart';
@@ -45,6 +45,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   @override
   Widget build(BuildContext context) {
     return BlocListener<UserCubit, UserState>(
+      listenWhen: (previous, current) => previous.runtimeType != current.runtimeType,
       listener: (context, state) {
         if (state is User) {
           if (state.justRegistered) {
@@ -68,7 +69,6 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
         },
         child: BlocListener<LoginCubit, LoginState>(
           listener: (context, state) {
-            print(state);
             if (state is EnteringLoginData && state.hasError) {
               showBottomChip(context, state.errorMessage);
             } else if (state is LoginSuccess) {

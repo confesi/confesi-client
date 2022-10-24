@@ -69,13 +69,12 @@ class _StepperTileState extends State<StepperTile> {
               ],
             ),
             AnimatedClipRect(
-              duration: const Duration(milliseconds: 500),
-              reverseDuration: const Duration(milliseconds: 300),
+              duration: const Duration(milliseconds: 350),
+              reverseDuration: const Duration(milliseconds: 350),
               alignment: Alignment.bottomCenter,
               horizontalAnimation: false,
               open: isOpen,
-              curve: Curves.easeOutBack,
-              reverseCurve: Curves.decelerate,
+              curve: Curves.decelerate,
               child: Padding(
                 padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
                 child: Text(

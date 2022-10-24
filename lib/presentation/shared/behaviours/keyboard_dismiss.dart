@@ -11,9 +11,18 @@ class KeyboardDismissLayout extends StatefulWidget {
 
 class _KeyboardDismissLayoutState extends State<KeyboardDismissLayout> {
   ScrollNotification? lastScrollNotification;
+  bool alreadyDismissedThisDrag = false;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onVerticalDragStart: (_) {
+        if (!alreadyDismissedThisDrag) {
+          FocusScope.of(context).unfocus();
+        }
+      },
+      onVerticalDragUpdate: (_) => alreadyDismissedThisDrag = true,
+      onVerticalDragEnd: (_) => alreadyDismissedThisDrag = false,
       behavior: HitTestBehavior.translucent,
       onTap: () => FocusScope.of(context).unfocus(),
       child: NotificationListener<ScrollNotification>(
