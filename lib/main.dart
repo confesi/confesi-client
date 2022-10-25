@@ -10,7 +10,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'application/authentication_and_prefs/cubit/login_cubit.dart';
 import 'application/authentication_and_prefs/cubit/register_cubit.dart';
 import 'application/authentication_and_prefs/cubit/user_cubit.dart';
-import 'application/shared/cubit/scaffold_shrinker_cubit.dart';
 import 'core/router/router.dart';
 import 'core/styles/themes.dart';
 import 'dependency_injection.dart';
@@ -91,10 +90,6 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           lazy: false,
           create: (context) => sl<CreatePostCubit>(),
-        ),
-        BlocProvider(
-          lazy: false,
-          create: (context) => sl<ScaffoldShrinkerCubit>(),
         ),
       ],
       child: Builder(

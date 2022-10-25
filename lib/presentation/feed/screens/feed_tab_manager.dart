@@ -1,4 +1,3 @@
-import 'package:Confessi/presentation/shared/behaviours/shrinking_view.dart';
 import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
@@ -45,7 +44,7 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
       child: Scaffold(
         drawer: const ExploreDrawer(),
         backgroundColor: Theme.of(context).colorScheme.background,
-        body: ShrinkingView(
+        body: SafeArea(
           child: Container(
             color: Theme.of(context).colorScheme.background,
             child: Column(

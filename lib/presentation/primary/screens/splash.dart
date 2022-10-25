@@ -10,7 +10,7 @@ import '../../../core/generators/intro_text_generator.dart';
 import '../../../core/styles/themes.dart';
 import '../../../core/utils/sizing/width_breakpoint_fraction.dart';
 import '../../shared/overlays/feedback_sheet.dart';
-import '../../shared/overlays/bottom_chip.dart';
+import '../../shared/overlays/notification_chip.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -62,7 +62,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
       child: BlocListener<RegisterCubit, RegisterState>(
         listener: (context, state) {
           if (state is EnteringRegisterData && state.hasError) {
-            showBottomChip(context, state.errorMessage);
+            showNotificationChip(context, state.errorMessage);
           } else if (state is RegisterSuccess) {
             context.read<UserCubit>().silentlyAuthenticateUser(AuthenticationType.register);
           }
@@ -70,7 +70,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
         child: BlocListener<LoginCubit, LoginState>(
           listener: (context, state) {
             if (state is EnteringLoginData && state.hasError) {
-              showBottomChip(context, state.errorMessage);
+              showNotificationChip(context, state.errorMessage);
             } else if (state is LoginSuccess) {
               context.read<UserCubit>().silentlyAuthenticateUser(AuthenticationType.login);
             }

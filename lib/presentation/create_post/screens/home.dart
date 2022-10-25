@@ -162,8 +162,7 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
             child: Scaffold(
               resizeToAvoidBottomInset: false,
               backgroundColor: Theme.of(context).colorScheme.background,
-              body: ShrinkingView(
-                // safeAreaBottom: true,
+              body: SafeArea(
                 child: Column(
                   children: [
                     AppbarLayout(

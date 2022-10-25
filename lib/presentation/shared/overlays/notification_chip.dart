@@ -4,18 +4,23 @@ import 'package:flutter/material.dart';
 import '../../../core/styles/typography.dart';
 import '../../../core/utils/sizing/height_fraction.dart';
 
-dynamic showBottomChip(BuildContext context, String text) {
+enum ScreenSide {
+  top,
+  bottom,
+}
+
+dynamic showNotificationChip(BuildContext context, String text, {ScreenSide screenSide = ScreenSide.bottom}) {
   OverlayEntry? overlay;
   overlay = OverlayEntry(
     builder: (context) {
       return IgnorePointer(
         ignoring: true,
         child: Align(
-          alignment: Alignment.bottomCenter,
+          alignment: screenSide == ScreenSide.top ? Alignment.topCenter : Alignment.bottomCenter,
           child: Material(
             color: Colors.transparent,
             child: SafeArea(
-              child: _OverlayItem(text: text, overlay: overlay),
+              child: _OverlayItem(text: text, overlay: overlay, screenSide: screenSide),
             ),
           ),
         ),
@@ -30,10 +35,12 @@ class _OverlayItem extends StatefulWidget {
     Key? key,
     required this.text,
     required this.overlay,
+    required this.screenSide,
   }) : super(key: key);
 
   final String text;
   final OverlayEntry? overlay;
+  final ScreenSide screenSide;
 
   @override
   State<_OverlayItem> createState() => __OverlayItemState();
@@ -50,7 +57,7 @@ class __OverlayItemState extends State<_OverlayItem> with TickerProviderStateMix
   void initState() {
     translateAnimController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 460),
+      duration: const Duration(milliseconds: 450),
       reverseDuration: const Duration(milliseconds: 450),
     );
     translateAnim = CurvedAnimation(
@@ -94,7 +101,8 @@ class __OverlayItemState extends State<_OverlayItem> with TickerProviderStateMix
   @override
   Widget build(BuildContext context) {
     return Transform.translate(
-      offset: Offset(0, (1 - translateAnim.value) * heightFraction(context, .25)),
+      offset: Offset(0,
+          (widget.screenSide == ScreenSide.bottom ? 1 : -1) * (1 - translateAnim.value) * heightFraction(context, .25)),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
         child: Container(
@@ -111,37 +119,30 @@ class __OverlayItemState extends State<_OverlayItem> with TickerProviderStateMix
               Radius.circular(10),
             ),
             child: Stack(
-              clipBehavior: Clip.hardEdge,
               children: [
-                Stack(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(15),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              widget.text,
-                              style: kTitle.copyWith(
-                                color: Theme.of(context).colorScheme.onError,
-                              ),
-                              maxLines: 5,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                            ),
+                Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          widget.text,
+                          style: kTitle.copyWith(
+                            color: Theme.of(context).colorScheme.onError,
                           ),
-                        ],
+                          maxLines: 5,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
+                        ),
                       ),
-                    ),
-                    Container(
-                      height: 5,
-                      width: timeAnim.value * widthFraction(context, 1),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.onError.withOpacity(0.75),
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
+                ),
+                Container(
+                  height: 5,
+                  width: timeAnim.value * widthFraction(context, 1),
+                  decoration: BoxDecoration(color: Theme.of(context).colorScheme.onError.withOpacity(0.75)),
                 ),
               ],
             ),

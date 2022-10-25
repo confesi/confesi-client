@@ -5,19 +5,16 @@ import 'package:Confessi/presentation/shared/layout/line.dart';
 import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
 import 'package:Confessi/presentation/shared/textfields/bulge.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../application/shared/cubit/scaffold_shrinker_cubit.dart';
 import '../../../shared/layout/swipebar.dart';
 
 Future<dynamic> showSearchItemsSheet(BuildContext context) {
-  context.read<ScaffoldShrinkerCubit>().setShrunk();
   return showModalBottomSheet(
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       context: context,
       // Optionally, you can change this BorderRadius... it's kinda preference.
-      builder: (context) => const _SheetBody()).whenComplete(() => context.read<ScaffoldShrinkerCubit>().setExpanded());
+      builder: (context) => const _SheetBody());
 }
 
 class _SheetBody extends StatefulWidget {

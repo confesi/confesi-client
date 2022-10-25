@@ -46,7 +46,7 @@ class PostAdvancedDetailsScreen extends StatelessWidget {
       child: ThemedStatusBar(
         child: Scaffold(
           backgroundColor: Theme.of(context).colorScheme.background,
-          body: ShrinkingView(
+          body: SafeArea(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

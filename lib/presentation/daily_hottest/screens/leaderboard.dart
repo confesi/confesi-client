@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:Confessi/core/utils/numbers/is_plural.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
-import 'package:Confessi/presentation/shared/behaviours/shrinking_view.dart';
 import 'package:Confessi/presentation/shared/indicators/alert.dart';
 import 'package:Confessi/presentation/shared/indicators/loading.dart';
 import 'package:Confessi/presentation/shared/layout/appbar.dart';
@@ -150,8 +149,8 @@ class LeaderboardScreen extends StatelessWidget {
     return ThemedStatusBar(
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
-        body: ShrinkingView(
-          safeAreaBottom: false,
+        body: SafeArea(
+          bottom: false,
           child: Container(
             color: Theme.of(context).colorScheme.shadow,
             child: Column(

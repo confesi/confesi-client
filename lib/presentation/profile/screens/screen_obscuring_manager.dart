@@ -1,9 +1,14 @@
 import 'dart:ui';
 
-import 'package:Confessi/application/shared/cubit/biometrics_cubit.dart';
+import 'package:Confessi/application/profile/cubit/biometrics_cubit.dart';
+import 'package:Confessi/core/styles/typography.dart';
+import 'package:Confessi/core/utils/sizing/height_fraction.dart';
 import 'package:Confessi/presentation/profile/screens/home.dart';
 import 'package:Confessi/presentation/profile/widgets/biometric_overlay_message.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
+import 'package:Confessi/presentation/shared/overlays/notification_chip.dart';
 import 'package:Confessi/presentation/shared/overlays/snackbar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -14,11 +19,7 @@ class ScreenObscuringManager extends StatefulWidget {
   State<ScreenObscuringManager> createState() => _ScreenObscuringManagerState();
 }
 
-class _ScreenObscuringManagerState extends State<ScreenObscuringManager>
-    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
-  late AnimationController _animController;
-  late Animation _anim;
-
+class _ScreenObscuringManagerState extends State<ScreenObscuringManager> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     switch (state) {
@@ -37,105 +38,57 @@ class _ScreenObscuringManagerState extends State<ScreenObscuringManager>
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
-    _animController = AnimationController(
-      value: 1,
-      vsync: this,
-      duration: Duration.zero,
-      reverseDuration: const Duration(milliseconds: 300),
-    );
-    _anim = CurvedAnimation(
-      parent: _animController,
-      curve: Curves.decelerate,
-      reverseCurve: Curves.linear,
-    );
+    context.read<BiometricsCubit>().authenticateWithBiometrics();
     super.initState();
-  }
-
-  void startAnim() async {
-    _animController.forward();
-    _animController.addListener(() {
-      setState(() {});
-    });
-  }
-
-  void reverseAnim() {
-    _animController.reverse();
-    _animController.addListener(() {
-      setState(() {});
-    });
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    _animController.dispose();
     super.dispose();
   }
-
-  Widget buildChild(BiometricsState state) {
-    if (state is! Authenticated) {
-      return BiometricOverlayMessage(
-        message: state is AuthenticationError
-            ? "Try again"
-            : state is AuthenticationLoading
-                ? "Verifying..."
-                : "Confirm ID",
-      );
-    } else {
-      return Container();
-    }
-  }
-
-  double getBlurValue() => _anim.value * 0;
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<BiometricsCubit, BiometricsState>(
       listener: (context, state) {
-        // Start/reverse the blur animation.
-        if (state is Authenticated) {
-          reverseAnim();
-        } else {
-          startAnim();
-        }
-        // Check when to show error snackbar.
-        if (state is AuthenticationError && state.biometricErrorType == BiometricErrorType.exausted) {
-          showSnackbar(context,
-              "Attempts exausted! Lock your entire device, login with the passcode, then open the app and try again.",
-              stayLonger: true);
+        if (state is AuthenticationError) {
+          showNotificationChip(context, state.message, screenSide: ScreenSide.top);
         }
       },
       builder: (context, state) {
         return Stack(
           children: <Widget>[
-            IgnorePointer(
-              ignoring: _anim.value == 0 ? false : true,
-              child: const ProfileHome(), // ProfileHome()
-            ),
-            IgnorePointer(
-              ignoring: _anim.value != 1 ? true : false,
-              child: ClipRect(
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(
-                    sigmaX: getBlurValue(),
-                    sigmaY: getBlurValue(),
-                  ),
+            const ProfileHome(),
+            AnimatedOpacity(
+              opacity: state is Authenticated ? 0 : 1,
+              duration: const Duration(milliseconds: 250),
+              child: IgnorePointer(
+                ignoring: state is Authenticated,
+                child: GestureDetector(
+                  onTap: () => context.read<BiometricsCubit>().authenticateWithBiometrics(),
                   child: Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.background.withOpacity(
-                          _anim.value * 1), // CHANGE THIS VALUE TO CHANGE OPACITY BASE (When not authenticated).
-                    ),
-                    child: AnimatedSwitcher(
-                      duration: Duration.zero,
-                      reverseDuration: const Duration(milliseconds: 75),
-                      switchInCurve: Curves.linear,
-                      switchOutCurve: Curves.linear,
-                      // transitionBuilder:
-                      //     (Widget child, Animation<double> animation) =>
-                      //         ScaleTransition(scale: animation, child: child),
-                      child: SafeArea(
-                        child: buildChild(state),
+                    color: Theme.of(context).colorScheme.background,
+                    child: SafeArea(
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              CupertinoIcons.lock,
+                              color: Theme.of(context).colorScheme.onBackground.withOpacity(0.2),
+                              size: 150,
+                            ),
+                            const SizedBox(height: 15),
+                            Text(
+                              "Tap to authenticate",
+                              style: kTitle.copyWith(
+                                color: Theme.of(context).colorScheme.onBackground.withOpacity(0.2),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),

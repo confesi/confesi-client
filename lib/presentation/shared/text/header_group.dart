@@ -29,6 +29,7 @@ class HeaderGroupText extends StatelessWidget {
         style: kSansSerifDisplay.copyWith(
           color: onSecondaryColors ? Theme.of(context).colorScheme.onSecondary : Theme.of(context).colorScheme.primary,
           fontSize: small ? 26 : 34,
+          height: 1.2,
         ),
         textAlign: left ? TextAlign.left : TextAlign.center,
         overflow: TextOverflow.ellipsis,

@@ -14,26 +14,20 @@ class BiometricsCubit extends Cubit<BiometricsState> {
     required this.biometricAuthentication,
   }) : super(NotAuthenticated());
 
-  void setNotAuthenticated() {
-    if (state is! AuthenticationLoading) {
-      emit(NotAuthenticated());
-    }
-  }
+  void setNotAuthenticated() => emit(NotAuthenticated());
 
   void authenticateWithBiometrics() async {
-    emit(AuthenticationLoading());
     final failureOrBool = await biometricAuthentication.call(NoParams());
     failureOrBool.fold(
       (failure) {
-        // TODO: create utils for the conversions of failures, and all error messages
-        if (failure is BiometricAttemptsExausted) {
-          emit(AuthenticationError(BiometricErrorType.exausted));
-        } else {
-          emit(AuthenticationError(BiometricErrorType.incorrect));
-        }
+        emit(AuthenticationError("Too many attempts. Please turn off your phone, then re-open the app."));
       },
       (authenticationStatus) async {
-        authenticationStatus ? emit(Authenticated()) : emit(AuthenticationError(BiometricErrorType.incorrect));
+        if (authenticationStatus) {
+          emit(Authenticated());
+        } else {
+          emit(AuthenticationError("Cannot recognize user."));
+        }
       },
     );
   }

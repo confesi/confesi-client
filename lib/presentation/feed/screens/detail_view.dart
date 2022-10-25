@@ -123,7 +123,7 @@ class _DetailViewScreenState extends State<DetailViewScreen> with TickerProvider
         ),
         backgroundColor: Theme.of(context).colorScheme.background,
         resizeToAvoidBottomInset: true,
-        body: ShrinkingView(
+        body: SafeArea(
           child: FooterLayout(
             footer: KeyboardAttachable(
               child: CommentSheet(

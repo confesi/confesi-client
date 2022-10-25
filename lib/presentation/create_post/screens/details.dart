@@ -3,11 +3,8 @@ import 'package:Confessi/core/utils/sizing/width_fraction.dart';
 import 'package:Confessi/presentation/create_post/widgets/genre_group.dart';
 import 'package:Confessi/presentation/shared/behaviours/nav_blocker.dart';
 import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
-import 'package:Confessi/presentation/shared/overlays/bottom_chip.dart';
+import 'package:Confessi/presentation/shared/overlays/notification_chip.dart';
 import 'package:Confessi/presentation/shared/overlays/info_sheet.dart';
-import 'package:Confessi/presentation/shared/text/disclaimer_text.dart';
-import 'package:Confessi/presentation/create_post/widgets/picker_sheet.dart';
-import 'package:Confessi/presentation/shared/behaviours/shrinking_view.dart';
 import 'package:Confessi/presentation/shared/buttons/long.dart';
 import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
 import 'package:Confessi/presentation/shared/text/spread_row.dart';
@@ -18,7 +15,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/styles/typography.dart';
 import '../../shared/button_touch_effects/touchable_opacity.dart';
 import '../../shared/layout/appbar.dart';
-import '../../shared/text/fade_size_text.dart';
 
 class DetailsScreen extends StatefulWidget {
   const DetailsScreen({
@@ -44,14 +40,14 @@ class _DetailsScreenState extends State<DetailsScreen> with AutomaticKeepAliveCl
   Widget build(BuildContext context) {
     return BlocListener<CreatePostCubit, CreatePostState>(
       listener: (context, state) {
-        if (state is Error) showBottomChip(context, state.message);
+        if (state is Error) showNotificationChip(context, state.message);
       },
       child: NavBlocker(
         blocking: context.watch<CreatePostCubit>().state is Loading,
         child: ThemedStatusBar(
           child: Scaffold(
             backgroundColor: Theme.of(context).colorScheme.background,
-            body: ShrinkingView(
+            body: SafeArea(
               child: Column(
                 children: [
                   NavBlocker(

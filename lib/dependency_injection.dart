@@ -16,7 +16,7 @@ import 'package:Confessi/domain/profile/usecases/biometric_authentication.dart';
 import 'package:Confessi/application/create_post/cubit/post_cubit.dart';
 import 'package:Confessi/application/daily_hottest/cubit/hottest_cubit.dart';
 import 'package:Confessi/application/daily_hottest/cubit/leaderboard_cubit.dart';
-import 'package:Confessi/application/shared/cubit/biometrics_cubit.dart';
+import 'package:Confessi/application/profile/cubit/biometrics_cubit.dart';
 import 'package:Confessi/domain/authentication_and_settings/usecases/appearance.dart';
 import 'package:Confessi/domain/authentication_and_settings/usecases/load_refresh_token.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -28,7 +28,6 @@ import 'package:local_auth/local_auth.dart';
 import 'application/authentication_and_prefs/cubit/login_cubit.dart';
 import 'application/authentication_and_prefs/cubit/register_cubit.dart';
 import 'application/authentication_and_prefs/cubit/user_cubit.dart';
-import 'application/shared/cubit/scaffold_shrinker_cubit.dart';
 import 'core/network/connection_info.dart';
 import 'core/router/router.dart';
 import 'data/authentication_and_settings/datasources/authentication_datasource.dart';
@@ -65,8 +64,6 @@ Future<void> init() async {
   sl.registerFactory(() => HottestCubit(posts: sl()));
   // Registers the create post cubit.
   sl.registerFactory(() => CreatePostCubit(uploadPost: sl()));
-  // Registers the scaffold shrinker cubit.
-  sl.registerFactory(() => ScaffoldShrinkerCubit());
   // Registers the biometrics cubit.
   sl.registerFactory(() => BiometricsCubit(biometricAuthentication: sl()));
   // Registers the prefs cubit.

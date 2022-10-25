@@ -1,6 +1,6 @@
 import 'package:Confessi/core/utils/tokens/user_id_from_jwt.dart';
 import 'package:Confessi/domain/authentication_and_settings/usecases/silent_authentication.dart';
-import 'package:Confessi/presentation/shared/overlays/bottom_chip.dart';
+import 'package:Confessi/presentation/shared/overlays/notification_chip.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -101,7 +101,7 @@ class UserCubit extends Cubit<UserState> {
 
   Future<void> setAppearance(AppearanceEnum appearanceEnum, BuildContext context) async {
     if (state is! User) {
-      showBottomChip(context, "Error saving appearance.");
+      showNotificationChip(context, "Error saving appearance.");
       return;
     }
     emit((state as User).copyWith(appearanceEnum: appearanceEnum));
