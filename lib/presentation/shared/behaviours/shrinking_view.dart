@@ -81,10 +81,10 @@ class _ShrinkingViewState extends State<ShrinkingView> with SingleTickerProvider
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(widget.topLeftSquare ? 0 : sqrt(_anim.value) * 50),
-                topRight: Radius.circular(widget.topRightSquare ? 0 : sqrt(_anim.value) * 50),
-                bottomLeft: Radius.circular(sqrt(_anim.value) * 50),
-                bottomRight: Radius.circular(sqrt(_anim.value) * 50),
+                topLeft: Radius.circular(widget.topLeftSquare ? 0 : sqrt(_anim.value) * 10),
+                topRight: Radius.circular(widget.topRightSquare ? 0 : sqrt(_anim.value) * 10),
+                bottomLeft: Radius.circular(sqrt(_anim.value) * 10),
+                bottomRight: Radius.circular(sqrt(_anim.value) * 10),
               ),
               color: Theme.of(context).colorScheme.background,
             ),
@@ -94,8 +94,11 @@ class _ShrinkingViewState extends State<ShrinkingView> with SingleTickerProvider
               bottom: widget.safeAreaBottom,
               child: ClipRRect(
                 borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(sqrt(_anim.value) * 20),
-                    bottomRight: Radius.circular(sqrt(_anim.value) * 20)),
+                  topLeft: Radius.circular(widget.topLeftSquare ? 0 : sqrt(_anim.value) * 10),
+                  topRight: Radius.circular(widget.topRightSquare ? 0 : sqrt(_anim.value) * 10),
+                  bottomLeft: Radius.circular(sqrt(_anim.value) * 10),
+                  bottomRight: Radius.circular(sqrt(_anim.value) * 10),
+                ),
                 child: widget.child,
               ),
             ),

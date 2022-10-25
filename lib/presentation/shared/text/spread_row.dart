@@ -26,13 +26,16 @@ class SpreadRowText extends StatelessWidget {
         textAlign: TextAlign.right,
       );
 
-  Widget buildLeftText(BuildContext context) => Text(
-        leftText,
-        style: kBody.copyWith(
-          color: Theme.of(context).colorScheme.onSurface,
+  Widget buildLeftText(BuildContext context) => Expanded(
+        flex: 2,
+        child: Text(
+          leftText,
+          style: kBody.copyWith(
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
+          overflow: TextOverflow.ellipsis,
+          textAlign: TextAlign.left,
         ),
-        overflow: TextOverflow.ellipsis,
-        textAlign: TextAlign.left,
       );
 
   Widget buildContent(BuildContext context) => Padding(
@@ -55,7 +58,7 @@ class SpreadRowText extends StatelessWidget {
                   )
                 : Container(),
             const SizedBox(width: 15),
-            Expanded(
+            Flexible(
               child: buildRightText(context),
             ),
           ],

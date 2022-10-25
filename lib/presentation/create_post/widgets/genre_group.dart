@@ -11,8 +11,6 @@ class GenreGroup extends StatelessWidget {
         IntrinsicHeight(
           child: Row(
             children: const [
-              GenreTile(text: "General", isSelected: true),
-              SizedBox(width: 10),
               GenreTile(text: "Relationships"),
               SizedBox(width: 10),
               GenreTile(text: "Classes"),
@@ -23,9 +21,17 @@ class GenreGroup extends StatelessWidget {
         IntrinsicHeight(
           child: Row(
             children: const [
-              GenreTile(text: "Politics"),
+              GenreTile(text: "General", isSelected: true),
               SizedBox(width: 10),
               GenreTile(text: "Hot Takes"),
+            ],
+          ),
+        ),
+        const SizedBox(height: 10),
+        IntrinsicHeight(
+          child: Row(
+            children: const [
+              GenreTile(text: "Politics"),
               SizedBox(width: 10),
               GenreTile(text: "Wholesome"),
             ],

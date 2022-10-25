@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import '../../../constants/shared/enums.dart';
 import '../../../core/utils/numbers/is_plural.dart';
+import '../../shared/behaviours/init_scale.dart';
 
 class VoteTileSet extends StatelessWidget {
   const VoteTileSet({
@@ -65,6 +66,11 @@ class VoteTileSet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return animateTiles ? InitTransform(child: buildBody(context)) : buildBody(context);
+    return animateTiles
+        ? InitTransform(
+            magnitudeOfTransform: 50,
+            child: buildBody(context),
+          )
+        : buildBody(context);
   }
 }

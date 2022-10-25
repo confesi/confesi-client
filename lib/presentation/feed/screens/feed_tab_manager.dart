@@ -8,8 +8,8 @@ import '../../../core/styles/typography.dart';
 import '../../shared/layout/appbar.dart';
 import '../widgets/drawer.dart';
 import '../../shared/layout/top_tabs.dart';
-import 'recents_feed.dart';
-import 'trending_feed.dart';
+import '../tabs/recents_feed.dart';
+import '../tabs/trending_feed.dart';
 
 class ExploreHome extends StatefulWidget {
   const ExploreHome({Key? key}) : super(key: key);

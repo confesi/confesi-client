@@ -1,4 +1,5 @@
 import 'package:Confessi/constants/shared/error_messages.dart';
+import 'package:Confessi/presentation/shared/indicators/loading.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,8 +17,7 @@ class ExploreTrending extends StatefulWidget {
   State<ExploreTrending> createState() => _ExploreTrendingState();
 }
 
-class _ExploreTrendingState extends State<ExploreTrending>
-    with AutomaticKeepAliveClientMixin {
+class _ExploreTrendingState extends State<ExploreTrending> with AutomaticKeepAliveClientMixin {
   Widget _buildFeed(TrendingState state, TrendingCubit trendingCubit) {
     if (state is ErrorLoadingAny) {
       return Center(
@@ -31,7 +31,7 @@ class _ExploreTrendingState extends State<ExploreTrending>
     } else if (state is LoadingAll) {
       return Center(
         key: UniqueKey(),
-        child: const CupertinoActivityIndicator(radius: 12),
+        child: const LoadingIndicator(),
       );
     } else {
       final hasPosts = state as HasPosts;
@@ -55,8 +55,7 @@ class _ExploreTrendingState extends State<ExploreTrending>
         );
       },
       listenWhen: (previous, current) {
-        if (current is HasPosts &&
-            current.feedState == FeedState.errorRefreshing) {
+        if (current is HasPosts && current.feedState == FeedState.errorRefreshing) {
           return true;
         } else {
           return false;

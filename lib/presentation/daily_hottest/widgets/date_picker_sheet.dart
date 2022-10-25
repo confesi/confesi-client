@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../application/shared/cubit/scaffold_shrinker_cubit.dart';
 import '../../../core/styles/typography.dart';
-import '../layout/swipebar.dart';
+import '../../shared/layout/swipebar.dart';
 
 Future<dynamic> showDatePickerSheet(BuildContext context) async {
   context.read<ScaffoldShrinkerCubit>().setShrunk();
@@ -36,7 +36,7 @@ Future<dynamic> showDatePickerSheet(BuildContext context) async {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                     child: Text(
-                      "View the top confessions from any day.",
+                      "View top confessions from any day.",
                       style: kTitle.copyWith(
                         color: Theme.of(context).colorScheme.primary,
                       ),

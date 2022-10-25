@@ -71,8 +71,11 @@ class _ProfileHomeState extends State<ProfileHome> {
                       Transform.scale(
                         scale: (1 - extraHeight / 700) > .8 ? (1 - extraHeight / 700) : .8,
                         child: ClipRRect(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(40 + extraHeight / 7),
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(40 + extraHeight / 7),
+                            bottomRight: Radius.circular(40 + extraHeight / 7),
+                            topLeft: Radius.circular(extraHeight / 3),
+                            topRight: Radius.circular(extraHeight / 3),
                           ),
                           child: SizedBox(
                             height: heightFraction(context, .3),

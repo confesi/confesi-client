@@ -83,7 +83,7 @@ class _DetailsScreenState extends State<DetailsScreen> with AutomaticKeepAliveCl
                         children: [
                           const SizedBox(height: 15),
                           Text(
-                            "Select the genre",
+                            "Select genre",
                             style: kBody.copyWith(
                               color: Theme.of(context).colorScheme.primary,
                             ),
@@ -94,7 +94,7 @@ class _DetailsScreenState extends State<DetailsScreen> with AutomaticKeepAliveCl
                           const GenreGroup(),
                           const SizedBox(height: 25),
                           Text(
-                            "Auto-populated from account",
+                            "Auto-populated details",
                             style: kBody.copyWith(
                               color: Theme.of(context).colorScheme.primary,
                             ),

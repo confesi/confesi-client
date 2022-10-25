@@ -1,8 +1,7 @@
 import 'package:Confessi/presentation/create_post/screens/home.dart';
 import 'package:Confessi/presentation/daily_hottest/screens/home.dart';
 import 'package:Confessi/presentation/profile/screens/screen_obscuring_manager.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_border_radius.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_opacity.dart';
+import 'package:Confessi/presentation/shared/behaviours/shrinking_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,7 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/responsive/breakpoints.dart';
 import '../../../core/styles/typography.dart';
-import '../../feed/screens/home.dart';
+import '../../feed/screens/feed_tab_manager.dart';
 import '../../../application/shared/cubit/biometrics_cubit.dart';
 
 class HomeScreen extends StatefulWidget {
