@@ -1,8 +1,9 @@
-import 'package:flutter/cupertino.dart';
+import 'package:Confessi/constants/shared/enums.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
-import '../behaviours/touchable_opacity.dart';
+import '../button_touch_effects/touchable_opacity.dart';
+import '../indicators/loading.dart';
 
 class PopButton extends StatelessWidget {
   const PopButton(
@@ -38,18 +39,17 @@ class PopButton extends StatelessWidget {
       child: IgnorePointer(
         ignoring: loading ? true : false,
         child: TouchableOpacity(
+          tapType: TapType.lightImpact,
           onTap: () => onPress(),
           child: Container(
             width: double.infinity,
             decoration: BoxDecoration(
               color: backgroundColor,
-              borderRadius: const BorderRadius.all(
-                Radius.circular(10),
-              ),
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
               boxShadow: [
                 BoxShadow(
-                  color: backgroundColor.withOpacity(0.8),
-                  blurRadius: 20,
+                  color: backgroundColor.withOpacity(0.2),
+                  blurRadius: 5,
                   offset: const Offset(2, 2),
                 ),
               ],
@@ -65,19 +65,13 @@ class PopButton extends StatelessWidget {
                       child: Align(
                         alignment: justText ? Alignment.center : Alignment.centerLeft,
                         child: AnimatedSwitcher(
-                          duration: const Duration(milliseconds: 200),
-                          transitionBuilder: (Widget child, Animation<double> animation) =>
-                              FadeTransition(opacity: animation, child: child),
+                          duration: const Duration(milliseconds: 250),
                           child: loading
                               ? Padding(
-                                  padding: const EdgeInsets.only(top: 2),
-                                  child: CupertinoActivityIndicator(
-                                    radius: 10,
-                                    color: textColor,
-                                  ),
-                                )
+                                  padding: const EdgeInsets.only(top: 2), child: LoadingIndicator(color: textColor))
                               : Text(
                                   text,
+                                  textScaleFactor: 1,
                                   style: kTitle.copyWith(
                                     color: textColor,
                                   ),

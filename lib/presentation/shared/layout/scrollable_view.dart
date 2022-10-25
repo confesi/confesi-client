@@ -1,7 +1,7 @@
 import 'package:Confessi/presentation/shared/behaviours/overscroll.dart';
 import 'package:flutter/cupertino.dart';
 
-class ScrollableView extends StatelessWidget {
+class ScrollableView extends StatefulWidget {
   const ScrollableView({
     this.horizontalPadding = 0.0,
     required this.child,
@@ -9,6 +9,7 @@ class ScrollableView extends StatelessWidget {
     this.controller,
     this.keyboardDismiss = false,
     this.thumbVisible = true,
+    this.scrollDirection = Axis.vertical,
     Key? key,
   }) : super(key: key);
 
@@ -17,29 +18,40 @@ class ScrollableView extends StatelessWidget {
   final Widget child;
   final double horizontalPadding;
   final ScrollPhysics? physics;
+  final Axis scrollDirection;
   final ScrollController? controller;
+
+  @override
+  State<ScrollableView> createState() => _ScrollableViewState();
+}
+
+class _ScrollableViewState extends State<ScrollableView> {
+  ScrollNotification? lastScrollNotification;
 
   @override
   Widget build(BuildContext context) {
     return NotificationListener<ScrollNotification>(
       onNotification: (notification) {
-        if (keyboardDismiss && notification.metrics.pixels < -15) {
+        if (notification is UserScrollNotification &&
+            (lastScrollNotification == null || lastScrollNotification is ScrollStartNotification)) {
           FocusScope.of(context).unfocus();
         }
-        return true;
+        lastScrollNotification = notification;
+        return false;
       },
       child: CupertinoScrollbar(
-        thickness: thumbVisible ? 3.0 : 0.0,
-        thumbVisibility: thumbVisible ? null : false,
-        controller: controller,
+        thickness: widget.thumbVisible ? 3.0 : 0.0,
+        thumbVisibility: widget.thumbVisible ? null : false,
+        controller: widget.controller,
         child: ScrollConfiguration(
           behavior: NoOverScrollSplash(),
           child: SingleChildScrollView(
-            controller: controller,
-            physics: physics,
+            scrollDirection: widget.scrollDirection,
+            controller: widget.controller,
+            physics: widget.physics,
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-              child: child,
+              padding: EdgeInsets.symmetric(horizontal: widget.horizontalPadding),
+              child: widget.child,
             ),
           ),
         ),

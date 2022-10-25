@@ -5,17 +5,12 @@ import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
 import 'package:Confessi/presentation/shared/buttons/simple_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../application/shared/scaffold_shrinker_cubit.dart';
 import '../layout/swipebar.dart';
 
 // TODO: Make this sheet EASILY disable-able
 Future<dynamic> showFeedbackSheet(BuildContext context) {
-  bool anotherDialogIsUp =
-      context.read<ScaffoldShrinkerCubit>().state is Shrunk;
-  HapticFeedback.heavyImpact();
-  context.read<ScaffoldShrinkerCubit>().setShrunk();
+  HapticFeedback.lightImpact();
   return showModalBottomSheet(
     useRootNavigator: true,
     backgroundColor: Colors.transparent,
@@ -70,8 +65,7 @@ Future<dynamic> showFeedbackSheet(BuildContext context) {
                       SimpleTextButton(
                         infiniteWidth: true,
                         isErrorText: true,
-                        onTap: () =>
-                            print("NOT YET IMPLEMENTED"), // TODO: implement
+                        onTap: () => print("NOT YET IMPLEMENTED"), // TODO: implement
                         text: "Disable shake for feedback",
                       ),
                     ],
@@ -84,7 +78,5 @@ Future<dynamic> showFeedbackSheet(BuildContext context) {
       ),
     ),
     // If another dialog is NOT up already, then you can set scaffold back to being expanded. Else, don't, and let the other sheet deal with it.
-  ).whenComplete(() => !anotherDialogIsUp
-      ? context.read<ScaffoldShrinkerCubit>().setExpanded()
-      : null);
+  );
 }

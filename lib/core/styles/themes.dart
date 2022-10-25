@@ -17,7 +17,7 @@ class AppTheme {
       onError: Colors.white,
       background: Colors.white,
       onBackground: Color.fromARGB(255, 214, 214, 214),
-      surface: Color.fromARGB(255, 246, 246, 246),
+      surface: Color.fromARGB(255, 240, 239, 239),
       onSurface: Color.fromARGB(255, 147, 147, 147),
       shadow: Color.fromARGB(255, 231, 228, 228),
       primaryContainer: Color(0xfffde5b6), // Badge's light color.

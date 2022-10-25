@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
 
 import '../../../core/clients/http_client.dart';
 import '../../../core/results/exceptions.dart';
@@ -21,21 +20,17 @@ class FeedDatasource implements IFeedDatasource {
 
   FeedDatasource({required this.api});
   @override
-  Future<List<PostModel>> fetchRecents(
-      String lastSeenPostId, String token) async {
+  Future<List<PostModel>> fetchRecents(String lastSeenPostId, String token) async {
     // TODO: implement fetchDailyHottest
     throw UnimplementedError();
   }
 
   @override
   Future<List<Post>> fetchTrending(String lastSeenPostId, String token) async {
-    final response = await api.req(
-        true, Method.get, null, '/api/posts/trending',
+    final response = await api.req(true, Method.get, null, '/api/posts/trending',
         dummyData: true, dummyPath: 'api.posts.trending.json');
     if (response.statusCode == 200 || response.statusCode == 201) {
-      return (json.decode(response.body)['foundPosts'] as List)
-          .map((item) => PostModel.fromJson(item))
-          .toList();
+      return (json.decode(response.body)['foundPosts'] as List).map((item) => PostModel.fromJson(item)).toList();
     } else {
       throw ServerException();
     }

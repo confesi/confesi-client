@@ -1,8 +1,7 @@
 import 'package:Confessi/core/utils/numbers/add_commas_to_number.dart';
-import 'package:Confessi/presentation/shared/behaviours/overscroll.dart';
 import 'package:Confessi/presentation/shared/behaviours/shrinking_view.dart';
 import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
-import 'package:Confessi/presentation/shared/behaviours/touchable_opacity.dart';
+import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
 import 'package:Confessi/presentation/shared/text/spread_row.dart';
 import 'package:flutter/cupertino.dart';
@@ -47,7 +46,7 @@ class PostAdvancedDetailsScreen extends StatelessWidget {
       child: ThemedStatusBar(
         child: Scaffold(
           backgroundColor: Theme.of(context).colorScheme.background,
-          body: ShrinkingView(
+          body: SafeArea(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -69,7 +68,7 @@ class PostAdvancedDetailsScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 15),
                         Text(
                           'Quick stats',
                           style: kTitle.copyWith(
@@ -77,7 +76,7 @@ class PostAdvancedDetailsScreen extends StatelessWidget {
                           ),
                           textAlign: TextAlign.left,
                         ),
-                        const SizedBox(height: 7.5),
+                        const SizedBox(height: 5),
                         SpreadRowText(
                           leftText: 'Likes',
                           rightText: addCommasToNumber(likes),
@@ -96,13 +95,13 @@ class PostAdvancedDetailsScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 30),
                         Text(
-                          'About the poster',
+                          'About the confesser',
                           style: kTitle.copyWith(
                             color: Theme.of(context).colorScheme.primary,
                           ),
                           textAlign: TextAlign.left,
                         ),
-                        const SizedBox(height: 7.5),
+                        const SizedBox(height: 5),
                         SpreadRowText(
                           leftText: 'University (abbr.)',
                           rightText: university,
@@ -155,6 +154,7 @@ class PostAdvancedDetailsScreen extends StatelessWidget {
                             ),
                           ],
                         ),
+                        const SizedBox(height: 5),
                         SpreadRowText(
                           leftText: 'Post status',
                           rightText: moderationStatus,

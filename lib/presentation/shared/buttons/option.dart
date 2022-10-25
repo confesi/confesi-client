@@ -2,7 +2,7 @@ import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
-import '../behaviours/touchable_opacity.dart';
+import '../button_touch_effects/touchable_opacity.dart';
 
 class OptionButton extends StatelessWidget {
   const OptionButton({
@@ -29,7 +29,7 @@ class OptionButton extends StatelessWidget {
       },
       child: InitScale(
         child: Container(
-          width: MediaQuery.of(context).size.width / 4,
+          width: MediaQuery.of(context).size.width / 3,
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surface,
             borderRadius: const BorderRadius.all(
@@ -37,23 +37,19 @@ class OptionButton extends StatelessWidget {
             ),
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 15),
+            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
             child: Column(
               children: [
                 Icon(
                   icon,
                   size: 24,
-                  color: isRed
-                      ? Theme.of(context).colorScheme.error
-                      : Theme.of(context).colorScheme.primary,
+                  color: isRed ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.primary,
                 ),
                 const SizedBox(height: 10),
                 Text(
                   text,
                   style: kDetail.copyWith(
-                    color: isRed
-                        ? Theme.of(context).colorScheme.error
-                        : Theme.of(context).colorScheme.primary,
+                    color: isRed ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.primary,
                   ),
                   textAlign: TextAlign.center,
                   overflow: TextOverflow.ellipsis,

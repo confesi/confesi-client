@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class SwipebarLayout extends StatelessWidget {
-  const SwipebarLayout({Key? key}) : super(key: key);
+  const SwipebarLayout({Key? key, this.color}) : super(key: key);
+
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +14,7 @@ class SwipebarLayout extends StatelessWidget {
           width: 40,
           height: 4,
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.onBackground,
+            color: color ?? Theme.of(context).colorScheme.onBackground,
             borderRadius: const BorderRadius.all(
               Radius.circular(20),
             ),

@@ -1,4 +1,3 @@
-import 'package:Confessi/presentation/shared/behaviours/touchable_shrink.dart';
 import 'package:Confessi/presentation/shared/buttons/option.dart';
 import 'package:Confessi/presentation/feed/widgets/comment_header_text.dart';
 import 'package:Confessi/presentation/feed/widgets/slidable_section.dart';
@@ -10,8 +9,8 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import '../../../constants/feed/enums.dart';
 import '../../../constants/shared/enums.dart';
 import '../../../core/styles/typography.dart';
-import '../../shared/behaviours/touchable_opacity.dart';
-import '../../../constants/feed/general.dart';
+import '../../shared/button_touch_effects/touchable_opacity.dart';
+import '../../shared/button_touch_effects/touchable_shrink.dart';
 import '../../shared/overlays/button_options_sheet.dart';
 
 class CommentTile extends StatelessWidget {
@@ -96,8 +95,7 @@ class CommentTile extends StatelessWidget {
             icon: CupertinoIcons.hand_thumbsdown,
           ),
         ],
-        text:
-            'Tip: swiping horizontally, or long pressing on a comment brings up actions.',
+        text: 'Tip: swiping horizontally, or long pressing on a comment brings up actions.',
       );
 
   Widget addBars(BuildContext context) {
@@ -184,17 +182,14 @@ class CommentTile extends StatelessWidget {
                                 width: 36,
                                 height: 36,
                                 decoration: BoxDecoration(
-                                  color:
-                                      Theme.of(context).colorScheme.secondary,
+                                  color: Theme.of(context).colorScheme.secondary,
                                   shape: BoxShape.circle,
                                 ),
                                 child: Center(
                                   child: Icon(
                                     CupertinoIcons.flame,
                                     size: 15,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSecondary,
+                                    color: Theme.of(context).colorScheme.onSecondary,
                                   ),
                                 ),
                               ),
@@ -218,9 +213,7 @@ class CommentTile extends StatelessWidget {
                                     padding: const EdgeInsets.all(5),
                                     child: Icon(
                                       CupertinoIcons.ellipsis,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onBackground,
+                                      color: Theme.of(context).colorScheme.onBackground,
                                     ),
                                   ),
                                 ),

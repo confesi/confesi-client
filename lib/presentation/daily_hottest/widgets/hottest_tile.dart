@@ -61,12 +61,13 @@ class _HottestTileState extends State<HottestTile> {
             child: Column(
               children: [
                 AnimatedOpacity(
-                  duration: const Duration(milliseconds: 250),
+                  duration: const Duration(milliseconds: 450),
+                  curve: Curves.decelerate,
                   opacity: isSelected ? 1 : 0.75,
                   child: AnimatedContainer(
                     width: double.infinity,
-                    duration: const Duration(milliseconds: 250),
-                    curve: Curves.easeInOut,
+                    duration: const Duration(milliseconds: 450),
+                    curve: Curves.decelerate,
                     height: isSelected ? constraints.maxHeight : constraints.maxHeight * .8,
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.background,

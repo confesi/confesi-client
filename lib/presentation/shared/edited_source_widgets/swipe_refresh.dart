@@ -8,7 +8,6 @@ import 'dart:math' as math;
 import 'package:Confessi/presentation/shared/indicators/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 
 // The over-scroll distance that moves the indicator to its maximum
 // displacement, as a percentage of the scrollable's container extent.
@@ -225,8 +224,7 @@ class SwipeRefresh extends StatefulWidget {
 
 /// Contains the state for a [SwipeRefresh]. This class can be used to
 /// programmatically show the refresh indicator, see the [show] method.
-class SwipeRefreshState extends State<SwipeRefresh>
-    with TickerProviderStateMixin<SwipeRefresh> {
+class SwipeRefreshState extends State<SwipeRefresh> with TickerProviderStateMixin<SwipeRefresh> {
   late AnimationController _positionController;
   late AnimationController _scaleController;
   late Animation<double> _positionFactor;
@@ -239,20 +237,17 @@ class SwipeRefreshState extends State<SwipeRefresh>
   bool? _isIndicatorAtTop;
   double? _dragOffset;
 
-  static final Animatable<double> _threeQuarterTween =
-      Tween<double>(begin: 0.0, end: 0.75);
-  static final Animatable<double> _kDragSizeFactorLimitTween =
-      Tween<double>(begin: 0.0, end: _kDragSizeFactorLimit);
-  static final Animatable<double> _oneToZeroTween =
-      Tween<double>(begin: 1.0, end: 0.0);
+  static final Animatable<double> _threeQuarterTween = Tween<double>(begin: 0.0, end: 0.75);
+  static final Animatable<double> _kDragSizeFactorLimitTween = Tween<double>(begin: 0.0, end: _kDragSizeFactorLimit);
+  static final Animatable<double> _oneToZeroTween = Tween<double>(begin: 1.0, end: 0.0);
 
   @override
   void initState() {
     super.initState();
     _positionController = AnimationController(vsync: this);
     _positionFactor = _positionController.drive(_kDragSizeFactorLimitTween);
-    _value = _positionController.drive(
-        _threeQuarterTween); // The "value" of the circular progress indicator during a drag.
+    _value =
+        _positionController.drive(_threeQuarterTween); // The "value" of the circular progress indicator during a drag.
 
     _scaleController = AnimationController(vsync: this);
     _scaleFactor = _scaleController.drive(_oneToZeroTween);
@@ -299,15 +294,12 @@ class SwipeRefreshState extends State<SwipeRefresh>
     // If the notification.dragDetails is null, this scroll is not triggered by
     // user dragging. It may be a result of ScrollController.jumpTo or ballistic scroll.
     // In this case, we don't want to trigger the refresh indicator.
-    return ((notification is ScrollStartNotification &&
-                notification.dragDetails != null) ||
+    return ((notification is ScrollStartNotification && notification.dragDetails != null) ||
             (notification is ScrollUpdateNotification &&
                 notification.dragDetails != null &&
                 widget.triggerMode == RefreshIndicatorTriggerMode.anywhere)) &&
-        ((notification.metrics.axisDirection == AxisDirection.up &&
-                notification.metrics.extentAfter == 0.0) ||
-            (notification.metrics.axisDirection == AxisDirection.down &&
-                notification.metrics.extentBefore == 0.0)) &&
+        ((notification.metrics.axisDirection == AxisDirection.up && notification.metrics.extentAfter == 0.0) ||
+            (notification.metrics.axisDirection == AxisDirection.down && notification.metrics.extentBefore == 0.0)) &&
         _mode == null &&
         _start(notification.metrics.axisDirection);
   }
@@ -332,16 +324,12 @@ class SwipeRefreshState extends State<SwipeRefresh>
         break;
     }
     if (indicatorAtTopNow != _isIndicatorAtTop) {
-      if (_mode == _RefreshIndicatorMode.drag ||
-          _mode == _RefreshIndicatorMode.armed)
+      if (_mode == _RefreshIndicatorMode.drag || _mode == _RefreshIndicatorMode.armed)
         _dismiss(_RefreshIndicatorMode.canceled);
     } else if (notification is ScrollUpdateNotification) {
-      if (_mode == _RefreshIndicatorMode.drag ||
-          _mode == _RefreshIndicatorMode.armed) {
-        if ((notification.metrics.axisDirection == AxisDirection.down &&
-                notification.metrics.extentBefore > 0.0) ||
-            (notification.metrics.axisDirection == AxisDirection.up &&
-                notification.metrics.extentAfter > 0.0)) {
+      if (_mode == _RefreshIndicatorMode.drag || _mode == _RefreshIndicatorMode.armed) {
+        if ((notification.metrics.axisDirection == AxisDirection.down && notification.metrics.extentBefore > 0.0) ||
+            (notification.metrics.axisDirection == AxisDirection.up && notification.metrics.extentAfter > 0.0)) {
           _dismiss(_RefreshIndicatorMode.canceled);
         } else {
           if (notification.metrics.axisDirection == AxisDirection.down) {
@@ -352,16 +340,14 @@ class SwipeRefreshState extends State<SwipeRefresh>
           _checkDragOffset(notification.metrics.viewportDimension);
         }
       }
-      if (_mode == _RefreshIndicatorMode.armed &&
-          notification.dragDetails == null) {
+      if (_mode == _RefreshIndicatorMode.armed && notification.dragDetails == null) {
         // On iOS start the refresh when the Scrollable bounces back from the
         // overscroll (ScrollNotification indicating this don't have dragDetails
         // because the scroll activity is not directly triggered by a drag).
         _show();
       }
     } else if (notification is OverscrollNotification) {
-      if (_mode == _RefreshIndicatorMode.drag ||
-          _mode == _RefreshIndicatorMode.armed) {
+      if (_mode == _RefreshIndicatorMode.drag || _mode == _RefreshIndicatorMode.armed) {
         if (notification.metrics.axisDirection == AxisDirection.down) {
           _dragOffset = _dragOffset! - notification.overscroll;
         } else if (notification.metrics.axisDirection == AxisDirection.up) {
@@ -420,16 +406,11 @@ class SwipeRefreshState extends State<SwipeRefresh>
   }
 
   void _checkDragOffset(double containerExtent) {
-    assert(_mode == _RefreshIndicatorMode.drag ||
-        _mode == _RefreshIndicatorMode.armed);
-    double newValue =
-        _dragOffset! / (containerExtent * _kDragContainerExtentPercentage);
-    if (_mode == _RefreshIndicatorMode.armed)
-      newValue = math.max(newValue, 1.0 / _kDragSizeFactorLimit);
-    _positionController.value =
-        newValue.clamp(0.0, 1.0); // this triggers various rebuilds
-    if (_mode == _RefreshIndicatorMode.drag && _valueColor.value!.alpha == 0xFF)
-      _mode = _RefreshIndicatorMode.armed;
+    assert(_mode == _RefreshIndicatorMode.drag || _mode == _RefreshIndicatorMode.armed);
+    double newValue = _dragOffset! / (containerExtent * _kDragContainerExtentPercentage);
+    if (_mode == _RefreshIndicatorMode.armed) newValue = math.max(newValue, 1.0 / _kDragSizeFactorLimit);
+    _positionController.value = newValue.clamp(0.0, 1.0); // this triggers various rebuilds
+    if (_mode == _RefreshIndicatorMode.drag && _valueColor.value!.alpha == 0xFF) _mode = _RefreshIndicatorMode.armed;
   }
 
   // Stop showing the refresh indicator.
@@ -438,19 +419,16 @@ class SwipeRefreshState extends State<SwipeRefresh>
     // This can only be called from _show() when refreshing and
     // _handleScrollNotification in response to a ScrollEndNotification or
     // direction change.
-    assert(newMode == _RefreshIndicatorMode.canceled ||
-        newMode == _RefreshIndicatorMode.done);
+    assert(newMode == _RefreshIndicatorMode.canceled || newMode == _RefreshIndicatorMode.done);
     setState(() {
       _mode = newMode;
     });
     switch (_mode!) {
       case _RefreshIndicatorMode.done:
-        await _scaleController.animateTo(1.0,
-            duration: _kIndicatorScaleDuration);
+        await _scaleController.animateTo(1.0, duration: _kIndicatorScaleDuration);
         break;
       case _RefreshIndicatorMode.canceled:
-        await _positionController.animateTo(0.0,
-            duration: _kIndicatorScaleDuration);
+        await _positionController.animateTo(0.0, duration: _kIndicatorScaleDuration);
         break;
       case _RefreshIndicatorMode.armed:
       case _RefreshIndicatorMode.drag:
@@ -474,8 +452,7 @@ class SwipeRefreshState extends State<SwipeRefresh>
     _pendingRefreshFuture = completer.future;
     _mode = _RefreshIndicatorMode.snap;
     _positionController
-        .animateTo(1.0 / _kDragSizeFactorLimit,
-            duration: _kIndicatorSnapDuration)
+        .animateTo(1.0 / _kDragSizeFactorLimit, duration: _kIndicatorSnapDuration)
         .then<void>((void value) {
       if (mounted && _mode == _RefreshIndicatorMode.snap) {
         assert(widget.onRefresh != null);
@@ -526,8 +503,7 @@ class SwipeRefreshState extends State<SwipeRefresh>
   /// actual scroll view. It defaults to showing the indicator at the top. To
   /// show it at the bottom, set `atTop` to false.
   Future<void> show({bool atTop = true}) {
-    if (_mode != _RefreshIndicatorMode.refresh &&
-        _mode != _RefreshIndicatorMode.snap) {
+    if (_mode != _RefreshIndicatorMode.refresh && _mode != _RefreshIndicatorMode.snap) {
       if (_mode == null) _start(atTop ? AxisDirection.down : AxisDirection.up);
       _show();
     }
@@ -556,8 +532,7 @@ class SwipeRefreshState extends State<SwipeRefresh>
     }());
 
     final bool showIndeterminateIndicator =
-        _mode == _RefreshIndicatorMode.refresh ||
-            _mode == _RefreshIndicatorMode.done;
+        _mode == _RefreshIndicatorMode.refresh || _mode == _RefreshIndicatorMode.done;
 
     return Stack(
       children: <Widget>[
@@ -575,9 +550,7 @@ class SwipeRefreshState extends State<SwipeRefresh>
                 padding: _isIndicatorAtTop!
                     ? EdgeInsets.only(top: widget.displacement)
                     : EdgeInsets.only(bottom: widget.displacement),
-                alignment: _isIndicatorAtTop!
-                    ? Alignment.topCenter
-                    : Alignment.bottomCenter,
+                alignment: _isIndicatorAtTop! ? Alignment.topCenter : Alignment.bottomCenter,
                 child: ScaleTransition(
                   scale: _scaleFactor,
                   child: AnimatedBuilder(
@@ -586,24 +559,17 @@ class SwipeRefreshState extends State<SwipeRefresh>
                       return Container(
                         width: 40,
                         height: 40,
-                        margin: const EdgeInsets.all(
-                            15), // prevents shadow from being cut off.
+                        margin: const EdgeInsets.all(15), // prevents shadow from being cut off.
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
                             boxShadow: [
                               BoxShadow(
-                                color: widget.shadowColor ??
-                                    Theme.of(context)
-                                        .colorScheme
-                                        .shadow
-                                        .withOpacity(0.5),
+                                color: widget.shadowColor ?? Theme.of(context).colorScheme.shadow.withOpacity(0.5),
                                 blurRadius: 8,
                               ),
                             ],
-                            color: widget.backgroundColor ??
-                                Theme.of(context).colorScheme.background,
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(20))),
+                            color: widget.backgroundColor ?? Theme.of(context).colorScheme.background,
+                            borderRadius: const BorderRadius.all(Radius.circular(20))),
                         child: LoadingIndicator(
                           color: widget.color,
                         ),

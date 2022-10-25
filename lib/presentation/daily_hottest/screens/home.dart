@@ -1,7 +1,6 @@
-import 'package:Confessi/application/daily_hottest/hottest_cubit.dart';
+import 'package:Confessi/application/daily_hottest/cubit/hottest_cubit.dart';
 import 'package:Confessi/presentation/daily_hottest/widgets/hottest_tile.dart';
-import 'package:Confessi/presentation/shared/behaviours/shrinking_view.dart';
-import 'package:Confessi/presentation/shared/overlays/date_picker_sheet.dart';
+import 'package:Confessi/presentation/daily_hottest/widgets/date_picker_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,13 +21,11 @@ class HottestHome extends StatefulWidget {
   State<HottestHome> createState() => _HottestHomeState();
 }
 
-class _HottestHomeState extends State<HottestHome>
-    with AutomaticKeepAliveClientMixin {
+class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 
-  final PageController pageController =
-      PageController(viewportFraction: .9, initialPage: 0);
+  final PageController pageController = PageController(viewportFraction: .9, initialPage: 0);
 
   int currentIndex = 0;
 
@@ -59,8 +56,7 @@ class _HottestHomeState extends State<HottestHome>
               'comments': state.posts[currentIndex].comments,
               'year': state.posts[currentIndex].year,
               'university': state.posts[currentIndex].university,
-              'university_full_name':
-                  state.posts[currentIndex].universityFullName,
+              'university_full_name': state.posts[currentIndex].universityFullName,
               'postView': PostView.detailView
             },
           );
@@ -112,11 +108,11 @@ class _HottestHomeState extends State<HottestHome>
   @override
   Widget build(BuildContext context) {
     return ThemedStatusBar(
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: Theme.of(context).colorScheme.background,
-        body: ShrinkingView(
-          child: LayoutBuilder(
+      child: SafeArea(
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          backgroundColor: Theme.of(context).colorScheme.background,
+          body: LayoutBuilder(
             builder: (context, constraints) {
               return Container(
                   color: Theme.of(context).colorScheme.shadow,
@@ -128,15 +124,13 @@ class _HottestHomeState extends State<HottestHome>
                           AppbarLayout(
                             centerWidget: Text(
                               'Hottest Today',
-                              style: kTitle.copyWith(
-                                  color: Theme.of(context).colorScheme.primary),
+                              style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.center,
                             ),
                             rightIconVisible: true,
                             rightIcon: CupertinoIcons.chart_bar,
-                            rightIconOnPress: () => Navigator.of(context)
-                                .pushNamed('/hottest/leaderboard'),
+                            rightIconOnPress: () => Navigator.of(context).pushNamed('/hottest/leaderboard'),
                             leftIconVisible: true,
                             leftIcon: CupertinoIcons.calendar,
                             leftIconOnPress: () => showDatePickerSheet(context),

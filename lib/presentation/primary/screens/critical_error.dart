@@ -14,7 +14,7 @@ class CriticalErrorScreen extends StatelessWidget {
       onWillPop: () async => false,
       child: ThemedStatusBar(
         child: Scaffold(
-          backgroundColor: appearanceType(context) == Brightness.light
+          backgroundColor: appearanceBrightness(context) == Brightness.light
               ? AppTheme.classicLight.colorScheme.background
               : AppTheme.classicDark.colorScheme.background,
           body: SafeArea(
@@ -25,10 +25,11 @@ class CriticalErrorScreen extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      // TODO: Add sad, but branded, image here.
                       Text(
                         "So, something went really wrong...",
                         style: kTitle.copyWith(
-                          color: appearanceType(context) == Brightness.light
+                          color: appearanceBrightness(context) == Brightness.light
                               ? AppTheme.classicLight.colorScheme.primary
                               : AppTheme.classicDark.colorScheme.primary,
                         ),
@@ -36,9 +37,9 @@ class CriticalErrorScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 30),
                       Text(
-                        "We couldn't load your device's local preferences. Please try closing and re-opening the app, or contacting support.",
+                        "Usually, this is because your device couldn't load your account's preferences. Please try closing and re-opening the app, or contacting support.",
                         style: kBody.copyWith(
-                          color: appearanceType(context) == Brightness.light
+                          color: appearanceBrightness(context) == Brightness.light
                               ? AppTheme.classicLight.colorScheme.primary
                               : AppTheme.classicDark.colorScheme.primary,
                         ),

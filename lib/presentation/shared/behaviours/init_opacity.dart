@@ -8,18 +8,19 @@ class InitOpacity extends StatefulWidget {
     required this.child,
     this.defaultOpacity = 0.0,
     this.durationInMilliseconds = 1000,
+    this.delayDurationInMilliseconds,
   });
 
   final Widget child;
   final double defaultOpacity;
   final int durationInMilliseconds;
+  final int? delayDurationInMilliseconds;
 
   @override
   State<InitOpacity> createState() => InitOpacityState();
 }
 
-class InitOpacityState extends State<InitOpacity>
-    with SingleTickerProviderStateMixin {
+class InitOpacityState extends State<InitOpacity> with SingleTickerProviderStateMixin {
   late AnimationController _animController;
   late Animation _anim;
 
@@ -38,6 +39,9 @@ class InitOpacityState extends State<InitOpacity>
   }
 
   void startAnim() async {
+    if (widget.delayDurationInMilliseconds != null) {
+      await Future.delayed(Duration(milliseconds: widget.delayDurationInMilliseconds!));
+    }
     _animController.forward();
     _animController.addListener(() {
       setState(() {});

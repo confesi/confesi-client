@@ -7,7 +7,7 @@ class HeaderGroupText extends StatelessWidget {
     this.onSecondaryColors = true,
     this.multiLine = false,
     this.left = false,
-    this.spaceBetween = 5,
+    this.spaceBetween = 10,
     required this.header,
     required this.body,
     this.expandsTopText = false,
@@ -26,9 +26,10 @@ class HeaderGroupText extends StatelessWidget {
 
   Widget buildTopText(BuildContext context) => Text(
         header,
-        style: kDisplay.copyWith(
+        style: kSansSerifDisplay.copyWith(
           color: onSecondaryColors ? Theme.of(context).colorScheme.onSecondary : Theme.of(context).colorScheme.primary,
           fontSize: small ? 26 : 34,
+          height: 1.2,
         ),
         textAlign: left ? TextAlign.left : TextAlign.center,
         overflow: TextOverflow.ellipsis,

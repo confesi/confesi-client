@@ -1,28 +1,30 @@
-import 'package:Confessi/application/create_post/post_cubit.dart';
-import 'package:Confessi/application/shared/prefs_cubit.dart';
+import 'package:Confessi/application/create_post/cubit/post_cubit.dart';
 import 'package:Confessi/constants/enums_that_are_local_keys.dart';
-import 'package:Confessi/presentation/primary/widgets/onboarding_university_select.dart';
-import 'package:Confessi/presentation/feedback/screens/home.dart';
+import 'package:Confessi/constants/shared/dev.dart';
 import 'package:Confessi/presentation/primary/screens/splash.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'constants/shared/dev.dart';
-import 'application/shared/scaffold_shrinker_cubit.dart';
+import 'application/authentication_and_prefs/cubit/login_cubit.dart';
+import 'application/authentication_and_prefs/cubit/register_cubit.dart';
+import 'application/authentication_and_prefs/cubit/user_cubit.dart';
 import 'core/router/router.dart';
 import 'core/styles/themes.dart';
 import 'dependency_injection.dart';
-import 'application/authentication/authentication_cubit.dart';
-import 'presentation/primary/screens/onboarding_details.dart';
 
 void main() async {
   await init();
   WidgetsFlutterBinding.ensureInitialized();
   // Locks the application to portait mode (facing up).
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then(
-    (value) => runApp(MyApp(appRouter: sl())),
+    (value) => runApp(DevicePreview(
+      enabled: kDevicePreview, // Whether the device is in preview mode (allows previewing of app on different devices).
+      builder: (context) => MyApp(
+        appRouter: sl(),
+      ),
+    )),
   );
 }
 
@@ -75,38 +77,40 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
           lazy: false,
-          create: (context) => sl<AuthenticationCubit>()..silentlyAuthenticateUser(),
+          create: (context) => sl<UserCubit>()..silentlyAuthenticateUser(AuthenticationType.silent),
+        ),
+        BlocProvider(
+          lazy: false,
+          create: (context) => sl<LoginCubit>(),
+        ),
+        BlocProvider(
+          lazy: false,
+          create: (context) => sl<RegisterCubit>(),
         ),
         BlocProvider(
           lazy: false,
           create: (context) => sl<CreatePostCubit>(),
         ),
-        BlocProvider(
-          lazy: false,
-          create: (context) => sl<ScaffoldShrinkerCubit>(),
-        ),
-        BlocProvider(
-          lazy: false,
-          create: (context) => sl<PrefsCubit>()..loadInitialPrefsAndTokens(),
-        ),
       ],
       child: Builder(
         builder: (context) {
           return MaterialApp(
+            useInheritedMediaQuery: kDevicePreview,
             debugShowCheckedModeBanner: false,
             title: "Confesi",
             onGenerateRoute: appRouter.onGenerateRoute,
             theme: AppTheme.classicLight,
             darkTheme: AppTheme.classicDark,
-            themeMode: context.watch<PrefsCubit>().isLoaded
+            themeMode: context.watch<UserCubit>().localDataLoaded
                 ? getAppearance(
-                    context.watch<PrefsCubit>().prefs.appearanceEnum,
+                    context.watch<UserCubit>().stateAsUser.appearanceEnum,
                   )
                 : ThemeMode.system,
             builder: (BuildContext context, Widget? child) {
               final MediaQueryData data = MediaQuery.of(context);
               return MediaQuery(
-                data: data.copyWith(textScaleFactor: 1),
+                // data: data.copyWith(textScaleFactor: 1),
+                data: data,
                 child: child!,
               );
             },
@@ -115,7 +119,7 @@ class MyApp extends StatelessWidget {
             //     return const SplashScreen();
             //   },
             // ),
-            home: const SplashScreen(),
+            home: const SplashScreen(), // TODO: Change back to SplashScreen()
           );
         },
       ),

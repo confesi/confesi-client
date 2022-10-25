@@ -1,5 +1,6 @@
 import 'package:Confessi/presentation/shared/behaviours/overscroll.dart';
 import 'package:Confessi/presentation/feed/widgets/post_tile.dart';
+import 'package:Confessi/presentation/shared/indicators/loading.dart';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -28,8 +29,7 @@ class InfiniteScroll extends StatefulWidget {
   State<InfiniteScroll> createState() => _InfiniteScrollState();
 }
 
-class _InfiniteScrollState extends State<InfiniteScroll>
-    with SingleTickerProviderStateMixin {
+class _InfiniteScrollState extends State<InfiniteScroll> with SingleTickerProviderStateMixin {
   bool isRefreshing = false;
   late ScrollController scrollController;
   bool isLoading = false;
@@ -38,8 +38,7 @@ class _InfiniteScrollState extends State<InfiniteScroll>
   void initState() {
     scrollController = ScrollController();
     scrollController.addListener(() async {
-      if (scrollController.offset ==
-              scrollController.position.maxScrollExtent &&
+      if (scrollController.offset == scrollController.position.maxScrollExtent &&
           isLoading == false &&
           widget.feedState == FeedState.loadingMore) {
         isLoading = true;
@@ -83,9 +82,7 @@ class _InfiniteScrollState extends State<InfiniteScroll>
         itemBuilder: (context, index) {
           if (index < widget.items.length) {
             return Padding(
-              padding: index == 0
-                  ? const EdgeInsets.all(0)
-                  : const EdgeInsets.only(top: 16),
+              padding: index == 0 ? const EdgeInsets.all(0) : const EdgeInsets.only(top: 16),
               child: PostTile(
                 id: widget.items[index].id,
                 universityFullName: widget.items[index].universityFullName,
@@ -131,7 +128,7 @@ class _InfiniteScrollState extends State<InfiniteScroll>
           onTap: () => widget.onLoad(),
         );
       case FeedState.loadingMore:
-        return const CupertinoActivityIndicator(radius: 12);
+        return const LoadingIndicator();
       case FeedState.reachedEnd:
         return ErrorMessage(
           key: UniqueKey(),
@@ -170,8 +167,7 @@ class _InfiniteScrollState extends State<InfiniteScroll>
           await Future.delayed(const Duration(milliseconds: 400));
           _fetchMore();
         },
-        builder: (BuildContext context, Widget child,
-            IndicatorController controller) {
+        builder: (BuildContext context, Widget child, IndicatorController controller) {
           return AnimatedBuilder(
             animation: controller,
             builder: (BuildContext context, _) {
@@ -184,15 +180,12 @@ class _InfiniteScrollState extends State<InfiniteScroll>
                         color: Theme.of(context).colorScheme.shadow,
                         width: double.infinity,
                         height: controller.value * 80,
-                        child: FittedBox(
+                        child: const FittedBox(
                           alignment: Alignment.center,
                           fit: BoxFit.scaleDown,
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8),
-                            child: CupertinoActivityIndicator(
-                              radius: 12,
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
+                            padding: EdgeInsets.symmetric(vertical: 8),
+                            child: LoadingIndicator(),
                           ),
                         ),
                       );

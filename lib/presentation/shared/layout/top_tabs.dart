@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/styles/typography.dart';
-
 class TopTabs extends StatefulWidget {
   const TopTabs({
     required this.tabController,

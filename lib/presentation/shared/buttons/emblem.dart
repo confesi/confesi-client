@@ -1,15 +1,10 @@
-import 'package:Confessi/presentation/shared/behaviours/touchable_burst.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../behaviours/touchable_opacity.dart';
+import '../button_touch_effects/touchable_opacity.dart';
 
 class EmblemButton extends StatelessWidget {
   const EmblemButton(
-      {required this.backgroundColor,
-      required this.icon,
-      required this.onPress,
-      required this.iconColor,
-      Key? key})
+      {required this.backgroundColor, required this.icon, required this.onPress, required this.iconColor, Key? key})
       : super(key: key);
 
   final VoidCallback onPress;

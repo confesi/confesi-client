@@ -1,7 +1,5 @@
-import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
-import 'package:Confessi/presentation/shared/behaviours/touchable_opacity.dart';
+import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:Confessi/presentation/shared/indicators/loading.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
@@ -47,8 +45,7 @@ class LongButton extends StatelessWidget {
                               child: Text(
                                 "text",
                                 style: kBody.copyWith(
-                                  color:
-                                      Theme.of(context).colorScheme.onSecondary,
+                                  color: Theme.of(context).colorScheme.onSecondary,
                                 ),
                                 textAlign: TextAlign.center,
                                 overflow: TextOverflow.ellipsis,
@@ -56,8 +53,7 @@ class LongButton extends StatelessWidget {
                             ),
                             Center(
                               child: LoadingIndicator(
-                                color:
-                                    Theme.of(context).colorScheme.onSecondary,
+                                color: Theme.of(context).colorScheme.onSecondary,
                               ),
                             ),
                           ],
@@ -72,8 +68,7 @@ class LongButton extends StatelessWidget {
                             opacity: 0,
                             child: Center(
                               child: LoadingIndicator(
-                                color:
-                                    Theme.of(context).colorScheme.onSecondary,
+                                color: Theme.of(context).colorScheme.onSecondary,
                               ),
                             ),
                           ),
@@ -81,8 +76,7 @@ class LongButton extends StatelessWidget {
                             child: Text(
                               text,
                               style: kBody.copyWith(
-                                color:
-                                    Theme.of(context).colorScheme.onSecondary,
+                                color: Theme.of(context).colorScheme.onSecondary,
                               ),
                               textAlign: TextAlign.center,
                               overflow: TextOverflow.ellipsis,

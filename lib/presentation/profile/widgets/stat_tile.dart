@@ -1,7 +1,5 @@
 import 'package:Confessi/core/utils/numbers/large_number_formatter.dart';
-import 'package:Confessi/presentation/shared/behaviours/touchable_burst.dart';
-import 'package:Confessi/presentation/shared/behaviours/touchable_opacity.dart';
-import 'package:dartz/dartz.dart';
+import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
@@ -43,8 +41,7 @@ class StatTile extends StatelessWidget {
               child: Container(
                 // Transparent hitbox trick.
                 color: Colors.transparent,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 child: Column(
                   children: [
                     Text(
@@ -73,8 +70,7 @@ class StatTile extends StatelessWidget {
               child: Container(
                 // Transparent hitbox trick.
                 color: Colors.transparent,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 child: Column(
                   children: [
                     Text(
@@ -103,8 +99,7 @@ class StatTile extends StatelessWidget {
               child: Container(
                 // Transparent hitbox trick.
                 color: Colors.transparent,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 child: Column(
                   children: [
                     Text(

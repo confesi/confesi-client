@@ -1,13 +1,12 @@
 import 'package:Confessi/core/styles/typography.dart';
-import 'package:Confessi/core/utils/numbers/large_number_formatter.dart';
 import 'package:Confessi/presentation/feed/widgets/vote_tile.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_opacity.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants/shared/enums.dart';
 import '../../../core/utils/numbers/is_plural.dart';
+import '../../shared/behaviours/init_scale.dart';
 
 class VoteTileSet extends StatelessWidget {
   const VoteTileSet({
@@ -42,9 +41,7 @@ class VoteTileSet extends StatelessWidget {
           postView == PostView.feedView
               ? Expanded(
                   child: Text(
-                    isPlural(comments) == true
-                        ? "$comments comments"
-                        : "$comments comment",
+                    isPlural(comments) == true ? "$comments comments" : "$comments comment",
                     style: kDetail.copyWith(
                       color: Theme.of(context).colorScheme.onSurface,
                     ),
@@ -70,7 +67,10 @@ class VoteTileSet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return animateTiles
-        ? InitTransform(child: buildBody(context))
+        ? InitTransform(
+            magnitudeOfTransform: 50,
+            child: buildBody(context),
+          )
         : buildBody(context);
   }
 }

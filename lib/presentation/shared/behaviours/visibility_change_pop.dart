@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:Confessi/presentation/shared/behaviours/touchable_opacity.dart';
 import 'package:flutter/material.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -16,8 +15,7 @@ class VisibilityScale extends StatefulWidget {
   State<VisibilityScale> createState() => _VisibilityScaleState();
 }
 
-class _VisibilityScaleState extends State<VisibilityScale>
-    with SingleTickerProviderStateMixin {
+class _VisibilityScaleState extends State<VisibilityScale> with SingleTickerProviderStateMixin {
   late AnimationController _animController;
   late Animation _anim;
   late double randomAngle;

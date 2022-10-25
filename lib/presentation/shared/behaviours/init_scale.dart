@@ -19,8 +19,7 @@ class InitScale extends StatefulWidget {
   State<InitScale> createState() => InitScaleState();
 }
 
-class InitScaleState extends State<InitScale>
-    with SingleTickerProviderStateMixin {
+class InitScaleState extends State<InitScale> with SingleTickerProviderStateMixin {
   late AnimationController _animController;
   late Animation _anim;
 
@@ -41,8 +40,7 @@ class InitScaleState extends State<InitScale>
   void startAnim() async {
     widget.delayDurationInMilliseconds == 0
         ? null
-        : await Future.delayed(
-            Duration(milliseconds: widget.delayDurationInMilliseconds));
+        : await Future.delayed(Duration(milliseconds: widget.delayDurationInMilliseconds));
     _animController.forward();
     _animController.addListener(() {
       setState(() {});

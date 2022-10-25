@@ -1,6 +1,4 @@
-import 'package:Confessi/core/utils/sizing/width_fraction.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
-import 'package:Confessi/presentation/shared/behaviours/touchable_opacity.dart';
+import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -28,17 +26,20 @@ class SpreadRowText extends StatelessWidget {
         textAlign: TextAlign.right,
       );
 
-  Widget buildLeftText(BuildContext context) => Text(
-        leftText,
-        style: kBody.copyWith(
-          color: Theme.of(context).colorScheme.onSurface,
+  Widget buildLeftText(BuildContext context) => Expanded(
+        flex: 2,
+        child: Text(
+          leftText,
+          style: kBody.copyWith(
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
+          overflow: TextOverflow.ellipsis,
+          textAlign: TextAlign.left,
         ),
-        overflow: TextOverflow.ellipsis,
-        textAlign: TextAlign.left,
       );
 
   Widget buildContent(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 7.5),
+        padding: const EdgeInsets.symmetric(vertical: 5),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -57,7 +58,7 @@ class SpreadRowText extends StatelessWidget {
                   )
                 : Container(),
             const SizedBox(width: 15),
-            Expanded(
+            Flexible(
               child: buildRightText(context),
             ),
           ],

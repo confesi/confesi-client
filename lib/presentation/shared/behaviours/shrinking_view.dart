@@ -1,104 +1,113 @@
-import 'package:Confessi/application/shared/scaffold_shrinker_cubit.dart';
-import 'package:Confessi/core/curves/bounce_back.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'dart:math';
 
-class ShrinkingView extends StatefulWidget {
-  const ShrinkingView({
-    required this.child,
-    this.safeAreaBottom = true,
-    this.topLeftSquare = false,
-    this.topRightSquare = false,
-    this.safeAreaTop = true,
-    super.key,
-  });
+// import 'package:flutter/material.dart';
+// import 'package:flutter_bloc/flutter_bloc.dart';
 
-  final Widget child;
-  final bool safeAreaTop;
-  final bool safeAreaBottom;
-  final bool topLeftSquare;
-  final bool topRightSquare;
+// import '../../../application/shared/cubit/scaffold_shrinker_cubit.dart';
 
-  @override
-  State<ShrinkingView> createState() => _ShrinkingViewState();
-}
+// class ShrinkingView extends StatefulWidget {
+//   const ShrinkingView({
+//     required this.child,
+//     this.safeAreaBottom = true,
+//     this.topLeftSquare = false,
+//     this.topRightSquare = false,
+//     this.safeAreaTop = true,
+//     super.key,
+//   });
 
-class _ShrinkingViewState extends State<ShrinkingView> with SingleTickerProviderStateMixin {
-  late AnimationController _animController;
-  late Animation _anim;
+//   final Widget child;
+//   final bool safeAreaTop;
+//   final bool safeAreaBottom;
+//   final bool topLeftSquare;
+//   final bool topRightSquare;
 
-  @override
-  void initState() {
-    _animController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 250),
-      reverseDuration: const Duration(milliseconds: 150),
-    );
-    _anim = CurvedAnimation(
-      parent: _animController,
-      curve: Curves.decelerate,
-      reverseCurve: Curves.linear,
-    );
-    super.initState();
-  }
+//   @override
+//   State<ShrinkingView> createState() => _ShrinkingViewState();
+// }
 
-  void startAnim() async {
-    _animController.forward();
-    _animController.addListener(() {
-      setState(() {});
-    });
-  }
+// class _ShrinkingViewState extends State<ShrinkingView> with SingleTickerProviderStateMixin {
+//   late AnimationController _animController;
+//   late Animation _anim;
 
-  void reverseAnim() {
-    _animController.reverse();
-    _animController.addListener(() {
-      setState(() {});
-    });
-  }
+//   @override
+//   void initState() {
+//     _animController = AnimationController(
+//       vsync: this,
+//       duration: const Duration(milliseconds: 250),
+//       reverseDuration: const Duration(milliseconds: 150),
+//     );
+//     _anim = CurvedAnimation(
+//       parent: _animController,
+//       curve: Curves.decelerate,
+//       reverseCurve: Curves.linear,
+//     );
+//     super.initState();
+//   }
 
-  @override
-  void dispose() {
-    _animController.dispose();
-    super.dispose();
-  }
+//   void startAnim() async {
+//     _animController.forward();
+//     _animController.addListener(() {
+//       setState(() {});
+//     });
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocListener<ScaffoldShrinkerCubit, ScaffoldShrinkerState>(
-      listener: (context, state) {
-        if (state is Shrunk) {
-          startAnim();
-        } else if (state is Enlarged) {
-          reverseAnim();
-        }
-      },
-      child: Container(
-        color: Colors.black, // Theme.of(context).colorScheme.shadow
-        child: Transform.scale(
-          scale: -_anim.value * .03 + 1,
-          child: Transform.translate(
-            offset: Offset(0, _anim.value * MediaQuery.of(context).size.height * .055),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(widget.topLeftSquare ? 0 : _anim.value * 50),
-                    topRight: Radius.circular(widget.topRightSquare ? 0 : _anim.value * 50)),
-                color: Theme.of(context).colorScheme.background,
-              ),
-              child: SafeArea(
-                top: widget.safeAreaTop,
-                maintainBottomViewPadding: true,
-                bottom: widget.safeAreaBottom,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(_anim.value * 50), bottomRight: Radius.circular(_anim.value * 50)),
-                  child: widget.child,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
+//   void reverseAnim() {
+//     _animController.reverse();
+//     _animController.addListener(() {
+//       setState(() {});
+//     });
+//   }
+
+//   @override
+//   void dispose() {
+//     _animController.dispose();
+//     super.dispose();
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocListener<ScaffoldShrinkerCubit, ScaffoldShrinkerState>(
+//       listener: (context, state) {
+//         if (state is Shrunk) {
+//           startAnim();
+//         } else if (state is Enlarged) {
+//           reverseAnim();
+//         }
+//       },
+//       child: Container(
+//         color: Colors.black,
+//         child: Transform.translate(
+//           offset: Offset(0, _anim.value * 0),
+//           child: Transform.scale(
+//             scale: (1 - _anim.value * 0.00).toDouble(),
+//             child: Container(
+//               decoration: BoxDecoration(
+//                 borderRadius: BorderRadius.only(
+//                   topLeft: Radius.circular(widget.topLeftSquare ? 0 : sqrt(_anim.value) * 40),
+//                   topRight: Radius.circular(widget.topRightSquare ? 0 : sqrt(_anim.value) * 40),
+//                   bottomLeft: Radius.circular(sqrt(_anim.value) * 40),
+//                   bottomRight: Radius.circular(sqrt(_anim.value) * 40),
+//                 ),
+//                 color: Theme.of(context).colorScheme.background,
+//               ),
+//               child: SafeArea(
+//                 top: widget.safeAreaTop,
+//                 maintainBottomViewPadding: true,
+//                 bottom: widget.safeAreaBottom,
+//                 child: ClipRRect(
+//                   borderRadius: BorderRadius.only(
+//                     topLeft: Radius.circular(widget.topLeftSquare ? 0 : sqrt(_anim.value) * 10),
+//                     topRight: Radius.circular(widget.topRightSquare ? 0 : sqrt(_anim.value) * 10),
+//                     bottomLeft: Radius.circular(sqrt(_anim.value) * 10),
+//                     bottomRight: Radius.circular(sqrt(_anim.value) * 10),
+//                   ),
+//                   child: widget.child,
+//                 ),
+//               ),
+//             ),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }

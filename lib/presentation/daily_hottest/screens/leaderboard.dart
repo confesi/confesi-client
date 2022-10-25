@@ -1,14 +1,12 @@
 import 'dart:math';
 
 import 'package:Confessi/core/utils/numbers/is_plural.dart';
-import 'package:Confessi/core/utils/sizing/width_fraction.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
-import 'package:Confessi/presentation/shared/behaviours/shrinking_view.dart';
 import 'package:Confessi/presentation/shared/indicators/alert.dart';
 import 'package:Confessi/presentation/shared/indicators/loading.dart';
 import 'package:Confessi/presentation/shared/layout/appbar.dart';
 import 'package:Confessi/presentation/shared/layout/line.dart';
-import 'package:Confessi/application/daily_hottest/leaderboard_cubit.dart';
+import 'package:Confessi/application/daily_hottest/cubit/leaderboard_cubit.dart';
 import 'package:Confessi/presentation/daily_hottest/widgets/leaderboard_circle_tile.dart';
 import 'package:Confessi/presentation/daily_hottest/widgets/leaderboard_rectangle_tile.dart';
 import 'package:flutter/cupertino.dart';
@@ -32,8 +30,7 @@ class LeaderboardScreen extends StatelessWidget {
               child: LeaderboardCircleTile(
                 universityImagePath: data.rankings[1].universityImagePath,
                 minSize: 90,
-                placing:
-                    '${data.rankings[1].placing}${numberPostfix(data.rankings[1].placing)}',
+                placing: '${data.rankings[1].placing}${numberPostfix(data.rankings[1].placing)}',
                 universityFullName: data.rankings[1].universityFullName,
                 universityName: data.rankings[1].universityName,
                 points: isPlural(data.rankings[1].points)
@@ -47,8 +44,7 @@ class LeaderboardScreen extends StatelessWidget {
               child: LeaderboardCircleTile(
                 universityImagePath: data.rankings[0].universityImagePath,
                 minSize: 120,
-                placing:
-                    '${data.rankings[0].placing}${numberPostfix(data.rankings[0].placing)}',
+                placing: '${data.rankings[0].placing}${numberPostfix(data.rankings[0].placing)}',
                 universityFullName: data.rankings[0].universityFullName,
                 universityName: data.rankings[0].universityName,
                 points: isPlural(data.rankings[0].points)
@@ -62,8 +58,7 @@ class LeaderboardScreen extends StatelessWidget {
               child: LeaderboardCircleTile(
                 universityImagePath: data.rankings[2].universityImagePath,
                 minSize: 90,
-                placing:
-                    '${data.rankings[2].placing}${numberPostfix(data.rankings[2].placing)}',
+                placing: '${data.rankings[2].placing}${numberPostfix(data.rankings[2].placing)}',
                 universityFullName: data.rankings[2].universityFullName,
                 universityName: data.rankings[2].universityName,
                 points: isPlural(data.rankings[2].points)
@@ -118,8 +113,7 @@ class LeaderboardScreen extends StatelessWidget {
                                   points: isPlural(state.rankings[index].points)
                                       ? '${largeNumberFormatter(state.rankings[index].points)} pts'
                                       : '${largeNumberFormatter(state.rankings[index].points)} pt',
-                                  university:
-                                      state.rankings[index].universityFullName,
+                                  university: state.rankings[index].universityFullName,
                                 );
                               } else {
                                 return Container();
@@ -155,8 +149,8 @@ class LeaderboardScreen extends StatelessWidget {
     return ThemedStatusBar(
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
-        body: ShrinkingView(
-          safeAreaBottom: false,
+        body: SafeArea(
+          bottom: false,
           child: Container(
             color: Theme.of(context).colorScheme.shadow,
             child: Column(
@@ -165,15 +159,13 @@ class LeaderboardScreen extends StatelessWidget {
                   bottomBorder: false,
                   centerWidget: Text(
                     'University Leaderboard',
-                    style: kTitle.copyWith(
-                        color: Theme.of(context).colorScheme.primary),
+                    style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
                   ),
                   rightIcon: CupertinoIcons.info,
                   rightIconVisible: true,
-                  rightIconOnPress: () => showInfoSheet(
-                      context, kLeaderboardInfoHeader, kLeaderboardInfoBody),
+                  rightIconOnPress: () => showInfoSheet(context, kLeaderboardInfoHeader, kLeaderboardInfoBody),
                 ),
                 Expanded(
                   child: BlocBuilder<LeaderboardCubit, LeaderboardState>(

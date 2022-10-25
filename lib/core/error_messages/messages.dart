@@ -1,4 +1,4 @@
-import '../../constants/authentication/general.dart';
+import '../../constants/authentication_and_settings/general.dart';
 
 /// Base [ErrorMessages] class.
 ///

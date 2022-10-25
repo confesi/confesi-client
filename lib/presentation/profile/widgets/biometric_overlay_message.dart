@@ -1,15 +1,13 @@
 import 'package:Confessi/core/styles/typography.dart';
-import 'package:Confessi/core/utils/sizing/height_fraction.dart';
 import 'package:Confessi/core/utils/sizing/width_breakpoint_fraction.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_opacity.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../shared/buttons/animated_simple_text.dart';
-import '../../../application/shared/biometrics_cubit.dart';
+import '../../../application/profile/cubit/biometrics_cubit.dart';
 
 class BiometricOverlayMessage extends StatelessWidget {
   const BiometricOverlayMessage({
@@ -41,16 +39,14 @@ class BiometricOverlayMessage extends StatelessWidget {
           width: widthBreakpointFraction(context, .3, 350),
           child: Text(
             "Authenticate with biometrics to access your private profile.", // Allow no password, auto-password, or default
-            style:
-                kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
+            style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
             textAlign: TextAlign.center,
           ),
         ),
         const SizedBox(height: 30),
         AnimatedSimpleTextButton(
           useSecondaryColors: true,
-          onTap: () =>
-              context.read<BiometricsCubit>().authenticateWithBiometrics(),
+          onTap: () => context.read<BiometricsCubit>().authenticateWithBiometrics(),
           text: message,
         ),
       ],

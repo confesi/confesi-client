@@ -1,9 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 
 import '../../../core/styles/typography.dart';
-import '../behaviours/touchable_opacity.dart';
+import '../button_touch_effects/touchable_opacity.dart';
 
 class ActionButton extends StatelessWidget {
   const ActionButton({
@@ -45,9 +43,8 @@ class ActionButton extends StatelessWidget {
             children: [
               AnimatedSwitcher(
                 duration: const Duration(milliseconds: 250),
-                transitionBuilder:
-                    (Widget child, Animation<double> animation) =>
-                        FadeTransition(opacity: animation, child: child),
+                transitionBuilder: (Widget child, Animation<double> animation) =>
+                    FadeTransition(opacity: animation, child: child),
                 child: SizedBox(
                   key: UniqueKey(),
                   width: 20,
@@ -59,15 +56,13 @@ class ActionButton extends StatelessWidget {
                             height: 14,
                             child: CircularProgressIndicator(
                               strokeWidth: 2.5,
-                              color: iconColor ??
-                                  Theme.of(context).colorScheme.onPrimary,
+                              color: iconColor ?? Theme.of(context).colorScheme.onPrimary,
                             ),
                           ),
                         )
                       : Icon(
                           icon,
-                          color: iconColor ??
-                              Theme.of(context).colorScheme.onPrimary,
+                          color: iconColor ?? Theme.of(context).colorScheme.onPrimary,
                           size: 20,
                         ),
                 ),
@@ -77,9 +72,7 @@ class ActionButton extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 3, top: 4),
                 child: Text(
                   text,
-                  style: kBody.copyWith(
-                      color:
-                          textColor ?? Theme.of(context).colorScheme.onPrimary),
+                  style: kBody.copyWith(color: textColor ?? Theme.of(context).colorScheme.onPrimary),
                 ),
               ),
             ],
