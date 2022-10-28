@@ -27,35 +27,32 @@ class OptionButton extends StatelessWidget {
         popContext ? Navigator.pop(context) : null;
         onTap();
       },
-      child: InitScale(
-        child: Container(
-          width: MediaQuery.of(context).size.width / 3,
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surface,
-            borderRadius: const BorderRadius.all(
-              Radius.circular(20),
-            ),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-            child: Column(
-              children: [
-                Icon(
-                  icon,
-                  size: 24,
-                  color: isRed ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.primary,
-                ),
-                const SizedBox(height: 10),
-                Text(
+      child: Container(
+        width: double.infinity,
+        // Transparent hitbox trick.
+        color: Colors.transparent,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Icon(
+                icon,
+                color: isRed ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.primary,
+              ),
+              const SizedBox(width: 15),
+              Expanded(
+                child: Text(
                   text,
-                  style: kDetail.copyWith(
+                  style: kBody.copyWith(
                     color: isRed ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.primary,
                   ),
-                  textAlign: TextAlign.center,
+                  textAlign: TextAlign.left,
                   overflow: TextOverflow.ellipsis,
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
