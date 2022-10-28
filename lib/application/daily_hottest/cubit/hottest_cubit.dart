@@ -14,7 +14,8 @@ class HottestCubit extends Cubit<HottestState> {
 
   HottestCubit({required this.posts}) : super(Loading());
 
-  Future<void> loadPosts() async {
+  Future<void> loadPosts(DateTime dateToLoad) async {
+    print("called with datetime: $dateToLoad");
     if (state is Error) {
       final error = state as Error;
       emit(Error(message: error.message, retryingAfterError: true));
@@ -28,7 +29,7 @@ class HottestCubit extends Cubit<HottestState> {
         emit(Error(message: failureToMessage(failure)));
       },
       (posts) {
-        emit(Data(posts: posts));
+        emit(Data(posts: posts, date: dateToLoad));
       },
     );
   }

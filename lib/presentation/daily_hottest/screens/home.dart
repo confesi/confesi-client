@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../constants/daily_hottest/general.dart';
 import '../../../constants/shared/enums.dart';
 import '../../../core/styles/typography.dart';
+import '../../../core/utils/dates/human_readable_datetime.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/indicators/alert.dart';
 import '../../shared/indicators/loading.dart';
@@ -99,7 +100,7 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
         child: AlertIndicator(
           isLoading: error.retryingAfterError,
           message: error.message,
-          onPress: () => context.read<HottestCubit>().loadPosts(),
+          onPress: () => context.read<HottestCubit>().loadPosts(DateTime.now()),
         ),
       );
     }
@@ -109,48 +110,59 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
   Widget build(BuildContext context) {
     return ThemedStatusBar(
       child: SafeArea(
-        child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          backgroundColor: Theme.of(context).colorScheme.background,
-          body: LayoutBuilder(
-            builder: (context, constraints) {
-              return Container(
-                  color: Theme.of(context).colorScheme.shadow,
-                  child: SingleChildScrollView(
-                    child: SizedBox(
-                      height: constraints.maxHeight,
-                      child: Column(
-                        children: [
-                          AppbarLayout(
-                            centerWidget: Text(
-                              'Hottest Today',
-                              style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                            ),
-                            rightIconVisible: true,
-                            rightIcon: CupertinoIcons.chart_bar,
-                            rightIconOnPress: () => Navigator.of(context).pushNamed('/hottest/leaderboard'),
-                            leftIconVisible: true,
-                            leftIcon: CupertinoIcons.calendar,
-                            leftIconOnPress: () => showDatePickerSheet(context),
-                          ),
-                          Expanded(
-                            child: BlocBuilder<HottestCubit, HottestState>(
+        child: BlocListener<HottestCubit, HottestState>(
+          listener: (context, state) {
+            setState(() {
+              currentIndex = 0; // To ensure the hottest tiles build and expand properly
+            });
+          },
+          child: Scaffold(
+            resizeToAvoidBottomInset: false,
+            backgroundColor: Theme.of(context).colorScheme.background,
+            body: LayoutBuilder(
+              builder: (context, constraints) {
+                return Container(
+                    color: Theme.of(context).colorScheme.shadow,
+                    child: SingleChildScrollView(
+                      child: SizedBox(
+                        height: constraints.maxHeight,
+                        child: Column(
+                          children: [
+                            BlocBuilder<HottestCubit, HottestState>(
                               builder: (context, state) {
-                                return AnimatedSwitcher(
-                                  duration: const Duration(milliseconds: 200),
-                                  child: buildChild(context, state),
+                                return AppbarLayout(
+                                  centerWidget: Text(
+                                    state is Data ? "Hottest from ${humanReadableDatetime(state.date)}" : "Loading...",
+                                    style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
+                                    overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  rightIconVisible: true,
+                                  rightIcon: CupertinoIcons.chart_bar,
+                                  rightIconOnPress: () => Navigator.of(context).pushNamed('/hottest/leaderboard'),
+                                  leftIconVisible: true,
+                                  leftIcon: CupertinoIcons.calendar,
+                                  leftIconOnPress: () => showDatePickerSheet(context),
                                 );
                               },
-                              // listenWhen: ,
                             ),
-                          ),
-                        ],
+                            Expanded(
+                              child: BlocBuilder<HottestCubit, HottestState>(
+                                builder: (context, state) {
+                                  return AnimatedSwitcher(
+                                    duration: const Duration(milliseconds: 200),
+                                    child: buildChild(context, state),
+                                  );
+                                },
+                                // listenWhen: ,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ));
-            },
+                    ));
+              },
+            ),
           ),
         ),
       ),

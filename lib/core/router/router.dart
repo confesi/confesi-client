@@ -85,10 +85,6 @@ class AppRouter {
               ),
               BlocProvider(
                 lazy: false,
-                create: (context) => sl<HottestCubit>()..loadPosts(),
-              ),
-              BlocProvider(
-                lazy: false,
                 create: (context) => sl<BiometricsCubit>(),
               ),
             ],

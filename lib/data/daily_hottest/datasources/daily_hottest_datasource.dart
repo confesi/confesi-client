@@ -18,11 +18,9 @@ class DailyHottestDatasource implements IDailyHottestDatasource {
   @override
   Future<List<Post>> fetchPosts() async {
     final response = await api.req(true, Method.get, null, '/api/posts/hottest',
-        dummyData: true, dummyPath: 'api.posts.hottest.json');
+        dummyData: true, dummyPath: 'api.posts.hottest.json', dummyDelay: const Duration(milliseconds: 500));
     if (response.statusCode == 200 || response.statusCode == 201) {
-      return (json.decode(response.body)['posts'] as List)
-          .map((item) => PostModel.fromJson(item))
-          .toList();
+      return (json.decode(response.body)['posts'] as List).map((item) => PostModel.fromJson(item)).toList();
     } else {
       throw ServerException();
     }

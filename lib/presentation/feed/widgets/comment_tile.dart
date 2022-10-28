@@ -76,11 +76,6 @@ class CommentTile extends StatelessWidget {
           ),
           OptionButton(
             onTap: () => print('tap'),
-            text: '195',
-            icon: CupertinoIcons.hand_thumbsup,
-          ),
-          OptionButton(
-            onTap: () => print('tap'),
             text: 'Share',
             icon: CupertinoIcons.share,
           ),
@@ -88,6 +83,11 @@ class CommentTile extends StatelessWidget {
             onTap: () => print('tap'),
             text: 'Reply',
             icon: CupertinoIcons.arrowshape_turn_up_right,
+          ),
+          OptionButton(
+            onTap: () => print('tap'),
+            text: '195',
+            icon: CupertinoIcons.hand_thumbsup,
           ),
           OptionButton(
             onTap: () => print('tap'),

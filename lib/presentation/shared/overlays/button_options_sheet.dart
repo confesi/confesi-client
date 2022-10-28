@@ -41,7 +41,10 @@ Future<dynamic> showButtonOptionsSheet(BuildContext context, List<OptionButton> 
                   ScrollableView(
                     thumbVisible: false,
                     child: Column(
-                      children: buttons,
+                      children: [
+                        ...buttons,
+                        OptionButton(onTap: () => {}, text: "Cancel", icon: CupertinoIcons.xmark, isRed: true),
+                      ],
                     ),
                   ),
                 ],

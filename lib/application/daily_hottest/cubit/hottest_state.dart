@@ -23,9 +23,10 @@ class Error extends HottestState {
 /// Success loading page, it now has data to display.
 class Data extends HottestState {
   final List<Post> posts;
+  final DateTime date;
 
-  Data({required this.posts});
+  Data({required this.posts, required this.date});
 
   @override
-  List<Object?> get props => [posts];
+  List<Object?> get props => [posts, date];
 }
