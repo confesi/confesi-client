@@ -19,36 +19,38 @@ Future<dynamic> showButtonOptionsSheet(BuildContext context, List<OptionButton> 
     backgroundColor: Colors.transparent,
     barrierColor: Colors.black.withOpacity(0.7),
     context: context,
-    // Optionally, you can change this BorderRadius... it's kinda preference.
     builder: (context) => Column(
       mainAxisAlignment: MainAxisAlignment.end,
       mainAxisSize: MainAxisSize.min,
       children: [
-        ClipRRect(
-          borderRadius: const BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
+        Container(
+          padding: EdgeInsets.only(bottom: bottomSafeArea(context)),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.background,
+          ),
           child: Container(
-            padding: EdgeInsets.only(bottom: bottomSafeArea(context)),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.background,
-            ),
-            child: Container(
-              constraints: const BoxConstraints(minHeight: 200),
-              width: double.infinity,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const SwipebarLayout(),
-                  ScrollableView(
-                    thumbVisible: false,
-                    child: Column(
-                      children: [
-                        ...buttons,
-                        OptionButton(onTap: () => {}, text: "Cancel", icon: CupertinoIcons.xmark, isRed: true),
-                      ],
-                    ),
+            constraints: const BoxConstraints(minHeight: 200),
+            width: double.infinity,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SwipebarLayout(),
+                ScrollableView(
+                  thumbVisible: false,
+                  child: Column(
+                    children: [
+                      ...buttons,
+                      OptionButton(
+                        onTap: () => {},
+                        text: "Cancel",
+                        icon: CupertinoIcons.xmark,
+                        isRed: true,
+                        centered: true,
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),

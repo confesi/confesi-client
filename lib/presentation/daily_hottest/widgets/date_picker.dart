@@ -32,7 +32,7 @@ class _DatePickerState extends State<DatePicker> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
             child: Text(
-              "View top confessions from any day.",
+              "View top confessions from the past.",
               style: kTitle.copyWith(
                 color: Theme.of(context).colorScheme.primary,
               ),

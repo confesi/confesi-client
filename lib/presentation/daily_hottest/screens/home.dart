@@ -1,4 +1,6 @@
 import 'package:Confessi/application/daily_hottest/cubit/hottest_cubit.dart';
+import 'package:Confessi/core/extensions/dates/two_dates_same.dart';
+import 'package:Confessi/core/extensions/dates/readable_date_format.dart';
 import 'package:Confessi/presentation/daily_hottest/widgets/hottest_tile.dart';
 import 'package:Confessi/presentation/daily_hottest/widgets/date_picker_sheet.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,7 +11,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../constants/daily_hottest/general.dart';
 import '../../../constants/shared/enums.dart';
 import '../../../core/styles/typography.dart';
-import '../../../core/utils/dates/human_readable_datetime.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/indicators/alert.dart';
 import '../../shared/indicators/loading.dart';
@@ -132,7 +133,11 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
                               builder: (context, state) {
                                 return AppbarLayout(
                                   centerWidget: Text(
-                                    state is Data ? "Hottest from ${humanReadableDatetime(state.date)}" : "Loading...",
+                                    state is Data
+                                        ? state.date.isSameDate(DateTime.now())
+                                            ? "Hottest Today"
+                                            : "Hottest of ${state.date.readableDateFormat()}"
+                                        : "Loading...",
                                     style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
                                     overflow: TextOverflow.ellipsis,
                                     textAlign: TextAlign.center,

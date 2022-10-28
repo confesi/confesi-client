@@ -11,9 +11,11 @@ class OptionButton extends StatelessWidget {
     required this.text,
     required this.icon,
     this.isRed = false,
+    this.centered = false,
     Key? key,
   }) : super(key: key);
 
+  final bool centered;
   final bool popContext;
   final String text;
   final IconData icon;
@@ -37,18 +39,20 @@ class OptionButton extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Icon(
-                icon,
-                color: isRed ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.primary,
-              ),
-              const SizedBox(width: 15),
+              centered
+                  ? Container()
+                  : Icon(
+                      icon,
+                      color: isRed ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.primary,
+                    ),
+              centered ? Container() : const SizedBox(width: 15),
               Expanded(
                 child: Text(
                   text,
                   style: kBody.copyWith(
                     color: isRed ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.primary,
                   ),
-                  textAlign: TextAlign.left,
+                  textAlign: centered ? TextAlign.center : TextAlign.left,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),

@@ -4,16 +4,14 @@ import 'package:Confessi/data/daily_hottest/repositories/daily_hottest_repositor
 import 'package:Confessi/domain/shared/entities/post.dart';
 import 'package:dartz/dartz.dart';
 
-import '../../../core/usecases/no_params.dart';
-
-class Posts implements Usecase<List<Post>, NoParams> {
+class Posts implements Usecase<List<Post>, DateTime> {
   final DailyHottestRepository repository;
 
   Posts({required this.repository});
 
   @override
-  Future<Either<Failure, List<Post>>> call(NoParams noParams) async {
-    final rankings = await repository.fetchPosts();
+  Future<Either<Failure, List<Post>>> call(DateTime date) async {
+    final rankings = await repository.fetchPosts(date);
     return rankings.fold(
       (failure) => Left(failure),
       (rankings) => Right(rankings),

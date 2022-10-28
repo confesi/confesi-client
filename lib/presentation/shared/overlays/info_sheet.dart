@@ -22,7 +22,6 @@ Future<dynamic> showInfoSheet(BuildContext context, String header, String body) 
       padding: const EdgeInsets.only(bottom: 15),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.background,
-        borderRadius: const BorderRadius.all(Radius.circular(15)),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
