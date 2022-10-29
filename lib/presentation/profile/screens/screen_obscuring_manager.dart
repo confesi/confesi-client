@@ -5,6 +5,7 @@ import 'package:Confessi/core/styles/typography.dart';
 import 'package:Confessi/core/utils/sizing/height_fraction.dart';
 import 'package:Confessi/presentation/profile/screens/home.dart';
 import 'package:Confessi/presentation/profile/widgets/biometric_overlay_message.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_opacity.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:Confessi/presentation/shared/overlays/notification_chip.dart';
 import 'package:Confessi/presentation/shared/overlays/snackbar.dart';
@@ -70,24 +71,12 @@ class _ScreenObscuringManagerState extends State<ScreenObscuringManager> with Wi
                   child: Container(
                     color: Theme.of(context).colorScheme.background,
                     child: SafeArea(
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              CupertinoIcons.lock,
-                              color: Theme.of(context).colorScheme.onBackground.withOpacity(0.2),
-                              size: 150,
-                            ),
-                            const SizedBox(height: 15),
-                            Text(
-                              "Tap to authenticate",
-                              style: kTitle.copyWith(
-                                color: Theme.of(context).colorScheme.onBackground.withOpacity(0.2),
-                              ),
-                            )
-                          ],
+                      child: Center(
+                        child: Text(
+                          "Tap to authenticate",
+                          style: kTitle.copyWith(
+                            color: Theme.of(context).colorScheme.onBackground.withOpacity(1),
+                          ),
                         ),
                       ),
                     ),

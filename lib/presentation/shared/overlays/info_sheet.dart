@@ -40,21 +40,19 @@ Future<dynamic> showInfoSheet(BuildContext context, String header, String body) 
             child: ScrollableView(
               horizontalPadding: 30,
               child: InitOpacity(
-                child: InitTransform(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        body,
-                        style: kBody.copyWith(
-                          color: Theme.of(context).colorScheme.onSurface,
-                        ),
-                        textAlign: TextAlign.justify,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      body,
+                      style: kBody.copyWith(
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
-                      const SizedBox(height: 45),
-                    ],
-                  ),
+                      textAlign: TextAlign.justify,
+                    ),
+                    const SizedBox(height: 45),
+                  ],
                 ),
               ),
             ),
