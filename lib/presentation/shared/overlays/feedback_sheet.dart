@@ -10,7 +10,6 @@ import '../layout/swipebar.dart';
 
 // TODO: Make this sheet EASILY disable-able
 Future<dynamic> showFeedbackSheet(BuildContext context) {
-  HapticFeedback.lightImpact();
   return showModalBottomSheet(
     useRootNavigator: true,
     backgroundColor: Colors.transparent,

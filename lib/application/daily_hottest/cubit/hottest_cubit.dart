@@ -14,21 +14,21 @@ class HottestCubit extends Cubit<HottestState> {
 
   HottestCubit({required this.posts}) : super(Loading());
 
-  Future<void> loadPosts() async {
+  Future<void> loadPosts(DateTime dateToLoad) async {
     if (state is Error) {
       final error = state as Error;
       emit(Error(message: error.message, retryingAfterError: true));
     } else {
       emit(Loading());
     }
-    final failureOrRankings = await posts(NoParams());
+    final failureOrRankings = await posts(dateToLoad);
     if (isClosed) return;
     failureOrRankings.fold(
       (failure) {
         emit(Error(message: failureToMessage(failure)));
       },
       (posts) {
-        emit(Data(posts: posts));
+        emit(Data(posts: posts, date: dateToLoad));
       },
     );
   }

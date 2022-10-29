@@ -1,5 +1,6 @@
 import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../../core/styles/typography.dart';
 import '../button_touch_effects/touchable_opacity.dart';
@@ -11,9 +12,11 @@ class OptionButton extends StatelessWidget {
     required this.text,
     required this.icon,
     this.isRed = false,
+    this.centered = false,
     Key? key,
   }) : super(key: key);
 
+  final bool centered;
   final bool popContext;
   final String text;
   final IconData icon;
@@ -22,37 +25,53 @@ class OptionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TouchableOpacity(
-      onTap: () {
-        popContext ? Navigator.pop(context) : null;
-        onTap();
-      },
-      child: InitScale(
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: Colors.transparent,
+        border: centered
+            ? null
+            : Border(
+                // top: BorderSide(
+                //   color: Theme.of(context).colorScheme.onBackground,
+                //   width: 0.25,
+                // ),
+                bottom: BorderSide(
+                  color: Theme.of(context).colorScheme.onBackground,
+                  width: 0.25,
+                ),
+              ),
+      ),
+      child: TouchableOpacity(
+        onTap: () {
+          popContext ? Navigator.pop(context) : null;
+          onTap();
+        },
         child: Container(
-          width: MediaQuery.of(context).size.width / 3,
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surface,
-            borderRadius: const BorderRadius.all(
-              Radius.circular(20),
-            ),
-          ),
+          // Transparent hitbox trick.
+          color: Colors.transparent,
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-            child: Column(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Icon(
-                  icon,
-                  size: 24,
-                  color: isRed ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.primary,
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  text,
-                  style: kDetail.copyWith(
-                    color: isRed ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.primary,
+                centered
+                    ? Container()
+                    : Icon(
+                        icon,
+                        color: isRed ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.primary,
+                      ),
+                centered ? Container() : const SizedBox(width: 15),
+                Expanded(
+                  child: Text(
+                    text,
+                    style: kBody.copyWith(
+                      color: isRed ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.primary,
+                    ),
+                    textAlign: centered ? TextAlign.center : TextAlign.left,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  textAlign: TextAlign.center,
-                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),

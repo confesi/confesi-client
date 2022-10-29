@@ -1,107 +1,31 @@
-import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
-import 'package:Confessi/presentation/shared/buttons/animated_simple_text.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:Confessi/presentation/daily_hottest/widgets/date_picker.dart';
 
-import '../../../core/styles/typography.dart';
+import 'package:flutter/material.dart';
+
 import '../../../core/utils/sizing/bottom_safe_area.dart';
 import '../../shared/layout/swipebar.dart';
 
 Future<dynamic> showDatePickerSheet(BuildContext context) async {
-  HapticFeedback.lightImpact();
   return showModalBottomSheet(
-    barrierColor: Colors.black.withOpacity(0.7),
+    barrierColor: Colors.black.withOpacity(0.9),
     backgroundColor: Colors.transparent,
     context: context,
-    builder: (context) => Padding(
-      padding: EdgeInsets.only(left: 20, right: 20, top: 20, bottom: bottomSafeArea(context)),
-      child: Container(
-        color: Colors.transparent,
-        child: InitScale(
+    builder: (context) => Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const SwipebarLayout(),
+        Expanded(
           child: Container(
-            padding: const EdgeInsets.only(bottom: 15),
+            padding: EdgeInsets.only(bottom: bottomSafeArea(context), top: 30, left: 15, right: 15),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.background,
-              borderRadius: const BorderRadius.all(Radius.circular(25)),
             ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const SwipebarLayout(),
-                  SizedBox(
-                    // This infinite width ensure it is presented on its own row inside the Wrap widget.
-                    width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                      child: Text(
-                        "View top confessions from any day.",
-                        style: kTitle.copyWith(
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            InitTransform(
-                              transformDirection: TransformDirection.horizontal,
-                              child: AnimatedSimpleTextButton(
-                                onTap: () => Navigator.pop(context),
-                                text: "Load today",
-                              ),
-                            ),
-                            const SizedBox(width: 15),
-                            InitTransform(
-                              transformDirection: TransformDirection.horizontal,
-                              magnitudeOfTransform: -100,
-                              child: AnimatedSimpleTextButton(
-                                onTap: () => Navigator.pop(context),
-                                text: "Load selected day",
-                              ),
-                            ),
-                          ],
-                        ),
-                        Expanded(
-                          child: InitScale(
-                            child: Padding(
-                              padding: const EdgeInsets.only(bottom: 15),
-                              child: CupertinoTheme(
-                                data: CupertinoThemeData(
-                                  textTheme: CupertinoTextThemeData(
-                                    dateTimePickerTextStyle:
-                                        kBody.copyWith(color: Theme.of(context).colorScheme.primary),
-                                  ),
-                                ),
-                                child: CupertinoDatePicker(
-                                  initialDateTime: DateTime.now(),
-                                  mode: CupertinoDatePickerMode.date,
-                                  onDateTimeChanged: (DateTime date) {
-                                    print(date);
-                                  },
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            child: Builder(builder: (context) {
+              return const DatePicker();
+            }),
           ),
         ),
-      ),
+      ],
     ),
   );
 }

@@ -93,7 +93,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                 bottomPadding: 15,
                                 loading: state is LoginLoading, // state is UserLoading ? true : false
                                 justText: true,
-                                onPress: () async {
+                                onPress: () {
                                   FocusScope.of(context).unfocus();
                                   context
                                       .read<LoginCubit>()

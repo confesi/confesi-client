@@ -12,10 +12,10 @@ class DailyHottestRepository implements IDailyHottestRepository {
   DailyHottestRepository({required this.networkInfo, required this.datasource});
 
   @override
-  Future<Either<Failure, List<Post>>> fetchPosts() async {
+  Future<Either<Failure, List<Post>>> fetchPosts(DateTime date) async {
     if (await networkInfo.isConnected) {
       try {
-        return Right(await datasource.fetchPosts());
+        return Right(await datasource.fetchPosts(date));
       } catch (e) {
         return Left(ServerFailure());
       }
