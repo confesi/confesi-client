@@ -62,7 +62,7 @@ class CommentDivider extends StatelessWidget {
           border: Border.symmetric(
             horizontal: BorderSide(
               color: Theme.of(context).colorScheme.onBackground,
-              width: 0.7,
+              width: 0.2,
             ),
           ),
         ),

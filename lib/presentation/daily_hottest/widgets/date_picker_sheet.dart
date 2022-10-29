@@ -1,32 +1,31 @@
 import 'package:Confessi/presentation/daily_hottest/widgets/date_picker.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../application/daily_hottest/cubit/hottest_cubit.dart';
-import '../../../dependency_injection.dart';
+import '../../../core/utils/sizing/bottom_safe_area.dart';
+import '../../shared/layout/swipebar.dart';
 
 Future<dynamic> showDatePickerSheet(BuildContext context) async {
-  HapticFeedback.lightImpact();
   return showModalBottomSheet(
-    barrierColor: Colors.black.withOpacity(0.7),
+    barrierColor: Colors.black.withOpacity(0.9),
     backgroundColor: Colors.transparent,
     context: context,
-    builder: (context) => Container(
-      color: Colors.transparent,
-      child: Container(
-        padding: const EdgeInsets.only(bottom: 15),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.background,
+    builder: (context) => Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const SwipebarLayout(),
+        Expanded(
+          child: Container(
+            padding: EdgeInsets.only(bottom: bottomSafeArea(context), top: 30, left: 15, right: 15),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.background,
+            ),
+            child: Builder(builder: (context) {
+              return const DatePicker();
+            }),
+          ),
         ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: Builder(builder: (context) {
-            return const DatePicker();
-          }),
-        ),
-      ),
+      ],
     ),
   );
 }

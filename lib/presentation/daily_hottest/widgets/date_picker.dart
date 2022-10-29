@@ -1,3 +1,4 @@
+import 'package:Confessi/presentation/shared/buttons/simple_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,68 +26,68 @@ class _DatePickerState extends State<DatePicker> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const SwipebarLayout(),
-        SizedBox(
-          // This infinite width ensure it is presented on its own row inside the Wrap widget.
-          width: double.infinity,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-            child: Text(
-              "View top confessions from the past.",
-              style: kTitle.copyWith(
-                color: Theme.of(context).colorScheme.primary,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ),
-        ),
+        // SizedBox(
+        //   // This infinite width ensure it is presented on its own row inside the Wrap widget.
+        //   width: double.infinity,
+        //   child: Padding(
+        //     padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+        //     child: Text(
+        //       "View top confessions from the past.",
+        //       style: kTitle.copyWith(
+        //         color: Theme.of(context).colorScheme.primary,
+        //       ),
+        //       textAlign: TextAlign.center,
+        //     ),
+        //   ),
+        // ),
         Expanded(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  InitTransform(
-                    transformDirection: TransformDirection.horizontal,
-                    child: AnimatedSimpleTextButton(
-                      onTap: () {
-                        context.read<HottestCubit>().loadPosts(DateTime.now());
-                        Navigator.pop(context);
-                      },
-                      text: "Load today",
+                  Expanded(
+                    child: InitTransform(
+                      transformDirection: TransformDirection.horizontal,
+                      child: SimpleTextButton(
+                        onTap: () {
+                          context.read<HottestCubit>().loadPosts(DateTime.now());
+                          Navigator.pop(context);
+                        },
+                        text: "Load today",
+                      ),
                     ),
                   ),
                   const SizedBox(width: 15),
-                  InitTransform(
-                    transformDirection: TransformDirection.horizontal,
-                    magnitudeOfTransform: -100,
-                    child: AnimatedSimpleTextButton(
-                      onTap: () {
-                        context.read<HottestCubit>().loadPosts(selectedDate);
-                        Navigator.pop(context);
-                      },
-                      text: "Load selected day",
+                  Expanded(
+                    child: InitTransform(
+                      transformDirection: TransformDirection.horizontal,
+                      magnitudeOfTransform: -100,
+                      child: SimpleTextButton(
+                        onTap: () {
+                          context.read<HottestCubit>().loadPosts(selectedDate);
+                          Navigator.pop(context);
+                        },
+                        text: "Load selected",
+                      ),
                     ),
                   ),
                 ],
               ),
               Expanded(
                 child: InitScale(
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 15),
-                    child: CupertinoTheme(
-                      data: CupertinoThemeData(
-                        textTheme: CupertinoTextThemeData(
-                          dateTimePickerTextStyle: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
-                        ),
+                  child: CupertinoTheme(
+                    data: CupertinoThemeData(
+                      textTheme: CupertinoTextThemeData(
+                        dateTimePickerTextStyle: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
                       ),
-                      child: CupertinoDatePicker(
-                        maximumDate: DateTime.now(),
-                        initialDateTime: selectedDate,
-                        mode: CupertinoDatePickerMode.date,
-                        onDateTimeChanged: (DateTime date) => selectedDate = date,
-                      ),
+                    ),
+                    child: CupertinoDatePicker(
+                      maximumDate: DateTime.now(),
+                      initialDateTime: selectedDate,
+                      mode: CupertinoDatePickerMode.date,
+                      onDateTimeChanged: (DateTime date) => selectedDate = date,
                     ),
                   ),
                 ),

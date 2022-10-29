@@ -13,18 +13,18 @@ import '../buttons/simple_text.dart';
 
 Future<dynamic> showButtonOptionsSheet(BuildContext context, List<OptionButton> buttons,
     {String? text, VoidCallback? onComplete}) {
-  HapticFeedback.lightImpact();
   return showModalBottomSheet(
     isScrollControlled: true,
     backgroundColor: Colors.transparent,
-    barrierColor: Colors.black.withOpacity(0.7),
+    barrierColor: Colors.black.withOpacity(0.9),
     context: context,
     builder: (context) => Column(
       mainAxisAlignment: MainAxisAlignment.end,
       mainAxisSize: MainAxisSize.min,
       children: [
+        const SwipebarLayout(),
         Container(
-          padding: EdgeInsets.only(bottom: bottomSafeArea(context)),
+          padding: EdgeInsets.only(bottom: bottomSafeArea(context) + 15),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.background,
           ),
@@ -34,19 +34,11 @@ Future<dynamic> showButtonOptionsSheet(BuildContext context, List<OptionButton> 
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const SwipebarLayout(),
                 ScrollableView(
                   thumbVisible: false,
                   child: Column(
                     children: [
                       ...buttons,
-                      OptionButton(
-                        onTap: () => {},
-                        text: "Cancel",
-                        icon: CupertinoIcons.xmark,
-                        isRed: true,
-                        centered: true,
-                      ),
                     ],
                   ),
                 ),

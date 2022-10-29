@@ -191,10 +191,11 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                         });
                         FocusScope.of(context).unfocus();
                       },
-                      leftIconDisabled: isEmpty() && widget.viewMethod == ViewMethod.tabScreen ? true : false,
+                      // leftIconDisabled: isEmpty() && widget.viewMethod == ViewMethod.tabScreen ? true : false,
                       leftIconVisible: true,
                       leftIcon: CupertinoIcons.xmark,
                       leftIconOnPress: () {
+                        if (isEmpty() && widget.viewMethod == ViewMethod.tabScreen) return;
                         isEmpty()
                             ? Navigator.pop(context)
                             : showButtonOptionsSheet(

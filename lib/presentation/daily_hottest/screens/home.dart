@@ -107,6 +107,8 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
     }
   }
 
+  String headerText = "Hottest Today";
+
   @override
   Widget build(BuildContext context) {
     return ThemedStatusBar(
@@ -116,6 +118,13 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
             setState(() {
               currentIndex = 0; // To ensure the hottest tiles build and expand properly
             });
+            if (state is Data) {
+              setState(() {
+                headerText = state.date.isSameDate(DateTime.now())
+                    ? "Hottest Today"
+                    : "Hottest of ${state.date.readableDateFormat()}";
+              });
+            }
           },
           child: Scaffold(
             resizeToAvoidBottomInset: false,
@@ -133,11 +142,7 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
                               builder: (context, state) {
                                 return AppbarLayout(
                                   centerWidget: Text(
-                                    state is Data
-                                        ? state.date.isSameDate(DateTime.now())
-                                            ? "Hottest Today"
-                                            : "Hottest of ${state.date.readableDateFormat()}"
-                                        : "Loading...",
+                                    headerText,
                                     style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
                                     overflow: TextOverflow.ellipsis,
                                     textAlign: TextAlign.center,
@@ -155,7 +160,7 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
                               child: BlocBuilder<HottestCubit, HottestState>(
                                 builder: (context, state) {
                                   return AnimatedSwitcher(
-                                    duration: const Duration(milliseconds: 200),
+                                    duration: const Duration(milliseconds: 500),
                                     child: buildChild(context, state),
                                   );
                                 },

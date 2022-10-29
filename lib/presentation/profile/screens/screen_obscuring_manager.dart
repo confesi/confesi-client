@@ -72,11 +72,22 @@ class _ScreenObscuringManagerState extends State<ScreenObscuringManager> with Wi
                     color: Theme.of(context).colorScheme.background,
                     child: SafeArea(
                       child: Center(
-                        child: Text(
-                          "Tap to authenticate",
-                          style: kTitle.copyWith(
-                            color: Theme.of(context).colorScheme.onBackground.withOpacity(1),
-                          ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              CupertinoIcons.lock,
+                              color: Theme.of(context).colorScheme.onBackground.withOpacity(0.2),
+                              size: 275,
+                            ),
+                            const SizedBox(height: 15),
+                            Text(
+                              "Tap to authenticate",
+                              style: kTitle.copyWith(
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                            )
+                          ],
                         ),
                       ),
                     ),
