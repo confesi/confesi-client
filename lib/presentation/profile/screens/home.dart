@@ -1,8 +1,11 @@
 import 'package:Confessi/core/utils/numbers/number_until_limit.dart';
+import 'package:Confessi/presentation/profile/widgets/add_watched_university_tile.dart';
+import 'package:Confessi/presentation/profile/widgets/university_tile.dart';
 import 'package:Confessi/presentation/shared/behaviours/bottom_overscroll_scroll_to_top.dart';
-import 'package:Confessi/presentation/shared/behaviours/shrinking_view.dart';
 import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
+import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:Confessi/presentation/shared/edited_source_widgets/swipe_refresh.dart';
+import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -10,7 +13,6 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import '../../../core/styles/typography.dart';
 import '../../../core/utils/sizing/height_fraction.dart';
-import '../../../core/utils/sizing/width_fraction.dart';
 import '../../shared/buttons/emblem.dart';
 import '../../shared/buttons/simple_text.dart';
 import '../../shared/overlays/info_sheet.dart';
@@ -25,12 +27,21 @@ class ProfileHome extends StatefulWidget {
 }
 
 class _ProfileHomeState extends State<ProfileHome> {
-  late ScrollController scrollController;
+  late ScrollController verticalScrollController;
+  late ScrollController horizontalScrollController;
 
   @override
   void initState() {
-    scrollController = ScrollController();
+    verticalScrollController = ScrollController();
+    horizontalScrollController = ScrollController();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    verticalScrollController.dispose();
+    horizontalScrollController.dispose();
+    super.dispose();
   }
 
   double extraHeight = 0;
@@ -42,12 +53,11 @@ class _ProfileHomeState extends State<ProfileHome> {
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
         body: SwipeRefresh(
-          // TODO: overscroll to go to top
           onRefresh: () async {
             await Future.delayed(const Duration(milliseconds: 1000));
           },
           child: BottomOverscrollScrollToTop(
-            scrollController: scrollController,
+            scrollController: verticalScrollController,
             child: NotificationListener<ScrollNotification>(
               onNotification: (details) {
                 if (details.metrics.pixels <= 0) {
@@ -62,7 +72,7 @@ class _ProfileHomeState extends State<ProfileHome> {
                 return false;
               },
               child: SingleChildScrollView(
-                controller: scrollController,
+                controller: verticalScrollController,
                 physics: const BouncingScrollPhysics(),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -148,45 +158,44 @@ class _ProfileHomeState extends State<ProfileHome> {
                           ),
                           Transform.translate(
                             offset: const Offset(0, 60),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 15),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(height: 20),
-                                  SizedBox(
-                                    width: widthFraction(context, 1),
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          child: SimpleTextButton(
-                                            onTap: () => print("comments tapped"),
-                                            text: "Comments",
-                                          ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(height: 20),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: SimpleTextButton(
+                                          onTap: () => Navigator.pushNamed(context, '/home/profile/comments'),
+                                          text: "Comments",
                                         ),
-                                        const SizedBox(width: 10),
-                                        Expanded(
-                                          child: SimpleTextButton(
-                                            onTap: () {
-                                              // context
-                                              //   .read<BiometricsEnabledCubit>()
-                                              //   .loadSetting(),
-                                            },
-                                            text: "Saved",
-                                          ),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Expanded(
+                                        child: SimpleTextButton(
+                                          onTap: () => Navigator.pushNamed(context, '/home/profile/posts'),
+                                          text: "Confessions",
                                         ),
-                                        const SizedBox(width: 10),
-                                        Expanded(
-                                          child: SimpleTextButton(
-                                            onTap: () {},
-                                            text: "Posts",
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
-                                  const SizedBox(height: 10),
-                                  StatTile(
+                                ),
+                                const SizedBox(height: 10),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                                  child: SimpleTextButton(
+                                    infiniteWidth: true,
+                                    onTap: () => Navigator.pushNamed(context, '/home/profile/saved'),
+                                    text: "Saved Content",
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                                  child: StatTile(
                                     onTap: () => showInfoSheet(
                                       context,
                                       "Profile Stats",
@@ -195,12 +204,65 @@ class _ProfileHomeState extends State<ProfileHome> {
                                     leftNumber: 17231223,
                                     leftDescription: "Likes",
                                     centerNumber: 2,
-                                    centerDescription: "Hottest",
+                                    centerDescription: "Hottests",
                                     rightNumber: 3891,
                                     rightDescription: "Hates",
                                   ),
-                                  const SizedBox(height: 10),
-                                  Row(
+                                ),
+                                const SizedBox(height: 20),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          "Your Watched Universities",
+                                          style: kTitle.copyWith(
+                                            color: Theme.of(context).colorScheme.primary,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      TouchableOpacity(
+                                        onTap: () => print("tap"),
+                                        child: Container(
+                                          // Transparent hitbox trick.
+                                          color: Colors.transparent,
+                                          child: Text(
+                                            "Edit",
+                                            style: kTitle.copyWith(
+                                              color: Theme.of(context).colorScheme.onSurface,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(height: 20),
+                                ScrollableView(
+                                  controller: horizontalScrollController,
+                                  bubbleUpScrollNotifications: false,
+                                  thumbVisible: false,
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: const [
+                                      SizedBox(width: 15),
+                                      UniversityTile(),
+                                      UniversityTile(),
+                                      UniversityTile(),
+                                      UniversityTile(),
+                                      UniversityTile(),
+                                      AddWatchedUniversityTile(),
+                                      SizedBox(width: 15),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                                  child: Row(
                                     children: [
                                       Expanded(
                                         child: Text(
@@ -219,9 +281,12 @@ class _ProfileHomeState extends State<ProfileHome> {
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(height: 10),
-                                  // Add visibility change checker to tiles; extract to custom widget
-                                  StaggeredGrid.count(
+                                ),
+                                const SizedBox(height: 10),
+                                // Add visibility change checker to tiles; extract to custom widget
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                                  child: StaggeredGrid.count(
                                     crossAxisCount: 4,
                                     mainAxisSpacing: 4,
                                     crossAxisSpacing: 4,
@@ -305,8 +370,8 @@ class _ProfileHomeState extends State<ProfileHome> {
                                       ),
                                     ],
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
                         ],

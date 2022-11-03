@@ -10,6 +10,7 @@ class ScrollableView extends StatefulWidget {
     this.keyboardDismiss = false,
     this.thumbVisible = true,
     this.scrollDirection = Axis.vertical,
+    this.bubbleUpScrollNotifications = true,
     Key? key,
   }) : super(key: key);
 
@@ -20,6 +21,7 @@ class ScrollableView extends StatefulWidget {
   final ScrollPhysics? physics;
   final Axis scrollDirection;
   final ScrollController? controller;
+  final bool bubbleUpScrollNotifications;
 
   @override
   State<ScrollableView> createState() => _ScrollableViewState();
@@ -37,7 +39,7 @@ class _ScrollableViewState extends State<ScrollableView> {
           FocusScope.of(context).unfocus();
         }
         lastScrollNotification = notification;
-        return false;
+        return !widget.bubbleUpScrollNotifications;
       },
       child: CupertinoScrollbar(
         thickness: widget.thumbVisible ? 3.0 : 0.0,

@@ -21,6 +21,7 @@ Future<dynamic> showInfoSheet(BuildContext context, String header, String body) 
           padding: EdgeInsets.only(bottom: bottomSafeArea(context) + 15, top: 30),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.background,
+            borderRadius: const BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -36,20 +37,18 @@ Future<dynamic> showInfoSheet(BuildContext context, String header, String body) 
               Flexible(
                 child: ScrollableView(
                   horizontalPadding: 30,
-                  child: InitOpacity(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          body,
-                          style: kBody.copyWith(
-                            color: Theme.of(context).colorScheme.onSurface,
-                          ),
-                          textAlign: TextAlign.justify,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        body,
+                        style: kBody.copyWith(
+                          color: Theme.of(context).colorScheme.onSurface,
                         ),
-                      ],
-                    ),
+                        textAlign: TextAlign.justify,
+                      ),
+                    ],
                   ),
                 ),
               ),

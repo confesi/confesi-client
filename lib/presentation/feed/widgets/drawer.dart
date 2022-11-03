@@ -1,3 +1,5 @@
+import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
+import 'package:Confessi/presentation/shared/buttons/simple_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -5,7 +7,6 @@ import '../../../core/styles/typography.dart';
 import '../../shared/buttons/icon_text.dart';
 import '../../shared/buttons/touchable_text.dart';
 import '../../shared/layout/line.dart';
-import '../../shared/text/group.dart';
 
 class ExploreDrawer extends StatelessWidget {
   const ExploreDrawer({Key? key}) : super(key: key);
@@ -14,126 +15,230 @@ class ExploreDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       backgroundColor: Theme.of(context).colorScheme.background,
-      child: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(right: 15, left: 15, top: 15),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const GroupText(header: "Current feed", body: "University of Victoria", leftAlign: true, small: true),
-                  LineLayout(
-                    color: Theme.of(context).colorScheme.onBackground,
-                    topPadding: 15,
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(right: 15, left: 15),
-                child: SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
+      child: Padding(
+        padding: const EdgeInsets.all(15),
+        child: SafeArea(
+          top: true,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(15),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.secondary,
+                  borderRadius: const BorderRadius.all(Radius.circular(15)),
+                ),
+                child: SafeArea(
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 15),
+                    padding: const EdgeInsets.all(15),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          "Default feed",
-                          style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
-                          textAlign: TextAlign.left,
-                          overflow: TextOverflow.ellipsis,
+                          "Current Feed",
+                          style: kSansSerifDisplay.copyWith(
+                            color: Theme.of(context).colorScheme.onSecondary,
+                          ),
+                          textAlign: TextAlign.center,
                         ),
-                        const SizedBox(height: 15),
-                        IconTextButton(
-                          onPress: () => Navigator.of(context).pop(),
-                          text: "University of Victoria",
-                          leftIcon: CupertinoIcons.house,
-                        ),
-                        LineLayout(
-                          color: Theme.of(context).colorScheme.onBackground,
-                          bottomPadding: 15,
-                        ),
+                        const SizedBox(height: 5),
                         Text(
-                          "Watched universities (3/5)",
-                          style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
-                          textAlign: TextAlign.left,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        const SizedBox(height: 15),
-                        IconTextButton(
-                          onPress: () => Navigator.of(context).pop(),
-                          text: "University of Colorado",
-                          leftIcon: CupertinoIcons.rocket,
-                        ),
-                        IconTextButton(
-                          onPress: () => Navigator.of(context).pop(),
-                          text: "Trinity Western University",
-                          leftIcon: CupertinoIcons.rocket,
-                        ),
-                        IconTextButton(
-                          onPress: () => Navigator.of(context).pop(),
-                          text: "University of Michigan",
-                          leftIcon: CupertinoIcons.rocket,
-                        ),
-                        LineLayout(
-                          color: Theme.of(context).colorScheme.onBackground,
-                          bottomPadding: 15,
-                        ),
-                        Text(
-                          "More options",
-                          style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
-                          textAlign: TextAlign.left,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        const SizedBox(height: 15),
-                        IconTextButton(
-                          onPress: () => Navigator.of(context).pop(),
-                          text: "Random university",
-                          leftIcon: CupertinoIcons.tickets,
-                        ),
-                        IconTextButton(
-                          onPress: () => Navigator.of(context).pop(),
-                          text: "All campuses",
-                          leftIcon: CupertinoIcons.square_stack_3d_down_right,
+                          "University of Victoria",
+                          style: kDetail.copyWith(
+                            color: Theme.of(context).colorScheme.onSecondary.withOpacity(0.75),
+                          ),
+                          textAlign: TextAlign.center,
                         ),
                       ],
                     ),
                   ),
                 ),
               ),
-            ),
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: Column(
-                  children: [
-                    LineLayout(
-                      color: Theme.of(context).colorScheme.onBackground,
+              const SizedBox(height: 10),
+              Row(
+                children: [
+                  Expanded(
+                    child: SimpleTextButton(
+                      onTap: () => print("tap"),
+                      text: "All",
                     ),
-                    TouchableTextButton(
-                      textColor: Theme.of(context).colorScheme.primary,
-                      animatedClick: false,
-                      onTap: () {
-                        Navigator.of(context).pop();
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) => const WatchedUniversitiesSettingsMenu(),
-                        //   ),
-                        // );
-                      },
-                      text: "Edit watched universities",
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: SimpleTextButton(
+                      onTap: () => print("tap"),
+                      text: "Random",
                     ),
-                  ],
+                  ),
+                ],
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 15, bottom: 15),
+                  child: SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 15),
+                        IconTextButton(
+                          onPress: () => Navigator.of(context).pop(),
+                          bottomText: "University of Victoria",
+                          topText: "UVic",
+                          leftIcon: CupertinoIcons.house,
+                        ),
+                        IconTextButton(
+                          onPress: () => Navigator.of(context).pop(),
+                          bottomText: "University of Victoria",
+                          topText: "UVic",
+                          leftIcon: CupertinoIcons.house,
+                        ),
+                        IconTextButton(
+                          onPress: () => Navigator.of(context).pop(),
+                          bottomText: "University of Victoria",
+                          topText: "UVic",
+                          leftIcon: CupertinoIcons.house,
+                        ),
+                        IconTextButton(
+                          onPress: () => Navigator.of(context).pop(),
+                          bottomText: "University of Victoria",
+                          topText: "UVic",
+                          leftIcon: CupertinoIcons.house,
+                        ),
+                        IconTextButton(
+                          onPress: () => Navigator.of(context).pop(),
+                          bottomText: "University of Victoria",
+                          topText: "UVic",
+                          leftIcon: CupertinoIcons.house,
+                        ),
+                        IconTextButton(
+                          onPress: () => Navigator.of(context).pop(),
+                          bottomText: "University of Victoria",
+                          topText: "UVic",
+                          leftIcon: CupertinoIcons.house,
+                        ),
+                        IconTextButton(
+                          onPress: () => Navigator.of(context).pop(),
+                          bottomText: "University of Victoria",
+                          topText: "UVic",
+                          leftIcon: CupertinoIcons.house,
+                        ),
+                        IconTextButton(
+                          onPress: () => Navigator.of(context).pop(),
+                          bottomText: "University of Victoria",
+                          topText: "UVic",
+                          leftIcon: CupertinoIcons.house,
+                        ),
+                        IconTextButton(
+                          onPress: () => Navigator.of(context).pop(),
+                          bottomText: "University of Victoria",
+                          topText: "UVic",
+                          leftIcon: CupertinoIcons.house,
+                        ),
+                        IconTextButton(
+                          onPress: () => Navigator.of(context).pop(),
+                          bottomText: "University of Victoria",
+                          topText: "UVic",
+                          leftIcon: CupertinoIcons.house,
+                        ),
+                        IconTextButton(
+                          onPress: () => Navigator.of(context).pop(),
+                          bottomText: "University of Victoria",
+                          topText: "UVic",
+                          leftIcon: CupertinoIcons.house,
+                        ),
+                        IconTextButton(
+                          onPress: () => Navigator.of(context).pop(),
+                          bottomText: "University of Victoria",
+                          topText: "UVic",
+                          leftIcon: CupertinoIcons.house,
+                        ),
+                        IconTextButton(
+                          onPress: () => Navigator.of(context).pop(),
+                          bottomText: "University of Victoria",
+                          topText: "UVic",
+                          leftIcon: CupertinoIcons.house,
+                        ),
+                        IconTextButton(
+                          onPress: () => Navigator.of(context).pop(),
+                          bottomText: "University of Victoria",
+                          topText: "UVic",
+                          leftIcon: CupertinoIcons.house,
+                        ),
+                        IconTextButton(
+                          onPress: () => Navigator.of(context).pop(),
+                          bottomText: "University of Victoria",
+                          topText: "UVic",
+                          leftIcon: CupertinoIcons.house,
+                        ),
+                        IconTextButton(
+                          onPress: () => Navigator.of(context).pop(),
+                          bottomText: "University of Victoria",
+                          topText: "UVic",
+                          leftIcon: CupertinoIcons.house,
+                        ),
+                        IconTextButton(
+                          onPress: () => Navigator.of(context).pop(),
+                          bottomText: "University of Victoria",
+                          topText: "UVic",
+                          leftIcon: CupertinoIcons.house,
+                        ),
+                        IconTextButton(
+                          onPress: () => Navigator.of(context).pop(),
+                          bottomText: "University of Victoria",
+                          topText: "UVic",
+                          leftIcon: CupertinoIcons.house,
+                        ),
+                        IconTextButton(
+                          onPress: () => Navigator.of(context).pop(),
+                          bottomText: "University of Victoria",
+                          topText: "UVic",
+                          leftIcon: CupertinoIcons.house,
+                        ),
+                        IconTextButton(
+                          onPress: () => Navigator.of(context).pop(),
+                          bottomText: "University of Victoria",
+                          topText: "UVic",
+                          leftIcon: CupertinoIcons.house,
+                        ),
+                        IconTextButton(
+                          onPress: () => Navigator.of(context).pop(),
+                          bottomText: "University of Victoria",
+                          topText: "UVic",
+                          leftIcon: CupertinoIcons.house,
+                        ),
+                        IconTextButton(
+                          onPress: () => Navigator.of(context).pop(),
+                          bottomText: "University of Victoria",
+                          topText: "UVic",
+                          leftIcon: CupertinoIcons.house,
+                        ),
+                        IconTextButton(
+                          onPress: () => Navigator.of(context).pop(),
+                          bottomText: "University of Victoria",
+                          topText: "UVic",
+                          leftIcon: CupertinoIcons.house,
+                        ),
+                        IconTextButton(
+                          onPress: () => Navigator.of(context).pop(),
+                          bottomText: "University of Victoria",
+                          topText: "UVic",
+                          leftIcon: CupertinoIcons.house,
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ],
+              SimpleTextButton(
+                infiniteWidth: true,
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+                text: "Edit watched universities",
+              ),
+            ],
+          ),
         ),
       ),
     );

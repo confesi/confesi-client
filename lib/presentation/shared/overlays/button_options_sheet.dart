@@ -2,14 +2,9 @@ import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:Confessi/presentation/shared/buttons/option.dart';
 import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
 import 'package:Confessi/presentation/shared/layout/swipebar.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
-import '../../../core/styles/typography.dart';
 import '../../../core/utils/sizing/bottom_safe_area.dart';
-import '../behaviours/init_opacity.dart';
-import '../buttons/simple_text.dart';
 
 Future<dynamic> showButtonOptionsSheet(BuildContext context, List<OptionButton> buttons,
     {String? text, VoidCallback? onComplete}) {
@@ -27,9 +22,9 @@ Future<dynamic> showButtonOptionsSheet(BuildContext context, List<OptionButton> 
           padding: EdgeInsets.only(bottom: bottomSafeArea(context) + 15),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.background,
+            borderRadius: const BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
           ),
-          child: Container(
-            constraints: const BoxConstraints(minHeight: 200),
+          child: SizedBox(
             width: double.infinity,
             child: Column(
               mainAxisSize: MainAxisSize.min,

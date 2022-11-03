@@ -12,6 +12,7 @@ import '../../../core/responsive/breakpoints.dart';
 import '../../../core/styles/typography.dart';
 import '../../feed/screens/feed_tab_manager.dart';
 import '../../../application/profile/cubit/biometrics_cubit.dart';
+import '../../feed/widgets/drawer.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -23,6 +24,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
   late TabController tabController;
   bool shakeSheetOpen = false;
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
 
   @override
   void initState() {
@@ -41,10 +43,12 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async => false, // disables back button
+      onWillPop: () async => false,
       child: ThemedStatusBar(
         child: Scaffold(
+          drawer: const ExploreDrawer(), // Reference to the "Feed" feature drawer (ExploreDrawer).
           resizeToAvoidBottomInset: false,
+          key: scaffoldKey,
           body: Container(
             color: Theme.of(context).colorScheme.background,
             child: SafeArea(
@@ -53,11 +57,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 body: TabBarView(
                   physics: const NeverScrollableScrollPhysics(),
                   controller: tabController,
-                  children: const [
-                    ExploreHome(),
-                    HottestHome(),
-                    CreatePostHome(viewMethod: ViewMethod.tabScreen),
-                    ScreenObscuringManager(),
+                  children: [
+                    ExploreHome(scaffoldKey: scaffoldKey),
+                    const HottestHome(),
+                    const CreatePostHome(viewMethod: ViewMethod.tabScreen),
+                    const ScreenObscuringManager(),
                   ],
                 ),
                 bottomNavigationBar: TabBar(
