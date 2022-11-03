@@ -6,8 +6,16 @@ import 'package:flutter/services.dart';
 import '../../../core/styles/typography.dart';
 import '../../shared/buttons/icon_text.dart';
 
-class ExploreDrawer extends StatelessWidget {
+class ExploreDrawer extends StatefulWidget {
   const ExploreDrawer({Key? key}) : super(key: key);
+
+  @override
+  State<ExploreDrawer> createState() => _ExploreDrawerState();
+}
+
+class _ExploreDrawerState extends State<ExploreDrawer> {
+  double scrollHeight = 0.0;
+  bool alreadyVibratedForEdge = true;
 
   @override
   Widget build(BuildContext context) {
@@ -74,12 +82,18 @@ class ExploreDrawer extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 15, bottom: 15),
                   child: NotificationListener<ScrollNotification>(
                     onNotification: (notification) {
-                      if (notification is ScrollEndNotification && notification.metrics.atEdge) {
+                      if (notification.metrics.atEdge && !alreadyVibratedForEdge) {
+                        alreadyVibratedForEdge = true;
                         HapticFeedback.heavyImpact();
                         return true;
                       }
                       if (notification is! ScrollUpdateNotification) return true;
-                      HapticFeedback.selectionClick();
+                      alreadyVibratedForEdge = false;
+                      if ((scrollHeight - notification.metrics.extentBefore).abs() > 50) {
+                        scrollHeight = notification.metrics.extentBefore;
+                        HapticFeedback.selectionClick();
+                        return true;
+                      }
                       return true;
                     },
                     child: SingleChildScrollView(

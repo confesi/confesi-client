@@ -63,7 +63,7 @@ class _ScreenObscuringManagerState extends State<ScreenObscuringManager> with Wi
             const ProfileHome(),
             AnimatedOpacity(
               opacity: state is Authenticated ? 0 : 1,
-              duration: const Duration(milliseconds: 250),
+              duration: const Duration(milliseconds: 125),
               child: IgnorePointer(
                 ignoring: state is Authenticated,
                 child: GestureDetector(

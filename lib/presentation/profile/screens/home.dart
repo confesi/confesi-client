@@ -212,31 +212,13 @@ class _ProfileHomeState extends State<ProfileHome> {
                                 const SizedBox(height: 20),
                                 Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 15),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          "Your Watched Universities",
-                                          style: kTitle.copyWith(
-                                            color: Theme.of(context).colorScheme.primary,
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 10),
-                                      TouchableOpacity(
-                                        onTap: () => print("tap"),
-                                        child: Container(
-                                          // Transparent hitbox trick.
-                                          color: Colors.transparent,
-                                          child: Text(
-                                            "Edit",
-                                            style: kTitle.copyWith(
-                                              color: Theme.of(context).colorScheme.onSurface,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
+                                  child: Text(
+                                    "Your Watched Universities",
+                                    style: kTitle.copyWith(
+                                      color: Theme.of(context).colorScheme.primary,
+                                    ),
+                                    textAlign: TextAlign.left,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
                                 const SizedBox(height: 20),
@@ -249,12 +231,12 @@ class _ProfileHomeState extends State<ProfileHome> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: const [
                                       SizedBox(width: 15),
-                                      UniversityTile(),
-                                      UniversityTile(),
-                                      UniversityTile(),
-                                      UniversityTile(),
-                                      UniversityTile(),
                                       AddWatchedUniversityTile(),
+                                      UniversityTile(),
+                                      UniversityTile(),
+                                      UniversityTile(),
+                                      UniversityTile(),
+                                      UniversityTile(),
                                       SizedBox(width: 15),
                                     ],
                                   ),
