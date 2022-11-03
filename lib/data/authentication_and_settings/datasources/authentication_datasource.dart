@@ -38,12 +38,15 @@ class AuthenticationDatasource implements IAuthenticationDatasource {
       false,
       Method.post,
       {
-        'usernameOrEmail': usernameOrEmail,
-        'password': password,
+        // 'usernameOrEmail': usernameOrEmail,
+        // 'password': password,
+        'username': usernameOrEmail,
       },
-      '/api/user/login',
+      '/login',
     );
     if (response.statusCode == 200 || response.statusCode == 201) {
+      print(
+          "Success, response: $response, response.body: ${response.body}, response.headers: ${response.headers.toString()}");
       return TokensModel.fromJson(jsonDecode(response.body));
     } else {
       throw errorMessageToException(jsonDecode(response.body));
@@ -52,8 +55,7 @@ class AuthenticationDatasource implements IAuthenticationDatasource {
 
   @override
   Future<Success> logout(String refreshToken) async {
-    final response = await api.req(
-        false, Method.delete, {'token': refreshToken}, "/api/user/logout");
+    final response = await api.req(false, Method.delete, {'token': refreshToken}, "/api/user/logout");
     if (response.statusCode == 200 || response.statusCode == 201) {
       return ApiSuccess();
     } else {
@@ -63,16 +65,23 @@ class AuthenticationDatasource implements IAuthenticationDatasource {
 
   /// Registers the user. Returns access and refresh tokens upon being successful.
   @override
-  Future<TokensModel> register(
-      String username, String password, String email) async {
+  Future<TokensModel> register(String username, String password, String email) async {
     final response = await api.req(
-        false,
-        Method.post,
-        {"username": username, "password": password, "email": email},
-        '/api/user/register');
+      false,
+      Method.post,
+      {
+        "username": username,
+        // "password": password,
+        // "email": email,
+      },
+      '/users/',
+    );
     if (response.statusCode == 201 || response.statusCode == 200) {
+      print(
+          "Success, response: $response, response.body: ${response.body}, response.headers: ${response.headers.toString()}");
       return TokensModel.fromJson(jsonDecode(response.body));
     } else {
+      print(response.body);
       throw errorMessageToException(jsonDecode(response.body));
     }
   }

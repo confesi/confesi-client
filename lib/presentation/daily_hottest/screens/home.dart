@@ -31,6 +31,12 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
 
   int currentIndex = 0;
 
+  @override
+  void initState() {
+    context.read<HottestCubit>().loadPosts(DateTime.now());
+    super.initState();
+  }
+
   Widget buildChild(BuildContext context, HottestState state) {
     if (state is Loading) {
       return const Center(

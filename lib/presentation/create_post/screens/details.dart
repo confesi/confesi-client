@@ -1,6 +1,5 @@
 import 'package:Confessi/application/create_post/cubit/post_cubit.dart';
 import 'package:Confessi/core/utils/sizing/width_fraction.dart';
-import 'package:Confessi/presentation/create_post/widgets/genre_group.dart';
 import 'package:Confessi/presentation/shared/behaviours/nav_blocker.dart';
 import 'package:Confessi/presentation/shared/behaviours/simulated_bottom_safe_area.dart';
 import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
@@ -8,6 +7,10 @@ import 'package:Confessi/presentation/shared/overlays/notification_chip.dart';
 import 'package:Confessi/presentation/shared/overlays/info_sheet.dart';
 import 'package:Confessi/presentation/shared/buttons/long.dart';
 import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
+import 'package:Confessi/presentation/shared/selection_groups/bool_selection_group.dart';
+import 'package:Confessi/presentation/shared/selection_groups/bool_selection_tile.dart';
+import 'package:Confessi/presentation/shared/selection_groups/text_stat_tile.dart';
+import 'package:Confessi/presentation/shared/selection_groups/text_stat_tile_group.dart';
 import 'package:Confessi/presentation/shared/text/spread_row.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -80,53 +83,58 @@ class _DetailsScreenState extends State<DetailsScreen> with AutomaticKeepAliveCl
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const SizedBox(height: 15),
-                          Text(
-                            "Select genre",
-                            style: kBody.copyWith(
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.left,
+                          BoolSelectionGroup(
+                            text: "Select genre",
+                            selectionTiles: [
+                              BoolSelectionTile(
+                                noHorizontalPadding: true,
+                                icon: CupertinoIcons.cube_box,
+                                text: "General",
+                                isActive: true,
+                                onTap: () => print("tap"),
+                              ),
+                              BoolSelectionTile(
+                                noHorizontalPadding: true,
+                                icon: CupertinoIcons.heart,
+                                text: "Relationships",
+                                onTap: () => print("tap"),
+                              ),
+                              BoolSelectionTile(
+                                noHorizontalPadding: true,
+                                icon: CupertinoIcons.hammer_fill,
+                                text: "Classess",
+                                onTap: () => print("tap"),
+                              ),
+                              BoolSelectionTile(
+                                noHorizontalPadding: true,
+                                icon: CupertinoIcons.chat_bubble_2,
+                                text: "Politics",
+                                onTap: () => print("tap"),
+                              ),
+                              BoolSelectionTile(
+                                noHorizontalPadding: true,
+                                icon: CupertinoIcons.bandage,
+                                text: "Wholesome",
+                                onTap: () => print("tap"),
+                              ),
+                              BoolSelectionTile(
+                                noHorizontalPadding: true,
+                                icon: CupertinoIcons.flame,
+                                text: "Hot Takes",
+                                onTap: () => print("tap"),
+                              ),
+                            ],
                           ),
                           const SizedBox(height: 15),
-                          const GenreGroup(),
-                          const SizedBox(height: 25),
-                          Text(
-                            "Auto-populated details",
-                            style: kBody.copyWith(
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.left,
+                          const TextStatTileGroup(
+                            text: "Auto-populated details",
+                            tiles: [
+                              TextStatTile(noHorizontalPadding: true, leftText: "Year of study", rightText: "1"),
+                              TextStatTile(noHorizontalPadding: true, leftText: "Faculty", rightText: "Kept private"),
+                              TextStatTile(noHorizontalPadding: true, leftText: "University", rightText: "UVic"),
+                            ],
                           ),
-                          const SizedBox(height: 10),
-                          const SpreadRowText(
-                            leftText: 'University',
-                            rightText: "UVic",
-                          ),
-                          const SpreadRowText(
-                            leftText: 'Year of study',
-                            rightText: "2",
-                          ),
-                          const SizedBox(height: 10),
-                          Text(
-                            "Kept Private",
-                            style: kBody.copyWith(
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.left,
-                          ),
-                          const SizedBox(height: 10),
-                          const SpreadRowText(
-                            leftText: 'Faculty (optional)',
-                            rightText: "Hidden",
-                          ),
-                          const SpreadRowText(
-                            leftText: 'Who you are',
-                            rightText: "Hidden",
-                          ),
-                          const SizedBox(height: 25),
+                          const SizedBox(height: 15),
                           BlocBuilder<CreatePostCubit, CreatePostState>(
                             // buildWhen: (previous, current) => true,
                             builder: (context, state) {

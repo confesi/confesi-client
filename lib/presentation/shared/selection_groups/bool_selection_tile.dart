@@ -15,6 +15,7 @@ class BoolSelectionTile extends StatefulWidget {
     this.backgroundColor,
     this.foregroundColor,
     this.secondaryColor,
+    this.noHorizontalPadding = false,
   });
 
   final IconData icon;
@@ -27,6 +28,7 @@ class BoolSelectionTile extends StatefulWidget {
   final Color? backgroundColor;
   final Color? foregroundColor;
   final Color? secondaryColor;
+  final bool noHorizontalPadding;
 
   @override
   State<BoolSelectionTile> createState() => _BoolSelectionTileState();
@@ -53,10 +55,10 @@ class _BoolSelectionTileState extends State<BoolSelectionTile> {
           children: [
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: widget.noHorizontalPadding ? 0 : 15),
                 child: Row(
                   children: [
-                    Icon(widget.icon),
+                    Icon(widget.icon, color: widget.secondaryColor),
                     const SizedBox(width: 15),
                     Expanded(
                       child: Text(
@@ -85,7 +87,7 @@ class _BoolSelectionTileState extends State<BoolSelectionTile> {
               ),
             ),
             Container(
-              margin: const EdgeInsets.only(right: 15),
+              margin: EdgeInsets.only(right: widget.noHorizontalPadding ? 0 : 15),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: Colors.transparent,

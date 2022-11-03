@@ -1,24 +1,22 @@
 import 'package:Confessi/core/styles/typography.dart';
 import 'package:Confessi/presentation/feed/widgets/vote_tile.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants/shared/enums.dart';
 import '../../../core/utils/numbers/is_plural.dart';
-import '../../shared/behaviours/init_scale.dart';
 
 class VoteTileSet extends StatelessWidget {
   const VoteTileSet({
     required this.likes,
     required this.hates,
-    this.animateTiles = false,
     required this.postView,
     required this.comments,
     Key? key,
   }) : super(key: key);
 
-  final bool animateTiles;
   final int likes;
   final int hates;
   final PostView postView;
@@ -66,11 +64,6 @@ class VoteTileSet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return animateTiles
-        ? InitTransform(
-            magnitudeOfTransform: 50,
-            child: buildBody(context),
-          )
-        : buildBody(context);
+    return buildBody(context);
   }
 }

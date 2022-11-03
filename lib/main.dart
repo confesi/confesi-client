@@ -94,7 +94,7 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           lazy: false,
-          create: (context) => sl<HottestCubit>()..loadPosts(DateTime.now()),
+          create: (context) => sl<HottestCubit>(),
         ),
       ],
       child: Builder(

@@ -79,9 +79,7 @@ class PostTile extends StatelessWidget {
     }
   }
 
-  List<BadgeTile> getBadges() => badges
-      .map((badge) => BadgeTile(text: badge.text, icon: badge.icon))
-      .toList();
+  List<BadgeTile> getBadges() => badges.map((badge) => BadgeTile(text: badge.text, icon: badge.icon)).toList();
 
   @override
   Widget build(BuildContext context) {
@@ -220,25 +218,21 @@ class PostTile extends StatelessWidget {
             SizedBox(height: title.isEmpty ? 15 : 30),
             //! Title row
             Text(
-              title.length > kPreviewPostTitleLength &&
-                      postView == PostView.feedView
+              title.length > kPreviewPostTitleLength && postView == PostView.feedView
                   ? "${title.substring(0, kPreviewPostTitleLength)}..."
                   : title,
               style: kTitle.copyWith(
                 color: Theme.of(context).colorScheme.primary,
               ),
             ),
-            title.isEmpty || getBadges().isEmpty
-                ? Container()
-                : const SizedBox(height: 2),
+            title.isEmpty || getBadges().isEmpty ? Container() : const SizedBox(height: 2),
             BadgeTileSet(
               badges: getBadges(),
             ),
             SizedBox(height: title.isEmpty ? 15 : 30),
             //! Middle row
             Text(
-              text.length > kPreviewPostTextLength &&
-                      postView == PostView.feedView
+              text.length > kPreviewPostTextLength && postView == PostView.feedView
                   ? "${text.substring(0, kPreviewPostTextLength)}..."
                   : text,
               style: kBody.copyWith(
@@ -257,8 +251,6 @@ class PostTile extends StatelessWidget {
                   child: VoteTileSet(
                     postView: postView,
                     comments: comments,
-                    animateTiles:
-                        postView == PostView.detailView ? true : false,
                     likes: likes,
                     hates: hates,
                   ),
