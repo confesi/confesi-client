@@ -8,7 +8,7 @@ import '../layout/swipebar.dart';
 
 Future<dynamic> showInfoSheet(BuildContext context, String header, String body) {
   return showModalBottomSheet(
-    barrierColor: Colors.black.withOpacity(0.9),
+    barrierColor: Colors.black.withOpacity(0.7),
     context: context,
     backgroundColor: Colors.transparent,
     isScrollControlled: true,

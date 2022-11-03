@@ -26,20 +26,6 @@ class _DatePickerState extends State<DatePicker> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        // SizedBox(
-        //   // This infinite width ensure it is presented on its own row inside the Wrap widget.
-        //   width: double.infinity,
-        //   child: Padding(
-        //     padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-        //     child: Text(
-        //       "View top confessions from the past.",
-        //       style: kTitle.copyWith(
-        //         color: Theme.of(context).colorScheme.primary,
-        //       ),
-        //       textAlign: TextAlign.center,
-        //     ),
-        //   ),
-        // ),
         Expanded(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

@@ -23,7 +23,7 @@ class _StepperTileState extends State<StepperTile> {
 
   @override
   Widget build(BuildContext context) {
-    return TouchableOpacity(
+    return GestureDetector(
       onTap: () {
         setState(() {
           isOpen = !isOpen;
@@ -69,12 +69,11 @@ class _StepperTileState extends State<StepperTile> {
               ],
             ),
             AnimatedClipRect(
-              duration: const Duration(milliseconds: 350),
-              reverseDuration: const Duration(milliseconds: 350),
+              duration: const Duration(milliseconds: 250),
+              reverseDuration: const Duration(milliseconds: 250),
               alignment: Alignment.bottomCenter,
               horizontalAnimation: false,
               open: isOpen,
-              curve: Curves.decelerate,
               child: Padding(
                 padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
                 child: Text(

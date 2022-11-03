@@ -1,4 +1,3 @@
-import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:Confessi/presentation/shared/buttons/option.dart';
 import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
 import 'package:Confessi/presentation/shared/layout/swipebar.dart';
@@ -11,10 +10,9 @@ Future<dynamic> showButtonOptionsSheet(BuildContext context, List<OptionButton> 
   return showModalBottomSheet(
     isScrollControlled: true,
     backgroundColor: Colors.transparent,
-    barrierColor: Colors.black.withOpacity(0.9),
+    barrierColor: Colors.black.withOpacity(0.7),
     context: context,
     builder: (context) => Column(
-      mainAxisAlignment: MainAxisAlignment.end,
       mainAxisSize: MainAxisSize.min,
       children: [
         const SwipebarLayout(),

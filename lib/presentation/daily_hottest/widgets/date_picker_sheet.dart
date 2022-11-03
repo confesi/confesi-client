@@ -7,7 +7,7 @@ import '../../shared/layout/swipebar.dart';
 
 Future<dynamic> showDatePickerSheet(BuildContext context) async {
   return showModalBottomSheet(
-    barrierColor: Colors.black.withOpacity(0.9),
+    barrierColor: Colors.black.withOpacity(0.7),
     backgroundColor: Colors.transparent,
     context: context,
     builder: (context) => Column(
