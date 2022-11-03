@@ -19,13 +19,10 @@ class LineLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(
-          left: horizontalPadding,
-          right: horizontalPadding,
-          top: topPadding,
-          bottom: bottomPadding),
+      padding:
+          EdgeInsets.only(left: horizontalPadding, right: horizontalPadding, top: topPadding, bottom: bottomPadding),
       child: Container(
-        height: 0.7,
+        height: 0.25,
         width: width,
         color: color,
       ),

@@ -2,6 +2,7 @@ import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 import '../../../core/styles/typography.dart';
 import '../../shared/layout/appbar.dart';
@@ -11,7 +12,9 @@ import '../tabs/recents_feed.dart';
 import '../tabs/trending_feed.dart';
 
 class ExploreHome extends StatefulWidget {
-  const ExploreHome({Key? key}) : super(key: key);
+  const ExploreHome({Key? key, required this.scaffoldKey}) : super(key: key);
+
+  final GlobalKey<ScaffoldState> scaffoldKey;
 
   @override
   State<ExploreHome> createState() => _ExploreHomeState();
@@ -42,7 +45,6 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
     super.build(context);
     return ThemedStatusBar(
       child: Scaffold(
-        drawer: const ExploreDrawer(),
         backgroundColor: Theme.of(context).colorScheme.background,
         body: SafeArea(
           child: Container(
@@ -60,7 +62,7 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
                     ),
                     leftIconVisible: true,
                     leftIcon: CupertinoIcons.slider_horizontal_3,
-                    leftIconOnPress: () => Scaffold.of(context).openDrawer(),
+                    leftIconOnPress: () => widget.scaffoldKey.currentState!.openDrawer(),
                   );
                 }),
                 Expanded(

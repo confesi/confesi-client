@@ -5,22 +5,22 @@ import '../../../core/styles/typography.dart';
 import '../button_touch_effects/touchable_opacity.dart';
 
 class IconTextButton extends StatelessWidget {
-  const IconTextButton(
-      {required this.onPress,
-      this.bottomPadding = 15,
-      required this.text,
-      this.leftIcon = CupertinoIcons.info,
-      this.leftIconVisible = true,
-      this.rightIcon = CupertinoIcons.chevron_right,
-      Key? key})
-      : super(key: key);
+  const IconTextButton({
+    required this.onPress,
+    this.bottomPadding = 15,
+    required this.bottomText,
+    required this.topText,
+    this.leftIcon = CupertinoIcons.info,
+    this.rightIcon = CupertinoIcons.chevron_right,
+    Key? key,
+  }) : super(key: key);
 
   final IconData rightIcon;
-  final String text;
+  final String bottomText;
+  final String topText;
   final IconData leftIcon;
   final double bottomPadding;
   final VoidCallback onPress;
-  final bool leftIconVisible;
 
   @override
   Widget build(BuildContext context) {
@@ -33,23 +33,24 @@ class IconTextButton extends StatelessWidget {
           padding: EdgeInsets.only(bottom: bottomPadding),
           child: Row(
             children: [
-              leftIconVisible
-                  ? Padding(
-                      padding: const EdgeInsets.only(right: 15),
-                      child: Icon(
-                        leftIcon,
-                        size: 24,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                    )
-                  : Container(),
               Expanded(
-                child: Text(
-                  text,
-                  style: kBody.copyWith(
-                      color: Theme.of(context).colorScheme.primary),
-                  textAlign: TextAlign.left,
-                  overflow: TextOverflow.ellipsis,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      topText,
+                      style: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
+                      textAlign: TextAlign.left,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      bottomText,
+                      style: kDetail.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                      textAlign: TextAlign.left,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
                 ),
               ),
               Icon(

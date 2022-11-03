@@ -10,6 +10,9 @@ import 'package:Confessi/presentation/authentication_and_settings/screens/settin
 import 'package:Confessi/presentation/authentication_and_settings/screens/settings/faq.dart';
 import 'package:Confessi/presentation/authentication_and_settings/screens/settings/home.dart';
 import 'package:Confessi/presentation/authentication_and_settings/screens/settings/text_size.dart';
+import 'package:Confessi/presentation/user_posts_and_comments/screens/comments.dart';
+import 'package:Confessi/presentation/user_posts_and_comments/screens/posts.dart';
+import 'package:Confessi/presentation/user_posts_and_comments/screens/saved.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
@@ -126,6 +129,15 @@ class AppRouter {
             body: args['body'],
             id: args['id'],
           );
+          break;
+        case '/home/profile/comments':
+          page = const CommentsScreen();
+          break;
+        case '/home/profile/posts':
+          page = const PostsScreen();
+          break;
+        case '/home/profile/saved':
+          page = const SavedScreen();
           break;
         // An individual post's advanced stats.
         case "/home/post/stats":

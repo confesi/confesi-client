@@ -2,6 +2,7 @@ import 'package:Confessi/application/create_post/cubit/post_cubit.dart';
 import 'package:Confessi/core/utils/sizing/width_fraction.dart';
 import 'package:Confessi/presentation/create_post/widgets/genre_group.dart';
 import 'package:Confessi/presentation/shared/behaviours/nav_blocker.dart';
+import 'package:Confessi/presentation/shared/behaviours/simulated_bottom_safe_area.dart';
 import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
 import 'package:Confessi/presentation/shared/overlays/notification_chip.dart';
 import 'package:Confessi/presentation/shared/overlays/info_sheet.dart';
@@ -48,6 +49,7 @@ class _DetailsScreenState extends State<DetailsScreen> with AutomaticKeepAliveCl
           child: Scaffold(
             backgroundColor: Theme.of(context).colorScheme.background,
             body: SafeArea(
+              bottom: false,
               child: Column(
                 children: [
                   NavBlocker(
@@ -106,8 +108,22 @@ class _DetailsScreenState extends State<DetailsScreen> with AutomaticKeepAliveCl
                             leftText: 'Year of study',
                             rightText: "2",
                           ),
+                          const SizedBox(height: 10),
+                          Text(
+                            "Kept Private",
+                            style: kBody.copyWith(
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.left,
+                          ),
+                          const SizedBox(height: 10),
                           const SpreadRowText(
                             leftText: 'Faculty (optional)',
+                            rightText: "Hidden",
+                          ),
+                          const SpreadRowText(
+                            leftText: 'Who you are',
                             rightText: "Hidden",
                           ),
                           const SizedBox(height: 25),
@@ -146,6 +162,7 @@ class _DetailsScreenState extends State<DetailsScreen> with AutomaticKeepAliveCl
                               ),
                             ),
                           ),
+                          const SimulatedBottomSafeArea(),
                         ],
                       ),
                     ),
