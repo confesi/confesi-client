@@ -6,7 +6,7 @@ import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
 import 'package:Confessi/presentation/shared/overlays/notification_chip.dart';
 import 'package:Confessi/presentation/shared/overlays/info_sheet.dart';
 import 'package:Confessi/presentation/shared/buttons/long.dart';
-import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
+import 'package:Confessi/presentation/shared/layout/scrollable_area.dart';
 import 'package:Confessi/presentation/shared/selection_groups/bool_selection_group.dart';
 import 'package:Confessi/presentation/shared/selection_groups/bool_selection_tile.dart';
 import 'package:Confessi/presentation/shared/selection_groups/text_stat_tile.dart';
@@ -77,7 +77,7 @@ class _DetailsScreenState extends State<DetailsScreen> with AutomaticKeepAliveCl
                     ),
                   ),
                   Expanded(
-                    child: ScrollableView(
+                    child: ScrollableArea(
                       horizontalPadding: 15,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

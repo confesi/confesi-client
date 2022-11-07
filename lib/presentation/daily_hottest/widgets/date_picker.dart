@@ -5,10 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../application/daily_hottest/cubit/hottest_cubit.dart';
 import '../../../core/styles/typography.dart';
-import '../../../dependency_injection.dart';
 import '../../shared/behaviours/init_scale.dart';
 import '../../shared/behaviours/init_transform.dart';
-import '../../shared/buttons/animated_simple_text.dart';
 import '../../shared/layout/swipebar.dart';
 
 class DatePicker extends StatefulWidget {
@@ -26,6 +24,7 @@ class _DatePickerState extends State<DatePicker> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
+        const SwipebarLayout(),
         Expanded(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

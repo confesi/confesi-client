@@ -17,7 +17,7 @@ import '../../../core/generators/hint_text_generator.dart';
 import '../../../core/styles/typography.dart';
 import '../../shared/behaviours/keyboard_dismiss.dart';
 import '../../shared/layout/appbar.dart';
-import '../../shared/layout/scrollable_view.dart';
+import '../../shared/layout/scrollable_area.dart';
 import '../../shared/overlays/center_overlay_message.dart';
 
 // TODO: move to feature constants file and document
@@ -234,7 +234,7 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                                       onTap: () => bodyFocusNode.requestFocus(),
                                       child: SizedBox(
                                         height: constraints.maxHeight,
-                                        child: ScrollableView(
+                                        child: ScrollableArea(
                                           physics: const ClampingScrollPhysics(),
                                           controller: scrollController,
                                           child: Padding(

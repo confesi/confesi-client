@@ -22,11 +22,11 @@ enum Method {
   delete,
 }
 
-class ApiClient {
+class HttpClient {
   final FlutterSecureStorage secureStorage;
   final Map<String, String> _headers = <String, String>{};
 
-  ApiClient({required this.secureStorage}) {
+  HttpClient({required this.secureStorage}) {
     _headers['Content-Type'] = 'application/json';
     _headers['Accept'] = 'application/json';
   }

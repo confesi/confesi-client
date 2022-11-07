@@ -13,10 +13,9 @@ Future<dynamic> showDatePickerSheet(BuildContext context) async {
     builder: (context) => Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const SwipebarLayout(),
         Expanded(
           child: Container(
-            padding: EdgeInsets.only(bottom: bottomSafeArea(context), top: 30, left: 15, right: 15),
+            padding: EdgeInsets.only(bottom: bottomSafeArea(context), left: 15, right: 15),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.background,
               borderRadius: const BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),

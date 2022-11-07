@@ -108,7 +108,7 @@ Future<void> init() async {
   // Registers the app routing system.
   sl.registerLazySingleton(() => AppRouter());
   // Registers the custom net client class.
-  sl.registerLazySingleton(() => ApiClient(secureStorage: sl()));
+  sl.registerLazySingleton(() => HttpClient(secureStorage: sl()));
 
   //! Repositories
   // Registers the authentication repository.

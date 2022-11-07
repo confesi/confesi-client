@@ -3,7 +3,7 @@ import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
 import 'package:Confessi/presentation/shared/behaviours/keyboard_dismiss.dart';
 import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
 import 'package:Confessi/presentation/shared/buttons/simple_text.dart';
-import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
+import 'package:Confessi/presentation/shared/layout/scrollable_area.dart';
 import 'package:Confessi/presentation/shared/textfields/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -75,7 +75,7 @@ class _FeedbackHomeState extends State<FeedbackHome> {
                   leftIcon: CupertinoIcons.xmark,
                 ),
                 Expanded(
-                  child: ScrollableView(
+                  child: ScrollableArea(
                     child: Column(
                       children: [
                         InitScale(

@@ -24,7 +24,7 @@ abstract class IAuthenticationDatasource {
 /// Throws exceptions when things go wrong.
 class AuthenticationDatasource implements IAuthenticationDatasource {
   final FlutterSecureStorage secureStorage;
-  final ApiClient api;
+  final HttpClient api;
 
   AuthenticationDatasource({
     required this.secureStorage,

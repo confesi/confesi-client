@@ -1,8 +1,8 @@
 import 'package:Confessi/presentation/shared/behaviours/overscroll.dart';
 import 'package:flutter/cupertino.dart';
 
-class ScrollableView extends StatefulWidget {
-  const ScrollableView({
+class ScrollableArea extends StatefulWidget {
+  const ScrollableArea({
     this.horizontalPadding = 0.0,
     required this.child,
     this.physics,
@@ -24,21 +24,21 @@ class ScrollableView extends StatefulWidget {
   final bool bubbleUpScrollNotifications;
 
   @override
-  State<ScrollableView> createState() => _ScrollableViewState();
+  State<ScrollableArea> createState() => _ScrollableAreaState();
 }
 
-class _ScrollableViewState extends State<ScrollableView> {
-  ScrollNotification? lastScrollNotification;
+class _ScrollableAreaState extends State<ScrollableArea> {
+  ScrollNotification? _lastScrollNotification;
 
   @override
   Widget build(BuildContext context) {
     return NotificationListener<ScrollNotification>(
       onNotification: (notification) {
         if (notification is UserScrollNotification &&
-            (lastScrollNotification == null || lastScrollNotification is ScrollStartNotification)) {
+            (_lastScrollNotification == null || _lastScrollNotification is ScrollStartNotification)) {
           FocusScope.of(context).unfocus();
         }
-        lastScrollNotification = notification;
+        _lastScrollNotification = notification;
         return !widget.bubbleUpScrollNotifications;
       },
       child: CupertinoScrollbar(

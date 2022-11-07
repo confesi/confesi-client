@@ -7,7 +7,6 @@ import '../button_touch_effects/touchable_opacity.dart';
 class IconTextButton extends StatelessWidget {
   const IconTextButton({
     required this.onPress,
-    this.bottomPadding = 15,
     required this.bottomText,
     required this.topText,
     this.leftIcon = CupertinoIcons.info,
@@ -19,7 +18,6 @@ class IconTextButton extends StatelessWidget {
   final String bottomText;
   final String topText;
   final IconData leftIcon;
-  final double bottomPadding;
   final VoidCallback onPress;
 
   @override
@@ -28,9 +26,13 @@ class IconTextButton extends StatelessWidget {
       onTap: () => onPress(),
       child: Container(
         // transparent color trick to increase hitbox size
-        color: Colors.transparent,
+        margin: const EdgeInsets.only(bottom: 10),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+        ),
         child: Padding(
-          padding: EdgeInsets.only(bottom: bottomPadding),
+          padding: const EdgeInsets.all(10),
           child: Row(
             children: [
               Expanded(
@@ -39,7 +41,7 @@ class IconTextButton extends StatelessWidget {
                   children: [
                     Text(
                       topText,
-                      style: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
+                      style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
                       textAlign: TextAlign.left,
                       overflow: TextOverflow.ellipsis,
                     ),

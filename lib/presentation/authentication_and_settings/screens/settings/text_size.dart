@@ -1,5 +1,5 @@
 import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
-import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
+import 'package:Confessi/presentation/shared/layout/scrollable_area.dart';
 import 'package:Confessi/presentation/shared/text/disclaimer_text.dart';
 import 'package:flutter/material.dart';
 
@@ -37,7 +37,7 @@ class _TextSizeScreenState extends State<TextSizeScreen> {
                   textAlign: TextAlign.center,
                 ),
               ),
-              ScrollableView(
+              ScrollableArea(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: Column(

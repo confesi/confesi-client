@@ -26,39 +26,37 @@ class VoteTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InitScale(
-      child: TouchableOpacity(
-        tooltip: tooltip,
-        tooltipLocation: tooltipLocation,
-        onTap: () => onTap(),
-        child: Container(
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: isActive ? Theme.of(context).colorScheme.secondary : Theme.of(context).colorScheme.surface,
-            borderRadius: const BorderRadius.all(
-              Radius.circular(10),
-            ),
+    return TouchableOpacity(
+      tooltip: tooltip,
+      tooltipLocation: tooltipLocation,
+      onTap: () => onTap(),
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: isActive ? Theme.of(context).colorScheme.secondary : Theme.of(context).colorScheme.surface,
+          borderRadius: const BorderRadius.all(
+            Radius.circular(10),
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                icon,
-                size: 15,
-                color: isActive ? Theme.of(context).colorScheme.onSecondary : Theme.of(context).colorScheme.primary,
-              ),
-              const SizedBox(width: 5),
-              Flexible(
-                child: Text(
-                  largeNumberFormatter(value),
-                  overflow: TextOverflow.ellipsis,
-                  style: kDetail.copyWith(
-                    color: isActive ? Theme.of(context).colorScheme.onSecondary : Theme.of(context).colorScheme.primary,
-                  ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              icon,
+              size: 15,
+              color: isActive ? Theme.of(context).colorScheme.onSecondary : Theme.of(context).colorScheme.primary,
+            ),
+            const SizedBox(width: 5),
+            Flexible(
+              child: Text(
+                largeNumberFormatter(value),
+                overflow: TextOverflow.ellipsis,
+                style: kDetail.copyWith(
+                  color: isActive ? Theme.of(context).colorScheme.onSecondary : Theme.of(context).colorScheme.primary,
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

@@ -16,7 +16,7 @@ abstract class IFeedDatasource {
 }
 
 class FeedDatasource implements IFeedDatasource {
-  final ApiClient api;
+  final HttpClient api;
 
   FeedDatasource({required this.api});
   @override

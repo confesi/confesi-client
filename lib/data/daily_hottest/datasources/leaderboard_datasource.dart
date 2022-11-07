@@ -11,14 +11,13 @@ abstract class ILeaderboardDatasource {
 }
 
 class LeaderboardDatasource implements ILeaderboardDatasource {
-  final ApiClient api;
+  final HttpClient api;
 
   LeaderboardDatasource({required this.api});
 
   @override
   Future<List<LeaderboardItem>> fetchRanking() async {
-    final response = await api.req(
-        true, Method.get, null, '/api/posts/leaderboard',
+    final response = await api.req(true, Method.get, null, '/api/posts/leaderboard',
         dummyData: true, dummyPath: 'api.posts.leaderboard.json');
     if (response.statusCode == 200 || response.statusCode == 201) {
       return (json.decode(response.body)['rankings'] as List)

@@ -38,6 +38,7 @@ class AppRouter {
       "/home/create_replied_post",
       "/feedback",
       "/prefsError",
+      "/create_post",
     ];
     return fullScreenDialogRoutes.contains(routeSettings.name) ? true : false;
   }
@@ -102,6 +103,10 @@ class AppRouter {
             body: args['body'],
             id: args['id'],
           );
+          break;
+        // TODO: HERE
+        case "/create_post":
+          page = const CreatePostHome(viewMethod: ViewMethod.separateScreen);
           break;
         // Detailed view for each post (thread view, has comments, fully expanded text, etc.).
         case '/home/detail':
@@ -168,7 +173,7 @@ class AppRouter {
           page = const OverscrollEasterEgg();
           break;
         case "/settings":
-          page = const SettingsHome();
+          page = const SettingsHome(); // TODO: remove?
           break;
         case "/settings/appearance":
           page = const AppearanceScreen();
@@ -210,7 +215,7 @@ class AppRouter {
         type: PageTransitionType.fade,
         curve: Curves.decelerate,
         duration: const Duration(
-          milliseconds: 225,
+          milliseconds: 175,
         ),
       );
     } else {

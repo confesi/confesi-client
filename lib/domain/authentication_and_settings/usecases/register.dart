@@ -9,7 +9,7 @@ import '../../../data/authentication_and_settings/repositories/authentication_re
 
 class Register implements Usecase<Success, RegisterParams> {
   final AuthenticationRepository repository;
-  final ApiClient netClient;
+  final HttpClient netClient;
 
   Register({required this.repository, required this.netClient});
 

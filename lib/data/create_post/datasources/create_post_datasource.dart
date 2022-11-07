@@ -9,7 +9,7 @@ abstract class ICreatePostDatasource {
 }
 
 class CreatePostDatasource implements ICreatePostDatasource {
-  final ApiClient api;
+  final HttpClient api;
 
   CreatePostDatasource({required this.api});
 

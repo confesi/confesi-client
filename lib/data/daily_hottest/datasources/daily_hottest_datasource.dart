@@ -11,7 +11,7 @@ abstract class IDailyHottestDatasource {
 }
 
 class DailyHottestDatasource implements IDailyHottestDatasource {
-  final ApiClient api;
+  final HttpClient api;
 
   DailyHottestDatasource({required this.api});
 

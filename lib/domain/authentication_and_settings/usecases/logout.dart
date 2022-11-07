@@ -9,7 +9,7 @@ import '../../../data/authentication_and_settings/repositories/authentication_re
 
 class Logout implements Usecase<Success, String> {
   final AuthenticationRepository repository;
-  final ApiClient netClient;
+  final HttpClient netClient;
 
   Logout({required this.repository, required this.netClient});
 

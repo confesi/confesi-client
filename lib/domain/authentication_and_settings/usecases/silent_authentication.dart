@@ -7,7 +7,7 @@ import '../../../core/usecases/no_params.dart';
 import '../../../core/usecases/single_usecase.dart';
 
 class SilentAuthentication implements Usecase<Success, NoParams> {
-  final ApiClient netClient;
+  final HttpClient netClient;
 
   SilentAuthentication({required this.netClient});
 

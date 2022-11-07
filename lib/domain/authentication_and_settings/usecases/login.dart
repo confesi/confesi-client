@@ -9,15 +9,14 @@ import '../../../data/authentication_and_settings/repositories/authentication_re
 
 class Login implements Usecase<Success, LoginParams> {
   final AuthenticationRepository repository;
-  final ApiClient netClient;
+  final HttpClient netClient;
 
   Login({required this.repository, required this.netClient});
 
   /// Logs the user in.
   @override
   Future<Either<Failure, Success>> call(LoginParams params) async {
-    final tokens =
-        await repository.login(params.usernameOrEmail, params.password);
+    final tokens = await repository.login(params.usernameOrEmail, params.password);
     return tokens.fold(
       (failure) => Left(failure),
       (tokens) async {

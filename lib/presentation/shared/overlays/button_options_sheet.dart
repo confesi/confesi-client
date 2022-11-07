@@ -1,5 +1,6 @@
 import 'package:Confessi/presentation/shared/buttons/option.dart';
-import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
+import 'package:Confessi/presentation/shared/layout/line.dart';
+import 'package:Confessi/presentation/shared/layout/scrollable_area.dart';
 import 'package:Confessi/presentation/shared/layout/swipebar.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +16,6 @@ Future<dynamic> showButtonOptionsSheet(BuildContext context, List<OptionButton> 
     builder: (context) => Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const SwipebarLayout(),
         Container(
           padding: EdgeInsets.only(bottom: bottomSafeArea(context) + 15),
           decoration: BoxDecoration(
@@ -27,10 +27,12 @@ Future<dynamic> showButtonOptionsSheet(BuildContext context, List<OptionButton> 
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                ScrollableView(
+                const SwipebarLayout(),
+                ScrollableArea(
                   thumbVisible: false,
                   child: Column(
                     children: [
+                      LineLayout(color: Theme.of(context).colorScheme.onBackground),
                       ...buttons,
                     ],
                   ),
