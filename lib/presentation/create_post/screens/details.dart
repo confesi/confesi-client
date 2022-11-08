@@ -11,6 +11,7 @@ import 'package:Confessi/presentation/shared/selection_groups/bool_selection_gro
 import 'package:Confessi/presentation/shared/selection_groups/bool_selection_tile.dart';
 import 'package:Confessi/presentation/shared/selection_groups/text_stat_tile.dart';
 import 'package:Confessi/presentation/shared/selection_groups/text_stat_tile_group.dart';
+import 'package:Confessi/presentation/shared/text/link.dart';
 import 'package:Confessi/presentation/shared/text/spread_row.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/styles/typography.dart';
 import '../../shared/button_touch_effects/touchable_opacity.dart';
+import '../../shared/buttons/pop.dart';
 import '../../shared/layout/appbar.dart';
 
 class DetailsScreen extends StatefulWidget {
@@ -80,7 +82,7 @@ class _DetailsScreenState extends State<DetailsScreen> with AutomaticKeepAliveCl
                     child: ScrollableArea(
                       horizontalPadding: 15,
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           const SizedBox(height: 15),
                           BoolSelectionGroup(
@@ -125,50 +127,36 @@ class _DetailsScreenState extends State<DetailsScreen> with AutomaticKeepAliveCl
                               ),
                             ],
                           ),
-                          const SizedBox(height: 15),
-                          const TextStatTileGroup(
-                            text: "Auto-populated details",
-                            tiles: [
-                              TextStatTile(noHorizontalPadding: true, leftText: "Year of study", rightText: "1"),
-                              TextStatTile(noHorizontalPadding: true, leftText: "Faculty", rightText: "Kept private"),
-                              TextStatTile(noHorizontalPadding: true, leftText: "University", rightText: "UVic"),
-                            ],
-                          ),
-                          const SizedBox(height: 15),
+                          // const TextStatTileGroup(
+                          //   text: "Auto-populated details",
+                          //   tiles: [
+                          //     TextStatTile(noHorizontalPadding: true, leftText: "Year of study", rightText: "1"),
+                          //     TextStatTile(noHorizontalPadding: true, leftText: "Faculty", rightText: "Kept private"),
+                          //     TextStatTile(noHorizontalPadding: true, leftText: "University", rightText: "UVic"),
+                          //   ],
+                          // ),
                           BlocBuilder<CreatePostCubit, CreatePostState>(
                             // buildWhen: (previous, current) => true,
                             builder: (context, state) {
-                              return LongButton(
-                                text: 'Submit Confession',
+                              return PopButton(
+                                topPadding: 20,
+                                bottomPadding: 5,
+                                loading: state is Loading ? true : false,
+                                justText: true,
                                 onPress: () async => await context
                                     .read<CreatePostCubit>()
                                     .uploadUserPost(widget.title, widget.body, widget.id),
-                                isLoading: state is Loading ? true : false,
+                                icon: CupertinoIcons.chevron_right,
+                                backgroundColor: Theme.of(context).colorScheme.secondary,
+                                textColor: Theme.of(context).colorScheme.onSecondary,
+                                text: 'Submit Confession',
                               );
                             },
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 15),
-                            child: TouchableOpacity(
-                              onTap: () => {}, // TODO: Implement
-                              child: Container(
-                                width: double.infinity,
-                                // Transparent hitbox trick.
-                                color: Colors.transparent,
-                                child: Center(
-                                  child: SizedBox(
-                                    width: widthFraction(context, 2 / 3),
-                                    child: Text(
-                                      "Edit university, faculty, and year details in settings",
-                                      style: kTitle.copyWith(
-                                        color: Theme.of(context).colorScheme.onSurface,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
+                          LinkText(
+                            onPress: () => print("tap"),
+                            text: "Posting as University of Victoria, year 2, computer science. ",
+                            linkText: "Tap here to edit.",
                           ),
                           const SimulatedBottomSafeArea(),
                         ],
@@ -184,3 +172,11 @@ class _DetailsScreenState extends State<DetailsScreen> with AutomaticKeepAliveCl
     );
   }
 }
+
+// Text(
+//                                       "Posting as University of Victoria, year 1, computer science. Edit these details here.",
+//                                       style: kTitle.copyWith(
+//                                         color: Theme.of(context).colorScheme.onSurface,
+//                                       ),
+//                                       textAlign: TextAlign.center,
+//                                     ),

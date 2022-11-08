@@ -1,12 +1,17 @@
 import 'package:Confessi/core/utils/numbers/number_until_limit.dart';
 import 'package:Confessi/presentation/shared/behaviours/bottom_overscroll_scroll_to_top.dart';
 import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
+import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:Confessi/presentation/shared/edited_source_widgets/swipe_refresh.dart';
+import 'package:Confessi/presentation/shared/layout/scrollable_area.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
+import '../../../core/styles/typography.dart';
 import '../../../core/utils/sizing/height_fraction.dart';
+import '../../shared/buttons/emblem.dart';
 import '../../shared/buttons/simple_text.dart';
 import '../../shared/overlays/info_sheet.dart';
 import '../../shared/text/group.dart';
@@ -94,32 +99,32 @@ class _ProfileHomeState extends State<ProfileHome> {
                       child: Stack(
                         alignment: Alignment.topCenter,
                         children: [
-                          // SizedBox(
-                          //   height: 120,
-                          //   width: double.infinity,
-                          //   child: Padding(
-                          //     padding: const EdgeInsets.symmetric(horizontal: 10),
-                          //     child: Row(
-                          //       crossAxisAlignment: CrossAxisAlignment.end,
-                          //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          //       children: [
-                          //         EmblemButton(
-                          //           backgroundColor: Theme.of(context).colorScheme.background,
-                          //           icon: CupertinoIcons.lock,
-                          //           onPress: () => showInfoSheet(context, "Privacy is Key",
-                          //               "This profile is only visible to you, hence the biometric authentication. This extra layer of security can be disabled in settings."),
-                          //           iconColor: Theme.of(context).colorScheme.onSurface,
-                          //         ),
-                          //         EmblemButton(
-                          //           backgroundColor: Theme.of(context).colorScheme.background,
-                          //           icon: CupertinoIcons.gear,
-                          //           onPress: () => Navigator.of(context).pushNamed("/settings"),
-                          //           iconColor: Theme.of(context).colorScheme.onSurface,
-                          //         ),
-                          //       ],
-                          //     ),
-                          //   ),
-                          // ),
+                          SizedBox(
+                            height: 120,
+                            width: double.infinity,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 15),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  EmblemButton(
+                                    backgroundColor: Theme.of(context).colorScheme.surface,
+                                    icon: CupertinoIcons.lock,
+                                    onPress: () => showInfoSheet(context, "This profile is private",
+                                        "This profile is only visible to you. In fact, to add an extra layer of protection, you can enable biometric authentication in order to view your saved posts, confessions, and comments."),
+                                    iconColor: Theme.of(context).colorScheme.onSurface,
+                                  ),
+                                  EmblemButton(
+                                    backgroundColor: Theme.of(context).colorScheme.surface,
+                                    icon: CupertinoIcons.gear,
+                                    onPress: () => Navigator.of(context).pushNamed("/settings"),
+                                    iconColor: Theme.of(context).colorScheme.onSurface,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
                           Container(
                             height: 120,
                             width: 120,
@@ -157,6 +162,19 @@ class _ProfileHomeState extends State<ProfileHome> {
                                 const SizedBox(height: 20),
                                 Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 15),
+                                  child: StatTile(
+                                    onTap: () => Navigator.pushNamed(context, "/account_statistics"),
+                                    leftNumber: 17231223,
+                                    leftDescription: "Likes",
+                                    centerNumber: 2,
+                                    centerDescription: "Hottests",
+                                    rightNumber: 3891,
+                                    rightDescription: "Hates",
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 15),
                                   child: Row(
                                     children: [
                                       Expanded(
@@ -184,24 +202,7 @@ class _ProfileHomeState extends State<ProfileHome> {
                                     text: "Saved Content",
                                   ),
                                 ),
-                                const SizedBox(height: 10),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                                  child: StatTile(
-                                    onTap: () => showInfoSheet(
-                                      context,
-                                      "Profile Stats",
-                                      "These describe your account. Likes and hates (equivalent of upvotes and downvotes) describe how well your content is received. The 'Hottest' stat is how many times your posts have been featured on the Daily Hottest screen - super rare!",
-                                    ),
-                                    leftNumber: 17231223,
-                                    leftDescription: "Likes",
-                                    centerNumber: 2,
-                                    centerDescription: "Hottests",
-                                    rightNumber: 3891,
-                                    rightDescription: "Hates",
-                                  ),
-                                ),
-                                const SizedBox(height: 10),
+                                const SizedBox(height: 20),
                                 Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 15),
                                   child: StaggeredGrid.count(

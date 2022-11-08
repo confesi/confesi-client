@@ -10,6 +10,7 @@ import 'package:Confessi/presentation/authentication_and_settings/screens/settin
 import 'package:Confessi/presentation/authentication_and_settings/screens/settings/faq.dart';
 import 'package:Confessi/presentation/authentication_and_settings/screens/settings/home.dart';
 import 'package:Confessi/presentation/authentication_and_settings/screens/settings/text_size.dart';
+import 'package:Confessi/presentation/profile/screens/account_statistics.dart';
 import 'package:Confessi/presentation/user_posts_and_comments/screens/comments.dart';
 import 'package:Confessi/presentation/user_posts_and_comments/screens/posts.dart';
 import 'package:Confessi/presentation/user_posts_and_comments/screens/saved.dart';
@@ -39,6 +40,8 @@ class AppRouter {
       "/feedback",
       "/prefsError",
       "/create_post",
+      "/settings",
+      "/account_statistics",
     ];
     return fullScreenDialogRoutes.contains(routeSettings.name) ? true : false;
   }
@@ -72,6 +75,9 @@ class AppRouter {
           break;
         case "/login":
           page = const LoginScreen();
+          break;
+        case "/account_statistics":
+          page = const AccountStatisticsScreen();
           break;
         case "/registerTabManager":
           page = const RegisterTabManager();

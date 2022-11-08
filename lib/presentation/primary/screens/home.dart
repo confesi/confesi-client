@@ -1,18 +1,13 @@
-import 'package:Confessi/presentation/create_post/screens/home.dart';
 import 'package:Confessi/presentation/daily_hottest/screens/home.dart';
+import 'package:Confessi/presentation/profile/screens/home.dart';
 import 'package:Confessi/presentation/profile/screens/screen_obscuring_manager.dart';
-import 'package:Confessi/presentation/shared/behaviours/shrinking_view.dart';
 import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../core/responsive/breakpoints.dart';
 import '../../../core/styles/typography.dart';
-import '../../authentication_and_settings/screens/settings/home.dart';
 import '../../feed/screens/feed_tab_manager.dart';
-import '../../../application/profile/cubit/biometrics_cubit.dart';
 import '../../feed/widgets/drawer.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -29,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   @override
   void initState() {
-    tabController = TabController(vsync: this, length: 4);
+    tabController = TabController(vsync: this, length: 3);
     super.initState();
   }
 
@@ -60,8 +55,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   children: [
                     ExploreHome(scaffoldKey: scaffoldKey),
                     const HottestHome(),
-                    const ScreenObscuringManager(),
-                    const SettingsHome(),
+                    const ProfileHome(),
                   ],
                 ),
                 bottomNavigationBar: TabBar(
@@ -76,8 +70,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   tabs: const [
                     Tab(icon: Icon(CupertinoIcons.compass)),
                     Tab(icon: Icon(CupertinoIcons.flame)),
-                    Tab(icon: Icon(CupertinoIcons.profile_circled)),
-                    Tab(icon: Icon(CupertinoIcons.gear)),
+                    Tab(icon: Icon(CupertinoIcons.person_solid)),
                   ],
                 ),
                 backgroundColor: Theme.of(context).colorScheme.background,

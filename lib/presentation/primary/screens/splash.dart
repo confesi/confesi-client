@@ -1,4 +1,5 @@
 import 'package:Confessi/presentation/shared/behaviours/one_theme_status_bar.dart';
+import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shake/shake.dart';
@@ -47,17 +48,19 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     return BlocListener<UserCubit, UserState>(
       listenWhen: (previous, current) => (previous.runtimeType != current.runtimeType || current is NoUser),
       listener: (context, state) {
-        if (state is User) {
-          if (state.justRegistered) {
-            Navigator.of(context).pushNamed("/onboarding", arguments: {"isRewatching": false});
-          } else {
-            Navigator.of(context).pushNamed("/home");
-          }
-        } else if (state is NoUser) {
-          Navigator.of(context).pushNamed("/open");
-        } else if (state is LocalDataError) {
-          Navigator.of(context).pushNamed("/prefsError");
-        }
+        // if (state is User) {
+        //   if (state.justRegistered) {
+        //     Navigator.of(context).pushNamed("/onboarding", arguments: {"isRewatching": false});
+        //   } else {
+        //     Navigator.of(context).pushNamed("/home");
+        //   }
+        // } else if (state is NoUser) {
+        //   Navigator.of(context).pushNamed("/open");
+        // } else if (state is LocalDataError) {
+        //   Navigator.of(context).pushNamed("/prefsError");
+        // }
+        Navigator.of(context)
+            .pushNamed("/home"); // TODO: Delete this line, and uncomment lines above; this is only for dev mode
       },
       child: BlocListener<RegisterCubit, RegisterState>(
         listener: (context, state) {
@@ -75,10 +78,9 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
               context.read<UserCubit>().silentlyAuthenticateUser(AuthenticationType.login);
             }
           },
-          child: OneThemeStatusBar(
-            brightness: Brightness.light,
+          child: ThemedStatusBar(
             child: Scaffold(
-              backgroundColor: AppTheme.classicLight.colorScheme.background,
+              backgroundColor: Theme.of(context).colorScheme.background,
               body: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Center(

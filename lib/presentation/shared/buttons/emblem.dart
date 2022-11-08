@@ -18,13 +18,13 @@ class EmblemButton extends StatelessWidget {
       onTap: () => onPress(),
       child: Container(
         decoration: BoxDecoration(
-          color: backgroundColor,
-          borderRadius: const BorderRadius.all(
-            Radius.circular(10),
-          ),
+          color: backgroundColor, shape: BoxShape.circle,
+          // borderRadius: const BorderRadius.all(
+          //   Radius.circular(10),
+          // ),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(9),
+          padding: const EdgeInsets.all(10),
           child: Icon(
             icon,
             color: iconColor,

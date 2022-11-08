@@ -4,6 +4,7 @@ import 'package:Confessi/core/utils/sizing/height_fraction.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_opacity.dart';
 import 'package:Confessi/presentation/shared/layout/scrollable_area.dart';
 import 'package:flutter/material.dart';
+import 'package:scrollable/exports.dart';
 
 import '../layout/swipebar.dart';
 
@@ -13,50 +14,51 @@ Future<dynamic> showInfoSheet(BuildContext context, String header, String body) 
     context: context,
     backgroundColor: Colors.transparent,
     isScrollControlled: true,
-    builder: (context) => Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          constraints: BoxConstraints(minHeight: heightFraction(context, .5)),
-          padding: EdgeInsets.only(bottom: bottomSafeArea(context) + 15),
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.background,
-            borderRadius: const BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const SwipebarLayout(),
-              Text(
-                header,
-                style: kTitle.copyWith(
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 15),
-              Flexible(
-                child: ScrollableArea(
-                  horizontalPadding: 30,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        body,
-                        style: kBody.copyWith(
-                          color: Theme.of(context).colorScheme.onSurface,
-                        ),
-                        textAlign: TextAlign.justify,
-                      ),
-                    ],
+    builder: (context) => Container(
+      constraints: BoxConstraints(maxHeight: heightFraction(context, .75)),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.background,
+        borderRadius: const BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const SwipebarLayout(),
+          Flexible(
+            child: ScrollableView(
+              distancebetweenHapticEffectsDuringScroll: 50,
+              hapticEffectAtEdge: HapticType.medium,
+              scrollBarVisible: false,
+              inlineTopOrLeftPadding: 15,
+              inlineBottomOrRightPadding: bottomSafeArea(context),
+              controller: ScrollController(),
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    header,
+                    style: kSansSerifDisplay.copyWith(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                ),
+                  const SizedBox(height: 15),
+                  Text(
+                    body,
+                    style: kTitle.copyWith(
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 15),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     ),
   );
 }
