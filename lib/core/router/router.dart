@@ -1,16 +1,17 @@
+import 'package:Confessi/presentation/authentication_and_settings/screens/settings/contact.dart';
 import 'package:Confessi/presentation/create_post/screens/details.dart';
 import 'package:Confessi/presentation/create_post/screens/home.dart';
 import 'package:Confessi/presentation/daily_hottest/screens/leaderboard.dart';
 import 'package:Confessi/presentation/easter_eggs/screens/overscroll.dart';
 import 'package:Confessi/presentation/feed/screens/detail_view.dart';
 import 'package:Confessi/presentation/feed/screens/post_advanced_details.dart';
+import 'package:Confessi/presentation/feed/screens/watched_universities.dart';
 import 'package:Confessi/presentation/feedback/screens/home.dart';
 import 'package:Confessi/presentation/primary/screens/critical_error.dart';
 import 'package:Confessi/presentation/authentication_and_settings/screens/settings/appearance.dart';
 import 'package:Confessi/presentation/authentication_and_settings/screens/settings/faq.dart';
 import 'package:Confessi/presentation/authentication_and_settings/screens/settings/home.dart';
 import 'package:Confessi/presentation/authentication_and_settings/screens/settings/text_size.dart';
-import 'package:Confessi/presentation/profile/screens/account_statistics.dart';
 import 'package:Confessi/presentation/user_posts_and_comments/screens/comments.dart';
 import 'package:Confessi/presentation/user_posts_and_comments/screens/posts.dart';
 import 'package:Confessi/presentation/user_posts_and_comments/screens/saved.dart';
@@ -41,7 +42,7 @@ class AppRouter {
       "/prefsError",
       "/create_post",
       "/settings",
-      "/account_statistics",
+      "/watched_universities",
     ];
     return fullScreenDialogRoutes.contains(routeSettings.name) ? true : false;
   }
@@ -75,9 +76,6 @@ class AppRouter {
           break;
         case "/login":
           page = const LoginScreen();
-          break;
-        case "/account_statistics":
-          page = const AccountStatisticsScreen();
           break;
         case "/registerTabManager":
           page = const RegisterTabManager();
@@ -179,7 +177,10 @@ class AppRouter {
           page = const OverscrollEasterEgg();
           break;
         case "/settings":
-          page = const SettingsHome(); // TODO: remove?
+          page = const SettingsHome();
+          break;
+        case "/watched_universities":
+          page = const WatchedUniversitiesScreen();
           break;
         case "/settings/appearance":
           page = const AppearanceScreen();
@@ -187,11 +188,11 @@ class AppRouter {
         case "/settings/faq":
           page = const FAQScreen();
           break;
+        case "/settings/contact":
+          page = const ContactScreen();
+          break;
         case "/settings/textSize":
           page = const TextSizeScreen();
-          break;
-        case "/settings/watchedUniversities":
-          page = const Text("Watched universities");
           break;
         case "/prefsError":
           page = const CriticalErrorScreen();
@@ -213,7 +214,7 @@ class AppRouter {
           milliseconds: 750,
         ),
       );
-    } else if (isFadeAnim(routeSettings)) {
+    } else if (isFadeAnim(routeSettings) || page is CriticalErrorScreen) {
       return PageTransition(
         settings: routeSettings,
         child: page,
@@ -221,7 +222,7 @@ class AppRouter {
         type: PageTransitionType.fade,
         curve: Curves.decelerate,
         duration: const Duration(
-          milliseconds: 175,
+          milliseconds: 150,
         ),
       );
     } else {

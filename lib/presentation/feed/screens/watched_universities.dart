@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import '../../../core/styles/typography.dart';
 import '../../shared/layout/appbar.dart';
 
-class AccountStatisticsScreen extends StatelessWidget {
-  const AccountStatisticsScreen({super.key});
+class WatchedUniversitiesScreen extends StatelessWidget {
+  const WatchedUniversitiesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,13 +17,14 @@ class AccountStatisticsScreen extends StatelessWidget {
           child: Column(
             children: [
               AppbarLayout(
-                leftIcon: CupertinoIcons.xmark,
                 centerWidget: Text(
-                  "Account Statistics",
+                  "Watched Universities",
                   style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
                 ),
+                leftIcon: CupertinoIcons.xmark,
+                leftIconOnPress: () => Navigator.pop(context),
               ),
             ],
           ),

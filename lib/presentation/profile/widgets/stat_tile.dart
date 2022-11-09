@@ -1,5 +1,5 @@
 import 'package:Confessi/core/utils/numbers/large_number_formatter.dart';
-import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opacity.dart';
+import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
@@ -12,7 +12,9 @@ class StatTile extends StatelessWidget {
     required this.centerDescription,
     required this.rightNumber,
     required this.rightDescription,
-    required this.onTap,
+    required this.leftTap,
+    required this.centerTap,
+    required this.rightTap,
     super.key,
   });
 
@@ -22,22 +24,24 @@ class StatTile extends StatelessWidget {
   final String centerDescription;
   final int rightNumber;
   final String rightDescription;
-  final VoidCallback onTap;
+  final VoidCallback leftTap;
+  final VoidCallback centerTap;
+  final VoidCallback rightTap;
 
   @override
   Widget build(BuildContext context) {
-    return TouchableOpacity(
-      onTap: () => onTap(),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
-          borderRadius: const BorderRadius.all(
-            Radius.circular(10),
-          ),
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: const BorderRadius.all(
+          Radius.circular(10),
         ),
-        child: Row(
-          children: [
-            Expanded(
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: TouchableScale(
+              onTap: () => leftTap(),
               child: Container(
                 // Transparent hitbox trick.
                 color: Colors.transparent,
@@ -65,8 +69,11 @@ class StatTile extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(width: 10),
-            Expanded(
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: TouchableScale(
+              onTap: () => centerTap(),
               child: Container(
                 // Transparent hitbox trick.
                 color: Colors.transparent,
@@ -94,8 +101,11 @@ class StatTile extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(width: 10),
-            Expanded(
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: TouchableScale(
+              onTap: () => rightTap(),
               child: Container(
                 // Transparent hitbox trick.
                 color: Colors.transparent,
@@ -123,8 +133,8 @@ class StatTile extends StatelessWidget {
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

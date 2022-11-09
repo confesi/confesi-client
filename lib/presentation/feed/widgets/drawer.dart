@@ -73,7 +73,7 @@ class _ExploreDrawerState extends State<ExploreDrawer> {
                     const SizedBox(width: 5),
                     SimpleTextButton(
                       secondaryColors: true,
-                      onTap: () => Navigator.pop(context),
+                      onTap: () => Navigator.pushNamed(context, "/watched_universities"),
                       text: "Edit",
                     ),
                   ],

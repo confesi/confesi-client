@@ -6,20 +6,20 @@ import 'package:flutter/material.dart';
 class SettingTile extends StatelessWidget {
   const SettingTile({
     super.key,
-    required this.icon,
+    required this.leftIcon,
     required this.text,
     required this.onTap,
     this.secondaryText,
     this.isRedText = false,
-    this.isLink = false,
+    this.rightIcon,
   });
 
   final bool isRedText;
-  final bool isLink;
-  final IconData icon;
+  final IconData leftIcon;
   final String text;
   final String? secondaryText;
   final VoidCallback onTap;
+  final IconData? rightIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class SettingTile extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Icon(
-              icon,
+              leftIcon,
               color: isRedText ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.primary,
             ),
             const SizedBox(width: 15),
@@ -73,7 +73,7 @@ class SettingTile extends StatelessWidget {
               ),
             ),
             Icon(
-              isLink ? CupertinoIcons.link : CupertinoIcons.arrow_right,
+              rightIcon ?? CupertinoIcons.arrow_right,
               color: isRedText ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.primary,
             ),
           ],

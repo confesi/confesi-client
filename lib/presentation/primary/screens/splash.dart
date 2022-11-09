@@ -1,3 +1,5 @@
+import 'package:Confessi/core/styles/typography.dart';
+import 'package:Confessi/core/utils/sizing/width_fraction.dart';
 import 'package:Confessi/presentation/shared/behaviours/one_theme_status_bar.dart';
 import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
 import 'package:flutter/material.dart';
@@ -84,11 +86,26 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
               body: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Center(
-                  child: SizedBox(
-                    height: widthBreakpointFraction(context, .25, 150),
-                    child: Image.asset(
-                      "assets/images/logo.jpg",
-                    ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      SizedBox(
+                        width: widthFraction(context, .50),
+                        child: Image.asset(
+                          "assets/images/logo.jpg",
+                        ),
+                      ),
+                      SizedBox(
+                        width: widthFraction(context, .75),
+                        child: Text(
+                          introText,
+                          style: kTitle.copyWith(
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),

@@ -1,3 +1,4 @@
+import 'package:Confessi/core/utils/numbers/add_commas_to_number.dart';
 import 'package:Confessi/core/utils/numbers/number_until_limit.dart';
 import 'package:Confessi/presentation/shared/behaviours/bottom_overscroll_scroll_to_top.dart';
 import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
@@ -163,7 +164,10 @@ class _ProfileHomeState extends State<ProfileHome> {
                                 Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 15),
                                   child: StatTile(
-                                    onTap: () => Navigator.pushNamed(context, "/account_statistics"),
+                                    leftTap: () => showInfoSheet(context, "Total likes", addCommasToNumber(983042378)),
+                                    centerTap: () =>
+                                        showInfoSheet(context, "Total hottests", addCommasToNumber(128937192)),
+                                    rightTap: () => showInfoSheet(context, "Total hates", addCommasToNumber(9487211)),
                                     leftNumber: 17231223,
                                     leftDescription: "Likes",
                                     centerNumber: 2,

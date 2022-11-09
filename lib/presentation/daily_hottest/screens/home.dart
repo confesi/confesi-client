@@ -138,7 +138,7 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
             body: LayoutBuilder(
               builder: (context, constraints) {
                 return Container(
-                    color: Theme.of(context).colorScheme.background,
+                    color: Theme.of(context).colorScheme.shadow,
                     child: SingleChildScrollView(
                       child: SizedBox(
                         height: constraints.maxHeight,

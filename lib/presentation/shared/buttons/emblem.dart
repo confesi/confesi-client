@@ -1,3 +1,4 @@
+import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../button_touch_effects/touchable_opacity.dart';
@@ -14,14 +15,12 @@ class EmblemButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TouchableOpacity(
+    return TouchableScale(
       onTap: () => onPress(),
       child: Container(
         decoration: BoxDecoration(
-          color: backgroundColor, shape: BoxShape.circle,
-          // borderRadius: const BorderRadius.all(
-          //   Radius.circular(10),
-          // ),
+          color: backgroundColor,
+          shape: BoxShape.circle,
         ),
         child: Padding(
           padding: const EdgeInsets.all(10),

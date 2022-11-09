@@ -113,11 +113,13 @@ const String kSettingsPageTitle = "Settings";
 
 const String kSettingsGeneralLabel = "General";
 
-const String kSettingsWatchedUniversitiesLabel = "Watched Universities";
+// const String kSettingsWatchedUniversitiesLabel = "Watched Universities";
 
 const String kSettingsLanguageLabel = "Language";
 
-const String kSettingsContactLabel = "Contact Confesi";
+const String kSettingsFeedbackLabel = "Give us Feedback";
+
+const String kContactConfesiLabel = "Contact Confesi";
 
 const String kSettingsFaqLabel = "FAQ";
 
@@ -125,29 +127,29 @@ const String kSettingsOurWebsiteLinkLabel = "Our Website";
 
 const String kSettingsAppearanceLabel = "Appearance";
 
-const String kSettingsInterfaceAdjustmentsLabel = "Interface Adjustments";
+// const String kSettingsInterfaceAdjustmentsLabel = "Interface Adjustments";
 
 const String kSettingsBiometricProfileLockLabel = "Biometric Profile Lock";
 
-const String kSettingsRewatchTutorialLabel = "Rewatch Onboarding Slides";
+// const String kSettingsRewatchTutorialLabel = "Rewatch Onboarding Slides";
 
 const String kSettingsAccountDetailsLabel = "Account Details";
 
-const String kSettingsStudentEmailPerksLabel = "Student Email Perks";
+const String kVerifiedStudentLabel = "Verified Student Perks";
 
 const String kSettingsLogoutLabel = "Logout";
 
-const String kSettingsReducedAnimationsLabel = "Reduced Animations";
+// const String kSettingsReducedAnimationsLabel = "Reduced Animations";
 
 const String kSettingsHapticFeedbackLabel = "Haptic Feedback";
 
-const String kSettingsTextSizeLabel = "Text Size";
+// const String kSettingsTextSizeLabel = "Text Size";
 
-const String kSettingsHighContrastLabel = "High Contrast";
+// const String kSettingsHighContrastLabel = "High Contrast";
 
-const String kSettingsToolTipsLabel = "Tool Tips";
+// const String kSettingsToolTipsLabel = "Tool Tips";
 
-const String kSettingsBoomerModeLabel = "Boomer Mode";
+// const String kSettingsBoomerModeLabel = "Boomer Mode";
 
 const String kSettingsTermsOfServiceLabel = "Terms of Service";
 
@@ -155,7 +157,7 @@ const String kSesttingsPrivacyStatementLabel = "Privacy Statement";
 
 const String kSettingsDeleteAccountLabel = "Delete Account";
 
-const String kSettingsResetLocalPreferencesLabel = "Reset Local Preferences";
+// const String kSettingsResetLocalPreferencesLabel = "Reset Local Preferences";
 
 const String kSettingsBottomDisclaimerText =
     "Some settings are synced between multiple devices, others are just local for this device.";

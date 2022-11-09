@@ -32,7 +32,7 @@ class _StepperTileState extends State<StepperTile> {
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.background,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: const BorderRadius.all(
             Radius.circular(10),
           ),
@@ -69,8 +69,8 @@ class _StepperTileState extends State<StepperTile> {
               ],
             ),
             AnimatedClipRect(
-              duration: const Duration(milliseconds: 250),
-              reverseDuration: const Duration(milliseconds: 250),
+              duration: const Duration(milliseconds: 175),
+              reverseDuration: const Duration(milliseconds: 175),
               alignment: Alignment.bottomCenter,
               horizontalAnimation: false,
               open: isOpen,

@@ -10,6 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrollable/exports.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../application/authentication_and_prefs/cubit/user_cubit.dart';
 import '../../../../constants/authentication_and_settings/text.dart';
@@ -41,7 +42,7 @@ class SettingsHome extends StatelessWidget {
                 child: Container(
                   color: Theme.of(context).colorScheme.background,
                   child: ScrollableView(
-                    inlineBottomOrRightPadding: bottomSafeArea(context),
+                    inlineBottomOrRightPadding: bottomSafeArea(context) * 2,
                     distancebetweenHapticEffectsDuringScroll: 50,
                     hapticEffectAtEdge: HapticType.medium,
                     controller: ScrollController(),
@@ -55,34 +56,23 @@ class SettingsHome extends StatelessWidget {
                             text: kSettingsGeneralLabel,
                             settingTiles: [
                               SettingTile(
-                                icon: CupertinoIcons.rocket,
-                                text: kSettingsWatchedUniversitiesLabel,
-                                onTap: () => print("tap"),
-                              ),
-                              SettingTile(
-                                icon: CupertinoIcons.map,
+                                leftIcon: CupertinoIcons.map,
                                 text: kSettingsLanguageLabel,
                                 onTap: () => print("tap"),
                               ),
                               SettingTile(
-                                icon: CupertinoIcons.chat_bubble,
-                                text: kSettingsContactLabel,
-                                onTap: () => Navigator.of(context).pushNamed("/feedback"),
-                              ),
-                              SettingTile(
-                                icon: CupertinoIcons.question_circle,
+                                leftIcon: CupertinoIcons.question_circle,
                                 text: kSettingsFaqLabel,
                                 onTap: () => Navigator.of(context).pushNamed("/settings/faq"),
                               ),
                               SettingTile(
-                                icon: CupertinoIcons.sparkles,
-                                text: kSettingsRewatchTutorialLabel,
-                                onTap: () =>
-                                    Navigator.pushNamed(context, '/onboarding', arguments: {"isRewatching": true}),
+                                leftIcon: CupertinoIcons.mail,
+                                text: kContactConfesiLabel,
+                                onTap: () => Navigator.pushNamed(context, "/settings/contact"),
                               ),
                               SettingTile(
-                                isLink: true,
-                                icon: CupertinoIcons.sidebar_left,
+                                rightIcon: CupertinoIcons.link,
+                                leftIcon: CupertinoIcons.sidebar_left,
                                 text: kSettingsOurWebsiteLinkLabel,
                                 onTap: () => print("tap"),
                               ),
@@ -93,14 +83,9 @@ class SettingsHome extends StatelessWidget {
                             text: kSettingsPersonalizationLabel,
                             settingTiles: [
                               SettingTile(
-                                icon: CupertinoIcons.color_filter,
+                                leftIcon: CupertinoIcons.color_filter,
                                 text: kSettingsAppearanceLabel,
                                 onTap: () => Navigator.of(context).pushNamed("/settings/appearance"),
-                              ),
-                              SettingTile(
-                                icon: CupertinoIcons.cube_box,
-                                text: kSettingsInterfaceAdjustmentsLabel,
-                                onTap: () => print("tap"),
                               ),
                             ],
                           ),
@@ -109,24 +94,24 @@ class SettingsHome extends StatelessWidget {
                             text: kSettingsAccountLabel,
                             settingTiles: [
                               SettingTile(
-                                icon: CupertinoIcons.shield,
+                                leftIcon: CupertinoIcons.shield,
                                 text: kSettingsBiometricProfileLockLabel,
                                 onTap: () => print("tap"),
                               ),
                               SettingTile(
-                                icon: CupertinoIcons.profile_circled,
+                                leftIcon: CupertinoIcons.profile_circled,
                                 text: kSettingsAccountDetailsLabel,
                                 onTap: () => print("tap"),
                               ),
                               SettingTile(
-                                icon: CupertinoIcons.mail,
+                                leftIcon: CupertinoIcons.helm,
                                 text:
-                                    kSettingsStudentEmailPerksLabel, // TODO: gives you a list of perks? Some incentive to prove it? mandatory (or not cuz then easier to ban)?
+                                    kVerifiedStudentLabel, // TODO: gives you a list of perks? Some incentive to prove it? mandatory (or not cuz then easier to ban)?
                                 onTap: () => print("tap"),
                               ),
                               SettingTile(
                                 isRedText: true,
-                                icon: CupertinoIcons.square_arrow_right,
+                                leftIcon: CupertinoIcons.square_arrow_right,
                                 text: kSettingsLogoutLabel,
                                 onTap: () => context.read<UserCubit>().logoutUser(),
                               ),
@@ -137,33 +122,8 @@ class SettingsHome extends StatelessWidget {
                             text: kSettingsAccessibilityLabel,
                             settingTiles: [
                               SettingTile(
-                                icon: CupertinoIcons.paintbrush_fill,
-                                text: kSettingsReducedAnimationsLabel,
-                                onTap: () => print("tap"),
-                              ),
-                              SettingTile(
-                                icon: CupertinoIcons.hand_draw,
+                                leftIcon: CupertinoIcons.hand_draw,
                                 text: kSettingsHapticFeedbackLabel,
-                                onTap: () => print("tap"),
-                              ),
-                              SettingTile(
-                                icon: CupertinoIcons.text_cursor,
-                                text: kSettingsTextSizeLabel,
-                                onTap: () => Navigator.of(context).pushNamed("/settings/textSize"),
-                              ),
-                              SettingTile(
-                                icon: CupertinoIcons.light_max,
-                                text: kSettingsHighContrastLabel,
-                                onTap: () => print("tap"),
-                              ),
-                              SettingTile(
-                                icon: CupertinoIcons.textformat_abc_dottedunderline,
-                                text: kSettingsToolTipsLabel,
-                                onTap: () => print("tap"),
-                              ),
-                              SettingTile(
-                                icon: CupertinoIcons.time,
-                                text: kSettingsBoomerModeLabel,
                                 onTap: () => print("tap"),
                               ),
                             ],
@@ -173,14 +133,14 @@ class SettingsHome extends StatelessWidget {
                             text: kSettingsLegalLabel,
                             settingTiles: [
                               SettingTile(
-                                isLink: true,
-                                icon: CupertinoIcons.doc,
+                                rightIcon: CupertinoIcons.link,
+                                leftIcon: CupertinoIcons.doc,
                                 text: kSettingsTermsOfServiceLabel,
                                 onTap: () => print("tap"),
                               ),
                               SettingTile(
-                                isLink: true,
-                                icon: CupertinoIcons.doc,
+                                rightIcon: CupertinoIcons.link,
+                                leftIcon: CupertinoIcons.doc,
                                 text: kSesttingsPrivacyStatementLabel,
                                 onTap: () => print("tap"),
                               ),
@@ -192,16 +152,16 @@ class SettingsHome extends StatelessWidget {
                             settingTiles: [
                               SettingTile(
                                 isRedText: true,
-                                icon: CupertinoIcons.xmark,
+                                leftIcon: CupertinoIcons.xmark,
                                 text: kSettingsDeleteAccountLabel,
                                 onTap: () => print("tap"), // TODO: go through support for this?
                               ),
-                              SettingTile(
-                                isRedText: true,
-                                icon: CupertinoIcons.refresh_thin,
-                                text: kSettingsResetLocalPreferencesLabel,
-                                onTap: () => print("reset"),
-                              ),
+                              // SettingTile(
+                              //   isRedText: true,
+                              //   icon: CupertinoIcons.refresh_thin,
+                              //   text: kSettingsResetLocalPreferencesLabel,
+                              //   onTap: () => print("reset"),
+                              // ),
                             ],
                           ),
                           const DisclaimerText(
