@@ -155,7 +155,7 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
             if (state is SuccessfullySubmitted) {
               clearTextfields();
               Navigator.popUntil(context, ModalRoute.withName('/home'));
-              CenterOverlay().show(context);
+              CenterOverlay().show(context, "Posted", blastConfetti: true);
             }
           },
           child: ThemedStatusBar(

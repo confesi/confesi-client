@@ -129,7 +129,7 @@ const String kSettingsAppearanceLabel = "Appearance";
 
 // const String kSettingsInterfaceAdjustmentsLabel = "Interface Adjustments";
 
-const String kSettingsBiometricProfileLockLabel = "Biometric Profile Lock";
+const String kSettingsBiometricLockLabel = "Biometric Lock";
 
 // const String kSettingsRewatchTutorialLabel = "Rewatch Onboarding Slides";
 

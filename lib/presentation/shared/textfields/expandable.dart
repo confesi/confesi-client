@@ -48,16 +48,14 @@ class _ExpandableTextfieldState extends State<ExpandableTextfield> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        widget.focusNode != null
-            ? widget.focusNode?.requestFocus()
-            : focusNode.requestFocus();
+        widget.focusNode != null ? widget.focusNode?.requestFocus() : focusNode.requestFocus();
       },
       child: Container(
-        margin: const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
+        margin: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surface,
           borderRadius: const BorderRadius.all(
-            Radius.circular(10),
+            Radius.circular(15),
           ),
         ),
         child: Padding(

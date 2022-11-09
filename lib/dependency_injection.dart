@@ -9,6 +9,8 @@ import 'package:Confessi/data/daily_hottest/repositories/daily_hottest_repositor
 import 'package:Confessi/data/daily_hottest/repositories/leaderboard_repository_concrete.dart';
 import 'package:Confessi/data/authentication_and_settings/datasources/prefs_datasource.dart';
 import 'package:Confessi/data/authentication_and_settings/repositories/prefs_repository_concrete.dart';
+import 'package:Confessi/domain/authentication_and_settings/usecases/copy_email_text.dart';
+import 'package:Confessi/domain/authentication_and_settings/usecases/open_mail_client.dart';
 import 'package:Confessi/domain/create_post/usecases/upload_post.dart';
 import 'package:Confessi/domain/daily_hottest/usecases/posts.dart';
 import 'package:Confessi/domain/daily_hottest/usecases/ranking.dart';
@@ -25,9 +27,10 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:local_auth/local_auth.dart';
 
-import 'application/authentication_and_prefs/cubit/login_cubit.dart';
-import 'application/authentication_and_prefs/cubit/register_cubit.dart';
-import 'application/authentication_and_prefs/cubit/user_cubit.dart';
+import 'application/authentication_and_settings/cubit/contact_setting_cubit.dart';
+import 'application/authentication_and_settings/cubit/login_cubit.dart';
+import 'application/authentication_and_settings/cubit/register_cubit.dart';
+import 'application/authentication_and_settings/cubit/user_cubit.dart';
 import 'core/network/connection_info.dart';
 import 'core/router/router.dart';
 import 'data/authentication_and_settings/datasources/authentication_datasource.dart';
@@ -75,6 +78,8 @@ Future<void> init() async {
   // Registers the user cubit.
   sl.registerFactory(
       () => UserCubit(logout: sl(), silentAuthentication: sl(), appearance: sl(), loadRefreshToken: sl()));
+  // Registers the contact setting cubit.
+  sl.registerFactory(() => ContactSettingCubit(copyEmailTextUsecase: sl(), openMailClientUsecase: sl()));
 
   //! Usecases
   // Registers the register usecase.
@@ -101,6 +106,10 @@ Future<void> init() async {
   sl.registerLazySingleton(() => Appearance(repository: sl()));
   // Registeres the load refresh token usecase.
   sl.registerLazySingleton(() => LoadRefreshToken(repository: sl()));
+  // Registers the usecase that opens the mail client.
+  sl.registerLazySingleton(() => OpenMailClient());
+  // Registers the usecase that copies the email text for support.
+  sl.registerLazySingleton(() => CopyEmailText());
 
   //! Core
   // Registers custom connection checker class.

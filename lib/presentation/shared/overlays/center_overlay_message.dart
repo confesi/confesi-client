@@ -6,31 +6,32 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 
 class CenterOverlay {
-  final ConfettiItemController confettiItemController =
-      ConfettiItemController();
+  final ConfettiItemController confettiItemController = ConfettiItemController();
 
-  void show(BuildContext context) async {
+  void show(BuildContext context, String text, {bool blastConfetti = false}) async {
     OverlayState? overlayState = Overlay.of(context);
-    OverlayEntry overlayEntry = OverlayEntry(builder: _build);
+    OverlayEntry overlayEntry = OverlayEntry(builder: (BuildContext context) => _build(context, text));
 
     overlayState?.insert(overlayEntry);
 
-    confettiItemController.blastConfetti();
+    if (blastConfetti) confettiItemController.blastConfetti();
 
     await Future.delayed(const Duration(milliseconds: 5000));
 
     overlayEntry.remove();
   }
 
-  Widget _build(BuildContext context) {
+  Widget _build(BuildContext context, String text) {
     return Stack(
       children: [
-        const Center(
+        Center(
           child: IgnorePointer(
             ignoring: true,
             child: Material(
               color: Colors.transparent,
-              child: _OverlayItem(),
+              child: _OverlayItem(
+                text: text,
+              ),
             ),
           ),
         ),
@@ -80,7 +81,6 @@ class __ConfettiItemState extends State<_ConfettiItem> {
         Theme.of(context).colorScheme.secondary,
         Theme.of(context).colorScheme.primary,
       ],
-      // blastDirection: -pi / 2,
       blastDirectionality: BlastDirectionality.explosive,
       gravity: .2,
       minBlastForce: 35,
@@ -91,14 +91,18 @@ class __ConfettiItemState extends State<_ConfettiItem> {
 }
 
 class _OverlayItem extends StatefulWidget {
-  const _OverlayItem({Key? key}) : super(key: key);
+  const _OverlayItem({
+    Key? key,
+    required this.text,
+  }) : super(key: key);
+
+  final String text;
 
   @override
   State<_OverlayItem> createState() => __OverlayItemState();
 }
 
-class __OverlayItemState extends State<_OverlayItem>
-    with SingleTickerProviderStateMixin {
+class __OverlayItemState extends State<_OverlayItem> with SingleTickerProviderStateMixin {
   late AnimationController animController;
   late Animation anim;
 
@@ -106,8 +110,8 @@ class __OverlayItemState extends State<_OverlayItem>
   void initState() {
     animController = AnimationController(
       vsync: this,
-      duration: Duration.zero,
-      reverseDuration: const Duration(milliseconds: 750),
+      duration: const Duration(milliseconds: 250),
+      reverseDuration: const Duration(milliseconds: 250),
     );
     anim = CurvedAnimation(
       parent: animController,
@@ -125,7 +129,7 @@ class __OverlayItemState extends State<_OverlayItem>
 
   void startAnim() async {
     animController.forward().then((value) async {
-      await Future.delayed(const Duration(milliseconds: 250));
+      await Future.delayed(const Duration(milliseconds: 500));
       animController.reverse();
     });
     animController.addListener(() {
@@ -141,7 +145,7 @@ class __OverlayItemState extends State<_OverlayItem>
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.background.withOpacity(0.6),
+          color: Theme.of(context).colorScheme.background,
           borderRadius: const BorderRadius.all(
             Radius.circular(5),
           ),
@@ -150,7 +154,7 @@ class __OverlayItemState extends State<_OverlayItem>
           child: Padding(
             padding: const EdgeInsets.all(10),
             child: Text(
-              'Posted',
+              widget.text,
               style: kTitle.copyWith(
                 color: Theme.of(context).colorScheme.primary,
               ),

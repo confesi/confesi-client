@@ -1,17 +1,14 @@
 import 'package:Confessi/core/styles/typography.dart';
 import 'package:Confessi/core/utils/sizing/width_fraction.dart';
-import 'package:Confessi/presentation/shared/behaviours/one_theme_status_bar.dart';
 import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shake/shake.dart';
 
-import '../../../application/authentication_and_prefs/cubit/login_cubit.dart';
-import '../../../application/authentication_and_prefs/cubit/register_cubit.dart';
-import '../../../application/authentication_and_prefs/cubit/user_cubit.dart';
+import '../../../application/authentication_and_settings/cubit/login_cubit.dart';
+import '../../../application/authentication_and_settings/cubit/register_cubit.dart';
+import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../../../core/generators/intro_text_generator.dart';
-import '../../../core/styles/themes.dart';
-import '../../../core/utils/sizing/width_breakpoint_fraction.dart';
 import '../../shared/overlays/feedback_sheet.dart';
 import '../../shared/overlays/notification_chip.dart';
 
@@ -95,6 +92,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                           "assets/images/logo.jpg",
                         ),
                       ),
+                      const SizedBox(height: 100),
                       SizedBox(
                         width: widthFraction(context, .75),
                         child: Text(

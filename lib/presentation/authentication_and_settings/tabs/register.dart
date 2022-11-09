@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../application/authentication_and_prefs/cubit/register_cubit.dart';
+import '../../../application/authentication_and_settings/cubit/register_cubit.dart';
 import '../../../constants/authentication_and_settings/text.dart';
 import '../../../core/styles/typography.dart';
 import '../../shared/button_touch_effects/touchable_opacity.dart';

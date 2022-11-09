@@ -1,9 +1,12 @@
 import 'package:Confessi/constants/feedback/text.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:Confessi/presentation/shared/behaviours/keyboard_dismiss.dart';
 import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
+import 'package:Confessi/presentation/shared/buttons/pop.dart';
 import 'package:Confessi/presentation/shared/buttons/simple_text.dart';
 import 'package:Confessi/presentation/shared/layout/scrollable_area.dart';
+import 'package:Confessi/presentation/shared/text/disclaimer_text.dart';
 import 'package:Confessi/presentation/shared/textfields/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -76,6 +79,7 @@ class _FeedbackHomeState extends State<FeedbackHome> {
                 ),
                 Expanded(
                   child: ScrollableArea(
+                    thumbVisible: false,
                     child: Column(
                       children: [
                         InitScale(
@@ -91,14 +95,26 @@ class _FeedbackHomeState extends State<FeedbackHome> {
                             },
                           ),
                         ),
-                        InitScale(
-                          child: SimpleTextButton(
-                            secondaryColors: true,
-                            tapType: TapType.lightImpact,
-                            horizontalPadding: 10,
-                            infiniteWidth: true,
-                            onTap: () => print("tap"),
-                            text: submitButtonText,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: InitScale(
+                            child: PopButton(
+                              topPadding: 5,
+                              backgroundColor: Theme.of(context).colorScheme.secondary,
+                              textColor: Theme.of(context).colorScheme.onSecondary,
+                              text: "Submit",
+                              onPress: () => print("tap"),
+                              icon: CupertinoIcons.up_arrow,
+                            ),
+                          ),
+                        ),
+                        const InitScale(
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            child: DisclaimerText(
+                              text: "At this time, all feedback is read directly by a developer.",
+                              verticalPadding: 15,
+                            ),
                           ),
                         ),
                       ],

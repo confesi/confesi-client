@@ -19,6 +19,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
 
+import '../../application/authentication_and_settings/cubit/contact_setting_cubit.dart';
 import '../../dependency_injection.dart';
 import '../../presentation/authentication_and_settings/screens/authentication/register_tab_manager.dart';
 import '../../presentation/primary/screens/home.dart';
@@ -189,7 +190,15 @@ class AppRouter {
           page = const FAQScreen();
           break;
         case "/settings/contact":
-          page = const ContactScreen();
+          page = MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                lazy: false,
+                create: (context) => sl<ContactSettingCubit>(),
+              ),
+            ],
+            child: const ContactScreen(),
+          );
           break;
         case "/settings/textSize":
           page = const TextSizeScreen();

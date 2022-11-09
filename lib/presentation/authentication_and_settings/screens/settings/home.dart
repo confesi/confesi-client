@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:Confessi/core/utils/sizing/bottom_safe_area.dart';
-import 'package:Confessi/core/utils/sizing/top_safe_area.dart';
 import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
 import 'package:Confessi/presentation/shared/text/disclaimer_text.dart';
 import 'package:Confessi/presentation/shared/selection_groups/setting_tile.dart';
@@ -10,9 +9,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrollable/exports.dart';
-import 'package:url_launcher/url_launcher.dart';
 
-import '../../../../application/authentication_and_prefs/cubit/user_cubit.dart';
+import '../../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../../../../constants/authentication_and_settings/text.dart';
 import '../../../../core/styles/typography.dart';
 import '../../../shared/layout/appbar.dart';
@@ -95,7 +93,7 @@ class SettingsHome extends StatelessWidget {
                             settingTiles: [
                               SettingTile(
                                 leftIcon: CupertinoIcons.shield,
-                                text: kSettingsBiometricProfileLockLabel,
+                                text: kSettingsBiometricLockLabel,
                                 onTap: () => print("tap"),
                               ),
                               SettingTile(

@@ -40,6 +40,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       onWillPop: () async => false,
       child: ThemedStatusBar(
         child: Scaffold(
+          drawerScrimColor: Colors.black.withOpacity(0.7),
           drawerEnableOpenDragGesture: false,
           drawer: const ExploreDrawer(), // Reference to the "Feed" feature drawer (ExploreDrawer).
           resizeToAvoidBottomInset: false,

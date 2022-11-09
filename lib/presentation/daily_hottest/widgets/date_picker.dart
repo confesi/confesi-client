@@ -7,6 +7,7 @@ import '../../../application/daily_hottest/cubit/hottest_cubit.dart';
 import '../../../core/styles/typography.dart';
 import '../../shared/behaviours/init_scale.dart';
 import '../../shared/behaviours/init_transform.dart';
+import '../../shared/buttons/pop.dart';
 import '../../shared/layout/swipebar.dart';
 
 class DatePicker extends StatefulWidget {
@@ -35,11 +36,17 @@ class _DatePickerState extends State<DatePicker> {
                   Expanded(
                     child: InitTransform(
                       transformDirection: TransformDirection.horizontal,
-                      child: SimpleTextButton(
-                        onTap: () {
+                      magnitudeOfTransform: -250,
+                      child: PopButton(
+                        bottomPadding: 15,
+                        justText: true,
+                        onPress: () {
                           context.read<HottestCubit>().loadPosts(DateTime.now());
                           Navigator.pop(context);
                         },
+                        icon: CupertinoIcons.chevron_right,
+                        backgroundColor: Theme.of(context).colorScheme.surface,
+                        textColor: Theme.of(context).colorScheme.primary,
                         text: "Load today",
                       ),
                     ),
@@ -48,12 +55,17 @@ class _DatePickerState extends State<DatePicker> {
                   Expanded(
                     child: InitTransform(
                       transformDirection: TransformDirection.horizontal,
-                      magnitudeOfTransform: -100,
-                      child: SimpleTextButton(
-                        onTap: () {
+                      magnitudeOfTransform: 250,
+                      child: PopButton(
+                        bottomPadding: 15,
+                        justText: true,
+                        onPress: () {
                           context.read<HottestCubit>().loadPosts(selectedDate);
                           Navigator.pop(context);
                         },
+                        icon: CupertinoIcons.chevron_right,
+                        backgroundColor: Theme.of(context).colorScheme.secondary,
+                        textColor: Theme.of(context).colorScheme.onSecondary,
                         text: "Load selected",
                       ),
                     ),

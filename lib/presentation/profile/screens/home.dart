@@ -164,10 +164,12 @@ class _ProfileHomeState extends State<ProfileHome> {
                                 Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 15),
                                   child: StatTile(
-                                    leftTap: () => showInfoSheet(context, "Total likes", addCommasToNumber(983042378)),
-                                    centerTap: () =>
-                                        showInfoSheet(context, "Total hottests", addCommasToNumber(128937192)),
-                                    rightTap: () => showInfoSheet(context, "Total hates", addCommasToNumber(9487211)),
+                                    leftTap: () => showInfoSheet(
+                                        context, "Total likes", "${addCommasToNumber(983042378)} / Top 4% of users"),
+                                    centerTap: () => showInfoSheet(
+                                        context, "Total hottests", "${addCommasToNumber(543253)} / Top 9% of users"),
+                                    rightTap: () => showInfoSheet(
+                                        context, "Total hates", "${addCommasToNumber(2436)} / Top 54% of users"),
                                     leftNumber: 17231223,
                                     leftDescription: "Likes",
                                     centerNumber: 2,

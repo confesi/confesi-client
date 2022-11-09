@@ -1,5 +1,4 @@
 import 'package:Confessi/constants/enums_that_are_local_keys.dart';
-import 'package:Confessi/core/utils/styles/appearance_name.dart';
 import 'package:Confessi/presentation/shared/selection_groups/bool_selection_group.dart';
 import 'package:Confessi/presentation/authentication_and_settings/widgets/settings/header_text.dart';
 import 'package:Confessi/presentation/shared/selection_groups/bool_selection_tile.dart';
@@ -10,7 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../application/authentication_and_prefs/cubit/user_cubit.dart';
+import '../../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../../../../constants/authentication_and_settings/text.dart';
 import '../../../../core/styles/typography.dart';
 import '../../../shared/behaviours/simulated_bottom_safe_area.dart';

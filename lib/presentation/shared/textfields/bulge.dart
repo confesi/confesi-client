@@ -104,7 +104,7 @@ class _BulgeTextFieldState extends State<BulgeTextField> {
                       ),
                       color: Theme.of(context).colorScheme.surface,
                       borderRadius: const BorderRadius.all(
-                        Radius.circular(10),
+                        Radius.circular(15),
                       ),
                     ),
                     child: Row(

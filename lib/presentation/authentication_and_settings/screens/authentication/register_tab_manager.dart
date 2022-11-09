@@ -3,7 +3,7 @@ import 'package:Confessi/presentation/shared/behaviours/nav_blocker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../application/authentication_and_prefs/cubit/register_cubit.dart';
+import '../../../../application/authentication_and_settings/cubit/register_cubit.dart';
 import '../../tabs/account_details.dart';
 
 class RegisterTabManager extends StatefulWidget {
