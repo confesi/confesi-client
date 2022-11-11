@@ -12,6 +12,7 @@ import 'package:Confessi/presentation/daily_hottest/widgets/leaderboard_rectangl
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:scrollable/exports.dart';
 
 import '../../../constants/daily_hottest/general.dart';
 import '../../../core/styles/typography.dart';
@@ -102,24 +103,29 @@ class LeaderboardScreen extends StatelessWidget {
                       ),
                       Expanded(
                         child: InitTransform(
-                          child: ListView.builder(
-                            itemBuilder: (context, index) {
-                              if (index == 0) {
-                                return const SizedBox(height: 30);
-                              } else if (index >= 3) {
-                                return LeaderboardRectangleTile(
-                                  placing:
-                                      '${state.rankings[index].placing}${numberPostfix(state.rankings[index].placing)}',
-                                  points: isPlural(state.rankings[index].points)
-                                      ? '${largeNumberFormatter(state.rankings[index].points)} pts'
-                                      : '${largeNumberFormatter(state.rankings[index].points)} pt',
-                                  university: state.rankings[index].universityFullName,
-                                );
-                              } else {
-                                return Container();
-                              }
-                            },
-                            itemCount: state.rankings.length,
+                          child: ScrollHaptics(
+                            distancebetweenHapticEffectsDuringScroll: 50,
+                            hapticEffectAtEdge: HapticType.medium,
+                            child: ListView.builder(
+                              physics: const ClampingScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                if (index == 0) {
+                                  return const SizedBox(height: 30);
+                                } else if (index >= 3) {
+                                  return LeaderboardRectangleTile(
+                                    placing:
+                                        '${state.rankings[index].placing}${numberPostfix(state.rankings[index].placing)}',
+                                    points: isPlural(state.rankings[index].points)
+                                        ? '${largeNumberFormatter(state.rankings[index].points)} pts'
+                                        : '${largeNumberFormatter(state.rankings[index].points)} pt',
+                                    university: state.rankings[index].universityFullName,
+                                  );
+                                } else {
+                                  return Container();
+                                }
+                              },
+                              itemCount: state.rankings.length,
+                            ),
                           ),
                         ),
                       ),

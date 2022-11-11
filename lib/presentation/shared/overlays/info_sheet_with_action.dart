@@ -1,14 +1,20 @@
 import 'package:Confessi/core/styles/typography.dart';
 import 'package:Confessi/core/utils/sizing/bottom_safe_area.dart';
 import 'package:Confessi/core/utils/sizing/height_fraction.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_opacity.dart';
-import 'package:Confessi/presentation/shared/layout/scrollable_area.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scrollable/exports.dart';
 
+import '../buttons/pop.dart';
 import '../layout/swipebar.dart';
 
-Future<dynamic> showInfoSheet(BuildContext context, String header, String body) {
+Future<dynamic> showInfoSheetWithAction(
+  BuildContext context,
+  String header,
+  String body,
+  VoidCallback onTap,
+  String buttonText,
+) {
   return showModalBottomSheet(
     barrierColor: Colors.black.withOpacity(0.7),
     context: context,
@@ -52,7 +58,19 @@ Future<dynamic> showInfoSheet(BuildContext context, String header, String body) 
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: bottomSafeArea(context)),
+                  const SizedBox(height: 30),
+                  PopButton(
+                    bottomPadding: bottomSafeArea(context),
+                    justText: true,
+                    onPress: () {
+                      Navigator.pop(context);
+                      onTap();
+                    },
+                    icon: CupertinoIcons.chevron_right,
+                    backgroundColor: Theme.of(context).colorScheme.secondary,
+                    textColor: Theme.of(context).colorScheme.onSecondary,
+                    text: buttonText,
+                  ),
                 ],
               ),
             ),

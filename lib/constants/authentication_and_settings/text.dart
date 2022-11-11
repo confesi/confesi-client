@@ -133,7 +133,7 @@ const String kSettingsBiometricLockLabel = "Biometric Lock";
 
 // const String kSettingsRewatchTutorialLabel = "Rewatch Onboarding Slides";
 
-const String kSettingsAccountDetailsLabel = "Account Details";
+const String kSettingsAccountDetailsLabel = "School Details";
 
 const String kVerifiedStudentLabel = "Verified Student Perks";
 

@@ -5,6 +5,7 @@ import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
 import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:Confessi/presentation/shared/edited_source_widgets/swipe_refresh.dart';
 import 'package:Confessi/presentation/shared/layout/scrollable_area.dart';
+import 'package:Confessi/presentation/shared/overlays/info_sheet_with_action.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -112,8 +113,13 @@ class _ProfileHomeState extends State<ProfileHome> {
                                   EmblemButton(
                                     backgroundColor: Theme.of(context).colorScheme.surface,
                                     icon: CupertinoIcons.lock,
-                                    onPress: () => showInfoSheet(context, "This profile is private",
-                                        "This profile is only visible to you. In fact, to add an extra layer of protection, you can enable biometric authentication in order to view your saved posts, confessions, and comments."),
+                                    onPress: () => showInfoSheetWithAction(
+                                      context,
+                                      "This profile is private",
+                                      "This profile is only visible to you. In fact, to add an extra layer of protection, you can enable biometric authentication to keep your saved posts, confessions, and comments locked.",
+                                      () => Navigator.pushNamed(context, "/settings/biometric_lock"),
+                                      "Edit biometric lock settings",
+                                    ),
                                     iconColor: Theme.of(context).colorScheme.onSurface,
                                   ),
                                   EmblemButton(

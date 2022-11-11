@@ -36,7 +36,7 @@ class DisclaimerText extends StatelessWidget {
                 child: Text(
                   text,
                   textScaleFactor: textScaleFactor1 ? 1 : null,
-                  style: kBody.copyWith(
+                  style: kDetail.copyWith(
                     color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),

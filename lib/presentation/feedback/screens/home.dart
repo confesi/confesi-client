@@ -1,4 +1,5 @@
 import 'package:Confessi/constants/feedback/text.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_opacity.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:Confessi/presentation/shared/behaviours/keyboard_dismiss.dart';
@@ -108,7 +109,9 @@ class _FeedbackHomeState extends State<FeedbackHome> {
                             ),
                           ),
                         ),
-                        const InitScale(
+                        const InitTransform(
+                          durationInMilliseconds: 750,
+                          magnitudeOfTransform: 400,
                           child: Padding(
                             padding: EdgeInsets.symmetric(horizontal: 10),
                             child: DisclaimerText(

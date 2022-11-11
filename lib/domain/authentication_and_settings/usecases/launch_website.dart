@@ -3,15 +3,14 @@ import 'package:dartz/dartz.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/results/failures.dart';
-import '../../../core/usecases/no_params.dart';
 import '../../../core/usecases/single_usecase.dart';
 
-class OpenMailClient implements Usecase<Success, NoParams> {
+class LaunchWebsite implements Usecase<Success, String> {
   @override
-  Future<Either<Failure, Success>> call(NoParams noParams) async {
+  Future<Either<Failure, Success>> call(String link) async {
     try {
-      // launch email client
-      launchUrl(Uri.parse("mailto:support@confesi.com?subject=I%20need%20some%20help%20here"));
+      // launch website
+      launchUrl(Uri.parse(link));
       return Right(ApiSuccess());
     } catch (error) {
       // return failure, so that an error state can be emitted properly inside the cubit

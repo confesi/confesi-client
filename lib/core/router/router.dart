@@ -1,4 +1,6 @@
 import 'package:Confessi/presentation/authentication_and_settings/screens/settings/contact.dart';
+import 'package:Confessi/presentation/authentication_and_settings/screens/settings/haptics.dart';
+import 'package:Confessi/presentation/authentication_and_settings/screens/settings/language.dart';
 import 'package:Confessi/presentation/create_post/screens/details.dart';
 import 'package:Confessi/presentation/create_post/screens/home.dart';
 import 'package:Confessi/presentation/daily_hottest/screens/leaderboard.dart';
@@ -11,7 +13,6 @@ import 'package:Confessi/presentation/primary/screens/critical_error.dart';
 import 'package:Confessi/presentation/authentication_and_settings/screens/settings/appearance.dart';
 import 'package:Confessi/presentation/authentication_and_settings/screens/settings/faq.dart';
 import 'package:Confessi/presentation/authentication_and_settings/screens/settings/home.dart';
-import 'package:Confessi/presentation/authentication_and_settings/screens/settings/text_size.dart';
 import 'package:Confessi/presentation/user_posts_and_comments/screens/comments.dart';
 import 'package:Confessi/presentation/user_posts_and_comments/screens/posts.dart';
 import 'package:Confessi/presentation/user_posts_and_comments/screens/saved.dart';
@@ -20,13 +21,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
 
 import '../../application/authentication_and_settings/cubit/contact_setting_cubit.dart';
+import '../../application/authentication_and_settings/cubit/website_launcher_setting_cubit.dart';
 import '../../dependency_injection.dart';
 import '../../presentation/authentication_and_settings/screens/authentication/register_tab_manager.dart';
+import '../../presentation/authentication_and_settings/screens/settings/biometric_lock.dart';
 import '../../presentation/primary/screens/home.dart';
 import '../../presentation/authentication_and_settings/screens/authentication/login.dart';
 import '../../presentation/primary/screens/showcase.dart';
 import '../../presentation/authentication_and_settings/screens/authentication/open.dart';
-import '../../application/daily_hottest/cubit/hottest_cubit.dart';
 import '../../application/daily_hottest/cubit/leaderboard_cubit.dart';
 import '../../application/feed/cubit/recents_cubit.dart';
 import '../../application/feed/cubit/trending_cubit.dart';
@@ -48,7 +50,7 @@ class AppRouter {
     return fullScreenDialogRoutes.contains(routeSettings.name) ? true : false;
   }
 
-  // Checks which routes show as a fade animation.
+  // Checks which routes show as a size animation.
   bool isSizeAnim(RouteSettings routeSettings) {
     List<String> sizeAnimDialogRoutes = [];
     return sizeAnimDialogRoutes.contains(routeSettings.name) ? true : false;
@@ -56,7 +58,11 @@ class AppRouter {
 
   // Checks which routes show as a fade animation.
   bool isFadeAnim(RouteSettings routeSettings) {
-    List<String> fadeAnimDialogRoutes = ["/onboarding", "/open", "/home"];
+    List<String> fadeAnimDialogRoutes = [
+      "/onboarding",
+      "/open",
+      "/home",
+    ];
     return fadeAnimDialogRoutes.contains(routeSettings.name) ? true : false;
   }
 
@@ -178,7 +184,15 @@ class AppRouter {
           page = const OverscrollEasterEgg();
           break;
         case "/settings":
-          page = const SettingsHome();
+          page = MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                lazy: false,
+                create: (context) => sl<WebsiteLauncherSettingCubit>(),
+              ),
+            ],
+            child: const SettingsHome(),
+          );
           break;
         case "/watched_universities":
           page = const WatchedUniversitiesScreen();
@@ -200,8 +214,14 @@ class AppRouter {
             child: const ContactScreen(),
           );
           break;
-        case "/settings/textSize":
-          page = const TextSizeScreen();
+        case "/settings/language":
+          page = const LanguageScreen();
+          break;
+        case "/settings/haptics":
+          page = const HapticsScreen();
+          break;
+        case "/settings/biometric_lock":
+          page = const BiometricLockScreen();
           break;
         case "/prefsError":
           page = const CriticalErrorScreen();

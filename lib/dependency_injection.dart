@@ -10,6 +10,7 @@ import 'package:Confessi/data/daily_hottest/repositories/leaderboard_repository_
 import 'package:Confessi/data/authentication_and_settings/datasources/prefs_datasource.dart';
 import 'package:Confessi/data/authentication_and_settings/repositories/prefs_repository_concrete.dart';
 import 'package:Confessi/domain/authentication_and_settings/usecases/copy_email_text.dart';
+import 'package:Confessi/domain/authentication_and_settings/usecases/launch_website.dart';
 import 'package:Confessi/domain/authentication_and_settings/usecases/open_mail_client.dart';
 import 'package:Confessi/domain/create_post/usecases/upload_post.dart';
 import 'package:Confessi/domain/daily_hottest/usecases/posts.dart';
@@ -31,6 +32,7 @@ import 'application/authentication_and_settings/cubit/contact_setting_cubit.dart
 import 'application/authentication_and_settings/cubit/login_cubit.dart';
 import 'application/authentication_and_settings/cubit/register_cubit.dart';
 import 'application/authentication_and_settings/cubit/user_cubit.dart';
+import 'application/authentication_and_settings/cubit/website_launcher_setting_cubit.dart';
 import 'core/network/connection_info.dart';
 import 'core/router/router.dart';
 import 'data/authentication_and_settings/datasources/authentication_datasource.dart';
@@ -80,6 +82,8 @@ Future<void> init() async {
       () => UserCubit(logout: sl(), silentAuthentication: sl(), appearance: sl(), loadRefreshToken: sl()));
   // Registers the contact setting cubit.
   sl.registerFactory(() => ContactSettingCubit(copyEmailTextUsecase: sl(), openMailClientUsecase: sl()));
+  // Registers the usecase that launches the website viewer.
+  sl.registerFactory(() => WebsiteLauncherSettingCubit(launchWebsiteUsecase: sl()));
 
   //! Usecases
   // Registers the register usecase.
@@ -110,6 +114,8 @@ Future<void> init() async {
   sl.registerLazySingleton(() => OpenMailClient());
   // Registers the usecase that copies the email text for support.
   sl.registerLazySingleton(() => CopyEmailText());
+  // Registers the launching a website usecase.
+  sl.registerLazySingleton(() => LaunchWebsite());
 
   //! Core
   // Registers custom connection checker class.

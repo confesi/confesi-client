@@ -1,12 +1,10 @@
 import 'package:Confessi/application/authentication_and_settings/cubit/contact_setting_cubit.dart';
-import 'package:Confessi/presentation/shared/overlays/center_overlay_message.dart';
 import 'package:Confessi/presentation/shared/overlays/notification_chip.dart';
 import 'package:Confessi/presentation/shared/selection_groups/setting_tile.dart';
 import 'package:Confessi/presentation/shared/selection_groups/setting_tile_group.dart';
 import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrollable/exports.dart';
 
@@ -14,6 +12,7 @@ import '../../../../constants/authentication_and_settings/text.dart';
 import '../../../../core/styles/typography.dart';
 import '../../../../core/utils/sizing/bottom_safe_area.dart';
 import '../../../shared/layout/appbar.dart';
+import '../../../shared/text/disclaimer_text.dart';
 
 class ContactScreen extends StatefulWidget {
   const ContactScreen({super.key});
@@ -26,10 +25,9 @@ class _ContactScreenState extends State<ContactScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<ContactSettingCubit, ContactSettingState>(
-      // listenWhen: (previous, current) => false,
       listener: (context, state) {
         if (state is ContactSuccess) {
-          CenterOverlay().show(context, "Copied Successfully");
+          showNotificationChip(context, "Email copied to clipboard.", notificationType: NotificationType.success);
         } else if (state is ContactError) {
           showNotificationChip(context, state.message);
         }
@@ -92,6 +90,10 @@ class _ContactScreenState extends State<ContactScreen> {
                               onTap: () => context.read<ContactSettingCubit>().openMailClient(),
                             ),
                           ],
+                        ),
+                        const DisclaimerText(
+                          verticalPadding: 15,
+                          text: "To permanently delete your account, send us an email.",
                         ),
                       ],
                     ),
