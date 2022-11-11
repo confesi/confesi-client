@@ -1,4 +1,4 @@
-import 'package:Confessi/core/styles/typography.dart';
+import '../../../core/styles/typography.dart';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';

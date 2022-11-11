@@ -1,4 +1,4 @@
-import 'package:Confessi/presentation/daily_hottest/utils/failure_to_message.dart';
+import '../../../presentation/daily_hottest/utils/failure_to_message.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';

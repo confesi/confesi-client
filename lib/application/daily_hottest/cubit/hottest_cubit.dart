@@ -1,4 +1,4 @@
-import 'package:Confessi/domain/shared/entities/post.dart';
+import '../../../domain/shared/entities/post.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';

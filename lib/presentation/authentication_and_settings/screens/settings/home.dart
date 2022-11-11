@@ -1,12 +1,10 @@
-import 'dart:ui';
-
-import 'package:Confessi/application/authentication_and_settings/cubit/website_launcher_setting_cubit.dart';
-import 'package:Confessi/core/utils/sizing/bottom_safe_area.dart';
-import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
-import 'package:Confessi/presentation/shared/overlays/notification_chip.dart';
-import 'package:Confessi/presentation/shared/text/disclaimer_text.dart';
-import 'package:Confessi/presentation/shared/selection_groups/setting_tile.dart';
-import 'package:Confessi/presentation/shared/selection_groups/setting_tile_group.dart';
+import '../../../../application/authentication_and_settings/cubit/website_launcher_setting_cubit.dart';
+import '../../../../core/utils/sizing/bottom_safe_area.dart';
+import '../../../../generated/l10n.dart';
+import '../../../shared/behaviours/themed_status_bar.dart';
+import '../../../shared/overlays/notification_chip.dart';
+import '../../../shared/selection_groups/setting_tile.dart';
+import '../../../shared/selection_groups/setting_tile_group.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,7 +38,7 @@ class SettingsHome extends StatelessWidget {
                 AppbarLayout(
                   leftIcon: CupertinoIcons.xmark,
                   centerWidget: Text(
-                    "Settings",
+                    S.of(context).settings_page_title,
                     style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
@@ -173,10 +171,16 @@ class SettingsHome extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            const DisclaimerText(
-                              verticalPadding: 15,
-                              text: kSettingsBottomDisclaimerText,
-                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10, right: 10, top: 45),
+                              child: Center(
+                                child: Text(
+                                  "version 1.2.1 (release)",
+                                  style: kDetail.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            )
                           ],
                         ),
                       ),

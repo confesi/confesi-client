@@ -1,6 +1,6 @@
-import 'package:Confessi/presentation/shared/behaviours/keyboard_dismiss.dart';
-import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
-import 'package:Confessi/presentation/shared/layout/scrollable_area.dart';
+import '../../shared/behaviours/keyboard_dismiss.dart';
+import '../../shared/behaviours/themed_status_bar.dart';
+import '../../shared/layout/scrollable_area.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

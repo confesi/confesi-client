@@ -1,4 +1,4 @@
-import 'package:Confessi/presentation/daily_hottest/widgets/date_picker.dart';
+import 'date_picker.dart';
 
 import 'package:flutter/material.dart';
 

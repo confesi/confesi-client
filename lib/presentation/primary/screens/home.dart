@@ -1,7 +1,7 @@
-import 'package:Confessi/presentation/daily_hottest/screens/home.dart';
-import 'package:Confessi/presentation/profile/screens/home.dart';
-import 'package:Confessi/presentation/profile/screens/screen_obscuring_manager.dart';
-import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
+import '../../daily_hottest/screens/home.dart';
+import '../../profile/screens/home.dart';
+import '../../profile/screens/screen_obscuring_manager.dart';
+import '../../shared/behaviours/themed_status_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

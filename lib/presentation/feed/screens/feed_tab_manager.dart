@@ -1,4 +1,4 @@
-import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
+import '../../shared/behaviours/themed_status_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';

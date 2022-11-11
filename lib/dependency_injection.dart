@@ -1,27 +1,30 @@
 import 'dart:async';
 
-import 'package:Confessi/core/clients/http_client.dart';
-import 'package:Confessi/data/create_post/datasources/create_post_datasource.dart';
-import 'package:Confessi/data/create_post/repositories/create_post_repository_concrete.dart';
-import 'package:Confessi/data/daily_hottest/datasources/daily_hottest_datasource.dart';
-import 'package:Confessi/data/daily_hottest/datasources/leaderboard_datasource.dart';
-import 'package:Confessi/data/daily_hottest/repositories/daily_hottest_repository_concrete.dart';
-import 'package:Confessi/data/daily_hottest/repositories/leaderboard_repository_concrete.dart';
-import 'package:Confessi/data/authentication_and_settings/datasources/prefs_datasource.dart';
-import 'package:Confessi/data/authentication_and_settings/repositories/prefs_repository_concrete.dart';
-import 'package:Confessi/domain/authentication_and_settings/usecases/copy_email_text.dart';
-import 'package:Confessi/domain/authentication_and_settings/usecases/launch_website.dart';
-import 'package:Confessi/domain/authentication_and_settings/usecases/open_mail_client.dart';
-import 'package:Confessi/domain/create_post/usecases/upload_post.dart';
-import 'package:Confessi/domain/daily_hottest/usecases/posts.dart';
-import 'package:Confessi/domain/daily_hottest/usecases/ranking.dart';
-import 'package:Confessi/domain/profile/usecases/biometric_authentication.dart';
-import 'package:Confessi/application/create_post/cubit/post_cubit.dart';
-import 'package:Confessi/application/daily_hottest/cubit/hottest_cubit.dart';
-import 'package:Confessi/application/daily_hottest/cubit/leaderboard_cubit.dart';
-import 'package:Confessi/application/profile/cubit/biometrics_cubit.dart';
-import 'package:Confessi/domain/authentication_and_settings/usecases/appearance.dart';
-import 'package:Confessi/domain/authentication_and_settings/usecases/load_refresh_token.dart';
+import 'package:Confessi/domain/authentication_and_settings/usecases/open_device_settings.dart';
+
+import 'application/authentication_and_settings/cubit/language_setting_cubit.dart';
+import 'core/clients/http_client.dart';
+import 'data/create_post/datasources/create_post_datasource.dart';
+import 'data/create_post/repositories/create_post_repository_concrete.dart';
+import 'data/daily_hottest/datasources/daily_hottest_datasource.dart';
+import 'data/daily_hottest/datasources/leaderboard_datasource.dart';
+import 'data/daily_hottest/repositories/daily_hottest_repository_concrete.dart';
+import 'data/daily_hottest/repositories/leaderboard_repository_concrete.dart';
+import 'data/authentication_and_settings/datasources/prefs_datasource.dart';
+import 'data/authentication_and_settings/repositories/prefs_repository_concrete.dart';
+import 'domain/authentication_and_settings/usecases/copy_email_text.dart';
+import 'domain/authentication_and_settings/usecases/launch_website.dart';
+import 'domain/authentication_and_settings/usecases/open_mail_client.dart';
+import 'domain/create_post/usecases/upload_post.dart';
+import 'domain/daily_hottest/usecases/posts.dart';
+import 'domain/daily_hottest/usecases/ranking.dart';
+import 'domain/profile/usecases/biometric_authentication.dart';
+import 'application/create_post/cubit/post_cubit.dart';
+import 'application/daily_hottest/cubit/hottest_cubit.dart';
+import 'application/daily_hottest/cubit/leaderboard_cubit.dart';
+import 'application/profile/cubit/biometrics_cubit.dart';
+import 'domain/authentication_and_settings/usecases/appearance.dart';
+import 'domain/authentication_and_settings/usecases/load_refresh_token.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/adapters.dart';
@@ -82,8 +85,10 @@ Future<void> init() async {
       () => UserCubit(logout: sl(), silentAuthentication: sl(), appearance: sl(), loadRefreshToken: sl()));
   // Registers the contact setting cubit.
   sl.registerFactory(() => ContactSettingCubit(copyEmailTextUsecase: sl(), openMailClientUsecase: sl()));
-  // Registers the usecase that launches the website viewer.
+  // Registers the cubit that launches the website viewer.
   sl.registerFactory(() => WebsiteLauncherSettingCubit(launchWebsiteUsecase: sl()));
+  // Registers the cubit that opens the device's system settings.
+  sl.registerFactory(() => LanguageSettingCubit(openDeviceSettingsUsecase: sl()));
 
   //! Usecases
   // Registers the register usecase.
@@ -116,6 +121,8 @@ Future<void> init() async {
   sl.registerLazySingleton(() => CopyEmailText());
   // Registers the launching a website usecase.
   sl.registerLazySingleton(() => LaunchWebsite());
+  // Registers the usecase that opens a device's system settings.
+  sl.registerLazySingleton(() => OpenDeviceSettings());
 
   //! Core
   // Registers custom connection checker class.

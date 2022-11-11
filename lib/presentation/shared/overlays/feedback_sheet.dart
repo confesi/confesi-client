@@ -1,8 +1,8 @@
-import 'package:Confessi/core/styles/typography.dart';
-import 'package:Confessi/core/utils/sizing/height_fraction.dart';
-import 'package:Confessi/core/utils/sizing/width_breakpoint_fraction.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
-import 'package:Confessi/presentation/shared/buttons/simple_text.dart';
+import '../../../core/styles/typography.dart';
+import '../../../core/utils/sizing/height_fraction.dart';
+import '../../../core/utils/sizing/width_breakpoint_fraction.dart';
+import '../behaviours/init_scale.dart';
+import '../buttons/simple_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

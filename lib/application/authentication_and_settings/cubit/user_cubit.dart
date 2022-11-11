@@ -1,6 +1,6 @@
-import 'package:Confessi/core/utils/tokens/user_id_from_jwt.dart';
-import 'package:Confessi/domain/authentication_and_settings/usecases/silent_authentication.dart';
-import 'package:Confessi/presentation/shared/overlays/notification_chip.dart';
+import '../../../core/utils/tokens/user_id_from_jwt.dart';
+import '../../../domain/authentication_and_settings/usecases/silent_authentication.dart';
+import '../../../presentation/shared/overlays/notification_chip.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';

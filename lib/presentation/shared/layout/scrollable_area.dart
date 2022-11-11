@@ -1,4 +1,4 @@
-import 'package:Confessi/presentation/shared/behaviours/overscroll.dart';
+import '../behaviours/overscroll.dart';
 import 'package:flutter/cupertino.dart';
 
 class ScrollableArea extends StatefulWidget {

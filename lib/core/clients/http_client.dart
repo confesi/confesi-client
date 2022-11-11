@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
-import 'package:Confessi/constants/shared/dev.dart';
-import 'package:Confessi/core/results/exceptions.dart';
-import 'package:Confessi/core/results/failures.dart';
-import 'package:Confessi/core/results/successes.dart';
+import '../../constants/shared/dev.dart';
+import '../results/exceptions.dart';
+import '../results/failures.dart';
+import '../results/successes.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';

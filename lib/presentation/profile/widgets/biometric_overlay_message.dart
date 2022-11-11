@@ -1,7 +1,7 @@
-import 'package:Confessi/core/styles/typography.dart';
-import 'package:Confessi/core/utils/sizing/width_breakpoint_fraction.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
+import '../../../core/styles/typography.dart';
+import '../../../core/utils/sizing/width_breakpoint_fraction.dart';
+import '../../shared/behaviours/init_scale.dart';
+import '../../shared/behaviours/init_transform.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

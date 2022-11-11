@@ -1,7 +1,7 @@
-import 'package:Confessi/core/utils/sizing/bottom_safe_area.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_opacity.dart';
-import 'package:Confessi/presentation/shared/buttons/simple_text.dart';
-import 'package:Confessi/presentation/shared/layout/line.dart';
+import '../../../core/utils/sizing/bottom_safe_area.dart';
+import '../../shared/behaviours/init_opacity.dart';
+import '../../shared/buttons/simple_text.dart';
+import '../../shared/layout/line.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scrollable/exports.dart';

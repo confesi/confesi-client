@@ -1,11 +1,11 @@
-import 'package:Confessi/core/utils/numbers/add_commas_to_number.dart';
-import 'package:Confessi/core/utils/numbers/number_until_limit.dart';
-import 'package:Confessi/presentation/shared/behaviours/bottom_overscroll_scroll_to_top.dart';
-import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
-import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opacity.dart';
-import 'package:Confessi/presentation/shared/edited_source_widgets/swipe_refresh.dart';
-import 'package:Confessi/presentation/shared/layout/scrollable_area.dart';
-import 'package:Confessi/presentation/shared/overlays/info_sheet_with_action.dart';
+import '../../../core/utils/numbers/add_commas_to_number.dart';
+import '../../../core/utils/numbers/number_until_limit.dart';
+import '../../shared/behaviours/bottom_overscroll_scroll_to_top.dart';
+import '../../shared/behaviours/themed_status_bar.dart';
+import '../../shared/button_touch_effects/touchable_opacity.dart';
+import '../../shared/edited_source_widgets/swipe_refresh.dart';
+import '../../shared/layout/scrollable_area.dart';
+import '../../shared/overlays/info_sheet_with_action.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

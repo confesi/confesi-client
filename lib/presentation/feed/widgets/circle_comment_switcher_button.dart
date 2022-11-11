@@ -1,5 +1,5 @@
-import 'package:Confessi/presentation/feed/widgets/infinite_list.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
+import 'infinite_list.dart';
+import '../../shared/behaviours/init_scale.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

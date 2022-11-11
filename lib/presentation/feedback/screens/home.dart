@@ -1,14 +1,14 @@
-import 'package:Confessi/constants/feedback/text.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_opacity.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
-import 'package:Confessi/presentation/shared/behaviours/keyboard_dismiss.dart';
-import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
-import 'package:Confessi/presentation/shared/buttons/pop.dart';
-import 'package:Confessi/presentation/shared/buttons/simple_text.dart';
-import 'package:Confessi/presentation/shared/layout/scrollable_area.dart';
-import 'package:Confessi/presentation/shared/text/disclaimer_text.dart';
-import 'package:Confessi/presentation/shared/textfields/expandable.dart';
+import '../../../constants/feedback/text.dart';
+import '../../shared/behaviours/init_opacity.dart';
+import '../../shared/behaviours/init_scale.dart';
+import '../../shared/behaviours/init_transform.dart';
+import '../../shared/behaviours/keyboard_dismiss.dart';
+import '../../shared/behaviours/themed_status_bar.dart';
+import '../../shared/buttons/pop.dart';
+import '../../shared/buttons/simple_text.dart';
+import '../../shared/layout/scrollable_area.dart';
+import '../../shared/text/disclaimer_text.dart';
+import '../../shared/textfields/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

@@ -1,7 +1,7 @@
-import 'package:Confessi/core/results/failures.dart';
-import 'package:Confessi/core/results/successes.dart';
-import 'package:Confessi/core/usecases/single_usecase.dart';
-import 'package:Confessi/data/create_post/repositories/create_post_repository_concrete.dart';
+import '../../../core/results/failures.dart';
+import '../../../core/results/successes.dart';
+import '../../../core/usecases/single_usecase.dart';
+import '../../../data/create_post/repositories/create_post_repository_concrete.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 

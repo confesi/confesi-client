@@ -1,4 +1,4 @@
-import 'package:Confessi/domain/authentication_and_settings/usecases/launch_website.dart';
+import '../../../domain/authentication_and_settings/usecases/launch_website.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';

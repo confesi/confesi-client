@@ -1,4 +1,4 @@
-import 'package:Confessi/core/clients/http_client.dart';
+import '../../../core/clients/http_client.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../../core/results/failures.dart';

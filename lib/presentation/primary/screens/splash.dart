@@ -1,6 +1,6 @@
-import 'package:Confessi/core/styles/typography.dart';
-import 'package:Confessi/core/utils/sizing/width_fraction.dart';
-import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
+import '../../../core/styles/typography.dart';
+import '../../../core/utils/sizing/width_fraction.dart';
+import '../../shared/behaviours/themed_status_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shake/shake.dart';
@@ -93,7 +93,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                         ),
                       ),
                       SizedBox(
-                        width: widthFraction(context, .75),
+                        width: widthFraction(context, .6),
                         child: Text(
                           introText,
                           style: kTitle.copyWith(

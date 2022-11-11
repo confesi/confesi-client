@@ -1,21 +1,22 @@
-import 'package:Confessi/presentation/authentication_and_settings/screens/settings/contact.dart';
-import 'package:Confessi/presentation/authentication_and_settings/screens/settings/haptics.dart';
-import 'package:Confessi/presentation/authentication_and_settings/screens/settings/language.dart';
-import 'package:Confessi/presentation/create_post/screens/details.dart';
-import 'package:Confessi/presentation/create_post/screens/home.dart';
-import 'package:Confessi/presentation/daily_hottest/screens/leaderboard.dart';
-import 'package:Confessi/presentation/easter_eggs/screens/overscroll.dart';
-import 'package:Confessi/presentation/feed/screens/detail_view.dart';
-import 'package:Confessi/presentation/feed/screens/post_advanced_details.dart';
-import 'package:Confessi/presentation/feed/screens/watched_universities.dart';
-import 'package:Confessi/presentation/feedback/screens/home.dart';
-import 'package:Confessi/presentation/primary/screens/critical_error.dart';
-import 'package:Confessi/presentation/authentication_and_settings/screens/settings/appearance.dart';
-import 'package:Confessi/presentation/authentication_and_settings/screens/settings/faq.dart';
-import 'package:Confessi/presentation/authentication_and_settings/screens/settings/home.dart';
-import 'package:Confessi/presentation/user_posts_and_comments/screens/comments.dart';
-import 'package:Confessi/presentation/user_posts_and_comments/screens/posts.dart';
-import 'package:Confessi/presentation/user_posts_and_comments/screens/saved.dart';
+import '../../application/authentication_and_settings/cubit/language_setting_cubit.dart';
+import '../../presentation/authentication_and_settings/screens/settings/contact.dart';
+import '../../presentation/authentication_and_settings/screens/settings/haptics.dart';
+import '../../presentation/authentication_and_settings/screens/settings/language.dart';
+import '../../presentation/create_post/screens/details.dart';
+import '../../presentation/create_post/screens/home.dart';
+import '../../presentation/daily_hottest/screens/leaderboard.dart';
+import '../../presentation/easter_eggs/screens/overscroll.dart';
+import '../../presentation/feed/screens/detail_view.dart';
+import '../../presentation/feed/screens/post_advanced_details.dart';
+import '../../presentation/feed/screens/watched_universities.dart';
+import '../../presentation/feedback/screens/home.dart';
+import '../../presentation/primary/screens/critical_error.dart';
+import '../../presentation/authentication_and_settings/screens/settings/appearance.dart';
+import '../../presentation/authentication_and_settings/screens/settings/faq.dart';
+import '../../presentation/authentication_and_settings/screens/settings/home.dart';
+import '../../presentation/user_posts_and_comments/screens/comments.dart';
+import '../../presentation/user_posts_and_comments/screens/posts.dart';
+import '../../presentation/user_posts_and_comments/screens/saved.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
@@ -52,7 +53,9 @@ class AppRouter {
 
   // Checks which routes show as a size animation.
   bool isSizeAnim(RouteSettings routeSettings) {
-    List<String> sizeAnimDialogRoutes = [];
+    List<String> sizeAnimDialogRoutes = [
+      "/home",
+    ];
     return sizeAnimDialogRoutes.contains(routeSettings.name) ? true : false;
   }
 
@@ -61,7 +64,6 @@ class AppRouter {
     List<String> fadeAnimDialogRoutes = [
       "/onboarding",
       "/open",
-      "/home",
     ];
     return fadeAnimDialogRoutes.contains(routeSettings.name) ? true : false;
   }
@@ -215,7 +217,15 @@ class AppRouter {
           );
           break;
         case "/settings/language":
-          page = const LanguageScreen();
+          page = MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                lazy: false,
+                create: (context) => sl<LanguageSettingCubit>(),
+              ),
+            ],
+            child: const LanguageScreen(),
+          );
           break;
         case "/settings/haptics":
           page = const HapticsScreen();

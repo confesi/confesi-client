@@ -1,4 +1,4 @@
-import 'package:Confessi/core/utils/sizing/width_fraction.dart';
+import '../../../core/utils/sizing/width_fraction.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';

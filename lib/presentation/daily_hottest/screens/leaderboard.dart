@@ -1,14 +1,14 @@
 import 'dart:math';
 
-import 'package:Confessi/core/utils/numbers/is_plural.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
-import 'package:Confessi/presentation/shared/indicators/alert.dart';
-import 'package:Confessi/presentation/shared/indicators/loading.dart';
-import 'package:Confessi/presentation/shared/layout/appbar.dart';
-import 'package:Confessi/presentation/shared/layout/line.dart';
-import 'package:Confessi/application/daily_hottest/cubit/leaderboard_cubit.dart';
-import 'package:Confessi/presentation/daily_hottest/widgets/leaderboard_circle_tile.dart';
-import 'package:Confessi/presentation/daily_hottest/widgets/leaderboard_rectangle_tile.dart';
+import '../../../core/utils/numbers/is_plural.dart';
+import '../../shared/behaviours/init_transform.dart';
+import '../../shared/indicators/alert.dart';
+import '../../shared/indicators/loading.dart';
+import '../../shared/layout/appbar.dart';
+import '../../shared/layout/line.dart';
+import '../../../application/daily_hottest/cubit/leaderboard_cubit.dart';
+import '../widgets/leaderboard_circle_tile.dart';
+import '../widgets/leaderboard_rectangle_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

@@ -1,5 +1,5 @@
-import 'package:Confessi/presentation/shared/selection_groups/bool_selection_tile.dart';
-import 'package:Confessi/presentation/shared/selection_groups/text_stat_tile.dart';
+import 'bool_selection_tile.dart';
+import 'text_stat_tile.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';

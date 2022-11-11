@@ -1,11 +1,12 @@
-import 'package:Confessi/application/create_post/cubit/post_cubit.dart';
-import 'package:Confessi/constants/enums_that_are_local_keys.dart';
-import 'package:Confessi/constants/shared/dev.dart';
-import 'package:Confessi/presentation/primary/screens/splash.dart';
+import 'application/create_post/cubit/post_cubit.dart';
+import 'constants/enums_that_are_local_keys.dart';
+import 'constants/shared/dev.dart';
+import 'presentation/primary/screens/splash.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'application/authentication_and_settings/cubit/login_cubit.dart';
 import 'application/authentication_and_settings/cubit/register_cubit.dart';
@@ -14,6 +15,7 @@ import 'application/daily_hottest/cubit/hottest_cubit.dart';
 import 'core/router/router.dart';
 import 'core/styles/themes.dart';
 import 'dependency_injection.dart';
+import 'generated/l10n.dart';
 
 void main() async {
   await init();
@@ -100,6 +102,17 @@ class MyApp extends StatelessWidget {
       child: Builder(
         builder: (context) {
           return MaterialApp(
+            localizationsDelegates: const [
+              S.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: const [
+              Locale('en', ''), // English, no country code; English first, so it's default/fallback
+              Locale('fr', ''), // French, no country code
+              Locale('es', ''), // Spanish, no country code
+            ],
             useInheritedMediaQuery: kDevicePreview,
             debugShowCheckedModeBanner: false,
             title: "Confesi",

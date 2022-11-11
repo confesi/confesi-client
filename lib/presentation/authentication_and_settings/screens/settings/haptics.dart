@@ -1,7 +1,7 @@
-import 'package:Confessi/presentation/shared/selection_groups/bool_selection_group.dart';
-import 'package:Confessi/presentation/shared/selection_groups/bool_selection_tile.dart';
-import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
-import 'package:Confessi/presentation/shared/text/disclaimer_text.dart';
+import '../../../shared/selection_groups/bool_selection_group.dart';
+import '../../../shared/selection_groups/bool_selection_tile.dart';
+import '../../../shared/behaviours/themed_status_bar.dart';
+import '../../../shared/text/disclaimer_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scrollable/exports.dart';

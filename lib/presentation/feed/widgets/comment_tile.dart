@@ -1,6 +1,6 @@
-import 'package:Confessi/presentation/shared/buttons/option.dart';
-import 'package:Confessi/presentation/feed/widgets/comment_header_text.dart';
-import 'package:Confessi/presentation/feed/widgets/slidable_section.dart';
+import '../../shared/buttons/option.dart';
+import 'comment_header_text.dart';
+import 'slidable_section.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';

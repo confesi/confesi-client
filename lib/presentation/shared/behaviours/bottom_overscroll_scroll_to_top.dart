@@ -1,4 +1,4 @@
-import 'package:Confessi/core/utils/numbers/number_until_limit.dart';
+import '../../../core/utils/numbers/number_until_limit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

@@ -1,4 +1,4 @@
-import 'package:Confessi/core/utils/numbers/large_number_formatter.dart';
+import '../../../core/utils/numbers/large_number_formatter.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';

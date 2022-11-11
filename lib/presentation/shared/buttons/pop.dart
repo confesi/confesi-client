@@ -1,4 +1,4 @@
-import 'package:Confessi/constants/shared/enums.dart';
+import '../../../constants/shared/enums.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';

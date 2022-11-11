@@ -1,6 +1,6 @@
-import 'package:Confessi/core/usecases/no_params.dart';
-import 'package:Confessi/domain/authentication_and_settings/usecases/copy_email_text.dart';
-import 'package:Confessi/domain/authentication_and_settings/usecases/open_mail_client.dart';
+import '../../../core/usecases/no_params.dart';
+import '../../../domain/authentication_and_settings/usecases/copy_email_text.dart';
+import '../../../domain/authentication_and_settings/usecases/open_mail_client.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';

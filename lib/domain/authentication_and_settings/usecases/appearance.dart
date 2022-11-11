@@ -1,6 +1,6 @@
-import 'package:Confessi/core/results/failures.dart';
-import 'package:Confessi/core/usecases/get_set_usecase.dart';
-import 'package:Confessi/data/authentication_and_settings/repositories/prefs_repository_concrete.dart';
+import '../../../core/results/failures.dart';
+import '../../../core/usecases/get_set_usecase.dart';
+import '../../../data/authentication_and_settings/repositories/prefs_repository_concrete.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../../constants/enums_that_are_local_keys.dart';

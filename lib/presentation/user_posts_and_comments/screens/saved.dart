@@ -1,4 +1,4 @@
-import 'package:Confessi/presentation/shared/overlays/info_sheet.dart';
+import '../../shared/overlays/info_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';

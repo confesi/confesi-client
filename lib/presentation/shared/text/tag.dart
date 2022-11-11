@@ -1,4 +1,4 @@
-import 'package:Confessi/core/styles/typography.dart';
+import '../../../core/styles/typography.dart';
 import 'package:flutter/material.dart';
 
 enum TagType { required, optional }

@@ -1,4 +1,4 @@
-import 'package:Confessi/presentation/shared/selection_groups/setting_tile.dart';
+import 'setting_tile.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';

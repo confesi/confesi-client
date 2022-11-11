@@ -1,8 +1,8 @@
-import 'package:Confessi/application/authentication_and_settings/cubit/contact_setting_cubit.dart';
-import 'package:Confessi/presentation/shared/overlays/notification_chip.dart';
-import 'package:Confessi/presentation/shared/selection_groups/setting_tile.dart';
-import 'package:Confessi/presentation/shared/selection_groups/setting_tile_group.dart';
-import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
+import '../../../../application/authentication_and_settings/cubit/contact_setting_cubit.dart';
+import '../../../shared/overlays/notification_chip.dart';
+import '../../../shared/selection_groups/setting_tile.dart';
+import '../../../shared/selection_groups/setting_tile_group.dart';
+import '../../../shared/behaviours/themed_status_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

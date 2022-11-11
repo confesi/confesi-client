@@ -1,5 +1,5 @@
-import 'package:Confessi/core/clients/http_client.dart';
-import 'package:Confessi/core/results/successes.dart';
+import '../../../core/clients/http_client.dart';
+import '../../../core/results/successes.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 

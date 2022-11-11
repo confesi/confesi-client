@@ -1,6 +1,6 @@
-import 'package:Confessi/constants/shared/enums.dart';
-import 'package:Confessi/core/styles/typography.dart';
-import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opacity.dart';
+import '../../../../constants/shared/enums.dart';
+import '../../../../core/styles/typography.dart';
+import '../../../shared/button_touch_effects/touchable_opacity.dart';
 import 'package:flutter/material.dart';
 
 class ItemRowTile extends StatelessWidget {

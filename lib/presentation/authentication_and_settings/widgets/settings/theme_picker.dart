@@ -1,4 +1,4 @@
-import 'package:Confessi/presentation/authentication_and_settings/widgets/settings/theme_sample_circle.dart';
+import 'theme_sample_circle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

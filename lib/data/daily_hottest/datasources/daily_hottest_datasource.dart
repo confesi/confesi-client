@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:Confessi/data/shared/models/post_model.dart';
-import 'package:Confessi/domain/shared/entities/post.dart';
+import '../../shared/models/post_model.dart';
+import '../../../domain/shared/entities/post.dart';
 
 import '../../../core/clients/http_client.dart';
 import '../../../core/results/exceptions.dart';

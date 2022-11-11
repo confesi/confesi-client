@@ -1,13 +1,13 @@
-import 'package:Confessi/core/styles/typography.dart';
-import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opacity.dart';
-import 'package:Confessi/presentation/shared/text/group.dart';
-import 'package:Confessi/constants/feed/general.dart';
-import 'package:Confessi/domain/shared/entities/badge.dart';
-import 'package:Confessi/domain/feed/entities/post_child.dart';
-import 'package:Confessi/presentation/feed/widgets/badge_tile.dart';
-import 'package:Confessi/presentation/feed/widgets/badge_tile_set.dart';
-import 'package:Confessi/presentation/feed/widgets/quote_tile.dart';
-import 'package:Confessi/presentation/feed/widgets/vote_tile_set.dart';
+import '../../../core/styles/typography.dart';
+import '../../shared/button_touch_effects/touchable_opacity.dart';
+import '../../shared/text/group.dart';
+import '../../../constants/feed/general.dart';
+import '../../../domain/shared/entities/badge.dart';
+import '../../../domain/feed/entities/post_child.dart';
+import 'badge_tile.dart';
+import 'badge_tile_set.dart';
+import 'quote_tile.dart';
+import 'vote_tile_set.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

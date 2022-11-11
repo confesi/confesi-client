@@ -157,11 +157,6 @@ const String kSesttingsPrivacyStatementLabel = "Privacy Statement";
 
 const String kSettingsDeleteAccountLabel = "Delete Account";
 
-// const String kSettingsResetLocalPreferencesLabel = "Reset Local Preferences";
-
-const String kSettingsBottomDisclaimerText =
-    "Some settings are synced between multiple devices, others are just local for this device.";
-
 const String kSettingsPersonalizationLabel = "Personalization";
 
 const String kSettingsAccountLabel = "Account";

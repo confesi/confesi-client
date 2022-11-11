@@ -1,6 +1,6 @@
-import 'package:Confessi/core/styles/typography.dart';
-import 'package:Confessi/core/utils/numbers/large_number_formatter.dart';
-import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opacity.dart';
+import '../../../core/styles/typography.dart';
+import '../../../core/utils/numbers/large_number_formatter.dart';
+import '../../shared/button_touch_effects/touchable_opacity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

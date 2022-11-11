@@ -1,7 +1,7 @@
-import 'package:Confessi/presentation/shared/buttons/option.dart';
-import 'package:Confessi/presentation/shared/layout/line.dart';
-import 'package:Confessi/presentation/shared/layout/scrollable_area.dart';
-import 'package:Confessi/presentation/shared/layout/swipebar.dart';
+import '../buttons/option.dart';
+import '../layout/line.dart';
+import '../layout/scrollable_area.dart';
+import '../layout/swipebar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
