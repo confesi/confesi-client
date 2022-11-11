@@ -109,17 +109,6 @@ class _FeedbackHomeState extends State<FeedbackHome> {
                             ),
                           ),
                         ),
-                        const InitTransform(
-                          durationInMilliseconds: 750,
-                          magnitudeOfTransform: 400,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 10),
-                            child: DisclaimerText(
-                              text: "At this time, all feedback is read directly by a developer.",
-                              verticalPadding: 15,
-                            ),
-                          ),
-                        ),
                       ],
                     ),
                   ),

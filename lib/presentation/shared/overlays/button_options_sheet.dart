@@ -2,6 +2,7 @@ import 'package:Confessi/presentation/shared/buttons/option.dart';
 import 'package:Confessi/presentation/shared/layout/line.dart';
 import 'package:Confessi/presentation/shared/layout/scrollable_area.dart';
 import 'package:Confessi/presentation/shared/layout/swipebar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/utils/sizing/bottom_safe_area.dart';
@@ -34,6 +35,7 @@ Future<dynamic> showButtonOptionsSheet(BuildContext context, List<OptionButton> 
                     children: [
                       LineLayout(color: Theme.of(context).colorScheme.onBackground),
                       ...buttons,
+                      OptionButton(onTap: () => print("tap"), text: "Close", icon: CupertinoIcons.xmark, isRed: true),
                     ],
                   ),
                 ),

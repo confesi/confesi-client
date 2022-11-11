@@ -7,7 +7,7 @@ class TextStatTile extends StatefulWidget {
     super.key,
     required this.leftText,
     this.onTap,
-    this.rightText,
+    required this.rightText,
     this.topRounded = false,
     this.bottomRounded = false,
     this.backgroundColor,

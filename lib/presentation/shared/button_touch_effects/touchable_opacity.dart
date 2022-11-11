@@ -28,21 +28,15 @@ class TouchableOpacity extends StatefulWidget {
   State<TouchableOpacity> createState() => _TouchableOpacityState();
 }
 
-class _TouchableOpacityState extends State<TouchableOpacity>
-    with SingleTickerProviderStateMixin {
+class _TouchableOpacityState extends State<TouchableOpacity> with SingleTickerProviderStateMixin {
   late AnimationController animController;
   late Animation anim;
 
   @override
   void initState() {
     animController = AnimationController(
-        vsync: this,
-        duration: const Duration(milliseconds: 0),
-        reverseDuration: const Duration(milliseconds: 400));
-    anim = CurvedAnimation(
-        parent: animController,
-        curve: Curves.linear,
-        reverseCurve: Curves.linear);
+        vsync: this, duration: const Duration(milliseconds: 0), reverseDuration: const Duration(milliseconds: 400));
+    anim = CurvedAnimation(parent: animController, curve: Curves.linear, reverseCurve: Curves.linear);
     super.initState();
   }
 

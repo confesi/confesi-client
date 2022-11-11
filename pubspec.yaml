@@ -67,6 +67,8 @@ dependencies:
   back_button_interceptor: ^6.0.2
   scrollable: ^1.0.2
   url_launcher: ^6.1.6
+  permission_handler: ^10.2.0
+  # open_settings: ^2.0.2
   # animated_text_kit: ^4.2.2
 
 dev_dependencies:

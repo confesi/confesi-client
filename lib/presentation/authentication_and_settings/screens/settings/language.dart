@@ -5,10 +5,13 @@ import 'package:Confessi/presentation/shared/selection_groups/bool_selection_til
 import 'package:Confessi/presentation/shared/selection_groups/setting_tile.dart';
 import 'package:Confessi/presentation/shared/selection_groups/setting_tile_group.dart';
 import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
+import 'package:Confessi/presentation/shared/selection_groups/text_stat_tile.dart';
+import 'package:Confessi/presentation/shared/selection_groups/text_stat_tile_group.dart';
 import 'package:Confessi/presentation/shared/text/disclaimer_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:scrollable/exports.dart';
 
 import '../../../../constants/authentication_and_settings/text.dart';
@@ -55,38 +58,51 @@ class _LanguageScreenState extends State<LanguageScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 15),
-                      BoolSelectionGroup(text: "App language", selectionTiles: [
-                        BoolSelectionTile(
-                          topRounded: true,
-                          backgroundColor: Theme.of(context).colorScheme.surface,
-                          icon: CupertinoIcons.map,
-                          text: "Device default",
-                          isActive: true,
-                          onTap: () => print("tap"),
-                        ),
-                        BoolSelectionTile(
-                          backgroundColor: Theme.of(context).colorScheme.surface,
-                          icon: CupertinoIcons.map,
-                          text: "English",
-                          onTap: () => print("tap"),
-                        ),
-                        BoolSelectionTile(
-                          backgroundColor: Theme.of(context).colorScheme.surface,
-                          icon: CupertinoIcons.map,
-                          text: "French",
-                          onTap: () => print("tap"),
-                        ),
-                        BoolSelectionTile(
-                          bottomRounded: true,
-                          backgroundColor: Theme.of(context).colorScheme.surface,
-                          icon: CupertinoIcons.map,
-                          text: "Spanish",
-                          onTap: () => print("tap"),
-                        ),
-                      ]),
-                      const DisclaimerText(
-                        verticalPadding: 15,
-                        text: "If the device's default language is not avaiable, English is selected.",
+                      SettingTileGroup(
+                        text: "Change language via system settings",
+                        settingTiles: [
+                          SettingTile(
+                            rightIcon: CupertinoIcons.link,
+                            leftIcon: CupertinoIcons.map,
+                            text: "System settings",
+                            onTap: () async =>
+                                await openAppSettings(), // TODO: make a usecase to handle error cases for this
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 15),
+                      SettingTileGroup(
+                        text: "Want another language added?",
+                        settingTiles: [
+                          SettingTile(
+                            leftIcon: CupertinoIcons.chat_bubble,
+                            text: "Give us feedback",
+                            onTap: () => Navigator.of(context).pushNamed("/feedback"),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 15),
+                      TextStatTileGroup(
+                        text: "Supported languages",
+                        tiles: [
+                          TextStatTile(
+                            topRounded: true,
+                            backgroundColor: Theme.of(context).colorScheme.surface,
+                            leftText: "English",
+                            rightText: "en",
+                          ),
+                          TextStatTile(
+                            backgroundColor: Theme.of(context).colorScheme.surface,
+                            leftText: "Spanish",
+                            rightText: "es",
+                          ),
+                          TextStatTile(
+                            bottomRounded: true,
+                            backgroundColor: Theme.of(context).colorScheme.surface,
+                            leftText: "French",
+                            rightText: "fr",
+                          ),
+                        ],
                       ),
                     ],
                   ),

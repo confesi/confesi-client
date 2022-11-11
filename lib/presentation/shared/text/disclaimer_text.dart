@@ -26,17 +26,13 @@ class DisclaimerText extends StatelessWidget {
               color: Theme.of(context).colorScheme.primary,
               width: 2,
             ),
-            // Container(
-            //   color: Theme.of(context).colorScheme.secondary,
-            //   width: 1,
-            // ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                 child: Text(
                   text,
                   textScaleFactor: textScaleFactor1 ? 1 : null,
-                  style: kDetail.copyWith(
+                  style: kBody.copyWith(
                     color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
