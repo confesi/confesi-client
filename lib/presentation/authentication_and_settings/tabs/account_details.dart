@@ -1,11 +1,11 @@
-import 'package:Confessi/application/authentication_and_prefs/cubit/register_cubit.dart';
-import 'package:Confessi/presentation/authentication_and_settings/widgets/authentication/item_selector.dart';
-import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
-import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
+import '../widgets/authentication/item_selector.dart';
+import '../../shared/behaviours/themed_status_bar.dart';
+import '../../shared/layout/scrollable_area.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../application/authentication_and_settings/cubit/register_cubit.dart';
 import '../../../constants/authentication_and_settings/text.dart';
 import '../../../core/styles/typography.dart';
 import '../../shared/buttons/pop.dart';
@@ -67,7 +67,7 @@ class _AccountDetailsState extends State<AccountDetails> with AutomaticKeepAlive
             builder: (context, constraints) {
               return SizedBox(
                 height: constraints.maxHeight,
-                child: ScrollableView(
+                child: ScrollableArea(
                   thumbVisible: false,
                   controller: scrollController,
                   keyboardDismiss: true,

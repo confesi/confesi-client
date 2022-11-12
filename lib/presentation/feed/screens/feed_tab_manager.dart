@@ -1,4 +1,4 @@
-import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
+import '../../shared/behaviours/themed_status_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -53,6 +53,9 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
               children: [
                 Builder(builder: (context) {
                   return AppbarLayout(
+                    rightIconOnPress: () => Navigator.of(context).pushNamed("/create_post"),
+                    rightIconVisible: true,
+                    rightIcon: CupertinoIcons.add,
                     bottomBorder: false,
                     centerWidget: Text(
                       "University of Victoria",

@@ -1,11 +1,11 @@
-import 'package:Confessi/core/utils/numbers/number_until_limit.dart';
-import 'package:Confessi/presentation/profile/widgets/add_watched_university_tile.dart';
-import 'package:Confessi/presentation/profile/widgets/university_tile.dart';
-import 'package:Confessi/presentation/shared/behaviours/bottom_overscroll_scroll_to_top.dart';
-import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
-import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opacity.dart';
-import 'package:Confessi/presentation/shared/edited_source_widgets/swipe_refresh.dart';
-import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
+import '../../../core/utils/numbers/add_commas_to_number.dart';
+import '../../../core/utils/numbers/number_until_limit.dart';
+import '../../shared/behaviours/bottom_overscroll_scroll_to_top.dart';
+import '../../shared/behaviours/themed_status_bar.dart';
+import '../../shared/button_touch_effects/touchable_opacity.dart';
+import '../../shared/edited_source_widgets/swipe_refresh.dart';
+import '../../shared/layout/scrollable_area.dart';
+import '../../shared/overlays/info_sheet_with_action.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -83,8 +83,8 @@ class _ProfileHomeState extends State<ProfileHome> {
                         borderRadius: BorderRadius.only(
                           bottomLeft: Radius.circular(40 + extraHeight / 7),
                           bottomRight: Radius.circular(40 + extraHeight / 7),
-                          topLeft: Radius.circular(numberUntilLimit(extraHeight / 3, 40)),
-                          topRight: Radius.circular(numberUntilLimit(extraHeight / 3, 40)),
+                          topLeft: Radius.circular(numberUntilLimit(extraHeight / 2, 40)),
+                          topRight: Radius.circular(numberUntilLimit(extraHeight / 2, 40)),
                         ),
                         child: SizedBox(
                           height: heightFraction(context, .3),
@@ -105,20 +105,25 @@ class _ProfileHomeState extends State<ProfileHome> {
                             height: 120,
                             width: double.infinity,
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              padding: const EdgeInsets.symmetric(horizontal: 15),
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   EmblemButton(
-                                    backgroundColor: Theme.of(context).colorScheme.background,
+                                    backgroundColor: Theme.of(context).colorScheme.surface,
                                     icon: CupertinoIcons.lock,
-                                    onPress: () => showInfoSheet(context, "Privacy is Key",
-                                        "This profile is only visible to you, hence the biometric authentication. This extra layer of security can be disabled in settings."),
+                                    onPress: () => showInfoSheetWithAction(
+                                      context,
+                                      "This profile is private",
+                                      "This profile is only visible to you. In fact, to add an extra layer of protection, you can enable biometric authentication to keep your saved posts, confessions, and comments locked.",
+                                      () => Navigator.pushNamed(context, "/settings/biometric_lock"),
+                                      "Edit biometric lock settings",
+                                    ),
                                     iconColor: Theme.of(context).colorScheme.onSurface,
                                   ),
                                   EmblemButton(
-                                    backgroundColor: Theme.of(context).colorScheme.background,
+                                    backgroundColor: Theme.of(context).colorScheme.surface,
                                     icon: CupertinoIcons.gear,
                                     onPress: () => Navigator.of(context).pushNamed("/settings"),
                                     iconColor: Theme.of(context).colorScheme.onSurface,
@@ -164,6 +169,24 @@ class _ProfileHomeState extends State<ProfileHome> {
                                 const SizedBox(height: 20),
                                 Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 15),
+                                  child: StatTile(
+                                    leftTap: () => showInfoSheet(
+                                        context, "Total likes", "${addCommasToNumber(983042378)} / Top 4% of users"),
+                                    centerTap: () => showInfoSheet(
+                                        context, "Total hottests", "${addCommasToNumber(543253)} / Top 9% of users"),
+                                    rightTap: () => showInfoSheet(
+                                        context, "Total hates", "${addCommasToNumber(2436)} / Top 54% of users"),
+                                    leftNumber: 17231223,
+                                    leftDescription: "Likes",
+                                    centerNumber: 2,
+                                    centerDescription: "Hottests",
+                                    rightNumber: 3891,
+                                    rightDescription: "Hates",
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 15),
                                   child: Row(
                                     children: [
                                       Expanded(
@@ -191,99 +214,7 @@ class _ProfileHomeState extends State<ProfileHome> {
                                     text: "Saved Content",
                                   ),
                                 ),
-                                const SizedBox(height: 10),
-
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                                  child: StatTile(
-                                    onTap: () => showInfoSheet(
-                                      context,
-                                      "Profile Stats",
-                                      "These describe your account. Likes and hates (equivalent of upvotes and downvotes) describe how well your content is received. The 'Hottest' stat is how many times your posts have been featured on the Daily Hottest screen - super rare!",
-                                    ),
-                                    leftNumber: 17231223,
-                                    leftDescription: "Likes",
-                                    centerNumber: 2,
-                                    centerDescription: "Hottests",
-                                    rightNumber: 3891,
-                                    rightDescription: "Hates",
-                                  ),
-                                ),
                                 const SizedBox(height: 20),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          "Your Watched Universities",
-                                          style: kTitle.copyWith(
-                                            color: Theme.of(context).colorScheme.primary,
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 10),
-                                      TouchableOpacity(
-                                        onTap: () => print("tap"),
-                                        child: Container(
-                                          // Transparent hitbox trick.
-                                          color: Colors.transparent,
-                                          child: Text(
-                                            "Edit",
-                                            style: kTitle.copyWith(
-                                              color: Theme.of(context).colorScheme.onSurface,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(height: 20),
-                                ScrollableView(
-                                  controller: horizontalScrollController,
-                                  bubbleUpScrollNotifications: false,
-                                  thumbVisible: false,
-                                  scrollDirection: Axis.horizontal,
-                                  child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: const [
-                                      SizedBox(width: 15),
-                                      UniversityTile(),
-                                      UniversityTile(),
-                                      UniversityTile(),
-                                      UniversityTile(),
-                                      UniversityTile(),
-                                      AddWatchedUniversityTile(),
-                                      SizedBox(width: 15),
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(height: 10),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          "Your achievements (rarest first)",
-                                          style: kTitle.copyWith(
-                                            color: Theme.of(context).colorScheme.primary,
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 10),
-                                      EmblemButton(
-                                        backgroundColor: Theme.of(context).colorScheme.background,
-                                        icon: CupertinoIcons.ellipsis,
-                                        onPress: () => print("tap"),
-                                        iconColor: Theme.of(context).colorScheme.onSurface,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(height: 10),
-                                // Add visibility change checker to tiles; extract to custom widget
                                 Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 15),
                                   child: StaggeredGrid.count(
@@ -351,7 +282,10 @@ class _ProfileHomeState extends State<ProfileHome> {
                                       StaggeredGridTile.count(
                                         crossAxisCellCount: 1,
                                         mainAxisCellCount: 1,
-                                        child: Container(color: Colors.green),
+                                        child: ClipRRect(
+                                          child: Container(color: Colors.green),
+                                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                                        ),
                                       ),
                                       StaggeredGridTile.count(
                                         crossAxisCellCount: 2,

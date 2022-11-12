@@ -1,8 +1,8 @@
-import 'package:Confessi/core/network/connection_info.dart';
-import 'package:Confessi/data/daily_hottest/datasources/daily_hottest_datasource.dart';
-import 'package:Confessi/core/results/failures.dart';
-import 'package:Confessi/domain/daily_hottest/repositories/daily_hottest_repository_interface.dart';
-import 'package:Confessi/domain/shared/entities/post.dart';
+import '../../../core/network/connection_info.dart';
+import '../datasources/daily_hottest_datasource.dart';
+import '../../../core/results/failures.dart';
+import '../../../domain/daily_hottest/repositories/daily_hottest_repository_interface.dart';
+import '../../../domain/shared/entities/post.dart';
 import 'package:dartz/dartz.dart';
 
 class DailyHottestRepository implements IDailyHottestRepository {

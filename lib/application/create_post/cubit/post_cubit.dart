@@ -1,6 +1,6 @@
-import 'package:Confessi/core/utils/validators/either_not_empty_validator.dart';
-import 'package:Confessi/domain/create_post/usecases/upload_post.dart';
-import 'package:Confessi/presentation/create_post/utils/failure_to_message.dart';
+import '../../../core/utils/validators/either_not_empty_validator.dart';
+import '../../../domain/create_post/usecases/upload_post.dart';
+import '../../../presentation/create_post/utils/failure_to_message.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';

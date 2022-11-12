@@ -1,4 +1,4 @@
-import 'package:Confessi/core/results/successes.dart';
+import '../results/successes.dart';
 import 'package:dartz/dartz.dart';
 
 import '../results/failures.dart';

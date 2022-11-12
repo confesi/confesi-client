@@ -1,15 +1,23 @@
-import 'package:Confessi/core/utils/sizing/width_fraction.dart';
+import '../../../core/utils/sizing/width_fraction.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
 import '../../../core/utils/sizing/height_fraction.dart';
 
+// Which side the notification should pop out from
 enum ScreenSide {
   top,
   bottom,
 }
 
-dynamic showNotificationChip(BuildContext context, String text, {ScreenSide screenSide = ScreenSide.bottom}) {
+// "Success" means the chip is green, "Failure" means it's red
+enum NotificationType {
+  success,
+  failure,
+}
+
+dynamic showNotificationChip(BuildContext context, String text,
+    {ScreenSide screenSide = ScreenSide.bottom, NotificationType notificationType = NotificationType.failure}) {
   OverlayEntry? overlay;
   overlay = OverlayEntry(
     builder: (context) {
@@ -20,7 +28,8 @@ dynamic showNotificationChip(BuildContext context, String text, {ScreenSide scre
           child: Material(
             color: Colors.transparent,
             child: SafeArea(
-              child: _OverlayItem(text: text, overlay: overlay, screenSide: screenSide),
+              child: _OverlayItem(
+                  text: text, overlay: overlay, screenSide: screenSide, notificationType: notificationType),
             ),
           ),
         ),
@@ -36,11 +45,13 @@ class _OverlayItem extends StatefulWidget {
     required this.text,
     required this.overlay,
     required this.screenSide,
+    required this.notificationType,
   }) : super(key: key);
 
   final String text;
   final OverlayEntry? overlay;
   final ScreenSide screenSide;
+  final NotificationType notificationType;
 
   @override
   State<_OverlayItem> createState() => __OverlayItemState();
@@ -109,7 +120,9 @@ class __OverlayItemState extends State<_OverlayItem> with TickerProviderStateMix
           width: double.infinity,
           constraints: BoxConstraints(maxHeight: heightFraction(context, .2)),
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.error,
+            color: widget.notificationType == NotificationType.failure
+                ? Theme.of(context).colorScheme.error
+                : Theme.of(context).colorScheme.surfaceTint,
             borderRadius: const BorderRadius.all(
               Radius.circular(10),
             ),

@@ -1,7 +1,8 @@
-import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
-import 'package:Confessi/presentation/shared/buttons/option.dart';
-import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
-import 'package:Confessi/presentation/shared/layout/swipebar.dart';
+import '../buttons/option.dart';
+import '../layout/line.dart';
+import '../layout/scrollable_area.dart';
+import '../layout/swipebar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/utils/sizing/bottom_safe_area.dart';
@@ -11,13 +12,11 @@ Future<dynamic> showButtonOptionsSheet(BuildContext context, List<OptionButton> 
   return showModalBottomSheet(
     isScrollControlled: true,
     backgroundColor: Colors.transparent,
-    barrierColor: Colors.black.withOpacity(0.9),
+    barrierColor: Colors.black.withOpacity(0.7),
     context: context,
     builder: (context) => Column(
-      mainAxisAlignment: MainAxisAlignment.end,
       mainAxisSize: MainAxisSize.min,
       children: [
-        const SwipebarLayout(),
         Container(
           padding: EdgeInsets.only(bottom: bottomSafeArea(context) + 15),
           decoration: BoxDecoration(
@@ -29,11 +28,14 @@ Future<dynamic> showButtonOptionsSheet(BuildContext context, List<OptionButton> 
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                ScrollableView(
+                const SwipebarLayout(),
+                ScrollableArea(
                   thumbVisible: false,
                   child: Column(
                     children: [
+                      LineLayout(color: Theme.of(context).colorScheme.onBackground),
                       ...buttons,
+                      OptionButton(onTap: () => print("tap"), text: "Close", icon: CupertinoIcons.xmark, isRed: true),
                     ],
                   ),
                 ),

@@ -1,14 +1,14 @@
-import 'package:Confessi/presentation/shared/behaviours/one_theme_status_bar.dart';
+import '../../../core/styles/typography.dart';
+import '../../../core/utils/sizing/width_fraction.dart';
+import '../../shared/behaviours/themed_status_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shake/shake.dart';
 
-import '../../../application/authentication_and_prefs/cubit/login_cubit.dart';
-import '../../../application/authentication_and_prefs/cubit/register_cubit.dart';
-import '../../../application/authentication_and_prefs/cubit/user_cubit.dart';
+import '../../../application/authentication_and_settings/cubit/login_cubit.dart';
+import '../../../application/authentication_and_settings/cubit/register_cubit.dart';
+import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../../../core/generators/intro_text_generator.dart';
-import '../../../core/styles/themes.dart';
-import '../../../core/utils/sizing/width_breakpoint_fraction.dart';
 import '../../shared/overlays/feedback_sheet.dart';
 import '../../shared/overlays/notification_chip.dart';
 
@@ -47,17 +47,19 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     return BlocListener<UserCubit, UserState>(
       listenWhen: (previous, current) => (previous.runtimeType != current.runtimeType || current is NoUser),
       listener: (context, state) {
-        if (state is User) {
-          if (state.justRegistered) {
-            Navigator.of(context).pushNamed("/onboarding", arguments: {"isRewatching": false});
-          } else {
-            Navigator.of(context).pushNamed("/home");
-          }
-        } else if (state is NoUser) {
-          Navigator.of(context).pushNamed("/open");
-        } else if (state is LocalDataError) {
-          Navigator.of(context).pushNamed("/prefsError");
-        }
+        // if (state is User) {
+        //   if (state.justRegistered) {
+        //     Navigator.of(context).pushNamed("/onboarding", arguments: {"isRewatching": false});
+        //   } else {
+        //     Navigator.of(context).pushNamed("/home");
+        //   }
+        // } else if (state is NoUser) {
+        //   Navigator.of(context).pushNamed("/open");
+        // } else if (state is LocalDataError) {
+        //   Navigator.of(context).pushNamed("/prefsError");
+        // }
+        Navigator.of(context)
+            .pushNamed("/home"); // TODO: Delete this line, and uncomment lines above; this is only for dev mode
       },
       child: BlocListener<RegisterCubit, RegisterState>(
         listener: (context, state) {
@@ -75,18 +77,32 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
               context.read<UserCubit>().silentlyAuthenticateUser(AuthenticationType.login);
             }
           },
-          child: OneThemeStatusBar(
-            brightness: Brightness.light,
+          child: ThemedStatusBar(
             child: Scaffold(
-              backgroundColor: AppTheme.classicLight.colorScheme.background,
+              backgroundColor: Theme.of(context).colorScheme.background,
               body: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Center(
-                  child: SizedBox(
-                    height: widthBreakpointFraction(context, .25, 150),
-                    child: Image.asset(
-                      "assets/images/logo.jpg",
-                    ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      SizedBox(
+                        width: widthFraction(context, .6),
+                        child: Image.asset(
+                          "assets/images/logo.jpg",
+                        ),
+                      ),
+                      SizedBox(
+                        width: widthFraction(context, .6),
+                        child: Text(
+                          introText,
+                          style: kTitle.copyWith(
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),

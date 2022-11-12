@@ -1,20 +1,25 @@
-import 'package:Confessi/application/create_post/cubit/post_cubit.dart';
-import 'package:Confessi/core/utils/sizing/width_fraction.dart';
-import 'package:Confessi/presentation/create_post/widgets/genre_group.dart';
-import 'package:Confessi/presentation/shared/behaviours/nav_blocker.dart';
-import 'package:Confessi/presentation/shared/behaviours/simulated_bottom_safe_area.dart';
-import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
-import 'package:Confessi/presentation/shared/overlays/notification_chip.dart';
-import 'package:Confessi/presentation/shared/overlays/info_sheet.dart';
-import 'package:Confessi/presentation/shared/buttons/long.dart';
-import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
-import 'package:Confessi/presentation/shared/text/spread_row.dart';
+import '../../../application/create_post/cubit/post_cubit.dart';
+import '../../../core/utils/sizing/width_fraction.dart';
+import '../../shared/behaviours/nav_blocker.dart';
+import '../../shared/behaviours/simulated_bottom_safe_area.dart';
+import '../../shared/behaviours/themed_status_bar.dart';
+import '../../shared/overlays/notification_chip.dart';
+import '../../shared/overlays/info_sheet.dart';
+import '../../shared/buttons/long.dart';
+import '../../shared/layout/scrollable_area.dart';
+import '../../shared/selection_groups/bool_selection_group.dart';
+import '../../shared/selection_groups/bool_selection_tile.dart';
+import '../../shared/selection_groups/text_stat_tile.dart';
+import '../../shared/selection_groups/text_stat_tile_group.dart';
+import '../../shared/text/link.dart';
+import '../../shared/text/spread_row.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/styles/typography.dart';
 import '../../shared/button_touch_effects/touchable_opacity.dart';
+import '../../shared/buttons/pop.dart';
 import '../../shared/layout/appbar.dart';
 
 class DetailsScreen extends StatefulWidget {
@@ -74,93 +79,86 @@ class _DetailsScreenState extends State<DetailsScreen> with AutomaticKeepAliveCl
                     ),
                   ),
                   Expanded(
-                    child: ScrollableView(
+                    child: ScrollableArea(
                       horizontalPadding: 15,
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           const SizedBox(height: 15),
-                          Text(
-                            "Select genre",
-                            style: kBody.copyWith(
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.left,
+                          BoolSelectionGroup(
+                            text: "Select genre",
+                            selectionTiles: [
+                              BoolSelectionTile(
+                                topRounded: true,
+                                backgroundColor: Theme.of(context).colorScheme.surface,
+                                icon: CupertinoIcons.cube_box,
+                                text: "General",
+                                isActive: true,
+                                onTap: () => print("tap"),
+                              ),
+                              BoolSelectionTile(
+                                backgroundColor: Theme.of(context).colorScheme.surface,
+                                icon: CupertinoIcons.heart,
+                                text: "Relationships",
+                                onTap: () => print("tap"),
+                              ),
+                              BoolSelectionTile(
+                                backgroundColor: Theme.of(context).colorScheme.surface,
+                                icon: CupertinoIcons.hammer_fill,
+                                text: "Classess",
+                                onTap: () => print("tap"),
+                              ),
+                              BoolSelectionTile(
+                                backgroundColor: Theme.of(context).colorScheme.surface,
+                                icon: CupertinoIcons.chat_bubble_2,
+                                text: "Politics",
+                                onTap: () => print("tap"),
+                              ),
+                              BoolSelectionTile(
+                                backgroundColor: Theme.of(context).colorScheme.surface,
+                                icon: CupertinoIcons.bandage,
+                                text: "Wholesome",
+                                onTap: () => print("tap"),
+                              ),
+                              BoolSelectionTile(
+                                bottomRounded: true,
+                                backgroundColor: Theme.of(context).colorScheme.surface,
+                                icon: CupertinoIcons.flame,
+                                text: "Hot Takes",
+                                onTap: () => print("tap"),
+                              ),
+                            ],
                           ),
-                          const SizedBox(height: 15),
-                          const GenreGroup(),
-                          const SizedBox(height: 25),
-                          Text(
-                            "Auto-populated details",
-                            style: kBody.copyWith(
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.left,
-                          ),
-                          const SizedBox(height: 10),
-                          const SpreadRowText(
-                            leftText: 'University',
-                            rightText: "UVic",
-                          ),
-                          const SpreadRowText(
-                            leftText: 'Year of study',
-                            rightText: "2",
-                          ),
-                          const SizedBox(height: 10),
-                          Text(
-                            "Kept Private",
-                            style: kBody.copyWith(
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.left,
-                          ),
-                          const SizedBox(height: 10),
-                          const SpreadRowText(
-                            leftText: 'Faculty (optional)',
-                            rightText: "Hidden",
-                          ),
-                          const SpreadRowText(
-                            leftText: 'Who you are',
-                            rightText: "Hidden",
-                          ),
-                          const SizedBox(height: 25),
+                          // const TextStatTileGroup(
+                          //   text: "Auto-populated details",
+                          //   tiles: [
+                          //     TextStatTile(noHorizontalPadding: true, leftText: "Year of study", rightText: "1"),
+                          //     TextStatTile(noHorizontalPadding: true, leftText: "Faculty", rightText: "Kept private"),
+                          //     TextStatTile(noHorizontalPadding: true, leftText: "University", rightText: "UVic"),
+                          //   ],
+                          // ),
                           BlocBuilder<CreatePostCubit, CreatePostState>(
                             // buildWhen: (previous, current) => true,
                             builder: (context, state) {
-                              return LongButton(
-                                text: 'Submit Confession',
+                              return PopButton(
+                                topPadding: 20,
+                                bottomPadding: 5,
+                                loading: state is Loading ? true : false,
+                                justText: true,
                                 onPress: () async => await context
                                     .read<CreatePostCubit>()
                                     .uploadUserPost(widget.title, widget.body, widget.id),
-                                isLoading: state is Loading ? true : false,
+                                icon: CupertinoIcons.chevron_right,
+                                backgroundColor: Theme.of(context).colorScheme.secondary,
+                                textColor: Theme.of(context).colorScheme.onSecondary,
+                                text: 'Submit Confession',
                               );
                             },
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 15),
-                            child: TouchableOpacity(
-                              onTap: () => {}, // TODO: Implement
-                              child: Container(
-                                width: double.infinity,
-                                // Transparent hitbox trick.
-                                color: Colors.transparent,
-                                child: Center(
-                                  child: SizedBox(
-                                    width: widthFraction(context, 2 / 3),
-                                    child: Text(
-                                      "Edit university, faculty, and year details in settings",
-                                      style: kTitle.copyWith(
-                                        color: Theme.of(context).colorScheme.onSurface,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
+                          LinkText(
+                            onPress: () => print("tap"),
+                            text: "Posting as University of Victoria, year 2, computer science. ",
+                            linkText: "Tap here to edit.",
                           ),
                           const SimulatedBottomSafeArea(),
                         ],
@@ -176,3 +174,11 @@ class _DetailsScreenState extends State<DetailsScreen> with AutomaticKeepAliveCl
     );
   }
 }
+
+// Text(
+//                                       "Posting as University of Victoria, year 1, computer science. Edit these details here.",
+//                                       style: kTitle.copyWith(
+//                                         color: Theme.of(context).colorScheme.onSurface,
+//                                       ),
+//                                       textAlign: TextAlign.center,
+//                                     ),

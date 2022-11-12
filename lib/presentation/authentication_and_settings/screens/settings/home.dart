@@ -1,16 +1,18 @@
-import 'package:Confessi/core/styles/typography.dart';
-import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
-import 'package:Confessi/presentation/shared/text/disclaimer_text.dart';
-import 'package:Confessi/presentation/shared/selection_groups/setting_tile.dart';
-import 'package:Confessi/presentation/shared/selection_groups/setting_tile_group.dart';
-import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
+import '../../../../application/authentication_and_settings/cubit/website_launcher_setting_cubit.dart';
+import '../../../../core/utils/sizing/bottom_safe_area.dart';
+import '../../../../generated/l10n.dart';
+import '../../../shared/behaviours/themed_status_bar.dart';
+import '../../../shared/overlays/notification_chip.dart';
+import '../../../shared/selection_groups/setting_tile.dart';
+import '../../../shared/selection_groups/setting_tile_group.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:scrollable/exports.dart';
 
-import '../../../../application/authentication_and_prefs/cubit/user_cubit.dart';
+import '../../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../../../../constants/authentication_and_settings/text.dart';
-import '../../../shared/behaviours/simulated_bottom_safe_area.dart';
+import '../../../../core/styles/typography.dart';
 import '../../../shared/layout/appbar.dart';
 
 class SettingsHome extends StatelessWidget {
@@ -18,195 +20,175 @@ class SettingsHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ThemedStatusBar(
-      child: Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.shadow,
-        body: SafeArea(
-          bottom: false,
-          child: Column(
-            children: [
-              AppbarLayout(
-                backgroundColor: Theme.of(context).colorScheme.shadow,
-                bottomBorder: false,
-                centerWidget: Text(
-                  kSettingsPageTitle,
-                  style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
+    return BlocListener<WebsiteLauncherSettingCubit, WebsitelauncherSettingState>(
+      listener: (context, state) {
+        if (state is WebsiteLauncherError) {
+          showNotificationChip(context, state.message);
+          // set to base
+          context.read<WebsiteLauncherSettingCubit>().setContactStateToBase();
+        }
+      },
+      child: ThemedStatusBar(
+        child: Scaffold(
+          backgroundColor: Theme.of(context).colorScheme.background,
+          body: SafeArea(
+            bottom: false,
+            child: Column(
+              children: [
+                AppbarLayout(
+                  leftIcon: CupertinoIcons.xmark,
+                  centerWidget: Text(
+                    S.of(context).settings_page_title,
+                    style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                  ),
                 ),
-              ),
-              Expanded(
-                child: ScrollableView(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 15),
-                        SettingTileGroup(
-                          text: kSettingsGeneralLabel,
-                          settingTiles: [
-                            SettingTile(
-                              icon: CupertinoIcons.rocket,
-                              text: kSettingsWatchedUniversitiesLabel,
-                              onTap: () => print("tap"),
+                Expanded(
+                  child: Container(
+                    color: Theme.of(context).colorScheme.background,
+                    child: ScrollableView(
+                      inlineBottomOrRightPadding: bottomSafeArea(context) * 2,
+                      distancebetweenHapticEffectsDuringScroll: 50,
+                      hapticEffectAtEdge: HapticType.medium,
+                      controller: ScrollController(),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SettingTileGroup(
+                              text: "Private profile",
+                              settingTiles: [
+                                SettingTile(
+                                  leftIcon: CupertinoIcons.profile_circled,
+                                  text: kSettingsAccountDetailsLabel,
+                                  onTap: () => print("tap"),
+                                ),
+                              ],
                             ),
-                            SettingTile(
-                              icon: CupertinoIcons.map,
-                              text: kSettingsLanguageLabel,
-                              onTap: () => print("tap"),
+                            const SizedBox(height: 15),
+                            SettingTileGroup(
+                              text: kSettingsGeneralLabel,
+                              settingTiles: [
+                                SettingTile(
+                                  leftIcon: CupertinoIcons.map,
+                                  text: kSettingsLanguageLabel,
+                                  onTap: () => Navigator.pushNamed(context, "/settings/language"),
+                                ),
+                                SettingTile(
+                                  leftIcon: CupertinoIcons.question_circle,
+                                  text: kSettingsFaqLabel,
+                                  onTap: () => Navigator.of(context).pushNamed("/settings/faq"),
+                                ),
+                                SettingTile(
+                                  leftIcon: CupertinoIcons.mail,
+                                  text: kContactConfesiLabel,
+                                  onTap: () => Navigator.pushNamed(context, "/settings/contact"),
+                                ),
+                                SettingTile(
+                                  rightIcon: CupertinoIcons.link,
+                                  leftIcon: CupertinoIcons.sidebar_left,
+                                  text: kSettingsOurWebsiteLinkLabel,
+                                  onTap: () => context.read<WebsiteLauncherSettingCubit>().launchWebsiteHome(),
+                                ),
+                              ],
                             ),
-                            SettingTile(
-                              icon: CupertinoIcons.chat_bubble,
-                              text: kSettingsContactLabel,
-                              onTap: () => Navigator.of(context).pushNamed("/feedback"),
+                            const SizedBox(height: 15),
+                            SettingTileGroup(
+                              text: kSettingsPersonalizationLabel,
+                              settingTiles: [
+                                SettingTile(
+                                  leftIcon: CupertinoIcons.color_filter,
+                                  text: kSettingsAppearanceLabel,
+                                  onTap: () => Navigator.of(context).pushNamed("/settings/appearance"),
+                                ),
+                              ],
                             ),
-                            SettingTile(
-                              icon: CupertinoIcons.question_circle,
-                              text: kSettingsFaqLabel,
-                              onTap: () => Navigator.of(context).pushNamed("/settings/faq"),
+                            const SizedBox(height: 15),
+                            SettingTileGroup(
+                              text: kSettingsAccountLabel,
+                              settingTiles: [
+                                SettingTile(
+                                  leftIcon: CupertinoIcons.shield,
+                                  text: kSettingsBiometricLockLabel,
+                                  onTap: () => Navigator.pushNamed(context, "/settings/biometric_lock"),
+                                ),
+                                SettingTile(
+                                  leftIcon: CupertinoIcons.helm,
+                                  text:
+                                      kVerifiedStudentLabel, // TODO: gives you a list of perks? Some incentive to prove it? mandatory (or not cuz then easier to ban)?
+                                  onTap: () => print("tap"),
+                                ),
+                                SettingTile(
+                                  isRedText: true,
+                                  leftIcon: CupertinoIcons.square_arrow_right,
+                                  text: kSettingsLogoutLabel,
+                                  onTap: () => context.read<UserCubit>().logoutUser(),
+                                ),
+                              ],
                             ),
-                            SettingTile(
-                              icon: CupertinoIcons.sparkles,
-                              text: kSettingsRewatchTutorialLabel,
-                              onTap: () =>
-                                  Navigator.pushNamed(context, '/onboarding', arguments: {"isRewatching": true}),
+                            const SizedBox(height: 15),
+                            SettingTileGroup(
+                              text: kSettingsAccessibilityLabel,
+                              settingTiles: [
+                                SettingTile(
+                                  leftIcon: CupertinoIcons.hand_draw,
+                                  text: kSettingsHapticFeedbackLabel,
+                                  onTap: () => Navigator.pushNamed(context, "/settings/haptics"),
+                                ),
+                              ],
                             ),
-                            SettingTile(
-                              isLink: true,
-                              icon: CupertinoIcons.sidebar_left,
-                              text: kSettingsOurWebsiteLinkLabel,
-                              onTap: () => print("tap"),
+                            const SizedBox(height: 15),
+                            SettingTileGroup(
+                              text: kSettingsLegalLabel,
+                              settingTiles: [
+                                SettingTile(
+                                  rightIcon: CupertinoIcons.link,
+                                  leftIcon: CupertinoIcons.doc,
+                                  text: kSettingsTermsOfServiceLabel,
+                                  onTap: () =>
+                                      context.read<WebsiteLauncherSettingCubit>().launchWebsiteTermsOfService(),
+                                ),
+                                SettingTile(
+                                  rightIcon: CupertinoIcons.link,
+                                  leftIcon: CupertinoIcons.doc,
+                                  text: kSesttingsPrivacyStatementLabel,
+                                  onTap: () =>
+                                      context.read<WebsiteLauncherSettingCubit>().launchWebsitePrivacyStatement(),
+                                ),
+                              ],
                             ),
+                            const SizedBox(height: 15),
+                            SettingTileGroup(
+                              text: kSettingsDangerZoneLabel,
+                              settingTiles: [
+                                SettingTile(
+                                  isRedText: true,
+                                  leftIcon: CupertinoIcons.xmark,
+                                  text: kSettingsDeleteAccountLabel,
+                                  onTap: () => Navigator.pushNamed(context, "/settings/contact"),
+                                ),
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10, right: 10, top: 45),
+                              child: Center(
+                                child: Text(
+                                  "version 1.2.1 (release)",
+                                  style: kDetail.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            )
                           ],
                         ),
-                        const SizedBox(height: 15),
-                        SettingTileGroup(
-                          text: kSettingsPersonalizationLabel,
-                          settingTiles: [
-                            SettingTile(
-                              icon: CupertinoIcons.color_filter,
-                              text: kSettingsAppearanceLabel,
-                              onTap: () => Navigator.of(context).pushNamed("/settings/appearance"),
-                            ),
-                            SettingTile(
-                              icon: CupertinoIcons.cube_box,
-                              text: kSettingsInterfaceAdjustmentsLabel,
-                              onTap: () => print("tap"),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 15),
-                        SettingTileGroup(
-                          text: kSettingsAccountLabel,
-                          settingTiles: [
-                            SettingTile(
-                              icon: CupertinoIcons.shield,
-                              text: kSettingsBiometricProfileLockLabel,
-                              onTap: () => print("tap"),
-                            ),
-                            SettingTile(
-                              icon: CupertinoIcons.profile_circled,
-                              text: kSettingsAccountDetailsLabel,
-                              onTap: () => print("tap"),
-                            ),
-                            SettingTile(
-                              icon: CupertinoIcons.mail,
-                              text:
-                                  kSettingsStudentEmailPerksLabel, // TODO: gives you a list of perks? Some incentive to prove it? mandatory (or not cuz then easier to ban)?
-                              onTap: () => print("tap"),
-                            ),
-                            SettingTile(
-                              isRedText: true,
-                              icon: CupertinoIcons.square_arrow_right,
-                              text: kSettingsLogoutLabel,
-                              onTap: () => context.read<UserCubit>().logoutUser(),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 15),
-                        SettingTileGroup(
-                          text: kSettingsAccessibilityLabel,
-                          settingTiles: [
-                            SettingTile(
-                              icon: CupertinoIcons.paintbrush_fill,
-                              text: kSettingsReducedAnimationsLabel,
-                              onTap: () => print("tap"),
-                            ),
-                            SettingTile(
-                              icon: CupertinoIcons.hand_draw,
-                              text: kSettingsHapticFeedbackLabel,
-                              onTap: () => print("tap"),
-                            ),
-                            SettingTile(
-                              icon: CupertinoIcons.text_cursor,
-                              text: kSettingsTextSizeLabel,
-                              onTap: () => Navigator.of(context).pushNamed("/settings/textSize"),
-                            ),
-                            SettingTile(
-                              icon: CupertinoIcons.light_max,
-                              text: kSettingsHighContrastLabel,
-                              onTap: () => print("tap"),
-                            ),
-                            SettingTile(
-                              icon: CupertinoIcons.textformat_abc_dottedunderline,
-                              text: kSettingsToolTipsLabel,
-                              onTap: () => print("tap"),
-                            ),
-                            SettingTile(
-                              icon: CupertinoIcons.time,
-                              text: kSettingsBoomerModeLabel,
-                              onTap: () => print("tap"),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 15),
-                        SettingTileGroup(
-                          text: kSettingsLegalLabel,
-                          settingTiles: [
-                            SettingTile(
-                              isLink: true,
-                              icon: CupertinoIcons.doc,
-                              text: kSettingsTermsOfServiceLabel,
-                              onTap: () => print("tap"),
-                            ),
-                            SettingTile(
-                              isLink: true,
-                              icon: CupertinoIcons.doc,
-                              text: kSesttingsPrivacyStatementLabel,
-                              onTap: () => print("tap"),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 15),
-                        SettingTileGroup(
-                          text: kSettingsDangerZoneLabel,
-                          settingTiles: [
-                            SettingTile(
-                              isRedText: true,
-                              icon: CupertinoIcons.xmark,
-                              text: kSettingsDeleteAccountLabel,
-                              onTap: () => print("tap"), // TODO: go through support for this?
-                            ),
-                            SettingTile(
-                              isRedText: true,
-                              icon: CupertinoIcons.refresh_thin,
-                              text: kSettingsResetLocalPreferencesLabel,
-                              onTap: () => print("reset"),
-                            ),
-                          ],
-                        ),
-                        const DisclaimerText(
-                          verticalPadding: 15,
-                          text: kSettingsBottomDisclaimerText,
-                        ),
-                        const SimulatedBottomSafeArea(),
-                      ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

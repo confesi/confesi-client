@@ -1,4 +1,4 @@
-import 'package:Confessi/presentation/feed/widgets/badge_tile.dart';
+import 'badge_tile.dart';
 import 'package:flutter/material.dart';
 
 class BadgeTileSet extends StatelessWidget {

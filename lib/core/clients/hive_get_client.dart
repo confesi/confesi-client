@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:dartz/dartz.dart';
 import 'package:hive/hive.dart';
 
 import '../results/exceptions.dart';

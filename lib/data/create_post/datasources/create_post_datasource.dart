@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:Confessi/core/results/successes.dart';
+import '../../../core/results/successes.dart';
 import '../../../core/clients/http_client.dart';
 import '../utils/error_message_to_exception.dart';
 
@@ -9,7 +9,7 @@ abstract class ICreatePostDatasource {
 }
 
 class CreatePostDatasource implements ICreatePostDatasource {
-  final ApiClient api;
+  final HttpClient api;
 
   CreatePostDatasource({required this.api});
 

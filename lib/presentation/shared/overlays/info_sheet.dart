@@ -1,61 +1,64 @@
-import 'package:Confessi/core/styles/typography.dart';
-import 'package:Confessi/core/utils/sizing/bottom_safe_area.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_opacity.dart';
-import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
+import '../../../core/styles/typography.dart';
+import '../../../core/utils/sizing/bottom_safe_area.dart';
+import '../../../core/utils/sizing/height_fraction.dart';
+import '../behaviours/init_opacity.dart';
+import '../layout/scrollable_area.dart';
 import 'package:flutter/material.dart';
+import 'package:scrollable/exports.dart';
 
 import '../layout/swipebar.dart';
 
 Future<dynamic> showInfoSheet(BuildContext context, String header, String body) {
   return showModalBottomSheet(
-    barrierColor: Colors.black.withOpacity(0.9),
+    barrierColor: Colors.black.withOpacity(0.7),
     context: context,
     backgroundColor: Colors.transparent,
     isScrollControlled: true,
-    // Optionally, you can change this BorderRadius... it's kinda preference.
-    builder: (context) => Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        const SwipebarLayout(),
-        Container(
-          padding: EdgeInsets.only(bottom: bottomSafeArea(context) + 15, top: 30),
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.background,
-            borderRadius: const BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                header,
-                style: kTitle.copyWith(
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 15),
-              Flexible(
-                child: ScrollableView(
-                  horizontalPadding: 30,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        body,
-                        style: kBody.copyWith(
-                          color: Theme.of(context).colorScheme.onSurface,
-                        ),
-                        textAlign: TextAlign.justify,
-                      ),
-                    ],
+    builder: (context) => Container(
+      constraints: BoxConstraints(maxHeight: heightFraction(context, .75)),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.background,
+        borderRadius: const BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const SwipebarLayout(),
+          Flexible(
+            child: ScrollableView(
+              distancebetweenHapticEffectsDuringScroll: 50,
+              hapticEffectAtEdge: HapticType.medium,
+              scrollBarVisible: false,
+              inlineTopOrLeftPadding: 15,
+              inlineBottomOrRightPadding: bottomSafeArea(context),
+              controller: ScrollController(),
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    header,
+                    style: kSansSerifDisplay.copyWith(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                ),
+                  const SizedBox(height: 30),
+                  Text(
+                    body,
+                    style: kTitle.copyWith(
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: bottomSafeArea(context)),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     ),
   );
 }

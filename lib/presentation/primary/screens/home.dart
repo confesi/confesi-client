@@ -1,17 +1,13 @@
-import 'package:Confessi/presentation/create_post/screens/home.dart';
-import 'package:Confessi/presentation/daily_hottest/screens/home.dart';
-import 'package:Confessi/presentation/profile/screens/screen_obscuring_manager.dart';
-import 'package:Confessi/presentation/shared/behaviours/shrinking_view.dart';
-import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
+import '../../daily_hottest/screens/home.dart';
+import '../../profile/screens/home.dart';
+import '../../profile/screens/screen_obscuring_manager.dart';
+import '../../shared/behaviours/themed_status_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../core/responsive/breakpoints.dart';
 import '../../../core/styles/typography.dart';
 import '../../feed/screens/feed_tab_manager.dart';
-import '../../../application/profile/cubit/biometrics_cubit.dart';
 import '../../feed/widgets/drawer.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -28,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   @override
   void initState() {
-    tabController = TabController(vsync: this, length: 4);
+    tabController = TabController(vsync: this, length: 3);
     super.initState();
   }
 
@@ -38,14 +34,14 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     super.dispose();
   }
 
-  int currentSelectedTab = 0;
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => false,
       child: ThemedStatusBar(
         child: Scaffold(
+          drawerScrimColor: Colors.black.withOpacity(0.7),
+          drawerEnableOpenDragGesture: false,
           drawer: const ExploreDrawer(), // Reference to the "Feed" feature drawer (ExploreDrawer).
           resizeToAvoidBottomInset: false,
           key: scaffoldKey,
@@ -60,43 +56,22 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   children: [
                     ExploreHome(scaffoldKey: scaffoldKey),
                     const HottestHome(),
-                    const CreatePostHome(viewMethod: ViewMethod.tabScreen),
-                    const ScreenObscuringManager(),
+                    const ProfileHome(),
                   ],
                 ),
                 bottomNavigationBar: TabBar(
-                  onTap: (tabIndex) {
-                    tabIndex == 3 && currentSelectedTab != 3
-                        ? context.read<BiometricsCubit>().setNotAuthenticated()
-                        : null;
-                    HapticFeedback.lightImpact();
-                    currentSelectedTab = tabIndex;
-                  },
-                  isScrollable: false,
+                  onTap: (_) => HapticFeedback.selectionClick(),
                   labelStyle: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
                   unselectedLabelColor: Theme.of(context).colorScheme.onBackground,
                   labelColor: Theme.of(context).colorScheme.primary,
-                  indicatorSize: TabBarIndicatorSize.tab,
+                  indicatorSize: TabBarIndicatorSize.label,
                   indicatorColor: Colors.transparent,
                   controller: tabController,
                   enableFeedback: true,
-                  tabs: [
-                    Tab(
-                      text: Responsive.isTablet(context) ? "Explore" : null,
-                      icon: const Icon(CupertinoIcons.compass),
-                    ),
-                    Tab(
-                      text: Responsive.isTablet(context) ? "Hot" : null,
-                      icon: const Icon(CupertinoIcons.flame),
-                    ),
-                    Tab(
-                      text: Responsive.isTablet(context) ? "Post" : null,
-                      icon: const Icon(CupertinoIcons.add),
-                    ),
-                    Tab(
-                      text: Responsive.isTablet(context) ? "Profile" : null,
-                      icon: const Icon(CupertinoIcons.profile_circled),
-                    )
+                  tabs: const [
+                    Tab(icon: Icon(CupertinoIcons.compass)),
+                    Tab(icon: Icon(CupertinoIcons.flame)),
+                    Tab(icon: Icon(CupertinoIcons.person_solid)),
                   ],
                 ),
                 backgroundColor: Theme.of(context).colorScheme.background,

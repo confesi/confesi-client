@@ -1,6 +1,6 @@
-import 'package:Confessi/core/styles/typography.dart';
-import 'package:Confessi/presentation/shared/behaviours/animated_cliprrect.dart';
-import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opacity.dart';
+import '../../../core/styles/typography.dart';
+import '../behaviours/animated_cliprrect.dart';
+import '../button_touch_effects/touchable_opacity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -23,7 +23,7 @@ class _StepperTileState extends State<StepperTile> {
 
   @override
   Widget build(BuildContext context) {
-    return TouchableOpacity(
+    return GestureDetector(
       onTap: () {
         setState(() {
           isOpen = !isOpen;
@@ -32,7 +32,7 @@ class _StepperTileState extends State<StepperTile> {
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.background,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: const BorderRadius.all(
             Radius.circular(10),
           ),
@@ -69,12 +69,11 @@ class _StepperTileState extends State<StepperTile> {
               ],
             ),
             AnimatedClipRect(
-              duration: const Duration(milliseconds: 350),
-              reverseDuration: const Duration(milliseconds: 350),
+              duration: const Duration(milliseconds: 175),
+              reverseDuration: const Duration(milliseconds: 175),
               alignment: Alignment.bottomCenter,
               horizontalAnimation: false,
               open: isOpen,
-              curve: Curves.decelerate,
               child: Padding(
                 padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
                 child: Text(

@@ -1,4 +1,4 @@
-import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
+import '../behaviours/init_scale.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

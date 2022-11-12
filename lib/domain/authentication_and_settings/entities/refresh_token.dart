@@ -1,4 +1,4 @@
-import 'package:Confessi/constants/enums_that_are_local_keys.dart';
+import '../../../constants/enums_that_are_local_keys.dart';
 import 'package:equatable/equatable.dart';
 
 /// [RefreshToken] entity. Stores the refresh token.

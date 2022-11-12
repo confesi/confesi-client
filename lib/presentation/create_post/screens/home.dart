@@ -1,12 +1,12 @@
-import 'package:Confessi/application/create_post/cubit/post_cubit.dart';
-import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
-import 'package:Confessi/presentation/shared/other/text_limit_tracker.dart';
-import 'package:Confessi/presentation/daily_hottest/widgets/preview_quote_tile.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
-import 'package:Confessi/presentation/shared/behaviours/shrinking_view.dart';
-import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opacity.dart';
-import 'package:Confessi/presentation/shared/buttons/option.dart';
-import 'package:Confessi/presentation/shared/overlays/button_options_sheet.dart';
+import '../../../application/create_post/cubit/post_cubit.dart';
+import '../../shared/behaviours/themed_status_bar.dart';
+import '../../shared/other/text_limit_tracker.dart';
+import '../../daily_hottest/widgets/preview_quote_tile.dart';
+import '../../shared/behaviours/init_scale.dart';
+import '../../shared/behaviours/shrinking_view.dart';
+import '../../shared/button_touch_effects/touchable_opacity.dart';
+import '../../shared/buttons/option.dart';
+import '../../shared/overlays/button_options_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,7 +17,7 @@ import '../../../core/generators/hint_text_generator.dart';
 import '../../../core/styles/typography.dart';
 import '../../shared/behaviours/keyboard_dismiss.dart';
 import '../../shared/layout/appbar.dart';
-import '../../shared/layout/scrollable_view.dart';
+import '../../shared/layout/scrollable_area.dart';
 import '../../shared/overlays/center_overlay_message.dart';
 
 // TODO: move to feature constants file and document
@@ -155,7 +155,7 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
             if (state is SuccessfullySubmitted) {
               clearTextfields();
               Navigator.popUntil(context, ModalRoute.withName('/home'));
-              CenterOverlay().show(context);
+              CenterOverlay().show(context, "Posted", blastConfetti: true);
             }
           },
           child: ThemedStatusBar(
@@ -234,7 +234,7 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                                       onTap: () => bodyFocusNode.requestFocus(),
                                       child: SizedBox(
                                         height: constraints.maxHeight,
-                                        child: ScrollableView(
+                                        child: ScrollableArea(
                                           physics: const ClampingScrollPhysics(),
                                           controller: scrollController,
                                           child: Padding(

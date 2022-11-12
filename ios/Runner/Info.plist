@@ -2,6 +2,21 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 	<dict>
+		<!-- ADDED TO SUPPORT MULTIPLE LOCALES - START -->
+		<key>CFBundleLocalizations</key>
+		<array>
+			<string>en</string>
+			<string>fr</string>
+			<string>es</string>
+		</array>
+		<!-- ADDED TO SUPPORT MULTIPLE LOCALES - END -->
+		<!-- ADDED FOR URL LAUNCHER - START -->
+		<key>LSApplicationQueriesSchemes</key>
+		<array>
+		<string>sms</string>
+		<string>tel</string>
+		</array>
+		<!-- ADDED FOR URL LAUNCHER - END -->
 		<!-- [START] Enabling status bar theme to be changed by UI -->
 		<key>UIViewControllerBasedStatusBarAppearance</key>
 		<true/>

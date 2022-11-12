@@ -1,5 +1,5 @@
-import 'package:Confessi/core/results/failures.dart';
-import 'package:Confessi/core/usecases/single_usecase.dart';
+import '../../../core/results/failures.dart';
+import '../../../core/usecases/single_usecase.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';

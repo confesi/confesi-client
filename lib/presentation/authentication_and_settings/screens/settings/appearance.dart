@@ -1,16 +1,15 @@
-import 'package:Confessi/constants/enums_that_are_local_keys.dart';
-import 'package:Confessi/core/utils/styles/appearance_name.dart';
-import 'package:Confessi/presentation/shared/selection_groups/bool_selection_group.dart';
-import 'package:Confessi/presentation/authentication_and_settings/widgets/settings/header_text.dart';
-import 'package:Confessi/presentation/shared/selection_groups/bool_selection_tile.dart';
-import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
-import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
-import 'package:Confessi/presentation/shared/text/disclaimer_text.dart';
+import '../../../../constants/enums_that_are_local_keys.dart';
+import '../../../shared/selection_groups/bool_selection_group.dart';
+import '../../widgets/settings/header_text.dart';
+import '../../../shared/selection_groups/bool_selection_tile.dart';
+import '../../../shared/behaviours/themed_status_bar.dart';
+import '../../../shared/layout/scrollable_area.dart';
+import '../../../shared/text/disclaimer_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../application/authentication_and_prefs/cubit/user_cubit.dart';
+import '../../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../../../../constants/authentication_and_settings/text.dart';
 import '../../../../core/styles/typography.dart';
 import '../../../shared/behaviours/simulated_bottom_safe_area.dart';
@@ -38,7 +37,7 @@ class AppearanceScreen extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: ScrollableView(
+                child: ScrollableArea(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 15),
                     child: Column(

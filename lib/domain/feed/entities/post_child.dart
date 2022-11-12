@@ -1,4 +1,4 @@
-import 'package:Confessi/domain/shared/entities/post.dart';
+import '../../shared/entities/post.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../constants/feed/enums.dart';

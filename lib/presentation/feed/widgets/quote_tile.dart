@@ -1,6 +1,6 @@
-import 'package:Confessi/presentation/shared/behaviours/tool_tip.dart';
-import 'package:Confessi/constants/feed/general.dart';
-import 'package:Confessi/domain/shared/entities/post.dart';
+import '../../shared/behaviours/tool_tip.dart';
+import '../../../constants/feed/general.dart';
+import '../../../domain/shared/entities/post.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants/shared/enums.dart';

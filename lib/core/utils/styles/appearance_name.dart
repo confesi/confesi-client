@@ -1,4 +1,4 @@
-import 'package:Confessi/constants/authentication_and_settings/text.dart';
+import '../../../constants/authentication_and_settings/text.dart';
 import 'package:flutter/material.dart';
 
 /// Gets the app's appearance name.

@@ -1,9 +1,9 @@
-import 'package:Confessi/core/utils/sizing/height_fraction.dart';
-import 'package:Confessi/presentation/authentication_and_settings/widgets/authentication/item_row_tile.dart';
-import 'package:Confessi/presentation/shared/behaviours/simulated_bottom_safe_area.dart';
-import 'package:Confessi/presentation/shared/layout/line.dart';
-import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
-import 'package:Confessi/presentation/shared/textfields/bulge.dart';
+import '../../../../core/utils/sizing/height_fraction.dart';
+import 'item_row_tile.dart';
+import '../../../shared/behaviours/simulated_bottom_safe_area.dart';
+import '../../../shared/layout/line.dart';
+import '../../../shared/layout/scrollable_area.dart';
+import '../../../shared/textfields/bulge.dart';
 import 'package:flutter/material.dart';
 
 import '../../../shared/layout/swipebar.dart';
@@ -92,7 +92,7 @@ class __SheetBodyState extends State<_SheetBody> {
                     const SizedBox(height: 15),
                     LineLayout(color: Theme.of(context).colorScheme.surface),
                     Expanded(
-                      child: ScrollableView(
+                      child: ScrollableArea(
                         controller: ScrollController(),
                         keyboardDismiss: true,
                         thumbVisible: false,

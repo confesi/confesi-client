@@ -1,29 +1,35 @@
-import 'package:Confessi/presentation/create_post/screens/details.dart';
-import 'package:Confessi/presentation/create_post/screens/home.dart';
-import 'package:Confessi/presentation/daily_hottest/screens/leaderboard.dart';
-import 'package:Confessi/presentation/easter_eggs/screens/overscroll.dart';
-import 'package:Confessi/presentation/feed/screens/detail_view.dart';
-import 'package:Confessi/presentation/feed/screens/post_advanced_details.dart';
-import 'package:Confessi/presentation/feedback/screens/home.dart';
-import 'package:Confessi/presentation/primary/screens/critical_error.dart';
-import 'package:Confessi/presentation/authentication_and_settings/screens/settings/appearance.dart';
-import 'package:Confessi/presentation/authentication_and_settings/screens/settings/faq.dart';
-import 'package:Confessi/presentation/authentication_and_settings/screens/settings/home.dart';
-import 'package:Confessi/presentation/authentication_and_settings/screens/settings/text_size.dart';
-import 'package:Confessi/presentation/user_posts_and_comments/screens/comments.dart';
-import 'package:Confessi/presentation/user_posts_and_comments/screens/posts.dart';
-import 'package:Confessi/presentation/user_posts_and_comments/screens/saved.dart';
+import '../../application/authentication_and_settings/cubit/language_setting_cubit.dart';
+import '../../presentation/authentication_and_settings/screens/settings/contact.dart';
+import '../../presentation/authentication_and_settings/screens/settings/haptics.dart';
+import '../../presentation/authentication_and_settings/screens/settings/language.dart';
+import '../../presentation/create_post/screens/details.dart';
+import '../../presentation/create_post/screens/home.dart';
+import '../../presentation/daily_hottest/screens/leaderboard.dart';
+import '../../presentation/easter_eggs/screens/overscroll.dart';
+import '../../presentation/feed/screens/detail_view.dart';
+import '../../presentation/feed/screens/post_advanced_details.dart';
+import '../../presentation/feed/screens/watched_universities.dart';
+import '../../presentation/feedback/screens/home.dart';
+import '../../presentation/primary/screens/critical_error.dart';
+import '../../presentation/authentication_and_settings/screens/settings/appearance.dart';
+import '../../presentation/authentication_and_settings/screens/settings/faq.dart';
+import '../../presentation/authentication_and_settings/screens/settings/home.dart';
+import '../../presentation/user_posts_and_comments/screens/comments.dart';
+import '../../presentation/user_posts_and_comments/screens/posts.dart';
+import '../../presentation/user_posts_and_comments/screens/saved.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
 
+import '../../application/authentication_and_settings/cubit/contact_setting_cubit.dart';
+import '../../application/authentication_and_settings/cubit/website_launcher_setting_cubit.dart';
 import '../../dependency_injection.dart';
 import '../../presentation/authentication_and_settings/screens/authentication/register_tab_manager.dart';
+import '../../presentation/authentication_and_settings/screens/settings/biometric_lock.dart';
 import '../../presentation/primary/screens/home.dart';
 import '../../presentation/authentication_and_settings/screens/authentication/login.dart';
 import '../../presentation/primary/screens/showcase.dart';
 import '../../presentation/authentication_and_settings/screens/authentication/open.dart';
-import '../../application/daily_hottest/cubit/hottest_cubit.dart';
 import '../../application/daily_hottest/cubit/leaderboard_cubit.dart';
 import '../../application/feed/cubit/recents_cubit.dart';
 import '../../application/feed/cubit/trending_cubit.dart';
@@ -38,19 +44,27 @@ class AppRouter {
       "/home/create_replied_post",
       "/feedback",
       "/prefsError",
+      "/create_post",
+      "/settings",
+      "/watched_universities",
     ];
     return fullScreenDialogRoutes.contains(routeSettings.name) ? true : false;
   }
 
-  // Checks which routes show as a fade animation.
+  // Checks which routes show as a size animation.
   bool isSizeAnim(RouteSettings routeSettings) {
-    List<String> sizeAnimDialogRoutes = [];
+    List<String> sizeAnimDialogRoutes = [
+      "/home",
+    ];
     return sizeAnimDialogRoutes.contains(routeSettings.name) ? true : false;
   }
 
   // Checks which routes show as a fade animation.
   bool isFadeAnim(RouteSettings routeSettings) {
-    List<String> fadeAnimDialogRoutes = ["/onboarding", "/open", "/home"];
+    List<String> fadeAnimDialogRoutes = [
+      "/onboarding",
+      "/open",
+    ];
     return fadeAnimDialogRoutes.contains(routeSettings.name) ? true : false;
   }
 
@@ -102,6 +116,10 @@ class AppRouter {
             body: args['body'],
             id: args['id'],
           );
+          break;
+        // TODO: HERE
+        case "/create_post":
+          page = const CreatePostHome(viewMethod: ViewMethod.separateScreen);
           break;
         // Detailed view for each post (thread view, has comments, fully expanded text, etc.).
         case '/home/detail':
@@ -168,7 +186,18 @@ class AppRouter {
           page = const OverscrollEasterEgg();
           break;
         case "/settings":
-          page = const SettingsHome();
+          page = MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                lazy: false,
+                create: (context) => sl<WebsiteLauncherSettingCubit>(),
+              ),
+            ],
+            child: const SettingsHome(),
+          );
+          break;
+        case "/watched_universities":
+          page = const WatchedUniversitiesScreen();
           break;
         case "/settings/appearance":
           page = const AppearanceScreen();
@@ -176,11 +205,33 @@ class AppRouter {
         case "/settings/faq":
           page = const FAQScreen();
           break;
-        case "/settings/textSize":
-          page = const TextSizeScreen();
+        case "/settings/contact":
+          page = MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                lazy: false,
+                create: (context) => sl<ContactSettingCubit>(),
+              ),
+            ],
+            child: const ContactScreen(),
+          );
           break;
-        case "/settings/watchedUniversities":
-          page = const Text("Watched universities");
+        case "/settings/language":
+          page = MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                lazy: false,
+                create: (context) => sl<LanguageSettingCubit>(),
+              ),
+            ],
+            child: const LanguageScreen(),
+          );
+          break;
+        case "/settings/haptics":
+          page = const HapticsScreen();
+          break;
+        case "/settings/biometric_lock":
+          page = const BiometricLockScreen();
           break;
         case "/prefsError":
           page = const CriticalErrorScreen();
@@ -202,7 +253,7 @@ class AppRouter {
           milliseconds: 750,
         ),
       );
-    } else if (isFadeAnim(routeSettings)) {
+    } else if (isFadeAnim(routeSettings) || page is CriticalErrorScreen) {
       return PageTransition(
         settings: routeSettings,
         child: page,
@@ -210,7 +261,7 @@ class AppRouter {
         type: PageTransitionType.fade,
         curve: Curves.decelerate,
         duration: const Duration(
-          milliseconds: 225,
+          milliseconds: 150,
         ),
       );
     } else {

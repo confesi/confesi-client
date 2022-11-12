@@ -1,14 +1,13 @@
-import 'package:Confessi/presentation/shared/buttons/simple_text.dart';
+import '../../shared/buttons/simple_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../application/daily_hottest/cubit/hottest_cubit.dart';
 import '../../../core/styles/typography.dart';
-import '../../../dependency_injection.dart';
 import '../../shared/behaviours/init_scale.dart';
 import '../../shared/behaviours/init_transform.dart';
-import '../../shared/buttons/animated_simple_text.dart';
+import '../../shared/buttons/pop.dart';
 import '../../shared/layout/swipebar.dart';
 
 class DatePicker extends StatefulWidget {
@@ -26,20 +25,7 @@ class _DatePickerState extends State<DatePicker> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        // SizedBox(
-        //   // This infinite width ensure it is presented on its own row inside the Wrap widget.
-        //   width: double.infinity,
-        //   child: Padding(
-        //     padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-        //     child: Text(
-        //       "View top confessions from the past.",
-        //       style: kTitle.copyWith(
-        //         color: Theme.of(context).colorScheme.primary,
-        //       ),
-        //       textAlign: TextAlign.center,
-        //     ),
-        //   ),
-        // ),
+        const SwipebarLayout(),
         Expanded(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -50,11 +36,17 @@ class _DatePickerState extends State<DatePicker> {
                   Expanded(
                     child: InitTransform(
                       transformDirection: TransformDirection.horizontal,
-                      child: SimpleTextButton(
-                        onTap: () {
+                      magnitudeOfTransform: -250,
+                      child: PopButton(
+                        bottomPadding: 15,
+                        justText: true,
+                        onPress: () {
                           context.read<HottestCubit>().loadPosts(DateTime.now());
                           Navigator.pop(context);
                         },
+                        icon: CupertinoIcons.chevron_right,
+                        backgroundColor: Theme.of(context).colorScheme.surface,
+                        textColor: Theme.of(context).colorScheme.primary,
                         text: "Load today",
                       ),
                     ),
@@ -63,12 +55,17 @@ class _DatePickerState extends State<DatePicker> {
                   Expanded(
                     child: InitTransform(
                       transformDirection: TransformDirection.horizontal,
-                      magnitudeOfTransform: -100,
-                      child: SimpleTextButton(
-                        onTap: () {
+                      magnitudeOfTransform: 250,
+                      child: PopButton(
+                        bottomPadding: 15,
+                        justText: true,
+                        onPress: () {
                           context.read<HottestCubit>().loadPosts(selectedDate);
                           Navigator.pop(context);
                         },
+                        icon: CupertinoIcons.chevron_right,
+                        backgroundColor: Theme.of(context).colorScheme.secondary,
+                        textColor: Theme.of(context).colorScheme.onSecondary,
                         text: "Load selected",
                       ),
                     ),

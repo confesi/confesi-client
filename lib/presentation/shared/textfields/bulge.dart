@@ -1,4 +1,4 @@
-import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opacity.dart';
+import '../button_touch_effects/touchable_opacity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -104,7 +104,7 @@ class _BulgeTextFieldState extends State<BulgeTextField> {
                       ),
                       color: Theme.of(context).colorScheme.surface,
                       borderRadius: const BorderRadius.all(
-                        Radius.circular(10),
+                        Radius.circular(15),
                       ),
                     ),
                     child: Row(

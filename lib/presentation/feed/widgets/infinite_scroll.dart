@@ -1,10 +1,11 @@
-import 'package:Confessi/presentation/shared/behaviours/overscroll.dart';
-import 'package:Confessi/presentation/feed/widgets/post_tile.dart';
-import 'package:Confessi/presentation/shared/indicators/loading.dart';
+import '../../shared/behaviours/overscroll.dart';
+import 'post_tile.dart';
+import '../../shared/indicators/loading.dart';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:scrollable/exports.dart';
 
 import '../../../constants/feed/enums.dart';
 import '../../../constants/feed/general.dart';

@@ -1,8 +1,8 @@
-import 'package:Confessi/core/network/connection_info.dart';
-import 'package:Confessi/core/results/successes.dart';
-import 'package:Confessi/core/results/failures.dart';
-import 'package:Confessi/data/create_post/utils/exception_to_failure.dart';
-import 'package:Confessi/domain/create_post/repositories/create_post_repository_interface.dart';
+import '../../../core/network/connection_info.dart';
+import '../../../core/results/successes.dart';
+import '../../../core/results/failures.dart';
+import '../utils/exception_to_failure.dart';
+import '../../../domain/create_post/repositories/create_post_repository_interface.dart';
 import 'package:dartz/dartz.dart';
 
 import '../datasources/create_post_datasource.dart';

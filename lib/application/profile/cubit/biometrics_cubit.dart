@@ -1,5 +1,5 @@
-import 'package:Confessi/core/results/failures.dart';
-import 'package:Confessi/domain/profile/usecases/biometric_authentication.dart';
+import '../../../core/results/failures.dart';
+import '../../../domain/profile/usecases/biometric_authentication.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 

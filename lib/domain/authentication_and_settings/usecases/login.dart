@@ -1,5 +1,5 @@
-import 'package:Confessi/core/clients/http_client.dart';
-import 'package:Confessi/core/results/successes.dart';
+import '../../../core/clients/http_client.dart';
+import '../../../core/results/successes.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
@@ -9,15 +9,14 @@ import '../../../data/authentication_and_settings/repositories/authentication_re
 
 class Login implements Usecase<Success, LoginParams> {
   final AuthenticationRepository repository;
-  final ApiClient netClient;
+  final HttpClient netClient;
 
   Login({required this.repository, required this.netClient});
 
   /// Logs the user in.
   @override
   Future<Either<Failure, Success>> call(LoginParams params) async {
-    final tokens =
-        await repository.login(params.usernameOrEmail, params.password);
+    final tokens = await repository.login(params.usernameOrEmail, params.password);
     return tokens.fold(
       (failure) => Left(failure),
       (tokens) async {

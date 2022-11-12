@@ -1,5 +1,5 @@
-import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opacity.dart';
-import 'package:Confessi/presentation/shared/indicators/loading.dart';
+import '../button_touch_effects/touchable_opacity.dart';
+import '../indicators/loading.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';

@@ -1,8 +1,8 @@
-import 'package:Confessi/core/styles/themes.dart';
-import 'package:Confessi/core/styles/typography.dart';
-import 'package:Confessi/core/utils/styles/appearance_type.dart';
-import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
-import 'package:Confessi/presentation/shared/layout/scrollable_view.dart';
+import '../../../core/styles/themes.dart';
+import '../../../core/styles/typography.dart';
+import '../../../core/utils/styles/appearance_type.dart';
+import '../../shared/behaviours/themed_status_bar.dart';
+import '../../shared/layout/scrollable_area.dart';
 import 'package:flutter/material.dart';
 
 class CriticalErrorScreen extends StatelessWidget {
@@ -19,7 +19,7 @@ class CriticalErrorScreen extends StatelessWidget {
               : AppTheme.classicDark.colorScheme.background,
           body: SafeArea(
             child: Center(
-              child: ScrollableView(
+              child: ScrollableArea(
                 child: Padding(
                   padding: const EdgeInsets.all(15),
                   child: Column(

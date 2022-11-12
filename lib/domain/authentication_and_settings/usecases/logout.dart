@@ -1,4 +1,4 @@
-import 'package:Confessi/core/clients/http_client.dart';
+import '../../../core/clients/http_client.dart';
 import 'package:dartz/dartz.dart';
 import 'package:hive/hive.dart';
 
@@ -9,7 +9,7 @@ import '../../../data/authentication_and_settings/repositories/authentication_re
 
 class Logout implements Usecase<Success, String> {
   final AuthenticationRepository repository;
-  final ApiClient netClient;
+  final HttpClient netClient;
 
   Logout({required this.repository, required this.netClient});
 

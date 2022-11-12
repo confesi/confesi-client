@@ -26,10 +26,6 @@ class DisclaimerText extends StatelessWidget {
               color: Theme.of(context).colorScheme.primary,
               width: 2,
             ),
-            // Container(
-            //   color: Theme.of(context).colorScheme.secondary,
-            //   width: 1,
-            // ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),

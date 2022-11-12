@@ -15,11 +15,12 @@ class AppTheme {
       onSecondary: Color(0xff333333),
       error: Color(0xffEB5353),
       onError: Colors.white,
+      surfaceTint: Color(0xff90A17D),
       background: Colors.white,
       onBackground: Color.fromARGB(255, 214, 214, 214),
       surface: Color.fromARGB(255, 240, 239, 239),
       onSurface: Color.fromARGB(255, 147, 147, 147),
-      shadow: Color.fromARGB(255, 231, 228, 228),
+      shadow: Color.fromARGB(255, 223, 221, 221),
       primaryContainer: Color(0xfffde5b6), // Badge's light color.
       secondaryContainer: Color.fromARGB(255, 151, 107, 20), // Badge's dark color.
     ),
@@ -37,6 +38,7 @@ class AppTheme {
       onPrimary: Color(0xff333333),
       secondary: Color(0xfffde5b6),
       onSecondary: Color(0xff333333),
+      surfaceTint: Color(0xff90A17D),
       error: Color(0xffEB5353),
       onError: Colors.white,
       background: Color(0xff2a2a2a),

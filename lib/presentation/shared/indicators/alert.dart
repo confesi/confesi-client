@@ -1,8 +1,8 @@
-import 'package:Confessi/core/styles/typography.dart';
-import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opacity.dart';
-import 'package:Confessi/presentation/shared/buttons/action.dart';
-import 'package:Confessi/presentation/shared/buttons/simple_text.dart';
-import 'package:Confessi/presentation/shared/indicators/loading.dart';
+import '../../../core/styles/typography.dart';
+import '../button_touch_effects/touchable_opacity.dart';
+import '../buttons/action.dart';
+import '../buttons/simple_text.dart';
+import 'loading.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

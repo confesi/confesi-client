@@ -1,17 +1,18 @@
 import 'dart:math';
 
-import 'package:Confessi/core/utils/numbers/is_plural.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
-import 'package:Confessi/presentation/shared/indicators/alert.dart';
-import 'package:Confessi/presentation/shared/indicators/loading.dart';
-import 'package:Confessi/presentation/shared/layout/appbar.dart';
-import 'package:Confessi/presentation/shared/layout/line.dart';
-import 'package:Confessi/application/daily_hottest/cubit/leaderboard_cubit.dart';
-import 'package:Confessi/presentation/daily_hottest/widgets/leaderboard_circle_tile.dart';
-import 'package:Confessi/presentation/daily_hottest/widgets/leaderboard_rectangle_tile.dart';
+import '../../../core/utils/numbers/is_plural.dart';
+import '../../shared/behaviours/init_transform.dart';
+import '../../shared/indicators/alert.dart';
+import '../../shared/indicators/loading.dart';
+import '../../shared/layout/appbar.dart';
+import '../../shared/layout/line.dart';
+import '../../../application/daily_hottest/cubit/leaderboard_cubit.dart';
+import '../widgets/leaderboard_circle_tile.dart';
+import '../widgets/leaderboard_rectangle_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:scrollable/exports.dart';
 
 import '../../../constants/daily_hottest/general.dart';
 import '../../../core/styles/typography.dart';
@@ -102,24 +103,29 @@ class LeaderboardScreen extends StatelessWidget {
                       ),
                       Expanded(
                         child: InitTransform(
-                          child: ListView.builder(
-                            itemBuilder: (context, index) {
-                              if (index == 0) {
-                                return const SizedBox(height: 30);
-                              } else if (index >= 3) {
-                                return LeaderboardRectangleTile(
-                                  placing:
-                                      '${state.rankings[index].placing}${numberPostfix(state.rankings[index].placing)}',
-                                  points: isPlural(state.rankings[index].points)
-                                      ? '${largeNumberFormatter(state.rankings[index].points)} pts'
-                                      : '${largeNumberFormatter(state.rankings[index].points)} pt',
-                                  university: state.rankings[index].universityFullName,
-                                );
-                              } else {
-                                return Container();
-                              }
-                            },
-                            itemCount: state.rankings.length,
+                          child: ScrollHaptics(
+                            distancebetweenHapticEffectsDuringScroll: 50,
+                            hapticEffectAtEdge: HapticType.medium,
+                            child: ListView.builder(
+                              physics: const ClampingScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                if (index == 0) {
+                                  return const SizedBox(height: 30);
+                                } else if (index >= 3) {
+                                  return LeaderboardRectangleTile(
+                                    placing:
+                                        '${state.rankings[index].placing}${numberPostfix(state.rankings[index].placing)}',
+                                    points: isPlural(state.rankings[index].points)
+                                        ? '${largeNumberFormatter(state.rankings[index].points)} pts'
+                                        : '${largeNumberFormatter(state.rankings[index].points)} pt',
+                                    university: state.rankings[index].universityFullName,
+                                  );
+                                } else {
+                                  return Container();
+                                }
+                              },
+                              itemCount: state.rankings.length,
+                            ),
                           ),
                         ),
                       ),

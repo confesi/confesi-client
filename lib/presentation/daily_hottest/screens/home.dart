@@ -1,8 +1,8 @@
-import 'package:Confessi/application/daily_hottest/cubit/hottest_cubit.dart';
-import 'package:Confessi/core/extensions/dates/two_dates_same.dart';
-import 'package:Confessi/core/extensions/dates/readable_date_format.dart';
-import 'package:Confessi/presentation/daily_hottest/widgets/hottest_tile.dart';
-import 'package:Confessi/presentation/daily_hottest/widgets/date_picker_sheet.dart';
+import '../../../application/daily_hottest/cubit/hottest_cubit.dart';
+import '../../../core/extensions/dates/two_dates_same.dart';
+import '../../../core/extensions/dates/readable_date_format.dart';
+import '../widgets/hottest_tile.dart';
+import '../widgets/date_picker_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -30,6 +30,12 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
   final PageController pageController = PageController(viewportFraction: .9, initialPage: 0);
 
   int currentIndex = 0;
+
+  @override
+  void initState() {
+    context.read<HottestCubit>().loadPosts(DateTime.now());
+    super.initState();
+  }
 
   Widget buildChild(BuildContext context, HottestState state) {
     if (state is Loading) {
