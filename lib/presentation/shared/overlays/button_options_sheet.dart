@@ -14,36 +14,52 @@ Future<dynamic> showButtonOptionsSheet(BuildContext context, List<OptionButton> 
     backgroundColor: Colors.transparent,
     barrierColor: Colors.black.withOpacity(0.7),
     context: context,
-    builder: (context) => Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          padding: EdgeInsets.only(bottom: bottomSafeArea(context) + 15),
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.background,
-            borderRadius: const BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-          ),
-          child: SizedBox(
-            width: double.infinity,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const SwipebarLayout(),
-                ScrollableArea(
-                  thumbVisible: false,
-                  child: Column(
-                    children: [
-                      LineLayout(color: Theme.of(context).colorScheme.onBackground),
-                      ...buttons,
-                      OptionButton(onTap: () => print("tap"), text: "Close", icon: CupertinoIcons.xmark, isRed: true),
-                    ],
+    builder: (context) => Padding(
+      padding: const EdgeInsets.all(15),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            decoration: const BoxDecoration(
+              color: Colors.transparent,
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+            ),
+            child: SizedBox(
+              width: double.infinity,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ScrollableArea(
+                    thumbVisible: false,
+                    child: SafeArea(
+                      top: false,
+                      child: Column(
+                        children: [
+                          LineLayout(color: Theme.of(context).colorScheme.onBackground),
+                          ClipRRect(
+                            borderRadius: const BorderRadius.all(Radius.circular(15)),
+                            child: Column(
+                              children: [
+                                ...buttons,
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 30),
+                          ClipRRect(
+                            borderRadius: const BorderRadius.all(Radius.circular(15)),
+                            child: OptionButton(
+                                onTap: () => print("tap"), text: "Done", icon: CupertinoIcons.xmark, isRed: true),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     ),
   );
 }

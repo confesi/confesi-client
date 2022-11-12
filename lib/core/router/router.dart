@@ -1,3 +1,5 @@
+import 'package:Confessi/presentation/authentication_and_settings/screens/settings/verified_student_perks.dart';
+
 import '../../application/authentication_and_settings/cubit/language_setting_cubit.dart';
 import '../../presentation/authentication_and_settings/screens/settings/contact.dart';
 import '../../presentation/authentication_and_settings/screens/settings/haptics.dart';
@@ -232,6 +234,9 @@ class AppRouter {
           break;
         case "/settings/biometric_lock":
           page = const BiometricLockScreen();
+          break;
+        case "/settings/verified_student_perks":
+          page = const VerifiedStudentPerksScreen();
           break;
         case "/prefsError":
           page = const CriticalErrorScreen();

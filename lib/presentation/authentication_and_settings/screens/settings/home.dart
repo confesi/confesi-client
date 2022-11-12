@@ -57,6 +57,7 @@ class SettingsHome extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            const SizedBox(height: 15),
                             SettingTileGroup(
                               text: "Private profile",
                               settingTiles: [
@@ -118,7 +119,7 @@ class SettingsHome extends StatelessWidget {
                                   leftIcon: CupertinoIcons.helm,
                                   text:
                                       kVerifiedStudentLabel, // TODO: gives you a list of perks? Some incentive to prove it? mandatory (or not cuz then easier to ban)?
-                                  onTap: () => print("tap"),
+                                  onTap: () => Navigator.pushNamed(context, "/settings/verified_student_perks"),
                                 ),
                                 SettingTile(
                                   isRedText: true,

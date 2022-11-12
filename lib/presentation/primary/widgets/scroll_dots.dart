@@ -5,12 +5,14 @@ class ScrollDots extends StatefulWidget {
     this.verticalPadding = 0.0,
     required this.pageLength,
     required this.pageIndex,
+    this.secondaryColors = false,
     Key? key,
   }) : super(key: key);
 
   final int pageIndex;
   final int pageLength;
   final double verticalPadding;
+  final bool secondaryColors;
 
   @override
   State<ScrollDots> createState() => _ScrollDotsState();
@@ -30,13 +32,19 @@ class _ScrollDotsState extends State<ScrollDots> {
             height: 9,
             decoration: BoxDecoration(
               color: i == widget.pageIndex
-                  ? Theme.of(context).colorScheme.onSecondary
-                  : Theme.of(context).colorScheme.secondary,
+                  ? widget.secondaryColors
+                      ? Theme.of(context).colorScheme.primary
+                      : Theme.of(context).colorScheme.onSecondary
+                  : widget.secondaryColors
+                      ? Theme.of(context).colorScheme.background
+                      : Theme.of(context).colorScheme.onSurface,
               shape: BoxShape.circle,
               border: i == widget.pageIndex
                   ? null
                   : Border.all(
-                      color: Theme.of(context).colorScheme.onSecondary,
+                      color: widget.secondaryColors
+                          ? Theme.of(context).colorScheme.primary
+                          : Theme.of(context).colorScheme.onSecondary,
                       width: 2),
             ),
           ),
@@ -49,8 +57,7 @@ class _ScrollDotsState extends State<ScrollDots> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(
-          horizontal: 30, vertical: widget.verticalPadding),
+      padding: EdgeInsets.symmetric(horizontal: 30, vertical: widget.verticalPadding),
       child: Wrap(
         spacing: 8,
         runSpacing: 8,

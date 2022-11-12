@@ -53,6 +53,9 @@ class PasswordInvalidException implements Exception {}
 /// Thrown when the received token from secure storage is null/empty.
 class EmptyTokenException implements Exception {}
 
+/// Request attempted with invalid tokens.
+class InvalidTokenException implements Exception {}
+
 /// Thrown when the account that's trying to be accesed doesn't exist.
 class AccountDoesNotExistException implements Exception {}
 

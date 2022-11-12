@@ -28,14 +28,10 @@ class OptionButton extends StatelessWidget {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Colors.transparent,
+        color: Theme.of(context).colorScheme.background,
         border: centered
             ? null
             : Border(
-                // top: BorderSide(
-                //   color: Theme.of(context).colorScheme.onBackground,
-                //   width: 0.25,
-                // ),
                 bottom: BorderSide(
                   color: Theme.of(context).colorScheme.onBackground,
                   width: 0.25,

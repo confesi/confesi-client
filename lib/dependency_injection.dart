@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:Confessi/core/clients/api_client.dart';
 import 'package:Confessi/domain/authentication_and_settings/usecases/open_device_settings.dart';
 
 import 'application/authentication_and_settings/cubit/language_setting_cubit.dart';
@@ -130,7 +131,9 @@ Future<void> init() async {
   // Registers the app routing system.
   sl.registerLazySingleton(() => AppRouter());
   // Registers the custom net client class.
-  sl.registerLazySingleton(() => HttpClient(secureStorage: sl()));
+  sl.registerLazySingleton(() => HttpClient(secureStorage: sl())); // TODO: api client to remove
+  // Registers the custom api client class.
+  sl.registerLazySingleton(() => ApiClient());
 
   //! Repositories
   // Registers the authentication repository.
