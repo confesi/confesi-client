@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 import '../../../core/styles/typography.dart';
 import '../../../core/utils/sizing/height_fraction.dart';
 
+// Which side the notification should pop out from
 enum ScreenSide {
   top,
   bottom,
 }
 
+// "Success" means the chip is green, "Failure" means it's red
 enum NotificationType {
   success,
   failure,
