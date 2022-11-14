@@ -29,14 +29,6 @@ class OptionButton extends StatelessWidget {
       width: double.infinity,
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.background,
-        border: centered
-            ? null
-            : Border(
-                bottom: BorderSide(
-                  color: Theme.of(context).colorScheme.onBackground,
-                  width: 0.25,
-                ),
-              ),
       ),
       child: TouchableOpacity(
         onTap: () {
@@ -62,7 +54,7 @@ class OptionButton extends StatelessWidget {
                 Expanded(
                   child: Text(
                     text,
-                    style: kBody.copyWith(
+                    style: kTitle.copyWith(
                       color: isRed ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.primary,
                     ),
                     textAlign: centered ? TextAlign.center : TextAlign.left,

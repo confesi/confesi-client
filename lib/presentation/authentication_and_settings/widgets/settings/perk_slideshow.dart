@@ -39,10 +39,26 @@ class _PerkSlideshowState extends State<PerkSlideshow> {
               },
               scrollDirection: Axis.horizontal,
               children: const [
-                PerkTile(),
-                PerkTile(),
-                PerkTile(),
-                PerkTile(),
+                PerkTile(
+                  title: "Verified Badge",
+                  body: "Confessions and comments include a badge indicating you're a verified student posting them.",
+                  imagePath: "assets/images/universities/twu.jpeg",
+                ),
+                PerkTile(
+                  title: "",
+                  body: "",
+                  imagePath: "assets/images/universities/ufv.jpeg",
+                ),
+                PerkTile(
+                  title: "",
+                  body: "",
+                  imagePath: "assets/images/universities/twu.jpeg",
+                ),
+                PerkTile(
+                  title: "",
+                  body: "",
+                  imagePath: "assets/images/universities/twu.jpeg",
+                ),
               ],
             ),
           ),

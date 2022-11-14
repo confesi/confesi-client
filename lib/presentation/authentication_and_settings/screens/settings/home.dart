@@ -49,8 +49,6 @@ class SettingsHome extends StatelessWidget {
                     color: Theme.of(context).colorScheme.background,
                     child: ScrollableView(
                       inlineBottomOrRightPadding: bottomSafeArea(context) * 2,
-                      distancebetweenHapticEffectsDuringScroll: 50,
-                      hapticEffectAtEdge: HapticType.medium,
                       controller: ScrollController(),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10),

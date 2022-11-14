@@ -68,7 +68,7 @@ dependencies:
   page_transition: ^2.0.9
   flutter_native_splash: ^2.2.10+1
   back_button_interceptor: ^6.0.2
-  scrollable: ^1.0.2
+  scrollable: ^1.0.3
   url_launcher: ^6.1.6
   permission_handler: ^10.2.0
   # open_settings: ^2.0.2

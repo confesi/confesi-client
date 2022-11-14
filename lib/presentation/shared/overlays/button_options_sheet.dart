@@ -1,11 +1,7 @@
 import '../buttons/option.dart';
-import '../layout/line.dart';
 import '../layout/scrollable_area.dart';
-import '../layout/swipebar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import '../../../core/utils/sizing/bottom_safe_area.dart';
 
 Future<dynamic> showButtonOptionsSheet(BuildContext context, List<OptionButton> buttons,
     {String? text, VoidCallback? onComplete}) {
@@ -35,7 +31,6 @@ Future<dynamic> showButtonOptionsSheet(BuildContext context, List<OptionButton> 
                       top: false,
                       child: Column(
                         children: [
-                          LineLayout(color: Theme.of(context).colorScheme.onBackground),
                           ClipRRect(
                             borderRadius: const BorderRadius.all(Radius.circular(15)),
                             child: Column(
@@ -44,11 +39,16 @@ Future<dynamic> showButtonOptionsSheet(BuildContext context, List<OptionButton> 
                               ],
                             ),
                           ),
-                          const SizedBox(height: 30),
+                          const SizedBox(height: 15),
                           ClipRRect(
                             borderRadius: const BorderRadius.all(Radius.circular(15)),
                             child: OptionButton(
-                                onTap: () => print("tap"), text: "Done", icon: CupertinoIcons.xmark, isRed: true),
+                              centered: true,
+                              onTap: () => print("tap"),
+                              text: "Done",
+                              icon: CupertinoIcons.xmark,
+                              isRed: true,
+                            ),
                           ),
                         ],
                       ),

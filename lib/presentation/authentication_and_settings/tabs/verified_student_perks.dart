@@ -1,30 +1,26 @@
-import 'package:Confessi/application/authentication_and_settings/cubit/language_setting_cubit.dart';
 import 'package:Confessi/presentation/authentication_and_settings/widgets/settings/perk_slideshow.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:Confessi/presentation/shared/overlays/info_sheet.dart';
 
-import '../../../shared/buttons/pop.dart';
-import '../../../shared/overlays/notification_chip.dart';
-import '../../../shared/selection_groups/setting_tile.dart';
-import '../../../shared/selection_groups/setting_tile_group.dart';
-import '../../../shared/behaviours/themed_status_bar.dart';
-import '../../../shared/selection_groups/text_stat_tile.dart';
-import '../../../shared/selection_groups/text_stat_tile_group.dart';
+import '../../shared/buttons/pop.dart';
+import '../../shared/behaviours/themed_status_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scrollable/exports.dart';
 
-import '../../../../core/styles/typography.dart';
-import '../../../../core/utils/sizing/bottom_safe_area.dart';
-import '../../../shared/layout/appbar.dart';
+import '../../../core/styles/typography.dart';
+import '../../../core/utils/sizing/bottom_safe_area.dart';
+import '../../shared/layout/appbar.dart';
 
-class VerifiedStudentPerksScreen extends StatefulWidget {
-  const VerifiedStudentPerksScreen({super.key});
+class VerifiedStudentPerksTab extends StatefulWidget {
+  const VerifiedStudentPerksTab({super.key, required this.nextScreen});
+
+  final VoidCallback nextScreen;
 
   @override
-  State<VerifiedStudentPerksScreen> createState() => _VerifiedStudentPerksScreenState();
+  State<VerifiedStudentPerksTab> createState() => _VerifiedStudentPerksTabState();
 }
 
-class _VerifiedStudentPerksScreenState extends State<VerifiedStudentPerksScreen> {
+class _VerifiedStudentPerksTabState extends State<VerifiedStudentPerksTab> {
   @override
   Widget build(BuildContext context) {
     return ThemedStatusBar(
@@ -43,6 +39,10 @@ class _VerifiedStudentPerksScreenState extends State<VerifiedStudentPerksScreen>
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
               ),
+              rightIcon: CupertinoIcons.info,
+              rightIconVisible: true,
+              rightIconOnPress: () => showInfoSheet(context, "Verification",
+                  "The perks that come with verification can be turned on/off whenever you want. This ensures you're never stuck with undesired perks."),
             ),
             Expanded(
               child: Column(
@@ -65,11 +65,11 @@ class _VerifiedStudentPerksScreenState extends State<VerifiedStudentPerksScreen>
                   PopButton(
                     horizontalPadding: 10,
                     justText: true,
-                    onPress: () => print("tap"),
+                    onPress: () => widget.nextScreen(),
                     icon: CupertinoIcons.chevron_right,
-                    backgroundColor: Theme.of(context).colorScheme.secondary,
-                    textColor: Theme.of(context).colorScheme.onSecondary,
-                    text: "Verify Email Now",
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    textColor: Theme.of(context).colorScheme.onPrimary,
+                    text: "Next",
                   ),
                   const SizedBox(height: 10),
                   Padding(

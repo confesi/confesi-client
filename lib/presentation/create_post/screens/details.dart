@@ -1,24 +1,18 @@
 import '../../../application/create_post/cubit/post_cubit.dart';
-import '../../../core/utils/sizing/width_fraction.dart';
 import '../../shared/behaviours/nav_blocker.dart';
 import '../../shared/behaviours/simulated_bottom_safe_area.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/overlays/notification_chip.dart';
 import '../../shared/overlays/info_sheet.dart';
-import '../../shared/buttons/long.dart';
 import '../../shared/layout/scrollable_area.dart';
 import '../../shared/selection_groups/bool_selection_group.dart';
 import '../../shared/selection_groups/bool_selection_tile.dart';
-import '../../shared/selection_groups/text_stat_tile.dart';
-import '../../shared/selection_groups/text_stat_tile_group.dart';
 import '../../shared/text/link.dart';
-import '../../shared/text/spread_row.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/styles/typography.dart';
-import '../../shared/button_touch_effects/touchable_opacity.dart';
 import '../../shared/buttons/pop.dart';
 import '../../shared/layout/appbar.dart';
 

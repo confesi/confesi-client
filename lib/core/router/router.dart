@@ -1,9 +1,10 @@
-import 'package:Confessi/presentation/authentication_and_settings/screens/settings/verified_student_perks.dart';
+import 'package:Confessi/presentation/authentication_and_settings/tabs/verified_student_perks.dart';
 
 import '../../application/authentication_and_settings/cubit/language_setting_cubit.dart';
 import '../../presentation/authentication_and_settings/screens/settings/contact.dart';
 import '../../presentation/authentication_and_settings/screens/settings/haptics.dart';
 import '../../presentation/authentication_and_settings/screens/settings/language.dart';
+import '../../presentation/authentication_and_settings/screens/settings/verified_student_manager.dart';
 import '../../presentation/create_post/screens/details.dart';
 import '../../presentation/create_post/screens/home.dart';
 import '../../presentation/daily_hottest/screens/leaderboard.dart';
@@ -236,7 +237,7 @@ class AppRouter {
           page = const BiometricLockScreen();
           break;
         case "/settings/verified_student_perks":
-          page = const VerifiedStudentPerksScreen();
+          page = const VerifiedStudentManager();
           break;
         case "/prefsError":
           page = const CriticalErrorScreen();
