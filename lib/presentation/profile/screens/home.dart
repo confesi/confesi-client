@@ -1,17 +1,14 @@
+import 'package:Confessi/presentation/profile/widgets/achievement_builder.dart';
+
 import '../../../core/utils/numbers/add_commas_to_number.dart';
 import '../../../core/utils/numbers/number_until_limit.dart';
 import '../../shared/behaviours/bottom_overscroll_scroll_to_top.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
-import '../../shared/button_touch_effects/touchable_opacity.dart';
 import '../../shared/edited_source_widgets/swipe_refresh.dart';
-import '../../shared/layout/scrollable_area.dart';
 import '../../shared/overlays/info_sheet_with_action.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-
-import '../../../core/styles/typography.dart';
 import '../../../core/utils/sizing/height_fraction.dart';
 import '../../shared/buttons/emblem.dart';
 import '../../shared/buttons/simple_text.dart';
@@ -168,14 +165,27 @@ class _ProfileHomeState extends State<ProfileHome> {
                               children: [
                                 const SizedBox(height: 20),
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                                  padding: const EdgeInsets.symmetric(horizontal: 10),
                                   child: StatTile(
-                                    leftTap: () => showInfoSheet(
-                                        context, "Total likes", "${addCommasToNumber(983042378)} / Top 4% of users"),
-                                    centerTap: () => showInfoSheet(
-                                        context, "Total hottests", "${addCommasToNumber(543253)} / Top 9% of users"),
-                                    rightTap: () => showInfoSheet(
-                                        context, "Total hates", "${addCommasToNumber(2436)} / Top 54% of users"),
+                                    leftTap: () => showInfoSheetWithAction(
+                                      context,
+                                      "Total likes",
+                                      "${addCommasToNumber(983042378)} / Top 4% of users",
+                                      () => print("tap"),
+                                      "Share with friends",
+                                    ),
+                                    centerTap: () => showInfoSheetWithAction(
+                                        context,
+                                        "Total hottests",
+                                        "${addCommasToNumber(543253)} / Top 9% of users",
+                                        () => print("tap"),
+                                        "Share with friends"),
+                                    rightTap: () => showInfoSheetWithAction(
+                                        context,
+                                        "Total hates",
+                                        "${addCommasToNumber(2436)} / Top 54% of users",
+                                        () => print("tap"),
+                                        "Share with friends"),
                                     leftNumber: 17231223,
                                     leftDescription: "Likes",
                                     centerNumber: 2,
@@ -186,7 +196,7 @@ class _ProfileHomeState extends State<ProfileHome> {
                                 ),
                                 const SizedBox(height: 10),
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                                  padding: const EdgeInsets.symmetric(horizontal: 10),
                                   child: Row(
                                     children: [
                                       Expanded(
@@ -207,103 +217,17 @@ class _ProfileHomeState extends State<ProfileHome> {
                                 ),
                                 const SizedBox(height: 10),
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                                  padding: const EdgeInsets.symmetric(horizontal: 10),
                                   child: SimpleTextButton(
                                     infiniteWidth: true,
                                     onTap: () => Navigator.pushNamed(context, '/home/profile/saved'),
-                                    text: "Saved Content",
+                                    text: "Saved Confessions",
                                   ),
                                 ),
                                 const SizedBox(height: 20),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                                  child: StaggeredGrid.count(
-                                    crossAxisCount: 4,
-                                    mainAxisSpacing: 4,
-                                    crossAxisSpacing: 4,
-                                    children: [
-                                      StaggeredGridTile.count(
-                                        crossAxisCellCount: 2,
-                                        mainAxisCellCount: 2,
-                                        child: Container(color: Colors.purple),
-                                      ),
-                                      StaggeredGridTile.count(
-                                        crossAxisCellCount: 2,
-                                        mainAxisCellCount: 1,
-                                        child: Container(color: Colors.pink),
-                                      ),
-                                      StaggeredGridTile.count(
-                                        crossAxisCellCount: 1,
-                                        mainAxisCellCount: 1,
-                                        child: Container(color: Colors.yellow),
-                                      ),
-                                      StaggeredGridTile.count(
-                                        crossAxisCellCount: 1,
-                                        mainAxisCellCount: 1,
-                                        child: Container(color: Colors.green),
-                                      ),
-                                      StaggeredGridTile.count(
-                                        crossAxisCellCount: 2,
-                                        mainAxisCellCount: 2,
-                                        child: Container(color: Colors.orange),
-                                      ),
-                                      StaggeredGridTile.count(
-                                        crossAxisCellCount: 2,
-                                        mainAxisCellCount: 2,
-                                        child: Container(color: Colors.purple),
-                                      ),
-                                      StaggeredGridTile.count(
-                                        crossAxisCellCount: 1,
-                                        mainAxisCellCount: 1,
-                                        child: Container(color: Colors.red),
-                                      ),
-                                      StaggeredGridTile.count(
-                                        crossAxisCellCount: 4,
-                                        mainAxisCellCount: 2,
-                                        child: Container(
-                                          color: Colors.blue,
-                                        ),
-                                      ),
-                                      StaggeredGridTile.count(
-                                        crossAxisCellCount: 2,
-                                        mainAxisCellCount: 2,
-                                        child: Container(color: Colors.purple),
-                                      ),
-                                      StaggeredGridTile.count(
-                                        crossAxisCellCount: 2,
-                                        mainAxisCellCount: 1,
-                                        child: Container(color: Colors.pink),
-                                      ),
-                                      StaggeredGridTile.count(
-                                        crossAxisCellCount: 1,
-                                        mainAxisCellCount: 1,
-                                        child: Container(color: Colors.yellow),
-                                      ),
-                                      StaggeredGridTile.count(
-                                        crossAxisCellCount: 1,
-                                        mainAxisCellCount: 1,
-                                        child: ClipRRect(
-                                          child: Container(color: Colors.green),
-                                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                                        ),
-                                      ),
-                                      StaggeredGridTile.count(
-                                        crossAxisCellCount: 2,
-                                        mainAxisCellCount: 2,
-                                        child: Container(color: Colors.orange),
-                                      ),
-                                      StaggeredGridTile.count(
-                                        crossAxisCellCount: 2,
-                                        mainAxisCellCount: 2,
-                                        child: Container(color: Colors.purple),
-                                      ),
-                                      StaggeredGridTile.count(
-                                        crossAxisCellCount: 1,
-                                        mainAxisCellCount: 1,
-                                        child: Container(color: Colors.red),
-                                      ),
-                                    ],
-                                  ),
+                                const Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 10),
+                                  child: AchievementBuilder(),
                                 ),
                               ],
                             ),

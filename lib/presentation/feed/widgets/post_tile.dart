@@ -1,3 +1,5 @@
+import 'package:share_plus/share_plus.dart';
+
 import '../../../core/styles/typography.dart';
 import '../../shared/button_touch_effects/touchable_opacity.dart';
 import '../../shared/text/group.dart';
@@ -152,15 +154,16 @@ class PostTile extends StatelessWidget {
                   onTap: () {
                     showButtonOptionsSheet(context, [
                       OptionButton(
-                        text: "Report",
-                        icon: CupertinoIcons.flag,
-                        onTap: () => print("tap"),
-                      ),
-                      OptionButton(
-                        text: "Share",
-                        icon: CupertinoIcons.share,
-                        onTap: () => print("tap"),
-                      ),
+                          text: "Share",
+                          icon: CupertinoIcons.share,
+                          onTap: () {
+                            final box = context.findRenderObject() as RenderBox?;
+                            Share.share(
+                              "View this confession here: https://link.com",
+                              subject: "Share this confession!",
+                              sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+                            );
+                          }),
                       OptionButton(
                         text: "Quote",
                         icon: CupertinoIcons.paperplane,
@@ -190,14 +193,17 @@ class PostTile extends StatelessWidget {
                             'genre': genre,
                             'hates': hates,
                             'likes': likes,
-                            // TODO: implement 'moderation_status' and 'saves'
-                            'moderation_status': 'IMPLEMENT THIS STILL',
-                            'saves': 999999,
+                            'saves': 999999, // TODO: implement saves
                             'university': university,
                             'year': year,
                             'university_full_name': universityFullName,
                           },
                         ),
+                      ),
+                      OptionButton(
+                        text: "Report",
+                        icon: CupertinoIcons.flag,
+                        onTap: () => print("tap"),
                       ),
                     ]);
                   },

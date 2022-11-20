@@ -169,7 +169,6 @@ class AppRouter {
             genre: args['genre'],
             hates: args['hates'],
             likes: args['likes'],
-            moderationStatus: args['moderation_status'],
             saves: args['saves'],
             university: args['university'],
             year: args['year'],

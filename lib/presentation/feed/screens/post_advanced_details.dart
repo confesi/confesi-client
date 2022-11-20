@@ -24,7 +24,6 @@ class PostAdvancedDetailsScreen extends StatelessWidget {
     required this.genre,
     required this.hates,
     required this.likes,
-    required this.moderationStatus,
     required this.saves,
     required this.university,
     required this.year,
@@ -40,7 +39,6 @@ class PostAdvancedDetailsScreen extends StatelessWidget {
   final String faculty;
   final String genre;
   final int year;
-  final String moderationStatus;
 
   @override
   Widget build(BuildContext context) {
