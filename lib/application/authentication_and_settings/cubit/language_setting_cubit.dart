@@ -1,4 +1,4 @@
-import 'package:Confessi/domain/authentication_and_settings/usecases/open_device_settings.dart';
+import '../../../domain/authentication_and_settings/usecases/open_device_settings.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';

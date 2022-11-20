@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:Confessi/core/clients/api_client.dart';
+import '../../../core/clients/api_client.dart';
 
 import '../../shared/models/post_model.dart';
 import '../../../domain/shared/entities/post.dart';

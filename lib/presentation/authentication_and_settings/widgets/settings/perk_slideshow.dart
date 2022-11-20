@@ -1,6 +1,6 @@
-import 'package:Confessi/generated/l10n.dart';
-import 'package:Confessi/presentation/authentication_and_settings/widgets/settings/perk_tile.dart';
-import 'package:Confessi/presentation/primary/widgets/scroll_dots.dart';
+import '../../../../generated/l10n.dart';
+import 'perk_tile.dart';
+import '../../../primary/widgets/scroll_dots.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

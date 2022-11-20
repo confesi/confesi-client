@@ -1,7 +1,8 @@
-import 'badge.dart';
-import '../../feed/entities/post_child.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+
+import '../../feed/entities/post_child.dart';
+import 'badge.dart';
 
 class Post extends Equatable {
   final String id;

@@ -1,10 +1,9 @@
-import '../../../core/styles/typography.dart';
-import '../button_touch_effects/touchable_opacity.dart';
-import '../buttons/action.dart';
-import '../buttons/simple_text.dart';
-import 'loading.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import '../../../core/styles/typography.dart';
+import '../button_touch_effects/touchable_opacity.dart';
+import 'loading.dart';
 
 class AlertIndicator extends StatelessWidget {
   const AlertIndicator({

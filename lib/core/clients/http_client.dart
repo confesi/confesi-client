@@ -2,16 +2,17 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
-import '../../constants/shared/dev.dart';
-import '../results/exceptions.dart';
-import '../results/failures.dart';
-import '../results/successes.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:jwt_decode/jwt_decode.dart';
+
+import '../../constants/shared/dev.dart';
+import '../results/exceptions.dart';
+import '../results/failures.dart';
+import '../results/successes.dart';
 
 /// The different RESTful API verbs.
 enum Method {

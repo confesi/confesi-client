@@ -1,6 +1,3 @@
-import '../../shared/buttons/option.dart';
-import 'comment_header_text.dart';
-import 'slidable_section.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +8,10 @@ import '../../../constants/shared/enums.dart';
 import '../../../core/styles/typography.dart';
 import '../../shared/button_touch_effects/touchable_opacity.dart';
 import '../../shared/button_touch_effects/touchable_shrink.dart';
+import '../../shared/buttons/option.dart';
 import '../../shared/overlays/button_options_sheet.dart';
+import 'comment_header_text.dart';
+import 'slidable_section.dart';
 
 class CommentTile extends StatelessWidget {
   const CommentTile({

@@ -1,11 +1,9 @@
-import '../../../core/styles/typography.dart';
-import '../../../core/utils/sizing/bottom_safe_area.dart';
-import '../../../core/utils/sizing/height_fraction.dart';
-import '../behaviours/init_opacity.dart';
-import '../layout/scrollable_area.dart';
 import 'package:flutter/material.dart';
 import 'package:scrollable/exports.dart';
 
+import '../../../core/styles/typography.dart';
+import '../../../core/utils/sizing/bottom_safe_area.dart';
+import '../../../core/utils/sizing/height_fraction.dart';
 import '../layout/swipebar.dart';
 
 Future<dynamic> showInfoSheet(BuildContext context, String header, String body) {

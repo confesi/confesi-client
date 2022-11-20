@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:Confessi/core/clients/api_client.dart';
-import 'package:Confessi/domain/authentication_and_settings/usecases/open_device_settings.dart';
+import 'core/clients/api_client.dart';
+import 'domain/authentication_and_settings/usecases/open_device_settings.dart';
 
 import 'application/authentication_and_settings/cubit/language_setting_cubit.dart';
 import 'core/clients/http_client.dart';

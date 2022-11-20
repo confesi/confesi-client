@@ -1,4 +1,4 @@
-import 'package:Confessi/presentation/authentication_and_settings/tabs/verified_student_email.dart';
+import '../../tabs/verified_student_email.dart';
 
 import '../../tabs/register.dart';
 import '../../../shared/behaviours/nav_blocker.dart';

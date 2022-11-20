@@ -1,3 +1,4 @@
+import 'package:Confessi/core/utils/sizing/width_fraction.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

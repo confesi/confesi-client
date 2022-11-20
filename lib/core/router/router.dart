@@ -1,4 +1,4 @@
-import 'package:Confessi/presentation/authentication_and_settings/tabs/verified_student_perks.dart';
+import '../../presentation/authentication_and_settings/tabs/verified_student_perks.dart';
 
 import '../../application/authentication_and_settings/cubit/language_setting_cubit.dart';
 import '../../presentation/authentication_and_settings/screens/settings/contact.dart';

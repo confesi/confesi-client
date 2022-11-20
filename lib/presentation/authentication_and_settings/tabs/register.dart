@@ -1,4 +1,4 @@
-import 'package:Confessi/core/utils/sizing/bottom_safe_area.dart';
+import '../../../core/utils/sizing/bottom_safe_area.dart';
 
 import '../../shared/behaviours/keyboard_dismiss.dart';
 import '../../shared/behaviours/themed_status_bar.dart';

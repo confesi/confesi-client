@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:Confessi/constants/shared/dev.dart';
-import 'package:Confessi/core/usecases/no_params.dart';
+import '../../constants/shared/dev.dart';
+import '../usecases/no_params.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';

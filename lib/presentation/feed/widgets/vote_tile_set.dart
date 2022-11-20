@@ -1,12 +1,10 @@
-import '../../../core/styles/typography.dart';
-import 'vote_tile.dart';
-import '../../shared/behaviours/init_scale.dart';
-import '../../shared/behaviours/init_transform.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants/shared/enums.dart';
+import '../../../core/styles/typography.dart';
 import '../../../core/utils/numbers/is_plural.dart';
+import 'vote_tile.dart';
 
 class VoteTileSet extends StatelessWidget {
   const VoteTileSet({

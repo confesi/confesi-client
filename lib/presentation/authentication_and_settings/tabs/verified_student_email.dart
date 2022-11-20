@@ -1,10 +1,10 @@
-import 'package:Confessi/core/utils/sizing/height_fraction.dart';
-import 'package:Confessi/presentation/authentication_and_settings/widgets/settings/perk_slideshow.dart';
-import 'package:Confessi/presentation/shared/behaviours/keyboard_dismiss.dart';
-import 'package:Confessi/presentation/shared/overlays/info_sheet.dart';
-import 'package:Confessi/presentation/shared/overlays/info_sheet_with_action.dart';
-import 'package:Confessi/presentation/shared/text/link.dart';
-import 'package:Confessi/presentation/shared/textfields/bulge.dart';
+import '../../../core/utils/sizing/height_fraction.dart';
+import '../widgets/settings/perk_slideshow.dart';
+import '../../shared/behaviours/keyboard_dismiss.dart';
+import '../../shared/overlays/info_sheet.dart';
+import '../../shared/overlays/info_sheet_with_action.dart';
+import '../../shared/text/link.dart';
+import '../../shared/textfields/bulge.dart';
 
 import '../../shared/button_touch_effects/touchable_opacity.dart';
 import '../../shared/buttons/pop.dart';

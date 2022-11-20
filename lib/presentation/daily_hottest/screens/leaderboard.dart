@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import '../../../core/utils/numbers/is_plural.dart';
+import '../../../generated/l10n.dart';
 import '../../shared/behaviours/init_transform.dart';
 import '../../shared/indicators/alert.dart';
 import '../../shared/indicators/loading.dart';
@@ -164,7 +165,7 @@ class LeaderboardScreen extends StatelessWidget {
                 AppbarLayout(
                   bottomBorder: false,
                   centerWidget: Text(
-                    'University Leaderboard',
+                    S.of(context).leaderboard_home_page_title,
                     style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,

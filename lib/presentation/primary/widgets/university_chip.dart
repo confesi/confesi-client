@@ -1,7 +1,8 @@
+import 'package:flutter/material.dart';
+
 import '../../../core/styles/themes.dart';
 import '../../../core/styles/typography.dart';
 import '../../shared/button_touch_effects/touchable_opacity.dart';
-import 'package:flutter/material.dart';
 
 class UniversityChip extends StatelessWidget {
   const UniversityChip({

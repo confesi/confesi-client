@@ -38,7 +38,7 @@ class SettingsHome extends StatelessWidget {
                 AppbarLayout(
                   leftIcon: CupertinoIcons.xmark,
                   centerWidget: Text(
-                    S.of(context).settings_page_title,
+                    S.of(context).settings_home_page_title,
                     style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,

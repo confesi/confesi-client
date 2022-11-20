@@ -1,5 +1,5 @@
-import 'package:Confessi/presentation/authentication_and_settings/widgets/settings/perk_slideshow.dart';
-import 'package:Confessi/presentation/shared/overlays/info_sheet.dart';
+import '../widgets/settings/perk_slideshow.dart';
+import '../../shared/overlays/info_sheet.dart';
 
 import '../../shared/buttons/pop.dart';
 import '../../shared/behaviours/themed_status_bar.dart';

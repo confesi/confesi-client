@@ -1,10 +1,11 @@
+import 'package:dartz/dartz.dart';
+
 import '../../../constants/enums_that_are_local_keys.dart';
 import '../../../core/results/exceptions.dart';
-import '../../../core/results/successes.dart';
 import '../../../core/results/failures.dart';
-import '../datasources/prefs_datasource.dart';
+import '../../../core/results/successes.dart';
 import '../../../domain/authentication_and_settings/repositories/prefs_repository_interface.dart';
-import 'package:dartz/dartz.dart';
+import '../datasources/prefs_datasource.dart';
 
 class PrefsRepository implements IPrefsRepository {
   final PrefsDatasource datasource;

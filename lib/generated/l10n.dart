@@ -51,10 +51,20 @@ class S {
   }
 
   /// `Settings`
-  String get settings_page_title {
+  String get settings_home_page_title {
     return Intl.message(
       'Settings',
-      name: 'settings_page_title',
+      name: 'settings_home_page_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `University Leaderboard`
+  String get leaderboard_home_page_title {
+    return Intl.message(
+      'University Leaderboard',
+      name: 'leaderboard_home_page_title',
       desc: '',
       args: [],
     );
