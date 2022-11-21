@@ -84,8 +84,8 @@ class _VerifiedStudentEmailTabState extends State<VerifiedStudentEmailTab> {
                           justText: true,
                           onPress: () => print("tap"),
                           icon: CupertinoIcons.chevron_right,
-                          backgroundColor: Theme.of(context).colorScheme.primary,
-                          textColor: Theme.of(context).colorScheme.onPrimary,
+                          backgroundColor: Theme.of(context).colorScheme.secondary,
+                          textColor: Theme.of(context).colorScheme.onSecondary,
                           text: "Send Verification Email",
                         ),
                         TouchableOpacity(

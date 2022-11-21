@@ -1,4 +1,7 @@
+import 'package:Confessi/application/shared/cubit/share_cubit.dart';
+import 'package:Confessi/presentation/primary/controllers/profile_controller.dart';
 import 'package:Confessi/presentation/profile/widgets/achievement_builder.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/utils/numbers/add_commas_to_number.dart';
 import '../../../core/utils/numbers/number_until_limit.dart';
@@ -12,34 +15,24 @@ import 'package:flutter/material.dart';
 import '../../../core/utils/sizing/height_fraction.dart';
 import '../../shared/buttons/emblem.dart';
 import '../../shared/buttons/simple_text.dart';
-import '../../shared/overlays/info_sheet.dart';
 import '../../shared/text/group.dart';
 import '../widgets/stat_tile.dart';
 
 class ProfileHome extends StatefulWidget {
-  const ProfileHome({super.key});
+  const ProfileHome({
+    super.key,
+    required this.profileController,
+  });
+
+  final ProfileController profileController;
 
   @override
   State<ProfileHome> createState() => _ProfileHomeState();
 }
 
-class _ProfileHomeState extends State<ProfileHome> {
-  late ScrollController verticalScrollController;
-  late ScrollController horizontalScrollController;
-
+class _ProfileHomeState extends State<ProfileHome> with AutomaticKeepAliveClientMixin {
   @override
-  void initState() {
-    verticalScrollController = ScrollController();
-    horizontalScrollController = ScrollController();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    verticalScrollController.dispose();
-    horizontalScrollController.dispose();
-    super.dispose();
-  }
+  bool get wantKeepAlive => true;
 
   double extraHeight = 0;
   bool hasNavigatedToEasterEgg = false;
@@ -54,7 +47,7 @@ class _ProfileHomeState extends State<ProfileHome> {
             await Future.delayed(const Duration(milliseconds: 1000));
           },
           child: BottomOverscrollScrollToTop(
-            scrollController: verticalScrollController,
+            scrollController: widget.profileController.scrollController,
             child: NotificationListener<ScrollNotification>(
               onNotification: (details) {
                 if (details.metrics.pixels <= 0) {
@@ -69,7 +62,7 @@ class _ProfileHomeState extends State<ProfileHome> {
                 return false;
               },
               child: SingleChildScrollView(
-                controller: verticalScrollController,
+                controller: widget.profileController.scrollController,
                 physics: const BouncingScrollPhysics(),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,

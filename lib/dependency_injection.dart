@@ -1,5 +1,8 @@
 import 'dart:async';
 
+import 'package:Confessi/domain/shared/usecases/share_content.dart';
+
+import 'application/shared/cubit/share_cubit.dart';
 import 'core/clients/api_client.dart';
 import 'domain/authentication_and_settings/usecases/open_device_settings.dart';
 
@@ -52,6 +55,7 @@ import 'domain/feed/usecases/trending.dart';
 import 'application/feed/cubit/recents_cubit.dart';
 import 'application/feed/cubit/trending_cubit.dart';
 
+// Get the GetIt instance to use for injection
 final GetIt sl = GetIt.instance;
 
 /// Injects the needed dependencies for the app to run.
@@ -90,6 +94,8 @@ Future<void> init() async {
   sl.registerFactory(() => WebsiteLauncherSettingCubit(launchWebsiteUsecase: sl()));
   // Registers the cubit that opens the device's system settings.
   sl.registerFactory(() => LanguageSettingCubit(openDeviceSettingsUsecase: sl()));
+  // Registers the share cubit
+  sl.registerFactory(() => ShareCubit(shareContentUsecase: sl()));
 
   //! Usecases
   // Registers the register usecase.
@@ -124,6 +130,8 @@ Future<void> init() async {
   sl.registerLazySingleton(() => LaunchWebsite());
   // Registers the usecase that opens a device's system settings.
   sl.registerLazySingleton(() => OpenDeviceSettings());
+  // Registers the share usecase.
+  sl.registerLazySingleton(() => ShareContent());
 
   //! Core
   // Registers custom connection checker class.

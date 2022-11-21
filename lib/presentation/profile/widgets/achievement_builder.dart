@@ -47,13 +47,11 @@ class AchievementBuilder extends StatelessWidget {
       if (leftLength > rightLength) {
         // add right
         rightLength += pow(element.aspectRatio, -1);
-        print("right: ${element.aspectRatio}, total: $rightLength");
-        rightColumn.add(AchievementTile(element: element));
+        rightColumn.add(AchievementTile(achievement: element));
       } else {
         // add left
         leftLength += pow(element.aspectRatio, -1);
-        print("left: ${element.aspectRatio}, total: $leftLength");
-        leftColumn.add(AchievementTile(element: element));
+        leftColumn.add(AchievementTile(achievement: element));
       }
     }
     return columnToReturn == ColumnSide.left ? leftColumn : rightColumn;

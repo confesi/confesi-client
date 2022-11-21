@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 
-class AchievementTile extends StatelessWidget {
-  const AchievementTile({super.key, required this.element});
+import 'achievement_builder.dart';
 
-  final dynamic element;
+class AchievementTile extends StatelessWidget {
+  const AchievementTile({super.key, required this.achievement});
+
+  final TempAchievement achievement;
 
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
-      aspectRatio: element.aspectRatio,
+      aspectRatio: achievement.aspectRatio,
       child: Container(
         margin: const EdgeInsets.all(2),
         decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(0)),
+          borderRadius: BorderRadius.all(Radius.circular(5)),
           color: Colors.redAccent,
         ),
       ),

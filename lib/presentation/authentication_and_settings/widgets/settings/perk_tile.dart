@@ -41,7 +41,7 @@ class PerkTile extends StatelessWidget {
             ),
             Container(
               width: double.infinity,
-              color: Theme.of(context).colorScheme.secondary,
+              color: Theme.of(context).colorScheme.surface,
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
                 child: Column(
@@ -52,7 +52,7 @@ class PerkTile extends StatelessWidget {
                       title,
                       maxLines: 5,
                       style: kTitle.copyWith(
-                        color: Theme.of(context).colorScheme.onSecondary,
+                        color: Theme.of(context).colorScheme.primary,
                       ),
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.ellipsis,
@@ -62,7 +62,7 @@ class PerkTile extends StatelessWidget {
                       body,
                       maxLines: 5,
                       style: kDetail.copyWith(
-                        color: Theme.of(context).colorScheme.onSecondary,
+                        color: Theme.of(context).colorScheme.primary,
                       ),
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.ellipsis,

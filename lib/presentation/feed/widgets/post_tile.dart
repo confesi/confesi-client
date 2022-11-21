@@ -1,3 +1,5 @@
+import 'package:Confessi/application/shared/cubit/share_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../../core/styles/typography.dart';
@@ -154,16 +156,11 @@ class PostTile extends StatelessWidget {
                   onTap: () {
                     showButtonOptionsSheet(context, [
                       OptionButton(
-                          text: "Share",
-                          icon: CupertinoIcons.share,
-                          onTap: () {
-                            final box = context.findRenderObject() as RenderBox?;
-                            Share.share(
-                              "View this confession here: https://link.com",
-                              subject: "Share this confession!",
-                              sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
-                            );
-                          }),
+                        text: "Share",
+                        icon: CupertinoIcons.share,
+                        onTap: () => context.read<ShareCubit>().shareContent(
+                            context, "View the confession here: https://example.com", "Share this confession!"),
+                      ),
                       OptionButton(
                         text: "Quote",
                         icon: CupertinoIcons.paperplane,
