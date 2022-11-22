@@ -1,3 +1,6 @@
+import 'package:Confessi/core/utils/sizing/bottom_safe_area.dart';
+import 'package:scrollable/exports.dart';
+
 import '../../../../core/utils/sizing/height_fraction.dart';
 import 'item_row_tile.dart';
 import '../../../shared/behaviours/simulated_bottom_safe_area.dart';
@@ -92,10 +95,10 @@ class __SheetBodyState extends State<_SheetBody> {
                     const SizedBox(height: 15),
                     LineLayout(color: Theme.of(context).colorScheme.surface),
                     Expanded(
-                      child: ScrollableArea(
+                      child: ScrollableView(
+                        inlineBottomOrRightPadding: bottomSafeArea(context),
+                        scrollBarVisible: false,
                         controller: ScrollController(),
-                        keyboardDismiss: true,
-                        thumbVisible: false,
                         child: Column(
                           children: [
                             ItemRowTile(onTap: () => print("tap")),
@@ -106,7 +109,6 @@ class __SheetBodyState extends State<_SheetBody> {
                             ItemRowTile(onTap: () => print("tap")),
                             ItemRowTile(onTap: () => print("tap")),
                             ItemRowTile(onTap: () => print("tap")),
-                            const SimulatedBottomSafeArea(),
                           ],
                         ),
                       ),

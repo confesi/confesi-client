@@ -1,7 +1,11 @@
+import '../../application/profile/cubit/profile_cubit.dart';
+import '../../presentation/authentication_and_settings/tabs/verified_student_perks.dart';
+
 import '../../application/authentication_and_settings/cubit/language_setting_cubit.dart';
 import '../../presentation/authentication_and_settings/screens/settings/contact.dart';
 import '../../presentation/authentication_and_settings/screens/settings/haptics.dart';
 import '../../presentation/authentication_and_settings/screens/settings/language.dart';
+import '../../presentation/authentication_and_settings/screens/settings/verified_student_manager.dart';
 import '../../presentation/create_post/screens/details.dart';
 import '../../presentation/create_post/screens/home.dart';
 import '../../presentation/daily_hottest/screens/leaderboard.dart';
@@ -94,6 +98,10 @@ class AppRouter {
             providers: [
               BlocProvider(
                 lazy: false,
+                create: (context) => sl<ProfileCubit>()..loadProfile(),
+              ),
+              BlocProvider(
+                lazy: false,
                 create: (context) => sl<TrendingCubit>()..fetchPosts(),
               ),
               BlocProvider(
@@ -166,7 +174,6 @@ class AppRouter {
             genre: args['genre'],
             hates: args['hates'],
             likes: args['likes'],
-            moderationStatus: args['moderation_status'],
             saves: args['saves'],
             university: args['university'],
             year: args['year'],
@@ -232,6 +239,9 @@ class AppRouter {
           break;
         case "/settings/biometric_lock":
           page = const BiometricLockScreen();
+          break;
+        case "/settings/verified_student_perks":
+          page = const VerifiedStudentManager();
           break;
         case "/prefsError":
           page = const CriticalErrorScreen();

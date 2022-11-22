@@ -39,20 +39,24 @@ class _RegisterTabManagerState extends State<RegisterTabManager> {
             physics: const NeverScrollableScrollPhysics(),
             scrollDirection: Axis.vertical,
             children: [
-              AccountDetails(
-                nextScreen: () => pageController.animateToPage(
-                  1,
-                  duration: const Duration(milliseconds: 850),
-                  curve: Curves.linearToEaseOut,
-                ),
+              AccountDetailsTab(
+                nextScreen: () {
+                  FocusScope.of(context).unfocus();
+                  pageController.animateToPage(
+                    1,
+                    duration: const Duration(milliseconds: 850),
+                    curve: Curves.linearToEaseOut,
+                  );
+                },
               ),
-              RegisterScreen(
-                previousScreen: () => pageController.animateToPage(
+              RegisterScreenTab(previousScreen: () {
+                FocusScope.of(context).unfocus();
+                pageController.animateToPage(
                   0,
                   duration: const Duration(milliseconds: 850),
                   curve: Curves.linearToEaseOut,
-                ),
-              ),
+                );
+              }),
             ],
           ),
         );

@@ -1,5 +1,4 @@
 import '../../../core/utils/sizing/bottom_safe_area.dart';
-import '../../shared/behaviours/init_opacity.dart';
 import '../../shared/buttons/simple_text.dart';
 import '../../shared/layout/line.dart';
 import 'package:flutter/cupertino.dart';
@@ -83,8 +82,6 @@ class _ExploreDrawerState extends State<ExploreDrawer> {
               Expanded(
                 child: ScrollableView(
                   inlineBottomOrRightPadding: bottomSafeArea(context),
-                  distancebetweenHapticEffectsDuringScroll: 50,
-                  hapticEffectAtEdge: HapticType.medium,
                   scrollBarVisible: false,
                   inlineTopOrLeftPadding: 10,
                   controller: ScrollController(),

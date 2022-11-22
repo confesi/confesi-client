@@ -38,7 +38,7 @@ class SettingsHome extends StatelessWidget {
                 AppbarLayout(
                   leftIcon: CupertinoIcons.xmark,
                   centerWidget: Text(
-                    S.of(context).settings_page_title,
+                    S.of(context).settings_home_page_title,
                     style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
@@ -49,14 +49,13 @@ class SettingsHome extends StatelessWidget {
                     color: Theme.of(context).colorScheme.background,
                     child: ScrollableView(
                       inlineBottomOrRightPadding: bottomSafeArea(context) * 2,
-                      distancebetweenHapticEffectsDuringScroll: 50,
-                      hapticEffectAtEdge: HapticType.medium,
                       controller: ScrollController(),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            const SizedBox(height: 15),
                             SettingTileGroup(
                               text: "Private profile",
                               settingTiles: [
@@ -118,7 +117,7 @@ class SettingsHome extends StatelessWidget {
                                   leftIcon: CupertinoIcons.helm,
                                   text:
                                       kVerifiedStudentLabel, // TODO: gives you a list of perks? Some incentive to prove it? mandatory (or not cuz then easier to ban)?
-                                  onTap: () => print("tap"),
+                                  onTap: () => Navigator.pushNamed(context, "/settings/verified_student_perks"),
                                 ),
                                 SettingTile(
                                   isRedText: true,

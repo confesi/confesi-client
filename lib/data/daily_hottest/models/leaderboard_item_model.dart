@@ -1,4 +1,4 @@
-import '../../shared/utils/university_full_%20name_converter.dart';
+import '../../shared/utils/university_full_name_converter.dart';
 import '../../../domain/daily_hottest/entities/leaderboard_item.dart';
 
 import '../../shared/utils/image_path_converter.dart';

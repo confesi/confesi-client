@@ -1,5 +1,3 @@
-import '../../shared/overlays/info_sheet.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -15,24 +13,7 @@ class SavedScreen extends StatefulWidget {
   State<SavedScreen> createState() => _SavedScreenState();
 }
 
-class _SavedScreenState extends State<SavedScreen> with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
-  @override
-  bool get wantKeepAlive => true;
-
-  late TabController tabController;
-
-  @override
-  void initState() {
-    tabController = TabController(vsync: this, length: 2, initialIndex: 0);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    tabController.dispose();
-    super.dispose();
-  }
-
+class _SavedScreenState extends State<SavedScreen> {
   @override
   Widget build(BuildContext context) {
     return ThemedStatusBar(
@@ -46,53 +27,12 @@ class _SavedScreenState extends State<SavedScreen> with AutomaticKeepAliveClient
               AppbarLayout(
                 bottomBorder: false,
                 centerWidget: Text(
-                  "Saved Content",
+                  "Saved Confessions",
                   style: kTitle.copyWith(
                     color: Theme.of(context).colorScheme.primary,
                   ),
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
-                ),
-              ),
-              Expanded(
-                child: Column(
-                  children: [
-                    TopTabs(
-                      tabController: tabController,
-                      tabs: [
-                        Tab(
-                          child: Text(
-                            "Confessions",
-                            style: kDetail.copyWith(
-                              color: Theme.of(context).colorScheme.onSurface,
-                            ),
-                          ),
-                        ),
-                        Tab(
-                          child: Text(
-                            "Comments",
-                            style: kDetail.copyWith(
-                              color: Theme.of(context).colorScheme.onSurface,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Expanded(
-                      child: Container(
-                        color: Theme.of(context).colorScheme.shadow,
-                        child: TabBarView(
-                          physics: const ClampingScrollPhysics(),
-                          controller: tabController,
-                          dragStartBehavior: DragStartBehavior.down,
-                          children: [
-                            Container(),
-                            Container(),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
                 ),
               ),
             ],

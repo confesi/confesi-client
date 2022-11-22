@@ -1,9 +1,4 @@
-import 'package:equatable/equatable.dart';
-
-class LeaderboardItem extends Equatable {
-  @override
-  List<Object?> get props => [];
-
+class LeaderboardItem {
   final String universityName;
   final int placing;
   final int points;

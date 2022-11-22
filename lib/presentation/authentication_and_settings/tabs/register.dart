@@ -1,3 +1,5 @@
+import '../../../core/utils/sizing/bottom_safe_area.dart';
+
 import '../../shared/behaviours/keyboard_dismiss.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/layout/scrollable_area.dart';
@@ -14,16 +16,16 @@ import '../../shared/layout/minimal_appbar.dart';
 import '../../shared/text_animations/typewriter.dart';
 import '../../shared/textfields/bulge.dart';
 
-class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({Key? key, required this.previousScreen}) : super(key: key);
+class RegisterScreenTab extends StatefulWidget {
+  const RegisterScreenTab({Key? key, required this.previousScreen}) : super(key: key);
 
   final VoidCallback previousScreen;
 
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+  State<RegisterScreenTab> createState() => _RegisterScreenTabState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> with AutomaticKeepAliveClientMixin {
+class _RegisterScreenTabState extends State<RegisterScreenTab> with AutomaticKeepAliveClientMixin {
   TextEditingController usernameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -148,7 +150,7 @@ class _RegisterScreenState extends State<RegisterScreen> with AutomaticKeepAlive
                                   ),
                                 ),
                               ),
-                              const SizedBox(height: 15),
+                              SizedBox(height: bottomSafeArea(context) * 2),
                             ],
                           ),
                         ),

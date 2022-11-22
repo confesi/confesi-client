@@ -2,7 +2,7 @@ import '../utils/badge_converter.dart';
 import '../utils/date_formatter.dart';
 import '../utils/genre_converter.dart';
 import '../utils/university_faculty_converter.dart';
-import '../utils/university_full_%20name_converter.dart';
+import '../utils/university_full_name_converter.dart';
 import '../utils/university_name_converter.dart';
 import '../../../domain/shared/entities/badge.dart';
 import 'package:flutter/cupertino.dart';

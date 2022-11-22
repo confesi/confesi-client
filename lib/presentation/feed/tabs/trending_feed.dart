@@ -1,3 +1,5 @@
+import 'package:Confessi/presentation/shared/indicators/alert.dart';
+
 import '../../../constants/shared/error_messages.dart';
 import '../../shared/indicators/loading.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,11 +24,8 @@ class _ExploreTrendingState extends State<ExploreTrending> with AutomaticKeepAli
     if (state is ErrorLoadingAny) {
       return Center(
         key: UniqueKey(),
-        child: ErrorMessage(
-          headerText: kErrorLoadingAnyHeader,
-          bodyText: kErrorLoadingAnyBody,
-          onTap: () => trendingCubit.fetchPosts(),
-        ),
+        child: AlertIndicator(
+            message: kErrorLoadingAnyHeader + kErrorLoadingAnyBody, onPress: () => trendingCubit.fetchPosts()),
       );
     } else if (state is LoadingAll) {
       return Center(

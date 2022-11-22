@@ -13,8 +13,8 @@ import '../../shared/layout/minimal_appbar.dart';
 import '../../shared/text_animations/typewriter.dart';
 import '../widgets/authentication/search_items_sheet.dart';
 
-class AccountDetails extends StatefulWidget {
-  const AccountDetails({
+class AccountDetailsTab extends StatefulWidget {
+  const AccountDetailsTab({
     Key? key,
     required this.nextScreen,
   }) : super(key: key);
@@ -22,10 +22,10 @@ class AccountDetails extends StatefulWidget {
   final VoidCallback nextScreen;
 
   @override
-  State<AccountDetails> createState() => _AccountDetailsState();
+  State<AccountDetailsTab> createState() => _AccountDetailsTabState();
 }
 
-class _AccountDetailsState extends State<AccountDetails> with AutomaticKeepAliveClientMixin {
+class _AccountDetailsTabState extends State<AccountDetailsTab> with AutomaticKeepAliveClientMixin {
   TextEditingController usernameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();

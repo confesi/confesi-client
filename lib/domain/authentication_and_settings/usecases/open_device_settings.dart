@@ -1,4 +1,4 @@
-import 'package:Confessi/core/usecases/no_params.dart';
+import '../../../core/usecases/no_params.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../../core/results/successes.dart';

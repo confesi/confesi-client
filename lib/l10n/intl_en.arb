@@ -1,3 +1,5 @@
 {
-    "settings_page_title": "Settings"
+    "settings_home_page_title": "Settings",
+    "leaderboard_home_page_title": "University Leaderboard",
+    "alert_indicator_button_text": "Try again"
 }

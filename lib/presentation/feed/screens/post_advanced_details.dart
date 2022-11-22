@@ -1,5 +1,8 @@
+import 'package:Confessi/presentation/shared/selection_groups/text_stat_tile.dart';
+import 'package:Confessi/presentation/shared/selection_groups/text_stat_tile_group.dart';
+import 'package:scrollable/exports.dart';
+
 import '../../../core/utils/numbers/add_commas_to_number.dart';
-import '../../shared/behaviours/shrinking_view.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/button_touch_effects/touchable_opacity.dart';
 import '../../shared/layout/scrollable_area.dart';
@@ -21,7 +24,6 @@ class PostAdvancedDetailsScreen extends StatelessWidget {
     required this.genre,
     required this.hates,
     required this.likes,
-    required this.moderationStatus,
     required this.saves,
     required this.university,
     required this.year,
@@ -37,7 +39,6 @@ class PostAdvancedDetailsScreen extends StatelessWidget {
   final String faculty;
   final String genre;
   final int year;
-  final String moderationStatus;
 
   @override
   Widget build(BuildContext context) {
@@ -63,101 +64,68 @@ class PostAdvancedDetailsScreen extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  child: ScrollableArea(
-                    horizontalPadding: 10,
+                  child: ScrollableView(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    controller: ScrollController(),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 15),
-                        Text(
-                          'Quick stats',
-                          style: kTitle.copyWith(
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                          textAlign: TextAlign.left,
-                        ),
-                        const SizedBox(height: 5),
-                        SpreadRowText(
-                          leftText: 'Likes',
-                          rightText: addCommasToNumber(likes),
-                        ),
-                        SpreadRowText(
-                          leftText: 'Hates',
-                          rightText: addCommasToNumber(hates),
-                        ),
-                        SpreadRowText(
-                          leftText: 'Comments',
-                          rightText: addCommasToNumber(comments),
-                        ),
-                        SpreadRowText(
-                          leftText: 'Saves',
-                          rightText: addCommasToNumber(saves),
-                        ),
-                        const SizedBox(height: 30),
-                        Text(
-                          'About the confesser',
-                          style: kTitle.copyWith(
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                          textAlign: TextAlign.left,
-                        ),
-                        const SizedBox(height: 5),
-                        SpreadRowText(
-                          leftText: 'University (abbr.)',
-                          rightText: university,
-                        ),
-                        SpreadRowText(
-                          leftText: 'University (full)',
-                          rightText: universityFullName,
-                        ),
-                        SpreadRowText(
-                          leftText: 'Faculty',
-                          rightText: faculty,
-                        ),
-                        SpreadRowText(
-                          leftText: 'Genre',
-                          rightText: genre,
-                        ),
-                        SpreadRowText(
-                          leftText: 'Year of study',
-                          rightText: year.toString(),
-                        ),
-                        const SizedBox(height: 30),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Moderation',
-                              style: kTitle.copyWith(
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
-                              textAlign: TextAlign.left,
+                        TextStatTileGroup(
+                          text: "Quick stats",
+                          tiles: [
+                            TextStatTile(
+                              noHorizontalPadding: true,
+                              leftText: "Likes",
+                              rightText: addCommasToNumber(likes),
                             ),
-                            const SizedBox(width: 5),
-                            Expanded(
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: TouchableOpacity(
-                                  tooltip: 'moderation info',
-                                  tooltipLocation: TooltipLocation.above,
-                                  onTap: () => showInfoSheet(
-                                    context,
-                                    kPostStatusTitle,
-                                    kPostStatusDescription,
-                                  ),
-                                  child: const Icon(
-                                    CupertinoIcons.info,
-                                    size: 20,
-                                  ),
-                                ),
-                              ),
+                            TextStatTile(
+                              noHorizontalPadding: true,
+                              leftText: "Hates",
+                              rightText: addCommasToNumber(hates),
+                            ),
+                            TextStatTile(
+                              noHorizontalPadding: true,
+                              leftText: "Comments",
+                              rightText: addCommasToNumber(comments),
+                            ),
+                            TextStatTile(
+                              noHorizontalPadding: true,
+                              leftText: "Saves",
+                              rightText: addCommasToNumber(saves),
                             ),
                           ],
                         ),
-                        const SizedBox(height: 5),
-                        SpreadRowText(
-                          leftText: 'Post status',
-                          rightText: moderationStatus,
+                        const SizedBox(height: 15),
+                        TextStatTileGroup(
+                          text: "About the confessor",
+                          tiles: [
+                            TextStatTile(
+                              noHorizontalPadding: true,
+                              leftText: "University (abbr.)",
+                              rightText: university,
+                            ),
+                            TextStatTile(
+                              noHorizontalPadding: true,
+                              leftText: "University (full)",
+                              rightText: universityFullName,
+                            ),
+                            TextStatTile(
+                              noHorizontalPadding: true,
+                              leftText: "Faculty",
+                              rightText: faculty,
+                            ),
+                            TextStatTile(
+                              noHorizontalPadding: true,
+                              leftText: "Genre",
+                              rightText: genre,
+                            ),
+                            TextStatTile(
+                              noHorizontalPadding: true,
+                              leftText: "Year of study",
+                              rightText: year.toString(),
+                            ),
+                          ],
                         ),
                       ],
                     ),

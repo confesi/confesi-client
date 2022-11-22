@@ -3,7 +3,6 @@ import '../../../core/utils/sizing/bottom_safe_area.dart';
 import '../../../core/utils/sizing/height_fraction.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:scrollable/exports.dart';
 
 import '../buttons/pop.dart';
 import '../layout/swipebar.dart';
@@ -31,48 +30,40 @@ Future<dynamic> showInfoSheetWithAction(
         mainAxisSize: MainAxisSize.min,
         children: [
           const SwipebarLayout(),
-          Flexible(
-            child: ScrollableView(
-              distancebetweenHapticEffectsDuringScroll: 50,
-              hapticEffectAtEdge: HapticType.medium,
-              scrollBarVisible: false,
-              inlineTopOrLeftPadding: 15,
-              inlineBottomOrRightPadding: bottomSafeArea(context),
-              controller: ScrollController(),
-              padding: const EdgeInsets.symmetric(horizontal: 30),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    header,
-                    style: kSansSerifDisplay.copyWith(
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                    textAlign: TextAlign.center,
+          Padding(
+            padding: EdgeInsets.only(left: 30, right: 30, bottom: bottomSafeArea(context), top: 15),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  header,
+                  style: kSansSerifDisplay.copyWith(
+                    color: Theme.of(context).colorScheme.primary,
                   ),
-                  const SizedBox(height: 30),
-                  Text(
-                    body,
-                    style: kTitle.copyWith(
-                      color: Theme.of(context).colorScheme.onSurface,
-                    ),
-                    textAlign: TextAlign.center,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 30),
+                Text(
+                  body,
+                  style: kTitle.copyWith(
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
-                  const SizedBox(height: 30),
-                  PopButton(
-                    bottomPadding: bottomSafeArea(context),
-                    justText: true,
-                    onPress: () {
-                      Navigator.pop(context);
-                      onTap();
-                    },
-                    icon: CupertinoIcons.chevron_right,
-                    backgroundColor: Theme.of(context).colorScheme.secondary,
-                    textColor: Theme.of(context).colorScheme.onSecondary,
-                    text: buttonText,
-                  ),
-                ],
-              ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 30),
+                PopButton(
+                  bottomPadding: bottomSafeArea(context),
+                  justText: true,
+                  onPress: () {
+                    Navigator.pop(context);
+                    onTap();
+                  },
+                  icon: CupertinoIcons.chevron_right,
+                  backgroundColor: Theme.of(context).colorScheme.secondary,
+                  textColor: Theme.of(context).colorScheme.onSecondary,
+                  text: buttonText,
+                ),
+              ],
             ),
           ),
         ],

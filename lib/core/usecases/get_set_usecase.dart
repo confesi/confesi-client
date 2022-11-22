@@ -1,7 +1,7 @@
-import '../results/successes.dart';
 import 'package:dartz/dartz.dart';
 
 import '../results/failures.dart';
+import '../results/successes.dart';
 
 /// Interface class for how a usecase that gets and sets a value should appear.
 abstract class GetSetUsecase<T, P> {

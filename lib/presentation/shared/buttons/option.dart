@@ -1,3 +1,5 @@
+import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
+
 import '../behaviours/init_scale.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,11 +14,9 @@ class OptionButton extends StatelessWidget {
     required this.text,
     required this.icon,
     this.isRed = false,
-    this.centered = false,
     Key? key,
   }) : super(key: key);
 
-  final bool centered;
   final bool popContext;
   final String text;
   final IconData icon;
@@ -28,19 +28,7 @@ class OptionButton extends StatelessWidget {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Colors.transparent,
-        border: centered
-            ? null
-            : Border(
-                // top: BorderSide(
-                //   color: Theme.of(context).colorScheme.onBackground,
-                //   width: 0.25,
-                // ),
-                bottom: BorderSide(
-                  color: Theme.of(context).colorScheme.onBackground,
-                  width: 0.25,
-                ),
-              ),
+        color: Theme.of(context).colorScheme.surface,
       ),
       child: TouchableOpacity(
         onTap: () {
@@ -54,22 +42,20 @@ class OptionButton extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
             child: Row(
               mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                centered
-                    ? Container()
-                    : Icon(
-                        icon,
-                        color: isRed ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.primary,
-                      ),
-                centered ? Container() : const SizedBox(width: 15),
+                Icon(
+                  icon,
+                  color: isRed ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.primary,
+                ),
+                const SizedBox(width: 15),
                 Expanded(
                   child: Text(
                     text,
-                    style: kBody.copyWith(
+                    style: kTitle.copyWith(
                       color: isRed ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.primary,
                     ),
-                    textAlign: centered ? TextAlign.center : TextAlign.left,
+                    textAlign: TextAlign.right,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),

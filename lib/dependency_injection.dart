@@ -1,6 +1,14 @@
 import 'dart:async';
 
-import 'package:Confessi/domain/authentication_and_settings/usecases/open_device_settings.dart';
+import 'package:Confessi/application/profile/cubit/profile_cubit.dart';
+import 'package:Confessi/data/profile/datasources/profile_datasource.dart';
+import 'package:Confessi/data/profile/repositories/profile_repository_concrete.dart';
+import 'package:Confessi/domain/profile/usecases/profile_data.dart';
+import 'package:Confessi/domain/shared/usecases/share_content.dart';
+
+import 'application/shared/cubit/share_cubit.dart';
+import 'core/clients/api_client.dart';
+import 'domain/authentication_and_settings/usecases/open_device_settings.dart';
 
 import 'application/authentication_and_settings/cubit/language_setting_cubit.dart';
 import 'core/clients/http_client.dart';
@@ -51,6 +59,7 @@ import 'domain/feed/usecases/trending.dart';
 import 'application/feed/cubit/recents_cubit.dart';
 import 'application/feed/cubit/trending_cubit.dart';
 
+// Get the GetIt instance to use for injection
 final GetIt sl = GetIt.instance;
 
 /// Injects the needed dependencies for the app to run.
@@ -89,6 +98,10 @@ Future<void> init() async {
   sl.registerFactory(() => WebsiteLauncherSettingCubit(launchWebsiteUsecase: sl()));
   // Registers the cubit that opens the device's system settings.
   sl.registerFactory(() => LanguageSettingCubit(openDeviceSettingsUsecase: sl()));
+  // Registers the share cubit
+  sl.registerFactory(() => ShareCubit(shareContentUsecase: sl()));
+  // Registers the profile cubit
+  sl.registerFactory(() => ProfileCubit(profileData: sl()));
 
   //! Usecases
   // Registers the register usecase.
@@ -123,6 +136,10 @@ Future<void> init() async {
   sl.registerLazySingleton(() => LaunchWebsite());
   // Registers the usecase that opens a device's system settings.
   sl.registerLazySingleton(() => OpenDeviceSettings());
+  // Registers the share usecase.
+  sl.registerLazySingleton(() => ShareContent());
+  // Registers the profile usecase
+  sl.registerLazySingleton(() => ProfileDataUsecase(repository: sl()));
 
   //! Core
   // Registers custom connection checker class.
@@ -130,7 +147,9 @@ Future<void> init() async {
   // Registers the app routing system.
   sl.registerLazySingleton(() => AppRouter());
   // Registers the custom net client class.
-  sl.registerLazySingleton(() => HttpClient(secureStorage: sl()));
+  sl.registerLazySingleton(() => HttpClient(secureStorage: sl())); // TODO: api client to remove
+  // Registers the custom api client class.
+  sl.registerLazySingleton(() => ApiClient());
 
   //! Repositories
   // Registers the authentication repository.
@@ -145,6 +164,8 @@ Future<void> init() async {
   sl.registerLazySingleton(() => CreatePostRepository(networkInfo: sl(), datasource: sl()));
   // Registers the prefs repository.
   sl.registerLazySingleton(() => PrefsRepository(datasource: sl()));
+  // Registers the profile repository.
+  sl.registerLazySingleton(() => ProfileRepository(networkInfo: sl(), datasource: sl()));
 
   //! Data sources
   // Registers the authentication datasource.
@@ -159,6 +180,8 @@ Future<void> init() async {
   sl.registerLazySingleton(() => CreatePostDatasource(api: sl()));
   // Registers the prefs datasource.
   sl.registerLazySingleton(() => PrefsDatasource(secureStorage: sl()));
+  // Registers the profile datasource.
+  sl.registerLazySingleton(() => ProfileDatasource(api: sl()));
 
   //! External
   // Registers connection checker package.

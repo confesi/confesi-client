@@ -1,3 +1,7 @@
+import 'package:Confessi/application/shared/cubit/share_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:share_plus/share_plus.dart';
+
 import '../../../core/styles/typography.dart';
 import '../../shared/button_touch_effects/touchable_opacity.dart';
 import '../../shared/text/group.dart';
@@ -54,7 +58,7 @@ class PostTile extends StatelessWidget {
   final PostChild postChild;
   final List<Badge> badges;
 
-  Widget _renderQuoteChild(BuildContext context) {
+  Widget _buildQuoteChild(BuildContext context) {
     final ChildType childType = postChild.childType;
     if (childType == ChildType.noChild) {
       return Container();
@@ -110,7 +114,7 @@ class PostTile extends StatelessWidget {
           : FocusManager.instance.primaryFocus?.unfocus(),
       child: Container(
         color: Theme.of(context).colorScheme.background,
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 30),
+        padding: const EdgeInsets.all(15),
         width: double.infinity,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -152,14 +156,10 @@ class PostTile extends StatelessWidget {
                   onTap: () {
                     showButtonOptionsSheet(context, [
                       OptionButton(
-                        text: "Report",
-                        icon: CupertinoIcons.flag,
-                        onTap: () => print("tap"),
-                      ),
-                      OptionButton(
                         text: "Share",
                         icon: CupertinoIcons.share,
-                        onTap: () => print("tap"),
+                        onTap: () => context.read<ShareCubit>().shareContent(
+                            context, "View the confession here: https://example.com", "Share this confession!"),
                       ),
                       OptionButton(
                         text: "Quote",
@@ -190,14 +190,17 @@ class PostTile extends StatelessWidget {
                             'genre': genre,
                             'hates': hates,
                             'likes': likes,
-                            // TODO: implement 'moderation_status' and 'saves'
-                            'moderation_status': 'IMPLEMENT THIS STILL',
-                            'saves': 999999,
+                            'saves': 999999, // TODO: implement saves
                             'university': university,
                             'year': year,
                             'university_full_name': universityFullName,
                           },
                         ),
+                      ),
+                      OptionButton(
+                        text: "Report",
+                        icon: CupertinoIcons.flag,
+                        onTap: () => print("tap"),
                       ),
                     ]);
                   },
@@ -241,7 +244,7 @@ class PostTile extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 30),
-            _renderQuoteChild(context),
+            _buildQuoteChild(context),
             //! Bottom row
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,

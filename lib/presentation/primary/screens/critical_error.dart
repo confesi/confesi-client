@@ -1,9 +1,10 @@
+import 'package:flutter/material.dart';
+
 import '../../../core/styles/themes.dart';
 import '../../../core/styles/typography.dart';
 import '../../../core/utils/styles/appearance_type.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/layout/scrollable_area.dart';
-import 'package:flutter/material.dart';
 
 class CriticalErrorScreen extends StatelessWidget {
   const CriticalErrorScreen({super.key});
