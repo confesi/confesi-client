@@ -1,6 +1,7 @@
 import 'package:Confessi/application/profile/cubit/profile_cubit.dart';
 import 'package:Confessi/application/shared/cubit/share_cubit.dart';
 import 'package:Confessi/core/utils/numbers/is_plural.dart';
+import 'package:Confessi/core/utils/sizing/bottom_safe_area.dart';
 import 'package:Confessi/core/utils/sizing/top_safe_area.dart';
 import 'package:Confessi/presentation/primary/controllers/profile_controller.dart';
 import 'package:Confessi/presentation/profile/widgets/achievement_builder.dart';
@@ -242,7 +243,7 @@ class _ProfileHomeState extends State<ProfileHome> with AutomaticKeepAliveClient
                                       text: "Saved Confessions",
                                     ),
                                   ),
-                                  const SizedBox(height: 20),
+                                  const SizedBox(height: 18), // 20 - the 2 of EdgeInsets.all(2)
                                   Padding(
                                     padding: const EdgeInsets.symmetric(horizontal: 10),
                                     child: AchievementBuilder(achievements: state.achievementTileEntities),
@@ -253,7 +254,7 @@ class _ProfileHomeState extends State<ProfileHome> with AutomaticKeepAliveClient
                           ],
                         ),
                       ),
-                      const SizedBox(height: 15),
+                      SizedBox(height: bottomSafeArea(context)),
                     ],
                   ),
                 ),

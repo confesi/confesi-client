@@ -15,9 +15,11 @@ class ProfileModel extends ProfileEntity {
 
   factory ProfileModel.fromJson(Map<String, dynamic> json) {
     List<AchievementTileModel> results = []; // List of [AchivementTileModel]s.
-    for (var i in (json['achievements'] as List<dynamic>)) {
-      results.add(AchievementTileModel.fromJson(i));
-    } // Loop through achivements, and add to list.
+    if (json['achievements'] != null) {
+      for (var i in (json['achievements'] as List<dynamic>)) {
+        results.add(AchievementTileModel.fromJson(i));
+      } // Loop through achivements, and add to list.
+    }
     return ProfileModel(
       statTileModel: StatTileModel.fromJson(json),
       achievementTileModels: results, // Return list constructed from the iterating over json['achievements']

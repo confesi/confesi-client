@@ -21,7 +21,7 @@ class AchievementTileModel extends AchievementTileEntity {
       title: json['title'] as String,
       description: json['description'] as String,
       quantity: json['quantity'] as int,
-      aspectRatio: json['aspect_ratio'] as double,
+      aspectRatio: json['aspect_ratio'].toDouble() as double,
     );
   }
 }

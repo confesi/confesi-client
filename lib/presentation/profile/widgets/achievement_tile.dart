@@ -21,12 +21,12 @@ class AchievementTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: const BorderRadius.all(Radius.circular(5)),
-      child: AspectRatio(
-        aspectRatio: aspectRatio,
-        child: Container(
-          margin: const EdgeInsets.all(2),
+    return AspectRatio(
+      aspectRatio: aspectRatio,
+      child: Container(
+        margin: const EdgeInsets.all(2),
+        child: ClipRRect(
+          borderRadius: const BorderRadius.all(Radius.circular(15)),
           child: CachedNetworkImage(
             fit: BoxFit.cover,
             imageUrl: achievementImgUrl,

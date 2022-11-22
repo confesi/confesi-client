@@ -18,7 +18,7 @@
             "title": "Hot",
             "description": "You've hit the daily hottest page. Congrats - that's not an easy feat!",
             "quantity": 1,
-            "aspect_ratio": 0.52
+            "aspect_ratio": 2
         },
         {
             "achievement_img_url": "https://matthewtrent.me/tests/ach.jpg",
@@ -33,6 +33,20 @@
             "description": "You've hit the daily hottest page. Congrats - that's not an easy feat!",
             "quantity": 1,
             "aspect_ratio": 1.4
+        },
+        {
+            "achievement_img_url": "https://matthewtrent.me/tests/ach.jpg",
+            "title": "Hot",
+            "description": "You've hit the daily hottest page. Congrats - that's not an easy feat!",
+            "quantity": 1,
+            "aspect_ratio": 0.84
+        },
+        {
+            "achievement_img_url": "https://matthewtrent.me/tests/ach.jpg",
+            "title": "Hot",
+            "description": "You've hit the daily hottest page. Congrats - that's not an easy feat!",
+            "quantity": 1,
+            "aspect_ratio": 2.5
         },
         {
             "achievement_img_url": "https://matthewtrent.me/tests/ach.jpg",
