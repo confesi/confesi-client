@@ -21,7 +21,7 @@ class ProfileDatasource implements IProfileDatasource {
       Method.get,
       "/api/profile",
       null,
-      dummyErrorChance: 0,
+      dummyErrorChance: 0.3,
       dummyPath: "api.profile.json",
       dummyReq: true,
     ))
