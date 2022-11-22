@@ -1,3 +1,5 @@
+//! Phasing this client out; use the api_client.dart instead
+
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';

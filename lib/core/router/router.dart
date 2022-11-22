@@ -1,3 +1,4 @@
+import '../../application/profile/cubit/profile_cubit.dart';
 import '../../presentation/authentication_and_settings/tabs/verified_student_perks.dart';
 
 import '../../application/authentication_and_settings/cubit/language_setting_cubit.dart';
@@ -95,6 +96,10 @@ class AppRouter {
         case "/home": //! Most of the (main) screens are tabs under the /home named route. Thus, should have their BLoC/Cubit providers here.
           page = MultiBlocProvider(
             providers: [
+              BlocProvider(
+                lazy: false,
+                create: (context) => sl<ProfileCubit>()..loadProfile(),
+              ),
               BlocProvider(
                 lazy: false,
                 create: (context) => sl<TrendingCubit>()..fetchPosts(),

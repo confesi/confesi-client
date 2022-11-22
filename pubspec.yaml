@@ -72,6 +72,8 @@ dependencies:
   url_launcher: ^6.1.6
   permission_handler: ^10.2.0
   share_plus: ^6.3.0
+  cached_network_image: ^3.2.2
+  # shimmer: ^2.0.0
   # open_settings: ^2.0.2
   # animated_text_kit: ^4.2.2
 

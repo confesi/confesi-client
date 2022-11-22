@@ -1,0 +1,52 @@
+{
+    "university_img_url": "https://matthewtrent.me/tests/sfu.jpeg",
+    "likes": {
+        "total": 1232,
+        "top_percent": 0.02
+    },
+    "dislikes": {
+        "total": 8483,
+        "top_percent": 0.05
+    },
+    "hottests": {
+        "total": 2,
+        "top_percent": 0.01
+    },
+    "achievements": [
+        {
+            "achievement_img_url": "https://matthewtrent.me/tests/ach.jpg",
+            "title": "Hot",
+            "description": "You've hit the daily hottest page. Congrats - that's not an easy feat!",
+            "quantity": 1,
+            "aspect_ratio": 0.52
+        },
+        {
+            "achievement_img_url": "https://matthewtrent.me/tests/ach.jpg",
+            "title": "Hot",
+            "description": "You've hit the daily hottest page. Congrats - that's not an easy feat!",
+            "quantity": 1,
+            "aspect_ratio": 1.2
+        },
+        {
+            "achievement_img_url": "https://matthewtrent.me/tests/ach.jpg",
+            "title": "Hot",
+            "description": "You've hit the daily hottest page. Congrats - that's not an easy feat!",
+            "quantity": 1,
+            "aspect_ratio": 1.4
+        },
+        {
+            "achievement_img_url": "https://matthewtrent.me/tests/ach.jpg",
+            "title": "Hot",
+            "description": "You've hit the daily hottest page. Congrats - that's not an easy feat!",
+            "quantity": 1,
+            "aspect_ratio": 0.84
+        },
+        {
+            "achievement_img_url": "https://matthewtrent.me/tests/ach.jpg",
+            "title": "Hot",
+            "description": "You've hit the daily hottest page. Congrats - that's not an easy feat!",
+            "quantity": 1,
+            "aspect_ratio": 2.5
+        }
+    ]
+}

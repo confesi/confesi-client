@@ -69,6 +69,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Try again`
+  String get alert_indicator_button_text {
+    return Intl.message(
+      'Try again',
+      name: 'alert_indicator_button_text',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

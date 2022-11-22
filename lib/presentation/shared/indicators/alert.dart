@@ -1,8 +1,12 @@
+import 'package:Confessi/core/utils/sizing/width_fraction.dart';
+import 'package:Confessi/generated/l10n.dart';
+import 'package:Confessi/presentation/shared/buttons/simple_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
 import '../button_touch_effects/touchable_opacity.dart';
+import '../buttons/pop.dart';
 import 'loading.dart';
 
 class AlertIndicator extends StatelessWidget {
@@ -17,31 +21,35 @@ class AlertIndicator extends StatelessWidget {
   final VoidCallback onPress;
   final bool isLoading;
 
-  // TODO: have loading state if there's a button, so that you can have special case inside cubit for loading again called after error, so it shows on button and not again on empty screen.
   @override
   Widget build(BuildContext context) {
-    return TouchableOpacity(
-      onTap: () => onPress(),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: Container(
-            // Transparent hitbox trick.
-            color: Colors.transparent,
-            child: Center(
-              child: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 250),
-                child: isLoading
-                    ? const LoadingIndicator()
-                    : Text(
-                        message,
-                        style: kDetail.copyWith(
-                          color: Theme.of(context).colorScheme.primary,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: Container(
+          constraints: BoxConstraints(maxWidth: widthFraction(context, .8)),
+          // Transparent hitbox trick.
+          color: Colors.transparent,
+          child: Center(
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 250),
+              child: isLoading
+                  ? const LoadingIndicator()
+                  : Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          message,
+                          style: kBody.copyWith(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          textAlign: TextAlign.center,
                         ),
-                        textAlign: TextAlign.center,
-                      ),
-              ),
-            )),
-      ),
+                        const SizedBox(height: 15),
+                        SimpleTextButton(onTap: () => onPress(), text: S.of(context).alert_indicator_button_text),
+                      ],
+                    ),
+            ),
+          )),
     );
   }
 }

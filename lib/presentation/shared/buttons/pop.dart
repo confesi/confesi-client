@@ -68,7 +68,9 @@ class PopButton extends StatelessWidget {
                           duration: const Duration(milliseconds: 250),
                           child: loading
                               ? Padding(
-                                  padding: const EdgeInsets.only(top: 2), child: LoadingIndicator(color: textColor))
+                                  padding: const EdgeInsets.only(top: 2),
+                                  child: LoadingIndicator(color: textColor),
+                                )
                               : Text(
                                   text,
                                   textScaleFactor: 1,

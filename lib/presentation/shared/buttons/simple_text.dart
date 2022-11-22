@@ -50,16 +50,14 @@ class SimpleTextButton extends StatelessWidget {
                 : thirdColors
                     ? Theme.of(context).colorScheme.onSecondary
                     : Theme.of(context).colorScheme.surface,
-            borderRadius: const BorderRadius.all(
-              Radius.circular(10),
-            ),
+            borderRadius: const BorderRadius.all(Radius.circular(5)),
           ),
           child: Text(
             text,
             textAlign: TextAlign.center,
             overflow: TextOverflow.ellipsis,
             maxLines: maxLines,
-            style: kBody.copyWith(
+            style: kTitle.copyWith(
               color: isErrorText
                   ? Theme.of(context).colorScheme.error
                   : secondaryColors

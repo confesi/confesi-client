@@ -29,26 +29,23 @@ Future<dynamic> showButtonOptionsSheet(BuildContext context, List<OptionButton> 
           children: [
             const SwipebarLayout(),
             SafeArea(
-              child: ScrollableView(
-                controller: ScrollController(),
-                child: Column(
-                  children: [
-                    ClipRRect(
-                      borderRadius: const BorderRadius.all(Radius.circular(15)),
-                      child: Column(
-                        children: [
-                          ...buttons,
-                          OptionButton(
-                            onTap: () => print("tap"),
-                            text: "Done",
-                            icon: CupertinoIcons.xmark,
-                            isRed: true,
-                          ),
-                        ],
-                      ),
+              child: Column(
+                children: [
+                  ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(15)),
+                    child: Column(
+                      children: [
+                        ...buttons,
+                        OptionButton(
+                          onTap: () => print("tap"),
+                          text: "Done",
+                          icon: CupertinoIcons.xmark,
+                          isRed: true,
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ],

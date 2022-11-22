@@ -48,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     return BlocListener<ShareCubit, ShareState>(
       listener: (context, state) {
         if (state is ShareError) {
-          showNotificationChip(context, state.message);
+          showNotificationChip(context, state.message, screenSide: ScreenSide.top);
           // set to base
           context.read<ShareCubit>().setToBase();
         }
