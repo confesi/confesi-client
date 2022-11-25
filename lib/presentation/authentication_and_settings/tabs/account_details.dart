@@ -1,3 +1,4 @@
+import '../../../core/utils/sizing/height_fraction.dart';
 import '../widgets/authentication/item_selector.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/layout/scrollable_area.dart';
@@ -71,65 +72,68 @@ class _AccountDetailsTabState extends State<AccountDetailsTab> with AutomaticKee
                   thumbVisible: false,
                   controller: scrollController,
                   keyboardDismiss: true,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      BlocBuilder<RegisterCubit, RegisterState>(
-                        builder: (context, state) {
-                          return MinimalAppbarLayout(
-                            pressable: state is! RegisterLoading,
-                          );
-                        },
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 30),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(height: 15),
-                            TypewriterText(
-                              textStyle: kSansSerifDisplay.copyWith(color: Theme.of(context).colorScheme.primary),
-                              controller: typewriterController,
-                            ),
-                            SizedBox(height: heightFactor * 8),
-                            Column(
-                              children: [
-                                ItemSelector(
-                                  text: kAccountDetailsUniversityFieldLabel,
-                                  bottomPadding: 10,
-                                  onTap: () => showSearchItemsSheet(context),
-                                ),
-                                ItemSelector(
-                                  text: kAccountDetailsYearFieldLabel,
-                                  bottomPadding: 10,
-                                  onTap: () => print("tap"),
-                                ),
-                                ItemSelector(
-                                  text: kAccountDetailsFacultyFieldLabel,
-                                  bottomPadding: 10,
-                                  onTap: () => print("tap"),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 45),
-                            BlocBuilder<RegisterCubit, RegisterState>(
-                              builder: (context, state) {
-                                return PopButton(
-                                  loading: state is RegisterLoading,
-                                  justText: true,
-                                  onPress: () => widget.nextScreen(),
-                                  icon: CupertinoIcons.chevron_right,
-                                  backgroundColor: Theme.of(context).colorScheme.secondary,
-                                  textColor: Theme.of(context).colorScheme.onSecondary,
-                                  text: kAccountDetailsContinueButtonText,
-                                );
-                              },
-                            ),
-                            const SizedBox(height: 30),
-                          ],
+                  child: SizedBox(
+                    height: heightFraction(context, 1),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        BlocBuilder<RegisterCubit, RegisterState>(
+                          builder: (context, state) {
+                            return MinimalAppbarLayout(
+                              pressable: state is! RegisterLoading,
+                            );
+                          },
                         ),
-                      ),
-                    ],
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 30),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(height: 15),
+                              TypewriterText(
+                                textStyle: kSansSerifDisplay.copyWith(color: Theme.of(context).colorScheme.primary),
+                                controller: typewriterController,
+                              ),
+                              SizedBox(height: heightFactor * 8),
+                              Column(
+                                children: [
+                                  ItemSelector(
+                                    text: kAccountDetailsUniversityFieldLabel,
+                                    bottomPadding: 10,
+                                    onTap: () => showSearchItemsSheet(context),
+                                  ),
+                                  ItemSelector(
+                                    text: kAccountDetailsYearFieldLabel,
+                                    bottomPadding: 10,
+                                    onTap: () => print("tap"),
+                                  ),
+                                  ItemSelector(
+                                    text: kAccountDetailsFacultyFieldLabel,
+                                    bottomPadding: 10,
+                                    onTap: () => print("tap"),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 45),
+                              BlocBuilder<RegisterCubit, RegisterState>(
+                                builder: (context, state) {
+                                  return PopButton(
+                                    loading: state is RegisterLoading,
+                                    justText: true,
+                                    onPress: () => widget.nextScreen(),
+                                    icon: CupertinoIcons.chevron_right,
+                                    backgroundColor: Theme.of(context).colorScheme.secondary,
+                                    textColor: Theme.of(context).colorScheme.onSecondary,
+                                    text: kAccountDetailsContinueButtonText,
+                                  );
+                                },
+                              ),
+                              const SizedBox(height: 30),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               );

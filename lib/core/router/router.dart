@@ -1,5 +1,4 @@
 import '../../application/profile/cubit/profile_cubit.dart';
-import '../../presentation/authentication_and_settings/tabs/verified_student_perks.dart';
 
 import '../../application/authentication_and_settings/cubit/language_setting_cubit.dart';
 import '../../presentation/authentication_and_settings/screens/settings/contact.dart';
@@ -18,6 +17,7 @@ import '../../presentation/primary/screens/critical_error.dart';
 import '../../presentation/authentication_and_settings/screens/settings/appearance.dart';
 import '../../presentation/authentication_and_settings/screens/settings/faq.dart';
 import '../../presentation/authentication_and_settings/screens/settings/home.dart';
+import '../../presentation/profile/screens/achievement_details.dart';
 import '../../presentation/user_posts_and_comments/screens/comments.dart';
 import '../../presentation/user_posts_and_comments/screens/posts.dart';
 import '../../presentation/user_posts_and_comments/screens/saved.dart';
@@ -51,6 +51,7 @@ class AppRouter {
       "/create_post",
       "/settings",
       "/watched_universities",
+      '/home/profile/achievement_details',
     ];
     return fullScreenDialogRoutes.contains(routeSettings.name) ? true : false;
   }
@@ -164,6 +165,9 @@ class AppRouter {
           break;
         case '/home/profile/saved':
           page = const SavedScreen();
+          break;
+        case '/home/profile/achievement_details':
+          page = const AchievementDetailsScreen();
           break;
         // An individual post's advanced stats.
         case "/home/post/stats":

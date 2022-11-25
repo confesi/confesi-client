@@ -50,11 +50,13 @@ class AchievementBuilder extends StatelessWidget {
     List<Widget> rightColumn = [];
     double leftLength = 0.0;
     double rightLength = 0.0;
+    int iter = 0;
     for (var element in achievements) {
       if (leftLength > rightLength) {
         // add right
         rightLength += pow(element.aspectRatio, -1);
         rightColumn.add(AchievementTile(
+            heroId: iter,
             title: element.title,
             aspectRatio: element.aspectRatio,
             achievementImgUrl: element.achievementImgUrl,
@@ -64,12 +66,14 @@ class AchievementBuilder extends StatelessWidget {
         // add left
         leftLength += pow(element.aspectRatio, -1);
         leftColumn.add(AchievementTile(
+            heroId: iter,
             title: element.title,
             aspectRatio: element.aspectRatio,
             achievementImgUrl: element.achievementImgUrl,
             description: element.description,
             quantity: element.quantity));
       }
+      iter++;
     }
     return columnToReturn == ColumnSide.left ? leftColumn : rightColumn;
   }
@@ -104,13 +108,19 @@ class AchievementBuilder extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                child: Column(
-                  children: delegateItems(ColumnSide.left),
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 3.75),
+                  child: Column(
+                    children: delegateItems(ColumnSide.left),
+                  ),
                 ),
               ),
               Expanded(
-                child: Column(
-                  children: delegateItems(ColumnSide.right),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 3.75),
+                  child: Column(
+                    children: delegateItems(ColumnSide.right),
+                  ),
                 ),
               ),
             ],

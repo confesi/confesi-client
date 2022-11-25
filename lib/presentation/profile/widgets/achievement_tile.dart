@@ -1,3 +1,4 @@
+import 'package:Confessi/core/styles/typography.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
@@ -11,8 +12,10 @@ class AchievementTile extends StatelessWidget {
     required this.achievementImgUrl,
     required this.description,
     required this.quantity,
+    required this.heroId,
   });
 
+  final int heroId;
   final String achievementImgUrl;
   final String title;
   final String description;
@@ -21,24 +24,36 @@ class AchievementTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: aspectRatio,
-      child: Container(
-        margin: const EdgeInsets.all(2),
+    return GestureDetector(
+      onTap: () => Navigator.pushNamed(
+        context,
+        "/home/profile/achievement_details",
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 7.5),
         child: ClipRRect(
           borderRadius: const BorderRadius.all(Radius.circular(15)),
-          child: CachedNetworkImage(
-            fit: BoxFit.cover,
-            imageUrl: achievementImgUrl,
-            placeholder: (context, url) => Container(
-              color: Theme.of(context).colorScheme.surface,
-              child: LoadingIndicator(
-                color: Theme.of(context).colorScheme.onSurface,
+          child: AspectRatio(
+            aspectRatio: aspectRatio,
+            child: ClipRRect(
+              // borderRadius: const BorderRadius.all(Radius.circular(15)),
+              child: Hero(
+                tag: heroId,
+                child: CachedNetworkImage(
+                  fit: BoxFit.cover,
+                  imageUrl: achievementImgUrl,
+                  placeholder: (context, url) => Container(
+                    color: Theme.of(context).colorScheme.surface,
+                    child: LoadingIndicator(
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                  ),
+                  errorWidget: (context, url, error) => Container(
+                    color: Theme.of(context).colorScheme.surface,
+                    child: Icon(Icons.error, color: Theme.of(context).colorScheme.onSurface),
+                  ),
+                ),
               ),
-            ),
-            errorWidget: (context, url, error) => Container(
-              color: Theme.of(context).colorScheme.surface,
-              child: Icon(Icons.error, color: Theme.of(context).colorScheme.onSurface),
             ),
           ),
         ),

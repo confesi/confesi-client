@@ -15,12 +15,10 @@ class BottomOverscrollScrollToTop extends StatefulWidget {
   final ScrollController scrollController;
 
   @override
-  State<BottomOverscrollScrollToTop> createState() =>
-      _BottomOverscrollScrollToTopState();
+  State<BottomOverscrollScrollToTop> createState() => _BottomOverscrollScrollToTopState();
 }
 
-class _BottomOverscrollScrollToTopState
-    extends State<BottomOverscrollScrollToTop> {
+class _BottomOverscrollScrollToTopState extends State<BottomOverscrollScrollToTop> {
   double overscrollValue = 0.0;
 
   bool isAnimatingScroll = false;
@@ -32,8 +30,7 @@ class _BottomOverscrollScrollToTopState
       onNotification: (details) {
         if (details.metrics.pixels >= details.metrics.maxScrollExtent) {
           setState(() {
-            overscrollValue =
-                details.metrics.pixels - details.metrics.maxScrollExtent;
+            overscrollValue = details.metrics.pixels - details.metrics.maxScrollExtent;
           });
         } else {
           atBottom = false;
@@ -45,9 +42,7 @@ class _BottomOverscrollScrollToTopState
           isAnimatingScroll = true;
           HapticFeedback.lightImpact();
           widget.scrollController
-              .animateTo(0,
-                  duration: const Duration(milliseconds: 400),
-                  curve: Curves.decelerate)
+              .animateTo(0, duration: const Duration(milliseconds: 400), curve: Curves.decelerate)
               .then((value) {
             setState(() {
               overscrollValue = 0;
@@ -68,15 +63,11 @@ class _BottomOverscrollScrollToTopState
             child: Transform.translate(
               offset: Offset(0, -overscrollValue * 2 + 175),
               child: Opacity(
-                opacity: isAnimatingScroll
-                    ? 0
-                    : numberUntilLimit(overscrollValue / 100, 1),
+                opacity: isAnimatingScroll ? 0 : numberUntilLimit(overscrollValue / 100, 1),
                 child: Transform.scale(
                   scale: numberUntilLimit(overscrollValue / 200, 1),
                   child: Container(
-                    decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.primary,
-                        shape: BoxShape.circle),
+                    decoration: BoxDecoration(color: Theme.of(context).colorScheme.primary, shape: BoxShape.circle),
                     width: 100,
                     height: 100,
                     child: FittedBox(

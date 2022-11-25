@@ -12,6 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/utils/numbers/add_commas_to_number.dart';
 import '../../../core/utils/numbers/number_until_limit.dart';
+import '../../../core/utils/sizing/width_fraction.dart';
 import '../../shared/behaviours/bottom_overscroll_scroll_to_top.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/edited_source_widgets/swipe_refresh.dart';
@@ -91,17 +92,22 @@ class _ProfileHomeState extends State<ProfileHome> with AutomaticKeepAliveClient
                           child: SizedBox(
                             height: heightFraction(context, .3),
                             width: double.infinity,
-                            child: CachedNetworkImage(
-                              imageUrl: state.universityImgUrl,
-                              placeholder: (context, url) => Container(
-                                color: Theme.of(context).colorScheme.surface,
-                                child: LoadingIndicator(
-                                  color: Theme.of(context).colorScheme.onSurface,
+                            child: SizedBox(
+                              height: heightFraction(context, .3),
+                              width: widthFraction(context, 1),
+                              child: CachedNetworkImage(
+                                fit: BoxFit.cover,
+                                imageUrl: state.universityImgUrl,
+                                placeholder: (context, url) => Container(
+                                  color: Theme.of(context).colorScheme.surface,
+                                  child: LoadingIndicator(
+                                    color: Theme.of(context).colorScheme.onSurface,
+                                  ),
                                 ),
-                              ),
-                              errorWidget: (context, url, error) => Container(
-                                color: Theme.of(context).colorScheme.surface,
-                                child: Icon(Icons.error, color: Theme.of(context).colorScheme.onSurface),
+                                errorWidget: (context, url, error) => Container(
+                                  color: Theme.of(context).colorScheme.surface,
+                                  child: Icon(Icons.error, color: Theme.of(context).colorScheme.onSurface),
+                                ),
                               ),
                             ),
                           ),
@@ -243,7 +249,7 @@ class _ProfileHomeState extends State<ProfileHome> with AutomaticKeepAliveClient
                                       text: "Saved Confessions",
                                     ),
                                   ),
-                                  const SizedBox(height: 18), // 20 - the 2 of EdgeInsets.all(2)
+                                  const SizedBox(height: 20),
                                   Padding(
                                     padding: const EdgeInsets.symmetric(horizontal: 10),
                                     child: AchievementBuilder(achievements: state.achievementTileEntities),
