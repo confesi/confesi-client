@@ -6,8 +6,10 @@ class AchievementTileEntity extends Equatable {
   final String description;
   final int quantity;
   final double aspectRatio;
+  final String rarity;
 
   const AchievementTileEntity({
+    required this.rarity,
     required this.aspectRatio,
     required this.description,
     required this.achievementImgUrl,

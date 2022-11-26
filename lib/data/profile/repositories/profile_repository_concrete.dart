@@ -17,8 +17,7 @@ class ProfileRepository implements IProfileRepository {
       try {
         return Right(await datasource.fetchProfileData());
       } catch (e) {
-        // return Left(exceptionToFailure(e));
-        return Left(GeneralFailure()); // TODO: Remove; just for testing
+        return Left(GeneralFailure());
       }
     } else {
       return Left(ConnectionFailure());

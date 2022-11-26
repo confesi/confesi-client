@@ -9,6 +9,9 @@ class ConnectionException implements Exception {}
 /// Thrown when fields are blank that need to be filled out.
 class FieldsBlankException implements Exception {}
 
+/// Some conversion failed. For example: json data going into a model and it not fitting properly.
+class ConversionException implements Exception {}
+
 //! Authentication exceptions
 
 /// Thrown when password is incorrect.

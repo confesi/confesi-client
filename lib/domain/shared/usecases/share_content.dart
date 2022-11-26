@@ -14,6 +14,7 @@ class ShareContent implements Usecase<Success, ShareParams> {
       // Gets the render object, in the share package docs this helps with rendering the
       // menu on iPads
       final box = shareParams.context.findRenderObject() as RenderBox?;
+
       // shares the specified content
       await Share.share(
         shareParams.message,

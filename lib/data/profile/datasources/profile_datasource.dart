@@ -21,7 +21,7 @@ class ProfileDatasource implements IProfileDatasource {
       Method.get,
       "/api/profile",
       null,
-      dummyErrorChance: 0.3,
+      dummyErrorChance: 0,
       dummyPath: "api.profile.json",
       dummyReq: true,
     ))
@@ -29,6 +29,7 @@ class ProfileDatasource implements IProfileDatasource {
       (_) => throw InvalidTokenException(),
       (response) {
         if (response.statusCode == 200 || response.statusCode == 201) {
+          print(jsonDecode(response.body));
           return ProfileModel.fromJson(jsonDecode(response.body));
         } else {
           throw ServerException();

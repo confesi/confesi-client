@@ -10,7 +10,6 @@ import '../../presentation/authentication_and_settings/screens/settings/verified
 import '../../presentation/create_post/screens/details.dart';
 import '../../presentation/create_post/screens/home.dart';
 import '../../presentation/daily_hottest/screens/leaderboard.dart';
-import '../../presentation/easter_eggs/screens/overscroll.dart';
 import '../../presentation/feed/screens/detail_view.dart';
 import '../../presentation/feed/screens/post_advanced_details.dart';
 import '../../presentation/feed/screens/watched_universities.dart';
@@ -19,7 +18,6 @@ import '../../presentation/primary/screens/critical_error.dart';
 import '../../presentation/authentication_and_settings/screens/settings/appearance.dart';
 import '../../presentation/authentication_and_settings/screens/settings/faq.dart';
 import '../../presentation/authentication_and_settings/screens/settings/home.dart';
-import '../../presentation/profile/screens/achievement_details.dart';
 import '../../presentation/user_posts_and_comments/screens/comments.dart';
 import '../../presentation/user_posts_and_comments/screens/posts.dart';
 import '../../presentation/user_posts_and_comments/screens/saved.dart';
@@ -53,7 +51,6 @@ class AppRouter {
       "/create_post",
       "/settings",
       "/watched_universities",
-      '/home/profile/achievement_details',
     ];
     return fullScreenDialogRoutes.contains(routeSettings.name) ? true : false;
   }
@@ -172,9 +169,7 @@ class AppRouter {
         case '/home/profile/saved':
           page = const SavedScreen();
           break;
-        case '/home/profile/achievement_details':
-          page = const AchievementDetailsScreen();
-          break;
+
         // An individual post's advanced stats.
         case "/home/post/stats":
           page = PostAdvancedDetailsScreen(
@@ -199,9 +194,6 @@ class AppRouter {
           break;
         case "/feedback":
           page = const FeedbackHome();
-          break;
-        case "/easterEggs/overscroll":
-          page = const OverscrollEasterEgg();
           break;
         case "/settings":
           page = MultiBlocProvider(
