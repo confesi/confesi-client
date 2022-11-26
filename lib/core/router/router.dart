@@ -1,3 +1,5 @@
+import 'package:Confessi/presentation/feed/screens/simple_detail_view.dart';
+
 import '../../application/profile/cubit/profile_cubit.dart';
 
 import '../../application/authentication_and_settings/cubit/language_setting_cubit.dart';
@@ -150,6 +152,10 @@ class AppRouter {
             universityFullName: args['university_full_name'],
           );
           break;
+        // Simplified view for post details
+        case "/home/simplified_detail":
+          page = const SimpleDetailViewScreen();
+          break;
         case '/home/create_post/details':
           page = DetailsScreen(
             title: args!['title'],
@@ -183,6 +189,7 @@ class AppRouter {
             year: args['year'],
           );
           break;
+
         case "/hottest/leaderboard":
           page = BlocProvider(
             lazy: false,

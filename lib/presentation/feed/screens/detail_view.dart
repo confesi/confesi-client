@@ -1,5 +1,4 @@
 import '../../../core/styles/typography.dart';
-import '../../shared/behaviours/shrinking_view.dart';
 import '../../shared/layout/appbar.dart';
 import '../../../domain/feed/entities/post_child.dart';
 import '../widgets/circle_comment_switcher_button.dart';
