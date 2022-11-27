@@ -90,13 +90,21 @@ class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
                                 children: [
                                   SimpleTextButton(
                                     onTap: () => Navigator.pushNamed(context, '/home/profile/posts'),
-                                    text: "Options",
+                                    text: "Quote",
+                                  ),
+                                  SimpleTextButton(
+                                    onTap: () => Navigator.pushNamed(context, '/home/profile/posts'),
+                                    text: "Flag",
+                                  ),
+                                  SimpleTextButton(
+                                    onTap: () => Navigator.pushNamed(context, '/home/profile/posts'),
+                                    text: "Save",
                                   ),
                                 ],
                               ),
                               const SizedBox(height: 20),
                               Text(
-                                "Year 1 Computer Science / Politics / 22min ago",
+                                "Year 1 Computer Science / Politics / 22min ago / University of Victoria",
                                 style: kDetail.copyWith(
                                   color: Theme.of(context).colorScheme.onSurface,
                                 ),

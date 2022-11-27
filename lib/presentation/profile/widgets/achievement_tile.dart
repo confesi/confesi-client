@@ -1,4 +1,6 @@
 import 'package:Confessi/application/shared/cubit/share_cubit.dart';
+import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opacity.dart';
+import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:Confessi/presentation/shared/overlays/info_sheet_with_action.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +28,7 @@ class AchievementTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return TouchableOpacity(
       onTap: () => showInfoSheetWithAction(
         context,
         "$title (x$quantity, $rarity)",
