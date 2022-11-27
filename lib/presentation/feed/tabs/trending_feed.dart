@@ -9,7 +9,6 @@ import '../../../constants/feed/enums.dart';
 import '../../../constants/feed/general.dart';
 import '../../shared/overlays/snackbar.dart';
 import '../../../application/feed/cubit/trending_cubit.dart';
-import '../widgets/error_message.dart';
 import '../widgets/infinite_scroll.dart';
 
 class ExploreTrending extends StatefulWidget {

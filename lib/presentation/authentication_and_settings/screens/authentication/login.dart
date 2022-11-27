@@ -1,3 +1,5 @@
+import 'package:Confessi/core/utils/sizing/height_fraction.dart';
+
 import '../../../../constants/authentication_and_settings/text.dart';
 import '../../../shared/behaviours/nav_blocker.dart';
 import '../../../shared/behaviours/themed_status_bar.dart';
@@ -61,76 +63,79 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                   child: ScrollableArea(
                     thumbVisible: false,
                     controller: scrollController,
-                    child: Column(
-                      children: [
-                        MinimalAppbarLayout(
-                          pressable: state is! LoginLoading, // state is UserLoading ? false : true
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 30),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const SizedBox(height: 15),
-                              TypewriterText(
-                                textStyle: kSansSerifDisplay.copyWith(color: Theme.of(context).colorScheme.primary),
-                                controller: typewriterController,
-                              ),
-                              SizedBox(height: heightFactor * 8),
-                              BulgeTextField(
-                                controller: usernameEmailController,
-                                topText: kUsernameOrEmailFieldLabel,
-                                bottomPadding: 10,
-                              ),
-                              BulgeTextField(
-                                controller: passwordController,
-                                password: true,
-                                topText: kPasswordFieldLabel,
-                                bottomPadding: 10,
-                              ),
-                              const SizedBox(height: 45),
-                              PopButton(
-                                bottomPadding: 15,
-                                loading: state is LoginLoading, // state is UserLoading ? true : false
-                                justText: true,
-                                onPress: () {
-                                  FocusScope.of(context).unfocus();
-                                  context
-                                      .read<LoginCubit>()
-                                      .loginUser(usernameEmailController.text, passwordController.text);
-                                },
-                                icon: CupertinoIcons.chevron_right,
-                                backgroundColor: Theme.of(context).colorScheme.secondary,
-                                textColor: Theme.of(context).colorScheme.onSecondary,
-                                text: kLoginButtonText,
-                              ),
-                              TouchableOpacity(
-                                onTap: () => {}, // TODO: Implement
-                                child: Container(
-                                  // Transparent hitbox trick.
-                                  color: Colors.transparent,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          kForgotPasswordText,
-                                          style: kTitle.copyWith(
-                                            color: Theme.of(context).colorScheme.onSurface,
+                    child: SizedBox(
+                      height: heightFraction(context, 1),
+                      child: Column(
+                        children: [
+                          MinimalAppbarLayout(
+                            pressable: state is! LoginLoading, // state is UserLoading ? false : true
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 30),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(height: 15),
+                                TypewriterText(
+                                  textStyle: kSansSerifDisplay.copyWith(color: Theme.of(context).colorScheme.primary),
+                                  controller: typewriterController,
+                                ),
+                                SizedBox(height: heightFactor * 8),
+                                BulgeTextField(
+                                  controller: usernameEmailController,
+                                  topText: kUsernameOrEmailFieldLabel,
+                                  bottomPadding: 10,
+                                ),
+                                BulgeTextField(
+                                  controller: passwordController,
+                                  password: true,
+                                  topText: kPasswordFieldLabel,
+                                  bottomPadding: 10,
+                                ),
+                                const SizedBox(height: 45),
+                                PopButton(
+                                  bottomPadding: 15,
+                                  loading: state is LoginLoading, // state is UserLoading ? true : false
+                                  justText: true,
+                                  onPress: () {
+                                    FocusScope.of(context).unfocus();
+                                    context
+                                        .read<LoginCubit>()
+                                        .loginUser(usernameEmailController.text, passwordController.text);
+                                  },
+                                  icon: CupertinoIcons.chevron_right,
+                                  backgroundColor: Theme.of(context).colorScheme.secondary,
+                                  textColor: Theme.of(context).colorScheme.onSecondary,
+                                  text: kLoginButtonText,
+                                ),
+                                TouchableOpacity(
+                                  onTap: () => {}, // TODO: Implement
+                                  child: Container(
+                                    // Transparent hitbox trick.
+                                    color: Colors.transparent,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            kForgotPasswordText,
+                                            style: kTitle.copyWith(
+                                              color: Theme.of(context).colorScheme.onSurface,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                            overflow: TextOverflow.ellipsis,
                                           ),
-                                          textAlign: TextAlign.center,
-                                          overflow: TextOverflow.ellipsis,
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                              const SizedBox(height: 15),
-                            ],
+                                const SizedBox(height: 15),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),

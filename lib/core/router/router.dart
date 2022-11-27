@@ -1,5 +1,6 @@
+import 'package:Confessi/presentation/feed/screens/simple_detail_view.dart';
+
 import '../../application/profile/cubit/profile_cubit.dart';
-import '../../presentation/authentication_and_settings/tabs/verified_student_perks.dart';
 
 import '../../application/authentication_and_settings/cubit/language_setting_cubit.dart';
 import '../../presentation/authentication_and_settings/screens/settings/contact.dart';
@@ -9,7 +10,6 @@ import '../../presentation/authentication_and_settings/screens/settings/verified
 import '../../presentation/create_post/screens/details.dart';
 import '../../presentation/create_post/screens/home.dart';
 import '../../presentation/daily_hottest/screens/leaderboard.dart';
-import '../../presentation/easter_eggs/screens/overscroll.dart';
 import '../../presentation/feed/screens/detail_view.dart';
 import '../../presentation/feed/screens/post_advanced_details.dart';
 import '../../presentation/feed/screens/watched_universities.dart';
@@ -149,6 +149,10 @@ class AppRouter {
             universityFullName: args['university_full_name'],
           );
           break;
+        // Simplified view for post details
+        case "/home/simplified_detail":
+          page = const SimpleDetailViewScreen();
+          break;
         case '/home/create_post/details':
           page = DetailsScreen(
             title: args!['title'],
@@ -165,6 +169,7 @@ class AppRouter {
         case '/home/profile/saved':
           page = const SavedScreen();
           break;
+
         // An individual post's advanced stats.
         case "/home/post/stats":
           page = PostAdvancedDetailsScreen(
@@ -179,6 +184,7 @@ class AppRouter {
             year: args['year'],
           );
           break;
+
         case "/hottest/leaderboard":
           page = BlocProvider(
             lazy: false,
@@ -188,9 +194,6 @@ class AppRouter {
           break;
         case "/feedback":
           page = const FeedbackHome();
-          break;
-        case "/easterEggs/overscroll":
-          page = const OverscrollEasterEgg();
           break;
         case "/settings":
           page = MultiBlocProvider(

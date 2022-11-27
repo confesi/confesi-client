@@ -2,11 +2,9 @@ import '../../shared/behaviours/themed_status_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 import '../../../core/styles/typography.dart';
 import '../../shared/layout/appbar.dart';
-import '../widgets/drawer.dart';
 import '../../shared/layout/top_tabs.dart';
 import '../tabs/recents_feed.dart';
 import '../tabs/trending_feed.dart';
@@ -52,20 +50,24 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
             child: Column(
               children: [
                 Builder(builder: (context) {
-                  return AppbarLayout(
-                    rightIconOnPress: () => Navigator.of(context).pushNamed("/create_post"),
-                    rightIconVisible: true,
-                    rightIcon: CupertinoIcons.add,
-                    bottomBorder: false,
-                    centerWidget: Text(
-                      "University of Victoria",
-                      style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.center,
+                  return GestureDetector(
+                    onTap: () =>
+                        Navigator.pushNamed(context, "/home/simplified_detail"), // TODO: remove, just for testing
+                    child: AppbarLayout(
+                      rightIconOnPress: () => Navigator.of(context).pushNamed("/create_post"),
+                      rightIconVisible: true,
+                      rightIcon: CupertinoIcons.add,
+                      bottomBorder: false,
+                      centerWidget: Text(
+                        "University of Victoria",
+                        style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                      ),
+                      leftIconVisible: true,
+                      leftIcon: CupertinoIcons.slider_horizontal_3,
+                      leftIconOnPress: () => widget.scaffoldKey.currentState!.openDrawer(),
                     ),
-                    leftIconVisible: true,
-                    leftIcon: CupertinoIcons.slider_horizontal_3,
-                    leftIconOnPress: () => widget.scaffoldKey.currentState!.openDrawer(),
                   );
                 }),
                 Expanded(

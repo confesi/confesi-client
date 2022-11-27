@@ -15,12 +15,28 @@ class ProfileData extends ProfileState {
   final String universityImgUrl;
   final StatTileEntity statTileEntity;
   final List<AchievementTileEntity> achievementTileEntities;
+  final String universityAbbr;
+  final String universityFullName;
+  final String username;
 
-  const ProfileData(
-      {required this.achievementTileEntities, required this.statTileEntity, required this.universityImgUrl});
+  const ProfileData({
+    required this.achievementTileEntities,
+    required this.statTileEntity,
+    required this.universityImgUrl,
+    required this.universityAbbr,
+    required this.universityFullName,
+    required this.username,
+  });
 
   @override
-  List<Object> get props => [universityImgUrl, statTileEntity, achievementTileEntities];
+  List<Object> get props => [
+        universityImgUrl,
+        statTileEntity,
+        achievementTileEntities,
+        universityAbbr,
+        universityFullName,
+        username,
+      ];
 }
 
 // Profile has some sort of error

@@ -1,5 +1,7 @@
 import 'package:Confessi/domain/profile/entities/achievement_tile_entity.dart';
 
+import '../../../core/converters/id_to_achievement_tile_model.dart';
+
 class AchievementTileModel extends AchievementTileEntity {
   const AchievementTileModel({
     required String achievementImgUrl,
@@ -7,7 +9,9 @@ class AchievementTileModel extends AchievementTileEntity {
     required String description,
     required int quantity,
     required double aspectRatio,
+    required String rarity,
   }) : super(
+          rarity: rarity,
           achievementImgUrl: achievementImgUrl,
           title: title,
           description: description,
@@ -15,13 +19,10 @@ class AchievementTileModel extends AchievementTileEntity {
           aspectRatio: aspectRatio,
         );
 
-  factory AchievementTileModel.fromJson(Map<String, dynamic> json) {
-    return AchievementTileModel(
-      achievementImgUrl: json['achievement_img_url'] as String,
-      title: json['title'] as String,
-      description: json['description'] as String,
-      quantity: json['quantity'] as int,
-      aspectRatio: json['aspect_ratio'].toDouble() as double,
+  factory AchievementTileModel.fromJson(dynamic json) {
+    return idToAchievementTileModel(
+      json['id'] as String,
+      json['quantity'] as int,
     );
   }
 }

@@ -25,6 +25,9 @@ class ProfileCubit extends Cubit<ProfileState> {
             achievementTileEntities: data.achievementTileEntities,
             statTileEntity: data.statTileEntity,
             universityImgUrl: data.universityImgUrl,
+            universityAbbr: data.universityAbbreviation,
+            universityFullName: data.universityFullName,
+            username: data.username,
           ),
         );
       },
@@ -43,6 +46,9 @@ class ProfileCubit extends Cubit<ProfileState> {
             achievementTileEntities: data.achievementTileEntities,
             statTileEntity: data.statTileEntity,
             universityImgUrl: data.universityImgUrl,
+            universityAbbr: data.universityAbbreviation,
+            universityFullName: data.universityFullName,
+            username: data.username,
           ),
         );
       },

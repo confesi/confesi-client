@@ -8,7 +8,7 @@ class ProfileController extends ChangeNotifier {
     if (!scrollController.hasClients) {
       return;
     } else {
-      scrollController.animateTo(0, duration: const Duration(milliseconds: 400), curve: Curves.decelerate);
+      scrollController.animateTo(0, duration: const Duration(milliseconds: 250), curve: Curves.decelerate);
     }
   }
 }

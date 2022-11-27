@@ -55,6 +55,7 @@ class AchievementBuilder extends StatelessWidget {
         // add right
         rightLength += pow(element.aspectRatio, -1);
         rightColumn.add(AchievementTile(
+            rarity: element.rarity,
             title: element.title,
             aspectRatio: element.aspectRatio,
             achievementImgUrl: element.achievementImgUrl,
@@ -64,6 +65,7 @@ class AchievementBuilder extends StatelessWidget {
         // add left
         leftLength += pow(element.aspectRatio, -1);
         leftColumn.add(AchievementTile(
+            rarity: element.rarity,
             title: element.title,
             aspectRatio: element.aspectRatio,
             achievementImgUrl: element.achievementImgUrl,
@@ -104,13 +106,19 @@ class AchievementBuilder extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                child: Column(
-                  children: delegateItems(ColumnSide.left),
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 3.75),
+                  child: Column(
+                    children: delegateItems(ColumnSide.left),
+                  ),
                 ),
               ),
               Expanded(
-                child: Column(
-                  children: delegateItems(ColumnSide.right),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 3.75),
+                  child: Column(
+                    children: delegateItems(ColumnSide.right),
+                  ),
                 ),
               ),
             ],
