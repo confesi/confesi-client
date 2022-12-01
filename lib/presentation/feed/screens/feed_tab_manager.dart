@@ -1,15 +1,20 @@
+import 'package:Confessi/presentation/feed/tabs/trending_feed.dart';
 import 'package:Confessi/presentation/shared/buttons/simple_text.dart';
 
 import '../../shared/behaviours/themed_status_bar.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-import '../../../core/styles/typography.dart';
 import '../../shared/layout/appbar.dart';
-import '../../shared/layout/top_tabs.dart';
 import '../tabs/recents_feed.dart';
-import '../tabs/trending_feed.dart';
+
+/// Which type of feed is selected.
+///
+/// Recents or Trending.
+enum SelectedFeedType {
+  recents,
+  trending,
+}
 
 class ExploreHome extends StatefulWidget {
   const ExploreHome({Key? key, required this.scaffoldKey}) : super(key: key);
@@ -20,24 +25,22 @@ class ExploreHome extends StatefulWidget {
   State<ExploreHome> createState() => _ExploreHomeState();
 }
 
-class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
+class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 
-  ScrollController scrollController = ScrollController();
+  SelectedFeedType selectedFeedType = SelectedFeedType.trending;
 
-  late TabController tabController;
-
-  @override
-  void initState() {
-    tabController = TabController(vsync: this, length: 2, initialIndex: 1);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    tabController.dispose();
-    super.dispose();
+  void changeFeed() {
+    if (selectedFeedType == SelectedFeedType.recents) {
+      setState(() {
+        selectedFeedType = SelectedFeedType.trending;
+      });
+    } else if (selectedFeedType == SelectedFeedType.trending) {
+      setState(() {
+        selectedFeedType = SelectedFeedType.recents;
+      });
+    }
   }
 
   @override
@@ -60,8 +63,8 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
                     centerWidget: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       child: SimpleTextButton(
-                        onTap: () => Navigator.pushNamed(context, "/home/simplified_detail"),
-                        text: "Trending",
+                        onTap: () => changeFeed(),
+                        text: selectedFeedType == SelectedFeedType.trending ? "TrendingsNews" : "Recents",
                       ),
                     ),
                     leftIconVisible: true,
@@ -69,7 +72,14 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
                     leftIconOnPress: () => widget.scaffoldKey.currentState!.openDrawer(),
                   );
                 }),
-                const Expanded(child: ExploreRecents()),
+                Expanded(
+                  child: AnimatedSwitcher(
+                    duration: Duration.zero,
+                    child: selectedFeedType == SelectedFeedType.trending
+                        ? const ExploreTrending()
+                        : const ExploreRecents(),
+                  ),
+                ),
               ],
             ),
           ),

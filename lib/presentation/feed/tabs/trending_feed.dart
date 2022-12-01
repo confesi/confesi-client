@@ -1,3 +1,5 @@
+// TODO: outdated; old style, complex ui
+
 import 'package:Confessi/presentation/shared/indicators/alert.dart';
 
 import '../../../constants/shared/error_messages.dart';

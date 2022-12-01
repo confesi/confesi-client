@@ -1,6 +1,8 @@
 import 'package:Confessi/core/styles/typography.dart';
+import 'package:Confessi/core/utils/numbers/large_number_formatter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:map_launcher/map_launcher.dart';
 
 class SimplePostTile extends StatelessWidget {
   const SimplePostTile({super.key});
@@ -8,9 +10,9 @@ class SimplePostTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 20),
+      padding: const EdgeInsets.only(top: 10),
       child: ClipRRect(
-        borderRadius: const BorderRadius.all(Radius.circular(0)),
+        borderRadius: const BorderRadius.all(Radius.circular(5)),
         child: Container(
           width: double.infinity,
           color: Theme.of(context).colorScheme.background,
@@ -32,9 +34,20 @@ class SimplePostTile extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 20),
-                    Icon(
-                      CupertinoIcons.ellipsis,
-                      color: Theme.of(context).colorScheme.onSecondary,
+                    GestureDetector(
+                      onTap: () async {
+                        final availableMaps = await MapLauncher.installedMaps;
+                        print(availableMaps); // [AvailableMap { mapName: Google Maps, mapType: google }, ...]
+
+                        await availableMaps.first.showMarker(
+                          coords: Coords(48.4634, -123.3117),
+                          title: "University of Victoria",
+                        );
+                      },
+                      child: Icon(
+                        CupertinoIcons.ellipsis,
+                        color: Theme.of(context).colorScheme.onSecondary,
+                      ),
                     )
                   ],
                 ),
@@ -94,40 +107,31 @@ class SimplePostTile extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(
-                            CupertinoIcons.share,
+                            CupertinoIcons.hand_thumbsdown,
                             color: Theme.of(context).colorScheme.onSurface,
                           ),
-                          const SizedBox(width: 5),
+                          const SizedBox(width: 10),
                           Text(
-                            "Share",
+                            "11.4k",
                             style: kDetail.copyWith(
                               color: Theme.of(context).colorScheme.onSurface,
                             ),
+                          ),
+                          const SizedBox(width: 10),
+                          Icon(
+                            CupertinoIcons.hand_thumbsup,
+                            color: Theme.of(context).colorScheme.onSurface,
                           ),
                         ],
                       ),
                     ),
                     Expanded(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Icon(
-                            CupertinoIcons.arrow_down,
-                            color: Theme.of(context).colorScheme.onSurface,
-                          ),
-                          const SizedBox(width: 10),
-                          Text(
-                            "12",
-                            style: kDetail.copyWith(
-                              color: Theme.of(context).colorScheme.onSurface,
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Icon(
-                            CupertinoIcons.arrow_up,
-                            color: Theme.of(context).colorScheme.onSurface,
-                          ),
-                        ],
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: Icon(
+                          CupertinoIcons.share,
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
                       ),
                     ),
                   ],
