@@ -48,6 +48,7 @@ class SettingsHome extends StatelessWidget {
                   child: Container(
                     color: Theme.of(context).colorScheme.background,
                     child: ScrollableView(
+                      hapticsEnabled: false,
                       inlineBottomOrRightPadding: bottomSafeArea(context) * 2,
                       controller: ScrollController(),
                       child: Padding(

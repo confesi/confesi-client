@@ -1,18 +1,11 @@
 import 'package:Confessi/core/utils/sizing/bottom_safe_area.dart';
-import 'package:Confessi/core/utils/sizing/height_fraction.dart';
-import 'package:Confessi/core/utils/sizing/width_fraction.dart';
 import 'package:Confessi/presentation/feed/widgets/post_stat_tile.dart';
-import 'package:Confessi/presentation/shared/behaviours/one_theme_status_bar.dart';
+import 'package:Confessi/presentation/feed/widgets/simple_post_tile.dart';
 import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
-import 'package:Confessi/presentation/shared/edited_source_widgets/swipe_refresh.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:scrollable/exports.dart';
 
 import '../../../core/styles/typography.dart';
 import '../../shared/buttons/simple_text.dart';
-import '../../shared/layout/appbar.dart';
 
 class SimpleDetailViewScreen extends StatefulWidget {
   const SimpleDetailViewScreen({super.key});
@@ -78,7 +71,7 @@ class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
                               const SizedBox(height: 20),
                               Text(
                                 "I found out all the stats profs are in a conspiracy ring together!",
-                                style: kDisplay.copyWith(
+                                style: kSansSerifDisplay.copyWith(
                                   color: Theme.of(context).colorScheme.primary,
                                 ),
                                 textAlign: TextAlign.left,

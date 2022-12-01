@@ -58,11 +58,18 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
                       rightIconVisible: true,
                       rightIcon: CupertinoIcons.add,
                       bottomBorder: false,
-                      centerWidget: Text(
-                        "University of Victoria",
-                        style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.center,
+                      centerWidget: Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.all(Radius.circular(5)),
+                          color: Theme.of(context).colorScheme.surface,
+                        ),
+                        child: Text(
+                          "Trending",
+                          style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                       leftIconVisible: true,
                       leftIcon: CupertinoIcons.slider_horizontal_3,

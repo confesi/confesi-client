@@ -1,3 +1,4 @@
+import 'package:Confessi/presentation/feed/widgets/simple_post_tile.dart';
 import 'package:flutter/material.dart';
 
 class ExploreRecents extends StatelessWidget {
@@ -7,8 +8,14 @@ class ExploreRecents extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Theme.of(context).colorScheme.shadow,
-      child: const Center(
-        child: Text('recents feed'),
+      child: ListView.builder(
+        physics: const ClampingScrollPhysics(),
+        itemBuilder: (context, index) {
+          return const Padding(
+            padding: EdgeInsets.only(top: 10),
+            child: SimplePostTile(),
+          );
+        },
       ),
     );
   }

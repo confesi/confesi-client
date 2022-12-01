@@ -60,13 +60,26 @@ class _ExploreDrawerState extends State<ExploreDrawer> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Expanded(
-                      child: Text(
-                        "Your Feeds",
-                        style: kSansSerifDisplay.copyWith(
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                        textAlign: TextAlign.left,
-                        overflow: TextOverflow.ellipsis,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Your Feeds",
+                            style: kSansSerifDisplay.copyWith(
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                            textAlign: TextAlign.left,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Text(
+                            "University of Victoria",
+                            style: kTitle.copyWith(
+                              color: Theme.of(context).colorScheme.onSurface,
+                            ),
+                            textAlign: TextAlign.left,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
                       ),
                     ),
                     const SizedBox(width: 5),
@@ -81,6 +94,7 @@ class _ExploreDrawerState extends State<ExploreDrawer> {
               LineLayout(color: Theme.of(context).colorScheme.onBackground, horizontalPadding: 15, topPadding: 10),
               Expanded(
                 child: ScrollableView(
+                  hapticsEnabled: false,
                   inlineBottomOrRightPadding: bottomSafeArea(context),
                   scrollBarVisible: false,
                   inlineTopOrLeftPadding: 10,
