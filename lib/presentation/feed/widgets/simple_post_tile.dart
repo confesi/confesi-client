@@ -8,7 +8,7 @@ class SimplePostTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+      padding: const EdgeInsets.only(top: 20),
       child: ClipRRect(
         borderRadius: const BorderRadius.all(Radius.circular(0)),
         child: Container(

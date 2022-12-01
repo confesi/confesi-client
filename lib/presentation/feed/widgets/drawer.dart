@@ -71,6 +71,7 @@ class _ExploreDrawerState extends State<ExploreDrawer> {
                             textAlign: TextAlign.left,
                             overflow: TextOverflow.ellipsis,
                           ),
+                          const SizedBox(height: 2),
                           Text(
                             "University of Victoria",
                             style: kTitle.copyWith(

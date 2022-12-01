@@ -1,3 +1,5 @@
+import 'package:Confessi/presentation/shared/buttons/simple_text.dart';
+
 import '../../shared/behaviours/themed_status_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
@@ -50,74 +52,24 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
             child: Column(
               children: [
                 Builder(builder: (context) {
-                  return GestureDetector(
-                    onTap: () =>
-                        Navigator.pushNamed(context, "/home/simplified_detail"), // TODO: remove, just for testing
-                    child: AppbarLayout(
-                      rightIconOnPress: () => Navigator.of(context).pushNamed("/create_post"),
-                      rightIconVisible: true,
-                      rightIcon: CupertinoIcons.add,
-                      bottomBorder: false,
-                      centerWidget: Container(
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.all(Radius.circular(5)),
-                          color: Theme.of(context).colorScheme.surface,
-                        ),
-                        child: Text(
-                          "Trending",
-                          style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.center,
-                        ),
+                  return AppbarLayout(
+                    rightIconOnPress: () => Navigator.of(context).pushNamed("/create_post"),
+                    rightIconVisible: true,
+                    rightIcon: CupertinoIcons.add,
+                    bottomBorder: false,
+                    centerWidget: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: SimpleTextButton(
+                        onTap: () => Navigator.pushNamed(context, "/home/simplified_detail"),
+                        text: "Trending",
                       ),
-                      leftIconVisible: true,
-                      leftIcon: CupertinoIcons.slider_horizontal_3,
-                      leftIconOnPress: () => widget.scaffoldKey.currentState!.openDrawer(),
                     ),
+                    leftIconVisible: true,
+                    leftIcon: CupertinoIcons.slider_horizontal_3,
+                    leftIconOnPress: () => widget.scaffoldKey.currentState!.openDrawer(),
                   );
                 }),
-                Expanded(
-                  child: Column(
-                    children: [
-                      TopTabs(
-                        tabController: tabController,
-                        tabs: [
-                          Tab(
-                            child: Text(
-                              "Recents",
-                              style: kDetail.copyWith(
-                                color: Theme.of(context).colorScheme.onSurface,
-                              ),
-                            ),
-                          ),
-                          Tab(
-                            child: Text(
-                              "Trending",
-                              style: kDetail.copyWith(
-                                color: Theme.of(context).colorScheme.onSurface,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Expanded(
-                        child: Container(
-                          color: Theme.of(context).colorScheme.shadow,
-                          child: TabBarView(
-                            physics: const ClampingScrollPhysics(),
-                            controller: tabController,
-                            dragStartBehavior: DragStartBehavior.down,
-                            children: const [
-                              ExploreRecents(),
-                              ExploreTrending(),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                const Expanded(child: ExploreRecents()),
               ],
             ),
           ),

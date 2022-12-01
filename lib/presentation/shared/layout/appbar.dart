@@ -85,11 +85,12 @@ class _AppbarLayoutState extends State<AppbarLayout> {
           border: Border(
             bottom: BorderSide(
               color: widget.bottomBorder ? Theme.of(context).colorScheme.shadow : Colors.transparent,
-              width: .7,
+              width: .25,
             ),
           ),
         ),
         child: Row(
+          // crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             if (widget.leftIconVisible)
@@ -101,9 +102,7 @@ class _AppbarLayoutState extends State<AppbarLayout> {
                 padding: const EdgeInsets.all(15),
                 child: Icon(widget.rightIcon ?? CupertinoIcons.arrow_clockwise, color: Colors.transparent),
               ),
-            Flexible(
-              child: widget.centerWidget,
-            ),
+            widget.centerWidget,
             if (widget.rightIconVisible)
               TouchableOpacity(
                 onTap: () {

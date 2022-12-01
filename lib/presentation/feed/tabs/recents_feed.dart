@@ -11,10 +11,7 @@ class ExploreRecents extends StatelessWidget {
       child: ListView.builder(
         physics: const ClampingScrollPhysics(),
         itemBuilder: (context, index) {
-          return const Padding(
-            padding: EdgeInsets.only(top: 10),
-            child: SimplePostTile(),
-          );
+          return const SimplePostTile();
         },
       ),
     );
