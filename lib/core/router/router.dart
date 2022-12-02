@@ -57,9 +57,7 @@ class AppRouter {
 
   // Checks which routes show as a size animation.
   bool isSizeAnim(RouteSettings routeSettings) {
-    List<String> sizeAnimDialogRoutes = [
-      "/home",
-    ];
+    List<String> sizeAnimDialogRoutes = [];
     return sizeAnimDialogRoutes.contains(routeSettings.name) ? true : false;
   }
 
@@ -68,6 +66,7 @@ class AppRouter {
     List<String> fadeAnimDialogRoutes = [
       "/onboarding",
       "/open",
+      "/home",
     ];
     return fadeAnimDialogRoutes.contains(routeSettings.name) ? true : false;
   }
@@ -272,9 +271,9 @@ class AppRouter {
         child: page,
         alignment: Alignment.center,
         type: PageTransitionType.fade,
-        curve: Curves.decelerate,
+        curve: Curves.linear,
         duration: const Duration(
-          milliseconds: 150,
+          milliseconds: 200,
         ),
       );
     } else {

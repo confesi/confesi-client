@@ -6,7 +6,7 @@ var kFaded = GoogleFonts.inter(
   textStyle: const TextStyle(fontSize: 105, fontWeight: FontWeight.bold),
 );
 
-/// Largest text style - meant for BOLD DISPLAY, but with sans serif style.
+/// Large text style - meant for display, but with sans serif style.
 var kSansSerifDisplay = GoogleFonts.inter(
   textStyle: const TextStyle(fontWeight: FontWeight.w700, fontSize: 26),
 );
@@ -22,7 +22,7 @@ var kHeader = GoogleFonts.inter(
 );
 
 /// Big text style.
-var kTitle = GoogleFonts.inter(
+var kTitle = GoogleFonts.ibmPlexSerif(
   textStyle: const TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
 );
 

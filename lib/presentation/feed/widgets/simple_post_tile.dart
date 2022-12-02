@@ -1,5 +1,4 @@
 import 'package:Confessi/core/styles/typography.dart';
-import 'package:Confessi/core/utils/numbers/large_number_formatter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:map_launcher/map_launcher.dart';
@@ -12,15 +11,22 @@ class SimplePostTile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 10),
       child: ClipRRect(
-        borderRadius: const BorderRadius.all(Radius.circular(5)),
+        borderRadius: const BorderRadius.all(Radius.circular(3)),
         child: Container(
           width: double.infinity,
-          color: Theme.of(context).colorScheme.background,
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.background,
+            borderRadius: const BorderRadius.all(Radius.circular(3)),
+            border: Border.all(color: Theme.of(context).colorScheme.surface, width: 1),
+          ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                color: Theme.of(context).colorScheme.secondary,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.secondary,
+                  borderRadius: const BorderRadius.only(topLeft: Radius.circular(3), topRight: Radius.circular(3)),
+                ),
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -46,7 +52,7 @@ class SimplePostTile extends StatelessWidget {
                       },
                       child: Icon(
                         CupertinoIcons.ellipsis,
-                        color: Theme.of(context).colorScheme.onSecondary,
+                        color: Theme.of(context).colorScheme.onSecondary.withOpacity(0.5),
                       ),
                     )
                   ],
@@ -54,7 +60,7 @@ class SimplePostTile extends StatelessWidget {
               ),
               //!
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 10),
                 child: Align(
                   alignment: Alignment.topLeft,
                   child: Column(
@@ -64,14 +70,17 @@ class SimplePostTile extends StatelessWidget {
                         "I found out all the stats profs are in a conspiracy ring together!",
                         style: kTitle.copyWith(
                           color: Theme.of(context).colorScheme.primary,
+                          fontSize: 24,
                         ),
+                        textAlign: TextAlign.left,
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sapien lacus, lacinia in posuere eget, bibendum quis lectus. Pellentesque eu nulla ullamcorper dui blandit porta vel id urna.",
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sapien lacus, lacinia in posuere eget, bibendum quis lectus. Pellentesque eu nulla ullamcorper dui blandit porta vel id urna...",
                         style: kBody.copyWith(
                           color: Theme.of(context).colorScheme.onSurface,
                         ),
+                        textAlign: TextAlign.left,
                       ),
                     ],
                   ),
@@ -79,8 +88,11 @@ class SimplePostTile extends StatelessWidget {
               ),
               //!
               Container(
-                color: Theme.of(context).colorScheme.background, // background
                 padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.all(Radius.circular(3)),
+                  color: Theme.of(context).colorScheme.background, // background
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -90,13 +102,13 @@ class SimplePostTile extends StatelessWidget {
                         children: [
                           Icon(
                             CupertinoIcons.chat_bubble,
-                            color: Theme.of(context).colorScheme.onSurface,
+                            color: Theme.of(context).colorScheme.primary,
                           ),
                           const SizedBox(width: 5),
                           Text(
                             "42",
                             style: kDetail.copyWith(
-                              color: Theme.of(context).colorScheme.onSurface,
+                              color: Theme.of(context).colorScheme.primary,
                             ),
                           ),
                         ],
@@ -108,19 +120,19 @@ class SimplePostTile extends StatelessWidget {
                         children: [
                           Icon(
                             CupertinoIcons.hand_thumbsdown,
-                            color: Theme.of(context).colorScheme.onSurface,
+                            color: Theme.of(context).colorScheme.primary,
                           ),
                           const SizedBox(width: 10),
                           Text(
                             "11.4k",
                             style: kDetail.copyWith(
-                              color: Theme.of(context).colorScheme.onSurface,
+                              color: Theme.of(context).colorScheme.primary,
                             ),
                           ),
                           const SizedBox(width: 10),
                           Icon(
                             CupertinoIcons.hand_thumbsup,
-                            color: Theme.of(context).colorScheme.onSurface,
+                            color: Theme.of(context).colorScheme.primary,
                           ),
                         ],
                       ),
@@ -130,7 +142,7 @@ class SimplePostTile extends StatelessWidget {
                         alignment: Alignment.centerRight,
                         child: Icon(
                           CupertinoIcons.share,
-                          color: Theme.of(context).colorScheme.onSurface,
+                          color: Theme.of(context).colorScheme.primary,
                         ),
                       ),
                     ),

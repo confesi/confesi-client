@@ -85,7 +85,7 @@ class _AppbarLayoutState extends State<AppbarLayout> {
           border: Border(
             bottom: BorderSide(
               color: widget.bottomBorder ? Theme.of(context).colorScheme.shadow : Colors.transparent,
-              width: .25,
+              width: .8,
             ),
           ),
         ),

@@ -86,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     },
                     labelStyle: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
                     unselectedLabelColor: Theme.of(context).colorScheme.onBackground,
-                    labelColor: Theme.of(context).colorScheme.primary,
+                    labelColor: Theme.of(context).colorScheme.secondary,
                     indicatorSize: TabBarIndicatorSize.label,
                     indicatorColor: Colors.transparent,
                     controller: tabController,
@@ -94,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     tabs: const [
                       Tab(icon: Icon(CupertinoIcons.compass)),
                       Tab(icon: Icon(CupertinoIcons.flame)),
-                      Tab(icon: Icon(CupertinoIcons.person_solid)),
+                      Tab(icon: Icon(CupertinoIcons.square_stack_3d_down_dottedline)),
                     ],
                   ),
                   backgroundColor: Theme.of(context).colorScheme.background,

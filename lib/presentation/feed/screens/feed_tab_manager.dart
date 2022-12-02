@@ -29,7 +29,7 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
   @override
   bool get wantKeepAlive => true;
 
-  SelectedFeedType selectedFeedType = SelectedFeedType.trending;
+  SelectedFeedType selectedFeedType = SelectedFeedType.recents;
 
   void changeFeed() {
     if (selectedFeedType == SelectedFeedType.recents) {
@@ -56,16 +56,14 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
               children: [
                 Builder(builder: (context) {
                   return AppbarLayout(
+                    bottomBorder: true,
+                    backgroundColor: Theme.of(context).colorScheme.background,
                     rightIconOnPress: () => Navigator.of(context).pushNamed("/create_post"),
                     rightIconVisible: true,
                     rightIcon: CupertinoIcons.add,
-                    bottomBorder: false,
-                    centerWidget: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: SimpleTextButton(
-                        onTap: () => changeFeed(),
-                        text: selectedFeedType == SelectedFeedType.trending ? "TrendingsNews" : "Recents",
-                      ),
+                    centerWidget: SimpleTextButton(
+                      onTap: () => changeFeed(),
+                      text: selectedFeedType == SelectedFeedType.trending ? "Trending" : "Recents",
                     ),
                     leftIconVisible: true,
                     leftIcon: CupertinoIcons.slider_horizontal_3,
