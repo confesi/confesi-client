@@ -95,6 +95,7 @@ class _ExploreDrawerState extends State<ExploreDrawer> {
               LineLayout(color: Theme.of(context).colorScheme.onBackground, horizontalPadding: 15, topPadding: 10),
               Expanded(
                 child: ScrollableView(
+                  physics: const BouncingScrollPhysics(),
                   hapticsEnabled: false,
                   inlineBottomOrRightPadding: bottomSafeArea(context),
                   scrollBarVisible: false,

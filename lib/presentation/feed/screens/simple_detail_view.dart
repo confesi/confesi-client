@@ -82,7 +82,7 @@ class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
                                 children: [
                                   SimpleTextButton(
                                     onTap: () => Navigator.pushNamed(context, '/home/profile/posts'),
-                                    text: "Quote",
+                                    text: "Options",
                                   ),
                                   SimpleTextButton(
                                     onTap: () => Navigator.pushNamed(context, '/home/profile/posts'),
@@ -95,25 +95,21 @@ class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
                                 ],
                               ),
                               const SizedBox(height: 20),
-                              InitOpacity(
-                                child: Text(
-                                  "Year 1 Computer Science / Politics / 22min ago / University of Victoria",
-                                  style: kDetail.copyWith(
-                                    color: Theme.of(context).colorScheme.onSurface,
-                                  ),
-                                  textAlign: TextAlign.left,
+                              Text(
+                                "Year 1 Computer Science / Politics / 22min ago / University of Victoria",
+                                style: kDetail.copyWith(
+                                  color: Theme.of(context).colorScheme.onSurface,
                                 ),
+                                textAlign: TextAlign.left,
                               ),
                               const SizedBox(height: 20),
-                              InitOpacity(
-                                child: Text(
-                                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec blandit ex eu nunc mattis auctor. Nam accumsan malesuada quam in egestas. Ut interdum efficitur purus, quis facilisis massa lobortis a. Nullam pharetra vel lacus faucibus accumsan.",
-                                  style: kBody.copyWith(
-                                    color: Theme.of(context).colorScheme.primary,
-                                    height: 1.5,
-                                  ),
-                                  textAlign: TextAlign.left,
+                              Text(
+                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec blandit ex eu nunc mattis auctor. Nam accumsan malesuada quam in egestas. Ut interdum efficitur purus, quis facilisis massa lobortis a. Nullam pharetra vel lacus faucibus accumsan.",
+                                style: kBody.copyWith(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  height: 1.5,
                                 ),
+                                textAlign: TextAlign.left,
                               ),
                               const SizedBox(height: 20),
                               // const CommentSortTile(),

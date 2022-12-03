@@ -1,18 +1,20 @@
 import 'package:Confessi/core/styles/typography.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_opacity.dart';
-import 'package:Confessi/presentation/shared/button_touch_effects/touchable_burst.dart';
 import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opacity.dart';
-import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../shared/buttons/option.dart';
 import '../../shared/overlays/button_options_sheet.dart';
 
-class SimplePostTile extends StatelessWidget {
+class SimplePostTile extends StatefulWidget {
   const SimplePostTile({super.key});
 
+  @override
+  State<SimplePostTile> createState() => _SimplePostTileState();
+}
+
+class _SimplePostTileState extends State<SimplePostTile> {
+  // Show the options for this post.
   void buildOptionsSheet(BuildContext context) => showButtonOptionsSheet(context, [
         OptionButton(
           text: "Save",
@@ -44,46 +46,39 @@ class SimplePostTile extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Hero(
-                  tag: 'purple',
-                  child: Material(
-                    color: Colors.transparent,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.secondary,
-                        borderRadius:
-                            const BorderRadius.only(topLeft: Radius.circular(3), topRight: Radius.circular(3)),
-                      ),
-                      // padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10),
-                              child: Text(
-                                "University of Victoria • Politics • 22m",
-                                style: kDetail.copyWith(
-                                  color: Theme.of(context).colorScheme.onSecondary,
-                                ),
-                              ),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.secondary,
+                    borderRadius: const BorderRadius.only(topLeft: Radius.circular(3), topRight: Radius.circular(3)),
+                  ),
+                  // padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Text(
+                            "University of Victoria • Politics • 22m",
+                            style: kDetail.copyWith(
+                              color: Theme.of(context).colorScheme.onSecondary,
                             ),
                           ),
-                          const SizedBox(width: 20),
-                          TouchableOpacity(
-                            onTap: () => buildOptionsSheet(context),
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                              color: Colors.transparent,
-                              child: Icon(
-                                CupertinoIcons.ellipsis,
-                                color: Theme.of(context).colorScheme.onSecondary,
-                              ),
-                            ),
-                          )
-                        ],
+                        ),
                       ),
-                    ),
+                      const SizedBox(width: 20),
+                      TouchableOpacity(
+                        onTap: () => buildOptionsSheet(context),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                          color: Colors.transparent,
+                          child: Icon(
+                            CupertinoIcons.ellipsis,
+                            color: Theme.of(context).colorScheme.onSecondary,
+                          ),
+                        ),
+                      )
+                    ],
                   ),
                 ),
                 //!
