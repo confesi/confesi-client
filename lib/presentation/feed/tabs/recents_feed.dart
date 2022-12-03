@@ -10,6 +10,7 @@ class ExploreRecents extends StatelessWidget {
     return Container(
       color: Theme.of(context).colorScheme.shadow,
       child: ListView.builder(
+        itemCount: 1,
         physics: const BouncingScrollPhysics(),
         itemBuilder: (context, index) {
           return const SimplePostTile();

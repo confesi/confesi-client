@@ -17,6 +17,7 @@ Future<dynamic> showButtonOptionsSheet(BuildContext context, List<OptionButton> 
         padding: const EdgeInsets.symmetric(horizontal: 15),
         width: double.infinity,
         decoration: BoxDecoration(
+          borderRadius: const BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
           color: Theme.of(context).colorScheme.background,
         ),
         child: Column(

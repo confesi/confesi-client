@@ -1,5 +1,5 @@
-import 'package:Confessi/core/utils/sizing/bottom_safe_area.dart';
 import 'package:Confessi/presentation/feed/widgets/post_stat_tile.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_opacity.dart';
 import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -42,20 +42,19 @@ class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
         },
         child: Column(
           children: [
-            // AppbarLayout(
-            //   backgroundColor: Color.fromARGB(255, 232, 138, 138),
-            //   bottomBorder: false,
-            //   centerWidget: Text(
-            //     "Confession View",
-            //     style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
-            //     overflow: TextOverflow.ellipsis,
-            //     textAlign: TextAlign.center,
-            //   ),
-            // ),
-            const PostStatTile(),
+            Hero(
+              tag: 'purple',
+              child: PostStatTile(
+                icon1OnPress: () => Navigator.pop(context),
+                icon2OnPress: () => print("tap"),
+                icon3OnPress: () => print("tap"),
+                icon4OnPress: () => print("tap"),
+                icon5OnPress: () => print("tap"),
+              ),
+            ),
             Expanded(
               child: SingleChildScrollView(
-                physics: const ClampingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -96,28 +95,39 @@ class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
                                 ],
                               ),
                               const SizedBox(height: 20),
-                              Text(
-                                "Year 1 Computer Science / Politics / 22min ago / University of Victoria",
-                                style: kDetail.copyWith(
-                                  color: Theme.of(context).colorScheme.onSurface,
+                              InitOpacity(
+                                child: Text(
+                                  "Year 1 Computer Science / Politics / 22min ago / University of Victoria",
+                                  style: kDetail.copyWith(
+                                    color: Theme.of(context).colorScheme.onSurface,
+                                  ),
+                                  textAlign: TextAlign.left,
                                 ),
-                                textAlign: TextAlign.left,
                               ),
                               const SizedBox(height: 20),
-                              Text(
-                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec blandit ex eu nunc mattis auctor. Nam accumsan malesuada quam in egestas. Ut interdum efficitur purus, quis facilisis massa lobortis a. Nullam pharetra vel lacus faucibus accumsan. Quisque suscipit euismod tellus, vitae luctus turpis sodales sit amet. Vivamus feugiat nibh sit amet enim feugiat, ac gravida sem auctor. Mauris eu augue at arcu sodales semper a sit amet nulla. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec blandit ex eu nunc mattis auctor. Nam accumsan malesuada quam in egestas. Ut interdum efficitur purus, quis facilisis massa lobortis a. Nullam pharetra vel lacus faucibus accumsan. Quisque suscipit euismod tellus, vitae luctus turpis sodales sit amet. Vivamus feugiat nibh sit amet enim feugiat, ac gravida sem auctor. Mauris eu augue at arcu sodales semper a sit amet nulla. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec blandit ex eu nunc mattis auctor. Nam accumsan malesuada quam in egestas. Ut interdum efficitur purus, quis facilisis massa lobortis a. Nullam pharetra vel lacus faucibus accumsan. Quisque suscipit euismod tellus, vitae luctus turpis sodales sit amet. Vivamus feugiat nibh sit amet enim feugiat, ac gravida sem auctor. Mauris eu augue at arcu sodales semper a sit amet nulla. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec blandit ex eu nunc mattis auctor. Nam accumsan malesuada quam in egestas. Ut interdum efficitur purus, quis facilisis massa lobortis a. Nullam pharetra vel lacus faucibus accumsan. Quisque suscipit euismod tellus, vitae luctus turpis sodales sit amet. Vivamus feugiat nibh sit amet enim feugiat, ac gravida sem auctor. Mauris eu augue at arcu sodales semper a sit amet nulla.",
-                                style: kBody.copyWith(
-                                  color: Theme.of(context).colorScheme.primary,
-                                  height: 1.5,
+                              InitOpacity(
+                                child: Text(
+                                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec blandit ex eu nunc mattis auctor. Nam accumsan malesuada quam in egestas. Ut interdum efficitur purus, quis facilisis massa lobortis a. Nullam pharetra vel lacus faucibus accumsan.",
+                                  style: kBody.copyWith(
+                                    color: Theme.of(context).colorScheme.primary,
+                                    height: 1.5,
+                                  ),
+                                  textAlign: TextAlign.left,
                                 ),
-                                textAlign: TextAlign.left,
+                              ),
+                              const SizedBox(height: 20),
+                              // const CommentSortTile(),
+                              SimpleTextButton(
+                                infiniteWidth: true,
+                                onTap: () => print("tap"),
+                                text: "Sort by: most liked",
                               ),
                             ],
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(height: bottomSafeArea(context)),
+                    // SizedBox(height: bottomSafeArea(context)),
                   ],
                 ),
               ),
