@@ -1,6 +1,4 @@
-import 'package:Confessi/presentation/feed/widgets/simple_post_tile.dart';
 import 'package:Confessi/presentation/shared/other/feed_list.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ExploreRecents extends StatefulWidget {
@@ -18,7 +16,6 @@ class _ExploreRecentsState extends State<ExploreRecents> {
     feedListController = FeedListController();
     feedListController.addItem(Text("HEY"));
     feedListController.addItem(Text("HEY"));
-
     super.initState();
   }
 
@@ -43,6 +40,9 @@ class _ExploreRecentsState extends State<ExploreRecents> {
           ),
           Expanded(
             child: FeedList(
+              feedIndicatorWidget: FeedIndicatorWidget.atEnd,
+              onPullToRefresh: () async => await Future.delayed(const Duration(milliseconds: 1000)),
+              onPreload: () => print("reloadddd"),
               header: Container(color: Colors.green, height: 100, width: double.infinity, child: const Text("HEADER")),
               controller: feedListController,
             ),
