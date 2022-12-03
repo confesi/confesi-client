@@ -1,42 +1,11 @@
 import 'dart:math';
 
 import 'package:Confessi/core/styles/typography.dart';
-import 'package:Confessi/core/utils/sizing/bottom_safe_area.dart';
 import 'package:Confessi/presentation/profile/widgets/achievement_tile.dart';
-import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../domain/profile/entities/achievement_tile_entity.dart';
-
-// class TempAchievement {
-//   final double aspectRatio;
-//   final String id;
-//   final String title;
-//   final String desc;
-//   final int quantity;
-
-//   TempAchievement({
-//     required this.aspectRatio,
-//     required this.desc,
-//     required this.id,
-//     required this.quantity,
-//     required this.title,
-//   });
-// }
-
-// List<TempAchievement> data = [
-//   TempAchievement(aspectRatio: 4 / 2, desc: "desc", id: "id", quantity: 1, title: "title"),
-//   TempAchievement(aspectRatio: 3 / 2, desc: "desc", id: "id", quantity: 1, title: "title"),
-//   TempAchievement(aspectRatio: 1 / 2, desc: "desc", id: "id", quantity: 1, title: "title"),
-//   TempAchievement(aspectRatio: 2, desc: "desc", id: "id", quantity: 1, title: "title"),
-//   TempAchievement(aspectRatio: 1, desc: "desc", id: "id", quantity: 1, title: "title"),
-//   TempAchievement(aspectRatio: 1 / 4, desc: "desc", id: "id", quantity: 1, title: "title"),
-//   TempAchievement(aspectRatio: 4 / 2, desc: "desc", id: "id", quantity: 1, title: "title"),
-//   TempAchievement(aspectRatio: 4 / 2, desc: "desc", id: "id", quantity: 1, title: "title"),
-//   TempAchievement(aspectRatio: 1 / 2, desc: "desc", id: "id", quantity: 1, title: "title"),
-//   TempAchievement(aspectRatio: 1, desc: "desc", id: "id", quantity: 1, title: "title"),
-// ];
 
 enum ColumnSide { left, right } // Which side of the column to build to.
 
@@ -107,7 +76,7 @@ class AchievementBuilder extends StatelessWidget {
             children: [
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.only(right: 3.75),
+                  padding: const EdgeInsets.only(right: 1),
                   child: Column(
                     children: delegateItems(ColumnSide.left),
                   ),
@@ -115,7 +84,7 @@ class AchievementBuilder extends StatelessWidget {
               ),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 3.75),
+                  padding: const EdgeInsets.only(left: 1),
                   child: Column(
                     children: delegateItems(ColumnSide.right),
                   ),

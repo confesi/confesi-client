@@ -14,6 +14,7 @@ class OptionButton extends StatelessWidget {
     required this.text,
     required this.icon,
     this.isRed = false,
+    this.noBottomPadding = false,
     Key? key,
   }) : super(key: key);
 
@@ -22,12 +23,15 @@ class OptionButton extends StatelessWidget {
   final IconData icon;
   final VoidCallback onTap;
   final bool isRed;
+  final bool noBottomPadding;
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.only(bottom: noBottomPadding ? 0 : 3),
       width: double.infinity,
       decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(Radius.circular(5)),
         color: Theme.of(context).colorScheme.surface,
       ),
       child: TouchableOpacity(
@@ -42,7 +46,7 @@ class OptionButton extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
             child: Row(
               mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Icon(
                   icon,
@@ -55,7 +59,7 @@ class OptionButton extends StatelessWidget {
                     style: kTitle.copyWith(
                       color: isRed ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.primary,
                     ),
-                    textAlign: TextAlign.right,
+                    textAlign: TextAlign.left,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),

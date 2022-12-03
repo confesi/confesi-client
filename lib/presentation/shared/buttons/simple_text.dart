@@ -34,14 +34,17 @@ class SimpleTextButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-      child: TouchableOpacity(
-        tapType: tapType,
-        tooltip: tooltip,
-        tooltipLocation: tooltipLocation,
-        onTap: () => onTap(),
-        child: Container(
+    return TouchableOpacity(
+      tapType: tapType,
+      tooltip: tooltip,
+      tooltipLocation: tooltipLocation,
+      onTap: () => onTap(),
+      child: AnimatedSize(
+        duration: const Duration(milliseconds: 175),
+        child: AnimatedContainer(
+          key: UniqueKey(),
+          margin: EdgeInsets.symmetric(horizontal: horizontalPadding),
+          duration: const Duration(milliseconds: 175),
           width: infiniteWidth ? double.infinity : null,
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(

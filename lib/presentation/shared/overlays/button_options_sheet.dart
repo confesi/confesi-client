@@ -1,9 +1,4 @@
-import 'package:Confessi/core/utils/sizing/width_breakpoint_fraction.dart';
-import 'package:Confessi/core/utils/sizing/width_fraction.dart';
-import 'package:scrollable/exports.dart';
-
 import '../buttons/option.dart';
-import '../layout/scrollable_area.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -31,19 +26,17 @@ Future<dynamic> showButtonOptionsSheet(BuildContext context, List<OptionButton> 
             SafeArea(
               child: Column(
                 children: [
-                  ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(15)),
-                    child: Column(
-                      children: [
-                        ...buttons,
-                        OptionButton(
-                          onTap: () => print("tap"),
-                          text: "Done",
-                          icon: CupertinoIcons.xmark,
-                          isRed: true,
-                        ),
-                      ],
-                    ),
+                  Column(
+                    children: [
+                      ...buttons,
+                      OptionButton(
+                        onTap: () => print("tap"),
+                        text: "Done",
+                        icon: CupertinoIcons.xmark,
+                        isRed: true,
+                        noBottomPadding: true,
+                      ),
+                    ],
                   ),
                 ],
               ),

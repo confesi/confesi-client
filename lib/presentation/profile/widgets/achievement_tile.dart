@@ -38,9 +38,9 @@ class AchievementTile extends StatelessWidget {
         "Share with friends",
       ),
       child: Padding(
-        padding: const EdgeInsets.only(bottom: 7.5),
+        padding: const EdgeInsets.only(bottom: 2),
         child: ClipRRect(
-          borderRadius: const BorderRadius.all(Radius.circular(15)),
+          borderRadius: const BorderRadius.all(Radius.circular(0)),
           child: AspectRatio(
             aspectRatio: aspectRatio,
             child: ClipRRect(

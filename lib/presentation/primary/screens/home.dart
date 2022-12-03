@@ -94,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     tabs: const [
                       Tab(icon: Icon(CupertinoIcons.compass)),
                       Tab(icon: Icon(CupertinoIcons.flame)),
-                      Tab(icon: Icon(CupertinoIcons.square_stack_3d_down_dottedline)),
+                      Tab(icon: Icon(CupertinoIcons.cube_box)),
                     ],
                   ),
                   backgroundColor: Theme.of(context).colorScheme.background,

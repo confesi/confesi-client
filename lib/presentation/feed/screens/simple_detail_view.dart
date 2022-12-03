@@ -1,6 +1,5 @@
 import 'package:Confessi/core/utils/sizing/bottom_safe_area.dart';
 import 'package:Confessi/presentation/feed/widgets/post_stat_tile.dart';
-import 'package:Confessi/presentation/feed/widgets/simple_post_tile.dart';
 import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -71,8 +70,9 @@ class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
                               const SizedBox(height: 20),
                               Text(
                                 "I found out all the stats profs are in a conspiracy ring together!",
-                                style: kSansSerifDisplay.copyWith(
+                                style: kTitle.copyWith(
                                   color: Theme.of(context).colorScheme.primary,
+                                  fontSize: 24,
                                 ),
                                 textAlign: TextAlign.left,
                               ),

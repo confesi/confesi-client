@@ -61,9 +61,25 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
                     rightIconOnPress: () => Navigator.of(context).pushNamed("/create_post"),
                     rightIconVisible: true,
                     rightIcon: CupertinoIcons.add,
-                    centerWidget: SimpleTextButton(
-                      onTap: () => changeFeed(),
-                      text: selectedFeedType == SelectedFeedType.trending ? "Trending" : "Recents",
+                    centerWidget: Row(
+                      children: [
+                        Icon(
+                          CupertinoIcons.chevron_back,
+                          color: Theme.of(context).colorScheme.onSurface,
+                          size: 20,
+                        ),
+                        const SizedBox(width: 5),
+                        SimpleTextButton(
+                          onTap: () => changeFeed(),
+                          text: selectedFeedType == SelectedFeedType.trending ? "Trending Now" : "Recents",
+                        ),
+                        const SizedBox(width: 5),
+                        Icon(
+                          CupertinoIcons.chevron_forward,
+                          color: Theme.of(context).colorScheme.onSurface,
+                          size: 20,
+                        ),
+                      ],
                     ),
                     leftIconVisible: true,
                     leftIcon: CupertinoIcons.slider_horizontal_3,
@@ -71,12 +87,8 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
                   );
                 }),
                 Expanded(
-                  child: AnimatedSwitcher(
-                    duration: Duration.zero,
-                    child: selectedFeedType == SelectedFeedType.trending
-                        ? const ExploreTrending()
-                        : const ExploreRecents(),
-                  ),
+                  child:
+                      selectedFeedType == SelectedFeedType.trending ? const ExploreTrending() : const ExploreRecents(),
                 ),
               ],
             ),
