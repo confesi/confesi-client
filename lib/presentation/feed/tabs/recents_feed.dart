@@ -1,4 +1,6 @@
+import 'package:Confessi/presentation/shared/indicators/alert.dart';
 import 'package:Confessi/presentation/shared/other/feed_list.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ExploreRecents extends StatefulWidget {
@@ -14,8 +16,8 @@ class _ExploreRecentsState extends State<ExploreRecents> {
   @override
   void initState() {
     feedListController = FeedListController();
-    feedListController.addItem(Text("HEY"));
-    feedListController.addItem(Text("HEY"));
+    feedListController.addItems(const [Text("HEY"), Text("HEY")]);
+    feedListController.addItem(const Text("HEY"));
     super.initState();
   }
 
@@ -33,16 +35,41 @@ class _ExploreRecentsState extends State<ExploreRecents> {
         children: [
           Row(
             children: [
-              TextButton(onPressed: () => feedListController.addItem(Text("added")), child: Text("add item")),
+              TextButton(
+                  onPressed: () => feedListController.addItem(
+                        Container(
+                          margin: const EdgeInsets.symmetric(vertical: 5),
+                          color: Colors.redAccent,
+                          height: 100,
+                          width: double.infinity,
+                          child: const Text("ITEM"),
+                        ),
+                      ),
+                  child: Text("add item")),
               TextButton(onPressed: () => feedListController.scrollToTop(), child: Text("to top")),
               TextButton(onPressed: () => feedListController.clearList(), child: Text("clear")),
             ],
           ),
           Expanded(
             child: FeedList(
-              feedIndicatorWidget: FeedIndicatorWidget.atEnd,
-              onPullToRefresh: () async => await Future.delayed(const Duration(milliseconds: 1000)),
-              onPreload: () => print("reloadddd"),
+              hasError: false,
+              hasReachedEnd: false,
+              onPullToRefresh: () async {
+                await Future.delayed(const Duration(milliseconds: 1000));
+                feedListController.clearList();
+              },
+              loadMore: () async {
+                await Future.delayed(const Duration(milliseconds: 500));
+                feedListController.addItem(
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 5),
+                    color: Colors.redAccent,
+                    height: 100,
+                    width: double.infinity,
+                    child: const Text("ITEM"),
+                  ),
+                );
+              },
               header: Container(color: Colors.green, height: 100, width: double.infinity, child: const Text("HEADER")),
               controller: feedListController,
             ),

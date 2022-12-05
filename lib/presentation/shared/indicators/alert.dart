@@ -1,12 +1,9 @@
 import 'package:Confessi/core/utils/sizing/width_fraction.dart';
 import 'package:Confessi/generated/l10n.dart';
 import 'package:Confessi/presentation/shared/buttons/simple_text.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
-import '../button_touch_effects/touchable_opacity.dart';
-import '../buttons/pop.dart';
 import 'loading.dart';
 
 class AlertIndicator extends StatelessWidget {
@@ -24,7 +21,7 @@ class AlertIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
+      padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
       child: Container(
           constraints: BoxConstraints(maxWidth: widthFraction(context, .8)),
           // Transparent hitbox trick.
