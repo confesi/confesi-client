@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-class LoadingIndicator extends StatelessWidget {
-  const LoadingIndicator({
+class LoadingMaterialIndicator extends StatelessWidget {
+  const LoadingMaterialIndicator({
     this.color,
     Key? key,
   }) : super(key: key);

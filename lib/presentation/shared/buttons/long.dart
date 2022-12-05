@@ -1,5 +1,7 @@
+import 'package:Confessi/presentation/shared/indicators/loading_cupertino.dart';
+
 import '../button_touch_effects/touchable_opacity.dart';
-import '../indicators/loading.dart';
+import '../indicators/loading_material.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
@@ -52,7 +54,7 @@ class LongButton extends StatelessWidget {
                               ),
                             ),
                             Center(
-                              child: LoadingIndicator(
+                              child: LoadingCupertinoIndicator(
                                 color: Theme.of(context).colorScheme.onSecondary,
                               ),
                             ),
@@ -67,7 +69,7 @@ class LongButton extends StatelessWidget {
                           Opacity(
                             opacity: 0,
                             child: Center(
-                              child: LoadingIndicator(
+                              child: LoadingCupertinoIndicator(
                                 color: Theme.of(context).colorScheme.onSecondary,
                               ),
                             ),

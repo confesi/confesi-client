@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
 import '../button_touch_effects/touchable_opacity.dart';
-import '../indicators/loading.dart';
+import '../indicators/loading_cupertino.dart';
+import '../indicators/loading_material.dart';
 
 class PopButton extends StatelessWidget {
   const PopButton(
@@ -69,7 +70,7 @@ class PopButton extends StatelessWidget {
                           child: loading
                               ? Padding(
                                   padding: const EdgeInsets.only(top: 2),
-                                  child: LoadingIndicator(color: textColor),
+                                  child: LoadingCupertinoIndicator(color: textColor),
                                 )
                               : Text(
                                   text,

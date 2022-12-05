@@ -1,3 +1,5 @@
+import 'package:Confessi/presentation/shared/indicators/loading_cupertino.dart';
+
 import '../../../application/daily_hottest/cubit/hottest_cubit.dart';
 import '../../../core/extensions/dates/two_dates_same.dart';
 import '../../../core/extensions/dates/readable_date_format.dart';
@@ -13,7 +15,7 @@ import '../../../constants/shared/enums.dart';
 import '../../../core/styles/typography.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/indicators/alert.dart';
-import '../../shared/indicators/loading.dart';
+import '../../shared/indicators/loading_material.dart';
 import '../../shared/layout/appbar.dart';
 
 class HottestHome extends StatefulWidget {
@@ -41,7 +43,7 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
     if (state is Loading) {
       return const Center(
         key: ValueKey('loading'),
-        child: LoadingIndicator(),
+        child: LoadingCupertinoIndicator(),
       );
     } else if (state is Data && state.posts.isNotEmpty) {
       return GestureDetector(

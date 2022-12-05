@@ -1,10 +1,12 @@
 import 'dart:math';
 
+import 'package:Confessi/presentation/shared/indicators/loading_cupertino.dart';
+
 import '../../../core/utils/numbers/is_plural.dart';
 import '../../../generated/l10n.dart';
 import '../../shared/behaviours/init_transform.dart';
 import '../../shared/indicators/alert.dart';
-import '../../shared/indicators/loading.dart';
+import '../../shared/indicators/loading_material.dart';
 import '../../shared/layout/appbar.dart';
 import '../../shared/layout/line.dart';
 import '../../../application/daily_hottest/cubit/leaderboard_cubit.dart';
@@ -76,7 +78,7 @@ class LeaderboardScreen extends StatelessWidget {
     if (state is Loading) {
       return const Center(
         key: ValueKey('loading'),
-        child: LoadingIndicator(),
+        child: LoadingCupertinoIndicator(),
       );
     } else if (state is Data && state.rankings.isNotEmpty) {
       return Column(

@@ -7,7 +7,7 @@ class FeedListController extends ChangeNotifier {
   // How many items to preload the feed by.
   final int preloadBy;
 
-  FeedListController({this.preloadBy = 5});
+  FeedListController({this.preloadBy = 8});
 
   // Items to be in the feed.
   List<Widget> items = [];
@@ -26,6 +26,7 @@ class FeedListController extends ChangeNotifier {
   /// Adds multiple items to the list.
   void addItems(List<Widget> newItems) {
     items.addAll(newItems);
+    notifyListeners();
   }
 
   /// Scrolls to the top of the list (over a set duration).
@@ -49,6 +50,8 @@ class FeedList extends StatefulWidget {
     required this.onPullToRefresh,
     required this.hasError,
     required this.hasReachedEnd,
+    required this.onEndOfFeedReachedButtonPressed,
+    required this.onErrorButtonPressed,
   });
 
   final bool hasError;
@@ -56,6 +59,8 @@ class FeedList extends StatefulWidget {
   final Widget? header;
   final FeedListController controller;
   final Function loadMore;
+  final Function onErrorButtonPressed;
+  final Function onEndOfFeedReachedButtonPressed;
   final Function onPullToRefresh;
 
   @override
@@ -64,6 +69,8 @@ class FeedList extends StatefulWidget {
 
 class _FeedListState extends State<FeedList> {
   bool isCurrentlyLoadingMorePosts = false;
+  bool errorLoadingMoreIsLoading = false;
+  bool endOfFeedReachedIsLoading = false;
 
   @override
   void initState() {
@@ -72,7 +79,10 @@ class _FeedListState extends State<FeedList> {
           widget.controller.itemPositionsListener.itemPositions.value.map((item) => item.index).toList();
       print("Length: ${widget.controller.items.length}, Last: ${visibleIndexes.last}");
       if (widget.controller.items.length - visibleIndexes.last < widget.controller.preloadBy &&
-          !isCurrentlyLoadingMorePosts) {
+          !isCurrentlyLoadingMorePosts &&
+          !widget.hasError &&
+          !widget.hasReachedEnd) {
+        print("got here");
         isCurrentlyLoadingMorePosts = true;
         await widget.loadMore();
         isCurrentlyLoadingMorePosts = false;
@@ -88,16 +98,34 @@ class _FeedListState extends State<FeedList> {
   Widget buildIndicator() {
     if (widget.hasError) {
       return _FeedListIndicator(
-        message: "Error loading feed.",
-        onClick: () => print("tap"),
+        isLoading: errorLoadingMoreIsLoading,
+        message: "Error loading more.",
+        onClick: () async {
+          setState(() {
+            errorLoadingMoreIsLoading = true;
+          });
+          await widget.onErrorButtonPressed();
+          setState(() {
+            errorLoadingMoreIsLoading = false;
+          });
+        },
       );
     } else if (widget.hasReachedEnd) {
       return _FeedListIndicator(
-        message: "You've reached the end.",
-        onClick: () => print("tap"),
+        isLoading: endOfFeedReachedIsLoading,
+        message: "You've reached the end!",
+        onClick: () async {
+          setState(() {
+            endOfFeedReachedIsLoading = true;
+          });
+          await widget.onEndOfFeedReachedButtonPressed();
+          setState(() {
+            endOfFeedReachedIsLoading = false;
+          });
+        },
       );
     } else {
-      return const _FeedListIndicator();
+      return const _FeedListIndicator(isLoading: true);
     }
   }
 
@@ -130,10 +158,11 @@ class _FeedListState extends State<FeedList> {
 //! Feed alert widget
 
 class _FeedListIndicator extends StatelessWidget {
-  const _FeedListIndicator({super.key, this.message, this.onClick});
+  const _FeedListIndicator({super.key, this.message, this.onClick, required this.isLoading});
 
   final String? message;
   final VoidCallback? onClick;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -142,12 +171,15 @@ class _FeedListIndicator extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(30),
         child: Center(
-          child: message != null && onClick != null
-              ? AlertIndicator(
-                  message: message!,
-                  onPress: () => onClick!(),
-                )
-              : const CupertinoActivityIndicator(),
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 250),
+            child: message != null && onClick != null && !isLoading
+                ? AlertIndicator(
+                    message: message!,
+                    onPress: () => onClick!(),
+                  )
+                : const CupertinoActivityIndicator(),
+          ),
         ),
       ),
     );

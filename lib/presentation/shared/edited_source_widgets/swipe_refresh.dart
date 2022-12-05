@@ -5,7 +5,7 @@
 import 'dart:async';
 import 'dart:math' as math;
 
-import 'package:Confessi/presentation/shared/indicators/loading.dart';
+import 'package:Confessi/presentation/shared/indicators/loading_material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

@@ -6,7 +6,7 @@ import 'package:Confessi/core/utils/sizing/top_safe_area.dart';
 import 'package:Confessi/presentation/primary/controllers/profile_controller.dart';
 import 'package:Confessi/presentation/profile/widgets/achievement_builder.dart';
 import 'package:Confessi/presentation/shared/indicators/alert.dart';
-import 'package:Confessi/presentation/shared/indicators/loading.dart';
+import 'package:Confessi/presentation/shared/indicators/loading_material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrollable/exports.dart';
@@ -17,6 +17,7 @@ import '../../../core/utils/sizing/width_fraction.dart';
 import '../../shared/behaviours/bottom_overscroll_scroll_to_top.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/edited_source_widgets/swipe_refresh.dart';
+import '../../shared/indicators/loading_cupertino.dart';
 import '../../shared/overlays/info_sheet_with_action.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -59,7 +60,7 @@ class _ProfileHomeState extends State<ProfileHome> with AutomaticKeepAliveClient
             onRefresh: () async => await context.read<ProfileCubit>().reloadProfile(),
             child: SingleChildScrollView(
               controller: widget.profileController.scrollController,
-              physics: const ClampingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+              physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -75,11 +76,8 @@ class _ProfileHomeState extends State<ProfileHome> with AutomaticKeepAliveClient
                           fit: BoxFit.cover,
                           imageUrl: state.universityImgUrl,
                           placeholder: (context, url) => Container(
-                            color: Theme.of(context).colorScheme.surface,
-                            child: LoadingIndicator(
-                              color: Theme.of(context).colorScheme.onSurface,
-                            ),
-                          ),
+                              color: Theme.of(context).colorScheme.surface,
+                              child: LoadingCupertinoIndicator(color: Theme.of(context).colorScheme.onSurface)),
                           errorWidget: (context, url, error) => Container(
                             color: Theme.of(context).colorScheme.surface,
                             child: Icon(Icons.error, color: Theme.of(context).colorScheme.onSurface),
@@ -249,7 +247,7 @@ class _ProfileHomeState extends State<ProfileHome> with AutomaticKeepAliveClient
         key: const ValueKey('loading'),
         child: Padding(
           padding: EdgeInsets.only(top: topSafeArea(context)),
-          child: const LoadingIndicator(),
+          child: const LoadingCupertinoIndicator(),
         ),
       );
     } else if (state is ProfileData) {

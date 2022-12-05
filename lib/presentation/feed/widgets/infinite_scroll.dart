@@ -1,6 +1,7 @@
 import '../../shared/behaviours/overscroll.dart';
+import '../../shared/indicators/loading_cupertino.dart';
 import 'post_tile.dart';
-import '../../shared/indicators/loading.dart';
+import '../../shared/indicators/loading_material.dart';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -127,7 +128,7 @@ class _InfiniteScrollState extends State<InfiniteScroll> with SingleTickerProvid
           onTap: () => widget.onLoad(),
         );
       case FeedState.loadingMore:
-        return const LoadingIndicator();
+        return const LoadingCupertinoIndicator();
       case FeedState.reachedEnd:
         return ErrorMessage(
           key: UniqueKey(),
@@ -184,7 +185,7 @@ class _InfiniteScrollState extends State<InfiniteScroll> with SingleTickerProvid
                           fit: BoxFit.scaleDown,
                           child: Padding(
                             padding: EdgeInsets.symmetric(vertical: 8),
-                            child: LoadingIndicator(),
+                            child: LoadingCupertinoIndicator(),
                           ),
                         ),
                       );

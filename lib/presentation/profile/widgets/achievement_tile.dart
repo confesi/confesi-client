@@ -6,7 +6,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../shared/indicators/loading.dart';
+import '../../shared/indicators/loading_cupertino.dart';
+import '../../shared/indicators/loading_material.dart';
 
 class AchievementTile extends StatelessWidget {
   const AchievementTile({
@@ -49,7 +50,7 @@ class AchievementTile extends StatelessWidget {
                 imageUrl: achievementImgUrl,
                 placeholder: (context, url) => Container(
                   color: Theme.of(context).colorScheme.surface,
-                  child: LoadingIndicator(
+                  child: LoadingCupertinoIndicator(
                     color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),

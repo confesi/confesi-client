@@ -3,7 +3,8 @@
 import 'package:Confessi/presentation/shared/indicators/alert.dart';
 
 import '../../../constants/shared/error_messages.dart';
-import '../../shared/indicators/loading.dart';
+import '../../shared/indicators/loading_cupertino.dart';
+import '../../shared/indicators/loading_material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -31,7 +32,7 @@ class _ExploreTrendingState extends State<ExploreTrending> with AutomaticKeepAli
     } else if (state is LoadingAll) {
       return Center(
         key: UniqueKey(),
-        child: const LoadingIndicator(),
+        child: const LoadingCupertinoIndicator(),
       );
     } else {
       final hasPosts = state as HasPosts;

@@ -4,7 +4,8 @@ import 'package:Confessi/presentation/shared/buttons/simple_text.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
-import 'loading.dart';
+import 'loading_cupertino.dart';
+import 'loading_material.dart';
 
 class AlertIndicator extends StatelessWidget {
   const AlertIndicator({
@@ -30,7 +31,7 @@ class AlertIndicator extends StatelessWidget {
             child: AnimatedSwitcher(
               duration: const Duration(milliseconds: 250),
               child: isLoading
-                  ? const LoadingIndicator()
+                  ? const LoadingCupertinoIndicator()
                   : Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
