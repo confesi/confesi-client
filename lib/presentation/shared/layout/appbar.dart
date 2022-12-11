@@ -64,7 +64,7 @@ class _AppbarLayoutState extends State<AppbarLayout> {
                     duration: const Duration(milliseconds: 250),
                     opacity: widget.leftIconDisabled ? 0.2 : 1,
                     child: Icon(
-                      widget.leftIcon ?? CupertinoIcons.back,
+                      widget.leftIcon ?? CupertinoIcons.arrow_left,
                     ),
                   ),
                 ),

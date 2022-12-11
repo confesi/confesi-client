@@ -97,6 +97,7 @@ class _ExploreDrawerState extends State<ExploreDrawer> {
                 child: ScrollableView(
                   physics: const BouncingScrollPhysics(),
                   hapticsEnabled: false,
+                  inlineBottomOrRightPadding: bottomSafeArea(context),
                   scrollBarVisible: false,
                   inlineTopOrLeftPadding: 10,
                   controller: ScrollController(),
@@ -106,28 +107,6 @@ class _ExploreDrawerState extends State<ExploreDrawer> {
                       ...buildBody(),
                     ],
                   ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(
-                  bottom: bottomSafeArea(context),
-                  top: 15,
-                  left: 15,
-                  right: 15,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Icon(
-                      CupertinoIcons.bell,
-                      color: Theme.of(context).colorScheme.onSurface,
-                    ),
-                    const SizedBox(width: 5),
-                    SimpleTextButton(
-                      onTap: () => Navigator.pushNamed(context, "/watched_universities"),
-                      text: "View updates feed",
-                    ),
-                  ],
                 ),
               ),
             ],

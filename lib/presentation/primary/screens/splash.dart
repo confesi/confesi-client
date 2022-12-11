@@ -89,10 +89,11 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                       SizedBox(
                         width: widthFraction(context, .6),
                         child: Image.asset(
-                          "assets/images/logo.jpg",
+                          "assets/images/logo_3.png",
                         ),
                       ),
                       SizedBox(
+                        width: widthFraction(context, .6),
                         child: Text(
                           introText,
                           style: kTitle.copyWith(

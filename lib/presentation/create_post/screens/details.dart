@@ -64,7 +64,6 @@ class _DetailsScreenState extends State<DetailsScreen> with AutomaticKeepAliveCl
                           textAlign: TextAlign.center,
                         ),
                       ),
-                      leftIcon: CupertinoIcons.back,
                       leftIconIgnored: context.watch<CreatePostCubit>().state is Loading,
                       rightIcon: CupertinoIcons.info,
                       rightIconVisible: true,
