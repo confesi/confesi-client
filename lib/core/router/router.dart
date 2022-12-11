@@ -26,7 +26,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
 
 import '../../application/authentication_and_settings/cubit/contact_setting_cubit.dart';
-import '../../application/authentication_and_settings/cubit/website_launcher_setting_cubit.dart';
+import '../../application/shared/cubit/website_launcher_cubit.dart';
 import '../../dependency_injection.dart';
 import '../../presentation/authentication_and_settings/screens/authentication/register_tab_manager.dart';
 import '../../presentation/authentication_and_settings/screens/settings/biometric_lock.dart';
@@ -195,15 +195,7 @@ class AppRouter {
           page = const FeedbackHome();
           break;
         case "/settings":
-          page = MultiBlocProvider(
-            providers: [
-              BlocProvider(
-                lazy: false,
-                create: (context) => sl<WebsiteLauncherSettingCubit>(),
-              ),
-            ],
-            child: const SettingsHome(),
-          );
+          page = const SettingsHome();
           break;
         case "/watched_universities":
           page = const WatchedUniversitiesScreen();

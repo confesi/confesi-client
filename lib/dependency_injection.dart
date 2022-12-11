@@ -43,7 +43,7 @@ import 'application/authentication_and_settings/cubit/contact_setting_cubit.dart
 import 'application/authentication_and_settings/cubit/login_cubit.dart';
 import 'application/authentication_and_settings/cubit/register_cubit.dart';
 import 'application/authentication_and_settings/cubit/user_cubit.dart';
-import 'application/authentication_and_settings/cubit/website_launcher_setting_cubit.dart';
+import 'application/shared/cubit/website_launcher_cubit.dart';
 import 'core/network/connection_info.dart';
 import 'core/router/router.dart';
 import 'data/authentication_and_settings/datasources/authentication_datasource.dart';
@@ -95,7 +95,7 @@ Future<void> init() async {
   // Registers the contact setting cubit.
   sl.registerFactory(() => ContactSettingCubit(copyEmailTextUsecase: sl(), openMailClientUsecase: sl()));
   // Registers the cubit that launches the website viewer.
-  sl.registerFactory(() => WebsiteLauncherSettingCubit(launchWebsiteUsecase: sl()));
+  sl.registerFactory(() => WebsiteLauncherCubit(launchWebsiteUsecase: sl()));
   // Registers the cubit that opens the device's system settings.
   sl.registerFactory(() => LanguageSettingCubit(openDeviceSettingsUsecase: sl()));
   // Registers the share cubit

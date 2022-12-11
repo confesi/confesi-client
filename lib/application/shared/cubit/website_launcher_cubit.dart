@@ -5,15 +5,25 @@ import 'package:meta/meta.dart';
 
 import '../../../core/usecases/no_params.dart';
 
-part 'website_launcher_setting_state.dart';
+part 'website_launcher_state.dart';
 
-class WebsiteLauncherSettingCubit extends Cubit<WebsitelauncherSettingState> {
+class WebsiteLauncherCubit extends Cubit<WebsiteLauncherState> {
   final LaunchWebsite launchWebsiteUsecase;
 
-  WebsiteLauncherSettingCubit({required this.launchWebsiteUsecase}) : super(WebsiteLauncherBase());
+  WebsiteLauncherCubit({required this.launchWebsiteUsecase}) : super(WebsiteLauncherBase());
 
   // resets the cubit state to base
   void setContactStateToBase() => emit(WebsiteLauncherBase());
+
+  // launch posted content link
+  void launchPostLink(String link) async {
+    (await launchWebsiteUsecase.call(link)).fold(
+      (failure) {
+        emit(WebsiteLauncherError(message: "Unable to open website."));
+      },
+      (success) => {}, // Nothing needed if it works, as the mail client would be clearly opening
+    );
+  }
 
   // opens our website to the home page
   void launchWebsiteHome() async {

@@ -35,8 +35,8 @@ class PostStatTile extends StatelessWidget {
             child: Row(
               children: [
                 PostStatItem(text: "Back", icon: CupertinoIcons.arrow_turn_up_left, onTap: () => icon1OnPress()),
-                PostStatItem(text: "Share", icon: CupertinoIcons.share, onTap: () => icon2OnPress()),
-                PostStatItem(text: "124", icon: CupertinoIcons.chat_bubble, onTap: () => icon3OnPress()),
+                PostStatItem(text: "124", icon: CupertinoIcons.chat_bubble, onTap: () => icon2OnPress()),
+                PostStatItem(text: "Share", icon: CupertinoIcons.share, onTap: () => icon3OnPress()),
                 PostStatItem(text: "12.2k", icon: CupertinoIcons.hand_thumbsdown, onTap: () => icon4OnPress()),
                 PostStatItem(text: "413", icon: CupertinoIcons.hand_thumbsup, onTap: () => icon5OnPress()),
               ],

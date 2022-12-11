@@ -82,15 +82,7 @@ class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
                                 children: [
                                   SimpleTextButton(
                                     onTap: () => Navigator.pushNamed(context, '/home/profile/posts'),
-                                    text: "Options",
-                                  ),
-                                  SimpleTextButton(
-                                    onTap: () => Navigator.pushNamed(context, '/home/profile/posts'),
-                                    text: "Flag",
-                                  ),
-                                  SimpleTextButton(
-                                    onTap: () => Navigator.pushNamed(context, '/home/profile/posts'),
-                                    text: "Save",
+                                    text: "Post options",
                                   ),
                                 ],
                               ),

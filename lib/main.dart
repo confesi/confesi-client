@@ -1,5 +1,6 @@
 import 'application/create_post/cubit/post_cubit.dart';
 import 'application/shared/cubit/share_cubit.dart';
+import 'application/shared/cubit/website_launcher_cubit.dart';
 import 'constants/enums_that_are_local_keys.dart';
 import 'constants/shared/dev.dart';
 import 'presentation/primary/screens/splash.dart';
@@ -79,6 +80,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider(
+          lazy: false,
+          create: (context) => sl<WebsiteLauncherCubit>(),
+        ),
         BlocProvider(
           lazy: false,
           create: (context) => sl<ShareCubit>(),

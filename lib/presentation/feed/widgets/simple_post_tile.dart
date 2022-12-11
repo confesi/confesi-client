@@ -1,5 +1,6 @@
 import 'package:Confessi/core/styles/typography.dart';
 import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opacity.dart';
+import 'package:Confessi/presentation/shared/other/link_preview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -33,7 +34,7 @@ class _SimplePostTileState extends State<SimplePostTile> {
     return GestureDetector(
       onTap: () => Navigator.pushNamed(context, "/home/simplified_detail"),
       child: Padding(
-        padding: const EdgeInsets.only(top: 10),
+        padding: const EdgeInsets.only(top: 5, left: 5, right: 5),
         child: ClipRRect(
           borderRadius: const BorderRadius.all(Radius.circular(3)),
           child: Container(
@@ -51,7 +52,6 @@ class _SimplePostTileState extends State<SimplePostTile> {
                     color: Theme.of(context).colorScheme.secondary,
                     borderRadius: const BorderRadius.only(topLeft: Radius.circular(3), topRight: Radius.circular(3)),
                   ),
-                  // padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -67,7 +67,7 @@ class _SimplePostTileState extends State<SimplePostTile> {
                         ),
                       ),
                       const SizedBox(width: 20),
-                      TouchableOpacity(
+                      GestureDetector(
                         onTap: () => buildOptionsSheet(context),
                         child: Container(
                           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
@@ -83,7 +83,7 @@ class _SimplePostTileState extends State<SimplePostTile> {
                 ),
                 //!
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 10),
+                  padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
                   child: Align(
                     alignment: Alignment.topLeft,
                     child: Column(
@@ -97,7 +97,7 @@ class _SimplePostTileState extends State<SimplePostTile> {
                           ),
                           textAlign: TextAlign.left,
                         ),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 15),
                         Text(
                           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sapien lacus, lacinia in posuere eget, bibendum quis lectus. Pellentesque eu nulla ullamcorper dui blandit porta vel id urna...",
                           style: kBody.copyWith(
@@ -105,6 +105,9 @@ class _SimplePostTileState extends State<SimplePostTile> {
                           ),
                           textAlign: TextAlign.left,
                         ),
+                        const SizedBox(height: 15),
+                        const UrlPreviewTile(url: "https://www.apple.com/ca/shop/buy-watch/apple-watch"),
+                        const SizedBox(height: 5),
                       ],
                     ),
                   ),

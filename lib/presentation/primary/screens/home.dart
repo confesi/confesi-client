@@ -2,6 +2,7 @@ import 'package:Confessi/application/shared/cubit/share_cubit.dart';
 import 'package:Confessi/presentation/primary/controllers/profile_controller.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../application/shared/cubit/website_launcher_cubit.dart';
 import '../../daily_hottest/screens/home.dart';
 import '../../profile/screens/home.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
@@ -45,14 +46,27 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<ShareCubit, ShareState>(
-      listener: (context, state) {
-        if (state is ShareError) {
-          showNotificationChip(context, state.message, screenSide: ScreenSide.top);
-          // set to base
-          context.read<ShareCubit>().setToBase();
-        }
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<ShareCubit, ShareState>(
+          listener: (context, state) {
+            if (state is ShareError) {
+              showNotificationChip(context, state.message, screenSide: ScreenSide.top);
+              // set to base
+              context.read<ShareCubit>().setToBase();
+            }
+          },
+        ),
+        BlocListener<WebsiteLauncherCubit, WebsiteLauncherState>(
+          listener: (context, state) {
+            if (state is WebsiteLauncherError) {
+              showNotificationChip(context, "error", screenSide: ScreenSide.top);
+              // set to base
+              context.read<WebsiteLauncherCubit>().setContactStateToBase();
+            }
+          },
+        ),
+      ],
       child: WillPopScope(
         onWillPop: () async => false,
         child: ThemedStatusBar(

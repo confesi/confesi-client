@@ -76,7 +76,7 @@ class _TouchableScaleState extends State<TouchableScale> with SingleTickerProvid
                 animController.addListener(() => setState(() {}));
               },
               child: Transform.scale(
-                scale: -anim.value * 0.15 + 1,
+                scale: -anim.value * 0.05 + 1,
                 child: widget.child,
               ),
             )

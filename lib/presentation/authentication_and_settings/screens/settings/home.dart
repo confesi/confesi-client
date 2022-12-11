@@ -1,4 +1,4 @@
-import '../../../../application/authentication_and_settings/cubit/website_launcher_setting_cubit.dart';
+import '../../../../application/shared/cubit/website_launcher_cubit.dart';
 import '../../../../core/utils/sizing/bottom_safe_area.dart';
 import '../../../../generated/l10n.dart';
 import '../../../shared/behaviours/themed_status_bar.dart';
@@ -20,12 +20,12 @@ class SettingsHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<WebsiteLauncherSettingCubit, WebsitelauncherSettingState>(
+    return BlocListener<WebsiteLauncherCubit, WebsiteLauncherState>(
       listener: (context, state) {
         if (state is WebsiteLauncherError) {
           showNotificationChip(context, state.message);
           // set to base
-          context.read<WebsiteLauncherSettingCubit>().setContactStateToBase();
+          context.read<WebsiteLauncherCubit>().setContactStateToBase();
         }
       },
       child: ThemedStatusBar(
@@ -82,6 +82,11 @@ class SettingsHome extends StatelessWidget {
                                   onTap: () => Navigator.of(context).pushNamed("/settings/faq"),
                                 ),
                                 SettingTile(
+                                  leftIcon: CupertinoIcons.chevron_left_slash_chevron_right,
+                                  text: "Updates feed",
+                                  onTap: () => print("nav to update feed"),
+                                ),
+                                SettingTile(
                                   leftIcon: CupertinoIcons.mail,
                                   text: kContactConfesiLabel,
                                   onTap: () => Navigator.pushNamed(context, "/settings/contact"),
@@ -90,7 +95,7 @@ class SettingsHome extends StatelessWidget {
                                   rightIcon: CupertinoIcons.link,
                                   leftIcon: CupertinoIcons.sidebar_left,
                                   text: kSettingsOurWebsiteLinkLabel,
-                                  onTap: () => context.read<WebsiteLauncherSettingCubit>().launchWebsiteHome(),
+                                  onTap: () => context.read<WebsiteLauncherCubit>().launchWebsiteHome(),
                                 ),
                               ],
                             ),
@@ -147,15 +152,13 @@ class SettingsHome extends StatelessWidget {
                                   rightIcon: CupertinoIcons.link,
                                   leftIcon: CupertinoIcons.doc,
                                   text: kSettingsTermsOfServiceLabel,
-                                  onTap: () =>
-                                      context.read<WebsiteLauncherSettingCubit>().launchWebsiteTermsOfService(),
+                                  onTap: () => context.read<WebsiteLauncherCubit>().launchWebsiteTermsOfService(),
                                 ),
                                 SettingTile(
                                   rightIcon: CupertinoIcons.link,
                                   leftIcon: CupertinoIcons.doc,
                                   text: kSesttingsPrivacyStatementLabel,
-                                  onTap: () =>
-                                      context.read<WebsiteLauncherSettingCubit>().launchWebsitePrivacyStatement(),
+                                  onTap: () => context.read<WebsiteLauncherCubit>().launchWebsitePrivacyStatement(),
                                 ),
                               ],
                             ),

@@ -4,6 +4,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class FeedListController extends ChangeNotifier {
+  bool isDisposed = false;
+
+  @override
+  void dispose() {
+    isDisposed = true;
+    super.dispose();
+  }
+
   // How many items to preload the feed by.
   final int preloadBy;
 
@@ -19,23 +27,30 @@ class FeedListController extends ChangeNotifier {
 
   /// Adds an item to the list.
   void addItem(Widget newItem) {
+    if (isDisposed) return;
     items.add(newItem);
     notifyListeners();
   }
 
   /// Adds multiple items to the list.
   void addItems(List<Widget> newItems) {
+    if (isDisposed) return;
+
     items.addAll(newItems);
     notifyListeners();
   }
 
   /// Scrolls to the top of the list (over a set duration).
   void scrollToTop() {
+    if (isDisposed) return;
+
     itemScrollController.scrollTo(index: 0, duration: const Duration(milliseconds: 150));
   }
 
   /// Clears the list.
   void clearList() {
+    if (isDisposed) return;
+
     items.clear();
     notifyListeners();
   }
@@ -77,19 +92,15 @@ class _FeedListState extends State<FeedList> {
     widget.controller.itemPositionsListener.itemPositions.addListener(() async {
       List<int> visibleIndexes =
           widget.controller.itemPositionsListener.itemPositions.value.map((item) => item.index).toList();
-      print("Length: ${widget.controller.items.length}, Last: ${visibleIndexes.last}");
-      if (widget.controller.items.length - visibleIndexes.last < widget.controller.preloadBy &&
+      if (visibleIndexes.isNotEmpty &&
+          widget.controller.items.length - visibleIndexes.last < widget.controller.preloadBy &&
           !isCurrentlyLoadingMorePosts &&
           !widget.hasError &&
           !widget.hasReachedEnd) {
-        print("got here");
         isCurrentlyLoadingMorePosts = true;
         await widget.loadMore();
         isCurrentlyLoadingMorePosts = false;
       }
-      // if (visibleIndexes.last < widget.controller.items.length) {
-      //   print("less; load more");
-      // }
     });
     widget.controller.addListener(() => setState(() {}));
     super.initState();
@@ -142,7 +153,10 @@ class _FeedListState extends State<FeedList> {
               child: widget.header ?? Container(),
             );
           } else if (index == widget.controller.items.length + 1) {
-            return buildIndicator();
+            return AnimatedSwitcher(
+              duration: const Duration(milliseconds: 250),
+              child: buildIndicator(),
+            );
           } else {
             return widget.controller.items[index - 1];
           }

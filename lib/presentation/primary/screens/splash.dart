@@ -84,7 +84,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Center(
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       SizedBox(
                         width: widthFraction(context, .6),
@@ -93,7 +93,6 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                         ),
                       ),
                       SizedBox(
-                        width: widthFraction(context, .6),
                         child: Text(
                           introText,
                           style: kTitle.copyWith(

@@ -27,18 +27,18 @@ class OptionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(bottom: noBottomPadding ? 0 : 3),
-      width: double.infinity,
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(Radius.circular(5)),
-        color: Theme.of(context).colorScheme.surface,
-      ),
-      child: TouchableOpacity(
-        onTap: () {
-          popContext ? Navigator.pop(context) : null;
-          onTap();
-        },
+    return TouchableOpacity(
+      onTap: () {
+        popContext ? Navigator.pop(context) : null;
+        onTap();
+      },
+      child: Container(
+        margin: EdgeInsets.only(bottom: noBottomPadding ? 0 : 3),
+        width: double.infinity,
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(5)),
+          color: Theme.of(context).colorScheme.surface,
+        ),
         child: Container(
           // Transparent hitbox trick.
           color: Colors.transparent,

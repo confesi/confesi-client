@@ -1,3 +1,4 @@
+import 'package:Confessi/presentation/feed/widgets/simple_post_tile.dart';
 import 'package:Confessi/presentation/shared/other/feed_list.dart';
 import 'package:Confessi/presentation/shared/overlays/create_account_sheet.dart';
 import 'package:flutter/material.dart';
@@ -15,8 +16,6 @@ class _ExploreRecentsState extends State<ExploreRecents> {
   @override
   void initState() {
     feedListController = FeedListController();
-    feedListController.addItems(const [Text("HEY"), Text("HEY")]);
-    feedListController.addItem(const Text("HEY"));
     super.initState();
   }
 
@@ -28,42 +27,12 @@ class _ExploreRecentsState extends State<ExploreRecents> {
 
   Future<void> loadMorePost() async {
     await Future.delayed(const Duration(milliseconds: 500));
-    feedListController.addItems([
-      Container(
-        margin: const EdgeInsets.symmetric(vertical: 5),
-        color: Colors.redAccent,
-        height: 100,
-        width: double.infinity,
-        child: const Text("ITEM"),
-      ),
-      Container(
-        margin: const EdgeInsets.symmetric(vertical: 5),
-        color: Colors.redAccent,
-        height: 100,
-        width: double.infinity,
-        child: const Text("ITEM"),
-      ),
-      Container(
-        margin: const EdgeInsets.symmetric(vertical: 5),
-        color: Colors.redAccent,
-        height: 100,
-        width: double.infinity,
-        child: const Text("ITEM"),
-      ),
-      Container(
-        margin: const EdgeInsets.symmetric(vertical: 5),
-        color: Colors.redAccent,
-        height: 100,
-        width: double.infinity,
-        child: const Text("ITEM"),
-      ),
-      Container(
-        margin: const EdgeInsets.symmetric(vertical: 5),
-        color: Colors.redAccent,
-        height: 100,
-        width: double.infinity,
-        child: const Text("ITEM"),
-      ),
+    feedListController.addItems(const [
+      SimplePostTile(),
+      SimplePostTile(),
+      SimplePostTile(),
+      SimplePostTile(),
+      SimplePostTile(),
     ]);
   }
 
@@ -73,24 +42,14 @@ class _ExploreRecentsState extends State<ExploreRecents> {
       color: Theme.of(context).colorScheme.shadow,
       child: Column(
         children: [
-          Row(
-            children: [
-              TextButton(
-                  onPressed: () => feedListController.addItem(
-                        Container(
-                          margin: const EdgeInsets.symmetric(vertical: 5),
-                          color: Colors.redAccent,
-                          height: 100,
-                          width: double.infinity,
-                          child: const Text("ITEM"),
-                        ),
-                      ),
-                  child: Text("add item")),
-              TextButton(onPressed: () => feedListController.scrollToTop(), child: Text("to top")),
-              TextButton(onPressed: () => feedListController.clearList(), child: Text("clear")),
-              TextButton(onPressed: () => showCreateAccountSheet(context), child: Text("create account")),
-            ],
-          ),
+          // Row(
+          //   children: [
+          //     TextButton(onPressed: () => feedListController.addItem(const SimplePostTile()), child: Text("add item")),
+          //     TextButton(onPressed: () => feedListController.scrollToTop(), child: Text("to top")),
+          //     TextButton(onPressed: () => feedListController.clearList(), child: Text("clear")),
+          //     TextButton(onPressed: () => showCreateAccountSheet(context), child: Text("create account")),
+          //   ],
+          // ),
           Expanded(
             child: FeedList(
               hasError: false,
@@ -102,7 +61,7 @@ class _ExploreRecentsState extends State<ExploreRecents> {
                 feedListController.clearList();
               },
               loadMore: () async => await loadMorePost(),
-              header: Container(color: Colors.green, height: 100, width: double.infinity, child: const Text("HEADER")),
+              // header: Container(color: Colors.green, height: 100, width: double.infinity, child: const Text("HEADER")),
               controller: feedListController,
             ),
           ),
