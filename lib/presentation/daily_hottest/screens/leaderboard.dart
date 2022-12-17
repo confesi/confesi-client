@@ -1,8 +1,12 @@
+import 'package:Confessi/core/utils/numbers/large_number_formatter.dart';
+import 'package:Confessi/core/utils/numbers/number_postfix.dart';
 import 'package:Confessi/presentation/daily_hottest/widgets/leaderboard_header.dart';
 import 'package:Confessi/presentation/daily_hottest/widgets/leaderboard_item_tile.dart';
 import 'package:Confessi/presentation/shared/indicators/loading_cupertino.dart';
 import 'package:Confessi/presentation/shared/other/feed_list.dart';
 
+import '../../../core/utils/numbers/is_plural.dart';
+import '../../../domain/daily_hottest/entities/leaderboard_item.dart';
 import '../../../generated/l10n.dart';
 import '../../shared/indicators/alert.dart';
 import '../../shared/layout/appbar.dart';
@@ -25,10 +29,18 @@ class LeaderboardScreen extends StatefulWidget {
 
 class _LeaderboardScreenState extends State<LeaderboardScreen> {
   late FeedListController controller;
+  bool scrolledDownFromTop = false;
 
   @override
   void initState() {
     controller = FeedListController();
+    controller.addListener(() {
+      if (controller.scrolledDownFromTop != scrolledDownFromTop) {
+        setState(() {
+          scrolledDownFromTop = controller.scrolledDownFromTop;
+        });
+      }
+    });
     super.initState();
   }
 
@@ -49,18 +61,15 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
         header: const LeaderboardHeader(),
         controller: controller,
         loadMore: () {
-          controller.addItem(
-            const LeaderboardItemTile(
-              placing: "31st",
-              points: "321 hottests",
-              university: "University of Southern California",
-            ),
-          );
-          print("added");
-          setState(() {});
+          for (LeaderboardItem item in state.rankings) {
+            controller.addItem(LeaderboardItemTile(
+                placing: "${item.placing}${numberPostfix(item.placing)}",
+                points: "${largeNumberFormatter(item.points)} ${isPlural(item.points) ? "hottests" : "hottest"}",
+                university: item.universityFullName));
+          }
         },
         onPullToRefresh: () async {
-          await Future.delayed(const Duration(milliseconds: 350));
+          await Future.delayed(const Duration(milliseconds: 500));
           controller.clearList();
         },
         hasError: false,
@@ -100,9 +109,11 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
                   ),
-                  rightIcon: CupertinoIcons.info,
+                  rightIcon: scrolledDownFromTop ? CupertinoIcons.arrow_up : CupertinoIcons.info,
                   rightIconVisible: true,
-                  rightIconOnPress: () => showInfoSheet(context, kLeaderboardInfoHeader, kLeaderboardInfoBody),
+                  rightIconOnPress: () => scrolledDownFromTop
+                      ? controller.scrollToTop()
+                      : showInfoSheet(context, kLeaderboardInfoHeader, kLeaderboardInfoBody),
                 ),
                 Expanded(
                   child: BlocBuilder<LeaderboardCubit, LeaderboardState>(

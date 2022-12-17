@@ -6,6 +6,8 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 class FeedListController extends ChangeNotifier {
   bool _isDisposed = false;
 
+  bool scrolledDownFromTop = false;
+
   @override
   void dispose() {
     _isDisposed = true;
@@ -32,6 +34,13 @@ class FeedListController extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Sets the items list to a whole new set of values.
+  void setItems(List<Widget> newItemList) {
+    if (_isDisposed) return;
+    items = newItemList;
+    notifyListeners();
+  }
+
   /// Adds multiple items to the list.
   void addItems(List<Widget> newItems) {
     if (_isDisposed) return;
@@ -44,7 +53,7 @@ class FeedListController extends ChangeNotifier {
   void scrollToTop() {
     if (_isDisposed) return;
 
-    itemScrollController.scrollTo(index: 0, duration: const Duration(milliseconds: 150));
+    itemScrollController.scrollTo(index: 0, duration: const Duration(milliseconds: 350));
   }
 
   /// Clears the list.
@@ -52,6 +61,12 @@ class FeedListController extends ChangeNotifier {
     if (_isDisposed) return;
 
     items.clear();
+    notifyListeners();
+  }
+
+  void _updateScrolledDownFromTop(bool newValue) {
+    if (_isDisposed) return;
+    scrolledDownFromTop = newValue;
     notifyListeners();
   }
 }
@@ -90,6 +105,21 @@ class _FeedListState extends State<FeedList> {
   @override
   void initState() {
     widget.controller.itemPositionsListener.itemPositions.addListener(() async {
+      // Check if at top
+      // if (widget.controller.itemPositionsListener.itemPositions.value.isNotEmpty &&
+      //     widget.controller.itemPositionsListener.itemPositions.value.toList()[0].itemLeadingEdge <= 0 &&
+      //     widget.controller.itemPositionsListener.itemPositions.value.toList().first ==
+      //         widget.controller.itemPositionsListener.itemPositions.value.toList()[0]) {
+      //   print("TOP");
+      // } else {
+      //   print("not top...");
+      // }
+      if (widget.controller.itemPositionsListener.itemPositions.value.first.index > 1) {
+        widget.controller._updateScrolledDownFromTop(true);
+      } else {
+        widget.controller._updateScrolledDownFromTop(false);
+      }
+      // Loading more items
       List<int> visibleIndexes =
           widget.controller.itemPositionsListener.itemPositions.value.map((item) => item.index).toList();
       if (visibleIndexes.isNotEmpty &&
