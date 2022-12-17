@@ -59,7 +59,7 @@ class _HottestTileState extends State<HottestTile> {
         return Center(
           child: SingleChildScrollView(
             child: ClipRRect(
-              borderRadius: const BorderRadius.all(Radius.circular(3)),
+              borderRadius: const BorderRadius.all(Radius.circular(5)),
               child: Column(
                 children: [
                   AnimatedOpacity(

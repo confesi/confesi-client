@@ -1,77 +1,41 @@
-import 'dart:math';
-
+import 'package:Confessi/presentation/daily_hottest/widgets/leaderboard_header.dart';
+import 'package:Confessi/presentation/daily_hottest/widgets/leaderboard_item_tile.dart';
 import 'package:Confessi/presentation/shared/indicators/loading_cupertino.dart';
+import 'package:Confessi/presentation/shared/other/feed_list.dart';
 
-import '../../../core/utils/numbers/is_plural.dart';
 import '../../../generated/l10n.dart';
-import '../../shared/behaviours/init_transform.dart';
 import '../../shared/indicators/alert.dart';
-import '../../shared/indicators/loading_material.dart';
 import '../../shared/layout/appbar.dart';
-import '../../shared/layout/line.dart';
 import '../../../application/daily_hottest/cubit/leaderboard_cubit.dart';
-import '../widgets/leaderboard_circle_tile.dart';
-import '../widgets/leaderboard_rectangle_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:scrollable/exports.dart';
 
 import '../../../constants/daily_hottest/general.dart';
 import '../../../core/styles/typography.dart';
-import '../../../core/utils/numbers/large_number_formatter.dart';
-import '../../../core/utils/numbers/number_postfix.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/overlays/info_sheet.dart';
 
-class LeaderboardScreen extends StatelessWidget {
+class LeaderboardScreen extends StatefulWidget {
   const LeaderboardScreen({Key? key}) : super(key: key);
 
-  List<Widget> getCircleRanks(Data data, BuildContext context) {
-    return [
-      data.rankings.length >= 2
-          ? Flexible(
-              child: LeaderboardCircleTile(
-                universityImagePath: data.rankings[1].universityImagePath,
-                minSize: 90,
-                placing: '${data.rankings[1].placing}${numberPostfix(data.rankings[1].placing)}',
-                universityFullName: data.rankings[1].universityFullName,
-                universityName: data.rankings[1].universityName,
-                points: isPlural(data.rankings[1].points)
-                    ? '${largeNumberFormatter(data.rankings[1].points)} pts'
-                    : '${largeNumberFormatter(data.rankings[1].points)} pt',
-              ),
-            )
-          : Container(),
-      data.rankings.isNotEmpty
-          ? Flexible(
-              child: LeaderboardCircleTile(
-                universityImagePath: data.rankings[0].universityImagePath,
-                minSize: 120,
-                placing: '${data.rankings[0].placing}${numberPostfix(data.rankings[0].placing)}',
-                universityFullName: data.rankings[0].universityFullName,
-                universityName: data.rankings[0].universityName,
-                points: isPlural(data.rankings[0].points)
-                    ? '${largeNumberFormatter(data.rankings[0].points)} pts'
-                    : '${largeNumberFormatter(data.rankings[0].points)} pt',
-              ),
-            )
-          : Container(),
-      data.rankings.length >= 3
-          ? Flexible(
-              child: LeaderboardCircleTile(
-                universityImagePath: data.rankings[2].universityImagePath,
-                minSize: 90,
-                placing: '${data.rankings[2].placing}${numberPostfix(data.rankings[2].placing)}',
-                universityFullName: data.rankings[2].universityFullName,
-                universityName: data.rankings[2].universityName,
-                points: isPlural(data.rankings[2].points)
-                    ? '${largeNumberFormatter(data.rankings[2].points)} pts'
-                    : '${largeNumberFormatter(data.rankings[2].points)} pt',
-              ),
-            )
-          : Container(),
-    ];
+  @override
+  State<LeaderboardScreen> createState() => _LeaderboardScreenState();
+}
+
+class _LeaderboardScreenState extends State<LeaderboardScreen> {
+  late FeedListController controller;
+
+  @override
+  void initState() {
+    controller = FeedListController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
   Widget buildChild(BuildContext context, LeaderboardState state) {
@@ -81,64 +45,28 @@ class LeaderboardScreen extends StatelessWidget {
         child: LoadingCupertinoIndicator(),
       );
     } else if (state is Data && state.rankings.isNotEmpty) {
-      return Column(
-        children: [
-          Expanded(
-            child: Stack(
-              children: [
-                CustomPaint(
-                  painter: PaintedHeader(context: context),
-                  size: Size(MediaQuery.of(context).size.width, 125),
-                ),
-                Positioned.fill(
-                  top: 30,
-                  child: Column(
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: getCircleRanks(state, context),
-                      ),
-                      // HERE
-                      LineLayout(
-                        topPadding: 30,
-                        width: MediaQuery.of(context).size.width * .3,
-                        color: Theme.of(context).colorScheme.onBackground,
-                      ),
-                      Expanded(
-                        child: InitTransform(
-                          child: ScrollHaptics(
-                            distancebetweenHapticEffectsDuringScroll: 50,
-                            hapticEffectAtEdge: HapticType.medium,
-                            child: ListView.builder(
-                              physics: const ClampingScrollPhysics(),
-                              itemBuilder: (context, index) {
-                                if (index == 0) {
-                                  return const SizedBox(height: 30);
-                                } else if (index >= 3) {
-                                  return LeaderboardRectangleTile(
-                                    placing:
-                                        '${state.rankings[index].placing}${numberPostfix(state.rankings[index].placing)}',
-                                    points: isPlural(state.rankings[index].points)
-                                        ? '${largeNumberFormatter(state.rankings[index].points)} pts'
-                                        : '${largeNumberFormatter(state.rankings[index].points)} pt',
-                                    university: state.rankings[index].universityFullName,
-                                  );
-                                } else {
-                                  return Container();
-                                }
-                              },
-                              itemCount: state.rankings.length,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+      return FeedList(
+        header: const LeaderboardHeader(),
+        controller: controller,
+        loadMore: () {
+          controller.addItem(
+            const LeaderboardItemTile(
+              placing: "31st",
+              points: "321 hottests",
+              university: "University of Southern California",
             ),
-          ),
-        ],
+          );
+          print("added");
+          setState(() {});
+        },
+        onPullToRefresh: () async {
+          await Future.delayed(const Duration(milliseconds: 350));
+          controller.clearList();
+        },
+        hasError: false,
+        hasReachedEnd: false,
+        onEndOfFeedReachedButtonPressed: () => print("end of feed reached pressed"),
+        onErrorButtonPressed: () => print("error button pressed"),
       );
     } else {
       final error = state as Error;
@@ -193,29 +121,4 @@ class LeaderboardScreen extends StatelessWidget {
       ),
     );
   }
-}
-
-class PaintedHeader extends CustomPainter {
-  PaintedHeader({required this.context});
-
-  final BuildContext context;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()..color = Theme.of(context).colorScheme.background;
-    canvas.drawArc(
-      Rect.fromCenter(
-        center: Offset(size.width / 2, 0),
-        height: size.height * 1.75,
-        width: size.width,
-      ),
-      pi * 2,
-      pi,
-      false,
-      paint,
-    );
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) => false;
 }

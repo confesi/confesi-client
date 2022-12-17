@@ -4,11 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class FeedListController extends ChangeNotifier {
-  bool isDisposed = false;
+  bool _isDisposed = false;
 
   @override
   void dispose() {
-    isDisposed = true;
+    _isDisposed = true;
     super.dispose();
   }
 
@@ -27,14 +27,14 @@ class FeedListController extends ChangeNotifier {
 
   /// Adds an item to the list.
   void addItem(Widget newItem) {
-    if (isDisposed) return;
+    if (_isDisposed) return;
     items.add(newItem);
     notifyListeners();
   }
 
   /// Adds multiple items to the list.
   void addItems(List<Widget> newItems) {
-    if (isDisposed) return;
+    if (_isDisposed) return;
 
     items.addAll(newItems);
     notifyListeners();
@@ -42,14 +42,14 @@ class FeedListController extends ChangeNotifier {
 
   /// Scrolls to the top of the list (over a set duration).
   void scrollToTop() {
-    if (isDisposed) return;
+    if (_isDisposed) return;
 
     itemScrollController.scrollTo(index: 0, duration: const Duration(milliseconds: 150));
   }
 
   /// Clears the list.
   void clearList() {
-    if (isDisposed) return;
+    if (_isDisposed) return;
 
     items.clear();
     notifyListeners();

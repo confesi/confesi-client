@@ -112,7 +112,7 @@ class _SimplePostTileState extends State<SimplePostTile> {
                           textAlign: TextAlign.left,
                         ),
                         const SizedBox(height: 15),
-                        const UrlPreviewTile(url: "https://www.apple.com/ca/shop/buy-watch/apple-watch"),
+                        // const UrlPreviewTile(url: "https://www.apple.com/ca/shop/buy-watch/apple-watch"),
                         const SizedBox(height: 5),
                       ],
                     ),

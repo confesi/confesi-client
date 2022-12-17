@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
 
-class LeaderboardRectangleTile extends StatelessWidget {
-  const LeaderboardRectangleTile({
+class LeaderboardItemTile extends StatelessWidget {
+  const LeaderboardItemTile({
     required this.placing,
     required this.points,
     required this.university,
@@ -17,33 +17,34 @@ class LeaderboardRectangleTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+      margin: const EdgeInsets.only(left: 5, right: 5, bottom: 5),
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
+        border: Border.all(color: Theme.of(context).colorScheme.surface, width: 1),
         color: Theme.of(context).colorScheme.background,
-        borderRadius: const BorderRadius.all(
-          Radius.circular(20),
-        ),
+        borderRadius: const BorderRadius.all(Radius.circular(5)),
       ),
       width: double.infinity,
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.secondary,
-              borderRadius: const BorderRadius.all(
-                Radius.circular(20),
-              ),
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
             ),
-            child: Text(
-              placing,
-              style: kDetail.copyWith(
-                color: Theme.of(context).colorScheme.onSecondary,
-                fontWeight: FontWeight.bold,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5),
+              child: Text(
+                placing,
+                style: kDetail.copyWith(
+                  color: Theme.of(context).colorScheme.onSecondary,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.left,
+                overflow: TextOverflow.ellipsis,
               ),
-              textAlign: TextAlign.left,
-              overflow: TextOverflow.ellipsis,
             ),
           ),
           const SizedBox(width: 5),
@@ -60,6 +61,7 @@ class LeaderboardRectangleTile extends StatelessWidget {
                   textAlign: TextAlign.right,
                   overflow: TextOverflow.ellipsis,
                 ),
+                const SizedBox(height: 5),
                 Text(
                   points,
                   style: kDetail.copyWith(
