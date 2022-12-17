@@ -1,5 +1,5 @@
 import 'package:Confessi/core/styles/typography.dart';
-import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opacity.dart';
+import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:Confessi/presentation/shared/other/link_preview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -49,8 +49,14 @@ class _SimplePostTileState extends State<SimplePostTile> {
               children: [
                 Container(
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.secondary,
-                    borderRadius: const BorderRadius.only(topLeft: Radius.circular(3), topRight: Radius.circular(3)),
+                    color: Theme.of(context).colorScheme.background,
+                    // borderRadius: const BorderRadius.only(topLeft: Radius.circular(3), topRight: Radius.circular(3)),
+                    border: Border(
+                      bottom: BorderSide(
+                        color: Theme.of(context).colorScheme.surface,
+                        width: 1,
+                      ),
+                    ),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -61,20 +67,20 @@ class _SimplePostTileState extends State<SimplePostTile> {
                           child: Text(
                             "University of Victoria • Politics • 22m",
                             style: kDetail.copyWith(
-                              color: Theme.of(context).colorScheme.onSecondary,
+                              color: Theme.of(context).colorScheme.onSurface,
                             ),
                           ),
                         ),
                       ),
                       const SizedBox(width: 20),
-                      GestureDetector(
+                      TouchableScale(
                         onTap: () => buildOptionsSheet(context),
                         child: Container(
                           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                           color: Colors.transparent,
                           child: Icon(
                             CupertinoIcons.ellipsis,
-                            color: Theme.of(context).colorScheme.onSecondary,
+                            color: Theme.of(context).colorScheme.onSurface,
                           ),
                         ),
                       )

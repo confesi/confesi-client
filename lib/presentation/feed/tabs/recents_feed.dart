@@ -63,7 +63,7 @@ class _ExploreRecentsState extends State<ExploreRecents> {
               },
               loadMore: () async => await loadMorePost(),
               header: Container(
-                margin: const EdgeInsets.only(left: 5, top: 10, right: 5),
+                margin: const EdgeInsets.only(left: 5, top: 10, right: 5, bottom: 5),
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   border: Border.all(color: Theme.of(context).colorScheme.surface, width: 1),
