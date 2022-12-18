@@ -1,6 +1,9 @@
 import 'package:Confessi/presentation/feed/widgets/post_stat_tile.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_opacity.dart';
 import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
+import 'package:Confessi/presentation/shared/buttons/option.dart';
+import 'package:Confessi/presentation/shared/overlays/button_options_sheet.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
@@ -15,6 +18,35 @@ class SimpleDetailViewScreen extends StatefulWidget {
 
 class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
   bool bottomSheetIsShown = true;
+
+  // Show the options for this post.
+  void buildOptionsSheet(BuildContext context) => showButtonOptionsSheet(context, [
+        OptionButton(
+          text: "Share",
+          icon: CupertinoIcons.share,
+          onTap: () => print("tap"),
+        ),
+        OptionButton(
+          text: "Quote",
+          icon: CupertinoIcons.paperplane,
+          onTap: () => print("tap"),
+        ),
+        OptionButton(
+          text: "Save",
+          icon: CupertinoIcons.bookmark,
+          onTap: () => print("tap"),
+        ),
+        OptionButton(
+          text: "Details",
+          icon: CupertinoIcons.info,
+          onTap: () => print("tap"),
+        ),
+        OptionButton(
+          text: "Report",
+          icon: CupertinoIcons.flag,
+          onTap: () => print("tap"),
+        ),
+      ]);
 
   @override
   Widget build(BuildContext context) {
@@ -81,8 +113,8 @@ class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
                                 spacing: 10,
                                 children: [
                                   SimpleTextButton(
-                                    onTap: () => Navigator.pushNamed(context, '/home/profile/posts'),
-                                    text: "Post options",
+                                    onTap: () => buildOptionsSheet(context),
+                                    text: "Advanced options",
                                   ),
                                 ],
                               ),

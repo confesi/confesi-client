@@ -69,6 +69,11 @@ class FeedListController extends ChangeNotifier {
     scrolledDownFromTop = newValue;
     notifyListeners();
   }
+
+  /// Returns the last item loaded.
+  Widget lastItem() {
+    return items[itemPositionsListener.itemPositions.value.last.index];
+  }
 }
 
 class FeedList extends StatefulWidget {
@@ -105,16 +110,8 @@ class _FeedListState extends State<FeedList> {
   @override
   void initState() {
     widget.controller.itemPositionsListener.itemPositions.addListener(() async {
-      // Check if at top
-      // if (widget.controller.itemPositionsListener.itemPositions.value.isNotEmpty &&
-      //     widget.controller.itemPositionsListener.itemPositions.value.toList()[0].itemLeadingEdge <= 0 &&
-      //     widget.controller.itemPositionsListener.itemPositions.value.toList().first ==
-      //         widget.controller.itemPositionsListener.itemPositions.value.toList()[0]) {
-      //   print("TOP");
-      // } else {
-      //   print("not top...");
-      // }
-      if (widget.controller.itemPositionsListener.itemPositions.value.first.index > 1) {
+      // Checking if you're scrolled down past the 1st index (inclusive)
+      if (widget.controller.itemPositionsListener.itemPositions.value.first.index >= 1) {
         widget.controller._updateScrolledDownFromTop(true);
       } else {
         widget.controller._updateScrolledDownFromTop(false);

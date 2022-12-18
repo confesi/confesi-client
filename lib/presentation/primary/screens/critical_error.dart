@@ -16,8 +16,8 @@ class CriticalErrorScreen extends StatelessWidget {
       child: ThemedStatusBar(
         child: Scaffold(
           backgroundColor: appearanceBrightness(context) == Brightness.light
-              ? AppTheme.classicLight.colorScheme.background
-              : AppTheme.classicDark.colorScheme.background,
+              ? AppTheme.light.colorScheme.background
+              : AppTheme.dark.colorScheme.background,
           body: SafeArea(
             child: Center(
               child: ScrollableArea(
@@ -31,8 +31,8 @@ class CriticalErrorScreen extends StatelessWidget {
                         "So, something went really wrong...",
                         style: kTitle.copyWith(
                           color: appearanceBrightness(context) == Brightness.light
-                              ? AppTheme.classicLight.colorScheme.primary
-                              : AppTheme.classicDark.colorScheme.primary,
+                              ? AppTheme.light.colorScheme.primary
+                              : AppTheme.dark.colorScheme.primary,
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -41,8 +41,8 @@ class CriticalErrorScreen extends StatelessWidget {
                         "Usually, this is because your device couldn't load your account's preferences. Please try closing and re-opening the app, or contacting support.",
                         style: kBody.copyWith(
                           color: appearanceBrightness(context) == Brightness.light
-                              ? AppTheme.classicLight.colorScheme.primary
-                              : AppTheme.classicDark.colorScheme.primary,
+                              ? AppTheme.light.colorScheme.primary
+                              : AppTheme.dark.colorScheme.primary,
                         ),
                         textAlign: TextAlign.center,
                       ),

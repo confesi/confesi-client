@@ -127,8 +127,8 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             title: "Confesi",
             onGenerateRoute: appRouter.onGenerateRoute,
-            theme: AppTheme.classicLight,
-            darkTheme: AppTheme.classicDark,
+            theme: AppTheme.light,
+            darkTheme: AppTheme.dark,
             themeMode: context.watch<UserCubit>().localDataLoaded
                 ? getAppearance(
                     context.watch<UserCubit>().stateAsUser.appearanceEnum,

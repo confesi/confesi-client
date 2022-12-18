@@ -18,6 +18,7 @@ import '../../shared/behaviours/bottom_overscroll_scroll_to_top.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/edited_source_widgets/swipe_refresh.dart';
 import '../../shared/indicators/loading_cupertino.dart';
+import '../../shared/other/cached_online_image.dart';
 import '../../shared/overlays/info_sheet_with_action.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -72,17 +73,7 @@ class _ProfileHomeState extends State<ProfileHome> with AutomaticKeepAliveClient
                       child: SizedBox(
                         height: heightFraction(context, .3),
                         width: widthFraction(context, 1),
-                        child: CachedNetworkImage(
-                          fit: BoxFit.cover,
-                          imageUrl: state.universityImgUrl,
-                          placeholder: (context, url) => Container(
-                              color: Theme.of(context).colorScheme.surface,
-                              child: LoadingCupertinoIndicator(color: Theme.of(context).colorScheme.onSurface)),
-                          errorWidget: (context, url, error) => Container(
-                            color: Theme.of(context).colorScheme.surface,
-                            child: Icon(Icons.error, color: Theme.of(context).colorScheme.onSurface),
-                          ),
-                        ),
+                        child: CachedOnlineImage(url: state.universityImgUrl),
                       ),
                     ),
                   ),

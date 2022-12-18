@@ -62,35 +62,35 @@ class _ExploreRecentsState extends State<ExploreRecents> {
                 feedListController.clearList();
               },
               loadMore: () async => await loadMorePost(),
-              header: Container(
-                margin: const EdgeInsets.only(left: 5, top: 10, right: 5, bottom: 5),
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Theme.of(context).colorScheme.surface, width: 1),
-                  color: Theme.of(context).colorScheme.background,
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(5),
-                  ),
-                ),
-                width: double.infinity,
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        "Check out the newest updates, news, and give feedback to the developers.",
-                        style: kDetail.copyWith(
-                          color: Theme.of(context).colorScheme.onSurface,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 15),
-                    Icon(
-                      CupertinoIcons.arrow_right,
-                      color: Theme.of(context).colorScheme.onSurface,
-                    ),
-                  ],
-                ),
-              ),
+              // header: Container(
+              //   margin: const EdgeInsets.only(left: 5, top: 10, right: 5, bottom: 5),
+              //   padding: const EdgeInsets.all(10),
+              //   decoration: BoxDecoration(
+              //     border: Border.all(color: Theme.of(context).colorScheme.surface, width: 1),
+              //     color: Theme.of(context).colorScheme.background,
+              //     borderRadius: const BorderRadius.all(
+              //       Radius.circular(5),
+              //     ),
+              //   ),
+              //   width: double.infinity,
+              //   child: Row(
+              //     children: [
+              //       Expanded(
+              //         child: Text(
+              //           "Check out the newest updates, news, and give feedback to the developers.",
+              //           style: kDetail.copyWith(
+              //             color: Theme.of(context).colorScheme.onSurface,
+              //           ),
+              //         ),
+              //       ),
+              //       const SizedBox(width: 15),
+              //       Icon(
+              //         CupertinoIcons.arrow_right,
+              //         color: Theme.of(context).colorScheme.onSurface,
+              //       ),
+              //     ],
+              //   ),
+              // ),
               controller: feedListController,
             ),
           ),

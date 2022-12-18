@@ -48,6 +48,7 @@ class SettingsHome extends StatelessWidget {
                   child: Container(
                     color: Theme.of(context).colorScheme.background,
                     child: ScrollableView(
+                      physics: const BouncingScrollPhysics(),
                       hapticsEnabled: false,
                       inlineBottomOrRightPadding: bottomSafeArea(context) * 2,
                       controller: ScrollController(),
@@ -80,11 +81,6 @@ class SettingsHome extends StatelessWidget {
                                   leftIcon: CupertinoIcons.question_circle,
                                   text: kSettingsFaqLabel,
                                   onTap: () => Navigator.of(context).pushNamed("/settings/faq"),
-                                ),
-                                SettingTile(
-                                  leftIcon: CupertinoIcons.chevron_left_slash_chevron_right,
-                                  text: "Updates feed",
-                                  onTap: () => print("nav to update feed"),
                                 ),
                                 SettingTile(
                                   leftIcon: CupertinoIcons.mail,

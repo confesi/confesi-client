@@ -65,7 +65,7 @@ class _ExploreDrawerState extends State<ExploreDrawer> {
                         children: [
                           Text(
                             "Your Feeds",
-                            style: kSansSerifDisplay.copyWith(
+                            style: kSerifDisplay.copyWith(
                               color: Theme.of(context).colorScheme.primary,
                             ),
                             textAlign: TextAlign.left,

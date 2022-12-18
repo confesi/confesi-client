@@ -1,3 +1,5 @@
+import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
+
 import '../../../constants/shared/enums.dart';
 import 'package:flutter/material.dart';
 
@@ -39,7 +41,7 @@ class PopButton extends StatelessWidget {
           EdgeInsets.only(left: horizontalPadding, right: horizontalPadding, top: topPadding, bottom: bottomPadding),
       child: IgnorePointer(
         ignoring: loading ? true : false,
-        child: TouchableOpacity(
+        child: TouchableScale(
           tapType: TapType.lightImpact,
           onTap: () => onPress(),
           child: Container(

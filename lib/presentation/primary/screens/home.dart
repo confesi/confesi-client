@@ -1,4 +1,5 @@
 import 'package:Confessi/application/shared/cubit/share_cubit.dart';
+import 'package:Confessi/presentation/primary/controllers/hottest_controller.dart';
 import 'package:Confessi/presentation/primary/controllers/profile_controller.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -27,6 +28,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   bool shakeSheetOpen = false;
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
   late ProfileController profileController; // Controls the profile page, allows for running methods to it.
+  late HottestController hottestController; // Controls the hottests page, allows for running methods to it.
 
   int currentIndex = 0; // The current index of the tab open.
 
@@ -34,6 +36,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   void initState() {
     tabController = TabController(vsync: this, length: 3);
     profileController = ProfileController();
+    hottestController = HottestController();
     super.initState();
   }
 
@@ -86,30 +89,42 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     controller: tabController,
                     children: [
                       ExploreHome(scaffoldKey: scaffoldKey),
-                      const HottestHome(),
+                      HottestHome(hottestController: hottestController),
                       ProfileHome(profileController: profileController),
                     ],
                   ),
-                  bottomNavigationBar: TabBar(
-                    onTap: (int newIndex) {
-                      HapticFeedback.selectionClick();
-                      if (currentIndex == 2 && newIndex == 2) {
-                        profileController.scrollToTop();
-                      }
-                      currentIndex = newIndex;
-                    },
-                    labelStyle: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
-                    unselectedLabelColor: Theme.of(context).colorScheme.onBackground,
-                    labelColor: Theme.of(context).colorScheme.secondary,
-                    indicatorSize: TabBarIndicatorSize.label,
-                    indicatorColor: Colors.transparent,
-                    controller: tabController,
-                    enableFeedback: true,
-                    tabs: const [
-                      Tab(icon: Icon(CupertinoIcons.compass)),
-                      Tab(icon: Icon(CupertinoIcons.flame)),
-                      Tab(icon: Icon(CupertinoIcons.cube_box)),
-                    ],
+                  bottomNavigationBar: Container(
+                    decoration: BoxDecoration(
+                      border: Border(
+                        top: BorderSide(
+                          color: Theme.of(context).colorScheme.surface,
+                          width: 1,
+                        ),
+                      ),
+                    ),
+                    child: TabBar(
+                      onTap: (int newIndex) {
+                        HapticFeedback.selectionClick();
+                        if (currentIndex == 2 && newIndex == 2) {
+                          profileController.scrollToTop();
+                        } else if (currentIndex == 1 && newIndex == 1) {
+                          hottestController.scrollToFront();
+                        }
+                        currentIndex = newIndex;
+                      },
+                      labelStyle: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
+                      unselectedLabelColor: Theme.of(context).colorScheme.onBackground,
+                      labelColor: Theme.of(context).colorScheme.secondary,
+                      indicatorSize: TabBarIndicatorSize.label,
+                      indicatorColor: Colors.transparent,
+                      controller: tabController,
+                      enableFeedback: true,
+                      tabs: const [
+                        Tab(icon: Icon(CupertinoIcons.compass)),
+                        Tab(icon: Icon(CupertinoIcons.flame)),
+                        Tab(icon: Icon(CupertinoIcons.cube_box)),
+                      ],
+                    ),
                   ),
                   backgroundColor: Theme.of(context).colorScheme.background,
                 ),

@@ -1,7 +1,9 @@
 import 'package:Confessi/application/shared/cubit/website_launcher_cubit.dart';
 import 'package:Confessi/core/styles/typography.dart';
+import 'package:Confessi/core/utils/sizing/width_fraction.dart';
 import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:Confessi/presentation/shared/indicators/loading_cupertino.dart';
+import 'package:Confessi/presentation/shared/other/cached_online_image.dart';
 import 'package:any_link_preview/any_link_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,6 +25,73 @@ class _UrlPreviewTileState extends State<UrlPreviewTile> {
     return result;
   }
 
+  Widget buildBody(BuildContext context, AsyncSnapshot<Object?> snapshot) {
+    if (snapshot.connectionState == ConnectionState.waiting) {
+      return Container(
+        height: 150,
+        padding: const EdgeInsets.all(10),
+        child: const Center(child: LoadingCupertinoIndicator()),
+      );
+    } else if (snapshot.hasData && snapshot.data.runtimeType == Metadata) {
+      Metadata metaData = (snapshot.data as Metadata);
+      return SizedBox(
+        height: metaData.image == null ? null : 150, // If no image is available, don't include space for it
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            metaData.image == null
+                ? Container()
+                : SizedBox(
+                    height: double.infinity,
+                    width: widthFraction(context, 1 / 3),
+                    child: ClipRRect(
+                      borderRadius:
+                          const BorderRadius.only(topLeft: Radius.circular(10), bottomLeft: Radius.circular(10)),
+                      child: CachedOnlineImage(url: metaData.image!),
+                    ),
+                  ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 15),
+                child: Column(
+                  children: [
+                    Text(
+                      metaData.title == null ? widget.url : metaData.title!,
+                      style: kBody.copyWith(
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      metaData.url == null ? "" : metaData.url!,
+                      style: kDetail.copyWith(
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 3,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    } else {
+      return Container(
+        height: 150,
+        padding: const EdgeInsets.all(10),
+        child: Center(
+          child: Text(
+            "No preview available: ${widget.url}",
+            style: kDetail.copyWith(color: Theme.of(context).colorScheme.onSurface),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return TouchableScale(
@@ -36,44 +105,12 @@ class _UrlPreviewTileState extends State<UrlPreviewTile> {
             borderRadius: const BorderRadius.all(Radius.circular(10)),
           ),
           child: FutureBuilder(
-            key: UniqueKey(),
             future: futureSnapshot(),
             builder: (context, snapshot) {
-              if (snapshot.data == null) {
-                return Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Text(
-                    widget.url,
-                    style: kBody.copyWith(
-                      color: Theme.of(context).colorScheme.onSurface,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                );
-              } else if (snapshot.hasData) {
-                Metadata metaData = (snapshot.data as Metadata);
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Text(
-                        metaData.title == null ? widget.url : metaData.title!,
-                        style: kBody.copyWith(
-                          color: Theme.of(context).colorScheme.onSurface,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    metaData.image == null ? Container() : Image.network(metaData.image!),
-                  ],
-                );
-              } else {
-                return const Padding(
-                  padding: EdgeInsets.all(10),
-                  child: LoadingCupertinoIndicator(),
-                );
-              }
+              return AnimatedSwitcher(
+                duration: const Duration(milliseconds: 250),
+                child: buildBody(context, snapshot),
+              );
             },
           ),
         ),

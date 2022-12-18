@@ -58,88 +58,89 @@ class _HottestTileState extends State<HottestTile> {
       child: LayoutBuilder(builder: (context, constraints) {
         return Center(
           child: SingleChildScrollView(
-            child: ClipRRect(
-              borderRadius: const BorderRadius.all(Radius.circular(5)),
-              child: Column(
-                children: [
-                  AnimatedOpacity(
+            child: Column(
+              children: [
+                AnimatedOpacity(
+                  duration: const Duration(milliseconds: 450),
+                  curve: Curves.decelerate,
+                  opacity: isSelected ? 1 : 0.75,
+                  child: AnimatedContainer(
+                    width: double.infinity,
                     duration: const Duration(milliseconds: 450),
                     curve: Curves.decelerate,
-                    opacity: isSelected ? 1 : 0.75,
-                    child: AnimatedContainer(
-                      width: double.infinity,
-                      duration: const Duration(milliseconds: 450),
-                      curve: Curves.decelerate,
-                      height: isSelected ? constraints.maxHeight : constraints.maxHeight * .8,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.background,
-                        borderRadius: const BorderRadius.all(Radius.circular(3)),
-                        border: Border.all(color: Theme.of(context).colorScheme.surface, width: 1),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
+                    height: isSelected ? constraints.maxHeight : constraints.maxHeight * .8,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.background,
+                      borderRadius: const BorderRadius.all(Radius.circular(5)),
+                      border: Border.all(color: Theme.of(context).colorScheme.surface, width: 1),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius:
+                                const BorderRadius.only(topRight: Radius.circular(5), topLeft: Radius.circular(5)),
                             color: Theme.of(context).colorScheme.secondary,
-                            padding: const EdgeInsets.all(10),
-                            width: double.infinity,
-                            child: Text(
-                              '${getComments()} · ${getLikes()} · ${getHates()}',
-                              style: kDetail.copyWith(
-                                color: Theme.of(context).colorScheme.onSecondary,
-                              ),
-                              textAlign: TextAlign.center,
-                              overflow: TextOverflow.ellipsis,
+                          ),
+                          padding: const EdgeInsets.all(10),
+                          width: double.infinity,
+                          child: Text(
+                            '${getComments()} · ${getLikes()} · ${getHates()}',
+                            style: kDetail.copyWith(
+                              color: Theme.of(context).colorScheme.onSecondary,
+                            ),
+                            textAlign: TextAlign.center,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        Expanded(
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 250),
+                            child: Image.asset(
+                              widget.universityImagePath,
+                              fit: BoxFit.cover,
+                              width: double.infinity,
                             ),
                           ),
-                          Expanded(
-                            child: AnimatedContainer(
-                              duration: const Duration(milliseconds: 250),
-                              child: Image.asset(
-                                widget.universityImagePath,
-                                fit: BoxFit.cover,
-                                width: double.infinity,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Stack(
-                              fit: StackFit.expand,
-                              children: [
-                                Positioned.fill(
-                                  right: 5,
-                                  child: Align(
-                                    alignment: Alignment.bottomRight,
-                                    child: Text(
-                                      '0${widget.thisIndex + 1}',
-                                      style: kFaded.copyWith(
-                                        color: Theme.of(context).colorScheme.onBackground.withOpacity(0.2),
-                                      ),
+                        ),
+                        Expanded(
+                          child: Stack(
+                            fit: StackFit.expand,
+                            children: [
+                              Positioned.fill(
+                                right: 5,
+                                child: Align(
+                                  alignment: Alignment.bottomRight,
+                                  child: Text(
+                                    '0${widget.thisIndex + 1}',
+                                    style: kFaded.copyWith(
+                                      color: Theme.of(context).colorScheme.onBackground.withOpacity(0.2),
                                     ),
                                   ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.all(20),
-                                  child: HeaderGroupText(
-                                    small: true,
-                                    expandsTopText: true,
-                                    onSecondaryColors: false,
-                                    multiLine: true,
-                                    spaceBetween: 20,
-                                    left: true,
-                                    header: widget.title.isEmpty ? widget.text : widget.title,
-                                    body: '${widget.university}, Year ${widget.year}',
-                                  ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(20),
+                                child: HeaderGroupText(
+                                  small: true,
+                                  expandsTopText: true,
+                                  onSecondaryColors: false,
+                                  multiLine: true,
+                                  spaceBetween: 20,
+                                  left: true,
+                                  header: widget.title.isEmpty ? widget.text : widget.title,
+                                  body: '${widget.university}, Year ${widget.year}',
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         );

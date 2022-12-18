@@ -84,23 +84,23 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Center(
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(
-                        width: widthFraction(context, .6),
-                        child: Image.asset(
-                          "assets/images/logo_3.png",
+                      Text(
+                        "Confesi",
+                        style: kSerifDisplay.copyWith(
+                          fontSize: 44,
+                          color: Theme.of(context).colorScheme.secondary,
                         ),
+                        textAlign: TextAlign.center,
                       ),
-                      SizedBox(
-                        width: widthFraction(context, .6),
-                        child: Text(
-                          introText,
-                          style: kTitle.copyWith(
-                            color: Theme.of(context).colorScheme.onSurface,
-                          ),
-                          textAlign: TextAlign.center,
+                      const SizedBox(height: 15),
+                      Text(
+                        "Open Beta", // introText
+                        style: kTitle.copyWith(
+                          color: Theme.of(context).colorScheme.onSurface,
                         ),
+                        textAlign: TextAlign.center,
                       ),
                     ],
                   ),

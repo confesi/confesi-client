@@ -1,3 +1,4 @@
+import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants/shared/enums.dart';
@@ -34,7 +35,7 @@ class SimpleTextButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TouchableOpacity(
+    return TouchableScale(
       tapType: tapType,
       tooltip: tooltip,
       tooltipLocation: tooltipLocation,

@@ -1,3 +1,5 @@
+import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
+
 import '../../../core/styles/typography.dart';
 import '../button_touch_effects/touchable_opacity.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,7 +25,7 @@ class SettingTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TouchableOpacity(
+    return TouchableScale(
       // fadeSplashOut: false,
       onTap: () => onTap(),
       child: Container(

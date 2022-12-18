@@ -27,13 +27,13 @@ class OptionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TouchableOpacity(
+    return TouchableScale(
       onTap: () {
         popContext ? Navigator.pop(context) : null;
         onTap();
       },
       child: Container(
-        margin: EdgeInsets.only(bottom: noBottomPadding ? 0 : 3),
+        margin: EdgeInsets.only(bottom: noBottomPadding ? 0 : 5),
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(Radius.circular(5)),

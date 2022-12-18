@@ -16,7 +16,7 @@ Future<dynamic> showInfoSheet(BuildContext context, String header, String body) 
       constraints: BoxConstraints(maxHeight: heightFraction(context, .75)),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.background,
-        borderRadius: const BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+        borderRadius: const BorderRadius.only(topLeft: Radius.circular(0), topRight: Radius.circular(0)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -30,7 +30,7 @@ Future<dynamic> showInfoSheet(BuildContext context, String header, String body) 
               children: [
                 Text(
                   header,
-                  style: kSansSerifDisplay.copyWith(
+                  style: kSerifDisplay.copyWith(
                     color: Theme.of(context).colorScheme.primary,
                   ),
                   textAlign: TextAlign.center,

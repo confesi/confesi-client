@@ -1,3 +1,4 @@
+import 'package:Confessi/presentation/primary/controllers/hottest_controller.dart';
 import 'package:Confessi/presentation/shared/indicators/loading_cupertino.dart';
 
 import '../../../application/daily_hottest/cubit/hottest_cubit.dart';
@@ -15,11 +16,12 @@ import '../../../constants/shared/enums.dart';
 import '../../../core/styles/typography.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/indicators/alert.dart';
-import '../../shared/indicators/loading_material.dart';
 import '../../shared/layout/appbar.dart';
 
 class HottestHome extends StatefulWidget {
-  const HottestHome({Key? key}) : super(key: key);
+  const HottestHome({Key? key, required this.hottestController}) : super(key: key);
+
+  final HottestController hottestController;
 
   @override
   State<HottestHome> createState() => _HottestHomeState();
@@ -28,8 +30,6 @@ class HottestHome extends StatefulWidget {
 class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
-
-  final PageController pageController = PageController(viewportFraction: .9, initialPage: 0);
 
   int currentIndex = 0;
 
@@ -72,7 +72,7 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
           );
         },
         child: PageView(
-            controller: pageController,
+            controller: widget.hottestController.pageController,
             physics: const BouncingScrollPhysics(),
             onPageChanged: (selectedIndex) {
               HapticFeedback.lightImpact();

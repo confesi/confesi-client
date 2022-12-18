@@ -109,7 +109,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
                   ),
-                  rightIcon: scrolledDownFromTop ? CupertinoIcons.arrow_up : CupertinoIcons.info,
+                  rightIcon: scrolledDownFromTop ? CupertinoIcons.arrow_up_to_line : CupertinoIcons.info,
                   rightIconVisible: true,
                   rightIconOnPress: () => scrolledDownFromTop
                       ? controller.scrollToTop()
