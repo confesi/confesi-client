@@ -7,6 +7,7 @@ import 'package:Confessi/presentation/shared/other/cached_online_image.dart';
 import 'package:any_link_preview/any_link_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:scrollable/exports.dart';
 
 class UrlPreviewTile extends StatefulWidget {
   const UrlPreviewTile({super.key, required this.url});
@@ -28,14 +29,14 @@ class _UrlPreviewTileState extends State<UrlPreviewTile> {
   Widget buildBody(BuildContext context, AsyncSnapshot<Object?> snapshot) {
     if (snapshot.connectionState == ConnectionState.waiting) {
       return Container(
-        height: 150,
+        height: 100,
         padding: const EdgeInsets.all(10),
         child: const Center(child: LoadingCupertinoIndicator()),
       );
     } else if (snapshot.hasData && snapshot.data.runtimeType == Metadata) {
       Metadata metaData = (snapshot.data as Metadata);
       return SizedBox(
-        height: metaData.image == null ? null : 150, // If no image is available, don't include space for it
+        height: metaData.image == null ? null : 100, // If no image is available, don't include space for it
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -51,41 +52,59 @@ class _UrlPreviewTileState extends State<UrlPreviewTile> {
                     ),
                   ),
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 15),
-                child: Column(
-                  children: [
-                    Text(
-                      metaData.title == null ? widget.url : metaData.title!,
-                      style: kBody.copyWith(
-                        color: Theme.of(context).colorScheme.primary,
+              child: Container(
+                  padding: const EdgeInsets.all(15),
+                  // height: metaData.image == null ? null : 100,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        metaData.title == null ? widget.url : metaData.title!,
+                        style: kBody.copyWith(
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        textScaleFactor: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                    const SizedBox(height: 5),
-                    Text(
-                      metaData.url == null ? "" : metaData.url!,
-                      style: kDetail.copyWith(
-                        color: Theme.of(context).colorScheme.onSurface,
+                      SizedBox(height: metaData.desc == null ? 0 : 5),
+                      Text(
+                        metaData.desc == null ? "" : metaData.desc!,
+                        style: kDetail.copyWith(
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                        textScaleFactor: 1,
+
+                        overflow: TextOverflow.ellipsis,
+                        // maxLines: 2,
                       ),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 3,
-                    ),
-                  ],
-                ),
-              ),
+                      SizedBox(height: metaData.url == null ? 0 : 5),
+                      Text(
+                        metaData.url == null ? "" : metaData.url!,
+                        style: kDetail.copyWith(
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                        textScaleFactor: 1,
+
+                        overflow: TextOverflow.ellipsis,
+                        // maxLines: 2,
+                      ),
+                    ],
+                  )),
             ),
           ],
         ),
       );
     } else {
       return Container(
-        height: 150,
+        height: 100,
         padding: const EdgeInsets.all(10),
         child: Center(
           child: Text(
             "No preview available: ${widget.url}",
             style: kDetail.copyWith(color: Theme.of(context).colorScheme.onSurface),
             textAlign: TextAlign.center,
+            textScaleFactor: 1,
           ),
         ),
       );

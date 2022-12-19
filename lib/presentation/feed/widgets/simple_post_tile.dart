@@ -1,4 +1,5 @@
 import 'package:Confessi/core/styles/typography.dart';
+import 'package:Confessi/presentation/feed/widgets/child_post.dart';
 import 'package:Confessi/presentation/feed/widgets/reaction_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,14 +21,14 @@ class _SimplePostTileState extends State<SimplePostTile> {
     return GestureDetector(
       onTap: () => Navigator.pushNamed(context, "/home/simplified_detail"),
       child: Padding(
-        padding: const EdgeInsets.only(top: 5, left: 5, right: 5),
+        padding: const EdgeInsets.only(top: 10, left: 5, right: 5),
         child: ClipRRect(
-          borderRadius: const BorderRadius.all(Radius.circular(5)),
+          borderRadius: const BorderRadius.all(Radius.circular(0)),
           child: Container(
             width: double.infinity,
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.background,
-              borderRadius: const BorderRadius.all(Radius.circular(5)),
+              borderRadius: const BorderRadius.all(Radius.circular(0)),
               border: Border.all(color: Theme.of(context).colorScheme.surface, width: 1),
             ),
             child: Column(
@@ -77,17 +78,18 @@ class _SimplePostTileState extends State<SimplePostTile> {
                         Text(
                           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sapien lacus, lacinia in posuere eget, bibendum quis lectus. Pellentesque eu nulla ullamcorper dui blandit porta vel id urna...",
                           style: kBody.copyWith(
-                            color: Theme.of(context).colorScheme.onSurface,
+                            color: Theme.of(context).colorScheme.primary,
                           ),
                           textAlign: TextAlign.left,
                         ),
                         const SizedBox(height: 15),
                         const UrlPreviewTile(url: "https://www.apple.com/ca/shop/buy-watch/apple-watch"),
+                        const SizedBox(height: 15),
+                        const ChildPost(),
                       ],
                     ),
                   ),
                 ),
-                //!
               ],
             ),
           ),

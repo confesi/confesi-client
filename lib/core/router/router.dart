@@ -26,7 +26,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
 
 import '../../application/authentication_and_settings/cubit/contact_setting_cubit.dart';
-import '../../application/shared/cubit/website_launcher_cubit.dart';
 import '../../dependency_injection.dart';
 import '../../presentation/authentication_and_settings/screens/authentication/register_tab_manager.dart';
 import '../../presentation/authentication_and_settings/screens/settings/biometric_lock.dart';
@@ -265,7 +264,7 @@ class AppRouter {
         type: PageTransitionType.fade,
         curve: Curves.linear,
         duration: const Duration(
-          milliseconds: 200,
+          milliseconds: 350,
         ),
       );
     } else {

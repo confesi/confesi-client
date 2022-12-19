@@ -8,7 +8,7 @@ var kFaded = GoogleFonts.inter(
 
 /// Large text style - meant for display, but with sans serif style.
 var kSerifDisplay = GoogleFonts.ibmPlexSerif(
-  textStyle: const TextStyle(fontWeight: FontWeight.w700, fontSize: 26),
+  textStyle: const TextStyle(fontWeight: FontWeight.w500, fontSize: 26),
 );
 
 /// Largest text style - meant for BOLD DISPLAY!
