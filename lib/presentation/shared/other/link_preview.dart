@@ -7,7 +7,6 @@ import 'package:Confessi/presentation/shared/other/cached_online_image.dart';
 import 'package:any_link_preview/any_link_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:scrollable/exports.dart';
 
 class UrlPreviewTile extends StatefulWidget {
   const UrlPreviewTile({super.key, required this.url});
@@ -19,8 +18,6 @@ class UrlPreviewTile extends StatefulWidget {
 }
 
 class _UrlPreviewTileState extends State<UrlPreviewTile> {
-  bool isNull = false;
-
   Future<Metadata?> futureSnapshot() async {
     Metadata? result = await AnyLinkPreview.getMetadata(link: widget.url);
     return result;
@@ -74,7 +71,6 @@ class _UrlPreviewTileState extends State<UrlPreviewTile> {
                           color: Theme.of(context).colorScheme.onSurface,
                         ),
                         textScaleFactor: 1,
-
                         overflow: TextOverflow.ellipsis,
                         // maxLines: 2,
                       ),
@@ -85,7 +81,6 @@ class _UrlPreviewTileState extends State<UrlPreviewTile> {
                           color: Theme.of(context).colorScheme.onSurface,
                         ),
                         textScaleFactor: 1,
-
                         overflow: TextOverflow.ellipsis,
                         // maxLines: 2,
                       ),
