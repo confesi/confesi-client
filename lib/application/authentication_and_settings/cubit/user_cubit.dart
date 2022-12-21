@@ -86,10 +86,11 @@ class UserCubit extends Cubit<UserState> {
               (appearanceEnum) async {
                 emit(
                   User(
-                      refreshToken: refreshToken.token, // Refresh token
-                      userID: userID, // Unique user ID (used for storage box location with Hive)
-                      justRegistered: authenticationType == AuthenticationType.register ? true : false, // Preference
-                      appearanceEnum: appearanceEnum), // Preference
+                    refreshToken: refreshToken.token, // Refresh token
+                    userID: userID, // Unique user ID (used for storage box location with Hive)
+                    justRegistered: authenticationType == AuthenticationType.register ? true : false, // Preference
+                    appearanceEnum: appearanceEnum,
+                  ), // Preference
                 );
               },
             );

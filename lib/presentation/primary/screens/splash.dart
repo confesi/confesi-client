@@ -49,7 +49,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
       listener: (context, state) {
         // if (state is User) {
         //   if (state.justRegistered) {
-        //     Navigator.of(context).pushNamed("/onboarding", arguments: {"isRewatching": false});
+        //     Navigator.of(context).pushNamed("/onboarding");
         //   } else {
         //     Navigator.of(context).pushNamed("/home");
         //   }
