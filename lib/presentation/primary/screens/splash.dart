@@ -66,7 +66,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
           if (state is EnteringRegisterData && state.hasError) {
             showNotificationChip(context, state.errorMessage);
           } else if (state is RegisterSuccess) {
-            context.read<UserCubit>().silentlyAuthenticateUser(AuthenticationType.register);
+            context.read<UserCubit>().authenticateUser(AuthenticationType.register);
           }
         },
         child: BlocListener<LoginCubit, LoginState>(
@@ -74,7 +74,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
             if (state is EnteringLoginData && state.hasError) {
               showNotificationChip(context, state.errorMessage);
             } else if (state is LoginSuccess) {
-              context.read<UserCubit>().silentlyAuthenticateUser(AuthenticationType.login);
+              context.read<UserCubit>().authenticateUser(AuthenticationType.login);
             }
           },
           child: ThemedStatusBar(

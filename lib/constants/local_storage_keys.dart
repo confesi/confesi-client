@@ -6,5 +6,8 @@
 
 // ***** IMPORTANT *****
 
-// const String kPreferencesBox = "prefs3";
-const String kRefreshToken = "refreshToken";
+/// Key for where the token is stored in the local db.
+const String tokenStorageLocation = "token";
+
+/// Key for where the guest location data are stored in the local db.
+const String guestDataStorageLocation = "guest";

@@ -37,7 +37,7 @@ class PrefsDatasource implements IPrefsDatasource {
 
   @override
   Future<String> loadRefreshToken() async {
-    final refreshToken = await secureStorage.read(key: kRefreshToken);
+    final refreshToken = await secureStorage.read(key: tokenStorageLocation);
     if (refreshToken == null || refreshToken.isEmpty) throw EmptyTokenException();
     return refreshToken;
   }

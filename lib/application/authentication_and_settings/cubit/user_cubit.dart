@@ -1,4 +1,10 @@
+import 'package:Confessi/constants/authentication_and_settings/enums.dart';
+
+import '../../../constants/authentication_and_settings/objects.dart';
+import '../../../constants/local_storage_keys.dart';
 import '../../../core/utils/tokens/user_id_from_jwt.dart';
+import '../../../domain/authentication_and_settings/entities/refresh_token.dart';
+import '../../../domain/authentication_and_settings/entities/user.dart';
 import '../../../domain/authentication_and_settings/usecases/silent_authentication.dart';
 import '../../../presentation/shared/overlays/notification_chip.dart';
 import 'package:bloc/bloc.dart';
@@ -15,8 +21,6 @@ import '../../../domain/authentication_and_settings/usecases/load_refresh_token.
 
 part 'user_state.dart';
 
-enum AuthenticationType { silent, register, login } // How the user got authenticated.
-
 // TODO: Ensure logging out erases storage as well
 
 class UserCubit extends Cubit<UserState> {
@@ -30,20 +34,11 @@ class UserCubit extends Cubit<UserState> {
       required this.silentAuthentication,
       required this.appearance,
       required this.loadRefreshToken})
-      : super(NoUser());
+      : super(UnknownUser());
 
   bool get localDataLoaded => state is User;
 
   User get stateAsUser => state as User;
-
-// TODO: Ensure that logging in / registering adds to prefs and doesn't just keep it empty?
-// TODO: Maybe just call loadInitialPrefsAndTokens?
-  /// Used to set the User if logging in, or registering.
-  // void setUser() => emit(User());
-
-  // void setNoUser() => emit(NoUser());
-
-  // void setUnknownUser() => emit(UnknownUser());
 
   /// Logs out the user. Upon error, currently does nothing, as the user will still be logged in.
   void logoutUser() async {
@@ -58,42 +53,48 @@ class UserCubit extends Cubit<UserState> {
     );
   }
 
-  // TODO: Merge with loadInitialPrefsAndTokens
-  Future<void> silentlyAuthenticateUser(AuthenticationType authenticationType) async {
-    if (authenticationType == AuthenticationType.silent) {
-      await Future.delayed(const Duration(milliseconds: 750));
-    } // Artificial delay as to not cause jank in the splash screen.
-    await (await loadRefreshToken.call(NoParams())).fold(
+  /// Load the user object if possible, otherwise throw an error.
+  Future<void> loadUser() async {
+    (await loadRefreshToken.call(NoParams())).fold(
       (failure) {
-        emit(LocalDataError());
+        // Something went wrong getting the token.
+        emit(UserError());
       },
       (refreshToken) async {
-        if (refreshToken.refreshTokenEnum == RefreshTokenEnum.noRefreshToken) {
-          emit(NoUser());
-          return;
-        }
-        // Decrypt JWT to get userID (mongo _id).
-        userIdFromJwt(refreshToken.token).fold(
-          (failure) => emit(LocalDataError()),
-          (userID) async {
-            print("opening this box: $userID");
-            // Opening Hive preferences box.
-            await Hive.openBox(userID);
-            (await appearance.get(AppearanceEnum.values, AppearanceEnum, userID)).fold(
-              (failure) {
-                emit(LocalDataError());
-              },
-              (appearanceEnum) async {
-                emit(
-                  User(
-                    refreshToken: refreshToken.token, // Refresh token
-                    userID: userID, // Unique user ID (used for storage box location with Hive)
-                    justRegistered: authenticationType == AuthenticationType.register ? true : false, // Preference
-                    appearanceEnum: appearanceEnum,
-                  ), // Preference
-                );
-              },
-            );
+        // Token received.
+        //
+        // Where the user's preferences will be stored (if no token, then "guest" location, else, stored in their unique user ID location).
+        String userStorageLocation = refreshToken is Token ? refreshToken.token() : guestDataStorageLocation;
+
+        // Opening Hive preferences box (for local storage).
+        await Hive.openBox(userStorageLocation);
+        (await appearance.get(AppearanceEnum.values, AppearanceEnum, userStorageLocation)).fold(
+          (failure) {
+            // If there's a failure loading these prefs, abort with UserError state.
+            emit(UserError());
+          },
+          (appearanceEnum) async {
+            // Last bit of the loading preferences chain contains emits the actual full user object,
+            // whether that be a Guest or a RegisteredUser.
+            //
+            // If user has a refresh token, then we must attempt to decrypt it, gaining
+            // access to its inner userId
+            if (refreshToken is Token) {
+              // If refreshToken is of type "hasRefreshToken", then its "token" field won't be null.
+              userIdFromJwt(refreshToken.token()).fold(
+                (failure) {
+                  // Failure decrypting user Id from token. Emit UserError state and abort.
+                  emit(UserError());
+                },
+                (userId) {
+                  // On succesfully decrypting token, emit a user object of type RegisteredUser.
+                  emit(User(appearanceEnum: appearanceEnum, userType: RegisteredUser(userId, refreshToken.token())));
+                },
+              );
+            } else {
+              // If user doesn't have refresh token, then they're a Guest.
+              emit(User(appearanceEnum: appearanceEnum, userType: Guest()));
+            }
           },
         );
       },
@@ -106,7 +107,7 @@ class UserCubit extends Cubit<UserState> {
       return;
     }
     emit((state as User).copyWith(appearanceEnum: appearanceEnum));
-    (await appearance.set(appearanceEnum, AppearanceEnum, stateAsUser.userID)).fold(
+    (await appearance.set(appearanceEnum, AppearanceEnum, stateAsUser.userType.userId())).fold(
       (failure) => null, // show error message... scaffold messenger?
       (success) => null, // do nothing
     );

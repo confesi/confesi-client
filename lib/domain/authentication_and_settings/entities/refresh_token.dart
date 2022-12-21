@@ -1,13 +1,22 @@
+import 'package:http/http.dart';
+
 import '../../../constants/enums_that_are_local_keys.dart';
 import 'package:equatable/equatable.dart';
 
-/// [RefreshToken] entity. Stores the refresh token.
-class RefreshToken extends Equatable {
-  final String token;
-  final RefreshTokenEnum refreshTokenEnum;
+/// [TokenType] entity. Stores the token recovered from local storage.
+///
+/// Can be either subclass [NoToken] or [Token].
+abstract class TokenType {}
 
-  const RefreshToken({required this.token, required this.refreshTokenEnum});
+/// No token is found.
+class NoToken extends TokenType {}
 
-  @override
-  List<Object> get props => [token, refreshTokenEnum];
+/// Token is found an present inside this object.
+class Token extends TokenType {
+  final String _token;
+
+  /// Returns the token associated with this object.
+  String token() => _token;
+
+  Token(this._token);
 }

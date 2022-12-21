@@ -7,35 +7,35 @@ abstract class UserState extends Equatable {
 }
 
 class User extends UserState {
-  final String refreshToken;
-  final String userID;
+  final UserType userType;
   final AppearanceEnum appearanceEnum;
-  final bool justRegistered;
 
   User({
-    this.justRegistered = false,
-    required this.refreshToken,
-    required this.userID,
     required this.appearanceEnum,
+    required this.userType,
   });
 
   User copyWith({
-    String? refreshToken,
-    String? userID,
     AppearanceEnum? appearanceEnum,
-    bool? justRegistered,
+    UserType? userType,
+    bool? hasViewedPastOpenScreenAlready,
   }) {
     return User(
-        refreshToken: refreshToken ?? this.refreshToken,
-        userID: userID ?? this.userID,
-        appearanceEnum: appearanceEnum ?? this.appearanceEnum,
-        justRegistered: justRegistered ?? this.justRegistered);
+      appearanceEnum: appearanceEnum ?? this.appearanceEnum,
+      userType: userType ?? this.userType,
+    );
   }
 
   @override
-  List<Object?> get props => [appearanceEnum]; //! Very intentionally not rebuilding based on preferences.
+  List<Object?> get props => []; //! Very intentionally not rebuilding based on preferences.
 }
 
-class NoUser extends UserState {}
+/// Error retrieving critical information to create a user.
+///
+/// This indicates an error page should be shown.
+class UserError extends UserState {}
 
-class LocalDataError extends UserState {}
+/// If the state of the user is currently unknown.
+///
+/// Provided as the initial state. Also the state if the user has not yet viewed past the open screen.
+class UnknownUser extends UserState {}
