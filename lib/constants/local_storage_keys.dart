@@ -11,3 +11,7 @@ const String tokenStorageLocation = "token";
 
 /// Key for where the guest location data are stored in the local db.
 const String guestDataStorageLocation = "guest";
+
+/// Key that holds information about whether or not the user has viewed the home screen before
+/// whether that be as a guest or registeredUser. Account/guest agnostic.
+const String homeViewedScreenLocation = "viewed_home_screen";

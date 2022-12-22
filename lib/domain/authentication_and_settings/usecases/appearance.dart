@@ -16,7 +16,7 @@ class Appearance implements GetSetUsecase<AppearanceEnum, List> {
     final failureOrAppearanceEnum = await repository.loadAppearance(enumValues, enumType, userID);
     return failureOrAppearanceEnum.fold(
       (failure) {
-        if (failure is DBDefaultFailure) {
+        if (failure is DbDefaultFailure) {
           return const Right(AppearanceEnum.system); // Default choice.
         }
         return Left(failure);

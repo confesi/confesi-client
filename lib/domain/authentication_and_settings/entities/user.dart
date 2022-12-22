@@ -1,5 +1,7 @@
 import 'package:http/http.dart';
 
+import '../../../constants/local_storage_keys.dart';
+
 /// Definies which kind of user is currently viewing the app.
 ///
 /// Can be either subclass: [Guest] or [RegisteredUser].
@@ -13,7 +15,7 @@ abstract class UserType {
 class Guest extends UserType {
   /// Gets the user's unique storage location ("guest" for all guest users).
   @override
-  String userId() => "guest";
+  String userId() => guestDataStorageLocation;
 }
 
 /// A registered user is viewing the application.

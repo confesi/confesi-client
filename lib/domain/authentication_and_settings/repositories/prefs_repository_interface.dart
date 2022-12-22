@@ -7,6 +7,11 @@ abstract class IPrefsRepository {
   //! Load refresh token.
   Future<Either<Failure, String>> loadRefreshToken();
 
+  //! Viewed home prefs.
+  Future<Either<Failure, Success>> setViewedHome(HomeViewedEnum settingValue, Type enumType, String userID);
+
+  Future<Either<Failure, HomeViewedEnum>> loadViewedHome(List enumValues, Type enumType, String userID);
+
   //! Appearance prefs.
   Future<Either<Failure, Success>> setAppearance(AppearanceEnum settingValue, Type enumType, String userID);
 

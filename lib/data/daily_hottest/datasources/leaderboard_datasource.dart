@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import '../../../core/clients/http_client.dart';
+import '../../../core/alt_unused/http_client.dart';
 import '../../../core/results/exceptions.dart';
 import '../../../domain/daily_hottest/entities/leaderboard_item.dart';
 import '../models/leaderboard_item_model.dart';

@@ -11,7 +11,7 @@ import 'core/clients/api_client.dart';
 import 'domain/authentication_and_settings/usecases/open_device_settings.dart';
 
 import 'application/authentication_and_settings/cubit/language_setting_cubit.dart';
-import 'core/clients/http_client.dart';
+import 'core/alt_unused/http_client.dart';
 import 'data/create_post/datasources/create_post_datasource.dart';
 import 'data/create_post/repositories/create_post_repository_concrete.dart';
 import 'data/daily_hottest/datasources/daily_hottest_datasource.dart';
@@ -109,7 +109,7 @@ Future<void> init() async {
   // Registers the login usecase.
   sl.registerLazySingleton(() => Login(repository: sl(), netClient: sl()));
   // Registers the logout usecase.
-  sl.registerLazySingleton(() => Logout(repository: sl(), netClient: sl()));
+  sl.registerLazySingleton(() => Logout(repository: sl(), api: sl()));
   // Registers the silent authentication usecase.
   sl.registerLazySingleton(() => SilentAuthentication(netClient: sl()));
   // Registers the recents feed usecase.

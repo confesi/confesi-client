@@ -1,4 +1,4 @@
-import '../../../core/clients/http_client.dart';
+import '../../../core/alt_unused/http_client.dart';
 import '../../../core/results/successes.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
@@ -20,7 +20,7 @@ class Register implements Usecase<Success, RegisterParams> {
     return tokens.fold(
       (failure) => Left(failure),
       (tokens) async {
-        final result = await repository.setRefreshToken(tokens.refreshToken);
+        final result = await repository.setToken(tokens.refreshToken);
         return result.fold(
           (failure) => Left(failure),
           (success) {

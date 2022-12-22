@@ -96,7 +96,7 @@ class BiometricFailure extends Failure {}
 class LocalDBFailure extends Failure {}
 
 /// A failure for when a setting is unwritten locally, meaning, it's default.
-class DBDefaultFailure extends Failure {}
+class DbDefaultFailure extends Failure {}
 
 /// For when the received token from secure storage is null/empty.
 class EmptyTokenFailure extends Failure {}

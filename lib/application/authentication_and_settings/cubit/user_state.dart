@@ -6,6 +6,7 @@ abstract class UserState extends Equatable {
   List<Object?> get props => [];
 }
 
+/// There is currently a user, whether that be a [Guest] or a [RegisteredUser].
 class User extends UserState {
   final UserType userType;
   final AppearanceEnum appearanceEnum;
@@ -35,7 +36,9 @@ class User extends UserState {
 /// This indicates an error page should be shown.
 class UserError extends UserState {}
 
-/// If the state of the user is currently unknown.
-///
-/// Provided as the initial state. Also the state if the user has not yet viewed past the open screen.
-class UnknownUser extends UserState {}
+/// If the state of the user is currently a new user who has not yet seen the home screen.
+/// Meaning, they should see the open screen by default.
+class OpenUser extends UserState {}
+
+/// Unknown user state. Currently loading. Provided as default.
+class UserLoading extends UserState {}

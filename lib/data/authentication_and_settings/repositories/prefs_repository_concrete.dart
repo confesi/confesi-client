@@ -30,7 +30,7 @@ class PrefsRepository implements IPrefsRepository {
     try {
       return Right(await datasource.loadPref(enumValues, enumType, userID));
     } on DBDefaultException {
-      return Left(DBDefaultFailure());
+      return Left(DbDefaultFailure());
     } catch (e) {
       return Left(LocalDBFailure());
     }
@@ -42,7 +42,7 @@ class PrefsRepository implements IPrefsRepository {
     try {
       return Right(await datasource.loadPref(enumValues, enumType, userID));
     } on DBDefaultException {
-      return Left(DBDefaultFailure());
+      return Left(DbDefaultFailure());
     } catch (e) {
       return Left(LocalDBFailure());
     }
@@ -60,6 +60,26 @@ class PrefsRepository implements IPrefsRepository {
   @override
   Future<Either<Failure, Success>> setReducedAnimations(
       ReducedAnimationsEnum settingValue, Type enumType, String userID) async {
+    try {
+      return Right(await datasource.setPref(settingValue, enumType, userID));
+    } catch (e) {
+      return Left(LocalDBFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, HomeViewedEnum>> loadViewedHome(List enumValues, Type enumType, String userID) async {
+    try {
+      return Right(await datasource.loadPref(enumValues, enumType, userID));
+    } on DBDefaultException {
+      return Left(DbDefaultFailure());
+    } catch (e) {
+      return Left(LocalDBFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, Success>> setViewedHome(HomeViewedEnum settingValue, Type enumType, String userID) async {
     try {
       return Right(await datasource.setPref(settingValue, enumType, userID));
     } catch (e) {

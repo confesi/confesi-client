@@ -1,6 +1,8 @@
 import 'dart:convert';
 
-import '../../../core/clients/http_client.dart';
+import '../../../constants/local_storage_keys.dart';
+import '../../../core/clients/api_client.dart';
+import '../../../core/alt_unused/http_client.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../../../core/results/exceptions.dart';
@@ -10,10 +12,9 @@ import '../models/tokens_model.dart';
 import '../utils/error_message_to_exception.dart';
 
 abstract class IAuthenticationDatasource {
-  Future<AccessTokenModel> getAccessToken(String refreshToken);
-  Future<String> getRefreshToken();
-  Future<Success> setRefreshToken(String refreshToken);
-  Future<Success> deleteRefreshToken();
+  Future<String> getToken();
+  Future<Success> setToken(String token);
+  Future<Success> deleteToken();
   Future<Success> logout(String refreshToken);
   Future<TokensModel> register(String username, String password, String email);
   Future<TokensModel> login(String usernameOrEmail, String password);
@@ -24,7 +25,7 @@ abstract class IAuthenticationDatasource {
 /// Throws exceptions when things go wrong.
 class AuthenticationDatasource implements IAuthenticationDatasource {
   final FlutterSecureStorage secureStorage;
-  final HttpClient api;
+  final ApiClient api;
 
   AuthenticationDatasource({
     required this.secureStorage,
@@ -86,41 +87,24 @@ class AuthenticationDatasource implements IAuthenticationDatasource {
     }
   }
 
-  /// Gets an access token given a refresh token.
-  @override
-  Future<AccessTokenModel> getAccessToken(String refreshToken) async {
-    final response = await api.req(
-        false,
-        Method.post,
-        {
-          "token": refreshToken,
-        },
-        '/api/user/token');
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      return AccessTokenModel.fromJson(jsonDecode(response.body));
-    } else {
-      throw errorMessageToException(jsonDecode(response.body));
-    }
-  }
-
   /// Deletes the current refresh token in the device's storage.
   @override
-  Future<Success> deleteRefreshToken() async {
-    await secureStorage.delete(key: "refreshToken");
+  Future<Success> deleteToken() async {
+    await secureStorage.delete(key: tokenStorageLocation);
     return ApiSuccess();
   }
 
   /// Sets the device's refresh token in storage.
   @override
-  Future<Success> setRefreshToken(String refreshToken) async {
-    await secureStorage.write(key: "refreshToken", value: refreshToken);
+  Future<Success> setToken(String refreshToken) async {
+    await secureStorage.write(key: tokenStorageLocation, value: refreshToken);
     return ApiSuccess();
   }
 
   /// Gets the current device's refresh token from storage.
   @override
-  Future<String> getRefreshToken() async {
-    final result = await secureStorage.read(key: "refreshToken");
+  Future<String> getToken() async {
+    final result = await secureStorage.read(key: tokenStorageLocation);
     if (result == null || result.isEmpty) throw EmptyTokenException();
     return result;
   }

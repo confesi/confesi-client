@@ -1,4 +1,6 @@
-import '../../../core/clients/http_client.dart';
+import 'package:Confessi/core/clients/api_client.dart';
+
+import '../../../core/alt_unused/http_client.dart';
 import 'package:dartz/dartz.dart';
 import 'package:hive/hive.dart';
 
@@ -9,46 +11,23 @@ import '../../../data/authentication_and_settings/repositories/authentication_re
 
 class Logout implements Usecase<Success, String> {
   final AuthenticationRepository repository;
-  final HttpClient netClient;
+  final ApiClient api;
 
-  Logout({required this.repository, required this.netClient});
+  Logout({required this.repository, required this.api});
 
   /// Logs the user out.
   @override
-  Future<Either<Failure, Success>> call(String userID) async {
-    Hive.box(userID).clear(); // TODO: Maybe move this to a deeper level?
-    final failureOrRefreshToken = await repository.getRefreshToken();
-    print('TOP LEVEL: $failureOrRefreshToken');
-    return failureOrRefreshToken.fold(
-      (failure) => Left(failure),
-      (refreshToken) async {
-        final failureOrSuccess = await repository.logout(refreshToken);
-        print('LEVEL 1: $failureOrSuccess');
-        return failureOrSuccess.fold(
-          (failure) async {
-            // If logging out on the server fails (this is because the user isn't
-            // connected, token tampered with, etc. then just delete their current
-            // local refresh token and log them out anyway).
-            final failureOrSuccess = await repository.deleteRefreshToken();
-            return failureOrSuccess.fold(
-              (failure) => Left(failure),
-              (success) {
-                netClient.removeAuthHeader();
-                return Right(success);
-              },
-            );
-          },
-          (success) async {
-            final failureOrSuccess = await repository.deleteRefreshToken();
-            return failureOrSuccess.fold(
-              (failure) => Left(failure),
-              (success) {
-                netClient.removeAuthHeader();
-                return Right(success);
-              },
-            );
-          },
-        );
+  Future<Either<Failure, Success>> call(String userId) async {
+    // Clears the token from storage.
+    return (await repository.deleteToken()).fold(
+      (failure) => Left(LocalDBFailure()),
+      (success) {
+        // Clears the box storing data for this user.
+        Hive.box(userId).clear();
+        // Removes the token from the authorization header of the Api Client
+        api.clearToken();
+        // Returns success.
+        return Right(ApiSuccess());
       },
     );
   }

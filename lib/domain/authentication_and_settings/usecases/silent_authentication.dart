@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 
-import '../../../core/clients/http_client.dart';
+import '../../../core/alt_unused/http_client.dart';
 import '../../../core/results/failures.dart';
 import '../../../core/results/successes.dart';
 import '../../../core/usecases/no_params.dart';
