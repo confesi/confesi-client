@@ -5,7 +5,7 @@ import '../../../constants/local_storage_keys.dart';
 import '../../../core/utils/tokens/user_id_from_jwt.dart';
 import '../../../domain/authentication_and_settings/entities/refresh_token.dart';
 import '../../../domain/authentication_and_settings/entities/user.dart';
-import '../../../domain/authentication_and_settings/usecases/silent_authentication.dart';
+import '../../../core/alt_unused/silent_authentication.dart';
 import '../../../presentation/shared/overlays/notification_chip.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -23,19 +23,20 @@ part 'user_state.dart';
 
 class UserCubit extends Cubit<UserState> {
   final Logout logout;
-  final SilentAuthentication silentAuthentication;
   final Appearance appearance;
   final HomeViewed homeViewed;
   final LoadRefreshToken loadRefreshToken;
 
-  UserCubit(
-      {required this.logout,
-      required this.homeViewed,
-      required this.silentAuthentication,
-      required this.appearance,
-      required this.loadRefreshToken})
-      : super(UserLoading());
+  UserCubit({
+    required this.logout,
+    required this.homeViewed,
+    required this.appearance,
+    required this.loadRefreshToken,
+  }) : super(
+          UserLoading(),
+        );
 
+  // TODO: remove? needed?
   bool get localDataLoaded => state is User;
 
   /// Get the state assuming its [User].
@@ -82,6 +83,7 @@ class UserCubit extends Cubit<UserState> {
 
         // Opening Hive preferences box (for local storage).
         await Hive.openBox(userStorageLocation);
+        print("Storing local data with box key: $userStorageLocation");
         (await appearance.get(AppearanceEnum.values, AppearanceEnum, userStorageLocation)).fold(
           (failure) {
             // If there's a failure loading these prefs, abort with UserError state.

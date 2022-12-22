@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:Confessi/core/clients/api_client.dart';
+
 import '../../../core/alt_unused/http_client.dart';
 import '../../../core/results/exceptions.dart';
 import '../../../domain/daily_hottest/entities/leaderboard_item.dart';
@@ -11,20 +13,31 @@ abstract class ILeaderboardDatasource {
 }
 
 class LeaderboardDatasource implements ILeaderboardDatasource {
-  final HttpClient api;
+  final ApiClient api;
 
   LeaderboardDatasource({required this.api});
 
   @override
   Future<List<LeaderboardItem>> fetchRanking() async {
-    final response = await api.req(true, Method.get, null, '/api/posts/leaderboard',
-        dummyData: true, dummyPath: 'api.posts.leaderboard.json');
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      return (json.decode(response.body)['rankings'] as List)
-          .map((item) => LeaderboardItemModel.fromJson(item))
-          .toList();
-    } else {
-      throw ServerException();
-    }
+    return (await api.req(
+      Method.get,
+      "/api/posts/leaderboard",
+      null,
+      dummyErrorChance: 0.1,
+      dummyPath: "api.posts.leaderboard.jso",
+      dummyReq: true,
+    ))
+        .fold(
+      (_) => throw InvalidTokenException(),
+      (response) {
+        if (response.statusCode == 200 || response.statusCode == 201) {
+          return (json.decode(response.body)['rankings'] as List)
+              .map((item) => LeaderboardItemModel.fromJson(item))
+              .toList();
+        } else {
+          throw ServerException();
+        }
+      },
+    );
   }
 }

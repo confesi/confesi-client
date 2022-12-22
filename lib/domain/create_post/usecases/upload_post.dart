@@ -9,9 +9,8 @@ import '../../../core/alt_unused/http_client.dart';
 
 class UploadPost implements Usecase<Success, UploadPostParams> {
   final CreatePostRepository repository;
-  final HttpClient api;
 
-  UploadPost({required this.repository, required this.api});
+  UploadPost({required this.repository});
 
   @override
   Future<Either<Failure, Success>> call(UploadPostParams uploadPostParams) async {

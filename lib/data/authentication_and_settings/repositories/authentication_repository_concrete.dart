@@ -34,20 +34,6 @@ class AuthenticationRepository implements IAuthenticationRepository {
     }
   }
 
-  /// Logs the user out.
-  @override
-  Future<Either<Failure, Success>> logout(String refreshToken) async {
-    if (await networkInfo.isConnected) {
-      try {
-        return Right(await datasource.logout(refreshToken));
-      } catch (e) {
-        return Left(exceptionToFailure(e));
-      }
-    } else {
-      return Left(ConnectionFailure());
-    }
-  }
-
   /// Registers the user.
   @override
   Future<Either<Failure, Tokens>> register(String username, String password, String email) async {

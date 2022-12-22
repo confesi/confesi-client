@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:Confessi/application/profile/cubit/profile_cubit.dart';
 import 'package:Confessi/data/profile/datasources/profile_datasource.dart';
 import 'package:Confessi/data/profile/repositories/profile_repository_concrete.dart';
+import 'package:Confessi/domain/authentication_and_settings/usecases/home_viewed.dart';
 import 'package:Confessi/domain/profile/usecases/profile_data.dart';
 import 'package:Confessi/domain/shared/usecases/share_content.dart';
 
@@ -11,7 +12,6 @@ import 'core/clients/api_client.dart';
 import 'domain/authentication_and_settings/usecases/open_device_settings.dart';
 
 import 'application/authentication_and_settings/cubit/language_setting_cubit.dart';
-import 'core/alt_unused/http_client.dart';
 import 'data/create_post/datasources/create_post_datasource.dart';
 import 'data/create_post/repositories/create_post_repository_concrete.dart';
 import 'data/daily_hottest/datasources/daily_hottest_datasource.dart';
@@ -51,7 +51,7 @@ import 'data/authentication_and_settings/repositories/authentication_repository_
 import 'domain/authentication_and_settings/usecases/login.dart';
 import 'domain/authentication_and_settings/usecases/logout.dart';
 import 'domain/authentication_and_settings/usecases/register.dart';
-import 'domain/authentication_and_settings/usecases/silent_authentication.dart';
+import 'core/alt_unused/silent_authentication.dart';
 import 'data/feed/datasources/feed_datasource.dart';
 import 'data/feed/repositories/feed_repository_concrete.dart';
 import 'domain/feed/usecases/recents.dart';
@@ -90,8 +90,7 @@ Future<void> init() async {
   // Registers the registration cubit.
   sl.registerFactory(() => RegisterCubit(register: sl()));
   // Registers the user cubit.
-  sl.registerFactory(
-      () => UserCubit(logout: sl(), silentAuthentication: sl(), appearance: sl(), loadRefreshToken: sl()));
+  sl.registerFactory(() => UserCubit(logout: sl(), appearance: sl(), loadRefreshToken: sl(), homeViewed: sl()));
   // Registers the contact setting cubit.
   sl.registerFactory(() => ContactSettingCubit(copyEmailTextUsecase: sl(), openMailClientUsecase: sl()));
   // Registers the cubit that launches the website viewer.
@@ -105,13 +104,11 @@ Future<void> init() async {
 
   //! Usecases
   // Registers the register usecase.
-  sl.registerLazySingleton(() => Register(repository: sl(), netClient: sl()));
+  sl.registerLazySingleton(() => Register(repository: sl(), api: sl()));
   // Registers the login usecase.
-  sl.registerLazySingleton(() => Login(repository: sl(), netClient: sl()));
+  sl.registerLazySingleton(() => Login(repository: sl(), api: sl()));
   // Registers the logout usecase.
   sl.registerLazySingleton(() => Logout(repository: sl(), api: sl()));
-  // Registers the silent authentication usecase.
-  sl.registerLazySingleton(() => SilentAuthentication(netClient: sl()));
   // Registers the recents feed usecase.
   sl.registerLazySingleton(() => Recents(repository: sl()));
   // Registers the trending feed usecase.
@@ -121,7 +118,7 @@ Future<void> init() async {
   // Registers the daily hottest usecase.
   sl.registerLazySingleton(() => Posts(repository: sl()));
   // Registers the upload post usecase.
-  sl.registerLazySingleton(() => UploadPost(repository: sl(), api: sl()));
+  sl.registerLazySingleton(() => UploadPost(repository: sl()));
   // Registers the biometric authentication usecase.
   sl.registerLazySingleton(() => BiometricAuthentication(localAuthentication: sl()));
   // Registers the appearance usecase.
@@ -140,14 +137,14 @@ Future<void> init() async {
   sl.registerLazySingleton(() => ShareContent());
   // Registers the profile usecase
   sl.registerLazySingleton(() => ProfileDataUsecase(repository: sl()));
+  // Registeres the home viewed usecase
+  sl.registerLazySingleton(() => HomeViewed(repository: sl()));
 
   //! Core
   // Registers custom connection checker class.
   sl.registerLazySingleton(() => NetworkInfo(sl()));
   // Registers the app routing system.
   sl.registerLazySingleton(() => AppRouter());
-  // Registers the custom net client class.
-  sl.registerLazySingleton(() => HttpClient(secureStorage: sl())); // TODO: api client to remove
   // Registers the custom api client class.
   sl.registerLazySingleton(() => ApiClient());
 

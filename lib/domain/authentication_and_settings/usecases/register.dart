@@ -1,3 +1,5 @@
+import 'package:Confessi/core/clients/api_client.dart';
+
 import '../../../core/alt_unused/http_client.dart';
 import '../../../core/results/successes.dart';
 import 'package:dartz/dartz.dart';
@@ -9,9 +11,9 @@ import '../../../data/authentication_and_settings/repositories/authentication_re
 
 class Register implements Usecase<Success, RegisterParams> {
   final AuthenticationRepository repository;
-  final HttpClient netClient;
+  final ApiClient api;
 
-  Register({required this.repository, required this.netClient});
+  Register({required this.repository, required this.api});
 
   /// Registers the user.
   @override
@@ -19,12 +21,12 @@ class Register implements Usecase<Success, RegisterParams> {
     final tokens = await repository.register(params.username, params.password, params.email);
     return tokens.fold(
       (failure) => Left(failure),
-      (tokens) async {
-        final result = await repository.setToken(tokens.refreshToken);
+      (token) async {
+        final result = await repository.setToken(token.token);
         return result.fold(
           (failure) => Left(failure),
           (success) {
-            netClient.setAccessTokenHeader(tokens.accessToken);
+            api.setToken(token.token);
             return Right(ApiSuccess());
           },
         );

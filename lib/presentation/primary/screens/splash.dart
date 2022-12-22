@@ -45,7 +45,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   @override
   Widget build(BuildContext context) {
     return BlocListener<UserCubit, UserState>(
-      listenWhen: (previous, current) => (previous.runtimeType != current.runtimeType || current is NoUser),
+      listenWhen: (previous, current) => (previous.runtimeType != current.runtimeType || current is UserLoading),
       listener: (context, state) {
         // if (state is User) {
         //   if (state.justRegistered) {
@@ -58,6 +58,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
         // } else if (state is LocalDataError) {
         //   Navigator.of(context).pushNamed("/prefsError");
         // }
+        print(state);
         Navigator.of(context)
             .pushNamed("/home"); // TODO: Delete this line, and uncomment lines above; this is only for dev mode
       },
@@ -66,7 +67,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
           if (state is EnteringRegisterData && state.hasError) {
             showNotificationChip(context, state.errorMessage);
           } else if (state is RegisterSuccess) {
-            context.read<UserCubit>().authenticateUser(AuthenticationType.register);
+            // context.read<UserCubit>().authenticateUser(AuthenticationType.register); // TODO: fix
           }
         },
         child: BlocListener<LoginCubit, LoginState>(
@@ -74,7 +75,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
             if (state is EnteringLoginData && state.hasError) {
               showNotificationChip(context, state.errorMessage);
             } else if (state is LoginSuccess) {
-              context.read<UserCubit>().authenticateUser(AuthenticationType.login);
+              // context.read<UserCubit>().authenticateUser(AuthenticationType.login); // TODO: fix
             }
           },
           child: ThemedStatusBar(

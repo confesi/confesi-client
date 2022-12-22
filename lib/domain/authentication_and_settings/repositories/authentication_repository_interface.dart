@@ -13,7 +13,6 @@ abstract class IAuthenticationRepository {
   Future<Either<Failure, Success>> setToken(String token);
 
   // User account.
-  Future<Either<Failure, Success>> logout(String token);
   Future<Either<Failure, Tokens>> register(String username, String password, String email);
   Future<Either<Failure, Tokens>> login(String usernameOrEmail, String password);
 }
