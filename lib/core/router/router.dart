@@ -1,5 +1,7 @@
 import 'package:Confessi/presentation/feed/screens/simple_detail_view.dart';
 
+import '../../application/create_post/cubit/post_cubit.dart';
+import '../../application/daily_hottest/cubit/hottest_cubit.dart';
 import '../../application/profile/cubit/profile_cubit.dart';
 
 import '../../application/authentication_and_settings/cubit/language_setting_cubit.dart';
@@ -96,6 +98,18 @@ class AppRouter {
             providers: [
               BlocProvider(
                 lazy: false,
+                create: (context) => sl<CreatePostCubit>(),
+              ),
+              BlocProvider(
+                lazy: false,
+                create: (context) => sl<HottestCubit>()..loadPosts(DateTime.now()),
+              ),
+              BlocProvider(
+                lazy: false,
+                create: (context) => sl<LeaderboardCubit>()..loadRankings(),
+              ),
+              BlocProvider(
+                lazy: false,
                 create: (context) => sl<ProfileCubit>()..loadProfile(),
               ),
               BlocProvider(
@@ -184,11 +198,7 @@ class AppRouter {
           break;
 
         case "/hottest/leaderboard":
-          page = BlocProvider(
-            lazy: false,
-            create: (context) => sl<LeaderboardCubit>()..loadRankings(),
-            child: const LeaderboardScreen(),
-          );
+          page = const LeaderboardScreen();
           break;
         case "/feedback":
           page = const FeedbackHome();

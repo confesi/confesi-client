@@ -9,7 +9,6 @@ Future<dynamic> hiveGet(
   String boxName,
   String key,
 ) async {
-  // if (Random().nextInt(2) == 0) throw Exception();
   final resultOrNull = await Hive.box(boxName).get(key);
   if (resultOrNull == null) throw DBDefaultException();
   return resultOrNull;

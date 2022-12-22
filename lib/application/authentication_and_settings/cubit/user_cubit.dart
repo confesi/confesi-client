@@ -55,10 +55,11 @@ class UserCubit extends Cubit<UserState> {
         (success) {
           // After succesfully logging out, now try reloading user data. This should
           // restart the user as a guest.
-          loadUser();
+          loadUser(false);
         },
       );
     } else {
+      print("error cant log out");
       // Can't log out. You're not a user.
       // TODO: Logout failure
     }
@@ -66,10 +67,16 @@ class UserCubit extends Cubit<UserState> {
 
   /// Load the user object if possible, otherwise emits an error state.
   ///
+  /// [artificialDelay] delays execution for x time. Used for initial call as to not
+  /// cause jank with the splash screen.
+  ///
   /// Success: emits Guest or RegisteredUser.
   ///
   /// Error: emits UserError.
-  Future<void> loadUser() async {
+  Future<void> loadUser(bool artificialDelay) async {
+    // If artificialDelay is true, then delay the execution marginally. Exists
+    // so that the splash screen doesn't jank quickly on initial load.
+    if (artificialDelay) await Future.delayed(const Duration(milliseconds: 750));
     (await loadRefreshToken.call(NoParams())).fold(
       (failure) {
         // Something went wrong getting the token.
@@ -83,7 +90,6 @@ class UserCubit extends Cubit<UserState> {
 
         // Opening Hive preferences box (for local storage).
         await Hive.openBox(userStorageLocation);
-        print("Storing local data with box key: $userStorageLocation");
         (await appearance.get(AppearanceEnum.values, AppearanceEnum, userStorageLocation)).fold(
           (failure) {
             // If there's a failure loading these prefs, abort with UserError state.
@@ -108,8 +114,10 @@ class UserCubit extends Cubit<UserState> {
                 },
               );
             } else {
+              // Open the Hive box with this pref.
+              await Hive.openBox(homeViewedScreenLocation);
               // Check the viewed viewedHomeScreen location to decide if routing -> home screen or -> open screen.
-              (await homeViewed.get(HomeViewedEnum.values, HomeViewedEnum, userStorageLocation)).fold(
+              (await homeViewed.get(HomeViewedEnum.values, HomeViewedEnum, homeViewedScreenLocation)).fold(
                 (failure) {
                   // Failure checking if the user has already viewed the home screen. Emit UserError state and abort.
                   emit(UserError());
@@ -149,7 +157,15 @@ class UserCubit extends Cubit<UserState> {
     }
   }
 
-  // TODO: After reaching home screen as guest or registered user, set this to "HomeViewedEnum.yes".
+  /// Sets the [HomeViewedEnum] to [HomeViewedEnum.yes] and then reloads the user.
+  ///
+  /// Should be called when you've progressed to the home screen (as guest or registered user).
+  ///
+  /// Prevents returning to the 'open' screen by default every time the app is opened.
+  Future<void> setHomeViewedThenReloadUser(BuildContext context) async {
+    await setHomeViewed(HomeViewedEnum.yes, context).then((value) => loadUser(false));
+  }
+
   // Special case for setting a preference. Does not relate to user. Account agnostic as it records
   // if any account on the device has viewed the home screen.
   Future<void> setHomeViewed(HomeViewedEnum homeViewedEnum, BuildContext context) async {

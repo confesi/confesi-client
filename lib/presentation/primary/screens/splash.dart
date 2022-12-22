@@ -1,3 +1,5 @@
+import 'package:Confessi/domain/authentication_and_settings/entities/user.dart';
+
 import '../../../core/styles/typography.dart';
 import '../../../core/utils/sizing/width_fraction.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
@@ -45,22 +47,27 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   @override
   Widget build(BuildContext context) {
     return BlocListener<UserCubit, UserState>(
-      listenWhen: (previous, current) => (previous.runtimeType != current.runtimeType || current is UserLoading),
+      listenWhen: (previous, current) => (previous.runtimeType != current.runtimeType),
       listener: (context, state) {
-        // if (state is User) {
-        //   if (state.justRegistered) {
-        //     Navigator.of(context).pushNamed("/onboarding");
-        //   } else {
-        //     Navigator.of(context).pushNamed("/home");
-        //   }
-        // } else if (state is NoUser) {
-        //   Navigator.of(context).pushNamed("/open");
-        // } else if (state is LocalDataError) {
-        //   Navigator.of(context).pushNamed("/prefsError");
-        // }
-        print(state);
-        Navigator.of(context)
-            .pushNamed("/home"); // TODO: Delete this line, and uncomment lines above; this is only for dev mode
+        if (state is OpenUser) {
+          // State is OpenUser, meaning they haven't seen the home screen yet ever.
+          print("open user");
+          Navigator.of(context).pushNamed("/open");
+        } else if (state is User) {
+          // State is some subset of User, whether that be Guest or RegisteredUser.
+          if (state.userType is RegisteredUser) {
+            // State is RegisteredUser, meaning they are a registered user.
+            print("registered user");
+            Navigator.of(context).pushNamed("/home");
+          } else {
+            // State is Guest, meaning they are a guest user.
+            print("guest");
+            Navigator.of(context).pushNamed("/home");
+          }
+        } else if (state is UserError) {
+          // Something went vastly wrong. Push to error screen.
+          Navigator.of(context).pushNamed("/prefsError");
+        }
       },
       child: BlocListener<RegisterCubit, RegisterState>(
         listener: (context, state) {
@@ -84,26 +91,13 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
               body: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Confesi",
-                        style: kSerifDisplay.copyWith(
-                          fontSize: 44,
-                          color: Theme.of(context).colorScheme.secondary,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 15),
-                      Text(
-                        "Open Beta", // introText
-                        style: kTitle.copyWith(
-                          color: Theme.of(context).colorScheme.onSurface,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
+                  child: Text(
+                    "Confesi",
+                    style: kSerifDisplay.copyWith(
+                      fontSize: 34,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
                 ),
               ),

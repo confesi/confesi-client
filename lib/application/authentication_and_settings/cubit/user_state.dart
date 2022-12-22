@@ -28,7 +28,7 @@ class User extends UserState {
   }
 
   @override
-  List<Object?> get props => []; //! Very intentionally not rebuilding based on preferences.
+  List<Object?> get props => [userType]; //! Very intentionally not rebuilding based on preferences.
 }
 
 /// Error retrieving critical information to create a user.

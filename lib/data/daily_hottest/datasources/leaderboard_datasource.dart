@@ -24,7 +24,7 @@ class LeaderboardDatasource implements ILeaderboardDatasource {
       "/api/posts/leaderboard",
       null,
       dummyErrorChance: 0.1,
-      dummyPath: "api.posts.leaderboard.jso",
+      dummyPath: "api.posts.leaderboard.json",
       dummyReq: true,
     ))
         .fold(

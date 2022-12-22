@@ -1,9 +1,12 @@
+import 'package:Confessi/application/authentication_and_settings/cubit/user_cubit.dart';
 import 'package:Confessi/application/shared/cubit/share_cubit.dart';
+import 'package:Confessi/presentation/daily_hottest/screens/leaderboard.dart';
 import 'package:Confessi/presentation/primary/controllers/hottest_controller.dart';
 import 'package:Confessi/presentation/primary/controllers/profile_controller.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../application/shared/cubit/website_launcher_cubit.dart';
+import '../../authentication_and_settings/screens/settings/home.dart';
 import '../../daily_hottest/screens/home.dart';
 import '../../profile/screens/home.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
@@ -34,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   @override
   void initState() {
-    tabController = TabController(vsync: this, length: 3);
+    tabController = TabController(vsync: this, length: 5);
     profileController = ProfileController();
     hottestController = HottestController();
     super.initState();
@@ -91,6 +94,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       ExploreHome(scaffoldKey: scaffoldKey),
                       HottestHome(hottestController: hottestController),
                       ProfileHome(profileController: profileController),
+                      const LeaderboardScreen(),
+                      const SettingsHome(),
                     ],
                   ),
                   bottomNavigationBar: Container(
@@ -122,7 +127,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       tabs: const [
                         Tab(icon: Icon(CupertinoIcons.compass)),
                         Tab(icon: Icon(CupertinoIcons.flame)),
-                        Tab(icon: Icon(CupertinoIcons.cube_box)),
+                        Tab(icon: Icon(CupertinoIcons.profile_circled)),
+                        Tab(icon: Icon(CupertinoIcons.chart_bar)),
+                        Tab(icon: Icon(CupertinoIcons.gear)),
                       ],
                     ),
                   ),

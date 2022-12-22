@@ -92,7 +92,7 @@ class MyApp extends StatelessWidget {
           lazy: false,
           // create: (context) => sl<UserCubit>()..authenticateUser(AuthenticationType.silent), // TODO: add silent auth
           // create: (context) => sl<UserCubit>(),
-          create: (context) => sl<UserCubit>()..loadUser(),
+          create: (context) => sl<UserCubit>()..loadUser(true),
         ),
         BlocProvider(
           lazy: false,
@@ -101,14 +101,6 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           lazy: false,
           create: (context) => sl<RegisterCubit>(),
-        ),
-        BlocProvider(
-          lazy: false,
-          create: (context) => sl<CreatePostCubit>(),
-        ),
-        BlocProvider(
-          lazy: false,
-          create: (context) => sl<HottestCubit>(),
         ),
       ],
       child: Builder(
@@ -139,16 +131,10 @@ class MyApp extends StatelessWidget {
             builder: (BuildContext context, Widget? child) {
               final MediaQueryData data = MediaQuery.of(context);
               return MediaQuery(
-                // data: data.copyWith(textScaleFactor: 1),
                 data: data,
                 child: child!,
               );
             },
-            // home: Builder(
-            //   builder: (context) {
-            //     return const SplashScreen();
-            //   },
-            // ),
             home: const SplashScreen(),
           );
         },

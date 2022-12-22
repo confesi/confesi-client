@@ -38,7 +38,7 @@ class CriticalErrorScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 30),
                       Text(
-                        "Usually, this is because your device couldn't load your account's preferences. Please try closing and re-opening the app, or contacting support.",
+                        "Usually, this is because your device couldn't load/access your account's local data. Please try closing and re-opening the app, or contacting support.",
                         style: kBody.copyWith(
                           color: appearanceBrightness(context) == Brightness.light
                               ? AppTheme.light.colorScheme.primary

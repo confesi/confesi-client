@@ -1,7 +1,9 @@
 import '../../../../application/shared/cubit/website_launcher_cubit.dart';
+import '../../../../constants/enums_that_are_local_keys.dart';
 import '../../../../core/utils/sizing/bottom_safe_area.dart';
 import '../../../../generated/l10n.dart';
 import '../../../shared/behaviours/themed_status_bar.dart';
+import '../../../shared/layout/appbar.dart';
 import '../../../shared/overlays/notification_chip.dart';
 import '../../../shared/selection_groups/setting_tile.dart';
 import '../../../shared/selection_groups/setting_tile_group.dart';
@@ -13,7 +15,6 @@ import 'package:scrollable/exports.dart';
 import '../../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../../../../constants/authentication_and_settings/text.dart';
 import '../../../../core/styles/typography.dart';
-import '../../../shared/layout/appbar.dart';
 
 class SettingsHome extends StatelessWidget {
   const SettingsHome({super.key});
@@ -36,7 +37,7 @@ class SettingsHome extends StatelessWidget {
             child: Column(
               children: [
                 AppbarLayout(
-                  leftIcon: CupertinoIcons.xmark,
+                  leftIconVisible: false,
                   centerWidget: Text(
                     S.of(context).settings_home_page_title,
                     style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
@@ -48,9 +49,10 @@ class SettingsHome extends StatelessWidget {
                   child: Container(
                     color: Theme.of(context).colorScheme.background,
                     child: ScrollableView(
+                      scrollBarVisible: false,
                       physics: const BouncingScrollPhysics(),
                       hapticsEnabled: false,
-                      inlineBottomOrRightPadding: bottomSafeArea(context) * 2,
+                      inlineBottomOrRightPadding: 45,
                       controller: ScrollController(),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -125,7 +127,20 @@ class SettingsHome extends StatelessWidget {
                                   isRedText: true,
                                   leftIcon: CupertinoIcons.square_arrow_right,
                                   text: kSettingsLogoutLabel,
-                                  onTap: () => context.read<UserCubit>().logoutUser(),
+                                  onTap: () {
+                                    context.read<UserCubit>().logoutUser();
+                                  },
+                                ),
+                                SettingTile(
+                                  isRedText: true,
+                                  leftIcon: CupertinoIcons.square_arrow_right,
+                                  text: "TEMPORARY - Reset",
+                                  onTap: () {
+                                    context
+                                        .read<UserCubit>()
+                                        .setHomeViewed(HomeViewedEnum.no, context)
+                                        .then((value) => context.read<UserCubit>().loadUser(false));
+                                  },
                                 ),
                               ],
                             ),
@@ -155,18 +170,6 @@ class SettingsHome extends StatelessWidget {
                                   leftIcon: CupertinoIcons.doc,
                                   text: kSesttingsPrivacyStatementLabel,
                                   onTap: () => context.read<WebsiteLauncherCubit>().launchWebsitePrivacyStatement(),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 15),
-                            SettingTileGroup(
-                              text: kSettingsDangerZoneLabel,
-                              settingTiles: [
-                                SettingTile(
-                                  isRedText: true,
-                                  leftIcon: CupertinoIcons.xmark,
-                                  text: kSettingsDeleteAccountLabel,
-                                  onTap: () => Navigator.pushNamed(context, "/settings/contact"),
                                 ),
                               ],
                             ),

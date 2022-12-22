@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:http/http.dart';
 
 import '../../../constants/local_storage_keys.dart';
@@ -5,8 +6,11 @@ import '../../../constants/local_storage_keys.dart';
 /// Definies which kind of user is currently viewing the app.
 ///
 /// Can be either subclass: [Guest] or [RegisteredUser].
-abstract class UserType {
+abstract class UserType extends Equatable {
   String userId();
+
+  @override
+  List<Object?> get props => [];
 }
 
 /// A guest is viewing the application.

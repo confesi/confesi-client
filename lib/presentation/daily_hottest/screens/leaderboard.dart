@@ -114,6 +114,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                   rightIconOnPress: () => scrolledDownFromTop
                       ? controller.scrollToTop()
                       : showInfoSheet(context, kLeaderboardInfoHeader, kLeaderboardInfoBody),
+                  leftIconVisible: false,
                 ),
                 Expanded(
                   child: BlocBuilder<LeaderboardCubit, LeaderboardState>(

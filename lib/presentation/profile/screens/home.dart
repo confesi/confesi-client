@@ -1,20 +1,14 @@
 import 'package:Confessi/application/profile/cubit/profile_cubit.dart';
 import 'package:Confessi/application/shared/cubit/share_cubit.dart';
 import 'package:Confessi/core/utils/numbers/is_plural.dart';
-import 'package:Confessi/core/utils/sizing/bottom_safe_area.dart';
 import 'package:Confessi/core/utils/sizing/top_safe_area.dart';
 import 'package:Confessi/presentation/primary/controllers/profile_controller.dart';
 import 'package:Confessi/presentation/profile/widgets/achievement_builder.dart';
 import 'package:Confessi/presentation/shared/indicators/alert.dart';
-import 'package:Confessi/presentation/shared/indicators/loading_material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:scrollable/exports.dart';
 
 import '../../../core/utils/numbers/add_commas_to_number.dart';
-import '../../../core/utils/numbers/number_until_limit.dart';
 import '../../../core/utils/sizing/width_fraction.dart';
-import '../../shared/behaviours/bottom_overscroll_scroll_to_top.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/edited_source_widgets/swipe_refresh.dart';
 import '../../shared/indicators/loading_cupertino.dart';
@@ -66,7 +60,8 @@ class _ProfileHomeState extends State<ProfileHome> with AutomaticKeepAliveClient
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(40)),
+                    borderRadius:
+                        const BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
                     child: SizedBox(
                       height: heightFraction(context, .3),
                       width: double.infinity,
@@ -103,12 +98,12 @@ class _ProfileHomeState extends State<ProfileHome> with AutomaticKeepAliveClient
                                   ),
                                   iconColor: Theme.of(context).colorScheme.onSurface,
                                 ),
-                                EmblemButton(
-                                  backgroundColor: Theme.of(context).colorScheme.surface,
-                                  icon: CupertinoIcons.gear,
-                                  onPress: () => Navigator.of(context).pushNamed("/settings"),
-                                  iconColor: Theme.of(context).colorScheme.onSurface,
-                                ),
+                                // EmblemButton(
+                                //   backgroundColor: Theme.of(context).colorScheme.surface,
+                                //   icon: CupertinoIcons.gear,
+                                //   onPress: () => Navigator.of(context).pushNamed("/settings"),
+                                //   iconColor: Theme.of(context).colorScheme.onSurface,
+                                // ),
                               ],
                             ),
                           ),

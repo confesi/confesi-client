@@ -30,8 +30,9 @@ class PrefsDatasource implements IPrefsDatasource {
 
   @override
   Future<Success> setPref(Enum enumData, Type enumType, String userID) async {
+    print(getLowercaseEnumName(enumType));
+    print(enumToString(enumData));
     await Hive.box(userID).put(getLowercaseEnumName(enumType), enumToString(enumData));
-    print("set successfully...");
     return SettingSuccess();
   }
 
