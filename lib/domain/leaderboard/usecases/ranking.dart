@@ -1,6 +1,6 @@
 import '../../../core/results/failures.dart';
 import '../../../core/usecases/single_usecase.dart';
-import '../../../data/daily_hottest/repositories/leaderboard_repository_concrete.dart';
+import '../../../data/leaderboard/repositories/leaderboard_repository_concrete.dart';
 import '../entities/leaderboard_item.dart';
 import 'package:dartz/dartz.dart';
 

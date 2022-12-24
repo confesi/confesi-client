@@ -1,16 +1,17 @@
 import 'package:Confessi/core/utils/numbers/large_number_formatter.dart';
 import 'package:Confessi/core/utils/numbers/number_postfix.dart';
-import 'package:Confessi/presentation/daily_hottest/widgets/leaderboard_header.dart';
-import 'package:Confessi/presentation/daily_hottest/widgets/leaderboard_item_tile.dart';
+import 'package:Confessi/presentation/leaderboard/widgets/leaderboard_header.dart';
+import 'package:Confessi/presentation/leaderboard/widgets/leaderboard_item_tile.dart';
 import 'package:Confessi/presentation/shared/indicators/loading_cupertino.dart';
 import 'package:Confessi/presentation/shared/other/feed_list.dart';
 
+import '../../../constants/leaderboard/general.dart';
 import '../../../core/utils/numbers/is_plural.dart';
-import '../../../domain/daily_hottest/entities/leaderboard_item.dart';
+import '../../../domain/leaderboard/entities/leaderboard_item.dart';
 import '../../../generated/l10n.dart';
 import '../../shared/indicators/alert.dart';
 import '../../shared/layout/appbar.dart';
-import '../../../application/daily_hottest/cubit/leaderboard_cubit.dart';
+import '../../../application/leaderboard/cubit/leaderboard_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -102,7 +103,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
             child: Column(
               children: [
                 AppbarLayout(
-                  bottomBorder: false,
+                  bottomBorder: true,
                   centerWidget: Text(
                     S.of(context).leaderboard_home_page_title,
                     style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),

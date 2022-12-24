@@ -6,6 +6,7 @@ import 'package:Confessi/presentation/primary/controllers/profile_controller.dar
 import 'package:Confessi/presentation/profile/widgets/achievement_builder.dart';
 import 'package:Confessi/presentation/shared/indicators/alert.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:scrollable/exports.dart';
 
 import '../../../core/utils/numbers/add_commas_to_number.dart';
 import '../../../core/utils/sizing/width_fraction.dart';
@@ -53,172 +54,132 @@ class _ProfileHomeState extends State<ProfileHome> with AutomaticKeepAliveClient
           backgroundColor: Theme.of(context).colorScheme.background,
           body: SwipeRefresh(
             onRefresh: () async => await context.read<ProfileCubit>().reloadProfile(),
-            child: SingleChildScrollView(
+            child: ScrollableView(
+              hapticsEnabled: false,
+              scrollBarVisible: false,
               controller: widget.profileController.scrollController,
               physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   ClipRRect(
-                    borderRadius:
-                        const BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30),
+                    ),
                     child: SizedBox(
-                      height: heightFraction(context, .3),
+                      height: heightFraction(context, 1 / 3),
                       width: double.infinity,
-                      child: SizedBox(
-                        height: heightFraction(context, .3),
-                        width: widthFraction(context, 1),
-                        child: CachedOnlineImage(url: state.universityImgUrl),
-                      ),
+                      child: CachedOnlineImage(url: state.universityImgUrl),
                     ),
                   ),
-                  Transform.translate(
-                    offset: const Offset(0, -60),
-                    child: Stack(
-                      alignment: Alignment.topCenter,
-                      children: [
-                        SizedBox(
-                          height: 120,
-                          width: double.infinity,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 15),
+                  Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 15, left: 10, right: 10),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: GroupText(
+                                leftAlign: true,
+                                small: true,
+                                header: state.username,
+                                body: "${state.universityFullName} (${state.universityAbbr})",
+                              ),
+                            ),
+                            const SizedBox(width: 5),
+                            EmblemButton(
+                              backgroundColor: Theme.of(context).colorScheme.surface,
+                              icon: CupertinoIcons.lock,
+                              onPress: () => showInfoSheetWithAction(
+                                context,
+                                "This profile is private",
+                                "This profile is only visible to you. In fact, to add an extra layer of protection, you can enable biometric authentication to keep your saved posts, confessions, and comments locked.",
+                                () => Navigator.pushNamed(context, "/settings/biometric_lock"),
+                                "Edit biometric lock settings",
+                              ),
+                              iconColor: Theme.of(context).colorScheme.onSurface,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 15),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: StatTile(
+                              leftTap: () => showInfoSheetWithAction(
+                                context,
+                                "Total likes",
+                                "${addCommasToNumber(state.statTileEntity.totalLikes)} / Top ${state.statTileEntity.topLikesPercentage}% of users",
+                                () => shareStatContent(context, state.statTileEntity.totalLikes,
+                                    state.statTileEntity.topLikesPercentage, "like", "likes"),
+                                "Share with friends",
+                              ),
+                              centerTap: () => showInfoSheetWithAction(
+                                context,
+                                "Total hottests",
+                                "${addCommasToNumber(state.statTileEntity.totalHottests)} / Top ${state.statTileEntity.topHottestsPercentage}% of users",
+                                () => shareStatContent(context, state.statTileEntity.totalHottests,
+                                    state.statTileEntity.topHottestsPercentage, "hottest", "hottests"),
+                                "Share with friends",
+                              ),
+                              rightTap: () => showInfoSheetWithAction(
+                                context,
+                                "Total hates",
+                                "${addCommasToNumber(state.statTileEntity.totalDislikes)} / Top ${state.statTileEntity.topDislikesPercentage}% of users",
+                                () => shareStatContent(context, state.statTileEntity.totalDislikes,
+                                    state.statTileEntity.topDislikesPercentage, "hate", "hates"),
+                                "Share with friends",
+                              ),
+                              leftNumber: state.statTileEntity.totalLikes,
+                              leftDescription: "Likes",
+                              centerNumber: state.statTileEntity.totalHottests,
+                              centerDescription: "Hottests",
+                              rightNumber: state.statTileEntity.totalDislikes,
+                              rightDescription: "Hates",
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
                             child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                EmblemButton(
-                                  backgroundColor: Theme.of(context).colorScheme.surface,
-                                  icon: CupertinoIcons.lock,
-                                  onPress: () => showInfoSheetWithAction(
-                                    context,
-                                    "This profile is private",
-                                    "This profile is only visible to you. In fact, to add an extra layer of protection, you can enable biometric authentication to keep your saved posts, confessions, and comments locked.",
-                                    () => Navigator.pushNamed(context, "/settings/biometric_lock"),
-                                    "Edit biometric lock settings",
+                                Expanded(
+                                  child: SimpleTextButton(
+                                    onTap: () => Navigator.pushNamed(context, '/home/profile/comments'),
+                                    text: "Comments",
                                   ),
-                                  iconColor: Theme.of(context).colorScheme.onSurface,
                                 ),
-                                // EmblemButton(
-                                //   backgroundColor: Theme.of(context).colorScheme.surface,
-                                //   icon: CupertinoIcons.gear,
-                                //   onPress: () => Navigator.of(context).pushNamed("/settings"),
-                                //   iconColor: Theme.of(context).colorScheme.onSurface,
-                                // ),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  child: SimpleTextButton(
+                                    onTap: () => Navigator.pushNamed(context, '/home/profile/posts'),
+                                    text: "Confessions",
+                                  ),
+                                ),
                               ],
                             ),
                           ),
-                        ),
-                        Container(
-                          height: 120,
-                          width: 120,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.secondary,
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              strokeAlign: StrokeAlign.outside,
-                              color: Theme.of(context).colorScheme.background,
-                              width: 5,
+                          const SizedBox(height: 10),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: SimpleTextButton(
+                              infiniteWidth: true,
+                              onTap: () => Navigator.pushNamed(context, '/home/profile/saved'),
+                              text: "Saved Confessions",
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Transform.translate(
-                    offset: const Offset(0, -60),
-                    child: Stack(
-                      alignment: Alignment.topCenter,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 15),
-                          child: GroupText(
-                            small: true,
-                            header: state.username,
-                            body: "${state.universityFullName} (${state.universityAbbr})",
+                          const SizedBox(height: 20),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: AchievementBuilder(achievements: state.achievementTileEntities),
                           ),
-                        ),
-                        Transform.translate(
-                          offset: const Offset(0, 60),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const SizedBox(height: 20),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 10),
-                                child: StatTile(
-                                  leftTap: () => showInfoSheetWithAction(
-                                    context,
-                                    "Total likes",
-                                    "${addCommasToNumber(state.statTileEntity.totalLikes)} / Top ${state.statTileEntity.topLikesPercentage}% of users",
-                                    () => shareStatContent(context, state.statTileEntity.totalLikes,
-                                        state.statTileEntity.topLikesPercentage, "like", "likes"),
-                                    "Share with friends",
-                                  ),
-                                  centerTap: () => showInfoSheetWithAction(
-                                    context,
-                                    "Total hottests",
-                                    "${addCommasToNumber(state.statTileEntity.totalHottests)} / Top ${state.statTileEntity.topHottestsPercentage}% of users",
-                                    () => shareStatContent(context, state.statTileEntity.totalHottests,
-                                        state.statTileEntity.topHottestsPercentage, "hottest", "hottests"),
-                                    "Share with friends",
-                                  ),
-                                  rightTap: () => showInfoSheetWithAction(
-                                    context,
-                                    "Total hates",
-                                    "${addCommasToNumber(state.statTileEntity.totalDislikes)} / Top ${state.statTileEntity.topDislikesPercentage}% of users",
-                                    () => shareStatContent(context, state.statTileEntity.totalDislikes,
-                                        state.statTileEntity.topDislikesPercentage, "hate", "hates"),
-                                    "Share with friends",
-                                  ),
-                                  leftNumber: state.statTileEntity.totalLikes,
-                                  leftDescription: "Likes",
-                                  centerNumber: state.statTileEntity.totalHottests,
-                                  centerDescription: "Hottests",
-                                  rightNumber: state.statTileEntity.totalDislikes,
-                                  rightDescription: "Hates",
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 10),
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      child: SimpleTextButton(
-                                        onTap: () => Navigator.pushNamed(context, '/home/profile/comments'),
-                                        text: "Comments",
-                                      ),
-                                    ),
-                                    const SizedBox(width: 10),
-                                    Expanded(
-                                      child: SimpleTextButton(
-                                        onTap: () => Navigator.pushNamed(context, '/home/profile/posts'),
-                                        text: "Confessions",
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 10),
-                                child: SimpleTextButton(
-                                  infiniteWidth: true,
-                                  onTap: () => Navigator.pushNamed(context, '/home/profile/saved'),
-                                  text: "Saved Confessions",
-                                ),
-                              ),
-                              const SizedBox(height: 20),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 10),
-                                child: AchievementBuilder(achievements: state.achievementTileEntities),
-                              ),
-                              const SizedBox(height: 20),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
+                          const SizedBox(height: 20),
+                        ],
+                      ),
+                    ],
                   ),
                 ],
               ),

@@ -4,7 +4,7 @@ import 'package:Confessi/core/clients/api_client.dart';
 
 import '../../../core/alt_unused/http_client.dart';
 import '../../../core/results/exceptions.dart';
-import '../../../domain/daily_hottest/entities/leaderboard_item.dart';
+import '../../../domain/leaderboard/entities/leaderboard_item.dart';
 import '../models/leaderboard_item_model.dart';
 
 /// The interface for how the implementation of the leaderboard datasource should look.

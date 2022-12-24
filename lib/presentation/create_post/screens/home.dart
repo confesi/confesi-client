@@ -1,7 +1,7 @@
 import '../../../application/create_post/cubit/post_cubit.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/other/text_limit_tracker.dart';
-import '../../daily_hottest/widgets/preview_quote_tile.dart';
+import '../../feed/widgets/preview_quote_tile.dart';
 import '../../shared/behaviours/init_scale.dart';
 import '../../shared/behaviours/shrinking_view.dart';
 import '../../shared/button_touch_effects/touchable_opacity.dart';

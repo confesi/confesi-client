@@ -1,8 +1,8 @@
 import '../../../core/network/connection_info.dart';
 import '../datasources/leaderboard_datasource.dart';
-import '../../../domain/daily_hottest/entities/leaderboard_item.dart';
+import '../../../domain/leaderboard/entities/leaderboard_item.dart';
 import '../../../core/results/failures.dart';
-import '../../../domain/daily_hottest/repositories/leaderboard_repository_interface.dart';
+import '../../../domain/leaderboard/repositories/leaderboard_repository_interface.dart';
 import 'package:dartz/dartz.dart';
 
 class LeaderboardRepository implements ILeaderboardRepository {

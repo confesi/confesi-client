@@ -2,6 +2,7 @@ import 'package:Confessi/presentation/primary/controllers/hottest_controller.dar
 import 'package:Confessi/presentation/shared/indicators/loading_cupertino.dart';
 
 import '../../../application/daily_hottest/cubit/hottest_cubit.dart';
+import '../../../constants/leaderboard/general.dart';
 import '../../../core/extensions/dates/two_dates_same.dart';
 import '../../../core/extensions/dates/readable_date_format.dart';
 import '../widgets/hottest_tile.dart';
@@ -143,15 +144,13 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
                             BlocBuilder<HottestCubit, HottestState>(
                               builder: (context, state) {
                                 return AppbarLayout(
+                                  bottomBorder: true,
                                   centerWidget: Text(
                                     headerText,
                                     style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
                                     overflow: TextOverflow.ellipsis,
                                     textAlign: TextAlign.center,
                                   ),
-                                  rightIconVisible: true,
-                                  rightIcon: CupertinoIcons.chart_bar,
-                                  rightIconOnPress: () => Navigator.of(context).pushNamed('/hottest/leaderboard'),
                                   leftIconVisible: true,
                                   leftIcon: CupertinoIcons.calendar,
                                   leftIconOnPress: () => showDatePickerSheet(context),

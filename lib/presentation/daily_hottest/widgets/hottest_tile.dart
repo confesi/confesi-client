@@ -71,7 +71,6 @@ class _HottestTileState extends State<HottestTile> {
                     height: isSelected ? constraints.maxHeight : constraints.maxHeight * .8,
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.background,
-                      borderRadius: const BorderRadius.all(Radius.circular(5)),
                       border: Border.all(color: Theme.of(context).colorScheme.surface, width: 1),
                     ),
                     child: Column(
@@ -79,8 +78,6 @@ class _HottestTileState extends State<HottestTile> {
                       children: [
                         Container(
                           decoration: BoxDecoration(
-                            borderRadius:
-                                const BorderRadius.only(topRight: Radius.circular(5), topLeft: Radius.circular(5)),
                             color: Theme.of(context).colorScheme.secondary,
                           ),
                           padding: const EdgeInsets.all(10),

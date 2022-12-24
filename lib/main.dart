@@ -80,6 +80,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        // Create post provider here because context needs tobe accessed from functions.
+        BlocProvider(
+          lazy: false,
+          create: (context) => sl<CreatePostCubit>(),
+        ),
+        // Hottest provider here so context can be accessed inside the bottom sheet.
+        BlocProvider(
+          lazy: false,
+          create: (context) => sl<HottestCubit>()..loadPosts(DateTime.now()),
+        ),
         BlocProvider(
           lazy: false,
           create: (context) => sl<WebsiteLauncherCubit>(),

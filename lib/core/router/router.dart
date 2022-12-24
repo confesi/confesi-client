@@ -11,7 +11,7 @@ import '../../presentation/authentication_and_settings/screens/settings/language
 import '../../presentation/authentication_and_settings/screens/settings/verified_student_manager.dart';
 import '../../presentation/create_post/screens/details.dart';
 import '../../presentation/create_post/screens/home.dart';
-import '../../presentation/daily_hottest/screens/leaderboard.dart';
+import '../../presentation/leaderboard/screens/home.dart';
 import '../../presentation/feed/screens/detail_view.dart';
 import '../../presentation/feed/screens/post_advanced_details.dart';
 import '../../presentation/feed/screens/watched_universities.dart';
@@ -35,7 +35,7 @@ import '../../presentation/primary/screens/home.dart';
 import '../../presentation/authentication_and_settings/screens/authentication/login.dart';
 import '../../presentation/primary/screens/showcase.dart';
 import '../../presentation/authentication_and_settings/screens/authentication/open.dart';
-import '../../application/daily_hottest/cubit/leaderboard_cubit.dart';
+import '../../application/leaderboard/cubit/leaderboard_cubit.dart';
 import '../../application/feed/cubit/recents_cubit.dart';
 import '../../application/feed/cubit/trending_cubit.dart';
 import '../../application/profile/cubit/biometrics_cubit.dart';
@@ -96,14 +96,6 @@ class AppRouter {
         case "/home": //! Most of the (main) screens are tabs under the /home named route. Thus, should have their BLoC/Cubit providers here.
           page = MultiBlocProvider(
             providers: [
-              BlocProvider(
-                lazy: false,
-                create: (context) => sl<CreatePostCubit>(),
-              ),
-              BlocProvider(
-                lazy: false,
-                create: (context) => sl<HottestCubit>()..loadPosts(DateTime.now()),
-              ),
               BlocProvider(
                 lazy: false,
                 create: (context) => sl<LeaderboardCubit>()..loadRankings(),
@@ -195,10 +187,6 @@ class AppRouter {
             university: args['university'],
             year: args['year'],
           );
-          break;
-
-        case "/hottest/leaderboard":
-          page = const LeaderboardScreen();
           break;
         case "/feedback":
           page = const FeedbackHome();
