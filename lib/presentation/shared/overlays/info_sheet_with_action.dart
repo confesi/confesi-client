@@ -37,7 +37,7 @@ Future<dynamic> showInfoSheetWithAction(
               children: [
                 Text(
                   header,
-                  style: kSerifDisplay.copyWith(
+                  style: kDisplay1.copyWith(
                     color: Theme.of(context).colorScheme.primary,
                   ),
                   textAlign: TextAlign.center,

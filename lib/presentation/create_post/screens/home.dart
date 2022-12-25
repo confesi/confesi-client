@@ -260,8 +260,8 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                                                     textCapitalization: TextCapitalization.sentences,
                                                     keyboardType: TextInputType.multiline,
                                                     maxLines: null,
-                                                    style:
-                                                        kHeader.copyWith(color: Theme.of(context).colorScheme.primary),
+                                                    style: kDisplay2.copyWith(
+                                                        color: Theme.of(context).colorScheme.primary),
                                                     decoration: InputDecoration(
                                                       isCollapsed: true,
                                                       border: InputBorder.none,

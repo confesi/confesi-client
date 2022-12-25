@@ -26,7 +26,7 @@ class HeaderGroupText extends StatelessWidget {
 
   Widget buildTopText(BuildContext context) => Text(
         header,
-        style: kSerifDisplay.copyWith(
+        style: kDisplay1.copyWith(
           color: onSecondaryColors ? Theme.of(context).colorScheme.onSecondary : Theme.of(context).colorScheme.primary,
           fontSize: small ? 26 : 34,
           height: 1.2,

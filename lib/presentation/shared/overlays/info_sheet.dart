@@ -30,7 +30,7 @@ Future<dynamic> showInfoSheet(BuildContext context, String header, String body) 
               children: [
                 Text(
                   header,
-                  style: kSerifDisplay.copyWith(
+                  style: kDisplay1.copyWith(
                     color: Theme.of(context).colorScheme.primary,
                   ),
                   textAlign: TextAlign.center,

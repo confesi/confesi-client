@@ -77,7 +77,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                               children: [
                                 const SizedBox(height: 15),
                                 TypewriterText(
-                                  textStyle: kSerifDisplay.copyWith(color: Theme.of(context).colorScheme.primary),
+                                  textStyle: kDisplay1.copyWith(color: Theme.of(context).colorScheme.primary),
                                   controller: typewriterController,
                                 ),
                                 SizedBox(height: heightFactor * 8),

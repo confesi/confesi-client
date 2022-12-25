@@ -7,23 +7,18 @@ var kFaded = GoogleFonts.inter(
 );
 
 /// Large text style - meant for display, but with sans serif style.
-var kSerifDisplay = GoogleFonts.ibmPlexSerif(
-  textStyle: const TextStyle(fontWeight: FontWeight.w500, fontSize: 26),
-);
-
-/// Largest text style - meant for BOLD DISPLAY!
-var kDisplay = GoogleFonts.dmSerifDisplay(
-  textStyle: const TextStyle(fontSize: 32, fontWeight: FontWeight.w300),
+var kDisplay1 = GoogleFonts.inter(
+  textStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 26),
 );
 
 /// Very big text style.
-var kHeader = GoogleFonts.inter(
-  textStyle: const TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
+var kDisplay2 = GoogleFonts.inter(
+  textStyle: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
 );
 
 /// Big text style.
-var kTitle = GoogleFonts.ibmPlexSerif(
-  textStyle: const TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+var kTitle = GoogleFonts.inter(
+  textStyle: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
 );
 
 /// Normal text style.

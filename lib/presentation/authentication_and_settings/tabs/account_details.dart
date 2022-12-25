@@ -91,7 +91,7 @@ class _AccountDetailsTabState extends State<AccountDetailsTab> with AutomaticKee
                             children: [
                               const SizedBox(height: 15),
                               TypewriterText(
-                                textStyle: kSerifDisplay.copyWith(color: Theme.of(context).colorScheme.primary),
+                                textStyle: kDisplay1.copyWith(color: Theme.of(context).colorScheme.primary),
                                 controller: typewriterController,
                               ),
                               SizedBox(height: heightFactor * 8),

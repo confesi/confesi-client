@@ -39,7 +39,7 @@ Future<dynamic> showCreateAccountSheet(
               children: [
                 Text(
                   "Create an account to do this & more.",
-                  style: kSerifDisplay.copyWith(
+                  style: kDisplay1.copyWith(
                     color: Theme.of(context).colorScheme.primary,
                   ),
                   textAlign: TextAlign.center,

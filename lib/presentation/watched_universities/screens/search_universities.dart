@@ -55,6 +55,22 @@ class _SearchUniversitiesScreenState extends State<SearchUniversitiesScreen> {
             bottom: false,
             child: Column(
               children: [
+                // Container(
+                //   width: double.infinity,
+                //   color: Theme.of(context).colorScheme.secondary,
+                //   padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                //   margin: const EdgeInsets.only(bottom: 10),
+                //   child: SafeArea(
+                //     bottom: false,
+                //     child: Text(
+                //       "Edit your Watched Universities",
+                //       style: kTitle.copyWith(
+                //         color: Theme.of(context).colorScheme.onSecondary,
+                //       ),
+                //       textAlign: TextAlign.center,
+                //     ),
+                //   ),
+                // ),
                 Container(
                   padding: const EdgeInsets.only(bottom: 10),
                   decoration: BoxDecoration(
@@ -80,12 +96,6 @@ class _SearchUniversitiesScreenState extends State<SearchUniversitiesScreen> {
                           ),
                         ),
                       ),
-                      // EmblemButton(
-                      //   backgroundColor: Theme.of(context).colorScheme.secondary,
-                      //   icon: CupertinoIcons.xmark,
-                      //   onPress: () => Navigator.pop(context),
-                      //   iconColor: Theme.of(context).colorScheme.onSecondary,
-                      // ),
                       Expanded(
                         child: ExpandableTextfield(
                           maxLines: 1,
@@ -117,19 +127,6 @@ class _SearchUniversitiesScreenState extends State<SearchUniversitiesScreen> {
                           ),
                         ),
                       ),
-                      // IgnorePointer(
-                      //   ignoring: _textEditingController.text.isEmpty,
-                      //   child: EmblemButton(
-                      //     backgroundColor: _textEditingController.text.isEmpty
-                      //         ? Theme.of(context).colorScheme.background
-                      //         : Theme.of(context).colorScheme.background,
-                      //     icon: CupertinoIcons.trash,
-                      //     onPress: () => _textEditingController.clear(),
-                      //     iconColor: _textEditingController.text.isEmpty
-                      //         ? Theme.of(context).colorScheme.primary.withOpacity(0.2)
-                      //         : Theme.of(context).colorScheme.primary,
-                      //   ),
-                      // ),
                     ],
                   ),
                 ),

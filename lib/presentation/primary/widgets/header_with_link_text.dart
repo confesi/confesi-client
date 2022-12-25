@@ -17,7 +17,7 @@ class HeaderWithLinkText extends StatelessWidget {
       children: [
         Text(
           header,
-          style: kDisplay.copyWith(
+          style: kDisplay2.copyWith(
             color: Theme.of(context).colorScheme.primary,
             fontSize: 34,
           ),

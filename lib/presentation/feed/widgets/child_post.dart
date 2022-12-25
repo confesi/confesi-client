@@ -35,7 +35,7 @@ class _ChildPostState extends State<ChildPost> {
             const SizedBox(height: 5),
             Text(
               "I wonder if any profs are in the mafia, this is serious",
-              style: kSerifDisplay.copyWith(
+              style: kDisplay1.copyWith(
                 color: Theme.of(context).colorScheme.primary,
                 fontSize: 17,
               ),

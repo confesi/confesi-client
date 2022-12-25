@@ -22,15 +22,14 @@ class GroupText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment:
-          leftAlign ? CrossAxisAlignment.start : CrossAxisAlignment.center,
+      crossAxisAlignment: leftAlign ? CrossAxisAlignment.start : CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
           header,
           style: small
               ? kTitle.copyWith(color: Theme.of(context).colorScheme.primary)
-              : kHeader.copyWith(color: Theme.of(context).colorScheme.primary),
+              : kDisplay2.copyWith(color: Theme.of(context).colorScheme.primary),
           textAlign: leftAlign ? TextAlign.left : TextAlign.center,
           overflow: TextOverflow.ellipsis,
           maxLines: multiLine ? 5 : null,
