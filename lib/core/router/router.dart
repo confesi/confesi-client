@@ -14,7 +14,8 @@ import '../../presentation/create_post/screens/home.dart';
 import '../../presentation/leaderboard/screens/home.dart';
 import '../../presentation/feed/screens/detail_view.dart';
 import '../../presentation/feed/screens/post_advanced_details.dart';
-import '../../presentation/feed/screens/watched_universities.dart';
+import '../../presentation/watched_universities/screens/search_universities.dart';
+import '../alt_unused/watched_universities.dart';
 import '../../presentation/feedback/screens/home.dart';
 import '../../presentation/primary/screens/critical_error.dart';
 import '../../presentation/authentication_and_settings/screens/settings/appearance.dart';
@@ -51,7 +52,7 @@ class AppRouter {
       "/prefsError",
       "/create_post",
       "/settings",
-      "/watched_universities",
+      "/search_universities",
     ];
     return fullScreenDialogRoutes.contains(routeSettings.name) ? true : false;
   }
@@ -191,11 +192,11 @@ class AppRouter {
         case "/feedback":
           page = const FeedbackHome();
           break;
+        case "/search_universities":
+          page = const SearchUniversitiesScreen();
+          break;
         case "/settings":
           page = const SettingsHome();
-          break;
-        case "/watched_universities":
-          page = const WatchedUniversitiesScreen();
           break;
         case "/settings/appearance":
           page = const AppearanceScreen();

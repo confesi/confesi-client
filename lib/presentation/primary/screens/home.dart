@@ -16,7 +16,7 @@ import 'package:flutter/services.dart';
 
 import '../../../core/styles/typography.dart';
 import '../../feed/screens/feed_tab_manager.dart';
-import '../../feed/widgets/drawer.dart';
+import '../../watched_universities/drawers/feed_drawer.dart';
 import '../../shared/overlays/notification_chip.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -79,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           child: Scaffold(
             drawerScrimColor: Colors.black.withOpacity(0.7),
             drawerEnableOpenDragGesture: false,
-            drawer: const ExploreDrawer(), // Reference to the "Feed" feature drawer (ExploreDrawer).
+            drawer: const FeedDrawer(), // Reference to the "Feed" feature drawer (ExploreDrawer).
             resizeToAvoidBottomInset: false,
             key: scaffoldKey,
             body: Container(

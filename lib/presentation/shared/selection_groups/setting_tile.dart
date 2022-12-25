@@ -25,8 +25,7 @@ class SettingTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TouchableScale(
-      // fadeSplashOut: false,
+    return TouchableOpacity(
       onTap: () => onTap(),
       child: Container(
         margin: const EdgeInsets.only(top: 10),

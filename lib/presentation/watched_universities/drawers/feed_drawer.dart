@@ -1,3 +1,5 @@
+import 'package:Confessi/presentation/shared/buttons/emblem.dart';
+
 import '../../../core/utils/sizing/bottom_safe_area.dart';
 import '../../shared/buttons/simple_text.dart';
 import '../../shared/layout/line.dart';
@@ -6,34 +8,34 @@ import 'package:flutter/material.dart';
 import 'package:scrollable/exports.dart';
 
 import '../../../core/styles/typography.dart';
-import '../../shared/buttons/icon_text.dart';
+import '../widgets/searched_university_tile.dart';
 
-class ExploreDrawer extends StatefulWidget {
-  const ExploreDrawer({Key? key}) : super(key: key);
+class FeedDrawer extends StatefulWidget {
+  const FeedDrawer({Key? key}) : super(key: key);
 
   @override
-  State<ExploreDrawer> createState() => _ExploreDrawerState();
+  State<FeedDrawer> createState() => _FeedDrawerState();
 }
 
-class _ExploreDrawerState extends State<ExploreDrawer> {
+class _FeedDrawerState extends State<FeedDrawer> {
   bool alreadyVibratedForEdge = true;
 
   List<Widget> buildBody() {
     List<Widget> widgets = [];
-    widgets.add(IconTextButton(
+    widgets.add(SearchedUniversityTile(
       onPress: () => Navigator.of(context).pop(),
       bottomText: "A mixture of all universities",
       topText: "All",
       leftIcon: CupertinoIcons.house,
     ));
-    widgets.add(IconTextButton(
+    widgets.add(SearchedUniversityTile(
       onPress: () => Navigator.of(context).pop(),
       bottomText: "Selects a random university",
       topText: "Random",
       leftIcon: CupertinoIcons.house,
     ));
     for (var i = 20; i > 0; i--) {
-      widgets.add(IconTextButton(
+      widgets.add(SearchedUniversityTile(
         onPress: () => Navigator.of(context).pop(),
         bottomText: "$i University of Victoria",
         topText: "UVic",
@@ -64,7 +66,7 @@ class _ExploreDrawerState extends State<ExploreDrawer> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Your Feeds",
+                            "University feeds",
                             style: kSerifDisplay.copyWith(
                               color: Theme.of(context).colorScheme.primary,
                             ),
@@ -84,15 +86,16 @@ class _ExploreDrawerState extends State<ExploreDrawer> {
                       ),
                     ),
                     const SizedBox(width: 5),
-                    SimpleTextButton(
-                      secondaryColors: true,
-                      onTap: () => Navigator.pushNamed(context, "/watched_universities"),
-                      text: "Edit",
+                    EmblemButton(
+                      backgroundColor: Theme.of(context).colorScheme.secondary,
+                      icon: CupertinoIcons.search,
+                      onPress: () => Navigator.pushNamed(context, "/search_universities"),
+                      iconColor: Theme.of(context).colorScheme.onSecondary,
                     ),
                   ],
                 ),
               ),
-              LineLayout(color: Theme.of(context).colorScheme.onBackground, horizontalPadding: 15, topPadding: 10),
+              LineLayout(color: Theme.of(context).colorScheme.surface, horizontalPadding: 15, topPadding: 10),
               Expanded(
                 child: ScrollableView(
                   physics: const BouncingScrollPhysics(),
