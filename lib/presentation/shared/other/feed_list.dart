@@ -129,7 +129,10 @@ class _FeedListState extends State<FeedList> {
         isCurrentlyLoadingMorePosts = false;
       }
     });
-    widget.controller.addListener(() => setState(() {}));
+    widget.controller.addListener(() {
+      if (!mounted) return;
+      setState(() {});
+    });
     super.initState();
   }
 

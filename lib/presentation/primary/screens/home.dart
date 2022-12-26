@@ -2,7 +2,9 @@ import 'package:Confessi/application/authentication_and_settings/cubit/user_cubi
 import 'package:Confessi/application/shared/cubit/share_cubit.dart';
 import 'package:Confessi/presentation/leaderboard/screens/home.dart';
 import 'package:Confessi/presentation/primary/controllers/hottest_controller.dart';
+import 'package:Confessi/core/alt_unused/leaderboard_controller.dart';
 import 'package:Confessi/presentation/primary/controllers/profile_controller.dart';
+import 'package:Confessi/presentation/primary/controllers/settings_controller.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../application/shared/cubit/website_launcher_cubit.dart';
@@ -32,6 +34,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
   late ProfileController profileController; // Controls the profile page, allows for running methods to it.
   late HottestController hottestController; // Controls the hottests page, allows for running methods to it.
+  late SettingController settingController; // Controls the settings page, allows for running methods to it.
 
   int currentIndex = 0; // The current index of the tab open.
 
@@ -40,6 +43,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     tabController = TabController(vsync: this, length: 5);
     profileController = ProfileController();
     hottestController = HottestController();
+    settingController = SettingController();
     super.initState();
   }
 
@@ -79,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           child: Scaffold(
             drawerScrimColor: Colors.black.withOpacity(0.7),
             drawerEnableOpenDragGesture: false,
-            drawer: const FeedDrawer(), // Reference to the "Feed" feature drawer (ExploreDrawer).
+            drawer: const FeedDrawer(), // Reference to the "watched_universities" feature drawer (feed_drawer).
             resizeToAvoidBottomInset: false,
             key: scaffoldKey,
             body: Container(
@@ -95,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       HottestHome(hottestController: hottestController),
                       ProfileHome(profileController: profileController),
                       const LeaderboardScreen(),
-                      const SettingsHome(),
+                      SettingsHome(settingController: settingController),
                     ],
                   ),
                   bottomNavigationBar: Container(
@@ -114,6 +118,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           profileController.scrollToTop();
                         } else if (currentIndex == 1 && newIndex == 1) {
                           hottestController.scrollToFront();
+                        } else if (currentIndex == 4 && newIndex == 4) {
+                          settingController.scrollToTop();
                         }
                         currentIndex = newIndex;
                       },

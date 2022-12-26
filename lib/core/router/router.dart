@@ -195,9 +195,6 @@ class AppRouter {
         case "/search_universities":
           page = const SearchUniversitiesScreen();
           break;
-        case "/settings":
-          page = const SettingsHome();
-          break;
         case "/settings/appearance":
           page = const AppearanceScreen();
           break;

@@ -1,3 +1,8 @@
+import 'package:Confessi/core/utils/sizing/bottom_safe_area.dart';
+import 'package:Confessi/presentation/shared/selection_groups/setting_tile.dart';
+import 'package:Confessi/presentation/shared/selection_groups/setting_tile_group.dart';
+import 'package:scrollable/exports.dart';
+
 import '../../../application/create_post/cubit/post_cubit.dart';
 import '../../shared/behaviours/nav_blocker.dart';
 import '../../shared/behaviours/simulated_bottom_safe_area.dart';
@@ -7,6 +12,8 @@ import '../../shared/overlays/info_sheet.dart';
 import '../../shared/layout/scrollable_area.dart';
 import '../../shared/selection_groups/bool_selection_group.dart';
 import '../../shared/selection_groups/bool_selection_tile.dart';
+import '../../shared/selection_groups/text_stat_tile.dart';
+import '../../shared/selection_groups/text_stat_tile_group.dart';
 import '../../shared/text/link.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -72,8 +79,12 @@ class _DetailsScreenState extends State<DetailsScreen> with AutomaticKeepAliveCl
                     ),
                   ),
                   Expanded(
-                    child: ScrollableArea(
-                      horizontalPadding: 15,
+                    child: ScrollableView(
+                      scrollBarVisible: false,
+                      hapticsEnabled: false,
+                      inlineBottomOrRightPadding: bottomSafeArea(context),
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      controller: ScrollController(),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
@@ -122,14 +133,39 @@ class _DetailsScreenState extends State<DetailsScreen> with AutomaticKeepAliveCl
                               ),
                             ],
                           ),
-                          // const TextStatTileGroup(
-                          //   text: "Auto-populated details",
-                          //   tiles: [
-                          //     TextStatTile(noHorizontalPadding: true, leftText: "Year of study", rightText: "1"),
-                          //     TextStatTile(noHorizontalPadding: true, leftText: "Faculty", rightText: "Kept private"),
-                          //     TextStatTile(noHorizontalPadding: true, leftText: "University", rightText: "UVic"),
-                          //   ],
-                          // ),
+                          const SizedBox(height: 15),
+                          SettingTileGroup(
+                            text: "University confessing to",
+                            settingTiles: [
+                              SettingTile(
+                                noRightIcon: true,
+                                secondaryText: "edit",
+                                leftIcon: CupertinoIcons.sparkles,
+                                text: "University of Victoria",
+                                onTap: () => print("tap"),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 15),
+                          SettingTileGroup(
+                            text: "Optional metadata",
+                            settingTiles: [
+                              SettingTile(
+                                secondaryText: "edit",
+                                noRightIcon: true,
+                                leftIcon: CupertinoIcons.sparkles,
+                                text: "Hidden year of study",
+                                onTap: () => print("tap"),
+                              ),
+                              SettingTile(
+                                secondaryText: "edit",
+                                noRightIcon: true,
+                                leftIcon: CupertinoIcons.sparkles,
+                                text: "Hidden faculty",
+                                onTap: () => print("tap"),
+                              ),
+                            ],
+                          ),
                           BlocBuilder<CreatePostCubit, CreatePostState>(
                             // buildWhen: (previous, current) => true,
                             builder: (context, state) {
@@ -148,12 +184,6 @@ class _DetailsScreenState extends State<DetailsScreen> with AutomaticKeepAliveCl
                               );
                             },
                           ),
-                          LinkText(
-                            onPress: () => print("tap"),
-                            text: "Posting as University of Victoria, year 2, computer science. ",
-                            linkText: "Tap here to edit.",
-                          ),
-                          const SimulatedBottomSafeArea(),
                         ],
                       ),
                     ),
@@ -167,11 +197,3 @@ class _DetailsScreenState extends State<DetailsScreen> with AutomaticKeepAliveCl
     );
   }
 }
-
-// Text(
-//                                       "Posting as University of Victoria, year 1, computer science. Edit these details here.",
-//                                       style: kTitle.copyWith(
-//                                         color: Theme.of(context).colorScheme.onSurface,
-//                                       ),
-//                                       textAlign: TextAlign.center,
-//                                     ),

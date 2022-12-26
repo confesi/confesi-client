@@ -97,7 +97,7 @@ class _FeedDrawerState extends State<FeedDrawer> {
                   SectionAccordian(
                     startsOpen: false,
                     bottomBorder: true,
-                    title: "Special",
+                    title: "Shuffles",
                     items: [
                       DrawerUniversityTile(
                         text: "Random university",

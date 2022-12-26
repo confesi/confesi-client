@@ -1,11 +1,9 @@
 import 'package:Confessi/core/utils/sizing/top_safe_area.dart';
+import 'package:Confessi/presentation/primary/controllers/settings_controller.dart';
 
 import '../../../../application/shared/cubit/website_launcher_cubit.dart';
 import '../../../../constants/enums_that_are_local_keys.dart';
-import '../../../../core/utils/sizing/bottom_safe_area.dart';
-import '../../../../generated/l10n.dart';
 import '../../../shared/behaviours/themed_status_bar.dart';
-import '../../../shared/layout/appbar.dart';
 import '../../../shared/other/top_frosted_glass_area.dart';
 import '../../../shared/overlays/notification_chip.dart';
 import '../../../shared/selection_groups/setting_tile.dart';
@@ -17,10 +15,14 @@ import 'package:scrollable/exports.dart';
 
 import '../../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../../../../constants/authentication_and_settings/text.dart';
-import '../../../../core/styles/typography.dart';
 
 class SettingsHome extends StatelessWidget {
-  const SettingsHome({super.key});
+  const SettingsHome({
+    super.key,
+    required this.settingController,
+  });
+
+  final SettingController settingController;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +46,7 @@ class SettingsHome extends StatelessWidget {
                 physics: const BouncingScrollPhysics(),
                 hapticsEnabled: false,
                 inlineBottomOrRightPadding: 15,
-                controller: ScrollController(),
+                controller: settingController.scrollController,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Column(
@@ -52,19 +54,13 @@ class SettingsHome extends StatelessWidget {
                     children: [
                       const SizedBox(height: 15),
                       SettingTileGroup(
-                        text: "Private profile",
+                        text: kSettingsGeneralLabel,
                         settingTiles: [
                           SettingTile(
                             leftIcon: CupertinoIcons.profile_circled,
                             text: kSettingsAccountDetailsLabel,
                             onTap: () => print("tap"),
                           ),
-                        ],
-                      ),
-                      const SizedBox(height: 15),
-                      SettingTileGroup(
-                        text: kSettingsGeneralLabel,
-                        settingTiles: [
                           SettingTile(
                             leftIcon: CupertinoIcons.map,
                             text: kSettingsLanguageLabel,
