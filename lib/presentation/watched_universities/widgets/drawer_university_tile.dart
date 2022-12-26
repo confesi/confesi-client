@@ -5,15 +5,25 @@ import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
 
-class DrawerUniversityTile extends StatelessWidget {
+class DrawerUniversityTile extends StatefulWidget {
   const DrawerUniversityTile({
     Key? key,
+    required this.text,
+    required this.onTap,
   }) : super(key: key);
 
+  final VoidCallback onTap;
+  final String text;
+
+  @override
+  State<DrawerUniversityTile> createState() => _DrawerUniversityTileState();
+}
+
+class _DrawerUniversityTileState extends State<DrawerUniversityTile> {
   @override
   Widget build(BuildContext context) {
     return TouchableOpacity(
-      onTap: () => print("tap"),
+      onTap: () => widget.onTap(),
       child: Container(
         // transparent color trick to increase hitbox size
         margin: const EdgeInsets.only(bottom: 5),
@@ -27,7 +37,7 @@ class DrawerUniversityTile extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  "University of Victoria",
+                  widget.text,
                   style: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
                   textAlign: TextAlign.left,
                   // overflow: TextOverflow.ellipsis,

@@ -28,7 +28,7 @@ class SearchedUniversityTile extends StatelessWidget {
         borderRadius: const BorderRadius.all(Radius.circular(10)),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
         child: Row(
           children: [
             Expanded(
@@ -44,6 +44,13 @@ class SearchedUniversityTile extends StatelessWidget {
                   const SizedBox(height: 5),
                   Text(
                     bottomText,
+                    style: kDetail.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                    textAlign: TextAlign.left,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    "uvic",
                     style: kDetail.copyWith(color: Theme.of(context).colorScheme.onSurface),
                     textAlign: TextAlign.left,
                     overflow: TextOverflow.ellipsis,

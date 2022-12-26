@@ -1,6 +1,6 @@
 import 'package:Confessi/presentation/shared/buttons/emblem.dart';
 import 'package:Confessi/presentation/watched_universities/widgets/drawer_university_tile.dart';
-import 'package:Confessi/presentation/watched_universities/widgets/section_header.dart';
+import 'package:Confessi/presentation/watched_universities/widgets/section_accordian.dart';
 
 import '../../../core/utils/sizing/bottom_safe_area.dart';
 import '../../shared/buttons/simple_text.dart';
@@ -33,18 +33,18 @@ class _FeedDrawerState extends State<FeedDrawer> {
             child: SafeArea(
               bottom: false,
               child: Padding(
-                padding: const EdgeInsets.all(15),
+                padding: const EdgeInsets.all(10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Text(
-                    //   "University Feeds",
-                    //   style: kDisplay1.copyWith(
-                    //     color: Theme.of(context).colorScheme.onSecondary,
-                    //   ),
-                    //   textAlign: TextAlign.left,
-                    // ),
-                    // const SizedBox(height: 5),
+                    Text(
+                      "Currently viewing",
+                      style: kDetail.copyWith(
+                        color: Theme.of(context).colorScheme.onSecondary,
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+                    const SizedBox(height: 5),
                     Text(
                       "University of British Columbia",
                       style: kDisplay1.copyWith(
@@ -71,7 +71,7 @@ class _FeedDrawerState extends State<FeedDrawer> {
                     child: SimpleTextButton(
                       infiniteWidth: true,
                       onTap: () => Navigator.pushNamed(context, "/search_universities"),
-                      text: "Edit watched universities",
+                      text: "Edit home university",
                     ),
                   ),
                   Padding(
@@ -79,32 +79,49 @@ class _FeedDrawerState extends State<FeedDrawer> {
                     child: SimpleTextButton(
                       infiniteWidth: true,
                       onTap: () => Navigator.pushNamed(context, "/search_universities"),
-                      text: "Edit home university",
+                      text: "Edit watched universities",
                     ),
                   ),
-                  const SectionHeader(
-                    bottomBorder: true,
+                  SectionAccordian(
                     topBorder: true,
-                    title: "Watched universities",
-                    items: [
-                      DrawerUniversityTile(),
-                      DrawerUniversityTile(),
-                    ],
-                  ),
-                  const SectionHeader(
+                    startsOpen: false,
                     bottomBorder: true,
                     title: "Home university",
                     items: [
-                      DrawerUniversityTile(),
-                      DrawerUniversityTile(),
+                      DrawerUniversityTile(
+                        text: "University of Victoria",
+                        onTap: () => print("tap"),
+                      ),
                     ],
                   ),
-                  const SectionHeader(
+                  SectionAccordian(
+                    startsOpen: false,
                     bottomBorder: true,
                     title: "Special",
                     items: [
-                      DrawerUniversityTile(),
-                      DrawerUniversityTile(),
+                      DrawerUniversityTile(
+                        text: "Random university",
+                        onTap: () => print("tap"),
+                      ),
+                      DrawerUniversityTile(
+                        text: "All universities mixed",
+                        onTap: () => print("tap"),
+                      ),
+                    ],
+                  ),
+                  SectionAccordian(
+                    startsOpen: false,
+                    bottomBorder: true,
+                    title: "Watched universities",
+                    items: [
+                      DrawerUniversityTile(
+                        text: "University of the Fraser Valley",
+                        onTap: () => print("tap"),
+                      ),
+                      DrawerUniversityTile(
+                        text: "University of British Columbia Okanagan",
+                        onTap: () => print("tap"),
+                      ),
                     ],
                   ),
                 ],

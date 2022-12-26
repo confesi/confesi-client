@@ -40,7 +40,7 @@ class OpenScreen extends StatelessWidget {
                     backgroundColor: Theme.of(context).colorScheme.surface,
                     textColor: Theme.of(context).colorScheme.onSurface,
                     text: "Try as guest",
-                    bottomPadding: 15,
+                    bottomPadding: 5,
                   ),
                   PopButton(
                     onPress: () => Navigator.of(context).pushNamed("/login"),
