@@ -1,3 +1,4 @@
+import 'package:Confessi/presentation/shared/other/item_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,76 +39,9 @@ class _FacultyPickerState extends State<FacultyPicker> {
           text: "Save selection",
         ),
         Expanded(
-          child: InitScale(
-            delayDurationInMilliseconds: 150,
-            child: CupertinoTheme(
-              data: CupertinoThemeData(
-                textTheme: CupertinoTextThemeData(
-                  pickerTextStyle: CupertinoTheme.of(context).textTheme.dateTimePickerTextStyle,
-                ),
-              ),
-              child: Center(
-                child: CupertinoPicker(
-                  selectionOverlay: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    decoration: BoxDecoration(
-                      border: Border(
-                        top: BorderSide(
-                          color: Theme.of(context).colorScheme.secondary,
-                          width: 3,
-                        ),
-                        bottom: BorderSide(
-                          color: Theme.of(context).colorScheme.secondary,
-                          width: 3,
-                        ),
-                      ),
-                    ),
-                  ),
-                  // squeeze: 1.25,
-                  looping: true,
-                  itemExtent: 64,
-                  onSelectedItemChanged: (_) => print("tap"),
-                  children: [
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
-                        child: Text(
-                          "XYZ the dog jumped over the lazy brown fox long text test here right now",
-                          style: kBody.copyWith(
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ),
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
-                        child: Text(
-                          "XYZ the dog jumped over the lazy brown fox long text test here right now",
-                          style: kBody.copyWith(
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ),
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
-                        child: Text(
-                          "XYZ the dog jumped over the lazy brown fox long text test here right now",
-                          style: kBody.copyWith(
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+          child: ItemPicker(
+            onChange: (index) => print(index),
+            options: ["Option 1", "Option 2", "Option 3"],
           ),
         ),
       ],
