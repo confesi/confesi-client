@@ -133,11 +133,13 @@ class MyApp extends StatelessWidget {
             onGenerateRoute: appRouter.onGenerateRoute,
             theme: AppTheme.light,
             darkTheme: AppTheme.dark,
-            themeMode: context.watch<UserCubit>().localDataLoaded
-                ? getAppearance(
-                    context.watch<UserCubit>().stateAsUser.appearanceEnum,
-                  )
-                : ThemeMode.system,
+            // TODO: re-implement theming properly
+            // themeMode: context.watch<UserCubit>().localDataLoaded
+            //     ? getAppearance(
+            //         context.watch<UserCubit>().stateAsUser.appearanceEnum,
+            //       )
+            //     : ThemeMode.system,
+            themeMode: ThemeMode.dark,
             builder: (BuildContext context, Widget? child) {
               final MediaQueryData data = MediaQuery.of(context);
               return MediaQuery(

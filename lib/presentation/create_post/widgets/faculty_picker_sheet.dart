@@ -1,10 +1,9 @@
-import 'date_picker.dart';
-
 import 'package:flutter/material.dart';
 
 import '../../../core/utils/sizing/bottom_safe_area.dart';
+import 'faculty_picker.dart';
 
-Future<dynamic> showDatePickerSheet(BuildContext context) async {
+Future<dynamic> showFacultyPickerSheet(BuildContext context) async {
   return showModalBottomSheet(
     barrierColor: Colors.black.withOpacity(0.7),
     backgroundColor: Colors.transparent,
@@ -19,7 +18,7 @@ Future<dynamic> showDatePickerSheet(BuildContext context) async {
               color: Theme.of(context).colorScheme.background,
             ),
             child: Builder(builder: (context) {
-              return const DatePicker();
+              return const FacultyPicker();
             }),
           ),
         ),
