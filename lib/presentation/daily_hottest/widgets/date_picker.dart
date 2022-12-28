@@ -60,20 +60,17 @@ class _DatePickerState extends State<DatePicker> {
           ],
         ),
         Expanded(
-          child: InitScale(
-            delayDurationInMilliseconds: 150,
-            child: CupertinoTheme(
-              data: CupertinoThemeData(
-                textTheme: CupertinoTextThemeData(
-                  dateTimePickerTextStyle: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
-                ),
+          child: CupertinoTheme(
+            data: CupertinoThemeData(
+              textTheme: CupertinoTextThemeData(
+                dateTimePickerTextStyle: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
               ),
-              child: CupertinoDatePicker(
-                maximumDate: DateTime.now(),
-                initialDateTime: selectedDate,
-                mode: CupertinoDatePickerMode.date,
-                onDateTimeChanged: (DateTime date) => selectedDate = date,
-              ),
+            ),
+            child: CupertinoDatePicker(
+              maximumDate: DateTime.now(),
+              initialDateTime: selectedDate,
+              mode: CupertinoDatePickerMode.date,
+              onDateTimeChanged: (DateTime date) => selectedDate = date,
             ),
           ),
         ),

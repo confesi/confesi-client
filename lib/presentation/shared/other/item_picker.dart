@@ -12,36 +12,33 @@ class ItemPicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InitScale(
-      delayDurationInMilliseconds: 150,
-      child: CupertinoTheme(
-        data: CupertinoThemeData(
-          textTheme: CupertinoTextThemeData(
-            pickerTextStyle: CupertinoTheme.of(context).textTheme.dateTimePickerTextStyle,
-          ),
+    return CupertinoTheme(
+      data: CupertinoThemeData(
+        textTheme: CupertinoTextThemeData(
+          pickerTextStyle: CupertinoTheme.of(context).textTheme.dateTimePickerTextStyle,
         ),
-        child: Center(
-          child: CupertinoPicker(
-            selectionOverlay: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              decoration: BoxDecoration(
-                border: Border(
-                  top: BorderSide(
-                    color: Theme.of(context).colorScheme.secondary,
-                    width: 3,
-                  ),
-                  bottom: BorderSide(
-                    color: Theme.of(context).colorScheme.secondary,
-                    width: 3,
-                  ),
+      ),
+      child: Center(
+        child: CupertinoPicker(
+          selectionOverlay: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            decoration: BoxDecoration(
+              border: Border(
+                top: BorderSide(
+                  color: Theme.of(context).colorScheme.secondary,
+                  width: 3,
+                ),
+                bottom: BorderSide(
+                  color: Theme.of(context).colorScheme.secondary,
+                  width: 3,
                 ),
               ),
             ),
-            looping: true,
-            itemExtent: 64,
-            onSelectedItemChanged: (index) => onChange(index),
-            children: options.map((i) => _ItemPickerText(text: i)).toList(),
           ),
+          looping: true,
+          itemExtent: 64,
+          onSelectedItemChanged: (index) => onChange(index),
+          children: options.map((i) => _ItemPickerText(text: i)).toList(),
         ),
       ),
     );

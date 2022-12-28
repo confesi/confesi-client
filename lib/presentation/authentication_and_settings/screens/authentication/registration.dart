@@ -1,53 +1,49 @@
-import 'package:Confessi/core/utils/sizing/bottom_safe_area.dart';
-import 'package:Confessi/core/utils/sizing/height_fraction.dart';
-import 'package:scrollable/exports.dart';
-
-import '../../../../constants/authentication_and_settings/text.dart';
-import '../../../shared/behaviours/nav_blocker.dart';
-import '../../../shared/behaviours/themed_status_bar.dart';
-import '../../../shared/layout/appbar.dart';
-import '../../../shared/layout/scrollable_area.dart';
-import '../../../shared/text_animations/typewriter.dart';
+import 'package:Confessi/application/authentication_and_settings/cubit/register_cubit.dart';
+import 'package:Confessi/presentation/shared/behaviours/nav_blocker.dart';
+import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:scrollable/exports.dart';
 
-import '../../../../application/authentication_and_settings/cubit/login_cubit.dart';
 import '../../../../core/styles/typography.dart';
-import '../../../shared/behaviours/keyboard_dismiss.dart';
+import '../../../../core/utils/sizing/bottom_safe_area.dart';
 import '../../../shared/button_touch_effects/touchable_opacity.dart';
 import '../../../shared/buttons/pop.dart';
-import '../../../shared/layout/minimal_appbar.dart';
-import '../../../shared/textfields/bulge_textfield.dart';
+import '../../../shared/layout/appbar.dart';
+import '../../../shared/text_animations/typewriter.dart';
 import '../../../shared/textfields/expandable_textfield.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class RegistrationScreen extends StatefulWidget {
+  const RegistrationScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegistrationScreen> createState() => _RegistrationScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin {
-  TextEditingController usernameEmailController = TextEditingController();
+class _RegistrationScreenState extends State<RegistrationScreen> {
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   late ScrollController scrollController;
   late TypewriterController typewriterController;
 
   @override
   void initState() {
-    typewriterController = TypewriterController(fullText: kLoginTypewriter);
+    typewriterController = TypewriterController(fullText: "Let's get you started.");
     typewriterController.forward();
     scrollController = ScrollController();
-    usernameEmailController.clear();
+    usernameController.clear();
     passwordController.clear();
+    emailController.clear();
     super.initState();
   }
 
   @override
   void dispose() {
-    usernameEmailController.dispose();
+    usernameController.dispose();
     passwordController.dispose();
+    emailController.dispose();
     scrollController.dispose();
     typewriterController.dispose();
     super.dispose();
@@ -55,10 +51,10 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginCubit, LoginState>(
+    return BlocBuilder<RegisterCubit, RegisterState>(
       builder: (context, state) {
         return NavBlocker(
-          blocking: state is LoginLoading,
+          blocking: state is RegisterLoading,
           child: ThemedStatusBar(
             child: KeyboardDismiss(
               child: Scaffold(
@@ -89,9 +85,16 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                               const SizedBox(height: 15),
                               ExpandableTextfield(
                                 maxLines: 1,
-                                controller: usernameEmailController,
+                                controller: emailController,
                                 onChanged: (newValue) => print(newValue),
-                                hintText: "Username or email",
+                                hintText: "Email",
+                              ),
+                              const SizedBox(height: 15),
+                              ExpandableTextfield(
+                                maxLines: 1,
+                                controller: usernameController,
+                                onChanged: (newValue) => print(newValue),
+                                hintText: "Username",
                               ),
                               const SizedBox(height: 15),
                               ExpandableTextfield(
@@ -102,22 +105,21 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                               ),
                               const SizedBox(height: 30),
                               PopButton(
-                                loading: state is LoginLoading, // state is UserLoading ? true : false
+                                loading: state is RegisterLoading, // state is UserLoading ? true : false
                                 justText: true,
                                 onPress: () {
                                   FocusScope.of(context).unfocus();
-                                  context
-                                      .read<LoginCubit>()
-                                      .loginUser(usernameEmailController.text, passwordController.text);
+                                  context.read<RegisterCubit>().registerUser(
+                                      usernameController.text, passwordController.text, emailController.text);
                                 },
                                 icon: CupertinoIcons.chevron_right,
                                 backgroundColor: Theme.of(context).colorScheme.secondary,
                                 textColor: Theme.of(context).colorScheme.onSecondary,
-                                text: kLoginButtonText,
+                                text: "Complete registration",
                               ),
                               const SizedBox(height: 15),
                               TouchableOpacity(
-                                onTap: () => print("tap"), // TODO: Implement
+                                onTap: () => Navigator.pushNamed(context, "/login"),
                                 child: Container(
                                   // Transparent hitbox trick.
                                   color: Colors.transparent,
@@ -126,7 +128,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                     children: [
                                       Expanded(
                                         child: Text(
-                                          kForgotPasswordText,
+                                          "Login instead",
                                           style: kTitle.copyWith(
                                             color: Theme.of(context).colorScheme.onSurface,
                                           ),

@@ -1,3 +1,4 @@
+import 'package:Confessi/presentation/authentication_and_settings/screens/authentication/registration.dart';
 import 'package:Confessi/presentation/feed/screens/simple_detail_view.dart';
 
 import '../../application/create_post/cubit/post_cubit.dart';
@@ -49,27 +50,21 @@ class AppRouter {
       "/home/post/stats",
       "/home/create_replied_post",
       "/feedback",
-      "/prefsError",
       "/create_post",
       "/settings",
-      "/search_universities",
     ];
     return fullScreenDialogRoutes.contains(routeSettings.name) ? true : false;
   }
 
-  // Checks which routes show as a size animation.
-  bool isSizeAnim(RouteSettings routeSettings) {
+  // Checks which routes show as a scale animation.
+  bool isFadeAnim(RouteSettings routeSettings) {
     List<String> sizeAnimDialogRoutes = [];
     return sizeAnimDialogRoutes.contains(routeSettings.name) ? true : false;
   }
 
-  // Checks which routes show as a fade animation.
-  bool isFadeAnim(RouteSettings routeSettings) {
-    List<String> fadeAnimDialogRoutes = [
-      "/onboarding",
-      "/open",
-      "/home",
-    ];
+  // Checks which routes show as a size animation.
+  bool isSizeAnim(RouteSettings routeSettings) {
+    List<String> fadeAnimDialogRoutes = ["/onboarding", "/open", "/home", "/prefsError"];
     return fadeAnimDialogRoutes.contains(routeSettings.name) ? true : false;
   }
 
@@ -91,8 +86,8 @@ class AppRouter {
         case "/login":
           page = const LoginScreen();
           break;
-        case "/registerTabManager":
-          page = const RegisterTabManager();
+        case "/register":
+          page = const RegistrationScreen();
           break;
         case "/home": //! Most of the (main) screens are tabs under the /home named route. Thus, should have their BLoC/Cubit providers here.
           page = MultiBlocProvider(
@@ -130,7 +125,6 @@ class AppRouter {
             id: args['id'],
           );
           break;
-        // TODO: HERE
         case "/create_post":
           page = const CreatePostHome(viewMethod: ViewMethod.separateScreen);
           break;
@@ -241,27 +235,23 @@ class AppRouter {
     } catch (e) {
       page = const CriticalErrorScreen();
     }
-    if (isSizeAnim(routeSettings)) {
+    if (isFadeAnim(routeSettings) || page is CriticalErrorScreen) {
       return PageTransition(
         child: page,
         settings: routeSettings,
-        alignment: Alignment.center,
-        type: PageTransitionType.scale,
-        curve: Curves.decelerate,
-        duration: const Duration(
-          milliseconds: 750,
-        ),
-      );
-    } else if (isFadeAnim(routeSettings) || page is CriticalErrorScreen) {
-      return PageTransition(
-        settings: routeSettings,
-        child: page,
         alignment: Alignment.center,
         type: PageTransitionType.fade,
         curve: Curves.linear,
-        duration: const Duration(
-          milliseconds: 350,
-        ),
+        duration: const Duration(milliseconds: 350),
+      );
+    } else if (isSizeAnim(routeSettings)) {
+      return PageTransition(
+        settings: routeSettings,
+        child: page,
+        alignment: Alignment.center,
+        type: PageTransitionType.size,
+        curve: Curves.linear,
+        duration: const Duration(milliseconds: 350),
       );
     } else {
       return MaterialPageRoute(

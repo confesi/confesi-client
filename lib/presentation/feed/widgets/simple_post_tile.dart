@@ -4,9 +4,7 @@ import 'package:Confessi/presentation/feed/widgets/reaction_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../shared/buttons/option.dart';
 import '../../shared/other/link_preview.dart';
-import '../../shared/overlays/button_options_sheet.dart';
 
 class SimplePostTile extends StatefulWidget {
   const SimplePostTile({super.key});
@@ -83,8 +81,8 @@ class _SimplePostTileState extends State<SimplePostTile> {
                           textAlign: TextAlign.left,
                         ),
                         const SizedBox(height: 15),
-                        const UrlPreviewTile(url: "https://uvic.ca"),
-                        const SizedBox(height: 15),
+                        // const UrlPreviewTile(url: "https://uvic.ca"),
+                        // const SizedBox(height: 15),
                         const ChildPost(),
                       ],
                     ),

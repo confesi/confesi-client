@@ -5,7 +5,7 @@ import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
 import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:Confessi/presentation/shared/buttons/simple_text.dart';
-import 'package:Confessi/presentation/shared/textfields/expandable.dart';
+import 'package:Confessi/presentation/shared/textfields/expandable_textfield.dart';
 import 'package:Confessi/presentation/watched_universities/widgets/searched_university_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -55,22 +55,6 @@ class _SearchUniversitiesScreenState extends State<SearchUniversitiesScreen> {
             bottom: false,
             child: Column(
               children: [
-                // Container(
-                //   width: double.infinity,
-                //   color: Theme.of(context).colorScheme.secondary,
-                //   padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-                //   margin: const EdgeInsets.only(bottom: 10),
-                //   child: SafeArea(
-                //     bottom: false,
-                //     child: Text(
-                //       "Edit your Watched Universities",
-                //       style: kTitle.copyWith(
-                //         color: Theme.of(context).colorScheme.onSecondary,
-                //       ),
-                //       textAlign: TextAlign.center,
-                //     ),
-                //   ),
-                // ),
                 Container(
                   padding: const EdgeInsets.only(bottom: 10),
                   decoration: BoxDecoration(
@@ -87,11 +71,11 @@ class _SearchUniversitiesScreenState extends State<SearchUniversitiesScreen> {
                         onTap: () => Navigator.pop(context),
                         child: Container(
                           height: 44,
-                          padding: const EdgeInsets.only(right: 20, left: 10),
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
                           // Transparent hitbox trick
                           color: Colors.transparent,
                           child: Icon(
-                            CupertinoIcons.xmark,
+                            CupertinoIcons.arrow_left,
                             color: Theme.of(context).colorScheme.primary,
                           ),
                         ),
@@ -109,24 +93,7 @@ class _SearchUniversitiesScreenState extends State<SearchUniversitiesScreen> {
                           hintText: "Search universities",
                         ),
                       ),
-                      IgnorePointer(
-                        ignoring: _textEditingController.text.isEmpty,
-                        child: TouchableOpacity(
-                          onTap: () => _textEditingController.clear(),
-                          child: Container(
-                            height: 44,
-                            padding: const EdgeInsets.only(left: 20, right: 10),
-                            // Transparent hitbox trick
-                            color: Colors.transparent,
-                            child: Icon(
-                              CupertinoIcons.trash,
-                              color: _textEditingController.text.isEmpty
-                                  ? Theme.of(context).colorScheme.onSurface
-                                  : Theme.of(context).colorScheme.primary,
-                            ),
-                          ),
-                        ),
-                      ),
+                      const SizedBox(width: 10)
                     ],
                   ),
                 ),

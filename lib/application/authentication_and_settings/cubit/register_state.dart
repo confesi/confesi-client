@@ -1,10 +1,5 @@
 part of 'register_cubit.dart';
 
-enum RegistrationPage {
-  register, // username, email, password
-  details, // university, year, faculty
-}
-
 @immutable
 abstract class RegisterState extends Equatable {
   @override

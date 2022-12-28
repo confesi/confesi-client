@@ -93,6 +93,7 @@ class UserCubit extends Cubit<UserState> {
         (await appearance.get(AppearanceEnum.values, AppearanceEnum, userStorageLocation)).fold(
           (failure) {
             // If there's a failure loading these prefs, abort with UserError state.
+
             emit(UserError());
           },
           (appearanceEnum) async {
@@ -102,10 +103,13 @@ class UserCubit extends Cubit<UserState> {
             // If user has a refresh token, then we must attempt to decrypt it, gaining
             // access to its inner userId
             if (token is Token) {
+              print(token.token());
               // If refreshToken is of type "hasRefreshToken", then its "token" field won't be null.
               userIdFromJwt(token.token()).fold(
                 (failure) {
                   // Failure decrypting user Id from token. Emit UserError state and abort.
+                  print("JWT decrypting causing error");
+
                   emit(UserError());
                 },
                 (userId) {

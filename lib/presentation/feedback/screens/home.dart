@@ -1,3 +1,5 @@
+import 'package:scrollable/exports.dart';
+
 import '../../../constants/feedback/text.dart';
 import '../../shared/behaviours/init_opacity.dart';
 import '../../shared/behaviours/init_scale.dart';
@@ -8,7 +10,7 @@ import '../../shared/buttons/pop.dart';
 import '../../shared/buttons/simple_text.dart';
 import '../../shared/layout/scrollable_area.dart';
 import '../../shared/text/disclaimer_text.dart';
-import '../../shared/textfields/expandable.dart';
+import '../../shared/textfields/expandable_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -54,7 +56,7 @@ class _FeedbackHomeState extends State<FeedbackHome> {
 
   @override
   Widget build(BuildContext context) {
-    return KeyboardDismissLayout(
+    return KeyboardDismiss(
       child: ThemedStatusBar(
         child: Scaffold(
           backgroundColor: Theme.of(context).colorScheme.background,

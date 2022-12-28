@@ -25,7 +25,7 @@ class SearchedUniversityTile extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 5),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
-        borderRadius: const BorderRadius.all(Radius.circular(10)),
+        borderRadius: const BorderRadius.all(Radius.circular(5)),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),

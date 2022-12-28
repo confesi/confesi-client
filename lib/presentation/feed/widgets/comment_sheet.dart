@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../constants/shared/enums.dart';
 import '../../shared/buttons/simple_text.dart';
-import '../../shared/textfields/expandable.dart';
+import '../../shared/textfields/expandable_textfield.dart';
 
 class CommentSheet extends StatefulWidget {
   const CommentSheet({

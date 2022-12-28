@@ -1,3 +1,5 @@
+import 'package:scrollable/exports.dart';
+
 import '../../shared/behaviours/keyboard_dismiss.dart';
 import 'package:flutter/material.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
@@ -247,7 +249,7 @@ class _InfiniteListState extends State<InfiniteList> {
   }
 
   /// Builds the infnite list.
-  Widget buildList() => KeyboardDismissLayout(
+  Widget buildList() => KeyboardDismiss(
         child: GestureDetector(
           onVerticalDragDown: (details) => FocusScope.of(context).unfocus(),
           child: SwipeRefresh(

@@ -48,7 +48,7 @@ class PopButton extends StatelessWidget {
             width: double.infinity,
             decoration: BoxDecoration(
               color: backgroundColor,
-              borderRadius: const BorderRadius.all(Radius.circular(15)),
+              borderRadius: const BorderRadius.all(Radius.circular(5)),
             ),
             child: Padding(
               padding: const EdgeInsets.all(15),

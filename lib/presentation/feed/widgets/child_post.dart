@@ -19,7 +19,7 @@ class _ChildPostState extends State<ChildPost> {
         padding: const EdgeInsets.all(15),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.background,
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          borderRadius: const BorderRadius.all(Radius.circular(5)),
           border: Border.all(color: Theme.of(context).colorScheme.surface, width: 1),
         ),
         child: Column(
@@ -39,16 +39,20 @@ class _ChildPostState extends State<ChildPost> {
                 color: Theme.of(context).colorScheme.primary,
                 fontSize: 17,
               ),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
               textAlign: TextAlign.left,
             ),
-            // const SizedBox(height: 5),
-            // Text(
-            //   "I wonder if any profs are in the mafia, this is serious",
-            //   style: kBody.copyWith(
-            //     color: Theme.of(context).colorScheme.primary,
-            //   ),
-            //   textAlign: TextAlign.left,
-            // ),
+            const SizedBox(height: 5),
+            Text(
+              "Here is the body of the post. It really is a serious issue, or so I believe. This is something I wonder will affect the future.",
+              style: kBody.copyWith(
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
+              textAlign: TextAlign.left,
+            ),
           ],
         ),
       ),

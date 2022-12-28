@@ -51,7 +51,7 @@ class OpenScreen extends StatelessWidget {
                     bottomPadding: 30,
                   ),
                   PopButton(
-                    onPress: () => Navigator.of(context).pushNamed("/registerTabManager"),
+                    onPress: () => Navigator.of(context).pushNamed("/register"),
                     icon: CupertinoIcons.arrow_right,
                     backgroundColor: Theme.of(context).colorScheme.secondary,
                     textColor: Theme.of(context).colorScheme.onSecondary,

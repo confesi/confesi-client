@@ -1,3 +1,5 @@
+import 'package:scrollable/exports.dart';
+
 import '../../../application/create_post/cubit/post_cubit.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/other/text_limit_tracker.dart';
@@ -147,7 +149,7 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
 
   @override
   Widget build(BuildContext context) {
-    return KeyboardDismissLayout(
+    return KeyboardDismiss(
       child: WillPopScope(
         onWillPop: () async => false,
         child: BlocListener<CreatePostCubit, CreatePostState>(
@@ -229,7 +231,7 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                             Expanded(
                               child: LayoutBuilder(
                                 builder: (context, constraints) {
-                                  return KeyboardDismissLayout(
+                                  return KeyboardDismiss(
                                     child: GestureDetector(
                                       onTap: () => bodyFocusNode.requestFocus(),
                                       child: SizedBox(
