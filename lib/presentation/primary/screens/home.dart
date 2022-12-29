@@ -18,8 +18,9 @@ import 'package:flutter/services.dart';
 
 import '../../../core/styles/typography.dart';
 import '../../feed/screens/feed_tab_manager.dart';
-import '../../watched_universities/drawers/feed_drawer.dart';
 import '../../shared/overlays/notification_chip.dart';
+import '../../watched_universities/drawers/feed_drawer.dart';
+import '../../../core/alt_unused/notification_chip.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -61,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         BlocListener<ShareCubit, ShareState>(
           listener: (context, state) {
             if (state is ShareError) {
-              showNotificationChip(context, state.message, screenSide: ScreenSide.top);
+              showNotificationChip(context, state.message);
               // set to base
               context.read<ShareCubit>().setToBase();
             }
@@ -70,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         BlocListener<WebsiteLauncherCubit, WebsiteLauncherState>(
           listener: (context, state) {
             if (state is WebsiteLauncherError) {
-              showNotificationChip(context, "error", screenSide: ScreenSide.top);
+              showNotificationChip(context, "error");
               // set to base
               context.read<WebsiteLauncherCubit>().setContactStateToBase();
             }

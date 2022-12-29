@@ -12,6 +12,7 @@ import '../../../application/authentication_and_settings/cubit/register_cubit.da
 import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../../../core/generators/intro_text_generator.dart';
 import '../../shared/overlays/feedback_sheet.dart';
+import '../../../core/alt_unused/notification_chip.dart';
 import '../../shared/overlays/notification_chip.dart';
 
 class SplashScreen extends StatefulWidget {

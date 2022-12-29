@@ -31,7 +31,7 @@ import 'package:page_transition/page_transition.dart';
 
 import '../../application/authentication_and_settings/cubit/contact_setting_cubit.dart';
 import '../../dependency_injection.dart';
-import '../../presentation/authentication_and_settings/screens/authentication/register_tab_manager.dart';
+import '../alt_unused/register_tab_manager.dart';
 import '../../presentation/authentication_and_settings/screens/settings/biometric_lock.dart';
 import '../../presentation/primary/screens/home.dart';
 import '../../presentation/authentication_and_settings/screens/authentication/login.dart';

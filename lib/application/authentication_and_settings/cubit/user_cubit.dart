@@ -6,7 +6,7 @@ import '../../../core/utils/tokens/user_id_from_jwt.dart';
 import '../../../domain/authentication_and_settings/entities/refresh_token.dart';
 import '../../../domain/authentication_and_settings/entities/user.dart';
 import '../../../core/alt_unused/silent_authentication.dart';
-import '../../../presentation/shared/overlays/notification_chip.dart';
+import '../../../core/alt_unused/notification_chip.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';

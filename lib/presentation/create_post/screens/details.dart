@@ -8,9 +8,10 @@ import '../../../application/create_post/cubit/post_cubit.dart';
 import '../../shared/behaviours/nav_blocker.dart';
 import '../../shared/behaviours/simulated_bottom_safe_area.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
-import '../../shared/overlays/notification_chip.dart';
+import '../../../core/alt_unused/notification_chip.dart';
 import '../../shared/overlays/info_sheet.dart';
 import '../../shared/layout/scrollable_area.dart';
+import '../../shared/overlays/notification_chip.dart';
 import '../../shared/selection_groups/bool_selection_group.dart';
 import '../../shared/selection_groups/bool_selection_tile.dart';
 import '../../shared/selection_groups/text_stat_tile.dart';
@@ -48,7 +49,9 @@ class _DetailsScreenState extends State<DetailsScreen> with AutomaticKeepAliveCl
   Widget build(BuildContext context) {
     return BlocListener<CreatePostCubit, CreatePostState>(
       listener: (context, state) {
-        if (state is Error) showNotificationChip(context, state.message);
+        if (state is Error) {
+          showNotificationChip(context, state.message, notificationDuration: NotificationDuration.regular);
+        }
       },
       child: NavBlocker(
         blocking: context.watch<CreatePostCubit>().state is Loading,

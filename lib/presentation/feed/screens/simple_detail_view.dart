@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
 import '../../shared/buttons/simple_text.dart';
+import '../../shared/overlays/notification_chip.dart';
 
 class SimpleDetailViewScreen extends StatefulWidget {
   const SimpleDetailViewScreen({super.key});

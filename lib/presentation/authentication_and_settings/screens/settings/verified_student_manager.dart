@@ -1,12 +1,12 @@
 import '../../tabs/verified_student_email.dart';
 
-import '../../tabs/register.dart';
+import '../../../../core/alt_unused/register.dart';
 import '../../../shared/behaviours/nav_blocker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../application/authentication_and_settings/cubit/register_cubit.dart';
-import '../../tabs/account_details.dart';
+import '../../../../core/alt_unused/account_details.dart';
 import '../../tabs/verified_student_perks.dart';
 
 class VerifiedStudentManager extends StatefulWidget {
