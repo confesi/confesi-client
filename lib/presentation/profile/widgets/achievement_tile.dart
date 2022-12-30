@@ -1,4 +1,5 @@
 import 'package:Confessi/application/shared/cubit/share_cubit.dart';
+import 'package:Confessi/presentation/profile/overlays/achievement_sheet.dart';
 import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:Confessi/presentation/shared/overlays/info_sheet_with_action.dart';
@@ -29,14 +30,13 @@ class AchievementTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TouchableOpacity(
-      onTap: () => showInfoSheetWithAction(
+    return TouchableScale(
+      onTap: () => showAchievementSheet(
         context,
-        "$title (x$quantity, $rarity)",
-        description,
-        () => context.read<ShareCubit>().shareContent(
-            context, "I got the $title (x$quantity) achievement on Confesi!", "Check out this achievement!"),
-        "Share with friends",
+        "header",
+        "body",
+        () => print("tap"),
+        "buttonText",
       ),
       child: Padding(
         padding: const EdgeInsets.only(bottom: 2),

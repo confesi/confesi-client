@@ -107,8 +107,20 @@ class _FeedDrawerState extends State<FeedDrawer> {
                         text: "All universities mixed",
                         onTap: () => print("tap"),
                       ),
+                    ],
+                  ),
+                  SectionAccordian(
+                    topBorder: true,
+                    startsOpen: false,
+                    bottomBorder: true,
+                    title: "Confesi Beta",
+                    items: [
                       DrawerUniversityTile(
-                        text: "Developer updates",
+                        text: "Update information",
+                        onTap: () => print("tap"),
+                      ),
+                      DrawerUniversityTile(
+                        text: "Developer announcements",
                         onTap: () => print("tap"),
                       ),
                     ],

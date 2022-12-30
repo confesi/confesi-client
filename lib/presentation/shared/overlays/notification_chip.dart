@@ -17,7 +17,7 @@ enum NotificationType {
 
 /// How long a notification is displayed for.
 ///
-/// [regular] is 2000 ms, [long] is 5500 ms.
+/// [regular] is 3500 ms, [long] is 6000 ms.
 enum NotificationDuration {
   regular,
   long,
@@ -118,7 +118,7 @@ class __OverlayItemState extends State<_OverlayItem> with TickerProviderStateMix
     if (!mounted || widget.overlay == null) return;
     timeAnimController.forward().then((_) async {
       await Future.delayed(
-          Duration(milliseconds: widget.notificationDuration == NotificationDuration.regular ? 2000 : 5500));
+          Duration(milliseconds: widget.notificationDuration == NotificationDuration.regular ? 3500 : 6000));
       if (!mounted || widget.overlay == null) return;
       timeAnimController.reverse().then((value) => widget.overlay!.remove());
     });
@@ -134,6 +134,7 @@ class __OverlayItemState extends State<_OverlayItem> with TickerProviderStateMix
         child: Transform.scale(
           scale: timeAnim.value,
           child: Container(
+            margin: const EdgeInsets.only(top: 10),
             constraints: BoxConstraints(maxWidth: widthFraction(context, .8)),
             decoration: BoxDecoration(
               color: widget.notificationChipType == NotificationType.failure

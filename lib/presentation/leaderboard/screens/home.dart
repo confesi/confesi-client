@@ -1,9 +1,12 @@
 import 'package:Confessi/core/utils/numbers/large_number_formatter.dart';
 import 'package:Confessi/core/utils/numbers/number_postfix.dart';
-import 'package:Confessi/presentation/leaderboard/widgets/leaderboard_header.dart';
+import 'package:Confessi/core/alt_unused/leaderboard_header.dart';
 import 'package:Confessi/presentation/leaderboard/widgets/leaderboard_item_tile.dart';
+import 'package:Confessi/presentation/profile/widgets/stat_tile.dart';
+import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:Confessi/presentation/shared/indicators/loading_cupertino.dart';
 import 'package:Confessi/presentation/shared/other/feed_list.dart';
+import 'package:Confessi/presentation/shared/overlays/info_sheet_with_action.dart';
 
 import '../../../constants/leaderboard/general.dart';
 import '../../../core/utils/numbers/is_plural.dart';
@@ -59,14 +62,80 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
       );
     } else if (state is Data && state.rankings.isNotEmpty) {
       return FeedList(
-        header: const LeaderboardHeader(),
+        header: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 30),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(
+                      "Your university",
+                      style: kDisplay1.copyWith(
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      textAlign: TextAlign.left,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  const SizedBox(width: 15),
+                  TouchableOpacity(
+                    onTap: () => showInfoSheetWithAction(
+                      context,
+                      "Home university",
+                      "To change which university appears here, and in other places throughout the app, update your home university.",
+                      () => print("tap"),
+                      "Edit in settings",
+                    ),
+                    child: Container(
+                      padding: const EdgeInsets.all(5),
+                      // Transparent hitbox trick.
+                      color: Colors.transparent,
+                      child: Icon(
+                        CupertinoIcons.ellipsis,
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            const SizedBox(height: 5),
+            const LeaderboardItemTile(
+              hottests: 13,
+              placing: 435,
+              universityAbbr: "UVIC",
+              universityFullName: "University of Victoria",
+            ),
+            const SizedBox(height: 30),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Text(
+                "All the others",
+                style: kDisplay1.copyWith(
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                textAlign: TextAlign.left,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            const SizedBox(height: 5),
+          ],
+        ),
         controller: controller,
         loadMore: () {
           for (LeaderboardItem item in state.rankings) {
-            controller.addItem(LeaderboardItemTile(
-                placing: "${item.placing}${numberPostfix(item.placing)}",
-                points: "${largeNumberFormatter(item.points)} ${isPlural(item.points) ? "hottests" : "hottest"}",
-                university: item.universityFullName));
+            controller.addItem(
+              LeaderboardItemTile(
+                hottests: item.points,
+                placing: item.placing,
+                universityAbbr: item.universityName,
+                universityFullName: item.universityFullName,
+              ),
+            );
           }
         },
         onPullToRefresh: () async {

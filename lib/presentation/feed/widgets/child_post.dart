@@ -32,7 +32,7 @@ class _ChildPostState extends State<ChildPost> {
               ),
               textAlign: TextAlign.left,
             ),
-            const SizedBox(height: 5),
+            const SizedBox(height: 10),
             Text(
               "I wonder if any profs are in the mafia, this is serious",
               style: kDisplay1.copyWith(

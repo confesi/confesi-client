@@ -19,7 +19,7 @@ class _SimplePostTileState extends State<SimplePostTile> {
     return GestureDetector(
       onTap: () => Navigator.pushNamed(context, "/home/simplified_detail"),
       child: Padding(
-        padding: const EdgeInsets.only(top: 10, left: 5, right: 5),
+        padding: const EdgeInsets.only(top: 5, left: 5, right: 5),
         child: ClipRRect(
           borderRadius: const BorderRadius.all(Radius.circular(0)),
           child: Container(
