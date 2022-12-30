@@ -1,9 +1,9 @@
-import '../../../core/styles/typography.dart';
-import '../../../core/utils/sizing/bottom_safe_area.dart';
-import '../../../core/utils/sizing/height_fraction.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../core/styles/typography.dart';
+import '../../../core/utils/sizing/bottom_safe_area.dart';
+import '../../../core/utils/sizing/height_fraction.dart';
 import '../buttons/pop.dart';
 import '../layout/swipebar.dart';
 

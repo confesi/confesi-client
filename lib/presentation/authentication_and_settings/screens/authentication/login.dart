@@ -1,5 +1,5 @@
-import 'package:Confessi/core/utils/sizing/bottom_safe_area.dart';
-import 'package:Confessi/core/utils/sizing/height_fraction.dart';
+import '../../../../core/utils/sizing/bottom_safe_area.dart';
+import '../../../../core/utils/sizing/height_fraction.dart';
 import 'package:scrollable/exports.dart';
 
 import '../../../../constants/authentication_and_settings/text.dart';

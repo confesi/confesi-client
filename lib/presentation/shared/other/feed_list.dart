@@ -1,5 +1,5 @@
-import 'package:Confessi/presentation/shared/edited_source_widgets/swipe_refresh.dart';
-import 'package:Confessi/presentation/shared/indicators/alert.dart';
+import '../edited_source_widgets/swipe_refresh.dart';
+import '../indicators/alert.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 

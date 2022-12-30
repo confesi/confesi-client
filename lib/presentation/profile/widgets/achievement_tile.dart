@@ -1,8 +1,8 @@
-import 'package:Confessi/application/shared/cubit/share_cubit.dart';
-import 'package:Confessi/presentation/profile/overlays/achievement_sheet.dart';
-import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opacity.dart';
-import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
-import 'package:Confessi/presentation/shared/overlays/info_sheet_with_action.dart';
+import '../../../application/shared/cubit/share_cubit.dart';
+import '../overlays/achievement_sheet.dart';
+import '../../shared/button_touch_effects/touchable_opacity.dart';
+import '../../shared/button_touch_effects/touchable_scale.dart';
+import '../../shared/overlays/info_sheet_with_action.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

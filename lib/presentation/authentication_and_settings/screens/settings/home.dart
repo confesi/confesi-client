@@ -1,5 +1,5 @@
-import 'package:Confessi/core/utils/sizing/top_safe_area.dart';
-import 'package:Confessi/presentation/primary/controllers/settings_controller.dart';
+import '../../../../core/utils/sizing/top_safe_area.dart';
+import '../../../primary/controllers/settings_controller.dart';
 
 import '../../../../application/shared/cubit/website_launcher_cubit.dart';
 import '../../../../constants/enums_that_are_local_keys.dart';

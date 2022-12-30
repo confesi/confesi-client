@@ -1,9 +1,9 @@
 import 'dart:isolate';
 
-import 'package:Confessi/core/styles/typography.dart';
-import 'package:Confessi/presentation/shared/behaviours/animated_cliprrect.dart';
-import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
-import 'package:Confessi/presentation/watched_universities/widgets/searched_university_tile.dart';
+import '../../../core/styles/typography.dart';
+import '../../shared/behaviours/animated_cliprrect.dart';
+import '../../shared/button_touch_effects/touchable_scale.dart';
+import 'searched_university_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

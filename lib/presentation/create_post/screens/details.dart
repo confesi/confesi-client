@@ -1,7 +1,7 @@
-import 'package:Confessi/core/utils/sizing/bottom_safe_area.dart';
-import 'package:Confessi/presentation/create_post/widgets/faculty_picker_sheet.dart';
-import 'package:Confessi/presentation/shared/selection_groups/setting_tile.dart';
-import 'package:Confessi/presentation/shared/selection_groups/setting_tile_group.dart';
+import '../../../core/utils/sizing/bottom_safe_area.dart';
+import '../widgets/faculty_picker_sheet.dart';
+import '../../shared/selection_groups/setting_tile.dart';
+import '../../shared/selection_groups/setting_tile_group.dart';
 import 'package:scrollable/exports.dart';
 
 import '../../../application/create_post/cubit/post_cubit.dart';

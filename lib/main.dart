@@ -1,9 +1,3 @@
-import 'application/create_post/cubit/post_cubit.dart';
-import 'application/shared/cubit/share_cubit.dart';
-import 'application/shared/cubit/website_launcher_cubit.dart';
-import 'constants/enums_that_are_local_keys.dart';
-import 'constants/shared/dev.dart';
-import 'presentation/primary/screens/splash.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,11 +7,17 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'application/authentication_and_settings/cubit/login_cubit.dart';
 import 'application/authentication_and_settings/cubit/register_cubit.dart';
 import 'application/authentication_and_settings/cubit/user_cubit.dart';
+import 'application/create_post/cubit/post_cubit.dart';
 import 'application/daily_hottest/cubit/hottest_cubit.dart';
+import 'application/shared/cubit/share_cubit.dart';
+import 'application/shared/cubit/website_launcher_cubit.dart';
+import 'constants/enums_that_are_local_keys.dart';
+import 'constants/shared/dev.dart';
 import 'core/router/router.dart';
 import 'core/styles/themes.dart';
 import 'dependency_injection.dart';
 import 'generated/l10n.dart';
+import 'presentation/primary/screens/splash.dart';
 
 void main() async {
   await init();

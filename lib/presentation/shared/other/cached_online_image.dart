@@ -1,9 +1,8 @@
-import 'package:Confessi/constants/authentication_and_settings/text.dart';
-import 'package:Confessi/core/styles/typography.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../core/styles/typography.dart';
 import '../indicators/loading_cupertino.dart';
 
 class CachedOnlineImage extends StatelessWidget {

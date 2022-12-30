@@ -1,5 +1,5 @@
-import 'package:Confessi/constants/authentication_and_settings/enums.dart';
-import 'package:Confessi/domain/authentication_and_settings/usecases/home_viewed.dart';
+import '../../../constants/authentication_and_settings/enums.dart';
+import '../../../domain/authentication_and_settings/usecases/home_viewed.dart';
 
 import '../../../constants/local_storage_keys.dart';
 import '../../../core/utils/tokens/user_id_from_jwt.dart';

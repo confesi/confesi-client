@@ -1,4 +1,4 @@
-import 'package:Confessi/domain/profile/entities/achievement_tile_entity.dart';
+import '../../../domain/profile/entities/achievement_tile_entity.dart';
 
 import '../../../core/converters/id_to_achievement_tile_model.dart';
 

@@ -1,14 +1,13 @@
-import '../../../constants/local_storage_keys.dart';
-import '../../../core/clients/hive_get_client.dart';
-import '../../../core/results/exceptions.dart';
-import '../../../core/results/failures.dart';
-import '../../../core/results/successes.dart';
-import '../../../core/utils/enums/string_to_enum.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive/hive.dart';
 
+import '../../../constants/local_storage_keys.dart';
+import '../../../core/clients/hive_get_client.dart';
+import '../../../core/results/exceptions.dart';
+import '../../../core/results/successes.dart';
 import '../../../core/utils/enums/enum_name.dart';
 import '../../../core/utils/enums/enum_to_string.dart';
+import '../../../core/utils/enums/string_to_enum.dart';
 
 abstract class IPrefsDatasource {
   // Load pref.

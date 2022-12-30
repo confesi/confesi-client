@@ -1,12 +1,12 @@
-import 'package:Confessi/core/utils/numbers/large_number_formatter.dart';
-import 'package:Confessi/core/utils/numbers/number_postfix.dart';
-import 'package:Confessi/core/alt_unused/leaderboard_header.dart';
-import 'package:Confessi/presentation/leaderboard/widgets/leaderboard_item_tile.dart';
-import 'package:Confessi/presentation/profile/widgets/stat_tile.dart';
-import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opacity.dart';
-import 'package:Confessi/presentation/shared/indicators/loading_cupertino.dart';
-import 'package:Confessi/presentation/shared/other/feed_list.dart';
-import 'package:Confessi/presentation/shared/overlays/info_sheet_with_action.dart';
+import '../../../core/utils/numbers/large_number_formatter.dart';
+import '../../../core/utils/numbers/number_postfix.dart';
+import '../../../core/alt_unused/leaderboard_header.dart';
+import '../widgets/leaderboard_item_tile.dart';
+import '../../profile/widgets/stat_tile.dart';
+import '../../shared/button_touch_effects/touchable_opacity.dart';
+import '../../shared/indicators/loading_cupertino.dart';
+import '../../shared/other/feed_list.dart';
+import '../../shared/overlays/info_sheet_with_action.dart';
 
 import '../../../constants/leaderboard/general.dart';
 import '../../../core/utils/numbers/is_plural.dart';

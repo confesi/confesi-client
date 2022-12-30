@@ -1,4 +1,4 @@
-import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
+import '../button_touch_effects/touchable_scale.dart';
 
 import '../../../constants/shared/enums.dart';
 import 'package:flutter/material.dart';

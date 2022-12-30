@@ -1,9 +1,9 @@
-import 'package:Confessi/application/shared/cubit/website_launcher_cubit.dart';
-import 'package:Confessi/core/styles/typography.dart';
-import 'package:Confessi/core/utils/sizing/width_fraction.dart';
-import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
-import 'package:Confessi/presentation/shared/indicators/loading_cupertino.dart';
-import 'package:Confessi/presentation/shared/other/cached_online_image.dart';
+import '../../../application/shared/cubit/website_launcher_cubit.dart';
+import '../../../core/styles/typography.dart';
+import '../../../core/utils/sizing/width_fraction.dart';
+import '../button_touch_effects/touchable_scale.dart';
+import '../indicators/loading_cupertino.dart';
+import 'cached_online_image.dart';
 import 'package:any_link_preview/any_link_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

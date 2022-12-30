@@ -1,6 +1,6 @@
-import 'package:Confessi/application/authentication_and_settings/cubit/user_cubit.dart';
-import 'package:Confessi/constants/enums_that_are_local_keys.dart';
-import 'package:Confessi/presentation/shared/text_animations/typewriter.dart';
+import '../../../../application/authentication_and_settings/cubit/user_cubit.dart';
+import '../../../../constants/enums_that_are_local_keys.dart';
+import '../../../shared/text_animations/typewriter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/utils/sizing/height_fraction.dart';

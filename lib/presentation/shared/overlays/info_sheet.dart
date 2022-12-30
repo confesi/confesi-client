@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:scrollable/exports.dart';
 
 import '../../../core/styles/typography.dart';
 import '../../../core/utils/sizing/bottom_safe_area.dart';

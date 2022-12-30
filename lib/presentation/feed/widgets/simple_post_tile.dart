@@ -1,10 +1,9 @@
-import 'package:Confessi/core/styles/typography.dart';
-import 'package:Confessi/presentation/feed/widgets/child_post.dart';
-import 'package:Confessi/presentation/feed/widgets/reaction_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../shared/other/link_preview.dart';
+import '../../../core/styles/typography.dart';
+import 'child_post.dart';
+import 'reaction_tile.dart';
 
 class SimplePostTile extends StatefulWidget {
   const SimplePostTile({super.key});

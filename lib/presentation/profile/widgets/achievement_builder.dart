@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:Confessi/core/styles/typography.dart';
-import 'package:Confessi/presentation/profile/widgets/achievement_tile.dart';
+import '../../../core/styles/typography.dart';
+import 'achievement_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

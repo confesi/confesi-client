@@ -1,8 +1,8 @@
-import '../../../core/styles/typography.dart';
-import '../behaviours/animated_cliprrect.dart';
-import '../button_touch_effects/touchable_opacity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import '../../../core/styles/typography.dart';
+import '../behaviours/animated_cliprrect.dart';
 
 class StepperTile extends StatefulWidget {
   const StepperTile({

@@ -1,14 +1,11 @@
-import 'package:Confessi/presentation/shared/other/item_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../application/daily_hottest/cubit/hottest_cubit.dart';
-import '../../../core/styles/typography.dart';
-import '../../shared/behaviours/init_scale.dart';
-import '../../shared/behaviours/init_transform.dart';
 import '../../shared/buttons/pop.dart';
 import '../../shared/layout/swipebar.dart';
+import '../../shared/other/item_picker.dart';
 
 class FacultyPicker extends StatefulWidget {
   const FacultyPicker({super.key});

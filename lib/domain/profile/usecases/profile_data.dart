@@ -1,5 +1,5 @@
-import 'package:Confessi/data/profile/repositories/profile_repository_concrete.dart';
-import 'package:Confessi/domain/profile/entities/profile_entity.dart';
+import '../../../data/profile/repositories/profile_repository_concrete.dart';
+import '../entities/profile_entity.dart';
 
 import '../../../core/results/failures.dart';
 import '../../../core/usecases/single_usecase.dart';

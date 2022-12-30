@@ -1,10 +1,10 @@
-import 'package:Confessi/application/profile/cubit/profile_cubit.dart';
-import 'package:Confessi/application/shared/cubit/share_cubit.dart';
-import 'package:Confessi/core/utils/numbers/is_plural.dart';
-import 'package:Confessi/core/utils/sizing/top_safe_area.dart';
-import 'package:Confessi/presentation/primary/controllers/profile_controller.dart';
-import 'package:Confessi/presentation/profile/widgets/achievement_builder.dart';
-import 'package:Confessi/presentation/shared/indicators/alert.dart';
+import '../../../application/profile/cubit/profile_cubit.dart';
+import '../../../application/shared/cubit/share_cubit.dart';
+import '../../../core/utils/numbers/is_plural.dart';
+import '../../../core/utils/sizing/top_safe_area.dart';
+import '../../primary/controllers/profile_controller.dart';
+import '../widgets/achievement_builder.dart';
+import '../../shared/indicators/alert.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrollable/exports.dart';
 

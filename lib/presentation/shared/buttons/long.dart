@@ -1,4 +1,4 @@
-import 'package:Confessi/presentation/shared/indicators/loading_cupertino.dart';
+import '../indicators/loading_cupertino.dart';
 
 import '../button_touch_effects/touchable_opacity.dart';
 import '../indicators/loading_material.dart';

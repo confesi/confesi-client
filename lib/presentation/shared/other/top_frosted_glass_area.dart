@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:Confessi/core/utils/sizing/top_safe_area.dart';
+import '../../../core/utils/sizing/top_safe_area.dart';
 import 'package:flutter/material.dart';
 
 /// To use, add [topSafeArea(context)] as a padding above your scrollable widget

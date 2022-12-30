@@ -1,10 +1,10 @@
-import 'package:Confessi/application/authentication_and_settings/cubit/user_cubit.dart';
-import 'package:Confessi/application/shared/cubit/share_cubit.dart';
-import 'package:Confessi/presentation/leaderboard/screens/home.dart';
-import 'package:Confessi/presentation/primary/controllers/hottest_controller.dart';
-import 'package:Confessi/core/alt_unused/leaderboard_controller.dart';
-import 'package:Confessi/presentation/primary/controllers/profile_controller.dart';
-import 'package:Confessi/presentation/primary/controllers/settings_controller.dart';
+import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
+import '../../../application/shared/cubit/share_cubit.dart';
+import '../../leaderboard/screens/home.dart';
+import '../controllers/hottest_controller.dart';
+import '../../../core/alt_unused/leaderboard_controller.dart';
+import '../controllers/profile_controller.dart';
+import '../controllers/settings_controller.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../application/shared/cubit/website_launcher_cubit.dart';

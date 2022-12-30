@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:Confessi/core/clients/api_client.dart';
-import 'package:Confessi/data/profile/models/profile_model.dart';
-import 'package:Confessi/domain/profile/entities/profile_entity.dart';
+import '../../../core/clients/api_client.dart';
+import '../models/profile_model.dart';
+import '../../../domain/profile/entities/profile_entity.dart';
 
 import '../../../core/results/exceptions.dart';
 

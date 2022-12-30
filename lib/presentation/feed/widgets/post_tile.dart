@@ -1,4 +1,4 @@
-import 'package:Confessi/application/shared/cubit/share_cubit.dart';
+import '../../../application/shared/cubit/share_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/styles/typography.dart';

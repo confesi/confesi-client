@@ -1,11 +1,11 @@
-import '../../../core/network/connection_info.dart';
-import '../../../core/results/successes.dart';
-import '../../../core/results/failures.dart';
-import '../utils/exception_to_failure.dart';
-import '../../../domain/create_post/repositories/create_post_repository_interface.dart';
 import 'package:dartz/dartz.dart';
 
+import '../../../core/network/connection_info.dart';
+import '../../../core/results/failures.dart';
+import '../../../core/results/successes.dart';
+import '../../../domain/create_post/repositories/create_post_repository_interface.dart';
 import '../datasources/create_post_datasource.dart';
+import '../utils/exception_to_failure.dart';
 
 class CreatePostRepository implements ICreatePostRepository {
   final NetworkInfo networkInfo;

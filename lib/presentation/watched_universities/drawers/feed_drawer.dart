@@ -1,16 +1,12 @@
-import 'package:Confessi/presentation/shared/buttons/emblem.dart';
-import 'package:Confessi/presentation/watched_universities/widgets/drawer_university_tile.dart';
-import 'package:Confessi/presentation/watched_universities/widgets/section_accordian.dart';
-
-import '../../../core/utils/sizing/bottom_safe_area.dart';
-import '../../shared/buttons/simple_text.dart';
-import '../../shared/layout/line.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scrollable/exports.dart';
 
 import '../../../core/styles/typography.dart';
-import '../widgets/searched_university_tile.dart';
+import '../../../core/utils/sizing/bottom_safe_area.dart';
+import '../../shared/buttons/simple_text.dart';
+import '../widgets/drawer_university_tile.dart';
+import '../widgets/section_accordian.dart';
 
 class FeedDrawer extends StatefulWidget {
   const FeedDrawer({Key? key}) : super(key: key);
@@ -116,11 +112,11 @@ class _FeedDrawerState extends State<FeedDrawer> {
                     title: "Confesi Beta",
                     items: [
                       DrawerUniversityTile(
-                        text: "Update information",
+                        text: "Updates",
                         onTap: () => print("tap"),
                       ),
                       DrawerUniversityTile(
-                        text: "Developer announcements",
+                        text: "Announcements",
                         onTap: () => print("tap"),
                       ),
                     ],

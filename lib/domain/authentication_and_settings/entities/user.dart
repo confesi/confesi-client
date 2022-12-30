@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:http/http.dart';
 
 import '../../../constants/local_storage_keys.dart';
 

@@ -1,6 +1,6 @@
-import 'package:Confessi/core/utils/numbers/is_plural.dart';
-import 'package:Confessi/core/utils/numbers/number_postfix.dart';
-import 'package:Confessi/presentation/shared/other/cached_online_image.dart';
+import '../../../core/utils/numbers/is_plural.dart';
+import '../../../core/utils/numbers/number_postfix.dart';
+import '../../shared/other/cached_online_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 

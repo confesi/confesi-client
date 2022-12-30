@@ -1,6 +1,6 @@
-import 'package:Confessi/presentation/feed/widgets/post_stat_item.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_opacity.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
+import 'post_stat_item.dart';
+import '../../shared/behaviours/init_opacity.dart';
+import '../../shared/behaviours/init_scale.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

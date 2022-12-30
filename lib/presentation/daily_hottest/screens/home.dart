@@ -1,5 +1,5 @@
-import 'package:Confessi/presentation/primary/controllers/hottest_controller.dart';
-import 'package:Confessi/presentation/shared/indicators/loading_cupertino.dart';
+import '../../primary/controllers/hottest_controller.dart';
+import '../../shared/indicators/loading_cupertino.dart';
 
 import '../../../application/daily_hottest/cubit/hottest_cubit.dart';
 import '../../../constants/leaderboard/general.dart';

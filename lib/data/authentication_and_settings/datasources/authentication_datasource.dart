@@ -1,13 +1,11 @@
 import 'dart:convert';
 
-import '../../../constants/local_storage_keys.dart';
-import '../../../core/clients/api_client.dart';
-import '../../../core/alt_unused/http_client.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import '../../../constants/local_storage_keys.dart';
+import '../../../core/clients/api_client.dart';
 import '../../../core/results/exceptions.dart';
 import '../../../core/results/successes.dart';
-import '../models/access_token_model.dart';
 import '../models/tokens_model.dart';
 import '../utils/error_message_to_exception.dart';
 

@@ -32,7 +32,7 @@ Future<dynamic> showButtonOptionsSheet(BuildContext context, List<OptionButton> 
                       ...buttons,
                       OptionButton(
                         onTap: () => print("tap"),
-                        text: "Done",
+                        text: "Close sheet",
                         icon: CupertinoIcons.xmark,
                         isRed: true,
                         noBottomPadding: true,

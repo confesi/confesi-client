@@ -1,5 +1,5 @@
-import 'package:Confessi/presentation/authentication_and_settings/screens/authentication/registration.dart';
-import 'package:Confessi/presentation/feed/screens/simple_detail_view.dart';
+import '../../presentation/authentication_and_settings/screens/authentication/registration.dart';
+import '../../presentation/feed/screens/simple_detail_view.dart';
 
 import '../../application/create_post/cubit/post_cubit.dart';
 import '../../application/daily_hottest/cubit/hottest_cubit.dart';

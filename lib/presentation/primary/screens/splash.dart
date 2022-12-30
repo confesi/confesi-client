@@ -1,4 +1,4 @@
-import 'package:Confessi/domain/authentication_and_settings/entities/user.dart';
+import '../../../domain/authentication_and_settings/entities/user.dart';
 
 import '../../../core/styles/typography.dart';
 import '../../../core/utils/sizing/width_fraction.dart';

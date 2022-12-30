@@ -1,8 +1,8 @@
-import 'package:Confessi/core/styles/typography.dart';
-import 'package:Confessi/presentation/feed/widgets/simple_post_tile.dart';
-import 'package:Confessi/presentation/shared/other/feed_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import '../../shared/other/feed_list.dart';
+import '../widgets/simple_post_tile.dart';
 
 class ExploreRecents extends StatefulWidget {
   const ExploreRecents({Key? key}) : super(key: key);

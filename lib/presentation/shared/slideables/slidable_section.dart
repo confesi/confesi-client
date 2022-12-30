@@ -1,5 +1,5 @@
 import '../../../core/styles/typography.dart';
-import '../../shared/button_touch_effects/touchable_opacity.dart';
+import '../button_touch_effects/touchable_opacity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
@@ -10,6 +10,7 @@ class SlidableSection extends StatelessWidget {
     required this.icon,
     required this.onPress,
     required this.text,
+    this.color,
     this.tooltip,
     Key? key,
   }) : super(key: key);
@@ -18,13 +19,14 @@ class SlidableSection extends StatelessWidget {
   final String text;
   final IconData icon;
   final String? tooltip;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
     return Flexible(
       child: Container(
         // Transparent hitbox trick.
-        color: Colors.transparent,
+        color: color ?? Colors.transparent,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 5),
           child: TouchableOpacity(

@@ -1,3 +1,7 @@
+import 'package:Confessi/core/utils/sizing/width_fraction.dart';
+import 'package:Confessi/presentation/create_post/overlays/drafts_sheet.dart';
+import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
+import 'package:Confessi/presentation/shared/other/widget_or_nothing.dart';
 import 'package:scrollable/exports.dart';
 
 import '../../../application/create_post/cubit/post_cubit.dart';
@@ -5,7 +9,6 @@ import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/other/text_limit_tracker.dart';
 import '../../feed/widgets/preview_quote_tile.dart';
 import '../../shared/behaviours/init_scale.dart';
-import '../../shared/behaviours/shrinking_view.dart';
 import '../../shared/button_touch_effects/touchable_opacity.dart';
 import '../../shared/buttons/option.dart';
 import '../../shared/overlays/button_options_sheet.dart';
@@ -17,7 +20,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../constants/create_post/general.dart';
 import '../../../core/generators/hint_text_generator.dart';
 import '../../../core/styles/typography.dart';
-import '../../shared/behaviours/keyboard_dismiss.dart';
 import '../../shared/layout/appbar.dart';
 import '../../shared/layout/scrollable_area.dart';
 import '../../shared/overlays/center_overlay_message.dart';
@@ -162,9 +164,10 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
           },
           child: ThemedStatusBar(
             child: Scaffold(
-              resizeToAvoidBottomInset: false,
+              resizeToAvoidBottomInset: true,
               backgroundColor: Theme.of(context).colorScheme.background,
               body: SafeArea(
+                bottom: false,
                 child: Column(
                   children: [
                     AppbarLayout(
@@ -334,6 +337,51 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                                     ),
                                   );
                                 },
+                              ),
+                            ),
+                            WidgetOrNothing(
+                              animatedTransition: false,
+                              showWidget: titleController.text.isEmpty &&
+                                  bodyController.text.isEmpty &&
+                                  !titleFocusNode.hasFocus &&
+                                  !bodyFocusNode.hasFocus,
+                              child: GestureDetector(
+                                onTap: () => bodyFocusNode.requestFocus(),
+                                child: Container(
+                                  // Transparent hitbox trick
+                                  color: Colors.transparent,
+                                  child: SafeArea(
+                                    top: false,
+                                    child: Container(
+                                      // Transparent hitbox trick
+                                      color: Colors.transparent,
+                                      width: double.infinity,
+                                      child: Center(
+                                        child: TouchableScale(
+                                          onTap: () => showDraftsSheet(context),
+                                          child: Container(
+                                            width: widthFraction(context, 2 / 3),
+                                            padding: const EdgeInsets.all(10),
+                                            margin: const EdgeInsets.symmetric(vertical: 30),
+                                            decoration: BoxDecoration(
+                                              color: Theme.of(context).colorScheme.secondary,
+                                              borderRadius: const BorderRadius.all(Radius.circular(30)),
+                                            ),
+                                            child: Text(
+                                              "Load a draft",
+                                              style: kTitle.copyWith(
+                                                color: Theme.of(context).colorScheme.onSecondary,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 2,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
                           ],

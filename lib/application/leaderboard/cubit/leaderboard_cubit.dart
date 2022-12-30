@@ -1,4 +1,3 @@
-import '../../../presentation/daily_hottest/utils/failure_to_message.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
@@ -6,6 +5,7 @@ import 'package:meta/meta.dart';
 import '../../../core/usecases/no_params.dart';
 import '../../../domain/leaderboard/entities/leaderboard_item.dart';
 import '../../../domain/leaderboard/usecases/ranking.dart';
+import '../../../presentation/daily_hottest/utils/failure_to_message.dart';
 
 part 'leaderboard_state.dart';
 

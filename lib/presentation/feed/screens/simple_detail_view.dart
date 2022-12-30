@@ -1,14 +1,12 @@
-import 'package:Confessi/presentation/feed/widgets/post_stat_tile.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_opacity.dart';
-import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
-import 'package:Confessi/presentation/shared/buttons/option.dart';
-import 'package:Confessi/presentation/shared/overlays/button_options_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
+import '../../shared/behaviours/themed_status_bar.dart';
+import '../../shared/buttons/option.dart';
 import '../../shared/buttons/simple_text.dart';
-import '../../shared/overlays/notification_chip.dart';
+import '../../shared/overlays/button_options_sheet.dart';
+import '../widgets/post_stat_tile.dart';
 
 class SimpleDetailViewScreen extends StatefulWidget {
   const SimpleDetailViewScreen({super.key});

@@ -1,11 +1,11 @@
 import 'dart:async';
 
-import 'package:Confessi/application/profile/cubit/profile_cubit.dart';
-import 'package:Confessi/data/profile/datasources/profile_datasource.dart';
-import 'package:Confessi/data/profile/repositories/profile_repository_concrete.dart';
-import 'package:Confessi/domain/authentication_and_settings/usecases/home_viewed.dart';
-import 'package:Confessi/domain/profile/usecases/profile_data.dart';
-import 'package:Confessi/domain/shared/usecases/share_content.dart';
+import 'application/profile/cubit/profile_cubit.dart';
+import 'data/profile/datasources/profile_datasource.dart';
+import 'data/profile/repositories/profile_repository_concrete.dart';
+import 'domain/authentication_and_settings/usecases/home_viewed.dart';
+import 'domain/profile/usecases/profile_data.dart';
+import 'domain/shared/usecases/share_content.dart';
 
 import 'application/shared/cubit/share_cubit.dart';
 import 'core/clients/api_client.dart';

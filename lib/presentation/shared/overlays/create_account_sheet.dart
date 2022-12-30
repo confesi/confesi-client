@@ -1,13 +1,9 @@
-import 'package:Confessi/presentation/shared/selection_groups/text_stat_tile.dart';
-import 'package:Confessi/presentation/shared/selection_groups/text_stat_tile_group.dart';
-import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
 import '../../../core/utils/sizing/bottom_safe_area.dart';
 import '../../../core/utils/sizing/height_fraction.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-
 import '../button_touch_effects/touchable_opacity.dart';
 import '../buttons/pop.dart';
 import '../layout/swipebar.dart';

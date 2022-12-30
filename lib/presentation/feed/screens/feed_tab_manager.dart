@@ -1,5 +1,5 @@
-import 'package:Confessi/presentation/feed/tabs/trending_feed.dart';
-import 'package:Confessi/presentation/shared/buttons/simple_text.dart';
+import '../tabs/trending_feed.dart';
+import '../../shared/buttons/simple_text.dart';
 
 import '../../shared/behaviours/themed_status_bar.dart';
 import 'package:flutter/cupertino.dart';

@@ -1,6 +1,6 @@
-import 'package:Confessi/core/utils/sizing/width_fraction.dart';
-import 'package:Confessi/generated/l10n.dart';
-import 'package:Confessi/presentation/shared/buttons/simple_text.dart';
+import '../../../core/utils/sizing/width_fraction.dart';
+import '../../../generated/l10n.dart';
+import '../buttons/simple_text.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
