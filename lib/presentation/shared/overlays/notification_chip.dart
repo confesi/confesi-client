@@ -1,3 +1,5 @@
+import 'package:Confessi/core/utils/numbers/number_until_limit.dart';
+
 import '../button_touch_effects/touchable_scale.dart';
 
 import '../../../core/utils/sizing/width_fraction.dart';
@@ -124,12 +126,33 @@ class __OverlayItemState extends State<_OverlayItem> with TickerProviderStateMix
     timeAnimController.addListener(() => setState(() {}));
   }
 
+  double totalSwipe = 0.0;
+
   @override
   Widget build(BuildContext context) {
     return Transform.translate(
-      offset: Offset(0, translateAnim.value * -heightFraction(context, 1)),
-      child: TouchableScale(
-        onTap: () => reverseAnimEarly(),
+      offset: Offset(0, translateAnim.value * -heightFraction(context, 1) + (totalSwipe <= 0 ? totalSwipe : 0)),
+      child: GestureDetector(
+        onVerticalDragEnd: (details) {
+          if (totalSwipe < 0) {
+            reverseAnimEarly();
+          }
+        },
+        onVerticalDragCancel: () {
+          if (totalSwipe <= 0) {
+            reverseAnimEarly();
+          }
+        },
+        onVerticalDragUpdate: (details) {
+          print(totalSwipe);
+          if (translateAnim.value != 0) return;
+          if (details.delta.dy <= 0 || totalSwipe < 0) {
+            setState(() {
+              totalSwipe += details.delta.dy;
+            });
+          }
+        },
+        // onTap: () => reverseAnimEarly(),
         child: Transform.scale(
           scale: timeAnim.value,
           child: Container(
