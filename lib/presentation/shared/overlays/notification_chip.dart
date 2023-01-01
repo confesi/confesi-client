@@ -144,7 +144,6 @@ class __OverlayItemState extends State<_OverlayItem> with TickerProviderStateMix
           }
         },
         onVerticalDragUpdate: (details) {
-          print(totalSwipe);
           if (translateAnim.value != 0) return;
           if (details.delta.dy <= 0 || totalSwipe < 0) {
             setState(() {
@@ -156,6 +155,7 @@ class __OverlayItemState extends State<_OverlayItem> with TickerProviderStateMix
         child: Transform.scale(
           scale: timeAnim.value,
           child: Container(
+            width: double.infinity,
             margin: const EdgeInsets.only(top: 10),
             constraints: BoxConstraints(maxWidth: widthFraction(context, .8)),
             decoration: BoxDecoration(

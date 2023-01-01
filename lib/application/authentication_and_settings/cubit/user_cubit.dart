@@ -63,9 +63,8 @@ class UserCubit extends Cubit<UserState> {
         },
       );
     } else {
-      print("error cant log out");
+      // TODO: Logout failure as you're not a user
       // Can't log out. You're not a user.
-      // TODO: Logout failure
     }
   }
 

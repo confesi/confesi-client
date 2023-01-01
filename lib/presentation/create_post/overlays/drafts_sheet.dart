@@ -3,10 +3,12 @@ import 'package:Confessi/application/create_post/cubit/drafts_cubit.dart';
 import 'package:Confessi/core/utils/sizing/bottom_safe_area.dart';
 import 'package:Confessi/domain/create_post/entities/draft_post_entity.dart';
 import 'package:Confessi/presentation/create_post/widgets/draft_tile.dart';
+import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:Confessi/presentation/shared/buttons/simple_text.dart';
 import 'package:Confessi/presentation/shared/indicators/alert.dart';
 import 'package:Confessi/presentation/shared/indicators/loading_cupertino.dart';
 import 'package:Confessi/presentation/shared/layout/line.dart';
+import 'package:Confessi/presentation/shared/overlays/info_sheet.dart';
 import 'package:Confessi/presentation/shared/overlays/notification_chip.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -35,31 +37,38 @@ Future<dynamic> showDraftsSheet(BuildContext context) {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          // EmblemButton(
-          //   backgroundColor: Theme.of(context).colorScheme.surface,
-          //   icon: CupertinoIcons.xmark,
-          //   onPress: () => Navigator.pop(context),
-          //   iconColor: Theme.of(context).colorScheme.onSurface,
-          // ),
           const SwipebarLayout(),
           Padding(
-            padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
-            child: Column(
+            padding: const EdgeInsets.only(left: 10, right: 10, bottom: 15),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  "Load a draft confession",
-                  style: kDisplay1.copyWith(
-                    color: Theme.of(context).colorScheme.primary,
+                Expanded(
+                  child: Text(
+                    "Your draft confessions",
+                    style: kDisplay1.copyWith(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    textAlign: TextAlign.left,
                   ),
-                  textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 15),
-                Text(
-                  "These are saved locally to your device, and lost upon sign out.",
-                  style: kBody.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface,
+                const SizedBox(width: 15),
+                TouchableScale(
+                  onTap: () => showInfoSheet(
+                    context,
+                    "Drafts",
+                    "Draft confessions are deleted upon you logging out. This is for security.",
                   ),
-                  textAlign: TextAlign.center,
+                  child: Container(
+                    // Transparent hitbox trick.
+                    color: Colors.transparent,
+                    padding: const EdgeInsets.all(5),
+                    child: Icon(
+                      CupertinoIcons.info,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                  ),
                 ),
               ],
             ),

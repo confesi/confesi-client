@@ -117,7 +117,7 @@ Future<void> init() async {
   // Registers the login usecase.
   sl.registerLazySingleton(() => Login(repository: sl(), api: sl()));
   // Registers the logout usecase.
-  sl.registerLazySingleton(() => Logout(repository: sl(), api: sl()));
+  sl.registerLazySingleton(() => Logout(repository: sl(), api: sl(), hiveClient: sl()));
   // Registers the recents feed usecase.
   sl.registerLazySingleton(() => Recents(repository: sl()));
   // Registers the trending feed usecase.
