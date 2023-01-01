@@ -82,7 +82,11 @@ class _SimplePostTileState extends State<SimplePostTile> {
                         const SizedBox(height: 15),
                         // const UrlPreviewTile(url: "https://uvic.ca"),
                         // const SizedBox(height: 15),
-                        const ChildPost(),
+                        ChildPost(
+                          title: "This is the title of a child post",
+                          body: "This is the body of the child post.",
+                          onTap: () => print("tap"),
+                        ),
                       ],
                     ),
                   ),

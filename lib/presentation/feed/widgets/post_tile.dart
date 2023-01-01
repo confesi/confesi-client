@@ -161,17 +161,19 @@ class PostTile extends StatelessWidget {
                             context, "View the confession here: https://example.com", "Share this confession!"),
                       ),
                       OptionButton(
-                        text: "Quote",
-                        icon: CupertinoIcons.paperplane,
-                        onTap: () => Navigator.of(context).pushNamed(
-                          '/home/create_replied_post',
-                          arguments: {
-                            'title': title,
-                            'body': text,
-                            'id': id,
-                          },
-                        ),
-                      ),
+                          text: "Quote",
+                          icon: CupertinoIcons.paperplane,
+                          onTap: () {
+                            print("$title, $text, $id"); // TODO: REMOVE
+                            Navigator.of(context).pushNamed(
+                              '/home/create_replied_post',
+                              arguments: {
+                                'title': title,
+                                'body': text,
+                                'id': id,
+                              },
+                            );
+                          }),
                       OptionButton(
                         text: "Save",
                         icon: CupertinoIcons.bookmark,

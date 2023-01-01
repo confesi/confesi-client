@@ -1,3 +1,5 @@
+import 'package:Confessi/application/create_post/cubit/drafts_cubit.dart';
+
 import '../../presentation/authentication_and_settings/screens/authentication/registration.dart';
 import '../../presentation/feed/screens/simple_detail_view.dart';
 
@@ -119,14 +121,13 @@ class AppRouter {
         // The direct route to creating a post (specifically, when you're replying to somebody else's post; separate from the tab that's a "create post" screen under /home, but uses the same screen).
         case "/home/create_replied_post":
           page = CreatePostHome(
-            viewMethod: ViewMethod.separateScreen,
             title: args!['title'],
             body: args['body'],
             id: args['id'],
           );
           break;
         case "/create_post":
-          page = const CreatePostHome(viewMethod: ViewMethod.separateScreen);
+          page = const CreatePostHome();
           break;
         // Detailed view for each post (thread view, has comments, fully expanded text, etc.).
         case '/home/detail':

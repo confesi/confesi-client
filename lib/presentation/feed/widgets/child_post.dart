@@ -1,22 +1,23 @@
+import '../../../constants/create_post/general.dart';
 import '../../../core/styles/typography.dart';
 import '../../shared/button_touch_effects/touchable_scale.dart';
 import 'package:flutter/material.dart';
 
-class ChildPost extends StatefulWidget {
-  const ChildPost({super.key});
+class ChildPost extends StatelessWidget {
+  const ChildPost({
+    super.key,
+    required this.body,
+    this.onTap,
+    required this.title,
+  });
 
-  @override
-  State<ChildPost> createState() => _ChildPostState();
-}
+  final String title;
+  final String body;
+  final VoidCallback? onTap;
 
-class _ChildPostState extends State<ChildPost> {
-  @override
-  Widget build(BuildContext context) {
-    return TouchableScale(
-      onTap: () => print("tap"),
-      child: Container(
+  Widget buildBody(BuildContext context) => Container(
         width: double.infinity,
-        padding: const EdgeInsets.all(15),
+        padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.background,
           borderRadius: const BorderRadius.all(Radius.circular(5)),
@@ -32,9 +33,11 @@ class _ChildPostState extends State<ChildPost> {
               ),
               textAlign: TextAlign.left,
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 15),
             Text(
-              "I wonder if any profs are in the mafia, this is serious",
+              title.length > kChildPostTitlePreviewLength
+                  ? '${title.substring(0, kChildPostTitlePreviewLength)}...'
+                  : title,
               style: kDisplay1.copyWith(
                 color: Theme.of(context).colorScheme.primary,
                 fontSize: 17,
@@ -45,7 +48,7 @@ class _ChildPostState extends State<ChildPost> {
             ),
             const SizedBox(height: 5),
             Text(
-              "Here is the body of the post. It really is a serious issue, or so I believe. This is something I wonder will affect the future.",
+              body.length > kChildPostBodyPreviewLength ? '${body.substring(0, kChildPostBodyPreviewLength)}...' : body,
               style: kBody.copyWith(
                 color: Theme.of(context).colorScheme.primary,
               ),
@@ -55,7 +58,15 @@ class _ChildPostState extends State<ChildPost> {
             ),
           ],
         ),
-      ),
-    );
+      );
+
+  @override
+  Widget build(BuildContext context) {
+    return onTap == null
+        ? buildBody(context)
+        : TouchableScale(
+            onTap: () => onTap!(),
+            child: buildBody(context),
+          );
   }
 }

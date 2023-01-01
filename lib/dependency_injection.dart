@@ -1,5 +1,13 @@
 import 'dart:async';
 
+import 'package:Confessi/application/create_post/cubit/drafts_cubit.dart';
+import 'package:Confessi/core/clients/hive_client.dart';
+import 'package:Confessi/data/create_post/datasources/draft_post_datasource.dart';
+import 'package:Confessi/data/create_post/repositories/draft_repository_concrete.dart';
+import 'package:Confessi/domain/create_post/usecases/delete_draft.dart';
+import 'package:Confessi/domain/create_post/usecases/get_draft.dart';
+import 'package:Confessi/domain/create_post/usecases/save_draft.dart';
+
 import 'application/profile/cubit/profile_cubit.dart';
 import 'data/profile/datasources/profile_datasource.dart';
 import 'data/profile/repositories/profile_repository_concrete.dart';
@@ -51,7 +59,6 @@ import 'data/authentication_and_settings/repositories/authentication_repository_
 import 'domain/authentication_and_settings/usecases/login.dart';
 import 'domain/authentication_and_settings/usecases/logout.dart';
 import 'domain/authentication_and_settings/usecases/register.dart';
-import 'core/alt_unused/silent_authentication.dart';
 import 'data/feed/datasources/feed_datasource.dart';
 import 'data/feed/repositories/feed_repository_concrete.dart';
 import 'domain/feed/usecases/recents.dart';
@@ -97,10 +104,12 @@ Future<void> init() async {
   sl.registerFactory(() => WebsiteLauncherCubit(launchWebsiteUsecase: sl()));
   // Registers the cubit that opens the device's system settings.
   sl.registerFactory(() => LanguageSettingCubit(openDeviceSettingsUsecase: sl()));
-  // Registers the share cubit
+  // Registers the share cubit.
   sl.registerFactory(() => ShareCubit(shareContentUsecase: sl()));
-  // Registers the profile cubit
+  // Registers the profile cubit.
   sl.registerFactory(() => ProfileCubit(profileData: sl()));
+  // Registers the draft post cubit.
+  sl.registerFactory(() => DraftsCubit(getDraftUsecase: sl(), saveDraftUsecase: sl(), deleteDraftUsecase: sl()));
 
   //! Usecases
   // Registers the register usecase.
@@ -139,6 +148,12 @@ Future<void> init() async {
   sl.registerLazySingleton(() => ProfileDataUsecase(repository: sl()));
   // Registeres the home viewed usecase
   sl.registerLazySingleton(() => HomeViewed(repository: sl()));
+  // Registers the save draft usecase.
+  sl.registerLazySingleton(() => SaveDraftUsecase(repository: sl()));
+  // Registers the get draft usecase.
+  sl.registerLazySingleton(() => GetDraftUsecase(repository: sl()));
+  // Registers the delete draft usecase.
+  sl.registerLazySingleton(() => DeleteDraftUsecase(repository: sl()));
 
   //! Core
   // Registers custom connection checker class.
@@ -147,6 +162,8 @@ Future<void> init() async {
   sl.registerLazySingleton(() => AppRouter());
   // Registers the custom api client class.
   sl.registerLazySingleton(() => ApiClient());
+  // Registers the custom hive client class.
+  sl.registerLazySingleton(() => HiveClient());
 
   //! Repositories
   // Registers the authentication repository.
@@ -163,6 +180,8 @@ Future<void> init() async {
   sl.registerLazySingleton(() => PrefsRepository(datasource: sl()));
   // Registers the profile repository.
   sl.registerLazySingleton(() => ProfileRepository(networkInfo: sl(), datasource: sl()));
+  // Registers the draft post repository.
+  sl.registerLazySingleton(() => DraftPostRepository(networkInfo: sl(), datasource: sl()));
 
   //! Data sources
   // Registers the authentication datasource.
@@ -179,6 +198,8 @@ Future<void> init() async {
   sl.registerLazySingleton(() => PrefsDatasource(secureStorage: sl()));
   // Registers the profile datasource.
   sl.registerLazySingleton(() => ProfileDatasource(api: sl()));
+  // Registers the draft post datasource.
+  sl.registerLazySingleton(() => DraftPostDatasource(api: sl(), hiveClient: sl()));
 
   //! External
   // Registers connection checker package.

@@ -1,4 +1,7 @@
+import 'package:dartz/dartz.dart';
+
 import '../../../constants/authentication_and_settings/enums.dart';
+import '../../../core/results/failures.dart';
 import '../../../domain/authentication_and_settings/usecases/home_viewed.dart';
 
 import '../../../constants/local_storage_keys.dart';
@@ -32,15 +35,16 @@ class UserCubit extends Cubit<UserState> {
     required this.homeViewed,
     required this.appearance,
     required this.loadRefreshToken,
-  }) : super(
-          UserLoading(),
-        );
+  }) : super(UserLoading());
 
-  // TODO: remove? needed?
-  bool get localDataLoaded => state is User;
+  // // TODO: remove? needed?
+  // bool get localDataLoaded => state is User;
 
   /// Get the state assuming its [User].
   User get stateAsUser => state as User;
+
+  /// Returns userId assuming state is [User].
+  String userId() => stateAsUser.userType.userId();
 
   /// Logs out the user.
   ///
@@ -89,8 +93,8 @@ class UserCubit extends Cubit<UserState> {
         String userStorageLocation = token is Token ? token.token() : guestDataStorageLocation;
 
         // Opening Hive preferences box (for local storage).
-        await Hive.openBox(userStorageLocation);
-        (await appearance.get(AppearanceEnum.values, AppearanceEnum, userStorageLocation)).fold(
+        await Hive.openBox(userStorageLocation + hiveUserPartition);
+        (await appearance.get(AppearanceEnum.values, AppearanceEnum, userStorageLocation + hiveUserPartition)).fold(
           (failure) {
             // If there's a failure loading these prefs, abort with UserError state.
 

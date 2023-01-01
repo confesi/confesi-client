@@ -1,3 +1,5 @@
+import 'package:flutter/rendering.dart';
+
 import '../../../core/utils/validators/either_not_empty_validator.dart';
 import '../../../domain/create_post/usecases/upload_post.dart';
 import '../../../presentation/create_post/utils/failure_to_message.dart';
@@ -11,8 +13,6 @@ class CreatePostCubit extends Cubit<CreatePostState> {
   final UploadPost uploadPost;
 
   CreatePostCubit({required this.uploadPost}) : super(EnteringData());
-
-  void setUserEnteringData() => emit(EnteringData());
 
   Future<void> uploadUserPost(String title, String body, String? id) async {
     emit(Loading());

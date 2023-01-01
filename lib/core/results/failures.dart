@@ -21,6 +21,9 @@ class FieldsBlankFailure extends Failure {}
 /// For when something failed, but you don't really need to know why specifically.
 class GeneralFailure extends Failure {}
 
+/// There is no value present.
+class NoneFailure extends Failure {}
+
 //! Authentication failures
 
 /// For when password is incorrect.

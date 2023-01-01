@@ -7,6 +7,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'application/authentication_and_settings/cubit/login_cubit.dart';
 import 'application/authentication_and_settings/cubit/register_cubit.dart';
 import 'application/authentication_and_settings/cubit/user_cubit.dart';
+import 'application/create_post/cubit/drafts_cubit.dart';
 import 'application/create_post/cubit/post_cubit.dart';
 import 'application/daily_hottest/cubit/hottest_cubit.dart';
 import 'application/shared/cubit/share_cubit.dart';
@@ -80,7 +81,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        // Create post provider here because context needs tobe accessed from functions.
+        // Create post provider here because context of drafts needs to be accessed from functions.
+        BlocProvider(
+          lazy: false,
+          create: (context) => sl<DraftsCubit>(),
+        ),
+        // Create post provider here because context needs to be accessed from functions.
         BlocProvider(
           lazy: false,
           create: (context) => sl<CreatePostCubit>(),

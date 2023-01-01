@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 class WidgetOrNothing extends StatelessWidget {
   const WidgetOrNothing({
     super.key,
-    required this.child,
     required this.showWidget,
     this.animatedTransition = true,
+    required this.child,
   });
 
   final Widget child;
