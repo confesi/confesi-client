@@ -41,11 +41,11 @@ class AppTheme {
       surfaceTint: Color(0xff90A17D),
       error: Color(0xffEB5353),
       onError: Colors.white, // Color for on error and on surfaceTint.
-      background: Color(0xff2a2a2a),
+      background: Color.fromARGB(255, 32, 32, 32),
       onBackground: Color.fromARGB(255, 83, 83, 83),
-      surface: Color.fromARGB(255, 55, 55, 55),
+      surface: Color.fromARGB(255, 45, 44, 44),
       onSurface: Color(0xff7d7d7d),
-      shadow: Color.fromARGB(255, 29, 28, 28),
+      shadow: Color.fromARGB(255, 17, 17, 17),
       primaryContainer: Color(0xff333333), // Badge's light color.
       secondaryContainer: Color(0xfffde5b6), // Badge's dark color.
       onErrorContainer: Color(0xff59CE8F), // Color for post reaction

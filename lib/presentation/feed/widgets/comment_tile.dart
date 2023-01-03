@@ -107,8 +107,8 @@ class CommentTile extends StatelessWidget {
           child: depth == CommentDepth.root
               ? Container()
               : Container(
-                  width: .7,
-                  color: Theme.of(context).colorScheme.onBackground,
+                  width: .8,
+                  color: Theme.of(context).colorScheme.surface,
                 ),
         ),
       );

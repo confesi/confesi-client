@@ -72,6 +72,7 @@ class _SimplePostTileState extends State<SimplePostTile> {
                             ],
                           ),
                         ),
+
                         Text(
                           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sapien lacus, lacinia in posuere eget, bibendum quis lectus. Pellentesque eu nulla ullamcorper dui blandit porta vel id urna...",
                           style: kBody.copyWith(
