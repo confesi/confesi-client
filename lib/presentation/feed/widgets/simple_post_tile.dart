@@ -49,21 +49,20 @@ class _SimplePostTileState extends State<SimplePostTile> {
                         // const SizedBox(height: 15),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 15),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                          child: Wrap(
+                            runSpacing: 10,
+                            spacing: 10,
                             children: [
                               ReactionTile(
                                 amount: 1831231,
                                 icon: CupertinoIcons.up_arrow,
                                 iconColor: Theme.of(context).colorScheme.onErrorContainer,
                               ),
-                              const SizedBox(width: 15),
                               ReactionTile(
                                 amount: 12341,
                                 icon: CupertinoIcons.down_arrow,
                                 iconColor: Theme.of(context).colorScheme.onSecondaryContainer,
                               ),
-                              const SizedBox(width: 15),
                               ReactionTile(
                                 amount: 123,
                                 icon: CupertinoIcons.chat_bubble,

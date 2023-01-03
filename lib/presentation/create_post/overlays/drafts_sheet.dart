@@ -35,42 +35,16 @@ Future<dynamic> showDraftsSheet(BuildContext context) {
         borderRadius: const BorderRadius.only(topLeft: Radius.circular(0), topRight: Radius.circular(0)),
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           const SwipebarLayout(),
           Padding(
             padding: const EdgeInsets.only(left: 10, right: 10, bottom: 15),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Text(
-                    "Your draft confessions",
-                    style: kDisplay1.copyWith(
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-                const SizedBox(width: 15),
-                TouchableScale(
-                  onTap: () => showInfoSheet(
-                    context,
-                    "Drafts",
-                    "Draft confessions are deleted upon you logging out. This is for security.",
-                  ),
-                  child: Container(
-                    // Transparent hitbox trick.
-                    color: Colors.transparent,
-                    padding: const EdgeInsets.all(5),
-                    child: Icon(
-                      CupertinoIcons.info,
-                      color: Theme.of(context).colorScheme.onSurface,
-                    ),
-                  ),
-                ),
-              ],
+            child: Text(
+              "Your draft confessions",
+              style: kDisplay1.copyWith(
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              textAlign: TextAlign.center,
             ),
           ),
           LineLayout(color: Theme.of(context).colorScheme.surface),

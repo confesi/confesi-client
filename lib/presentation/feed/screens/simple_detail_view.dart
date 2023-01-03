@@ -1,5 +1,6 @@
 import 'package:Confessi/constants/feed/enums.dart';
 import 'package:Confessi/presentation/feed/widgets/comment_tile.dart';
+import 'package:Confessi/presentation/feed/widgets/simple_comment_root_group.dart';
 import 'package:Confessi/presentation/feed/widgets/simple_comment_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ import '../../shared/buttons/option.dart';
 import '../../shared/buttons/simple_text.dart';
 import '../../shared/overlays/button_options_sheet.dart';
 import '../widgets/post_stat_tile.dart';
+import '../widgets/simple_comment_sort.dart';
 
 class SimpleDetailViewScreen extends StatefulWidget {
   const SimpleDetailViewScreen({super.key});
@@ -21,11 +23,6 @@ class SimpleDetailViewScreen extends StatefulWidget {
 class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
   // Show the options for this post.
   void buildOptionsSheet(BuildContext context) => showButtonOptionsSheet(context, [
-        OptionButton(
-          text: "Share",
-          icon: CupertinoIcons.share,
-          onTap: () => print("tap"),
-        ),
         OptionButton(
           text: "Quote",
           icon: CupertinoIcons.paperplane,
@@ -79,7 +76,7 @@ class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const SizedBox(height: 20),
+                            const SizedBox(height: 15),
                             Text(
                               "I found out all the stats profs are in a conspiracy ring together!",
                               style: kTitle.copyWith(
@@ -88,7 +85,7 @@ class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
                               ),
                               textAlign: TextAlign.left,
                             ),
-                            const SizedBox(height: 20),
+                            const SizedBox(height: 15),
                             Wrap(
                               runSpacing: 10,
                               spacing: 10,
@@ -99,7 +96,7 @@ class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 20),
+                            const SizedBox(height: 15),
                             Text(
                               "Year 1 Computer Science / Politics / 22min ago / University of Victoria",
                               style: kDetail.copyWith(
@@ -107,7 +104,7 @@ class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
                               ),
                               textAlign: TextAlign.left,
                             ),
-                            const SizedBox(height: 20),
+                            const SizedBox(height: 15),
                             Text(
                               "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec blandit ex eu nunc mattis auctor. Nam accumsan malesuada quam in egestas. Ut interdum efficitur purus, quis facilisis massa lobortis a. Nullam pharetra vel lacus faucibus accumsan.",
                               style: kBody.copyWith(
@@ -115,12 +112,15 @@ class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
                               ),
                               textAlign: TextAlign.left,
                             ),
-                            const SizedBox(height: 20),
+                            const SizedBox(height: 15),
                             // const CommentSortTile(),
-                            SimpleTextButton(
-                              infiniteWidth: true,
-                              onTap: () => print("tap"),
-                              text: "Sort by: most liked",
+                            // SimpleTextButton(
+                            //   infiniteWidth: true,
+                            //   onTap: () => print("tap"),
+                            //   text: "Sort by: most liked",
+                            // ),
+                            SimpleCommentSort(
+                              onSwitch: (sortMode) => print(sortMode),
                             ),
                             // const CommentTile(
                             //   likes: 3,
@@ -128,9 +128,57 @@ class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
                             //   text: "text",
                             //   depth: CommentDepth.one,
                             // ),
-                            const SizedBox(height: 20),
-                            const SimpleCommentTile(),
-                            const SizedBox(height: 20),
+                            const SimpleCommentRootGroup(
+                              root: SimpleCommentTile(depth: CommentDepth.root),
+                              subTree: [
+                                SimpleCommentRootGroup(
+                                  root: SimpleCommentTile(depth: CommentDepth.one),
+                                  subTree: [
+                                    SimpleCommentRootGroup(
+                                      root: SimpleCommentTile(depth: CommentDepth.two),
+                                      subTree: [
+                                        SimpleCommentRootGroup(
+                                          root: SimpleCommentTile(depth: CommentDepth.three),
+                                          subTree: [],
+                                        ),
+                                      ],
+                                    ),
+                                    SimpleCommentRootGroup(
+                                      root: SimpleCommentTile(depth: CommentDepth.two),
+                                      subTree: [],
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+
+                            // const SimpleCommentTile(depth: CommentDepth.one),
+                            // const SimpleCommentTile(depth: CommentDepth.two),
+                            // const SimpleCommentTile(depth: CommentDepth.three),
+                            // const SimpleCommentTile(depth: CommentDepth.three),
+                            // const SimpleCommentTile(depth: CommentDepth.four),
+                            // const SimpleCommentTile(depth: CommentDepth.three),
+
+                            // const SimpleCommentTile(depth: CommentDepth.root),
+                            // const SimpleCommentTile(depth: CommentDepth.one),
+                            // const SimpleCommentTile(depth: CommentDepth.two),
+                            // const SimpleCommentTile(depth: CommentDepth.three),
+                            // const SimpleCommentTile(depth: CommentDepth.four),
+                            // const SimpleCommentTile(depth: CommentDepth.four),
+                            // const SimpleCommentTile(depth: CommentDepth.four),
+                            // const SimpleCommentTile(depth: CommentDepth.root),
+                            // const SimpleCommentTile(depth: CommentDepth.one),
+                            // const SimpleCommentTile(depth: CommentDepth.two),
+                            // const SimpleCommentTile(depth: CommentDepth.three),
+                            // const SimpleCommentTile(depth: CommentDepth.two),
+                            // const SimpleCommentTile(depth: CommentDepth.three),
+                            // const SimpleCommentTile(depth: CommentDepth.root),
+                            // const SimpleCommentTile(depth: CommentDepth.root),
+                            // const SimpleCommentTile(depth: CommentDepth.root),
+                            // const SimpleCommentTile(depth: CommentDepth.one),
+                            // const SimpleCommentTile(depth: CommentDepth.root),
+
+                            const SizedBox(height: 15),
                           ],
                         ),
                       ),

@@ -151,7 +151,6 @@ class __OverlayItemState extends State<_OverlayItem> with TickerProviderStateMix
             });
           }
         },
-        // onTap: () => reverseAnimEarly(),
         child: Transform.scale(
           scale: timeAnim.value,
           child: Container(

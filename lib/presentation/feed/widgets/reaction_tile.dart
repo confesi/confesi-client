@@ -29,6 +29,7 @@ class ReactionTile extends StatelessWidget {
           border: Border.all(color: Theme.of(context).colorScheme.surface, width: 1),
         ),
         child: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Icon(
               icon,

@@ -11,9 +11,7 @@ import 'package:scrollable/exports.dart';
 import '../../../application/create_post/cubit/post_cubit.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/other/text_limit_tracker.dart';
-import '../../../core/alt_unused/preview_quote_tile.dart';
 import '../../shared/behaviours/init_scale.dart';
-import '../../shared/button_touch_effects/touchable_opacity.dart';
 import '../../shared/buttons/option.dart';
 import '../../shared/overlays/button_options_sheet.dart';
 import 'package:flutter/cupertino.dart';
@@ -27,6 +25,7 @@ import '../../../core/styles/typography.dart';
 import '../../shared/layout/appbar.dart';
 import '../../shared/layout/scrollable_area.dart';
 import '../../shared/overlays/center_overlay_message.dart';
+import '../../shared/overlays/info_sheet.dart';
 
 // TODO: move to feature constants file and document?
 enum FocusedField {
@@ -366,26 +365,49 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                                         color: Colors.transparent,
                                         width: double.infinity,
                                         child: Center(
-                                          child: TouchableScale(
-                                            onTap: () => showDraftsSheet(context),
-                                            child: Container(
-                                              constraints: BoxConstraints(maxWidth: widthFraction(context, 2 / 3)),
-                                              padding: const EdgeInsets.all(10),
-                                              margin: const EdgeInsets.symmetric(vertical: 45),
-                                              decoration: BoxDecoration(
-                                                color: Theme.of(context).colorScheme.secondary,
-                                                borderRadius: const BorderRadius.all(Radius.circular(10)),
-                                              ),
-                                              child: Text(
-                                                "Load a draft",
-                                                style: kTitle.copyWith(
-                                                  color: Theme.of(context).colorScheme.onSecondary,
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              TouchableScale(
+                                                onTap: () => showDraftsSheet(context),
+                                                child: Container(
+                                                  constraints: BoxConstraints(maxWidth: widthFraction(context, 2 / 3)),
+                                                  padding: const EdgeInsets.all(10),
+                                                  margin: const EdgeInsets.symmetric(vertical: 45),
+                                                  decoration: BoxDecoration(
+                                                    color: Theme.of(context).colorScheme.secondary,
+                                                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                                                  ),
+                                                  child: Text(
+                                                    "Load a draft",
+                                                    style: kTitle.copyWith(
+                                                      color: Theme.of(context).colorScheme.onSecondary,
+                                                    ),
+                                                    textAlign: TextAlign.center,
+                                                    overflow: TextOverflow.ellipsis,
+                                                    maxLines: 2,
+                                                  ),
                                                 ),
-                                                textAlign: TextAlign.center,
-                                                overflow: TextOverflow.ellipsis,
-                                                maxLines: 2,
                                               ),
-                                            ),
+                                              const SizedBox(width: 5),
+                                              TouchableScale(
+                                                onTap: () => showInfoSheet(
+                                                  context,
+                                                  "Drafts",
+                                                  "Draft confessions are deleted upon you logging out. This is for security.",
+                                                ),
+                                                child: Container(
+                                                  // Transparent hitbox trick.
+                                                  color: Colors.transparent,
+                                                  padding: const EdgeInsets.all(10),
+                                                  margin: const EdgeInsets.symmetric(vertical: 45),
+                                                  child: Icon(
+                                                    CupertinoIcons.info,
+                                                    color: Theme.of(context).colorScheme.primary,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ),
