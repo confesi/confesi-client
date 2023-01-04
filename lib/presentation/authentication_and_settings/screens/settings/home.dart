@@ -88,6 +88,11 @@ class SettingsHome extends StatelessWidget {
                           text: kSettingsAppearanceLabel,
                           onTap: () => Navigator.of(context).pushNamed("/settings/appearance"),
                         ),
+                        SettingTile(
+                          leftIcon: CupertinoIcons.textformat_size,
+                          text: "Text size",
+                          onTap: () => Navigator.of(context).pushNamed("/settings/text_size"),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 15),

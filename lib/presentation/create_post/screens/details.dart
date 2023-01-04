@@ -146,6 +146,7 @@ class _DetailsScreenState extends State<DetailsScreen> with AutomaticKeepAliveCl
                                   text: "Audience (your home university)",
                                   settingTiles: [
                                     SettingTile(
+                                      bgColor: Theme.of(context).colorScheme.surface,
                                       noRightIcon: true,
                                       secondaryText: "edit",
                                       leftIcon: CupertinoIcons.sparkles,
@@ -159,6 +160,7 @@ class _DetailsScreenState extends State<DetailsScreen> with AutomaticKeepAliveCl
                                   text: "Your year of study (optional)",
                                   settingTiles: [
                                     SettingTile(
+                                      bgColor: Theme.of(context).colorScheme.surface,
                                       secondaryText: "edit",
                                       noRightIcon: true,
                                       leftIcon: CupertinoIcons.sparkles,
@@ -172,6 +174,7 @@ class _DetailsScreenState extends State<DetailsScreen> with AutomaticKeepAliveCl
                                   text: "Your faculty (optional)",
                                   settingTiles: [
                                     SettingTile(
+                                      bgColor: Theme.of(context).colorScheme.surface,
                                       secondaryText: "edit",
                                       noRightIcon: true,
                                       leftIcon: CupertinoIcons.sparkles,

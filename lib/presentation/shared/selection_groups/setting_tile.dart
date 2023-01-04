@@ -15,6 +15,7 @@ class SettingTile extends StatelessWidget {
     this.isRedText = false,
     this.rightIcon,
     this.noRightIcon = false,
+    this.bgColor,
   });
 
   final bool noRightIcon;
@@ -24,6 +25,7 @@ class SettingTile extends StatelessWidget {
   final String? secondaryText;
   final VoidCallback onTap;
   final IconData? rightIcon;
+  final Color? bgColor;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +36,7 @@ class SettingTile extends StatelessWidget {
         width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.background,
+          color: bgColor ?? Theme.of(context).colorScheme.background,
           borderRadius: const BorderRadius.all(
             Radius.circular(5),
           ),

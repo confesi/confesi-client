@@ -140,14 +140,18 @@ class MyApp extends StatelessWidget {
             theme: AppTheme.light,
             darkTheme: AppTheme.dark,
             themeMode: context.watch<UserCubit>().stateIsUser
+                // If state is user, then use their preferences
                 ? getAppearance(
                     context.watch<UserCubit>().stateAsUser.appearanceEnum,
                   )
-                : ThemeMode.system,
+                // Otherwise, just go dark
+                : ThemeMode.dark,
             builder: (BuildContext context, Widget? child) {
               final MediaQueryData data = MediaQuery.of(context);
               return MediaQuery(
-                data: data,
+                // Force the textScaleFactor that's loaded from the device
+                // to lock to 1.
+                data: data.copyWith(textScaleFactor: 1),
                 child: child!,
               );
             },

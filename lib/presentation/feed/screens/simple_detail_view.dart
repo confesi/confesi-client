@@ -4,7 +4,9 @@ import 'package:Confessi/presentation/feed/widgets/simple_comment_root_group.dar
 import 'package:Confessi/presentation/feed/widgets/simple_comment_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../../../core/styles/typography.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/buttons/option.dart';
@@ -81,7 +83,7 @@ class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
                               "I found out all the stats profs are in a conspiracy ring together!",
                               style: kTitle.copyWith(
                                 color: Theme.of(context).colorScheme.primary,
-                                fontSize: 24,
+                                fontSize: 24 * context.watch<UserCubit>().stateAsUser.textSizeEnum.multiplier,
                               ),
                               textAlign: TextAlign.left,
                             ),
@@ -101,6 +103,8 @@ class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
                               "Year 1 Computer Science / Politics / 22min ago / University of Victoria",
                               style: kDetail.copyWith(
                                 color: Theme.of(context).colorScheme.onSurface,
+                                fontSize:
+                                    kDetail.fontSize! * context.watch<UserCubit>().stateAsUser.textSizeEnum.multiplier,
                               ),
                               textAlign: TextAlign.left,
                             ),
@@ -109,6 +113,8 @@ class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
                               "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec blandit ex eu nunc mattis auctor. Nam accumsan malesuada quam in egestas. Ut interdum efficitur purus, quis facilisis massa lobortis a. Nullam pharetra vel lacus faucibus accumsan.",
                               style: kBody.copyWith(
                                 color: Theme.of(context).colorScheme.primary,
+                                fontSize:
+                                    kBody.fontSize! * context.watch<UserCubit>().stateAsUser.textSizeEnum.multiplier,
                               ),
                               textAlign: TextAlign.left,
                             ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SimulatedBottomSafeArea extends StatelessWidget {
-  const SimulatedBottomSafeArea({super.key, this.heightFactor = 2});
+  const SimulatedBottomSafeArea({super.key, this.heightFactor = 1});
 
   final double heightFactor;
 

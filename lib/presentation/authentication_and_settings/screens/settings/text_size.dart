@@ -9,13 +9,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../application/authentication_and_settings/cubit/user_cubit.dart';
-import '../../../../constants/authentication_and_settings/text.dart';
 import '../../../../core/styles/typography.dart';
 import '../../../shared/behaviours/simulated_bottom_safe_area.dart';
 import '../../../shared/layout/appbar.dart';
 
-class AppearanceScreen extends StatelessWidget {
-  const AppearanceScreen({super.key});
+class TextSizeScreen extends StatelessWidget {
+  const TextSizeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +27,7 @@ class AppearanceScreen extends StatelessWidget {
               AppbarLayout(
                 backgroundColor: Theme.of(context).colorScheme.shadow,
                 centerWidget: Text(
-                  kAppearancePageTitle,
+                  "Text size",
                   style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
@@ -43,27 +42,33 @@ class AppearanceScreen extends StatelessWidget {
                       children: [
                         const SizedBox(height: 10),
                         BoolSelectionGroup(
-                          text: kAppearanceGroupLabel,
+                          text: "Edit confession and thread-view text size",
                           selectionTiles: [
                             BoolSelectionTile(
                               topRounded: true,
-                              isActive: context.watch<UserCubit>().stateAsUser.appearanceEnum == AppearanceEnum.system,
-                              icon: CupertinoIcons.device_laptop,
-                              text: kSystemAppearanceRealTime(context),
-                              onTap: () => context.read<UserCubit>().setAppearance(AppearanceEnum.system, context),
+                              isActive: context.watch<UserCubit>().stateAsUser.textSizeEnum == TextSizeEnum.small,
+                              icon: CupertinoIcons.sparkles,
+                              text: "Small",
+                              onTap: () => context.read<UserCubit>().setTextSize(TextSizeEnum.small, context),
                             ),
                             BoolSelectionTile(
-                              isActive: context.watch<UserCubit>().stateAsUser.appearanceEnum == AppearanceEnum.light,
-                              icon: CupertinoIcons.sun_min,
-                              text: kLightAppearance,
-                              onTap: () => context.read<UserCubit>().setAppearance(AppearanceEnum.light, context),
+                              isActive: context.watch<UserCubit>().stateAsUser.textSizeEnum == TextSizeEnum.regular,
+                              icon: CupertinoIcons.sparkles,
+                              text: "Regular",
+                              onTap: () => context.read<UserCubit>().setTextSize(TextSizeEnum.regular, context),
                             ),
                             BoolSelectionTile(
+                              isActive: context.watch<UserCubit>().stateAsUser.textSizeEnum == TextSizeEnum.large,
+                              icon: CupertinoIcons.sparkles,
+                              text: "Large",
+                              onTap: () => context.read<UserCubit>().setTextSize(TextSizeEnum.large, context),
+                            ),
+                            BoolSelectionTile(
+                              isActive: context.watch<UserCubit>().stateAsUser.textSizeEnum == TextSizeEnum.veryLarge,
                               bottomRounded: true,
-                              isActive: context.watch<UserCubit>().stateAsUser.appearanceEnum == AppearanceEnum.dark,
-                              icon: CupertinoIcons.moon,
-                              text: kDarkAppearance,
-                              onTap: () => context.read<UserCubit>().setAppearance(AppearanceEnum.dark, context),
+                              icon: CupertinoIcons.sparkles,
+                              text: "Boomer large",
+                              onTap: () => context.read<UserCubit>().setTextSize(TextSizeEnum.veryLarge, context),
                             ),
                           ],
                         ),

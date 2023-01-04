@@ -6,31 +6,30 @@ import 'package:dartz/dartz.dart';
 import '../../../constants/enums_that_are_local_keys.dart';
 import '../../../core/results/successes.dart';
 
-class AppearanceUsecase implements GetSetUsecase<AppearanceEnum, List> {
+class TextSizeUsecase implements GetSetUsecase<TextSizeEnum, List> {
   final PrefsRepository repository;
 
-  const AppearanceUsecase({required this.repository});
+  const TextSizeUsecase({required this.repository});
 
   @override
-  Future<Either<Failure, AppearanceEnum>> get(
+  Future<Either<Failure, TextSizeEnum>> get(
       List enumValues, Type enumType, String userID, String storagePartitionLocation) async {
-    final failureOrAppearanceEnum =
-        await repository.loadAppearance(enumValues, enumType, userID, storagePartitionLocation);
-    return failureOrAppearanceEnum.fold(
+    final failureOrTextSizeEnum = await repository.loadTextSize(enumValues, enumType, userID, storagePartitionLocation);
+    return failureOrTextSizeEnum.fold(
       (failure) {
         if (failure is DbDefaultFailure) {
-          return const Right(AppearanceEnum.system); // Default choice.
+          return const Right(TextSizeEnum.regular); // Default choice.
         }
         return Left(failure);
       },
-      (appearanceEnum) => Right(appearanceEnum),
+      (textSizeEnum) => Right(textSizeEnum),
     );
   }
 
   @override
   Future<Either<Failure, Success>> set(
-      AppearanceEnum enumData, Type enumType, String userID, String storagePartitionLocation) async {
-    final failureOrSuccess = await repository.setAppearance(enumData, enumType, userID, storagePartitionLocation);
+      TextSizeEnum enumData, Type enumType, String userID, String storagePartitionLocation) async {
+    final failureOrSuccess = await repository.setTextSize(enumData, enumType, userID, storagePartitionLocation);
     return failureOrSuccess.fold(
       (failure) => Left(failure),
       (success) => Right(SettingSuccess()),

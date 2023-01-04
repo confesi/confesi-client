@@ -1,4 +1,5 @@
 import 'package:Confessi/application/create_post/cubit/drafts_cubit.dart';
+import 'package:Confessi/presentation/authentication_and_settings/screens/settings/text_size.dart';
 
 import '../../presentation/authentication_and_settings/screens/authentication/registration.dart';
 import '../../presentation/feed/screens/simple_detail_view.dart';
@@ -9,7 +10,6 @@ import '../../application/profile/cubit/profile_cubit.dart';
 
 import '../../application/authentication_and_settings/cubit/language_setting_cubit.dart';
 import '../../presentation/authentication_and_settings/screens/settings/contact.dart';
-import '../../presentation/authentication_and_settings/screens/settings/haptics.dart';
 import '../../presentation/authentication_and_settings/screens/settings/language.dart';
 import '../../presentation/authentication_and_settings/screens/settings/verified_student_manager.dart';
 import '../../presentation/create_post/screens/details.dart';
@@ -193,6 +193,9 @@ class AppRouter {
         case "/settings/appearance":
           page = const AppearanceScreen();
           break;
+        case "/settings/text_size":
+          page = const TextSizeScreen();
+          break;
         case "/settings/faq":
           page = const FAQScreen();
           break;
@@ -218,9 +221,7 @@ class AppRouter {
             child: const LanguageScreen(),
           );
           break;
-        case "/settings/haptics":
-          page = const HapticsScreen();
-          break;
+
         case "/settings/biometric_lock":
           page = const BiometricLockScreen();
           break;

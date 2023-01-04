@@ -8,11 +8,15 @@
 
 // ***** IMPORTANT *****
 
-enum ReducedAnimationsEnum {
-  // TODO: remove?
-  minimum,
-  few,
-  normal,
+enum TextSizeEnum {
+  small(0.75),
+  regular(1),
+  large(1.2),
+  veryLarge(1.5);
+
+  final double multiplier;
+
+  const TextSizeEnum(this.multiplier);
 }
 
 enum AppearanceEnum {

@@ -1,3 +1,6 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../../../constants/create_post/general.dart';
 import '../../../core/styles/typography.dart';
 import '../../shared/button_touch_effects/touchable_scale.dart';
@@ -30,6 +33,7 @@ class ChildPost extends StatelessWidget {
               "Replying to post:",
               style: kDetail.copyWith(
                 color: Theme.of(context).colorScheme.onSurface,
+                fontSize: kDetail.fontSize! * context.watch<UserCubit>().stateAsUser.textSizeEnum.multiplier,
               ),
               textAlign: TextAlign.left,
             ),
@@ -40,7 +44,7 @@ class ChildPost extends StatelessWidget {
                   : title,
               style: kDisplay1.copyWith(
                 color: Theme.of(context).colorScheme.primary,
-                fontSize: 17,
+                fontSize: 17 * context.watch<UserCubit>().stateAsUser.textSizeEnum.multiplier,
               ),
               overflow: TextOverflow.ellipsis,
               maxLines: 2,
@@ -51,6 +55,7 @@ class ChildPost extends StatelessWidget {
               body.length > kChildPostBodyPreviewLength ? '${body.substring(0, kChildPostBodyPreviewLength)}...' : body,
               style: kBody.copyWith(
                 color: Theme.of(context).colorScheme.primary,
+                fontSize: kBody.fontSize! * context.watch<UserCubit>().stateAsUser.textSizeEnum.multiplier,
               ),
               overflow: TextOverflow.ellipsis,
               maxLines: 2,

@@ -10,25 +10,29 @@ abstract class UserState extends Equatable {
 class User extends UserState {
   final UserType userType;
   final AppearanceEnum appearanceEnum;
+  final TextSizeEnum textSizeEnum;
 
   User({
+    required this.textSizeEnum,
     required this.appearanceEnum,
     required this.userType,
   });
 
   User copyWith({
     AppearanceEnum? appearanceEnum,
+    TextSizeEnum? textSizeEnum,
     UserType? userType,
     bool? hasViewedPastOpenScreenAlready,
   }) {
     return User(
+      textSizeEnum: textSizeEnum ?? this.textSizeEnum,
       appearanceEnum: appearanceEnum ?? this.appearanceEnum,
       userType: userType ?? this.userType,
     );
   }
 
   @override
-  List<Object?> get props => [userType, appearanceEnum];
+  List<Object?> get props => [userType, appearanceEnum, textSizeEnum];
 }
 
 /// Error retrieving critical information to create a user.

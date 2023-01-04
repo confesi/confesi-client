@@ -55,3 +55,13 @@ const String hiveAppearancePartition = "appearance-5";
 /// Ex: for a registered users account, storage location: "831bfs983home_viewed", where "831bfs983k"
 /// is their unique account id.
 const String hiveHomeViewedPartition = "home_viewed-5";
+
+/// The specific location where the data surrounding text size is stored.
+///
+/// Always combined with the user's id.
+///
+/// Ex: for a guest account, storage location: "guesttext_size"
+///
+/// Ex: for a registered users account, storage location: "831bfs983text_size", where "831bfs983k"
+/// is their unique account id.
+const String hiveTextSizePartition = "text_size-5";

@@ -26,8 +26,6 @@ const String kLightAppearance = "Light";
 
 String kSystemAppearanceRealTime(BuildContext context) => "System (currently ${appearanceName(context)})";
 
-const String kAppearanceBottomDisclaimerText = "These preferences are saved locally to your device.";
-
 const String kFaqPageTitle = "FAQ";
 
 const String kFaqGeneralLabel = "General";
