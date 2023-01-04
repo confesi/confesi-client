@@ -1,6 +1,8 @@
 import 'dart:convert';
 
-import '../../../core/clients/http_client.dart';
+import '../../../core/clients/api_client.dart';
+
+import '../../../core/alt_unused/http_client.dart';
 import '../../../core/results/exceptions.dart';
 import '../../../domain/shared/entities/post.dart';
 import '../../shared/models/post_model.dart';
@@ -16,7 +18,7 @@ abstract class IFeedDatasource {
 }
 
 class FeedDatasource implements IFeedDatasource {
-  final HttpClient api;
+  final ApiClient api;
 
   FeedDatasource({required this.api});
   @override
@@ -27,13 +29,24 @@ class FeedDatasource implements IFeedDatasource {
 
   @override
   Future<List<Post>> fetchTrending(String lastSeenPostId, String token) async {
-    final response = await api.req(true, Method.get, null, '/api/posts/trending',
-        dummyData: true, dummyPath: 'api.posts.trending.json');
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      return (json.decode(response.body)['foundPosts'] as List).map((item) => PostModel.fromJson(item)).toList();
-    } else {
-      throw ServerException();
-    }
+    return (await api.req(
+      Method.get,
+      "/api/posts/trending",
+      null,
+      dummyErrorChance: 0.1,
+      dummyPath: "api.posts.trending.json",
+      dummyReq: true,
+    ))
+        .fold(
+      (_) => throw InvalidTokenException(),
+      (response) {
+        if (response.statusCode == 200 || response.statusCode == 201) {
+          return (json.decode(response.body)['foundPosts'] as List).map((item) => PostModel.fromJson(item)).toList();
+        } else {
+          throw ServerException();
+        }
+      },
+    );
   }
 
   @override
@@ -47,4 +60,16 @@ class FeedDatasource implements IFeedDatasource {
     // TODO: implement refreshTrending
     throw UnimplementedError();
   }
+}
+
+@override
+Future<List<Post>> refreshRecents(String token) {
+  // TODO: implement refreshRecents
+  throw UnimplementedError();
+}
+
+@override
+Future<List<Post>> refreshTrending(String token) {
+  // TODO: implement refreshTrending
+  throw UnimplementedError();
 }

@@ -1,4 +1,8 @@
+import '../../primary/controllers/hottest_controller.dart';
+import '../../shared/indicators/loading_cupertino.dart';
+
 import '../../../application/daily_hottest/cubit/hottest_cubit.dart';
+import '../../../constants/leaderboard/general.dart';
 import '../../../core/extensions/dates/two_dates_same.dart';
 import '../../../core/extensions/dates/readable_date_format.dart';
 import '../widgets/hottest_tile.dart';
@@ -13,11 +17,12 @@ import '../../../constants/shared/enums.dart';
 import '../../../core/styles/typography.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/indicators/alert.dart';
-import '../../shared/indicators/loading.dart';
 import '../../shared/layout/appbar.dart';
 
 class HottestHome extends StatefulWidget {
-  const HottestHome({Key? key}) : super(key: key);
+  const HottestHome({Key? key, required this.hottestController}) : super(key: key);
+
+  final HottestController hottestController;
 
   @override
   State<HottestHome> createState() => _HottestHomeState();
@@ -27,21 +32,13 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
   @override
   bool get wantKeepAlive => true;
 
-  final PageController pageController = PageController(viewportFraction: .9, initialPage: 0);
-
   int currentIndex = 0;
-
-  @override
-  void initState() {
-    context.read<HottestCubit>().loadPosts(DateTime.now());
-    super.initState();
-  }
 
   Widget buildChild(BuildContext context, HottestState state) {
     if (state is Loading) {
       return const Center(
         key: ValueKey('loading'),
-        child: LoadingIndicator(),
+        child: LoadingCupertinoIndicator(),
       );
     } else if (state is Data && state.posts.isNotEmpty) {
       return GestureDetector(
@@ -70,10 +67,10 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
           );
         },
         child: PageView(
-            controller: pageController,
+            controller: widget.hottestController.pageController,
             physics: const BouncingScrollPhysics(),
             onPageChanged: (selectedIndex) {
-              HapticFeedback.lightImpact();
+              // HapticFeedback.lightImpact();
               setState(() {
                 currentIndex = selectedIndex;
               });
@@ -147,15 +144,13 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
                             BlocBuilder<HottestCubit, HottestState>(
                               builder: (context, state) {
                                 return AppbarLayout(
+                                  bottomBorder: true,
                                   centerWidget: Text(
                                     headerText,
                                     style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
                                     overflow: TextOverflow.ellipsis,
                                     textAlign: TextAlign.center,
                                   ),
-                                  rightIconVisible: true,
-                                  rightIcon: CupertinoIcons.chart_bar,
-                                  rightIconOnPress: () => Navigator.of(context).pushNamed('/hottest/leaderboard'),
                                   leftIconVisible: true,
                                   leftIcon: CupertinoIcons.calendar,
                                   leftIconOnPress: () => showDatePickerSheet(context),

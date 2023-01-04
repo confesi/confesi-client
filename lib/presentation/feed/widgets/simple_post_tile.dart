@@ -1,0 +1,101 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+import '../../../core/styles/typography.dart';
+import 'child_post.dart';
+import 'reaction_tile.dart';
+
+class SimplePostTile extends StatefulWidget {
+  const SimplePostTile({super.key});
+
+  @override
+  State<SimplePostTile> createState() => _SimplePostTileState();
+}
+
+class _SimplePostTileState extends State<SimplePostTile> {
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => Navigator.pushNamed(context, "/home/simplified_detail"),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 5, left: 5, right: 5),
+        child: ClipRRect(
+          borderRadius: const BorderRadius.all(Radius.circular(0)),
+          child: Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.background,
+              borderRadius: const BorderRadius.all(Radius.circular(0)),
+              border: Border.all(color: Theme.of(context).colorScheme.surface, width: 1),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "I found out all the stats profs are in a conspiracy ring together!",
+                          style: kTitle.copyWith(
+                            color: Theme.of(context).colorScheme.primary,
+                            fontSize: 24,
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                        // const SizedBox(height: 15),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 15),
+                          child: Wrap(
+                            runSpacing: 10,
+                            spacing: 10,
+                            children: [
+                              ReactionTile(
+                                amount: 1831231,
+                                icon: CupertinoIcons.up_arrow,
+                                iconColor: Theme.of(context).colorScheme.onErrorContainer,
+                              ),
+                              ReactionTile(
+                                amount: 12341,
+                                icon: CupertinoIcons.down_arrow,
+                                iconColor: Theme.of(context).colorScheme.onSecondaryContainer,
+                              ),
+                              ReactionTile(
+                                amount: 123,
+                                icon: CupertinoIcons.chat_bubble,
+                                iconColor: Theme.of(context).colorScheme.secondary,
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        Text(
+                          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sapien lacus, lacinia in posuere eget, bibendum quis lectus. Pellentesque eu nulla ullamcorper dui blandit porta vel id urna...",
+                          style: kBody.copyWith(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                        const SizedBox(height: 15),
+                        // const UrlPreviewTile(url: "https://uvic.ca"),
+                        // const SizedBox(height: 15),
+                        ChildPost(
+                          title: "This is the title of a child post",
+                          body: "This is the body of the child post.",
+                          onTap: () => print("tap"),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

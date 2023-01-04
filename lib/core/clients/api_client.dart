@@ -1,12 +1,12 @@
 import 'dart:math';
 
-import '../../constants/shared/dev.dart';
-import '../usecases/no_params.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
+
+import '../../constants/shared/dev.dart';
+import '../usecases/no_params.dart';
 
 /// The different RESTful API verbs.
 enum Method {

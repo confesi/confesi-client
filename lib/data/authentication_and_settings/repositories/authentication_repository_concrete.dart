@@ -18,31 +18,14 @@ class AuthenticationRepository implements IAuthenticationRepository {
   final NetworkInfo networkInfo;
   final AuthenticationDatasource datasource;
 
-  AuthenticationRepository(
-      {required this.networkInfo, required this.datasource});
+  AuthenticationRepository({required this.networkInfo, required this.datasource});
 
   /// Logs the user in.
   @override
-  Future<Either<Failure, Tokens>> login(
-      String usernameOrEmail, String password) async {
+  Future<Either<Failure, Tokens>> login(String usernameOrEmail, String password) async {
     if (await networkInfo.isConnected) {
       try {
         return Right(await datasource.login(usernameOrEmail, password));
-      } catch (e) {
-        print("CONRETEEEEEEEEEEEEEEEEEEE $e");
-        return Left(exceptionToFailure(e));
-      }
-    } else {
-      return Left(ConnectionFailure());
-    }
-  }
-
-  /// Logs the user out.
-  @override
-  Future<Either<Failure, Success>> logout(String refreshToken) async {
-    if (await networkInfo.isConnected) {
-      try {
-        return Right(await datasource.logout(refreshToken));
       } catch (e) {
         return Left(exceptionToFailure(e));
       }
@@ -53,8 +36,7 @@ class AuthenticationRepository implements IAuthenticationRepository {
 
   /// Registers the user.
   @override
-  Future<Either<Failure, Tokens>> register(
-      String username, String password, String email) async {
+  Future<Either<Failure, Tokens>> register(String username, String password, String email) async {
     if (await networkInfo.isConnected) {
       try {
         return Right(await datasource.register(username, password, email));
@@ -66,26 +48,11 @@ class AuthenticationRepository implements IAuthenticationRepository {
     }
   }
 
-  /// Gets an access token given a refresh token.
-  @override
-  Future<Either<Failure, AccessToken>> getAccessToken(
-      String refreshToken) async {
-    if (await networkInfo.isConnected) {
-      try {
-        return Right(await datasource.getAccessToken(refreshToken));
-      } catch (e) {
-        return Left(exceptionToFailure(e));
-      }
-    } else {
-      return Left(ConnectionFailure());
-    }
-  }
-
   /// Deletes the refresh token from device storage.
   @override
-  Future<Either<Failure, Success>> deleteRefreshToken() async {
+  Future<Either<Failure, Success>> deleteToken() async {
     try {
-      return Right(await datasource.deleteRefreshToken());
+      return Right(await datasource.deleteToken());
     } catch (e) {
       return Left(ServerFailure());
     }
@@ -93,9 +60,9 @@ class AuthenticationRepository implements IAuthenticationRepository {
 
   /// Setes the refresh token in device storage.
   @override
-  Future<Either<Failure, Success>> setRefreshToken(String refreshToken) async {
+  Future<Either<Failure, Success>> setToken(String refreshToken) async {
     try {
-      return Right(await datasource.setRefreshToken(refreshToken));
+      return Right(await datasource.setToken(refreshToken));
     } catch (e) {
       return Left(ServerFailure());
     }
@@ -103,9 +70,9 @@ class AuthenticationRepository implements IAuthenticationRepository {
 
   /// Gets the currently stored refresh token.
   @override
-  Future<Either<Failure, String>> getRefreshToken() async {
+  Future<Either<Failure, String>> getToken() async {
     try {
-      return Right(await datasource.getRefreshToken());
+      return Right(await datasource.getToken());
     } on EmptyTokenException {
       return Left(EmptyTokenFailure());
     } catch (e) {

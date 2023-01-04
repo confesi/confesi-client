@@ -1,4 +1,5 @@
 import '../../../../application/authentication_and_settings/cubit/contact_setting_cubit.dart';
+import '../../../../core/alt_unused/notification_chip.dart';
 import '../../../shared/overlays/notification_chip.dart';
 import '../../../shared/selection_groups/setting_tile.dart';
 import '../../../shared/selection_groups/setting_tile_group.dart';

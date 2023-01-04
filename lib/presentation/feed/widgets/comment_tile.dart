@@ -11,7 +11,7 @@ import '../../shared/button_touch_effects/touchable_shrink.dart';
 import '../../shared/buttons/option.dart';
 import '../../shared/overlays/button_options_sheet.dart';
 import 'comment_header_text.dart';
-import 'slidable_section.dart';
+import '../../shared/slideables/slidable_section.dart';
 
 class CommentTile extends StatelessWidget {
   const CommentTile({
@@ -107,8 +107,8 @@ class CommentTile extends StatelessWidget {
           child: depth == CommentDepth.root
               ? Container()
               : Container(
-                  width: .7,
-                  color: Theme.of(context).colorScheme.onBackground,
+                  width: .8,
+                  color: Theme.of(context).colorScheme.surface,
                 ),
         ),
       );

@@ -42,7 +42,7 @@ class SingleTextButton extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
             child: Text(
               text,
-              style: kHeader.copyWith(
+              style: kDisplay2.copyWith(
                 color: textColor,
               ),
               textAlign: TextAlign.left,

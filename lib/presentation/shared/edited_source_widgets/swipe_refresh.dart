@@ -5,7 +5,8 @@
 import 'dart:async';
 import 'dart:math' as math;
 
-import 'package:Confessi/presentation/shared/indicators/loading.dart';
+import 'package:Confessi/presentation/shared/indicators/loading_material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -556,23 +557,15 @@ class SwipeRefreshState extends State<SwipeRefresh> with TickerProviderStateMixi
                   child: AnimatedBuilder(
                     animation: _positionController,
                     builder: (BuildContext context, Widget? child) {
+                      // My custom modifications (for Project: Ember) have gone here.
                       return Container(
-                        width: 40,
-                        height: 40,
                         margin: const EdgeInsets.all(15), // prevents shadow from being cut off.
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                color: widget.shadowColor ?? Theme.of(context).colorScheme.shadow.withOpacity(0.5),
-                                blurRadius: 8,
-                              ),
-                            ],
-                            color: widget.backgroundColor ?? Theme.of(context).colorScheme.background,
-                            borderRadius: const BorderRadius.all(Radius.circular(20))),
-                        child: LoadingIndicator(
-                          color: widget.color,
+                          shape: BoxShape.circle,
+                          color: widget.backgroundColor ?? Theme.of(context).colorScheme.secondary,
                         ),
+                        child: CupertinoActivityIndicator(color: Theme.of(context).colorScheme.onSecondary),
                       );
                     },
                   ),

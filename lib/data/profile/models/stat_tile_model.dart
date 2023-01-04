@@ -1,4 +1,4 @@
-import 'package:Confessi/domain/profile/entities/stat_tile_entity.dart';
+import '../../../domain/profile/entities/stat_tile_entity.dart';
 
 class StatTileModel extends StatTileEntity {
   const StatTileModel({

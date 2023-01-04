@@ -12,11 +12,13 @@ class Appearance implements GetSetUsecase<AppearanceEnum, List> {
   const Appearance({required this.repository});
 
   @override
-  Future<Either<Failure, AppearanceEnum>> get(List enumValues, Type enumType, String userID) async {
-    final failureOrAppearanceEnum = await repository.loadAppearance(enumValues, enumType, userID);
+  Future<Either<Failure, AppearanceEnum>> get(
+      List enumValues, Type enumType, String userID, String storagePartitionLocation) async {
+    final failureOrAppearanceEnum =
+        await repository.loadAppearance(enumValues, enumType, userID, storagePartitionLocation);
     return failureOrAppearanceEnum.fold(
       (failure) {
-        if (failure is DBDefaultFailure) {
+        if (failure is DbDefaultFailure) {
           return const Right(AppearanceEnum.system); // Default choice.
         }
         return Left(failure);
@@ -26,8 +28,9 @@ class Appearance implements GetSetUsecase<AppearanceEnum, List> {
   }
 
   @override
-  Future<Either<Failure, Success>> set(AppearanceEnum enumData, Type enumType, String userID) async {
-    final failureOrSuccess = await repository.setAppearance(enumData, enumType, userID);
+  Future<Either<Failure, Success>> set(
+      AppearanceEnum enumData, Type enumType, String userID, String storagePartitionLocation) async {
+    final failureOrSuccess = await repository.setAppearance(enumData, enumType, userID, storagePartitionLocation);
     return failureOrSuccess.fold(
       (failure) => Left(failure),
       (success) => Right(SettingSuccess()),

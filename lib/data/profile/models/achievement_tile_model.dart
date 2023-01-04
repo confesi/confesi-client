@@ -1,4 +1,6 @@
-import 'package:Confessi/domain/profile/entities/achievement_tile_entity.dart';
+import '../../../constants/profile/enums.dart';
+import '../../../core/converters/achievement_rarity_to_string.dart';
+import '../../../domain/profile/entities/achievement_tile_entity.dart';
 
 import '../../../core/converters/id_to_achievement_tile_model.dart';
 
@@ -9,7 +11,7 @@ class AchievementTileModel extends AchievementTileEntity {
     required String description,
     required int quantity,
     required double aspectRatio,
-    required String rarity,
+    required AchievementRarity rarity,
   }) : super(
           rarity: rarity,
           achievementImgUrl: achievementImgUrl,

@@ -1,13 +1,11 @@
-import 'package:Confessi/core/utils/sizing/width_fraction.dart';
-import 'package:Confessi/generated/l10n.dart';
-import 'package:Confessi/presentation/shared/buttons/simple_text.dart';
-import 'package:flutter/cupertino.dart';
+import '../../../core/utils/sizing/width_fraction.dart';
+import '../../../generated/l10n.dart';
+import '../buttons/simple_text.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
-import '../button_touch_effects/touchable_opacity.dart';
-import '../buttons/pop.dart';
-import 'loading.dart';
+import 'loading_cupertino.dart';
+import 'loading_material.dart';
 
 class AlertIndicator extends StatelessWidget {
   const AlertIndicator({
@@ -24,7 +22,7 @@ class AlertIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
+      padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
       child: Container(
           constraints: BoxConstraints(maxWidth: widthFraction(context, .8)),
           // Transparent hitbox trick.
@@ -33,7 +31,7 @@ class AlertIndicator extends StatelessWidget {
             child: AnimatedSwitcher(
               duration: const Duration(milliseconds: 250),
               child: isLoading
-                  ? const LoadingIndicator()
+                  ? const LoadingCupertinoIndicator()
                   : Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

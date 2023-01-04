@@ -9,6 +9,7 @@
 // ***** IMPORTANT *****
 
 enum ReducedAnimationsEnum {
+  // TODO: remove?
   minimum,
   few,
   normal,
@@ -20,7 +21,12 @@ enum AppearanceEnum {
   system,
 }
 
-enum RefreshTokenEnum {
-  hasRefreshToken,
-  noRefreshToken,
+enum HomeViewedEnum {
+  yes,
+  no,
 }
+
+// enum RefreshTokenEnum {
+//   hasRefreshToken,
+//   noRefreshToken,
+// }

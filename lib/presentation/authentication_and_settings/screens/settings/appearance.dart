@@ -14,7 +14,6 @@ import '../../../../constants/authentication_and_settings/text.dart';
 import '../../../../core/styles/typography.dart';
 import '../../../shared/behaviours/simulated_bottom_safe_area.dart';
 import '../../../shared/layout/appbar.dart';
-import '../../widgets/settings/theme_picker.dart';
 
 class AppearanceScreen extends StatelessWidget {
   const AppearanceScreen({super.key});
@@ -43,8 +42,6 @@ class AppearanceScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const HeaderText(text: kThemePickerLabel),
-                        const ThemePicker(),
                         const SizedBox(height: 10),
                         BoolSelectionGroup(
                           text: kAppearanceGroupLabel,

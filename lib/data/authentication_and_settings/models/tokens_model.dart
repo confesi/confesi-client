@@ -3,24 +3,20 @@ import '../../../domain/authentication_and_settings/entities/tokens.dart';
 /// Model for access and refresh token.
 class TokensModel extends Tokens {
   const TokensModel({
-    required String accessToken,
-    required String refreshToken,
+    required String token,
   }) : super(
-          accessToken: accessToken,
-          refreshToken: refreshToken,
+          token: token,
         );
 
   factory TokensModel.fromJson(Map<String, dynamic> json) {
     return TokensModel(
-      accessToken: json["accessToken"],
-      refreshToken: json["refreshToken"],
+      token: json["token"],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      "accessToken": accessToken,
-      "refreshToken": refreshToken,
+      "token": token,
     };
   }
 }

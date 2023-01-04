@@ -73,6 +73,10 @@ dependencies:
   permission_handler: ^10.2.0
   share_plus: ^6.3.0
   cached_network_image: ^3.2.2
+  map_launcher: ^2.4.0
+  animated_text_kit: ^4.2.2
+  link_preview_generator: ^1.2.0
+  any_link_preview: ^2.0.9
   # shimmer: ^2.0.0
   # open_settings: ^2.0.2
   # animated_text_kit: ^4.2.2
@@ -91,7 +95,7 @@ dev_dependencies:
   flutter_lints: ^2.0.0
 
 flutter_native_splash:
-  color: ffffff
+  color: 111111
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

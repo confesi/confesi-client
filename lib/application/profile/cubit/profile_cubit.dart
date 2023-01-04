@@ -1,7 +1,7 @@
-import 'package:Confessi/core/usecases/no_params.dart';
-import 'package:Confessi/domain/profile/entities/achievement_tile_entity.dart';
-import 'package:Confessi/domain/profile/entities/stat_tile_entity.dart';
-import 'package:Confessi/domain/profile/usecases/profile_data.dart';
+import '../../../core/usecases/no_params.dart';
+import '../../../domain/profile/entities/achievement_tile_entity.dart';
+import '../../../domain/profile/entities/stat_tile_entity.dart';
+import '../../../domain/profile/usecases/profile_data.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 

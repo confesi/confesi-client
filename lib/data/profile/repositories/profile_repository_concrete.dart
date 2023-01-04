@@ -1,7 +1,7 @@
-import 'package:Confessi/data/profile/datasources/profile_datasource.dart';
-import 'package:Confessi/domain/profile/entities/profile_entity.dart';
+import '../datasources/profile_datasource.dart';
+import '../../../domain/profile/entities/profile_entity.dart';
 import 'package:dartz/dartz.dart';
-import 'package:Confessi/core/results/failures.dart';
+import '../../../core/results/failures.dart';
 import '../../../core/network/connection_info.dart';
 import '../../../domain/profile/repositories/profile_repository_interface.dart';
 

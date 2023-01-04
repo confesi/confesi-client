@@ -1,13 +1,20 @@
+import '../tabs/trending_feed.dart';
+import '../../shared/buttons/simple_text.dart';
+
 import '../../shared/behaviours/themed_status_bar.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-import '../../../core/styles/typography.dart';
 import '../../shared/layout/appbar.dart';
-import '../../shared/layout/top_tabs.dart';
 import '../tabs/recents_feed.dart';
-import '../tabs/trending_feed.dart';
+
+/// Which type of feed is selected.
+///
+/// Recents or Trending.
+enum SelectedFeedType {
+  recents,
+  trending,
+}
 
 class ExploreHome extends StatefulWidget {
   const ExploreHome({Key? key, required this.scaffoldKey}) : super(key: key);
@@ -18,24 +25,22 @@ class ExploreHome extends StatefulWidget {
   State<ExploreHome> createState() => _ExploreHomeState();
 }
 
-class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
+class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 
-  ScrollController scrollController = ScrollController();
+  SelectedFeedType selectedFeedType = SelectedFeedType.recents;
 
-  late TabController tabController;
-
-  @override
-  void initState() {
-    tabController = TabController(vsync: this, length: 2, initialIndex: 1);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    tabController.dispose();
-    super.dispose();
+  void changeFeed() {
+    if (selectedFeedType == SelectedFeedType.recents) {
+      setState(() {
+        selectedFeedType = SelectedFeedType.trending;
+      });
+    } else if (selectedFeedType == SelectedFeedType.trending) {
+      setState(() {
+        selectedFeedType = SelectedFeedType.recents;
+      });
+    }
   }
 
   @override
@@ -50,66 +55,40 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
             child: Column(
               children: [
                 Builder(builder: (context) {
-                  return GestureDetector(
-                    onTap: () =>
-                        Navigator.pushNamed(context, "/home/simplified_detail"), // TODO: remove, just for testing
-                    child: AppbarLayout(
-                      rightIconOnPress: () => Navigator.of(context).pushNamed("/create_post"),
-                      rightIconVisible: true,
-                      rightIcon: CupertinoIcons.add,
-                      bottomBorder: false,
-                      centerWidget: Text(
-                        "University of Victoria",
-                        style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.center,
-                      ),
-                      leftIconVisible: true,
-                      leftIcon: CupertinoIcons.slider_horizontal_3,
-                      leftIconOnPress: () => widget.scaffoldKey.currentState!.openDrawer(),
+                  return AppbarLayout(
+                    bottomBorder: true,
+                    backgroundColor: Theme.of(context).colorScheme.background,
+                    rightIconOnPress: () => Navigator.of(context).pushNamed("/create_post"),
+                    rightIconVisible: true,
+                    rightIcon: CupertinoIcons.add,
+                    centerWidget: Row(
+                      children: [
+                        Icon(
+                          CupertinoIcons.chevron_back,
+                          color: Theme.of(context).colorScheme.onSurface,
+                          size: 20,
+                        ),
+                        const SizedBox(width: 5),
+                        SimpleTextButton(
+                          onTap: () => changeFeed(),
+                          text: selectedFeedType == SelectedFeedType.trending ? "Trending Now" : "Recents",
+                        ),
+                        const SizedBox(width: 5),
+                        Icon(
+                          CupertinoIcons.chevron_forward,
+                          color: Theme.of(context).colorScheme.onSurface,
+                          size: 20,
+                        ),
+                      ],
                     ),
+                    leftIconVisible: true,
+                    leftIcon: CupertinoIcons.slider_horizontal_3,
+                    leftIconOnPress: () => widget.scaffoldKey.currentState!.openDrawer(),
                   );
                 }),
                 Expanded(
-                  child: Column(
-                    children: [
-                      TopTabs(
-                        tabController: tabController,
-                        tabs: [
-                          Tab(
-                            child: Text(
-                              "Recents",
-                              style: kDetail.copyWith(
-                                color: Theme.of(context).colorScheme.onSurface,
-                              ),
-                            ),
-                          ),
-                          Tab(
-                            child: Text(
-                              "Trending",
-                              style: kDetail.copyWith(
-                                color: Theme.of(context).colorScheme.onSurface,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Expanded(
-                        child: Container(
-                          color: Theme.of(context).colorScheme.shadow,
-                          child: TabBarView(
-                            physics: const ClampingScrollPhysics(),
-                            controller: tabController,
-                            dragStartBehavior: DragStartBehavior.down,
-                            children: const [
-                              ExploreRecents(),
-                              ExploreTrending(),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                  child:
+                      selectedFeedType == SelectedFeedType.trending ? const ExploreTrending() : const ExploreRecents(),
                 ),
               ],
             ),

@@ -1,6 +1,9 @@
 import 'dart:convert';
 
-import '../../../core/clients/http_client.dart';
+import '../../../core/clients/api_client.dart';
+
+import '../../../core/alt_unused/http_client.dart';
+import '../../../core/results/exceptions.dart';
 import '../../../core/results/successes.dart';
 import '../utils/error_message_to_exception.dart';
 
@@ -9,31 +12,33 @@ abstract class ICreatePostDatasource {
 }
 
 class CreatePostDatasource implements ICreatePostDatasource {
-  final HttpClient api;
+  final ApiClient api;
 
   CreatePostDatasource({required this.api});
 
   @override
   Future<Success> uploadPost(String title, String body, String? id) async {
-    final response = await api.req(
-      true,
+    return (await api.req(
       Method.post,
+      "/api/create/post",
       {
         'title': title,
         'body': body,
         '_id': id,
       },
-      '/api/create/post',
-      dummyData: true,
-      dummyPath: 'api.create.post.json',
-      // dummyDelay: const Duration(seconds: 1),
-      // dummyErrorChance: 1,
-      // dummyErrorMessage: 'fields blank',
+      dummyErrorChance: 0.1,
+      dummyPath: "api.create.post.json",
+      dummyReq: true,
+    ))
+        .fold(
+      (_) => throw InvalidTokenException(),
+      (response) {
+        if (response.statusCode == 200 || response.statusCode == 201) {
+          return ApiSuccess();
+        } else {
+          throw errorMessageToException(jsonDecode(response.body));
+        }
+      },
     );
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      return ApiSuccess();
-    } else {
-      throw errorMessageToException(jsonDecode(response.body));
-    }
   }
 }

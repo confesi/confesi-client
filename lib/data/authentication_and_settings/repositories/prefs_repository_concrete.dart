@@ -13,55 +13,44 @@ class PrefsRepository implements IPrefsRepository {
   const PrefsRepository({required this.datasource});
 
   @override
-  Future<Either<Failure, String>> loadRefreshToken() async {
+  Future<Either<Failure, AppearanceEnum>> loadAppearance(
+      List enumValues, Type enumType, String userID, String storagePartitionLocation) async {
     try {
-      return Right(await datasource.loadRefreshToken());
-    } catch (e) {
-      if (e is EmptyTokenException) {
-        return Left(EmptyTokenFailure());
-      } else {
-        return Left(LocalDBFailure());
-      }
-    }
-  }
-
-  @override
-  Future<Either<Failure, AppearanceEnum>> loadAppearance(List enumValues, Type enumType, String userID) async {
-    try {
-      return Right(await datasource.loadPref(enumValues, enumType, userID));
+      return Right(await datasource.loadPref(enumValues, enumType, userID, storagePartitionLocation));
     } on DBDefaultException {
-      return Left(DBDefaultFailure());
+      return Left(DbDefaultFailure());
     } catch (e) {
       return Left(LocalDBFailure());
     }
   }
 
   @override
-  Future<Either<Failure, ReducedAnimationsEnum>> loadReducedAnimations(
-      List enumValues, Type enumType, String userID) async {
+  Future<Either<Failure, Success>> setAppearance(
+      AppearanceEnum settingValue, Type enumType, String userID, String storagePartitionLocation) async {
     try {
-      return Right(await datasource.loadPref(enumValues, enumType, userID));
+      return Right(await datasource.setPref(settingValue, enumType, userID, storagePartitionLocation));
+    } catch (e) {
+      return Left(LocalDBFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, HomeViewedEnum>> loadViewedHome(
+      List enumValues, Type enumType, String userID, String storagePartitionLocation) async {
+    try {
+      return Right(await datasource.loadPref(enumValues, enumType, userID, storagePartitionLocation));
     } on DBDefaultException {
-      return Left(DBDefaultFailure());
+      return Left(DbDefaultFailure());
     } catch (e) {
       return Left(LocalDBFailure());
     }
   }
 
   @override
-  Future<Either<Failure, Success>> setAppearance(AppearanceEnum settingValue, Type enumType, String userID) async {
+  Future<Either<Failure, Success>> setViewedHome(
+      HomeViewedEnum settingValue, Type enumType, String userID, String storagePartitionLocation) async {
     try {
-      return Right(await datasource.setPref(settingValue, enumType, userID));
-    } catch (e) {
-      return Left(LocalDBFailure());
-    }
-  }
-
-  @override
-  Future<Either<Failure, Success>> setReducedAnimations(
-      ReducedAnimationsEnum settingValue, Type enumType, String userID) async {
-    try {
-      return Right(await datasource.setPref(settingValue, enumType, userID));
+      return Right(await datasource.setPref(settingValue, enumType, userID, storagePartitionLocation));
     } catch (e) {
       return Left(LocalDBFailure());
     }

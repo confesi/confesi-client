@@ -6,36 +6,39 @@ abstract class UserState extends Equatable {
   List<Object?> get props => [];
 }
 
+/// There is currently a user, whether that be a [Guest] or a [RegisteredUser].
 class User extends UserState {
-  final String refreshToken;
-  final String userID;
+  final UserType userType;
   final AppearanceEnum appearanceEnum;
-  final bool justRegistered;
 
   User({
-    this.justRegistered = false,
-    required this.refreshToken,
-    required this.userID,
     required this.appearanceEnum,
+    required this.userType,
   });
 
   User copyWith({
-    String? refreshToken,
-    String? userID,
     AppearanceEnum? appearanceEnum,
-    bool? justRegistered,
+    UserType? userType,
+    bool? hasViewedPastOpenScreenAlready,
   }) {
     return User(
-        refreshToken: refreshToken ?? this.refreshToken,
-        userID: userID ?? this.userID,
-        appearanceEnum: appearanceEnum ?? this.appearanceEnum,
-        justRegistered: justRegistered ?? this.justRegistered);
+      appearanceEnum: appearanceEnum ?? this.appearanceEnum,
+      userType: userType ?? this.userType,
+    );
   }
 
   @override
-  List<Object?> get props => [appearanceEnum]; //! Very intentionally not rebuilding based on preferences.
+  List<Object?> get props => [userType, appearanceEnum];
 }
 
-class NoUser extends UserState {}
+/// Error retrieving critical information to create a user.
+///
+/// This indicates an error page should be shown.
+class UserError extends UserState {}
 
-class LocalDataError extends UserState {}
+/// If the state of the user is currently a new user who has not yet seen the home screen.
+/// Meaning, they should see the open screen by default.
+class OpenUser extends UserState {}
+
+/// Unknown user state. Currently loading. Provided as default.
+class UserLoading extends UserState {}

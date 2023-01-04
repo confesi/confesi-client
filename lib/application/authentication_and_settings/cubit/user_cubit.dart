@@ -1,6 +1,16 @@
+import 'package:Confessi/presentation/shared/overlays/notification_chip.dart';
+import 'package:dartz/dartz.dart';
+
+import '../../../constants/authentication_and_settings/enums.dart';
+import '../../../core/results/failures.dart';
+import '../../../domain/authentication_and_settings/usecases/home_viewed.dart';
+
+import '../../../constants/local_storage_keys.dart';
 import '../../../core/utils/tokens/user_id_from_jwt.dart';
-import '../../../domain/authentication_and_settings/usecases/silent_authentication.dart';
-import '../../../presentation/shared/overlays/notification_chip.dart';
+import '../../../domain/authentication_and_settings/entities/refresh_token.dart';
+import '../../../domain/authentication_and_settings/entities/user.dart';
+import '../../../core/alt_unused/silent_authentication.dart';
+import '../../../core/alt_unused/notification_chip.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -15,84 +25,126 @@ import '../../../domain/authentication_and_settings/usecases/load_refresh_token.
 
 part 'user_state.dart';
 
-enum AuthenticationType { silent, register, login } // How the user got authenticated.
-
-// TODO: Ensure logging out erases storage as well
-
 class UserCubit extends Cubit<UserState> {
   final Logout logout;
-  final SilentAuthentication silentAuthentication;
   final Appearance appearance;
+  final HomeViewed homeViewed;
   final LoadRefreshToken loadRefreshToken;
 
-  UserCubit(
-      {required this.logout,
-      required this.silentAuthentication,
-      required this.appearance,
-      required this.loadRefreshToken})
-      : super(NoUser());
+  UserCubit({
+    required this.logout,
+    required this.homeViewed,
+    required this.appearance,
+    required this.loadRefreshToken,
+  }) : super(UserLoading());
 
-  bool get localDataLoaded => state is User;
+  /// Checks if the current state is user
+  bool get stateIsUser => state is User;
 
+  /// Get the state assuming its [User].
+  ///
+  /// This can throw an exception if state is not [User]!
   User get stateAsUser => state as User;
 
-// TODO: Ensure that logging in / registering adds to prefs and doesn't just keep it empty?
-// TODO: Maybe just call loadInitialPrefsAndTokens?
-  /// Used to set the User if logging in, or registering.
-  // void setUser() => emit(User());
+  /// Returns userId assuming state is [User].
+  String userId() => stateAsUser.userType.userId();
 
-  // void setNoUser() => emit(NoUser());
-
-  // void setUnknownUser() => emit(UnknownUser());
-
-  /// Logs out the user. Upon error, currently does nothing, as the user will still be logged in.
+  /// Logs out the user.
+  ///
+  /// Shows message on error logging out.
   void logoutUser() async {
-    final failureOrSuccess = await logout.call(stateAsUser.userID);
-    failureOrSuccess.fold(
-      (failure) {
-        print("failure to log out...");
-      }, // Do nothing upon failure to logout, as the user would still be logged in (hopefully)? Instead, upon pressing logout, check if the state didn't change, then if not, show an error dialog.
-      (success) {
-        emit(NoUser());
-      },
-    );
+    if (state is User) {
+      final failureOrSuccess = await logout.call(stateAsUser.userType.userId());
+      failureOrSuccess.fold(
+        (failure) {
+          // TODO: Logout failure
+        },
+        (success) {
+          // After succesfully logging out, now try reloading user data. This should
+          // restart the user as a guest.
+          loadUser(false);
+        },
+      );
+    } else {
+      // TODO: Logout failure as you're not a user
+      // Can't log out. You're not a user.
+    }
   }
 
-  // TODO: Merge with loadInitialPrefsAndTokens
-  Future<void> silentlyAuthenticateUser(AuthenticationType authenticationType) async {
-    if (authenticationType == AuthenticationType.silent) {
-      await Future.delayed(const Duration(milliseconds: 750));
-    } // Artificial delay as to not cause jank in the splash screen.
-    await (await loadRefreshToken.call(NoParams())).fold(
+  /// Load the user object if possible, otherwise emits an error state.
+  ///
+  /// [artificialDelay] delays execution for x time. Used for initial call as to not
+  /// cause jank with the splash screen.
+  ///
+  /// Success: emits Guest or RegisteredUser.
+  ///
+  /// Error: emits UserError.
+  Future<void> loadUser(bool artificialDelay) async {
+    // If artificialDelay is true, then delay the execution marginally. Exists
+    // so that the splash screen doesn't jank quickly on initial load.
+    if (artificialDelay) await Future.delayed(const Duration(milliseconds: 750));
+    (await loadRefreshToken.call(NoParams())).fold(
       (failure) {
-        emit(LocalDataError());
+        // Something went wrong getting the token.
+        emit(UserError());
       },
-      (refreshToken) async {
-        if (refreshToken.refreshTokenEnum == RefreshTokenEnum.noRefreshToken) {
-          emit(NoUser());
-          return;
-        }
-        // Decrypt JWT to get userID (mongo _id).
-        userIdFromJwt(refreshToken.token).fold(
-          (failure) => emit(LocalDataError()),
-          (userID) async {
-            print("opening this box: $userID");
-            // Opening Hive preferences box.
-            await Hive.openBox(userID);
-            (await appearance.get(AppearanceEnum.values, AppearanceEnum, userID)).fold(
-              (failure) {
-                emit(LocalDataError());
-              },
-              (appearanceEnum) async {
-                emit(
-                  User(
-                      refreshToken: refreshToken.token, // Refresh token
-                      userID: userID, // Unique user ID (used for storage box location with Hive)
-                      justRegistered: authenticationType == AuthenticationType.register ? true : false, // Preference
-                      appearanceEnum: appearanceEnum), // Preference
-                );
-              },
-            );
+      (token) async {
+        // Token received.
+        //
+        // Where the user's preferences will be stored (if no token, then "guest" location, else, stored in their unique user ID location).
+        // Of course, the partition location always gets appended to the end.
+        (await appearance.get(AppearanceEnum.values, AppearanceEnum, token.token(), hiveUserPartition)).fold(
+          (failure) {
+            // If there's a failure loading these prefs, abort with UserError state.
+            emit(UserError());
+          },
+          (appearanceEnum) async {
+            // Last bit of the loading preferences chain contains emits the actual full user object,
+            // whether that be a Guest or a RegisteredUser.
+            //
+            // If user has a refresh token, then we must attempt to decrypt it, gaining
+            // access to its inner userId
+            if (token is Token) {
+              print(token.token());
+              // If refreshToken is of type "hasRefreshToken", then its "token" field won't be null.
+              userIdFromJwt(token.token()).fold(
+                (failure) {
+                  // Failure decrypting user Id from token. Emit UserError state and abort.
+                  print("JWT decrypting causing error");
+
+                  emit(UserError());
+                },
+                (userId) {
+                  // On succesfully decrypting token, emit a user object of type RegisteredUser.
+                  emit(User(appearanceEnum: appearanceEnum, userType: RegisteredUser(userId, token.token())));
+                },
+              );
+            } else {
+              // Check the viewed viewedHomeScreen location to decide if routing -> home screen or -> open screen.
+              (await homeViewed.get(
+                      HomeViewedEnum.values, HomeViewedEnum, homeViewedScreenLocation, hiveHomeViewedPartition))
+                  .fold(
+                (failure) {
+                  // Failure checking if the user has already viewed the home screen. Emit UserError state and abort.
+                  emit(UserError());
+                },
+                (homeViewedEnum) {
+                  if (homeViewedEnum == HomeViewedEnum.yes) {
+                    print("TOP !");
+                    // The user has already viewed home, so we can assume they've gone through the
+                    // open screen already. Hence, we can consider them a guest.
+                    //
+                    // If user doesn't have refresh token, then they're a Guest.
+                    emit(User(appearanceEnum: appearanceEnum, userType: Guest()));
+                  } else {
+                    print("BOTTOM !");
+                    // The user has not yet seen the home screen. Thus, they must be new. So, we should
+                    // show them the open screen.
+                    emit(OpenUser());
+                  }
+                },
+              );
+            }
           },
         );
       },
@@ -100,14 +152,45 @@ class UserCubit extends Cubit<UserState> {
   }
 
   Future<void> setAppearance(AppearanceEnum appearanceEnum, BuildContext context) async {
-    if (state is! User) {
-      showNotificationChip(context, "Error saving appearance.");
-      return;
+    if (stateIsUser) {
+      emit(stateAsUser.copyWith(appearanceEnum: appearanceEnum));
+      (await appearance.set(appearanceEnum, AppearanceEnum, stateAsUser.userType.userId(), hiveAppearancePartition))
+          .fold(
+        (failure) {
+          showNotificationChip(context, "Error updating setting.");
+        },
+        (success) => null, // Do nothing upon success
+      );
+    } else {
+      // Case where user isn't a [User].
+      showNotificationChip(context, "An unknown error has occured.");
     }
-    emit((state as User).copyWith(appearanceEnum: appearanceEnum));
-    (await appearance.set(appearanceEnum, AppearanceEnum, stateAsUser.userID)).fold(
-      (failure) => null, // show error message... scaffold messenger?
-      (success) => null, // do nothing
+  }
+
+  /// Sets the [HomeViewedEnum] to [HomeViewedEnum.yes] and then reloads the user.
+  ///
+  /// Should be called when you've progressed to the home screen (as guest or registered user).
+  ///
+  /// Prevents returning to the 'open' screen by default every time the app is opened.
+  Future<void> setHomeViewedThenReloadUser(BuildContext context) async {
+    await setHomeViewed(HomeViewedEnum.yes, context).then((succeded) {
+      loadUser(false);
+    });
+  }
+
+  /// Special case for setting a preference. Does not relate to user. Account-agnostic as it records
+  /// if any account on the device has viewed the home screen.
+  ///
+  /// Returns [true] or [false] depending on if it succeeds.
+  Future<bool> setHomeViewed(HomeViewedEnum homeViewedEnum, BuildContext context) async {
+    return (await homeViewed.set(homeViewedEnum, HomeViewedEnum, homeViewedScreenLocation, hiveHomeViewedPartition))
+        .fold(
+      (failure) {
+        // Error setting [HomeViewedEnum].
+        showNotificationChip(context, "An unknown error has occured.");
+        return false;
+      },
+      (success) => true, // Do nothing upon success.
     );
   }
 }

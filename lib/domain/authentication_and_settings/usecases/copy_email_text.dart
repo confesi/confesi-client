@@ -1,8 +1,8 @@
-import '../../../core/results/successes.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/services.dart';
 
 import '../../../core/results/failures.dart';
+import '../../../core/results/successes.dart';
 import '../../../core/usecases/no_params.dart';
 import '../../../core/usecases/single_usecase.dart';
 

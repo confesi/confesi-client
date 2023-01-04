@@ -1,4 +1,5 @@
-import '../../../core/clients/http_client.dart';
+import '../../../core/clients/api_client.dart';
+
 import '../../../core/results/successes.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
@@ -9,9 +10,9 @@ import '../../../data/authentication_and_settings/repositories/authentication_re
 
 class Login implements Usecase<Success, LoginParams> {
   final AuthenticationRepository repository;
-  final HttpClient netClient;
+  final ApiClient api;
 
-  Login({required this.repository, required this.netClient});
+  Login({required this.repository, required this.api});
 
   /// Logs the user in.
   @override
@@ -19,12 +20,12 @@ class Login implements Usecase<Success, LoginParams> {
     final tokens = await repository.login(params.usernameOrEmail, params.password);
     return tokens.fold(
       (failure) => Left(failure),
-      (tokens) async {
-        final result = await repository.setRefreshToken(tokens.refreshToken);
+      (token) async {
+        final result = await repository.setToken(token.token);
         return result.fold(
           (failure) => Left(failure),
           (success) {
-            netClient.setAccessTokenHeader(tokens.accessToken);
+            api.setToken(token.token);
             return Right(ApiSuccess());
           },
         );
@@ -33,6 +34,9 @@ class Login implements Usecase<Success, LoginParams> {
   }
 }
 
+/// Parameters for logging in.
+///
+/// [usernameOrEmail] & [password].
 class LoginParams extends Equatable {
   final String usernameOrEmail;
   final String password;

@@ -33,7 +33,7 @@ class _TouchableScaleState extends State<TouchableScale> with SingleTickerProvid
   @override
   void initState() {
     animController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 75), reverseDuration: const Duration(milliseconds: 75));
+        vsync: this, duration: const Duration(milliseconds: 75), reverseDuration: const Duration(milliseconds: 200));
     anim = CurvedAnimation(parent: animController, curve: Curves.linear, reverseCurve: Curves.linear);
     super.initState();
   }
@@ -75,9 +75,12 @@ class _TouchableScaleState extends State<TouchableScale> with SingleTickerProvid
                 animController.forward().then((_) => animController.reverse());
                 animController.addListener(() => setState(() {}));
               },
-              child: Transform.scale(
-                scale: -anim.value * 0.15 + 1,
-                child: widget.child,
+              child: Opacity(
+                opacity: -anim.value * 0.65 + 1,
+                child: Transform.scale(
+                  scale: -anim.value * 0.05 + 1,
+                  child: widget.child,
+                ),
               ),
             )
           : widget.child,

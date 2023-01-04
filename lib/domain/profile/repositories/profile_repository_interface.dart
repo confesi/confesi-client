@@ -1,4 +1,4 @@
-import 'package:Confessi/domain/profile/entities/profile_entity.dart';
+import '../entities/profile_entity.dart';
 import '../../../core/results/failures.dart';
 import 'package:dartz/dartz.dart';
 

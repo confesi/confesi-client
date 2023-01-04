@@ -1,6 +1,6 @@
-import 'package:Confessi/data/profile/models/achievement_tile_model.dart';
-import 'package:Confessi/data/profile/models/stat_tile_model.dart';
-import 'package:Confessi/domain/profile/entities/profile_entity.dart';
+import 'achievement_tile_model.dart';
+import 'stat_tile_model.dart';
+import '../../../domain/profile/entities/profile_entity.dart';
 
 import '../../../core/converters/university_abbr_to_full_name.dart';
 

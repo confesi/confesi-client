@@ -32,9 +32,7 @@ class TextLimitTracker extends StatelessWidget {
           child: CircularProgressIndicator(
             strokeWidth: 3,
             backgroundColor: Theme.of(context).colorScheme.onBackground,
-            color: value >= 1
-                ? Theme.of(context).colorScheme.error
-                : Theme.of(context).colorScheme.primary,
+            color: value >= 1 ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.primary,
             value: value,
           ),
         ),

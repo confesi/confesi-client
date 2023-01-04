@@ -71,12 +71,15 @@ class _HottestTileState extends State<HottestTile> {
                     height: isSelected ? constraints.maxHeight : constraints.maxHeight * .8,
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.background,
+                      border: Border.all(color: Theme.of(context).colorScheme.surface, width: 1),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          color: Theme.of(context).colorScheme.secondary,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
                           padding: const EdgeInsets.all(10),
                           width: double.infinity,
                           child: Text(

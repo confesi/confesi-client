@@ -1,11 +1,9 @@
 import 'dart:convert';
 
 import '../../../core/clients/api_client.dart';
-
-import '../../shared/models/post_model.dart';
-import '../../../domain/shared/entities/post.dart';
-
 import '../../../core/results/exceptions.dart';
+import '../../../domain/shared/entities/post.dart';
+import '../../shared/models/post_model.dart';
 
 abstract class IDailyHottestDatasource {
   Future<List<Post>> fetchPosts(DateTime date);

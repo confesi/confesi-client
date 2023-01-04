@@ -1,44 +1,37 @@
-import '../../../constants/local_storage_keys.dart';
-import '../../../core/clients/hive_get_client.dart';
-import '../../../core/results/exceptions.dart';
-import '../../../core/results/failures.dart';
-import '../../../core/results/successes.dart';
-import '../../../core/utils/enums/string_to_enum.dart';
+import 'package:Confessi/core/clients/hive_client.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive/hive.dart';
 
+import '../../../core/results/exceptions.dart';
+import '../../../core/results/successes.dart';
 import '../../../core/utils/enums/enum_name.dart';
 import '../../../core/utils/enums/enum_to_string.dart';
+import '../../../core/utils/enums/string_to_enum.dart';
 
 abstract class IPrefsDatasource {
   // Load pref.
-  Future loadPref(List enumValues, Type enumType, String userID);
+  Future loadPref(List enumValues, Type enumType, String userID, String storagePartitionLocation);
   // Set pref.
-  Future<Success> setPref(Enum enumData, Type enumType, String userID);
-  // Load refresh token.
-  Future<String> loadRefreshToken();
+  Future<Success> setPref(Enum enumData, Type enumType, String userID, String storagePartitionLocation);
 }
 
 class PrefsDatasource implements IPrefsDatasource {
-  final FlutterSecureStorage secureStorage;
+  final HiveClient hiveClient;
 
-  const PrefsDatasource({required this.secureStorage});
-
-  @override
-  Future loadPref(List enumValues, Type enumType, String userID) async =>
-      stringToEnum(await hiveGet(userID, getLowercaseEnumName(enumType)), enumValues);
+  const PrefsDatasource({required this.hiveClient});
 
   @override
-  Future<Success> setPref(Enum enumData, Type enumType, String userID) async {
-    await Hive.box(userID).put(getLowercaseEnumName(enumType), enumToString(enumData));
-    print("set successfully...");
-    return SettingSuccess();
+  Future loadPref(List enumValues, Type enumType, String boxId, String storagePartitionLocation) async {
+    dynamic matcher = await hiveClient.getValue(boxId + storagePartitionLocation, getLowercaseEnumName(enumType));
+    // If nothing exists inside the database for this entry, then this must be the first this user is accessing it.
+    // Thus, we say it's a default exception - and we can provide a default value for it higher up, after bubbling this value.
+    if (matcher == null) throw DBDefaultException();
+    return stringToEnum(matcher, enumValues);
   }
 
   @override
-  Future<String> loadRefreshToken() async {
-    final refreshToken = await secureStorage.read(key: kRefreshToken);
-    if (refreshToken == null || refreshToken.isEmpty) throw EmptyTokenException();
-    return refreshToken;
+  Future<Success> setPref(Enum enumData, Type enumType, String boxId, String storagePartitionLocation) async {
+    await hiveClient.setValue(boxId + storagePartitionLocation, getLowercaseEnumName(enumType), enumToString(enumData));
+    return SettingSuccess();
   }
 }

@@ -1,5 +1,10 @@
-import 'package:Confessi/presentation/feed/screens/simple_detail_view.dart';
+import 'package:Confessi/application/create_post/cubit/drafts_cubit.dart';
 
+import '../../presentation/authentication_and_settings/screens/authentication/registration.dart';
+import '../../presentation/feed/screens/simple_detail_view.dart';
+
+import '../../application/create_post/cubit/post_cubit.dart';
+import '../../application/daily_hottest/cubit/hottest_cubit.dart';
 import '../../application/profile/cubit/profile_cubit.dart';
 
 import '../../application/authentication_and_settings/cubit/language_setting_cubit.dart';
@@ -9,10 +14,11 @@ import '../../presentation/authentication_and_settings/screens/settings/language
 import '../../presentation/authentication_and_settings/screens/settings/verified_student_manager.dart';
 import '../../presentation/create_post/screens/details.dart';
 import '../../presentation/create_post/screens/home.dart';
-import '../../presentation/daily_hottest/screens/leaderboard.dart';
+import '../../presentation/leaderboard/screens/home.dart';
 import '../../presentation/feed/screens/detail_view.dart';
 import '../../presentation/feed/screens/post_advanced_details.dart';
-import '../../presentation/feed/screens/watched_universities.dart';
+import '../../presentation/watched_universities/screens/search_universities.dart';
+import '../alt_unused/watched_universities.dart';
 import '../../presentation/feedback/screens/home.dart';
 import '../../presentation/primary/screens/critical_error.dart';
 import '../../presentation/authentication_and_settings/screens/settings/appearance.dart';
@@ -26,15 +32,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
 
 import '../../application/authentication_and_settings/cubit/contact_setting_cubit.dart';
-import '../../application/authentication_and_settings/cubit/website_launcher_setting_cubit.dart';
 import '../../dependency_injection.dart';
-import '../../presentation/authentication_and_settings/screens/authentication/register_tab_manager.dart';
+import '../alt_unused/register_tab_manager.dart';
 import '../../presentation/authentication_and_settings/screens/settings/biometric_lock.dart';
 import '../../presentation/primary/screens/home.dart';
 import '../../presentation/authentication_and_settings/screens/authentication/login.dart';
 import '../../presentation/primary/screens/showcase.dart';
 import '../../presentation/authentication_and_settings/screens/authentication/open.dart';
-import '../../application/daily_hottest/cubit/leaderboard_cubit.dart';
+import '../../application/leaderboard/cubit/leaderboard_cubit.dart';
 import '../../application/feed/cubit/recents_cubit.dart';
 import '../../application/feed/cubit/trending_cubit.dart';
 import '../../application/profile/cubit/biometrics_cubit.dart';
@@ -47,28 +52,21 @@ class AppRouter {
       "/home/post/stats",
       "/home/create_replied_post",
       "/feedback",
-      "/prefsError",
       "/create_post",
       "/settings",
-      "/watched_universities",
     ];
     return fullScreenDialogRoutes.contains(routeSettings.name) ? true : false;
   }
 
-  // Checks which routes show as a size animation.
-  bool isSizeAnim(RouteSettings routeSettings) {
-    List<String> sizeAnimDialogRoutes = [
-      "/home",
-    ];
+  // Checks which routes show as a scale animation.
+  bool isFadeAnim(RouteSettings routeSettings) {
+    List<String> sizeAnimDialogRoutes = [];
     return sizeAnimDialogRoutes.contains(routeSettings.name) ? true : false;
   }
 
-  // Checks which routes show as a fade animation.
-  bool isFadeAnim(RouteSettings routeSettings) {
-    List<String> fadeAnimDialogRoutes = [
-      "/onboarding",
-      "/open",
-    ];
+  // Checks which routes show as a size animation.
+  bool isSizeAnim(RouteSettings routeSettings) {
+    List<String> fadeAnimDialogRoutes = ["/onboarding", "/open", "/home", "/prefsError"];
     return fadeAnimDialogRoutes.contains(routeSettings.name) ? true : false;
   }
 
@@ -90,12 +88,16 @@ class AppRouter {
         case "/login":
           page = const LoginScreen();
           break;
-        case "/registerTabManager":
-          page = const RegisterTabManager();
+        case "/register":
+          page = const RegistrationScreen();
           break;
         case "/home": //! Most of the (main) screens are tabs under the /home named route. Thus, should have their BLoC/Cubit providers here.
           page = MultiBlocProvider(
             providers: [
+              BlocProvider(
+                lazy: false,
+                create: (context) => sl<LeaderboardCubit>()..loadRankings(),
+              ),
               BlocProvider(
                 lazy: false,
                 create: (context) => sl<ProfileCubit>()..loadProfile(),
@@ -119,15 +121,13 @@ class AppRouter {
         // The direct route to creating a post (specifically, when you're replying to somebody else's post; separate from the tab that's a "create post" screen under /home, but uses the same screen).
         case "/home/create_replied_post":
           page = CreatePostHome(
-            viewMethod: ViewMethod.separateScreen,
             title: args!['title'],
             body: args['body'],
             id: args['id'],
           );
           break;
-        // TODO: HERE
         case "/create_post":
-          page = const CreatePostHome(viewMethod: ViewMethod.separateScreen);
+          page = const CreatePostHome();
           break;
         // Detailed view for each post (thread view, has comments, fully expanded text, etc.).
         case '/home/detail':
@@ -184,30 +184,11 @@ class AppRouter {
             year: args['year'],
           );
           break;
-
-        case "/hottest/leaderboard":
-          page = BlocProvider(
-            lazy: false,
-            create: (context) => sl<LeaderboardCubit>()..loadRankings(),
-            child: const LeaderboardScreen(),
-          );
-          break;
         case "/feedback":
           page = const FeedbackHome();
           break;
-        case "/settings":
-          page = MultiBlocProvider(
-            providers: [
-              BlocProvider(
-                lazy: false,
-                create: (context) => sl<WebsiteLauncherSettingCubit>(),
-              ),
-            ],
-            child: const SettingsHome(),
-          );
-          break;
-        case "/watched_universities":
-          page = const WatchedUniversitiesScreen();
+        case "/search_universities":
+          page = const SearchUniversitiesScreen();
           break;
         case "/settings/appearance":
           page = const AppearanceScreen();
@@ -255,27 +236,23 @@ class AppRouter {
     } catch (e) {
       page = const CriticalErrorScreen();
     }
-    if (isSizeAnim(routeSettings)) {
+    if (isFadeAnim(routeSettings) || page is CriticalErrorScreen) {
       return PageTransition(
         child: page,
         settings: routeSettings,
-        alignment: Alignment.center,
-        type: PageTransitionType.scale,
-        curve: Curves.decelerate,
-        duration: const Duration(
-          milliseconds: 750,
-        ),
-      );
-    } else if (isFadeAnim(routeSettings) || page is CriticalErrorScreen) {
-      return PageTransition(
-        settings: routeSettings,
-        child: page,
         alignment: Alignment.center,
         type: PageTransitionType.fade,
-        curve: Curves.decelerate,
-        duration: const Duration(
-          milliseconds: 150,
-        ),
+        curve: Curves.linear,
+        duration: const Duration(milliseconds: 350),
+      );
+    } else if (isSizeAnim(routeSettings)) {
+      return PageTransition(
+        settings: routeSettings,
+        child: page,
+        alignment: Alignment.center,
+        type: PageTransitionType.size,
+        curve: Curves.linear,
+        duration: const Duration(milliseconds: 350),
       );
     } else {
       return MaterialPageRoute(

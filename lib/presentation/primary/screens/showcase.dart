@@ -1,10 +1,10 @@
-import '../../shared/behaviours/one_theme_status_bar.dart';
 import 'package:flutter/material.dart';
 
+import '../../shared/behaviours/one_theme_status_bar.dart';
 import '../../shared/behaviours/overscroll.dart';
 import '../../shared/buttons/single_text.dart';
-import '../widgets/showcase_item.dart';
 import '../widgets/scroll_dots.dart';
+import '../widgets/showcase_item.dart';
 
 class ShowcaseScreen extends StatefulWidget {
   const ShowcaseScreen({

@@ -1,5 +1,5 @@
-import 'package:Confessi/presentation/shared/selection_groups/text_stat_tile.dart';
-import 'package:Confessi/presentation/shared/selection_groups/text_stat_tile_group.dart';
+import '../../shared/selection_groups/text_stat_tile.dart';
+import '../../shared/selection_groups/text_stat_tile_group.dart';
 import 'package:scrollable/exports.dart';
 
 import '../../../core/utils/numbers/add_commas_to_number.dart';

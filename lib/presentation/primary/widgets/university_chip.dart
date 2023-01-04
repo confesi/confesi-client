@@ -22,7 +22,7 @@ class UniversityChip extends StatelessWidget {
         width: double.infinity,
         margin: const EdgeInsets.only(bottom: 15),
         decoration: BoxDecoration(
-          color: isSelected ? AppTheme.classicLight.colorScheme.secondary : AppTheme.classicLight.colorScheme.primary,
+          color: isSelected ? AppTheme.light.colorScheme.secondary : AppTheme.light.colorScheme.primary,
           borderRadius: const BorderRadius.all(
             Radius.circular(15),
           ),
@@ -31,7 +31,7 @@ class UniversityChip extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(
-              color: AppTheme.classicLight.colorScheme.background,
+              color: AppTheme.light.colorScheme.background,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 14),
@@ -40,9 +40,7 @@ class UniversityChip extends StatelessWidget {
                 textAlign: TextAlign.center,
                 overflow: TextOverflow.ellipsis,
                 style: kTitle.copyWith(
-                  color: isSelected
-                      ? AppTheme.classicLight.colorScheme.onSecondary
-                      : AppTheme.classicLight.colorScheme.onPrimary,
+                  color: isSelected ? AppTheme.light.colorScheme.onSecondary : AppTheme.light.colorScheme.onPrimary,
                 ),
               ),
             ),

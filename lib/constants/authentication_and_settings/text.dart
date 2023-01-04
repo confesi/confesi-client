@@ -18,8 +18,6 @@ const String kOpenScreenAlreadyHaveAccountButtonText = "I already have an accoun
 
 const String kAppearancePageTitle = "Appearance";
 
-const String kThemePickerLabel = "Choose theme";
-
 const String kAppearanceGroupLabel = "Choose appearance";
 
 const String kDarkAppearance = "Dark";
@@ -160,8 +158,6 @@ const String kSettingsDeleteAccountLabel = "Delete Account";
 const String kSettingsPersonalizationLabel = "Personalization";
 
 const String kSettingsAccountLabel = "Account";
-
-const String kSettingsAccessibilityLabel = "Accessibility";
 
 const String kSettingsLegalLabel = "Legal";
 

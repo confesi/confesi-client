@@ -1,5 +1,5 @@
-import 'package:Confessi/core/usecases/no_params.dart';
-import 'package:Confessi/domain/shared/usecases/share_content.dart';
+import '../../../core/usecases/no_params.dart';
+import '../../../domain/shared/usecases/share_content.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';

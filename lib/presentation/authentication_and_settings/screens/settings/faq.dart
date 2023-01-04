@@ -27,14 +27,14 @@ class _FAQScreenState extends State<FAQScreen> {
   Widget build(BuildContext context) {
     return ThemedStatusBar(
         child: Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.shadow,
       body: SafeArea(
         bottom: false,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             AppbarLayout(
-              backgroundColor: Theme.of(context).colorScheme.background,
+              backgroundColor: Theme.of(context).colorScheme.shadow,
               centerWidget: Text(
                 kFaqPageTitle,
                 style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
@@ -44,9 +44,9 @@ class _FAQScreenState extends State<FAQScreen> {
             ),
             Expanded(
               child: ScrollableView(
-                inlineBottomOrRightPadding: bottomSafeArea(context) * 2,
-                distancebetweenHapticEffectsDuringScroll: 50,
-                hapticEffectAtEdge: HapticType.medium,
+                scrollBarVisible: false,
+                hapticsEnabled: false,
+                inlineBottomOrRightPadding: bottomSafeArea(context),
                 controller: ScrollController(),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),

@@ -1,9 +1,12 @@
+import '../button_touch_effects/touchable_scale.dart';
+
 import '../../../constants/shared/enums.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
 import '../button_touch_effects/touchable_opacity.dart';
-import '../indicators/loading.dart';
+import '../indicators/loading_cupertino.dart';
+import '../indicators/loading_material.dart';
 
 class PopButton extends StatelessWidget {
   const PopButton(
@@ -38,21 +41,13 @@ class PopButton extends StatelessWidget {
           EdgeInsets.only(left: horizontalPadding, right: horizontalPadding, top: topPadding, bottom: bottomPadding),
       child: IgnorePointer(
         ignoring: loading ? true : false,
-        child: TouchableOpacity(
-          tapType: TapType.lightImpact,
+        child: TouchableScale(
           onTap: () => onPress(),
           child: Container(
             width: double.infinity,
             decoration: BoxDecoration(
               color: backgroundColor,
-              borderRadius: const BorderRadius.all(Radius.circular(15)),
-              boxShadow: [
-                BoxShadow(
-                  color: backgroundColor.withOpacity(0.2),
-                  blurRadius: 5,
-                  offset: const Offset(2, 2),
-                ),
-              ],
+              borderRadius: const BorderRadius.all(Radius.circular(5)),
             ),
             child: Padding(
               padding: const EdgeInsets.all(15),
@@ -69,7 +64,7 @@ class PopButton extends StatelessWidget {
                           child: loading
                               ? Padding(
                                   padding: const EdgeInsets.only(top: 2),
-                                  child: LoadingIndicator(color: textColor),
+                                  child: LoadingCupertinoIndicator(color: textColor),
                                 )
                               : Text(
                                   text,

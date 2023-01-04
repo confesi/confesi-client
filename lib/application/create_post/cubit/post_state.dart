@@ -9,12 +9,6 @@ abstract class CreatePostState extends Equatable {
 /// The post was successfully submitted.
 class SuccessfullySubmitted extends CreatePostState {}
 
-/// The post was successfully saved as a draft.
-class DraftSuccessfullySaved extends CreatePostState {}
-
-/// The post had error saving as a draft.
-class ErrorSavingDraft extends CreatePostState {}
-
 /// The user can enter post data under this state freely. Nothing interesting is happening.
 class EnteringData extends CreatePostState {}
 

@@ -1,4 +1,4 @@
-import 'package:Confessi/core/utils/sizing/bottom_safe_area.dart';
+import '../../../../core/utils/sizing/bottom_safe_area.dart';
 import 'package:scrollable/exports.dart';
 
 import '../../../../core/utils/sizing/height_fraction.dart';
@@ -6,7 +6,7 @@ import 'item_row_tile.dart';
 import '../../../shared/behaviours/simulated_bottom_safe_area.dart';
 import '../../../shared/layout/line.dart';
 import '../../../shared/layout/scrollable_area.dart';
-import '../../../shared/textfields/bulge.dart';
+import '../../../shared/textfields/bulge_textfield.dart';
 import 'package:flutter/material.dart';
 
 import '../../../shared/layout/swipebar.dart';

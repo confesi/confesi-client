@@ -4,7 +4,7 @@ import '../../shared/behaviours/keyboard_dismiss.dart';
 import '../../shared/overlays/info_sheet.dart';
 import '../../shared/overlays/info_sheet_with_action.dart';
 import '../../shared/text/link.dart';
-import '../../shared/textfields/bulge.dart';
+import '../../shared/textfields/bulge_textfield.dart';
 
 import '../../shared/button_touch_effects/touchable_opacity.dart';
 import '../../shared/buttons/pop.dart';

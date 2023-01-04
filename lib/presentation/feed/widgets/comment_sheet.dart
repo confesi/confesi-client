@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../constants/shared/enums.dart';
 import '../../shared/buttons/simple_text.dart';
-import '../../shared/textfields/expandable.dart';
+import '../../shared/textfields/expandable_textfield.dart';
 
 class CommentSheet extends StatefulWidget {
   const CommentSheet({
@@ -19,8 +19,7 @@ class CommentSheet extends StatefulWidget {
   State<CommentSheet> createState() => _CommentSheetState();
 }
 
-class _CommentSheetState extends State<CommentSheet>
-    with TickerProviderStateMixin {
+class _CommentSheetState extends State<CommentSheet> with TickerProviderStateMixin {
   final TextEditingController commentController = TextEditingController();
 
   late AnimationController showAnimController;
@@ -38,8 +37,7 @@ class _CommentSheetState extends State<CommentSheet>
       vsync: this,
       duration: const Duration(milliseconds: 200),
     );
-    showAnim =
-        CurvedAnimation(parent: showAnimController, curve: Curves.linear);
+    showAnim = CurvedAnimation(parent: showAnimController, curve: Curves.linear);
     popAnimController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 200),
@@ -111,8 +109,7 @@ class _CommentSheetState extends State<CommentSheet>
                             child: Align(
                               alignment: Alignment.centerRight,
                               child: Padding(
-                                padding:
-                                    const EdgeInsets.only(bottom: 15, top: 5),
+                                padding: const EdgeInsets.only(bottom: 15, top: 5),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
@@ -133,8 +130,7 @@ class _CommentSheetState extends State<CommentSheet>
                                       alignment: Alignment.centerLeft,
                                       child: TextLimitTracker(
                                         noText: true,
-                                        value: commentLength /
-                                            widget.maxCharacters,
+                                        value: commentLength / widget.maxCharacters,
                                       ),
                                     ),
                                     const SizedBox(width: 5),

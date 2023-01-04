@@ -15,7 +15,7 @@ class RegisterCubit extends Cubit<RegisterState> {
 
   RegisterCubit({required this.register}) : super(EnteringRegisterData());
 
-  Future<void> page2Submit(String username, String password, String email) async {
+  Future<void> registerUser(String username, String password, String email) async {
     emit(RegisterLoading());
     final usernameEither = usernameValidator(username);
     final passwordEither = passwordValidator(password);

@@ -1,8 +1,3 @@
-import 'application/create_post/cubit/post_cubit.dart';
-import 'application/shared/cubit/share_cubit.dart';
-import 'constants/enums_that_are_local_keys.dart';
-import 'constants/shared/dev.dart';
-import 'presentation/primary/screens/splash.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,11 +7,18 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'application/authentication_and_settings/cubit/login_cubit.dart';
 import 'application/authentication_and_settings/cubit/register_cubit.dart';
 import 'application/authentication_and_settings/cubit/user_cubit.dart';
+import 'application/create_post/cubit/drafts_cubit.dart';
+import 'application/create_post/cubit/post_cubit.dart';
 import 'application/daily_hottest/cubit/hottest_cubit.dart';
+import 'application/shared/cubit/share_cubit.dart';
+import 'application/shared/cubit/website_launcher_cubit.dart';
+import 'constants/enums_that_are_local_keys.dart';
+import 'constants/shared/dev.dart';
 import 'core/router/router.dart';
 import 'core/styles/themes.dart';
 import 'dependency_injection.dart';
 import 'generated/l10n.dart';
+import 'presentation/primary/screens/splash.dart';
 
 void main() async {
   await init();
@@ -79,13 +81,34 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        // Create post provider here because context of drafts needs to be accessed from functions.
+        BlocProvider(
+          lazy: false,
+          create: (context) => sl<DraftsCubit>(),
+        ),
+        // Create post provider here because context needs to be accessed from functions.
+        BlocProvider(
+          lazy: false,
+          create: (context) => sl<CreatePostCubit>(),
+        ),
+        // Hottest provider here so context can be accessed inside the bottom sheet.
+        BlocProvider(
+          lazy: false,
+          create: (context) => sl<HottestCubit>()..loadPosts(DateTime.now()),
+        ),
+        BlocProvider(
+          lazy: false,
+          create: (context) => sl<WebsiteLauncherCubit>(),
+        ),
         BlocProvider(
           lazy: false,
           create: (context) => sl<ShareCubit>(),
         ),
         BlocProvider(
           lazy: false,
-          create: (context) => sl<UserCubit>()..silentlyAuthenticateUser(AuthenticationType.silent),
+          // create: (context) => sl<UserCubit>()..authenticateUser(AuthenticationType.silent), // TODO: add silent auth
+          // create: (context) => sl<UserCubit>(),
+          create: (context) => sl<UserCubit>()..loadUser(true),
         ),
         BlocProvider(
           lazy: false,
@@ -94,14 +117,6 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           lazy: false,
           create: (context) => sl<RegisterCubit>(),
-        ),
-        BlocProvider(
-          lazy: false,
-          create: (context) => sl<CreatePostCubit>(),
-        ),
-        BlocProvider(
-          lazy: false,
-          create: (context) => sl<HottestCubit>(),
         ),
       ],
       child: Builder(
@@ -122,9 +137,9 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             title: "Confesi",
             onGenerateRoute: appRouter.onGenerateRoute,
-            theme: AppTheme.classicLight,
-            darkTheme: AppTheme.classicDark,
-            themeMode: context.watch<UserCubit>().localDataLoaded
+            theme: AppTheme.light,
+            darkTheme: AppTheme.dark,
+            themeMode: context.watch<UserCubit>().stateIsUser
                 ? getAppearance(
                     context.watch<UserCubit>().stateAsUser.appearanceEnum,
                   )
@@ -132,16 +147,10 @@ class MyApp extends StatelessWidget {
             builder: (BuildContext context, Widget? child) {
               final MediaQueryData data = MediaQuery.of(context);
               return MediaQuery(
-                // data: data.copyWith(textScaleFactor: 1),
                 data: data,
                 child: child!,
               );
             },
-            // home: Builder(
-            //   builder: (context) {
-            //     return const SplashScreen();
-            //   },
-            // ),
             home: const SplashScreen(),
           );
         },

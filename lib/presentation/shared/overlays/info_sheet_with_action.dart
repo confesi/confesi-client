@@ -1,9 +1,9 @@
-import '../../../core/styles/typography.dart';
-import '../../../core/utils/sizing/bottom_safe_area.dart';
-import '../../../core/utils/sizing/height_fraction.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../core/styles/typography.dart';
+import '../../../core/utils/sizing/bottom_safe_area.dart';
+import '../../../core/utils/sizing/height_fraction.dart';
 import '../buttons/pop.dart';
 import '../layout/swipebar.dart';
 
@@ -23,7 +23,7 @@ Future<dynamic> showInfoSheetWithAction(
       constraints: BoxConstraints(maxHeight: heightFraction(context, .75)),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.background,
-        borderRadius: const BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+        borderRadius: const BorderRadius.only(topLeft: Radius.circular(0), topRight: Radius.circular(0)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -37,7 +37,7 @@ Future<dynamic> showInfoSheetWithAction(
               children: [
                 Text(
                   header,
-                  style: kSansSerifDisplay.copyWith(
+                  style: kDisplay1.copyWith(
                     color: Theme.of(context).colorScheme.primary,
                   ),
                   textAlign: TextAlign.center,

@@ -1,3 +1,4 @@
+import '../../../core/utils/sizing/width_fraction.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +15,6 @@ class AppbarLayout extends StatefulWidget {
     this.leftIconVisible = true,
     this.rightIconVisible = false,
     required this.centerWidget,
-    this.centerWidgetFullWidth = false,
     this.leftIconDisabled = false,
     this.leftIconIgnored = false,
     this.leftIconTag,
@@ -23,7 +23,6 @@ class AppbarLayout extends StatefulWidget {
   }) : super(key: key);
 
   final String? leftIconTag;
-  final bool centerWidgetFullWidth;
   final bool leftIconIgnored;
   final Widget centerWidget;
   final bool leftIconVisible;
@@ -65,7 +64,7 @@ class _AppbarLayoutState extends State<AppbarLayout> {
                     duration: const Duration(milliseconds: 250),
                     opacity: widget.leftIconDisabled ? 0.2 : 1,
                     child: Icon(
-                      widget.leftIcon ?? CupertinoIcons.back,
+                      widget.leftIcon ?? CupertinoIcons.arrow_left,
                     ),
                   ),
                 ),
@@ -80,12 +79,11 @@ class _AppbarLayoutState extends State<AppbarLayout> {
     return Material(
       color: widget.backgroundColor ?? Theme.of(context).colorScheme.background,
       child: Container(
-        width: double.infinity,
         decoration: BoxDecoration(
           border: Border(
             bottom: BorderSide(
-              color: widget.bottomBorder ? Theme.of(context).colorScheme.shadow : Colors.transparent,
-              width: .7,
+              color: widget.bottomBorder ? Theme.of(context).colorScheme.surface : Colors.transparent,
+              width: .8,
             ),
           ),
         ),
@@ -101,8 +99,13 @@ class _AppbarLayoutState extends State<AppbarLayout> {
                 padding: const EdgeInsets.all(15),
                 child: Icon(widget.rightIcon ?? CupertinoIcons.arrow_clockwise, color: Colors.transparent),
               ),
-            Flexible(
-              child: widget.centerWidget,
+            Expanded(
+              child: Center(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: widget.centerWidget,
+                ),
+              ),
             ),
             if (widget.rightIconVisible)
               TouchableOpacity(

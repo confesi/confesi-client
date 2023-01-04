@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class AnimatedClipRect extends StatefulWidget {
   @override
-  _AnimatedClipRectState createState() => _AnimatedClipRectState();
+  AnimatedClipRectState createState() => AnimatedClipRectState();
 
   final Widget child;
   final bool open;
@@ -32,8 +32,7 @@ class AnimatedClipRect extends StatefulWidget {
   }) : super(key: key);
 }
 
-class _AnimatedClipRectState extends State<AnimatedClipRect>
-    with TickerProviderStateMixin {
+class AnimatedClipRectState extends State<AnimatedClipRect> with TickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation _animation;
 
@@ -61,9 +60,7 @@ class _AnimatedClipRectState extends State<AnimatedClipRect>
 
   @override
   Widget build(BuildContext context) {
-    widget.open
-        ? _animationController.forward()
-        : _animationController.reverse();
+    widget.open ? _animationController.forward() : _animationController.reverse();
 
     return ClipRect(
       child: AnimatedBuilder(

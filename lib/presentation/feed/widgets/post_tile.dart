@@ -1,6 +1,5 @@
-import 'package:Confessi/application/shared/cubit/share_cubit.dart';
+import '../../../application/shared/cubit/share_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:share_plus/share_plus.dart';
 
 import '../../../core/styles/typography.dart';
 import '../../shared/button_touch_effects/touchable_opacity.dart';
@@ -162,17 +161,19 @@ class PostTile extends StatelessWidget {
                             context, "View the confession here: https://example.com", "Share this confession!"),
                       ),
                       OptionButton(
-                        text: "Quote",
-                        icon: CupertinoIcons.paperplane,
-                        onTap: () => Navigator.of(context).pushNamed(
-                          '/home/create_replied_post',
-                          arguments: {
-                            'title': title,
-                            'body': text,
-                            'id': id,
-                          },
-                        ),
-                      ),
+                          text: "Quote",
+                          icon: CupertinoIcons.paperplane,
+                          onTap: () {
+                            print("$title, $text, $id"); // TODO: REMOVE
+                            Navigator.of(context).pushNamed(
+                              '/home/create_replied_post',
+                              arguments: {
+                                'title': title,
+                                'body': text,
+                                'id': id,
+                              },
+                            );
+                          }),
                       OptionButton(
                         text: "Save",
                         icon: CupertinoIcons.bookmark,

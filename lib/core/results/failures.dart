@@ -21,6 +21,9 @@ class FieldsBlankFailure extends Failure {}
 /// For when something failed, but you don't really need to know why specifically.
 class GeneralFailure extends Failure {}
 
+/// There is no value present.
+class NoneFailure extends Failure {}
+
 //! Authentication failures
 
 /// For when password is incorrect.
@@ -96,7 +99,7 @@ class BiometricFailure extends Failure {}
 class LocalDBFailure extends Failure {}
 
 /// A failure for when a setting is unwritten locally, meaning, it's default.
-class DBDefaultFailure extends Failure {}
+class DbDefaultFailure extends Failure {}
 
 /// For when the received token from secure storage is null/empty.
 class EmptyTokenFailure extends Failure {}
