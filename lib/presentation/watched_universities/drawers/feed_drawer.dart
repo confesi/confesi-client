@@ -106,7 +106,6 @@ class _FeedDrawerState extends State<FeedDrawer> {
                     ],
                   ),
                   SectionAccordian(
-                    topBorder: true,
                     startsOpen: false,
                     bottomBorder: true,
                     title: "Confesi Beta",

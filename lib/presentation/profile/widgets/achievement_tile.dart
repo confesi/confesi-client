@@ -1,4 +1,7 @@
 import '../../../application/shared/cubit/share_cubit.dart';
+import '../../../constants/profile/enums.dart';
+import '../../../core/converters/achievement_rarity_to_color.dart';
+import '../../../core/converters/achievement_rarity_to_string.dart';
 import '../overlays/achievement_sheet.dart';
 import '../../shared/button_touch_effects/touchable_opacity.dart';
 import '../../shared/button_touch_effects/touchable_scale.dart';
@@ -21,7 +24,7 @@ class AchievementTile extends StatelessWidget {
     required this.rarity,
   });
 
-  final String rarity;
+  final AchievementRarity rarity;
   final String achievementImgUrl;
   final String title;
   final String description;
@@ -31,20 +34,23 @@ class AchievementTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TouchableScale(
-      onTap: () => showAchievementSheet(
-        context,
-        "header",
-        "body",
-        () => print("tap"),
-        "buttonText",
-      ),
+      onTap: () => showAchievementSheet(context, rarity, title, description, quantity),
       child: Padding(
-        padding: const EdgeInsets.only(bottom: 2),
-        child: ClipRRect(
-          borderRadius: const BorderRadius.all(Radius.circular(0)),
-          child: AspectRatio(
-            aspectRatio: aspectRatio,
-            child: ClipRRect(
+        padding: const EdgeInsets.only(bottom: 5),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(Radius.circular(30)),
+            boxShadow: [
+              BoxShadow(
+                color: achievementRarityToColor(rarity),
+                blurRadius: 15,
+              ),
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: const BorderRadius.all(Radius.circular(30)),
+            child: AspectRatio(
+              aspectRatio: aspectRatio,
               child: CachedNetworkImage(
                 fit: BoxFit.cover,
                 imageUrl: achievementImgUrl,

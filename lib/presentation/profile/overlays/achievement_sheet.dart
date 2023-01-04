@@ -1,18 +1,20 @@
+import 'package:Confessi/constants/profile/enums.dart';
+import 'package:Confessi/core/converters/achievement_rarity_to_color.dart';
+import 'package:Confessi/core/converters/achievement_rarity_to_string.dart';
+
 import '../../../core/styles/typography.dart';
 import '../../../core/utils/sizing/bottom_safe_area.dart';
 import '../../../core/utils/sizing/height_fraction.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../shared/buttons/pop.dart';
 import '../../shared/layout/swipebar.dart';
 
 Future<dynamic> showAchievementSheet(
   BuildContext context,
+  AchievementRarity rarity,
   String header,
   String body,
-  VoidCallback onTap,
-  String buttonText,
+  int amount,
 ) {
   return showModalBottomSheet(
     barrierColor: Colors.black.withOpacity(0.7),
@@ -37,7 +39,7 @@ Future<dynamic> showAchievementSheet(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Celebrity x4",
+                  "$header x$amount",
                   style: kDisplay1.copyWith(
                     color: Theme.of(context).colorScheme.primary,
                   ),
@@ -47,23 +49,23 @@ Future<dynamic> showAchievementSheet(
                 Container(
                   padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                   decoration: BoxDecoration(
-                    color: Colors.blue.withOpacity(0.2),
+                    color: achievementRarityToColor(rarity).withOpacity(0.2),
                     borderRadius: const BorderRadius.all(
                       Radius.circular(5),
                     ),
                     border: Border.all(
-                      color: Colors.blue,
+                      color: achievementRarityToColor(rarity),
                       // width: 2,
                     ),
                   ),
                   child: Text(
-                    "Rare",
-                    style: kDetail.copyWith(color: Colors.blue, fontWeight: FontWeight.bold),
+                    achievementRarityToString(rarity).toUpperCase(),
+                    style: kDetail.copyWith(color: achievementRarityToColor(rarity), fontWeight: FontWeight.bold),
                   ),
                 ),
                 const SizedBox(height: 15),
                 Text(
-                  "Reach the daily hottest page on 4 separate occasions.",
+                  body,
                   style: kTitle.copyWith(
                     color: Theme.of(context).colorScheme.onSurface,
                   ),

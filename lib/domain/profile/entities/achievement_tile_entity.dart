@@ -1,4 +1,7 @@
+import 'package:Confessi/core/converters/achievement_rarity_to_string.dart';
 import 'package:equatable/equatable.dart';
+
+import '../../../constants/profile/enums.dart';
 
 class AchievementTileEntity extends Equatable {
   final String achievementImgUrl;
@@ -6,7 +9,7 @@ class AchievementTileEntity extends Equatable {
   final String description;
   final int quantity;
   final double aspectRatio;
-  final String rarity;
+  final AchievementRarity rarity;
 
   const AchievementTileEntity({
     required this.rarity,

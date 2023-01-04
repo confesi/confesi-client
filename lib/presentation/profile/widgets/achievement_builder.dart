@@ -76,7 +76,7 @@ class AchievementBuilder extends StatelessWidget {
             children: [
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.only(right: 1),
+                  padding: const EdgeInsets.only(right: 2.5),
                   child: Column(
                     children: delegateItems(ColumnSide.left),
                   ),
@@ -84,7 +84,7 @@ class AchievementBuilder extends StatelessWidget {
               ),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 1),
+                  padding: const EdgeInsets.only(left: 2.5),
                   child: Column(
                     children: delegateItems(ColumnSide.right),
                   ),

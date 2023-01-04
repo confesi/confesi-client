@@ -9,7 +9,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrollable/exports.dart';
 
 import '../../../core/utils/numbers/add_commas_to_number.dart';
-import '../../../core/utils/sizing/width_fraction.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/edited_source_widgets/swipe_refresh.dart';
 import '../../shared/indicators/loading_cupertino.dart';
