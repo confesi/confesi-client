@@ -24,7 +24,7 @@ class OpenScreen extends StatelessWidget {
       child: ThemedStatusBar(
         child: Scaffold(
           resizeToAvoidBottomInset: false,
-          backgroundColor: Theme.of(context).colorScheme.background,
+          backgroundColor: Theme.of(context).colorScheme.shadow,
           body: SafeArea(
             bottom: false,
             maintainBottomViewPadding: false,
@@ -37,7 +37,7 @@ class OpenScreen extends StatelessWidget {
                   PopButton(
                     onPress: () => context.read<UserCubit>().setHomeViewedThenReloadUser(context),
                     icon: CupertinoIcons.arrow_right,
-                    backgroundColor: Theme.of(context).colorScheme.surface,
+                    backgroundColor: Theme.of(context).colorScheme.background,
                     textColor: Theme.of(context).colorScheme.onSurface,
                     text: "Try as guest",
                     bottomPadding: 5,
@@ -45,7 +45,7 @@ class OpenScreen extends StatelessWidget {
                   PopButton(
                     onPress: () => Navigator.of(context).pushNamed("/login"),
                     icon: CupertinoIcons.arrow_right,
-                    backgroundColor: Theme.of(context).colorScheme.surface,
+                    backgroundColor: Theme.of(context).colorScheme.background,
                     textColor: Theme.of(context).colorScheme.onSurface,
                     text: "Login",
                     bottomPadding: 30,

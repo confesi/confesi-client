@@ -37,9 +37,9 @@ class SettingsHome extends StatelessWidget {
       },
       child: ThemedStatusBar(
         child: Scaffold(
-          backgroundColor: Theme.of(context).colorScheme.background,
+          backgroundColor: Theme.of(context).colorScheme.shadow,
           body: TopFrostedGlassArea(
-            color: Theme.of(context).colorScheme.background,
+            color: Theme.of(context).colorScheme.shadow,
             child: ScrollableView(
               inlineTopOrLeftPadding: topSafeArea(context),
               scrollBarVisible: false,
@@ -123,17 +123,6 @@ class SettingsHome extends StatelessWidget {
                                 .setHomeViewed(HomeViewedEnum.no, context)
                                 .then((value) => context.read<UserCubit>().loadUser(false));
                           },
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 15),
-                    SettingTileGroup(
-                      text: kSettingsAccessibilityLabel,
-                      settingTiles: [
-                        SettingTile(
-                          leftIcon: CupertinoIcons.hand_draw,
-                          text: kSettingsHapticFeedbackLabel,
-                          onTap: () => Navigator.pushNamed(context, "/settings/haptics"),
                         ),
                       ],
                     ),

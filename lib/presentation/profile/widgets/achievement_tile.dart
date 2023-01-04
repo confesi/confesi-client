@@ -37,33 +37,22 @@ class AchievementTile extends StatelessWidget {
       onTap: () => showAchievementSheet(context, rarity, title, description, quantity),
       child: Padding(
         padding: const EdgeInsets.only(bottom: 5),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(Radius.circular(30)),
-            boxShadow: [
-              BoxShadow(
-                color: achievementRarityToColor(rarity),
-                blurRadius: 15,
+        child: ClipRRect(
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          child: AspectRatio(
+            aspectRatio: aspectRatio,
+            child: CachedNetworkImage(
+              fit: BoxFit.cover,
+              imageUrl: achievementImgUrl,
+              placeholder: (context, url) => Container(
+                color: Theme.of(context).colorScheme.surface,
+                child: LoadingCupertinoIndicator(
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
               ),
-            ],
-          ),
-          child: ClipRRect(
-            borderRadius: const BorderRadius.all(Radius.circular(30)),
-            child: AspectRatio(
-              aspectRatio: aspectRatio,
-              child: CachedNetworkImage(
-                fit: BoxFit.cover,
-                imageUrl: achievementImgUrl,
-                placeholder: (context, url) => Container(
-                  color: Theme.of(context).colorScheme.surface,
-                  child: LoadingCupertinoIndicator(
-                    color: Theme.of(context).colorScheme.onSurface,
-                  ),
-                ),
-                errorWidget: (context, url, error) => Container(
-                  color: Theme.of(context).colorScheme.surface,
-                  child: Icon(Icons.error, color: Theme.of(context).colorScheme.onSurface),
-                ),
+              errorWidget: (context, url, error) => Container(
+                color: Theme.of(context).colorScheme.surface,
+                child: Icon(Icons.error, color: Theme.of(context).colorScheme.onSurface),
               ),
             ),
           ),

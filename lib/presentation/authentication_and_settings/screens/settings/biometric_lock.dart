@@ -22,14 +22,14 @@ class _BiometricLockScreenState extends State<BiometricLockScreen> {
   Widget build(BuildContext context) {
     return ThemedStatusBar(
         child: Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.shadow,
       body: SafeArea(
         bottom: false,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             AppbarLayout(
-              backgroundColor: Theme.of(context).colorScheme.background,
+              backgroundColor: Theme.of(context).colorScheme.shadow,
               centerWidget: Text(
                 "Biometric Lock",
                 style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
@@ -55,14 +55,14 @@ class _BiometricLockScreenState extends State<BiometricLockScreen> {
                           BoolSelectionTile(
                             topRounded: true,
                             isActive: true,
-                            backgroundColor: Theme.of(context).colorScheme.surface,
+                            backgroundColor: Theme.of(context).colorScheme.background,
                             icon: CupertinoIcons.shield_slash,
                             text: "Off",
                             onTap: () => print("tap"),
                           ),
                           BoolSelectionTile(
                             bottomRounded: true,
-                            backgroundColor: Theme.of(context).colorScheme.surface,
+                            backgroundColor: Theme.of(context).colorScheme.background,
                             icon: CupertinoIcons.shield,
                             text: "On",
                             onTap: () => print("tap"),

@@ -32,7 +32,7 @@ class _StepperTileState extends State<StepperTile> {
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
+          color: Theme.of(context).colorScheme.background,
           borderRadius: const BorderRadius.all(
             Radius.circular(5),
           ),

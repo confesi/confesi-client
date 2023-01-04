@@ -36,14 +36,14 @@ class _LanguageScreenState extends State<LanguageScreen> {
       },
       child: ThemedStatusBar(
           child: Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).colorScheme.shadow,
         body: SafeArea(
           bottom: false,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AppbarLayout(
-                backgroundColor: Theme.of(context).colorScheme.background,
+                backgroundColor: Theme.of(context).colorScheme.shadow,
                 centerWidget: Text(
                   "Language",
                   style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
@@ -86,23 +86,20 @@ class _LanguageScreenState extends State<LanguageScreen> {
                           ],
                         ),
                         const SizedBox(height: 15),
-                        TextStatTileGroup(
+                        const TextStatTileGroup(
                           text: "Supported languages",
                           tiles: [
                             TextStatTile(
                               topRounded: true,
-                              backgroundColor: Theme.of(context).colorScheme.surface,
                               leftText: "English",
                               rightText: "en",
                             ),
                             TextStatTile(
-                              backgroundColor: Theme.of(context).colorScheme.surface,
                               leftText: "French",
                               rightText: "fr",
                             ),
                             TextStatTile(
                               bottomRounded: true,
-                              backgroundColor: Theme.of(context).colorScheme.surface,
                               leftText: "Spanish",
                               rightText: "es",
                             ),

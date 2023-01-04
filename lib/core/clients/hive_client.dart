@@ -6,9 +6,9 @@ import 'package:hive/hive.dart';
 ///
 /// Throws exceptions.
 class HiveClient {
-  Future<dynamic> addValue(String boxName, dynamic value) async {
+  Future<int> addValue(String boxName, dynamic value) async {
     final box = await Hive.openBox(boxName);
-    box.add(value);
+    return box.add(value);
     // await box.close();
   }
 
@@ -20,7 +20,7 @@ class HiveClient {
 
   Future<dynamic> getValue(String boxName, dynamic key) async {
     final box = await Hive.openBox(boxName);
-    box.get(key);
+    return box.get(key);
     // await box.close();
   }
 

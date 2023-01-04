@@ -195,7 +195,7 @@ Future<void> init() async {
   // Registers the create post datasource.
   sl.registerLazySingleton(() => CreatePostDatasource(api: sl()));
   // Registers the prefs datasource.
-  sl.registerLazySingleton(() => PrefsDatasource(secureStorage: sl()));
+  sl.registerLazySingleton(() => PrefsDatasource(hiveClient: sl()));
   // Registers the profile datasource.
   sl.registerLazySingleton(() => ProfileDatasource(api: sl()));
   // Registers the draft post datasource.

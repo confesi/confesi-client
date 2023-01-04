@@ -1,3 +1,4 @@
+import 'package:Confessi/presentation/shared/overlays/notification_chip.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../../constants/authentication_and_settings/enums.dart';
@@ -37,10 +38,12 @@ class UserCubit extends Cubit<UserState> {
     required this.loadRefreshToken,
   }) : super(UserLoading());
 
-  // // TODO: remove? needed?
-  // bool get localDataLoaded => state is User;
+  /// Checks if the current state is user
+  bool get stateIsUser => state is User;
 
   /// Get the state assuming its [User].
+  ///
+  /// This can throw an exception if state is not [User]!
   User get stateAsUser => state as User;
 
   /// Returns userId assuming state is [User].
@@ -89,14 +92,10 @@ class UserCubit extends Cubit<UserState> {
         // Token received.
         //
         // Where the user's preferences will be stored (if no token, then "guest" location, else, stored in their unique user ID location).
-        String userStorageLocation = token is Token ? token.token() : guestDataStorageLocation;
-
-        // Opening Hive preferences box (for local storage).
-        await Hive.openBox(userStorageLocation + hiveUserPartition);
-        (await appearance.get(AppearanceEnum.values, AppearanceEnum, userStorageLocation + hiveUserPartition)).fold(
+        // Of course, the partition location always gets appended to the end.
+        (await appearance.get(AppearanceEnum.values, AppearanceEnum, token.token(), hiveUserPartition)).fold(
           (failure) {
             // If there's a failure loading these prefs, abort with UserError state.
-
             emit(UserError());
           },
           (appearanceEnum) async {
@@ -121,22 +120,24 @@ class UserCubit extends Cubit<UserState> {
                 },
               );
             } else {
-              // Open the Hive box with this pref.
-              await Hive.openBox(homeViewedScreenLocation);
               // Check the viewed viewedHomeScreen location to decide if routing -> home screen or -> open screen.
-              (await homeViewed.get(HomeViewedEnum.values, HomeViewedEnum, homeViewedScreenLocation)).fold(
+              (await homeViewed.get(
+                      HomeViewedEnum.values, HomeViewedEnum, homeViewedScreenLocation, hiveHomeViewedPartition))
+                  .fold(
                 (failure) {
                   // Failure checking if the user has already viewed the home screen. Emit UserError state and abort.
                   emit(UserError());
                 },
                 (homeViewedEnum) {
                   if (homeViewedEnum == HomeViewedEnum.yes) {
+                    print("TOP !");
                     // The user has already viewed home, so we can assume they've gone through the
                     // open screen already. Hence, we can consider them a guest.
                     //
                     // If user doesn't have refresh token, then they're a Guest.
                     emit(User(appearanceEnum: appearanceEnum, userType: Guest()));
                   } else {
+                    print("BOTTOM !");
                     // The user has not yet seen the home screen. Thus, they must be new. So, we should
                     // show them the open screen.
                     emit(OpenUser());
@@ -151,16 +152,18 @@ class UserCubit extends Cubit<UserState> {
   }
 
   Future<void> setAppearance(AppearanceEnum appearanceEnum, BuildContext context) async {
-    if (state is User) {
-      emit((state as User).copyWith(appearanceEnum: appearanceEnum));
-      (await appearance.set(appearanceEnum, AppearanceEnum, stateAsUser.userType.userId())).fold(
+    if (stateIsUser) {
+      emit(stateAsUser.copyWith(appearanceEnum: appearanceEnum));
+      (await appearance.set(appearanceEnum, AppearanceEnum, stateAsUser.userType.userId(), hiveAppearancePartition))
+          .fold(
         (failure) {
-          // TODO: Error setting appearance
+          showNotificationChip(context, "Error updating setting.");
         },
-        (success) => null, // Do nothing, as setting updated succesfully.
+        (success) => null, // Do nothing upon success
       );
     } else {
-      // TODO: Error setting appearance
+      // Case where user isn't a [User].
+      showNotificationChip(context, "An unknown error has occured.");
     }
   }
 
@@ -170,17 +173,24 @@ class UserCubit extends Cubit<UserState> {
   ///
   /// Prevents returning to the 'open' screen by default every time the app is opened.
   Future<void> setHomeViewedThenReloadUser(BuildContext context) async {
-    await setHomeViewed(HomeViewedEnum.yes, context).then((value) => loadUser(false));
+    await setHomeViewed(HomeViewedEnum.yes, context).then((succeded) {
+      loadUser(false);
+    });
   }
 
-  // Special case for setting a preference. Does not relate to user. Account agnostic as it records
-  // if any account on the device has viewed the home screen.
-  Future<void> setHomeViewed(HomeViewedEnum homeViewedEnum, BuildContext context) async {
-    (await homeViewed.set(homeViewedEnum, HomeViewedEnum, homeViewedScreenLocation)).fold(
+  /// Special case for setting a preference. Does not relate to user. Account-agnostic as it records
+  /// if any account on the device has viewed the home screen.
+  ///
+  /// Returns [true] or [false] depending on if it succeeds.
+  Future<bool> setHomeViewed(HomeViewedEnum homeViewedEnum, BuildContext context) async {
+    return (await homeViewed.set(homeViewedEnum, HomeViewedEnum, homeViewedScreenLocation, hiveHomeViewedPartition))
+        .fold(
       (failure) {
-        // TODO: Error setting home viewed
+        // Error setting [HomeViewedEnum].
+        showNotificationChip(context, "An unknown error has occured.");
+        return false;
       },
-      (success) => null, // Do nothing, as setting updated succesfully.
+      (success) => true, // Do nothing upon success.
     );
   }
 }

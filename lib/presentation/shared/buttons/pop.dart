@@ -42,7 +42,6 @@ class PopButton extends StatelessWidget {
       child: IgnorePointer(
         ignoring: loading ? true : false,
         child: TouchableScale(
-          tapType: TapType.lightImpact,
           onTap: () => onPress(),
           child: Container(
             width: double.infinity,

@@ -1,3 +1,5 @@
+import 'package:Confessi/data/authentication_and_settings/repositories/authentication_repository_concrete.dart';
+
 import '../../../constants/enums_that_are_local_keys.dart';
 import '../../../data/authentication_and_settings/repositories/prefs_repository_concrete.dart';
 import '../entities/refresh_token.dart';
@@ -8,13 +10,13 @@ import '../../../core/usecases/no_params.dart';
 import '../../../core/usecases/single_usecase.dart';
 
 class LoadRefreshToken implements Usecase<TokenType, NoParams> {
-  final PrefsRepository repository;
+  final AuthenticationRepository repository;
 
   LoadRefreshToken({required this.repository});
 
   @override
   Future<Either<Failure, TokenType>> call(NoParams noParams) async {
-    final failureOrRefreshToken = await repository.loadRefreshToken();
+    final failureOrRefreshToken = await repository.getToken();
     return failureOrRefreshToken.fold(
       (failure) {
         // User doesn't have a refresh token already (new user)

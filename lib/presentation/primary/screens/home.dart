@@ -1,8 +1,6 @@
-import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../../../application/shared/cubit/share_cubit.dart';
 import '../../leaderboard/screens/home.dart';
 import '../controllers/hottest_controller.dart';
-import '../../../core/alt_unused/leaderboard_controller.dart';
 import '../controllers/profile_controller.dart';
 import '../controllers/settings_controller.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,7 +18,6 @@ import '../../../core/styles/typography.dart';
 import '../../feed/screens/feed_tab_manager.dart';
 import '../../shared/overlays/notification_chip.dart';
 import '../../watched_universities/drawers/feed_drawer.dart';
-import '../../../core/alt_unused/notification_chip.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -114,7 +111,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     ),
                     child: TabBar(
                       onTap: (int newIndex) {
-                        HapticFeedback.selectionClick();
+                        // HapticFeedback.selectionClick();
                         if (currentIndex == 2 && newIndex == 2) {
                           profileController.scrollToTop();
                         } else if (currentIndex == 1 && newIndex == 1) {

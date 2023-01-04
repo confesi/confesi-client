@@ -70,7 +70,7 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
             controller: widget.hottestController.pageController,
             physics: const BouncingScrollPhysics(),
             onPageChanged: (selectedIndex) {
-              HapticFeedback.lightImpact();
+              // HapticFeedback.lightImpact();
               setState(() {
                 currentIndex = selectedIndex;
               });

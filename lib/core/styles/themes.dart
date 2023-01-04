@@ -41,7 +41,7 @@ class AppTheme {
       surfaceTint: Color(0xff90A17D),
       error: Color(0xffEB5353),
       onError: Colors.white, // Color for on error and on surfaceTint.
-      background: Color.fromARGB(255, 32, 32, 32),
+      background: Color(0xff202020),
       onBackground: Color.fromARGB(255, 83, 83, 83),
       surface: Color.fromARGB(255, 45, 44, 44),
       onSurface: Color(0xff7d7d7d),

@@ -12,8 +12,10 @@ class HomeViewed implements GetSetUsecase<HomeViewedEnum, List> {
   const HomeViewed({required this.repository});
 
   @override
-  Future<Either<Failure, HomeViewedEnum>> get(List enumValues, Type enumType, String boxLocation) async {
-    final failureOrHomeViewedEnum = await repository.loadViewedHome(enumValues, enumType, boxLocation);
+  Future<Either<Failure, HomeViewedEnum>> get(
+      List enumValues, Type enumType, String boxLocation, String storagePartitionLocation) async {
+    final failureOrHomeViewedEnum =
+        await repository.loadViewedHome(enumValues, enumType, boxLocation, storagePartitionLocation);
     return failureOrHomeViewedEnum.fold(
       (failure) {
         if (failure is DbDefaultFailure) {
@@ -26,8 +28,9 @@ class HomeViewed implements GetSetUsecase<HomeViewedEnum, List> {
   }
 
   @override
-  Future<Either<Failure, Success>> set(HomeViewedEnum enumData, Type enumType, String boxLocation) async {
-    final failureOrSuccess = await repository.setViewedHome(enumData, enumType, boxLocation);
+  Future<Either<Failure, Success>> set(
+      HomeViewedEnum enumData, Type enumType, String boxLocation, String storagePartitionLocation) async {
+    final failureOrSuccess = await repository.setViewedHome(enumData, enumType, boxLocation, storagePartitionLocation);
     return failureOrSuccess.fold(
       (failure) => Left(failure),
       (success) => Right(SettingSuccess()),

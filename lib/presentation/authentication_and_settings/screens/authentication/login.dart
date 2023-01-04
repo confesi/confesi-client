@@ -63,13 +63,13 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
             child: KeyboardDismiss(
               child: Scaffold(
                 resizeToAvoidBottomInset: true,
-                backgroundColor: Theme.of(context).colorScheme.background,
+                backgroundColor: Theme.of(context).colorScheme.shadow,
                 body: SafeArea(
                   bottom: false,
                   child: Column(
                     children: [
                       AppbarLayout(
-                        backgroundColor: Theme.of(context).colorScheme.background,
+                        backgroundColor: Theme.of(context).colorScheme.shadow,
                         centerWidget: Container(),
                       ),
                       Expanded(
@@ -89,6 +89,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                               const SizedBox(height: 15),
                               ExpandableTextfield(
                                 maxLines: 1,
+                                color: Theme.of(context).colorScheme.background,
                                 controller: usernameEmailController,
                                 onChanged: (newValue) => print(newValue),
                                 hintText: "Username or email",
@@ -96,6 +97,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                               const SizedBox(height: 15),
                               ExpandableTextfield(
                                 maxLines: 1,
+                                color: Theme.of(context).colorScheme.background,
                                 controller: passwordController,
                                 onChanged: (newValue) => print(newValue),
                                 hintText: "Password",

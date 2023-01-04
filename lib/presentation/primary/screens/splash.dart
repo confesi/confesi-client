@@ -88,7 +88,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
           },
           child: ThemedStatusBar(
             child: Scaffold(
-              backgroundColor: Theme.of(context).colorScheme.background,
+              backgroundColor: Theme.of(context).colorScheme.shadow,
               body: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Center(
@@ -96,7 +96,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                     "Confesi",
                     style: kDisplay1.copyWith(
                       fontSize: 34,
-                      color: Theme.of(context).colorScheme.onSurface,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
                     textAlign: TextAlign.center,
                   ),

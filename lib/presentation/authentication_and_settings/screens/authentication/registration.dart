@@ -59,13 +59,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             child: KeyboardDismiss(
               child: Scaffold(
                 resizeToAvoidBottomInset: true,
-                backgroundColor: Theme.of(context).colorScheme.background,
+                backgroundColor: Theme.of(context).colorScheme.shadow,
                 body: SafeArea(
                   bottom: false,
                   child: Column(
                     children: [
                       AppbarLayout(
-                        backgroundColor: Theme.of(context).colorScheme.background,
+                        backgroundColor: Theme.of(context).colorScheme.shadow,
                         centerWidget: Container(),
                       ),
                       Expanded(
@@ -85,6 +85,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               const SizedBox(height: 15),
                               ExpandableTextfield(
                                 maxLines: 1,
+                                color: Theme.of(context).colorScheme.background,
                                 controller: emailController,
                                 onChanged: (newValue) => print(newValue),
                                 hintText: "Email",
@@ -92,6 +93,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               const SizedBox(height: 15),
                               ExpandableTextfield(
                                 maxLines: 1,
+                                color: Theme.of(context).colorScheme.background,
                                 controller: usernameController,
                                 onChanged: (newValue) => print(newValue),
                                 hintText: "Username",
@@ -99,6 +101,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               const SizedBox(height: 15),
                               ExpandableTextfield(
                                 maxLines: 1,
+                                color: Theme.of(context).colorScheme.background,
                                 controller: passwordController,
                                 onChanged: (newValue) => print(newValue),
                                 hintText: "Password",

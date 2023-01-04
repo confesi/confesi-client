@@ -17,7 +17,7 @@ Future<dynamic> showAchievementSheet(
   int amount,
 ) {
   return showModalBottomSheet(
-    barrierColor: Colors.black.withOpacity(0.7),
+    barrierColor: achievementRarityToColor(rarity).withOpacity(0.1),
     context: context,
     backgroundColor: Colors.transparent,
     isScrollControlled: true,
@@ -25,7 +25,13 @@ Future<dynamic> showAchievementSheet(
       constraints: BoxConstraints(maxHeight: heightFraction(context, .75)),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.background,
-        borderRadius: const BorderRadius.only(topLeft: Radius.circular(0), topRight: Radius.circular(0)),
+        boxShadow: [
+          BoxShadow(
+            color: achievementRarityToColor(rarity),
+            blurRadius: 60,
+            offset: const Offset(0, 20),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

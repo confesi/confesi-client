@@ -16,6 +16,7 @@ class ExpandableTextfield extends StatefulWidget {
     this.maxLines,
     this.focusNode,
     this.padding,
+    this.color,
     Key? key,
   }) : super(key: key);
 
@@ -27,6 +28,7 @@ class ExpandableTextfield extends StatefulWidget {
   final int? maxLines;
   final String hintText;
   final FocusNode? focusNode;
+  final Color? color;
 
   @override
   State<ExpandableTextfield> createState() => _ExpandableTextfieldState();
@@ -63,7 +65,7 @@ class _ExpandableTextfieldState extends State<ExpandableTextfield> {
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surface,
+                  color: widget.color ?? Theme.of(context).colorScheme.surface,
                   borderRadius: const BorderRadius.all(Radius.circular(5)),
                 ),
                 child: CupertinoScrollbar(
