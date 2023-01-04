@@ -68,7 +68,7 @@ class AppearanceScreen extends StatelessWidget {
                           ],
                         ),
                         const DisclaimerText(
-                          verticalPadding: 15,
+                          verticalPadding: 10,
                           text: "This preference is saved locally to your device.",
                         ),
                         const SimulatedBottomSafeArea(),

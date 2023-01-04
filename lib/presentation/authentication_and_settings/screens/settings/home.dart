@@ -67,6 +67,11 @@ class SettingsHome extends StatelessWidget {
                           onTap: () => Navigator.of(context).pushNamed("/settings/faq"),
                         ),
                         SettingTile(
+                          leftIcon: CupertinoIcons.chat_bubble,
+                          text: "Feedback",
+                          onTap: () => Navigator.of(context).pushNamed("/settings/feedback"),
+                        ),
+                        SettingTile(
                           leftIcon: CupertinoIcons.mail,
                           text: kContactConfesiLabel,
                           onTap: () => Navigator.pushNamed(context, "/settings/contact"),

@@ -53,7 +53,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
               ),
               Expanded(
                 child: ScrollableView(
-                  inlineBottomOrRightPadding: bottomSafeArea(context) * 2,
+                  inlineBottomOrRightPadding: bottomSafeArea(context),
                   distancebetweenHapticEffectsDuringScroll: 50,
                   hapticEffectAtEdge: HapticType.medium,
                   controller: ScrollController(),
@@ -62,7 +62,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: 15),
+                        const SizedBox(height: 10),
                         SettingTileGroup(
                           text: "Change language via system settings",
                           settingTiles: [
@@ -74,7 +74,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 15),
+                        const SizedBox(height: 10),
                         SettingTileGroup(
                           text: "Want another language added?",
                           settingTiles: [
@@ -85,7 +85,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 15),
+                        const SizedBox(height: 10),
                         const TextStatTileGroup(
                           text: "Supported languages",
                           tiles: [

@@ -36,14 +36,14 @@ class _ContactScreenState extends State<ContactScreen> {
       },
       child: ThemedStatusBar(
           child: Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).colorScheme.shadow,
         body: SafeArea(
           bottom: false,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AppbarLayout(
-                backgroundColor: Theme.of(context).colorScheme.background,
+                backgroundColor: Theme.of(context).colorScheme.shadow,
                 centerWidget: Text(
                   "Support",
                   style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
@@ -53,7 +53,7 @@ class _ContactScreenState extends State<ContactScreen> {
               ),
               Expanded(
                 child: ScrollableView(
-                  inlineBottomOrRightPadding: bottomSafeArea(context) * 2,
+                  inlineBottomOrRightPadding: bottomSafeArea(context),
                   distancebetweenHapticEffectsDuringScroll: 50,
                   hapticEffectAtEdge: HapticType.medium,
                   controller: ScrollController(),
@@ -63,18 +63,7 @@ class _ContactScreenState extends State<ContactScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // const HeaderText(text: "Contact us for support"),
-                        const SizedBox(height: 15),
-                        SettingTileGroup(
-                          text: "Send us one-time feedback",
-                          settingTiles: [
-                            SettingTile(
-                              leftIcon: CupertinoIcons.chat_bubble,
-                              text: kSettingsFeedbackLabel,
-                              onTap: () => Navigator.of(context).pushNamed("/feedback"),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 15),
+                        const SizedBox(height: 10),
                         SettingTileGroup(
                           text: "Contact support agent",
                           settingTiles: [
@@ -93,7 +82,7 @@ class _ContactScreenState extends State<ContactScreen> {
                           ],
                         ),
                         const DisclaimerText(
-                          verticalPadding: 15,
+                          verticalPadding: 10,
                           text: "To permanently delete your account, send us an email.",
                         ),
                       ],

@@ -1,4 +1,5 @@
 import 'package:Confessi/application/create_post/cubit/drafts_cubit.dart';
+import 'package:Confessi/presentation/authentication_and_settings/screens/settings/feedback.dart';
 import 'package:Confessi/presentation/authentication_and_settings/screens/settings/text_size.dart';
 
 import '../../presentation/authentication_and_settings/screens/authentication/registration.dart';
@@ -195,6 +196,9 @@ class AppRouter {
           break;
         case "/settings/text_size":
           page = const TextSizeScreen();
+          break;
+        case "/settings/feedback":
+          page = const FeedbackSettingScreen();
           break;
         case "/settings/faq":
           page = const FAQScreen();

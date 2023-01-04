@@ -65,3 +65,13 @@ const String hiveHomeViewedPartition = "home_viewed-6";
 /// Ex: for a registered users account, storage location: "831bfs983text_size", where "831bfs983k"
 /// is their unique account id.
 const String hiveTextSizePartition = "text_size-6";
+
+/// The specific location where the data surrounding if shake to give feedback is enabled is stored.
+///
+/// Always combined with the user's id.
+///
+/// Ex: for a guest account, storage location: "guestshake_for_feedback"
+///
+/// Ex: for a registered users account, storage location: "831bfs983shake_for_feedback", where "831bfs983k"
+/// is their unique account id.
+const String hiveShakeForFeedbackPartition = "shake_for_feedback-6";

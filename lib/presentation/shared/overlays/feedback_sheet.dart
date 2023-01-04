@@ -1,3 +1,8 @@
+import 'package:Confessi/application/authentication_and_settings/cubit/user_cubit.dart';
+import 'package:Confessi/constants/enums_that_are_local_keys.dart';
+import 'package:Confessi/presentation/shared/other/widget_or_nothing.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../core/styles/typography.dart';
 import '../../../core/utils/sizing/height_fraction.dart';
 import '../../../core/utils/sizing/width_breakpoint_fraction.dart';
@@ -15,65 +20,62 @@ Future<dynamic> showFeedbackSheet(BuildContext context) {
     backgroundColor: Colors.transparent,
     context: context,
     // Optionally, you can change this BorderRadius... it's kinda preference.
-    builder: (context) => ClipRRect(
-      borderRadius: const BorderRadius.only(
-        topLeft: Radius.circular(20),
-        topRight: Radius.circular(20),
-      ),
-      child: Container(
-        constraints: BoxConstraints(minHeight: heightFraction(context, .5)),
-        padding: const EdgeInsets.only(bottom: 15, left: 15, right: 15),
-        color: Theme.of(context).colorScheme.background,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const SwipebarLayout(),
-            const SizedBox(height: 15),
-            Text(
-              "Let's improve Confesi, together.",
-              style: kTitle.copyWith(
-                color: Theme.of(context).colorScheme.primary,
-              ),
-              textAlign: TextAlign.center,
+    builder: (context) => Container(
+      constraints: BoxConstraints(minHeight: heightFraction(context, .5)),
+      padding: const EdgeInsets.only(bottom: 15, left: 15, right: 15),
+      color: Theme.of(context).colorScheme.background,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const SwipebarLayout(),
+          const SizedBox(height: 15),
+          Text(
+            "Let's improve Confesi, together.",
+            style: kDisplay1.copyWith(
+              color: Theme.of(context).colorScheme.primary,
             ),
-            const SizedBox(height: 15),
-            Text(
-              "All feedback (yes, all of it) will be read and considered by the lead developer.",
-              style: kBody.copyWith(
-                color: Theme.of(context).colorScheme.onSurface,
-              ),
-              textAlign: TextAlign.center,
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 15),
+          Text(
+            "All feedback will be read and considered by the lead developer.",
+            style: kBody.copyWith(
+              color: Theme.of(context).colorScheme.onSurface,
             ),
-            Flexible(
-              child: InitScale(
-                child: SizedBox(
-                  width: widthBreakpointFraction(context, 2 / 3, 250),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SimpleTextButton(
-                        infiniteWidth: true,
-                        onTap: () {
-                          Navigator.pop(context);
-                          Navigator.of(context).pushNamed("/feedback");
-                        },
-                        text: "Give us feedback",
-                      ),
-                      const SizedBox(height: 15),
-                      SimpleTextButton(
-                        infiniteWidth: true,
-                        isErrorText: true,
-                        onTap: () => print("NOT YET IMPLEMENTED"), // TODO: implement
-                        text: "Disable shake for feedback",
-                      ),
-                    ],
-                  ),
+            textAlign: TextAlign.center,
+          ),
+          Flexible(
+            child: InitScale(
+              child: SizedBox(
+                width: widthBreakpointFraction(context, 2 / 3, 250),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SimpleTextButton(
+                      infiniteWidth: true,
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.of(context).pushNamed("/feedback");
+                      },
+                      text: "Give us feedback",
+                    ),
+                    const SizedBox(height: 15),
+                    SimpleTextButton(
+                      infiniteWidth: true,
+                      isErrorText: true,
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.pushNamed(context, "/settings/feedback");
+                      },
+                      text: "Disable shake for feedback",
+                    ),
+                  ],
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     ),
     // If another dialog is NOT up already, then you can set scaffold back to being expanded. Else, don't, and let the other sheet deal with it.

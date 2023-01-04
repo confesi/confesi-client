@@ -30,7 +30,7 @@ enum HomeViewedEnum {
   no,
 }
 
-// enum RefreshTokenEnum {
-//   hasRefreshToken,
-//   noRefreshToken,
-// }
+enum ShakeForFeedbackEnum {
+  enabled,
+  disabled,
+}

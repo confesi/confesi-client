@@ -1,3 +1,4 @@
+import 'package:Confessi/domain/authentication_and_settings/usecases/shake_for_feedback.dart';
 import 'package:Confessi/domain/authentication_and_settings/usecases/text_size.dart';
 import 'package:Confessi/presentation/shared/overlays/notification_chip.dart';
 import 'package:dartz/dartz.dart';
@@ -30,11 +31,13 @@ class UserCubit extends Cubit<UserState> {
   final Logout logout;
   final AppearanceUsecase appearance;
   final TextSizeUsecase textSize;
+  final ShakeForFeedbackUsecase shakeForFeedback;
   final HomeViewed homeViewed;
   final LoadRefreshToken loadRefreshToken;
 
   UserCubit({
     required this.logout,
+    required this.shakeForFeedback,
     required this.homeViewed,
     required this.appearance,
     required this.textSize,
@@ -108,54 +111,73 @@ class UserCubit extends Cubit<UserState> {
                 emit(UserError());
               },
               (textSizeEnum) async {
-                // Last bit of the loading preferences chain contains emits the actual full user object,
-                // whether that be a Guest or a RegisteredUser.
-                //
-                // If user has a refresh token, then we must attempt to decrypt it, gaining
-                // access to its inner userId
-                if (token is Token) {
-                  // If refreshToken is of type "hasRefreshToken", then its "token" field won't be null.
-                  userIdFromJwt(token.token()).fold(
-                    (failure) {
-                      // Failure decrypting user Id from token. Emit UserError state and abort.
-                      print("JWT decrypting causing error");
-
-                      emit(UserError());
-                    },
-                    (userId) {
-                      // On succesfully decrypting token, emit a user object of type RegisteredUser.
-                      emit(User(
-                          appearanceEnum: appearanceEnum,
-                          textSizeEnum: textSizeEnum,
-                          userType: RegisteredUser(userId, token.token())));
-                    },
-                  );
-                } else {
-                  // Check the viewed viewedHomeScreen location to decide if routing -> home screen or -> open screen.
-                  (await homeViewed.get(
-                          HomeViewedEnum.values, HomeViewedEnum, homeViewedScreenLocation, hiveHomeViewedPartition))
-                      .fold(
-                    (failure) {
-                      // Failure checking if the user has already viewed the home screen. Emit UserError state and abort.
-                      emit(UserError());
-                    },
-                    (homeViewedEnum) {
-                      if (homeViewedEnum == HomeViewedEnum.yes) {
-                        print("TOP !");
-                        // The user has already viewed home, so we can assume they've gone through the
-                        // open screen already. Hence, we can consider them a guest.
-                        //
-                        // If user doesn't have refresh token, then they're a Guest.
-                        emit(User(appearanceEnum: appearanceEnum, textSizeEnum: textSizeEnum, userType: Guest()));
-                      } else {
-                        print("BOTTOM !");
-                        // The user has not yet seen the home screen. Thus, they must be new. So, we should
-                        // show them the open screen.
-                        emit(OpenUser());
-                      }
-                    },
-                  );
-                }
+                (await shakeForFeedback.get(ShakeForFeedbackEnum.values, ShakeForFeedbackEnum, token.token(),
+                        hiveShakeForFeedbackPartition))
+                    .fold(
+                  (failure) {
+                    // If there's a failure loading these prefs, abort with UserError state.
+                    emit(UserError());
+                  },
+                  (shakeForFeedbackEnum) async {
+                    // Last bit of the loading preferences chain contains emits the actual full user object,
+                    // whether that be a Guest or a RegisteredUser.
+                    //
+                    // If user has a refresh token, then we must attempt to decrypt it, gaining
+                    // access to its inner userId
+                    if (token is Token) {
+                      // If refreshToken is of type "hasRefreshToken", then its "token" field won't be null.
+                      userIdFromJwt(token.token()).fold(
+                        (failure) {
+                          // Failure decrypting user Id from token. Emit UserError state and abort.
+                          emit(UserError());
+                        },
+                        (userId) {
+                          // On succesfully decrypting token, emit a user object of type RegisteredUser.
+                          emit(
+                            User(
+                              shakeForFeedbackEnum: shakeForFeedbackEnum,
+                              appearanceEnum: appearanceEnum,
+                              textSizeEnum: textSizeEnum,
+                              userType: RegisteredUser(userId, token.token()),
+                            ),
+                          );
+                        },
+                      );
+                    } else {
+                      // Check the viewed viewedHomeScreen location to decide if routing -> home screen or -> open screen.
+                      (await homeViewed.get(
+                              HomeViewedEnum.values, HomeViewedEnum, homeViewedScreenLocation, hiveHomeViewedPartition))
+                          .fold(
+                        (failure) {
+                          // Failure checking if the user has already viewed the home screen. Emit UserError state and abort.
+                          emit(UserError());
+                        },
+                        (homeViewedEnum) {
+                          if (homeViewedEnum == HomeViewedEnum.yes) {
+                            print("TOP !");
+                            // The user has already viewed home, so we can assume they've gone through the
+                            // open screen already. Hence, we can consider them a guest.
+                            //
+                            // If user doesn't have refresh token, then they're a Guest.
+                            emit(
+                              User(
+                                appearanceEnum: appearanceEnum,
+                                textSizeEnum: textSizeEnum,
+                                userType: Guest(),
+                                shakeForFeedbackEnum: shakeForFeedbackEnum,
+                              ),
+                            );
+                          } else {
+                            print("BOTTOM !");
+                            // The user has not yet seen the home screen. Thus, they must be new. So, we should
+                            // show them the open screen.
+                            emit(OpenUser());
+                          }
+                        },
+                      );
+                    }
+                  },
+                );
               },
             );
           },
@@ -184,6 +206,23 @@ class UserCubit extends Cubit<UserState> {
     if (stateIsUser) {
       emit(stateAsUser.copyWith(textSizeEnum: textSizeEnum));
       (await textSize.set(textSizeEnum, TextSizeEnum, stateAsUser.userType.userId(), hiveTextSizePartition)).fold(
+        (failure) {
+          showNotificationChip(context, "Error updating setting.");
+        },
+        (success) => null, // Do nothing upon success
+      );
+    } else {
+      // Case where user isn't a [User].
+      showNotificationChip(context, "An unknown error has occured.");
+    }
+  }
+
+  Future<void> setShakeForFeedback(ShakeForFeedbackEnum shakeForFeedbackEnum, BuildContext context) async {
+    if (stateIsUser) {
+      emit(stateAsUser.copyWith(shakeForFeedbackEnum: shakeForFeedbackEnum));
+      (await shakeForFeedback.set(
+              shakeForFeedbackEnum, ShakeForFeedbackEnum, stateAsUser.userType.userId(), hiveShakeForFeedbackPartition))
+          .fold(
         (failure) {
           showNotificationChip(context, "Error updating setting.");
         },

@@ -1,3 +1,5 @@
+import 'package:Confessi/constants/enums_that_are_local_keys.dart';
+
 import '../../../domain/authentication_and_settings/entities/user.dart';
 
 import '../../../core/styles/typography.dart';
@@ -26,23 +28,34 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   bool shakeSheetOpen = false;
   late String introText;
 
+  bool shouldOpenFeedbackSheetOnShake(BuildContext context) {
+    UserCubit userCubit = context.read<UserCubit>();
+    return userCubit.stateIsUser && userCubit.stateAsUser.shakeForFeedbackEnum == ShakeForFeedbackEnum.enabled;
+  }
+
   @override
   void initState() {
     introText = getIntro().text;
 
     // Opens the feedback sheet when the phone is shook. Implemented on the [Splash] screen because it is only shown once per app run. Otherwise, mutliple shake listeners would be created.
-    ShakeDetector.autoStart(
+    final shaker = ShakeDetector.autoStart(
       onPhoneShake: () {
-        if (!shakeSheetOpen) {
+        if (!shakeSheetOpen && shouldOpenFeedbackSheetOnShake(context)) {
           shakeSheetOpen = true;
           showFeedbackSheet(context).whenComplete(() => shakeSheetOpen = false);
         }
       },
       shakeThresholdGravity: 3,
-      shakeCountResetTime: 1000,
-      minimumShakeCount: 3,
+      shakeCountResetTime: 1500,
+      minimumShakeCount: 2,
     );
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: stop listening to shaker
+    super.dispose();
   }
 
   @override

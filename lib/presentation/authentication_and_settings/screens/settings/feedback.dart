@@ -3,18 +3,21 @@ import '../../../shared/selection_groups/bool_selection_group.dart';
 import '../../../shared/selection_groups/bool_selection_tile.dart';
 import '../../../shared/behaviours/themed_status_bar.dart';
 import '../../../shared/layout/scrollable_area.dart';
+import '../../../shared/selection_groups/setting_tile.dart';
+import '../../../shared/selection_groups/setting_tile_group.dart';
 import '../../../shared/text/disclaimer_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../application/authentication_and_settings/cubit/user_cubit.dart';
+import '../../../../constants/authentication_and_settings/text.dart';
 import '../../../../core/styles/typography.dart';
 import '../../../shared/behaviours/simulated_bottom_safe_area.dart';
 import '../../../shared/layout/appbar.dart';
 
-class TextSizeScreen extends StatelessWidget {
-  const TextSizeScreen({super.key});
+class FeedbackSettingScreen extends StatelessWidget {
+  const FeedbackSettingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +30,7 @@ class TextSizeScreen extends StatelessWidget {
               AppbarLayout(
                 backgroundColor: Theme.of(context).colorScheme.shadow,
                 centerWidget: Text(
-                  "Text size",
+                  "Feedback",
                   style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
@@ -41,34 +44,37 @@ class TextSizeScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 10),
+                        SettingTileGroup(
+                          text: "Send us one-time feedback",
+                          settingTiles: [
+                            SettingTile(
+                              leftIcon: CupertinoIcons.chat_bubble,
+                              text: kSettingsFeedbackLabel,
+                              onTap: () => Navigator.of(context).pushNamed("/feedback"),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
                         BoolSelectionGroup(
-                          text: "Confession, thread-view, and comment text size",
+                          text: "Shake to give feedback",
                           selectionTiles: [
                             BoolSelectionTile(
                               topRounded: true,
-                              isActive: context.watch<UserCubit>().stateAsUser.textSizeEnum == TextSizeEnum.small,
-                              icon: CupertinoIcons.sparkles,
-                              text: "Small",
-                              onTap: () => context.read<UserCubit>().setTextSize(TextSizeEnum.small, context),
+                              isActive: context.watch<UserCubit>().stateAsUser.shakeForFeedbackEnum ==
+                                  ShakeForFeedbackEnum.enabled,
+                              icon: CupertinoIcons.check_mark,
+                              text: "Enabled",
+                              onTap: () =>
+                                  context.read<UserCubit>().setShakeForFeedback(ShakeForFeedbackEnum.enabled, context),
                             ),
                             BoolSelectionTile(
-                              isActive: context.watch<UserCubit>().stateAsUser.textSizeEnum == TextSizeEnum.regular,
-                              icon: CupertinoIcons.sparkles,
-                              text: "Regular",
-                              onTap: () => context.read<UserCubit>().setTextSize(TextSizeEnum.regular, context),
-                            ),
-                            BoolSelectionTile(
-                              isActive: context.watch<UserCubit>().stateAsUser.textSizeEnum == TextSizeEnum.large,
-                              icon: CupertinoIcons.sparkles,
-                              text: "Large",
-                              onTap: () => context.read<UserCubit>().setTextSize(TextSizeEnum.large, context),
-                            ),
-                            BoolSelectionTile(
-                              isActive: context.watch<UserCubit>().stateAsUser.textSizeEnum == TextSizeEnum.veryLarge,
                               bottomRounded: true,
-                              icon: CupertinoIcons.sparkles,
-                              text: "Boomer large",
-                              onTap: () => context.read<UserCubit>().setTextSize(TextSizeEnum.veryLarge, context),
+                              isActive: context.watch<UserCubit>().stateAsUser.shakeForFeedbackEnum ==
+                                  ShakeForFeedbackEnum.disabled,
+                              icon: CupertinoIcons.xmark,
+                              text: "Disabled",
+                              onTap: () =>
+                                  context.read<UserCubit>().setShakeForFeedback(ShakeForFeedbackEnum.disabled, context),
                             ),
                           ],
                         ),
