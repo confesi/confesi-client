@@ -7,14 +7,14 @@
 // ***** IMPORTANT *****
 
 /// Key for where the token is stored in the local db.
-const String tokenStorageLocation = "token-5";
+const String tokenStorageLocation = "token-6";
 
 /// Key for where the guest location data are stored in the local db.
-const String guestDataStorageLocation = "guest-5";
+const String guestDataStorageLocation = "guest-6";
 
 /// Key that holds information about whether or not the user has viewed the home screen before
 /// whether that be as a guest or registeredUser. Account/guest agnostic.
-const String homeViewedScreenLocation = "viewed_home_screen-5";
+const String homeViewedScreenLocation = "viewed_home_screen-6";
 
 /// The specific location where user-centric info is stored.
 ///
@@ -24,7 +24,7 @@ const String homeViewedScreenLocation = "viewed_home_screen-5";
 ///
 /// Ex: for a registered users account, storage location: "831bfs983k/user", where "831bfs983k"
 /// is their unique account id.
-const String hiveUserPartition = "user-5";
+const String hiveUserPartition = "user-6";
 
 /// The specific location where post-draft-centric info is stored.
 ///
@@ -34,7 +34,7 @@ const String hiveUserPartition = "user-5";
 ///
 /// Ex: for a registered users account, storage location: "831bfs983kdrafts", where "831bfs983k"
 /// is their unique account id.
-const String hiveDraftPartition = "drafts-5";
+const String hiveDraftPartition = "drafts-6";
 
 /// The specific location where appearance-centric info is stored.
 ///
@@ -44,7 +44,7 @@ const String hiveDraftPartition = "drafts-5";
 ///
 /// Ex: for a registered users account, storage location: "831bfs983kappearance", where "831bfs983k"
 /// is their unique account id.
-const String hiveAppearancePartition = "appearance-5";
+const String hiveAppearancePartition = "appearance-6";
 
 /// The specific location where the data surrounding guest users and if they've "logged in" already is stored.
 ///
@@ -54,7 +54,7 @@ const String hiveAppearancePartition = "appearance-5";
 ///
 /// Ex: for a registered users account, storage location: "831bfs983home_viewed", where "831bfs983k"
 /// is their unique account id.
-const String hiveHomeViewedPartition = "home_viewed-5";
+const String hiveHomeViewedPartition = "home_viewed-6";
 
 /// The specific location where the data surrounding text size is stored.
 ///
@@ -64,4 +64,4 @@ const String hiveHomeViewedPartition = "home_viewed-5";
 ///
 /// Ex: for a registered users account, storage location: "831bfs983text_size", where "831bfs983k"
 /// is their unique account id.
-const String hiveTextSizePartition = "text_size-5";
+const String hiveTextSizePartition = "text_size-6";

@@ -115,6 +115,8 @@ class SimpleCommentTile extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    runAlignment: WrapAlignment.center,
                     runSpacing: 10,
                     children: [
                       GestureDetector(

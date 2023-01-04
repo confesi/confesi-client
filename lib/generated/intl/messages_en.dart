@@ -25,7 +25,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "alert_indicator_button_text":
             MessageLookupByLibrary.simpleMessage("Try again"),
         "leaderboard_home_page_title":
-            MessageLookupByLibrary.simpleMessage("University Leaderboard"),
+            MessageLookupByLibrary.simpleMessage("University Rank"),
         "settings_home_page_title":
             MessageLookupByLibrary.simpleMessage("Settings")
       };

@@ -42,7 +42,7 @@ class TextSizeScreen extends StatelessWidget {
                       children: [
                         const SizedBox(height: 10),
                         BoolSelectionGroup(
-                          text: "Edit confession and thread-view text size",
+                          text: "Confession, thread-view, and comment text size",
                           selectionTiles: [
                             BoolSelectionTile(
                               topRounded: true,

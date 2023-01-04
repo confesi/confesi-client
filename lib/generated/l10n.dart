@@ -60,10 +60,10 @@ class S {
     );
   }
 
-  /// `University Leaderboard`
+  /// `University Rank`
   String get leaderboard_home_page_title {
     return Intl.message(
-      'University Leaderboard',
+      'University Rank',
       name: 'leaderboard_home_page_title',
       desc: '',
       args: [],
