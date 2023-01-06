@@ -368,12 +368,13 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                                           child: TouchableScale(
                                             onTap: () => showDraftsSheet(context),
                                             child: Container(
+                                              // width: double.infinity,
                                               constraints: BoxConstraints(maxWidth: widthFraction(context, 2 / 3)),
-                                              padding: const EdgeInsets.all(10),
+                                              padding: const EdgeInsets.all(20),
                                               margin: const EdgeInsets.symmetric(vertical: 45),
                                               decoration: BoxDecoration(
                                                 color: Theme.of(context).colorScheme.secondary,
-                                                borderRadius: const BorderRadius.all(Radius.circular(10)),
+                                                borderRadius: const BorderRadius.all(Radius.circular(50)),
                                               ),
                                               child: Text(
                                                 "Load a draft",

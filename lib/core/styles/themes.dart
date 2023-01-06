@@ -14,9 +14,9 @@ class AppTheme {
       // secondary: Color.fromARGB(255, 254, 224, 115),
       secondary: Color(0xffFFB26B),
       onSecondary: Color(0xff333333),
-      error: Color.fromARGB(255, 231, 104, 104),
+      error: Color.fromARGB(255, 231, 104, 104), // "ERROR" color
       onError: Colors.white,
-      surfaceTint: Color(0xff90A17D),
+      surfaceTint: Color(0xff90A17D), // "SUCCESS" color
       background: Color.fromARGB(255, 251, 251, 251),
       onBackground: Color.fromARGB(255, 217, 217, 217),
       surface: Color.fromARGB(255, 246, 246, 246),
@@ -40,10 +40,10 @@ class AppTheme {
       primary: Color.fromARGB(255, 238, 239, 240),
       onPrimary: Color(0xff333333),
       // secondary: Color.fromARGB(255, 254, 224, 115),
-      secondary: Color(0xffFFB26B),
+      secondary: Color(0xff8D9EFF),
       onSecondary: Color(0xff333333),
-      surfaceTint: Color(0xff90A17D),
-      error: Color.fromARGB(255, 231, 104, 104),
+      surfaceTint: Color(0xff90A17D), // "SUCCESS" color
+      error: Color.fromARGB(255, 231, 104, 104), // "ERROR" color
       onError: Colors.white, // Color for on error and on surfaceTint.
       background: Color.fromARGB(255, 28, 28, 28),
       onBackground: Color.fromARGB(255, 57, 57, 57),

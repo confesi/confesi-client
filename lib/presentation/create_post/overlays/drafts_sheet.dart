@@ -3,25 +3,18 @@ import 'package:Confessi/application/create_post/cubit/drafts_cubit.dart';
 import 'package:Confessi/core/utils/sizing/bottom_safe_area.dart';
 import 'package:Confessi/domain/create_post/entities/draft_post_entity.dart';
 import 'package:Confessi/presentation/create_post/widgets/draft_tile.dart';
-import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
-import 'package:Confessi/presentation/shared/buttons/simple_text.dart';
 import 'package:Confessi/presentation/shared/indicators/alert.dart';
 import 'package:Confessi/presentation/shared/indicators/loading_cupertino.dart';
-import 'package:Confessi/presentation/shared/layout/line.dart';
 import 'package:Confessi/presentation/shared/overlays/info_sheet.dart';
 import 'package:Confessi/presentation/shared/overlays/notification_chip.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 
-import '../../../application/create_post/cubit/post_cubit.dart';
 import '../../../core/styles/typography.dart';
 import '../../../core/utils/sizing/height_fraction.dart';
-import '../../shared/buttons/pop.dart';
 import '../../shared/layout/appbar.dart';
-import '../../shared/layout/swipebar.dart';
 
 Future<dynamic> showDraftsSheet(BuildContext context) {
   return showModalBottomSheet(
@@ -52,7 +45,7 @@ Future<dynamic> showDraftsSheet(BuildContext context) {
               "Drafts",
               "Draft confessions are deleted upon you logging out. This is for security.",
             ),
-            leftIconVisible: false,
+            leftIcon: CupertinoIcons.xmark,
           ),
           const Expanded(child: _DraftsSheet()),
         ],
@@ -70,7 +63,6 @@ class _DraftsSheet extends StatefulWidget {
 
 class _DraftsSheetState extends State<_DraftsSheet> {
   List<DraftPostEntity> draftEntities = [];
-  GlobalKey<AnimatedListState> _animatedListKey = GlobalKey();
 
   @override
   void initState() {
@@ -82,37 +74,22 @@ class _DraftsSheetState extends State<_DraftsSheet> {
     await context.read<DraftsCubit>().getDrafts(context.read<UserCubit>().userId()).then((drafts) async {
       if (mounted) {
         setState(() {
-          draftEntities = drafts;
+          draftEntities = drafts.reversed.toList();
         });
-        _animatedListKey = GlobalKey(); // Resets the global key.
       }
     });
   }
 
-  void removeAtIndex(int index) async {
-    if (await context.read<DraftsCubit>().deleteDraft(context.read<UserCubit>().userId(), index)) {
-      DraftPostEntity removedItem = draftEntities.removeAt(index);
-      builder(context, animation) {
-        // A method to build the Card widget.
-        return SizeTransition(
-          sizeFactor: animation,
-          child: DraftTile(
-            childTitle: removedItem.repliedPostTitle,
-            childBody: removedItem.repliedPostBody,
-            childId: removedItem.repliedPostId,
-            title: removedItem.title,
-            body: removedItem.body,
-            onTap: () => {}, // Can't click an item currently being removed.
-            onDelete: () => {}, // Can't click an item currently being removed.
-          ),
+  void openDraft(BuildContext context, int index) {
+    context.read<DraftsCubit>().loadFromDraft(
+          context.read<UserCubit>().userId(),
+          index,
+          draftEntities[index].title,
+          draftEntities[index].body,
+          draftEntities[index].repliedPostId,
+          draftEntities[index].repliedPostTitle,
+          draftEntities[index].repliedPostBody,
         );
-      }
-
-      _animatedListKey.currentState?.removeItem(index, builder, duration: const Duration(milliseconds: 75));
-      setState(() {});
-    } else {
-      showNotificationChip(context, "Error deleting draft");
-    }
   }
 
   Widget buildBody(BuildContext context, DraftsState state) {
@@ -120,50 +97,70 @@ class _DraftsSheetState extends State<_DraftsSheet> {
       return const LoadingCupertinoIndicator();
     } else if (state is DraftsData) {
       return AnimatedSwitcher(
-        duration: const Duration(milliseconds: 250),
-        child: state.drafts.isEmpty
-            ? Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Text(
-                  "No drafts here!",
-                  style: kBody.copyWith(
-                    color: Theme.of(context).colorScheme.primary,
+          duration: const Duration(milliseconds: 250),
+          child: state.drafts.isEmpty
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Text(
+                    "No drafts here!",
+                    style: kBody.copyWith(
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
                   ),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                ),
-              )
-            : SlidableAutoCloseBehavior(
-                closeWhenOpened: true,
-                child: AnimatedList(
+                )
+              : ListView.builder(
                   physics: const BouncingScrollPhysics(),
-                  key: _animatedListKey,
-                  initialItemCount: draftEntities.length,
-                  itemBuilder: (context, i, animation) {
-                    return Column(
-                      children: [
-                        DraftTile(
-                          childBody: draftEntities[i].repliedPostBody,
-                          childTitle: draftEntities[i].repliedPostTitle,
-                          childId: draftEntities[i].repliedPostId,
-                          title: draftEntities[i].title,
-                          body: draftEntities[i].body,
-                          onTap: () => context.read<DraftsCubit>().loadFromDraft(
-                              context.read<UserCubit>().userId(),
-                              i,
-                              draftEntities[i].title,
-                              draftEntities[i].body,
-                              draftEntities[i].repliedPostId,
-                              draftEntities[i].repliedPostTitle,
-                              draftEntities[i].repliedPostBody),
-                          onDelete: () => removeAtIndex(i),
+                  itemCount: draftEntities.length + 1,
+                  itemBuilder: (context, i) {
+                    // Returns a bottom buffer so that content doesn't extend over bottom un-safe area
+                    if (i == draftEntities.length) return SizedBox(height: bottomSafeArea(context));
+                    // Returns main list widgets
+                    return Dismissible(
+                      resizeDuration: const Duration(milliseconds: 100),
+                      movementDuration: const Duration(milliseconds: 100),
+                      background: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        alignment: Alignment.centerLeft,
+                        color: Theme.of(context).colorScheme.surfaceTint,
+                        child: Icon(
+                          CupertinoIcons.arrow_up_left_arrow_down_right,
+                          color: Theme.of(context).colorScheme.onError,
                         ),
-                      ],
+                      ),
+                      secondaryBackground: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        alignment: Alignment.centerRight,
+                        color: Theme.of(context).colorScheme.error,
+                        child: Icon(
+                          CupertinoIcons.trash,
+                          color: Theme.of(context).colorScheme.onError,
+                        ),
+                      ),
+                      onDismissed: (direction) async {
+                        if (direction == DismissDirection.startToEnd) {
+                          openDraft(context, i);
+                        } else {
+                          if (await context.read<DraftsCubit>().deleteDraft(context.read<UserCubit>().userId(), i)) {
+                            setState(() => draftEntities.removeAt(i));
+                          } else {
+                            showNotificationChip(context, "Error removing draft");
+                          }
+                        }
+                      },
+                      key: UniqueKey(),
+                      child: DraftTile(
+                        childBody: draftEntities[i].repliedPostBody,
+                        childTitle: draftEntities[i].repliedPostTitle,
+                        childId: draftEntities[i].repliedPostId,
+                        title: draftEntities[i].title,
+                        body: draftEntities[i].body,
+                        onTap: () => openDraft(context, i),
+                      ),
                     );
                   },
-                ),
-              ),
-      );
+                ));
     } else if (state is DraftsError) {
       return AlertIndicator(message: state.message, onPress: () => loadDrafts());
     } else {
@@ -173,38 +170,10 @@ class _DraftsSheetState extends State<_DraftsSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Column(
-        children: [
-          Expanded(
-            child: BlocBuilder<DraftsCubit, DraftsState>(
-              builder: (context, state) => AnimatedSwitcher(
-                duration: const Duration(milliseconds: 250),
-                child: buildBody(context, state),
-              ),
-            ),
-          ),
-          Container(
-            decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.background,
-                border: Border(top: BorderSide(color: Theme.of(context).colorScheme.surface, width: 0.8))),
-            child: SafeArea(
-              top: false,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: PopButton(
-                  topPadding: 15,
-                  justText: true,
-                  onPress: () => Navigator.pop(context),
-                  icon: CupertinoIcons.chevron_right,
-                  backgroundColor: Theme.of(context).colorScheme.secondary,
-                  textColor: Theme.of(context).colorScheme.onSecondary,
-                  text: 'Back to writing',
-                ),
-              ),
-            ),
-          ),
-        ],
+    return BlocBuilder<DraftsCubit, DraftsState>(
+      builder: (context, state) => AnimatedSwitcher(
+        duration: const Duration(milliseconds: 250),
+        child: buildBody(context, state),
       ),
     );
   }

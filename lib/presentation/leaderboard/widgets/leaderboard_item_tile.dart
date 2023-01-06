@@ -26,7 +26,7 @@ class LeaderboardItemTile extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(left: 5, right: 5, top: 5),
       decoration: BoxDecoration(
-        border: Border.all(color: Theme.of(context).colorScheme.surface, width: 1),
+        border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
       ),
       child: Container(
         padding: const EdgeInsets.all(10),
