@@ -1,4 +1,8 @@
+import 'package:dartz/dartz.dart';
 import 'package:hive/hive.dart';
+
+import '../results/failures.dart';
+import '../results/successes.dart';
 
 /// Hive client for accessing locally stored data.
 ///
@@ -6,6 +10,19 @@ import 'package:hive/hive.dart';
 ///
 /// Throws exceptions.
 class HiveClient {
+  Future<Either<Failure, Success>> clearBox(String boxName) async {
+    if (Hive.isBoxOpen(boxName)) {
+      try {
+        await Hive.box(boxName).clear();
+        return Right(ApiSuccess());
+      } catch (e) {
+        return Left(LocalDBFailure());
+      }
+    } else {
+      return Left(LocalDBFailure());
+    }
+  }
+
   Future<int> addValue(String boxName, dynamic value) async {
     final box = await Hive.openBox(boxName);
     return box.add(value);

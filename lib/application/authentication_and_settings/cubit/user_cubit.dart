@@ -16,8 +16,6 @@ import '../../../core/alt_unused/notification_chip.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:meta/meta.dart';
 
 import '../../../constants/enums_that_are_local_keys.dart';
 import '../../../core/usecases/no_params.dart';
@@ -58,22 +56,25 @@ class UserCubit extends Cubit<UserState> {
   /// Logs out the user.
   ///
   /// Shows message on error logging out.
-  void logoutUser() async {
+  void logoutRegisteredUser(BuildContext context) async {
+    // if (state is User && stateAsUser.userType is RegisteredUser) {
     if (state is User) {
       final failureOrSuccess = await logout.call(stateAsUser.userType.userId());
       failureOrSuccess.fold(
         (failure) {
-          // TODO: Logout failure
+          // TODO: Improve! Because this may delete half the local data and THEN fail. What to do then?
+          // Something went wrong logging out.
+          showNotificationChip(context, "Failure logging out.");
         },
         (success) {
           // After succesfully logging out, now try reloading user data. This should
           // restart the user as a guest.
-          loadUser(false);
+          setHomeViewedThenReloadUser(context);
         },
       );
     } else {
-      // TODO: Logout failure as you're not a user
       // Can't log out. You're not a user.
+      showNotificationChip(context, "Can't log out. You're not a user.");
     }
   }
 
@@ -99,20 +100,20 @@ class UserCubit extends Cubit<UserState> {
         //
         // Where the user's preferences will be stored (if no token, then "guest" location, else, stored in their unique user ID location).
         // Of course, the partition location always gets appended to the end.
-        (await appearance.get(AppearanceEnum.values, AppearanceEnum, token.token(), hiveAppearancePartition)).fold(
+        (await appearance.get(AppearanceEnum.values, AppearanceEnum, token.token(), hivePrefsPartition)).fold(
           (failure) {
             // If there's a failure loading these prefs, abort with UserError state.
             emit(UserError());
           },
           (appearanceEnum) async {
-            (await textSize.get(TextSizeEnum.values, TextSizeEnum, token.token(), hiveTextSizePartition)).fold(
+            (await textSize.get(TextSizeEnum.values, TextSizeEnum, token.token(), hivePrefsPartition)).fold(
               (failure) {
                 // If there's a failure loading these prefs, abort with UserError state.
                 emit(UserError());
               },
               (textSizeEnum) async {
-                (await shakeForFeedback.get(ShakeForFeedbackEnum.values, ShakeForFeedbackEnum, token.token(),
-                        hiveShakeForFeedbackPartition))
+                (await shakeForFeedback.get(
+                        ShakeForFeedbackEnum.values, ShakeForFeedbackEnum, token.token(), hivePrefsPartition))
                     .fold(
                   (failure) {
                     // If there's a failure loading these prefs, abort with UserError state.
@@ -122,6 +123,7 @@ class UserCubit extends Cubit<UserState> {
                     // Last bit of the loading preferences chain contains emits the actual full user object,
                     // whether that be a Guest or a RegisteredUser.
                     //
+                    //! Starting internal logic
                     // If user has a refresh token, then we must attempt to decrypt it, gaining
                     // access to its inner userId
                     if (token is Token) {
@@ -135,6 +137,7 @@ class UserCubit extends Cubit<UserState> {
                           // On succesfully decrypting token, emit a user object of type RegisteredUser.
                           emit(
                             User(
+                              homeViewedEnum: HomeViewedEnum.yes,
                               shakeForFeedbackEnum: shakeForFeedbackEnum,
                               appearanceEnum: appearanceEnum,
                               textSizeEnum: textSizeEnum,
@@ -146,7 +149,7 @@ class UserCubit extends Cubit<UserState> {
                     } else {
                       // Check the viewed viewedHomeScreen location to decide if routing -> home screen or -> open screen.
                       (await homeViewed.get(
-                              HomeViewedEnum.values, HomeViewedEnum, homeViewedScreenLocation, hiveHomeViewedPartition))
+                              HomeViewedEnum.values, HomeViewedEnum, homeViewedScreenLocation, hivePrefsPartition))
                           .fold(
                         (failure) {
                           // Failure checking if the user has already viewed the home screen. Emit UserError state and abort.
@@ -154,24 +157,31 @@ class UserCubit extends Cubit<UserState> {
                         },
                         (homeViewedEnum) {
                           if (homeViewedEnum == HomeViewedEnum.yes) {
-                            print("TOP !");
                             // The user has already viewed home, so we can assume they've gone through the
                             // open screen already. Hence, we can consider them a guest.
                             //
                             // If user doesn't have refresh token, then they're a Guest.
                             emit(
                               User(
+                                homeViewedEnum: HomeViewedEnum.yes,
                                 appearanceEnum: appearanceEnum,
                                 textSizeEnum: textSizeEnum,
-                                userType: Guest(),
+                                userType: Guest(directToHome: true),
                                 shakeForFeedbackEnum: shakeForFeedbackEnum,
                               ),
                             );
                           } else {
-                            print("BOTTOM !");
                             // The user has not yet seen the home screen. Thus, they must be new. So, we should
                             // show them the open screen.
-                            emit(OpenUser());
+                            emit(
+                              User(
+                                homeViewedEnum: HomeViewedEnum.no,
+                                appearanceEnum: appearanceEnum,
+                                textSizeEnum: textSizeEnum,
+                                userType: Guest(directToHome: false),
+                                shakeForFeedbackEnum: shakeForFeedbackEnum,
+                              ),
+                            );
                           }
                         },
                       );
@@ -189,8 +199,7 @@ class UserCubit extends Cubit<UserState> {
   Future<void> setAppearance(AppearanceEnum appearanceEnum, BuildContext context) async {
     if (stateIsUser) {
       emit(stateAsUser.copyWith(appearanceEnum: appearanceEnum));
-      (await appearance.set(appearanceEnum, AppearanceEnum, stateAsUser.userType.userId(), hiveAppearancePartition))
-          .fold(
+      (await appearance.set(appearanceEnum, AppearanceEnum, stateAsUser.userType.userId(), hivePrefsPartition)).fold(
         (failure) {
           showNotificationChip(context, "Error updating setting.");
         },
@@ -205,7 +214,7 @@ class UserCubit extends Cubit<UserState> {
   Future<void> setTextSize(TextSizeEnum textSizeEnum, BuildContext context) async {
     if (stateIsUser) {
       emit(stateAsUser.copyWith(textSizeEnum: textSizeEnum));
-      (await textSize.set(textSizeEnum, TextSizeEnum, stateAsUser.userType.userId(), hiveTextSizePartition)).fold(
+      (await textSize.set(textSizeEnum, TextSizeEnum, stateAsUser.userType.userId(), hivePrefsPartition)).fold(
         (failure) {
           showNotificationChip(context, "Error updating setting.");
         },
@@ -221,7 +230,7 @@ class UserCubit extends Cubit<UserState> {
     if (stateIsUser) {
       emit(stateAsUser.copyWith(shakeForFeedbackEnum: shakeForFeedbackEnum));
       (await shakeForFeedback.set(
-              shakeForFeedbackEnum, ShakeForFeedbackEnum, stateAsUser.userType.userId(), hiveShakeForFeedbackPartition))
+              shakeForFeedbackEnum, ShakeForFeedbackEnum, stateAsUser.userType.userId(), hivePrefsPartition))
           .fold(
         (failure) {
           showNotificationChip(context, "Error updating setting.");
@@ -233,6 +242,8 @@ class UserCubit extends Cubit<UserState> {
       showNotificationChip(context, "An unknown error has occured.");
     }
   }
+
+  //! Changing the viewship of [Guest]
 
   /// Sets the [HomeViewedEnum] to [HomeViewedEnum.yes] and then reloads the user.
   ///
@@ -250,8 +261,7 @@ class UserCubit extends Cubit<UserState> {
   ///
   /// Returns [true] or [false] depending on if it succeeds.
   Future<bool> setHomeViewed(HomeViewedEnum homeViewedEnum, BuildContext context) async {
-    return (await homeViewed.set(homeViewedEnum, HomeViewedEnum, homeViewedScreenLocation, hiveHomeViewedPartition))
-        .fold(
+    return (await homeViewed.set(homeViewedEnum, HomeViewedEnum, homeViewedScreenLocation, hivePrefsPartition)).fold(
       (failure) {
         // Error setting [HomeViewedEnum].
         showNotificationChip(context, "An unknown error has occured.");

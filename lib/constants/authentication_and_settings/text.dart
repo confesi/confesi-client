@@ -131,8 +131,6 @@ const String kSettingsAccountDetailsLabel = "School details";
 
 const String kVerifiedStudentLabel = "Verified student perks";
 
-const String kSettingsLogoutLabel = "Logout";
-
 // const String kSettingsReducedAnimationsLabel = "Reduced Animations";
 
 const String kSettingsHapticFeedbackLabel = "Haptic feedback";

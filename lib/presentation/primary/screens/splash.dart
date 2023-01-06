@@ -56,21 +56,21 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   Widget build(BuildContext context) {
     return BlocListener<UserCubit, UserState>(
       listenWhen: (previous, current) => (previous.runtimeType != current.runtimeType),
+      // listenWhen: (previous, current) => true,
       listener: (context, state) {
-        if (state is OpenUser) {
-          // State is OpenUser, meaning they haven't seen the home screen yet ever.
-          print("open user");
-          Navigator.of(context).pushNamed("/open");
-        } else if (state is User) {
+        if (state is User) {
           // State is some subset of User, whether that be Guest or RegisteredUser.
           if (state.userType is RegisteredUser) {
             // State is RegisteredUser, meaning they are a registered user.
-            print("registered user");
             Navigator.of(context).pushNamed("/home");
-          } else {
-            // State is Guest, meaning they are a guest user.
-            print("guest");
-            Navigator.of(context).pushNamed("/home");
+          } else if (state.userType is Guest) {
+            // Go directly to home
+            if ((state.userType as Guest).directToHome) {
+              Navigator.of(context).pushNamed("/home");
+            } else {
+              // Go directly to open
+              Navigator.of(context).pushNamed("/open");
+            }
           }
         } else if (state is UserError) {
           // Something went vastly wrong. Push to error screen.

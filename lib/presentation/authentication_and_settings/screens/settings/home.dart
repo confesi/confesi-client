@@ -1,4 +1,5 @@
 import '../../../../core/utils/sizing/top_safe_area.dart';
+import '../../../../domain/authentication_and_settings/entities/user.dart';
 import '../../../primary/controllers/settings_controller.dart';
 
 import '../../../../application/shared/cubit/website_launcher_cubit.dart';
@@ -118,21 +119,8 @@ class SettingsHome extends StatelessWidget {
                         SettingTile(
                           isRedText: true,
                           leftIcon: CupertinoIcons.square_arrow_right,
-                          text: kSettingsLogoutLabel,
-                          onTap: () {
-                            context.read<UserCubit>().logoutUser();
-                          },
-                        ),
-                        SettingTile(
-                          isRedText: true,
-                          leftIcon: CupertinoIcons.square_arrow_right,
-                          text: "TEMPORARY - Reset",
-                          onTap: () {
-                            context
-                                .read<UserCubit>()
-                                .setHomeViewed(HomeViewedEnum.no, context)
-                                .then((value) => context.read<UserCubit>().loadUser(false));
-                          },
+                          text: "Logout",
+                          onTap: () => context.read<UserCubit>().logoutRegisteredUser(context),
                         ),
                       ],
                     ),

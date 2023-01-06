@@ -36,42 +36,12 @@ const String hiveUserPartition = "user-6";
 /// is their unique account id.
 const String hiveDraftPartition = "drafts-6";
 
-/// The specific location where appearance-centric info is stored.
+/// The specific location where prefs-centric info is stored.
 ///
 /// Always combined with the user's id.
 ///
-/// Ex: for a guest account, storage location: "guestappearance"
+/// Ex: for a guest account, storage location: "guestprefs"
 ///
-/// Ex: for a registered users account, storage location: "831bfs983kappearance", where "831bfs983k"
+/// Ex: for a registered users account, storage location: "831bfs983kprefs", where "831bfs983k"
 /// is their unique account id.
-const String hiveAppearancePartition = "appearance-6";
-
-/// The specific location where the data surrounding guest users and if they've "logged in" already is stored.
-///
-/// Always combined with the user's id.
-///
-/// Ex: for a guest account, storage location: "guesthome_viewed"
-///
-/// Ex: for a registered users account, storage location: "831bfs983home_viewed", where "831bfs983k"
-/// is their unique account id.
-const String hiveHomeViewedPartition = "home_viewed-6";
-
-/// The specific location where the data surrounding text size is stored.
-///
-/// Always combined with the user's id.
-///
-/// Ex: for a guest account, storage location: "guesttext_size"
-///
-/// Ex: for a registered users account, storage location: "831bfs983text_size", where "831bfs983k"
-/// is their unique account id.
-const String hiveTextSizePartition = "text_size-6";
-
-/// The specific location where the data surrounding if shake to give feedback is enabled is stored.
-///
-/// Always combined with the user's id.
-///
-/// Ex: for a guest account, storage location: "guestshake_for_feedback"
-///
-/// Ex: for a registered users account, storage location: "831bfs983shake_for_feedback", where "831bfs983k"
-/// is their unique account id.
-const String hiveShakeForFeedbackPartition = "shake_for_feedback-6";
+const String hivePrefsPartition = "prefs-6";

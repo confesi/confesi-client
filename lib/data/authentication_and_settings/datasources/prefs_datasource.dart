@@ -25,9 +25,7 @@ class PrefsDatasource implements IPrefsDatasource {
     dynamic matcher = await hiveClient.getValue(boxId + storagePartitionLocation, getLowercaseEnumName(enumType));
     // If nothing exists inside the database for this entry, then this must be the first this user is accessing it.
     // Thus, we say it's a default exception - and we can provide a default value for it higher up, after bubbling this value.
-    print("1, matcher: $matcher");
     if (matcher == null) throw DBDefaultException();
-    print("2");
     return stringToEnum(matcher, enumValues);
   }
 
