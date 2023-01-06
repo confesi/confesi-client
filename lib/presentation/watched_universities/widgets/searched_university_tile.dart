@@ -24,6 +24,7 @@ class SearchedUniversityTile extends StatelessWidget {
       // transparent color trick to increase hitbox size
       margin: const EdgeInsets.only(bottom: 5),
       decoration: BoxDecoration(
+        border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
         color: Theme.of(context).colorScheme.surface,
         borderRadius: const BorderRadius.all(Radius.circular(5)),
       ),

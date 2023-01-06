@@ -24,7 +24,7 @@ class ChildPost extends StatelessWidget {
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.background,
           borderRadius: const BorderRadius.all(Radius.circular(5)),
-          border: Border.all(color: Theme.of(context).colorScheme.surface, width: 1),
+          border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

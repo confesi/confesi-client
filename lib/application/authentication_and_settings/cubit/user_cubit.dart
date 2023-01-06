@@ -99,7 +99,7 @@ class UserCubit extends Cubit<UserState> {
         //
         // Where the user's preferences will be stored (if no token, then "guest" location, else, stored in their unique user ID location).
         // Of course, the partition location always gets appended to the end.
-        (await appearance.get(AppearanceEnum.values, AppearanceEnum, token.token(), hiveUserPartition)).fold(
+        (await appearance.get(AppearanceEnum.values, AppearanceEnum, token.token(), hiveAppearancePartition)).fold(
           (failure) {
             // If there's a failure loading these prefs, abort with UserError state.
             emit(UserError());

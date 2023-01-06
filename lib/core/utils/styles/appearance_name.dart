@@ -7,8 +7,8 @@ import '../../../constants/authentication_and_settings/text.dart';
 /// Primarily for display purposes.
 String appearanceName(BuildContext context) {
   if (MediaQuery.of(context).platformBrightness == Brightness.dark) {
-    return kDarkAppearance;
+    return "Dark";
   } else {
-    return kLightAppearance;
+    return "Light";
   }
 }

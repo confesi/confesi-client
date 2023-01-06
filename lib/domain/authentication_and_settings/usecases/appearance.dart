@@ -19,7 +19,7 @@ class AppearanceUsecase implements GetSetUsecase<AppearanceEnum, List> {
     return failureOrAppearanceEnum.fold(
       (failure) {
         if (failure is DbDefaultFailure) {
-          return const Right(AppearanceEnum.system); // Default choice.
+          return const Right(AppearanceEnum.dark); // Default choice.
         }
         return Left(failure);
       },

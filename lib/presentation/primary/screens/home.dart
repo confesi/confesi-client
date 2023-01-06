@@ -102,10 +102,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 ),
                 bottomNavigationBar: Container(
                   decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.background,
                     border: Border(
                       top: BorderSide(
-                        color: Theme.of(context).colorScheme.surface,
-                        width: 1,
+                        color: Theme.of(context).colorScheme.onBackground,
+                        width: 0.8,
                       ),
                     ),
                   ),
@@ -128,8 +129,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                             }
                             setState(() => currentIndex = newIndex);
                           },
-                          labelStyle: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
-                          unselectedLabelColor: Theme.of(context).colorScheme.onBackground,
+                          unselectedLabelColor: Theme.of(context).colorScheme.surface,
                           labelColor: Theme.of(context).colorScheme.secondary,
                           indicatorSize: TabBarIndicatorSize.label,
                           indicatorColor: Colors.transparent,
@@ -167,7 +167,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     ),
                   ),
                 ),
-                backgroundColor: Theme.of(context).colorScheme.background,
               ),
             ),
           ),
@@ -193,14 +192,20 @@ class _BottomTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Tab(
-      icon: Icon(icon, size: 28),
-      iconMargin: const EdgeInsets.only(top: 4, bottom: 1),
-      child: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 250),
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 250),
+      child: Tab(
+        key: UniqueKey(),
+        icon: Icon(
+          icon,
+          size: 24,
+          color: currentIndex == indexMatcher
+              ? Theme.of(context).colorScheme.secondary
+              : Theme.of(context).colorScheme.onBackground,
+        ),
+        iconMargin: const EdgeInsets.only(top: 5, bottom: 2),
         child: Text(
           text,
-          key: UniqueKey(),
           style: kDetail.copyWith(
               color: currentIndex == indexMatcher
                   ? Theme.of(context).colorScheme.secondary

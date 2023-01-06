@@ -27,8 +27,7 @@ class _SimplePostTileState extends State<SimplePostTile> {
             width: double.infinity,
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.background,
-              borderRadius: const BorderRadius.all(Radius.circular(0)),
-              border: Border.all(color: Theme.of(context).colorScheme.surface, width: 1),
+              border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

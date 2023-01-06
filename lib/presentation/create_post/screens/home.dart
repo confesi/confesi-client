@@ -365,49 +365,26 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                                         color: Colors.transparent,
                                         width: double.infinity,
                                         child: Center(
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: [
-                                              TouchableScale(
-                                                onTap: () => showDraftsSheet(context),
-                                                child: Container(
-                                                  constraints: BoxConstraints(maxWidth: widthFraction(context, 2 / 3)),
-                                                  padding: const EdgeInsets.all(10),
-                                                  margin: const EdgeInsets.symmetric(vertical: 45),
-                                                  decoration: BoxDecoration(
-                                                    color: Theme.of(context).colorScheme.secondary,
-                                                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                                                  ),
-                                                  child: Text(
-                                                    "Load a draft",
-                                                    style: kTitle.copyWith(
-                                                      color: Theme.of(context).colorScheme.onSecondary,
-                                                    ),
-                                                    textAlign: TextAlign.center,
-                                                    overflow: TextOverflow.ellipsis,
-                                                    maxLines: 2,
-                                                  ),
-                                                ),
+                                          child: TouchableScale(
+                                            onTap: () => showDraftsSheet(context),
+                                            child: Container(
+                                              constraints: BoxConstraints(maxWidth: widthFraction(context, 2 / 3)),
+                                              padding: const EdgeInsets.all(10),
+                                              margin: const EdgeInsets.symmetric(vertical: 45),
+                                              decoration: BoxDecoration(
+                                                color: Theme.of(context).colorScheme.secondary,
+                                                borderRadius: const BorderRadius.all(Radius.circular(10)),
                                               ),
-                                              const SizedBox(width: 5),
-                                              TouchableScale(
-                                                onTap: () => showInfoSheet(
-                                                  context,
-                                                  "Drafts",
-                                                  "Draft confessions are deleted upon you logging out. This is for security.",
+                                              child: Text(
+                                                "Load a draft",
+                                                style: kTitle.copyWith(
+                                                  color: Theme.of(context).colorScheme.onSecondary,
                                                 ),
-                                                child: Container(
-                                                  // Transparent hitbox trick.
-                                                  color: Colors.transparent,
-                                                  padding: const EdgeInsets.all(10),
-                                                  margin: const EdgeInsets.symmetric(vertical: 45),
-                                                  child: Icon(
-                                                    CupertinoIcons.info,
-                                                    color: Theme.of(context).colorScheme.primary,
-                                                  ),
-                                                ),
+                                                textAlign: TextAlign.center,
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 2,
                                               ),
-                                            ],
+                                            ),
                                           ),
                                         ),
                                       ),

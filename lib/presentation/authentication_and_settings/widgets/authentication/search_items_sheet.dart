@@ -93,7 +93,7 @@ class __SheetBodyState extends State<_SheetBody> {
                       controller: textEditingController,
                     ),
                     const SizedBox(height: 15),
-                    LineLayout(color: Theme.of(context).colorScheme.surface),
+                    LineLayout(color: Theme.of(context).colorScheme.onBackground),
                     Expanded(
                       child: ScrollableView(
                         inlineBottomOrRightPadding: bottomSafeArea(context),

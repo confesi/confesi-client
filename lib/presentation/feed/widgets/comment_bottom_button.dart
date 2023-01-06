@@ -12,13 +12,14 @@ class CommentBottomButton extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
+        border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
         color: Theme.of(context).colorScheme.surface,
         borderRadius: const BorderRadius.all(Radius.circular(5)),
       ),
       child: Text(
         text,
         style: kDetail.copyWith(
-          color: Theme.of(context).colorScheme.secondary,
+          color: Theme.of(context).colorScheme.primary,
         ),
         textAlign: TextAlign.center,
         overflow: TextOverflow.ellipsis,

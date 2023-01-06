@@ -22,8 +22,6 @@ const String kAppearanceGroupLabel = "Choose appearance";
 
 const String kDarkAppearance = "Dark";
 
-const String kLightAppearance = "Light";
-
 String kSystemAppearanceRealTime(BuildContext context) => "System (currently ${appearanceName(context)})";
 
 const String kFaqPageTitle = "FAQ";

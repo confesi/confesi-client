@@ -55,7 +55,7 @@ class AppearanceScreen extends StatelessWidget {
                             BoolSelectionTile(
                               isActive: context.watch<UserCubit>().stateAsUser.appearanceEnum == AppearanceEnum.light,
                               icon: CupertinoIcons.sun_min,
-                              text: kLightAppearance,
+                              text: "Light - BETA",
                               onTap: () => context.read<UserCubit>().setAppearance(AppearanceEnum.light, context),
                             ),
                             BoolSelectionTile(

@@ -24,7 +24,15 @@ class BoolSelectionGroup extends StatelessWidget {
           textAlign: TextAlign.left,
         ),
         const SizedBox(height: 10),
-        ...selectionTiles,
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
+            border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
+          ),
+          child: Column(
+            children: selectionTiles,
+          ),
+        )
       ],
     );
   }

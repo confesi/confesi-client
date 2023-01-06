@@ -20,6 +20,7 @@ import '../../../application/create_post/cubit/post_cubit.dart';
 import '../../../core/styles/typography.dart';
 import '../../../core/utils/sizing/height_fraction.dart';
 import '../../shared/buttons/pop.dart';
+import '../../shared/layout/appbar.dart';
 import '../../shared/layout/swipebar.dart';
 
 Future<dynamic> showDraftsSheet(BuildContext context) {
@@ -36,18 +37,23 @@ Future<dynamic> showDraftsSheet(BuildContext context) {
       ),
       child: Column(
         children: [
-          const SwipebarLayout(),
-          Padding(
-            padding: const EdgeInsets.only(left: 10, right: 10, bottom: 15),
-            child: Text(
-              "Your draft confessions",
-              style: kDisplay1.copyWith(
-                color: Theme.of(context).colorScheme.primary,
-              ),
+          AppbarLayout(
+            bottomBorder: true,
+            centerWidget: Text(
+              "Your drafts",
+              style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
+              overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
             ),
+            rightIconVisible: true,
+            rightIcon: CupertinoIcons.info,
+            rightIconOnPress: () => showInfoSheet(
+              context,
+              "Drafts",
+              "Draft confessions are deleted upon you logging out. This is for security.",
+            ),
+            leftIconVisible: false,
           ),
-          LineLayout(color: Theme.of(context).colorScheme.surface),
           const Expanded(child: _DraftsSheet()),
         ],
       ),

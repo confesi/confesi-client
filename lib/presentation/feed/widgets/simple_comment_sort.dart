@@ -57,11 +57,11 @@ class _SimpleCommentSortState extends State<SimpleCommentSort> {
       decoration: BoxDecoration(
         border: Border(
           top: BorderSide(
-            color: Theme.of(context).colorScheme.surface,
+            color: Theme.of(context).colorScheme.onBackground,
             width: 0.8,
           ),
           bottom: BorderSide(
-            color: Theme.of(context).colorScheme.surface,
+            color: Theme.of(context).colorScheme.onBackground,
             width: 0.8,
           ),
         ),

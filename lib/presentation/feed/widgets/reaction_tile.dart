@@ -24,9 +24,9 @@ class ReactionTile extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
         decoration: BoxDecoration(
+          border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
           color: Theme.of(context).colorScheme.surface,
           borderRadius: const BorderRadius.all(Radius.circular(5)),
-          border: Border.all(color: Theme.of(context).colorScheme.surface, width: 1),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,

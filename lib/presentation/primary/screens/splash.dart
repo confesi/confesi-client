@@ -38,7 +38,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     introText = getIntro().text;
 
     // Opens the feedback sheet when the phone is shook. Implemented on the [Splash] screen because it is only shown once per app run. Otherwise, mutliple shake listeners would be created.
-    final shaker = ShakeDetector.autoStart(
+    ShakeDetector.autoStart(
       onPhoneShake: () {
         if (!shakeSheetOpen && shouldOpenFeedbackSheetOnShake(context)) {
           shakeSheetOpen = true;
@@ -50,12 +50,6 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
       minimumShakeCount: 2,
     );
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    // TODO: stop listening to shaker
-    super.dispose();
   }
 
   @override

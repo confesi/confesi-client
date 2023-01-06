@@ -61,13 +61,13 @@ class AppRouter {
 
   // Checks which routes show as a scale animation.
   bool isFadeAnim(RouteSettings routeSettings) {
-    List<String> sizeAnimDialogRoutes = [];
+    List<String> sizeAnimDialogRoutes = ["/home"];
     return sizeAnimDialogRoutes.contains(routeSettings.name) ? true : false;
   }
 
   // Checks which routes show as a size animation.
   bool isSizeAnim(RouteSettings routeSettings) {
-    List<String> fadeAnimDialogRoutes = ["/onboarding", "/open", "/home", "/prefsError"];
+    List<String> fadeAnimDialogRoutes = ["/onboarding", "/open", "/prefsError"];
     return fadeAnimDialogRoutes.contains(routeSettings.name) ? true : false;
   }
 

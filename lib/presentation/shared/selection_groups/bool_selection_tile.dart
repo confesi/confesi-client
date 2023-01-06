@@ -44,10 +44,10 @@ class _BoolSelectionTileState extends State<BoolSelectionTile> {
         decoration: BoxDecoration(
           color: widget.backgroundColor ?? Theme.of(context).colorScheme.background,
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(widget.topRounded ? 5 : 0),
-            topRight: Radius.circular(widget.topRounded ? 5 : 0),
-            bottomRight: Radius.circular(widget.bottomRounded ? 5 : 0),
-            bottomLeft: Radius.circular(widget.bottomRounded ? 5 : 0),
+            topLeft: Radius.circular(widget.topRounded ? 10 : 0),
+            topRight: Radius.circular(widget.topRounded ? 10 : 0),
+            bottomRight: Radius.circular(widget.bottomRounded ? 10 : 0),
+            bottomLeft: Radius.circular(widget.bottomRounded ? 10 : 0),
           ),
         ),
         child: Row(
