@@ -8,6 +8,7 @@ import '../../../core/utils/sizing/height_fraction.dart';
 import 'package:flutter/material.dart';
 
 import '../../shared/layout/swipebar.dart';
+import '../../shared/other/cached_online_image.dart';
 
 Future<dynamic> showAchievementSheet(
   BuildContext context,
@@ -17,7 +18,7 @@ Future<dynamic> showAchievementSheet(
   int amount,
 ) {
   return showModalBottomSheet(
-    barrierColor: achievementRarityToColor(rarity).withOpacity(0.1),
+    barrierColor: achievementRarityToColor(rarity).withOpacity(0.2),
     context: context,
     backgroundColor: Colors.transparent,
     isScrollControlled: true,
@@ -28,8 +29,8 @@ Future<dynamic> showAchievementSheet(
         boxShadow: [
           BoxShadow(
             color: achievementRarityToColor(rarity),
-            blurRadius: 60,
-            offset: const Offset(0, 20),
+            blurRadius: 80,
+            offset: const Offset(0, 50),
           ),
         ],
       ),

@@ -73,67 +73,75 @@ class _HottestTileState extends State<HottestTile> {
                       color: Theme.of(context).colorScheme.background,
                       border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
-                          padding: const EdgeInsets.all(10),
-                          width: double.infinity,
-                          child: Text(
-                            '${getComments()} · ${getLikes()} · ${getHates()}',
-                            style: kDetail.copyWith(
-                              color: Theme.of(context).colorScheme.onSecondary,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.background,
+                        boxShadow: [
+                          BoxShadow(color: Theme.of(context).colorScheme.secondary.withOpacity(0.1), blurRadius: 30),
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.secondary,
                             ),
-                            textAlign: TextAlign.center,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        Expanded(
-                          child: AnimatedContainer(
-                            duration: const Duration(milliseconds: 250),
-                            child: Image.asset(
-                              widget.universityImagePath,
-                              fit: BoxFit.cover,
-                              width: double.infinity,
+                            padding: const EdgeInsets.all(10),
+                            width: double.infinity,
+                            child: Text(
+                              '${getComments()} · ${getLikes()} · ${getHates()}',
+                              style: kDetail.copyWith(
+                                color: Theme.of(context).colorScheme.onSecondary,
+                              ),
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
-                        ),
-                        Expanded(
-                          child: Stack(
-                            fit: StackFit.expand,
-                            children: [
-                              Positioned.fill(
-                                right: 5,
-                                child: Align(
-                                  alignment: Alignment.bottomRight,
-                                  child: Text(
-                                    '0${widget.thisIndex + 1}',
-                                    style: kFaded.copyWith(
-                                      color: Theme.of(context).colorScheme.onBackground.withOpacity(0.2),
+                          Expanded(
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 250),
+                              child: Image.asset(
+                                widget.universityImagePath,
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Stack(
+                              fit: StackFit.expand,
+                              children: [
+                                Positioned.fill(
+                                  right: 5,
+                                  child: Align(
+                                    alignment: Alignment.bottomRight,
+                                    child: Text(
+                                      '0${widget.thisIndex + 1}',
+                                      style: kFaded.copyWith(
+                                        color: Theme.of(context).colorScheme.onBackground.withOpacity(0.2),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(20),
-                                child: HeaderGroupText(
-                                  small: true,
-                                  expandsTopText: true,
-                                  onSecondaryColors: false,
-                                  multiLine: true,
-                                  spaceBetween: 20,
-                                  left: true,
-                                  header: widget.title.isEmpty ? widget.text : widget.title,
-                                  body: '${widget.university}, Year ${widget.year}',
+                                Padding(
+                                  padding: const EdgeInsets.all(20),
+                                  child: HeaderGroupText(
+                                    small: true,
+                                    expandsTopText: true,
+                                    onSecondaryColors: false,
+                                    multiLine: true,
+                                    spaceBetween: 20,
+                                    left: true,
+                                    header: widget.title.isEmpty ? widget.text : widget.title,
+                                    body: '${widget.university}, Year ${widget.year}',
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),

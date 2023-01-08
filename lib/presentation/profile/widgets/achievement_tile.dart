@@ -1,3 +1,8 @@
+import 'package:Confessi/core/styles/typography.dart';
+import 'package:Confessi/core/utils/sizing/width_fraction.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
+import 'package:Confessi/presentation/shared/other/cached_online_image.dart';
+
 import '../../../application/shared/cubit/share_cubit.dart';
 import '../../../constants/profile/enums.dart';
 import '../../../core/converters/achievement_rarity_to_color.dart';
@@ -33,28 +38,61 @@ class AchievementTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TouchableScale(
-      onTap: () => showAchievementSheet(context, rarity, title, description, quantity),
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 5),
-        child: ClipRRect(
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
-          child: AspectRatio(
-            aspectRatio: aspectRatio,
-            child: CachedNetworkImage(
-              fit: BoxFit.cover,
-              imageUrl: achievementImgUrl,
-              placeholder: (context, url) => Container(
-                color: Theme.of(context).colorScheme.surface,
-                child: LoadingCupertinoIndicator(
-                  color: Theme.of(context).colorScheme.onSurface,
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 5),
+      child: InitScale(
+        child: TouchableScale(
+          onTap: () => showAchievementSheet(context, rarity, title, description, quantity),
+          child: Stack(
+            children: [
+              ClipRRect(
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
+                child: AspectRatio(
+                  aspectRatio: aspectRatio,
+                  child: CachedOnlineImage(
+                    url: achievementImgUrl,
+                  ),
                 ),
               ),
-              errorWidget: (context, url, error) => Container(
-                color: Theme.of(context).colorScheme.surface,
-                child: Icon(Icons.error, color: Theme.of(context).colorScheme.onSurface),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  margin: const EdgeInsets.all(5),
+                  padding: const EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    color: Theme.of(context).colorScheme.background,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text(
+                          "x$quantity",
+                          style: kBody.copyWith(
+                            color: Theme.of(context).colorScheme.onError,
+                          ),
+                          textAlign: TextAlign.left,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(width: 10),
+                        Container(
+                          height: 8,
+                          width: 8,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: achievementRarityToColor(rarity),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
         ),
       ),

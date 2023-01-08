@@ -98,16 +98,26 @@ class _DraftsSheetState extends State<_DraftsSheet> {
     } else if (state is DraftsData) {
       return AnimatedSwitcher(
           duration: const Duration(milliseconds: 250),
-          child: state.drafts.isEmpty
+          child: draftEntities.isEmpty
               ? Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Text(
-                    "No drafts here!",
-                    style: kBody.copyWith(
-                      color: Theme.of(context).colorScheme.onSurface,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
+                  padding: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: bottomSafeArea(context)),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        CupertinoIcons.exclamationmark_circle,
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        "No drafts found",
+                        style: kBody.copyWith(
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                      ),
+                    ],
                   ),
                 )
               : ListView.builder(
@@ -172,7 +182,7 @@ class _DraftsSheetState extends State<_DraftsSheet> {
   Widget build(BuildContext context) {
     return BlocBuilder<DraftsCubit, DraftsState>(
       builder: (context, state) => AnimatedSwitcher(
-        duration: const Duration(milliseconds: 250),
+        duration: const Duration(milliseconds: 350),
         child: buildBody(context, state),
       ),
     );

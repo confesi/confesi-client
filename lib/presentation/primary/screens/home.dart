@@ -129,7 +129,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                             }
                             setState(() => currentIndex = newIndex);
                           },
-                          unselectedLabelColor: Theme.of(context).colorScheme.surface,
                           labelColor: Theme.of(context).colorScheme.secondary,
                           indicatorSize: TabBarIndicatorSize.label,
                           indicatorColor: Colors.transparent,
@@ -192,26 +191,23 @@ class _BottomTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 250),
-      child: Tab(
-        key: UniqueKey(),
-        icon: Icon(
-          icon,
-          size: 24,
+    return Tab(
+      icon: Icon(
+        icon,
+        size: 24,
+        color: currentIndex == indexMatcher
+            ? Theme.of(context).colorScheme.secondary
+            : Theme.of(context).colorScheme.onSurface,
+      ),
+      iconMargin: const EdgeInsets.only(top: 5, bottom: 2),
+      child: Text(
+        text,
+        style: kDetail.copyWith(
           color: currentIndex == indexMatcher
               ? Theme.of(context).colorScheme.secondary
-              : Theme.of(context).colorScheme.onBackground,
-        ),
-        iconMargin: const EdgeInsets.only(top: 5, bottom: 2),
-        child: Text(
-          text,
-          style: kDetail.copyWith(
-              color: currentIndex == indexMatcher
-                  ? Theme.of(context).colorScheme.secondary
-                  : Theme.of(context).colorScheme.onBackground,
-              fontSize: 10,
-              overflow: TextOverflow.ellipsis),
+              : Theme.of(context).colorScheme.onSurface,
+          fontSize: 10,
+          overflow: TextOverflow.ellipsis,
         ),
       ),
     );

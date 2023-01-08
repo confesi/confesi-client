@@ -60,7 +60,7 @@ class SimpleTextButton extends StatelessWidget {
                     : thirdColors
                         ? Theme.of(context).colorScheme.onSecondary
                         : Theme.of(context).colorScheme.surface),
-            borderRadius: const BorderRadius.all(Radius.circular(5)),
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
           ),
           child: Text(
             text,

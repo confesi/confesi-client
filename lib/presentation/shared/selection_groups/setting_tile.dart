@@ -38,9 +38,7 @@ class SettingTile extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
           color: bgColor ?? Theme.of(context).colorScheme.background,
-          borderRadius: const BorderRadius.all(
-            Radius.circular(5),
-          ),
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
