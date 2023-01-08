@@ -1,11 +1,11 @@
-import 'post_stat_item.dart';
-import '../../shared/behaviours/init_opacity.dart';
-import '../../shared/behaviours/init_scale.dart';
+import 'stat_tile_item.dart';
+import '../behaviours/init_opacity.dart';
+import '../behaviours/init_scale.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class PostStatTile extends StatelessWidget {
-  const PostStatTile({
+class StatTileGroup extends StatelessWidget {
+  const StatTileGroup({
     super.key,
     required this.icon1OnPress,
     required this.icon2OnPress,
@@ -34,11 +34,11 @@ class PostStatTile extends StatelessWidget {
             physics: const NeverScrollableScrollPhysics(),
             child: Row(
               children: [
-                PostStatItem(text: "Back", icon: CupertinoIcons.arrow_turn_up_left, onTap: () => icon1OnPress()),
-                PostStatItem(text: "124", icon: CupertinoIcons.chat_bubble, onTap: () => icon2OnPress()),
-                PostStatItem(text: "Share", icon: CupertinoIcons.share, onTap: () => icon3OnPress()),
-                PostStatItem(text: "12.2k", icon: CupertinoIcons.arrow_up, onTap: () => icon4OnPress()),
-                PostStatItem(text: "413", icon: CupertinoIcons.arrow_down, onTap: () => icon5OnPress()),
+                StatTileItem(text: "Back", icon: CupertinoIcons.arrow_turn_up_left, onTap: () => icon1OnPress()),
+                StatTileItem(text: "124", icon: CupertinoIcons.chat_bubble, onTap: () => icon2OnPress()),
+                StatTileItem(text: "Share", icon: CupertinoIcons.share, onTap: () => icon3OnPress()),
+                StatTileItem(text: "12.2k", icon: CupertinoIcons.arrow_up, onTap: () => icon4OnPress()),
+                StatTileItem(text: "413", icon: CupertinoIcons.arrow_down, onTap: () => icon5OnPress()),
               ],
             ),
           ),

@@ -1,6 +1,12 @@
 import 'package:Confessi/constants/profile/enums.dart';
+import 'package:Confessi/core/utils/sizing/width_fraction.dart';
 import 'package:Confessi/domain/profile/entities/number_of_each_achievement_type.dart';
 import 'package:Confessi/presentation/profile/widgets/achievement_stat_tile.dart';
+import 'package:Confessi/presentation/profile/widgets/like_hate_hottest_pageview_tile.dart';
+import 'package:Confessi/presentation/shared/buttons/pop.dart';
+import 'package:Confessi/presentation/shared/stat_tiles/stat_tile_group.dart';
+import 'package:Confessi/presentation/shared/stat_tiles/stat_tile_item.dart';
+import 'package:flutter/cupertino.dart';
 
 import '../../../application/profile/cubit/profile_cubit.dart';
 import '../../../application/shared/cubit/share_cubit.dart';
@@ -23,6 +29,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/utils/sizing/height_fraction.dart';
 import '../../shared/buttons/simple_text.dart';
+import '../widgets/achievement_rarity_numbers_display_tile.dart';
 import '../widgets/stat_tile.dart';
 
 class ProfileHome extends StatefulWidget {
@@ -38,6 +45,8 @@ class ProfileHome extends StatefulWidget {
 }
 
 class _ProfileHomeState extends State<ProfileHome> with AutomaticKeepAliveClientMixin {
+  late PageController pageController;
+
   @override
   bool get wantKeepAlive => true;
 
@@ -48,6 +57,18 @@ class _ProfileHomeState extends State<ProfileHome> with AutomaticKeepAliveClient
           "I have ${addCommasToNumber(value)} ${isPlural(value) ? valueTypePlural : valueTypeSingular}, putting me in the top $percentage% of users!",
           "Check out my $valueTypePlural!",
         );
+  }
+
+  @override
+  void initState() {
+    pageController = PageController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
   }
 
   double scrollDy = 0.0;
@@ -84,158 +105,130 @@ class _ProfileHomeState extends State<ProfileHome> with AutomaticKeepAliveClient
             return false;
           },
           child: SwipeRefresh(
+            color: Theme.of(context).colorScheme.primary,
+            backgroundColor: Theme.of(context).colorScheme.background,
             onRefresh: () async => await context.read<ProfileCubit>().reloadProfile(),
             child: ScrollableView(
-              inlineBottomOrRightPadding: 15,
               hapticsEnabled: false,
               scrollBarVisible: false,
               controller: widget.profileController.scrollController,
               physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
               child: Column(
                 children: [
-                  ClipRRect(
-                    borderRadius:
-                        BorderRadius.only(topLeft: Radius.circular(scrollDy), topRight: Radius.circular(scrollDy)),
-                    child: SizedBox(
-                      height: heightFraction(context, 2 / 5),
-                      width: double.infinity,
-                      child: CachedOnlineImage(url: state.universityImgUrl),
-                    ),
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.secondary,
-                          border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
+                  Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 30),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.secondary,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(scrollDy),
+                              topRight: Radius.circular(scrollDy),
+                            ),
+                          ),
+                          child: SafeArea(
+                            bottom: false,
+                            child: Column(
+                              children: [
+                                Container(
+                                  width: widthFraction(context, 1 / 2),
+                                  height: widthFraction(context, 1 / 2),
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Theme.of(context).colorScheme.shadow.withOpacity(0.4),
+                                        blurRadius: 30,
+                                      ),
+                                    ],
+                                    shape: BoxShape.circle,
+                                    border: Border.all(color: Theme.of(context).colorScheme.background, width: 2),
+                                  ),
+                                  child: CachedOnlineImage(url: state.universityImgUrl, isCircle: true),
+                                ),
+                                const SizedBox(height: 30),
+                                PopButton(
+                                  backgroundColor: Theme.of(context).colorScheme.background,
+                                  textColor: Theme.of(context).colorScheme.primary,
+                                  text: state.universityFullName,
+                                  onPress: () => print("tap"),
+                                  icon: CupertinoIcons.pen,
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "@dougtheuser",
-                              style: kTitle.copyWith(
-                                color: Theme.of(context).colorScheme.onSecondary,
-                              ),
-                              textAlign: TextAlign.left,
-                              overflow: TextOverflow.ellipsis,
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.background,
+                            border: Border(
+                              bottom: BorderSide(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
                             ),
-                            const SizedBox(height: 5),
-                            Text(
-                              "Private profile only visible to you.",
-                              style: kBody.copyWith(
-                                color: Theme.of(context).colorScheme.onSecondary,
-                              ),
-                              textAlign: TextAlign.left,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 15),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: SimpleTextButton(
-                                bgColor: Theme.of(context).colorScheme.background,
-                                onTap: () => Navigator.pushNamed(context, '/home/profile/comments'),
-                                text: "Comments",
-                              ),
-                            ),
-                            const SizedBox(width: 10),
-                            Expanded(
-                              child: SimpleTextButton(
-                                bgColor: Theme.of(context).colorScheme.background,
-                                onTap: () => Navigator.pushNamed(context, '/home/profile/posts'),
+                          ),
+                          child: Row(
+                            children: [
+                              StatTileItem(
+                                color: Theme.of(context).colorScheme.primary,
                                 text: "Confessions",
+                                icon: CupertinoIcons.cube_box,
+                                onTap: () => Navigator.pushNamed(context, "/home/profile/posts"),
                               ),
+                              StatTileItem(
+                                color: Theme.of(context).colorScheme.primary,
+                                text: "Saved",
+                                icon: CupertinoIcons.bookmark,
+                                onTap: () => Navigator.pushNamed(context, "/home/profile/saved"),
+                              ),
+                              StatTileItem(
+                                color: Theme.of(context).colorScheme.primary,
+                                text: "Comments",
+                                icon: CupertinoIcons.chat_bubble,
+                                onTap: () => Navigator.pushNamed(context, "/home/profile/comments"),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          color: Theme.of(context).colorScheme.shadow,
+                          height: 200,
+                          child: NotificationListener<ScrollUpdateNotification>(
+                            onNotification: (_) => true,
+                            child: PageView(
+                              controller: pageController,
+                              children: [
+                                LikeHateHottestPageviewTile(
+                                  header: "like",
+                                  percentile: state.statTileEntity.topLikesPercentage,
+                                  pluralHeader: "likes",
+                                  value: state.statTileEntity.totalLikes,
+                                ),
+                                LikeHateHottestPageviewTile(
+                                  header: "dislikes",
+                                  percentile: state.statTileEntity.topDislikesPercentage,
+                                  pluralHeader: "dislike",
+                                  value: state.statTileEntity.totalDislikes,
+                                ),
+                                LikeHateHottestPageviewTile(
+                                  header: "hottest",
+                                  percentile: state.statTileEntity.topHottestsPercentage,
+                                  pluralHeader: "hottests",
+                                  value: state.statTileEntity.totalHottests,
+                                  showSwipeSign: false,
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: SimpleTextButton(
-                          bgColor: Theme.of(context).colorScheme.background,
-                          infiniteWidth: true,
-                          onTap: () => Navigator.pushNamed(context, '/home/profile/saved'),
-                          text: "Saved Confessions",
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                        child: Text(
-                          "Statistics",
-                          style: kDisplay1.copyWith(
-                            color: Theme.of(context).colorScheme.primary,
                           ),
-                          textAlign: TextAlign.left,
-                          overflow: TextOverflow.ellipsis,
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: StatTile(
-                          leftTap: () => showInfoSheetWithAction(
-                            context,
-                            "${addCommasToNumber(state.statTileEntity.totalLikes)} total ${isPlural(state.statTileEntity.totalLikes) ? "likes" : "like"}. Top ${state.statTileEntity.topLikesPercentage}% of users.",
-                            "Yup, everyone loves your content.",
-                            () => shareStatContent(context, state.statTileEntity.totalLikes,
-                                state.statTileEntity.topLikesPercentage, "like", "likes"),
-                            "Share with friends",
-                          ),
-                          centerTap: () => showInfoSheetWithAction(
-                            context,
-                            "${addCommasToNumber(state.statTileEntity.totalHottests)} total ${isPlural(state.statTileEntity.totalHottests) ? "hottests" : "hottest"}. Top ${state.statTileEntity.topHottestsPercentage}% of users.",
-                            "Oh so popular, huh?",
-                            () => shareStatContent(context, state.statTileEntity.totalHottests,
-                                state.statTileEntity.topHottestsPercentage, "hottest", "hottests"),
-                            "Share with friends",
-                          ),
-                          rightTap: () => showInfoSheetWithAction(
-                            context,
-                            "${addCommasToNumber(state.statTileEntity.totalDislikes)} total ${isPlural(state.statTileEntity.totalDislikes) ? "hates" : "hate"}. Top ${state.statTileEntity.topDislikesPercentage}% of users.",
-                            "It's confirmed. You're a baddie.",
-                            () => shareStatContent(context, state.statTileEntity.totalDislikes,
-                                state.statTileEntity.topDislikesPercentage, "hate", "hates"),
-                            "Share with friends",
-                          ),
-                          leftNumber: state.statTileEntity.totalLikes,
-                          leftDescription: "Likes",
-                          centerNumber: state.statTileEntity.totalHottests,
-                          centerDescription: "Hottests",
-                          rightNumber: state.statTileEntity.totalDislikes,
-                          rightDescription: "Hates",
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                        child: Text(
-                          "Achievements",
-                          style: kDisplay1.copyWith(
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                          textAlign: TextAlign.left,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: AchievementStatTile(
+                        AchievementRarityNumbersDisplayTile(
                           numOfCommons: numberOfEachRarityForAchievements(state.achievementTileEntities).commons,
                           numOfRares: numberOfEachRarityForAchievements(state.achievementTileEntities).rares,
                           numOfEpics: numberOfEachRarityForAchievements(state.achievementTileEntities).epics,
                           numOfLegendaries:
                               numberOfEachRarityForAchievements(state.achievementTileEntities).legendaries,
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -273,13 +266,16 @@ class _ProfileHomeState extends State<ProfileHome> with AutomaticKeepAliveClient
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.shadow,
-      body: BlocBuilder<ProfileCubit, ProfileState>(
-        builder: (context, state) {
-          return AnimatedSwitcher(
-            duration: const Duration(milliseconds: 250),
-            child: buildChildFromState(state),
-          );
-        },
+      body: SafeArea(
+        top: false,
+        child: BlocBuilder<ProfileCubit, ProfileState>(
+          builder: (context, state) {
+            return AnimatedSwitcher(
+              duration: const Duration(milliseconds: 250),
+              child: buildChildFromState(state),
+            );
+          },
+        ),
       ),
     );
   }

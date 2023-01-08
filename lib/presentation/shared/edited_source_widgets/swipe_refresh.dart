@@ -565,7 +565,8 @@ class SwipeRefreshState extends State<SwipeRefresh> with TickerProviderStateMixi
                           shape: BoxShape.circle,
                           color: widget.backgroundColor ?? Theme.of(context).colorScheme.secondary,
                         ),
-                        child: CupertinoActivityIndicator(color: Theme.of(context).colorScheme.onSecondary),
+                        child: CupertinoActivityIndicator(
+                            color: widget.color ?? Theme.of(context).colorScheme.onSecondary),
                       );
                     },
                   ),

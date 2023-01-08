@@ -12,7 +12,7 @@ import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/buttons/option.dart';
 import '../../shared/buttons/simple_text.dart';
 import '../../shared/overlays/button_options_sheet.dart';
-import '../widgets/post_stat_tile.dart';
+import '../../shared/stat_tiles/stat_tile_group.dart';
 import '../widgets/simple_comment_sort.dart';
 
 class SimpleDetailViewScreen extends StatefulWidget {
@@ -56,7 +56,7 @@ class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
         children: [
           Hero(
             tag: 'purple',
-            child: PostStatTile(
+            child: StatTileGroup(
               icon1OnPress: () => Navigator.pop(context),
               icon2OnPress: () => print("tap"),
               icon3OnPress: () => print("tap"),
