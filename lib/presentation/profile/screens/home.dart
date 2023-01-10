@@ -4,6 +4,7 @@ import 'package:Confessi/domain/profile/entities/number_of_each_achievement_type
 import 'package:Confessi/core/alt_unused/achievement_stat_tile.dart';
 import 'package:Confessi/presentation/profile/widgets/like_hate_hottest_pageview_tile.dart';
 import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opacity.dart';
+import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:Confessi/presentation/shared/buttons/pop.dart';
 import 'package:Confessi/presentation/shared/stat_tiles/stat_tile_group.dart';
 import 'package:Confessi/presentation/shared/stat_tiles/stat_tile_item.dart';
@@ -163,7 +164,7 @@ class _ProfileHomeState extends State<ProfileHome> with AutomaticKeepAliveClient
                             ),
                           ),
                         ),
-                        TouchableOpacity(
+                        TouchableScale(
                           onTap: () => Navigator.pushNamed(context, "/profile/account_details"),
                           child: Container(
                             padding: const EdgeInsets.all(10),
@@ -259,6 +260,10 @@ class _ProfileHomeState extends State<ProfileHome> with AutomaticKeepAliveClient
                           ),
                         ),
                         AchievementRarityNumbersDisplayTile(
+                          onTapCommons: () => Navigator.pushNamed(context, "/profile/achievements"),
+                          onTapRares: () => Navigator.pushNamed(context, "/profile/achievements"),
+                          onTapEpics: () => Navigator.pushNamed(context, "/profile/achievements"),
+                          onTapLegendaries: () => Navigator.pushNamed(context, "/profile/achievements"),
                           numOfCommons: numberOfEachRarityForAchievements(state.achievementTileEntities).commons,
                           numOfRares: numberOfEachRarityForAchievements(state.achievementTileEntities).rares,
                           numOfEpics: numberOfEachRarityForAchievements(state.achievementTileEntities).epics,

@@ -6,6 +6,11 @@ var kFaded = GoogleFonts.inter(
   textStyle: const TextStyle(fontSize: 105, fontWeight: FontWeight.bold),
 );
 
+/// Faded text style - meant for decorative background numbers or display values. Not for primary reading.
+var kSplashScreenLogo = GoogleFonts.arimaMadurai(
+  textStyle: const TextStyle(fontSize: 105, fontWeight: FontWeight.bold),
+);
+
 /// Large text style - meant for display, but with sans serif style.
 var kDisplay1 = GoogleFonts.inter(
   textStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 26),

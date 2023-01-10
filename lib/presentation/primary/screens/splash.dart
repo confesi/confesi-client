@@ -101,7 +101,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                 child: Center(
                   child: Text(
                     "Confesi",
-                    style: kDisplay1.copyWith(
+                    style: kSplashScreenLogo.copyWith(
                       fontSize: 34,
                       color: Theme.of(context).colorScheme.primary,
                     ),

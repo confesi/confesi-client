@@ -3,6 +3,8 @@ import 'package:Confessi/core/converters/achievement_rarity_to_color.dart';
 import 'package:Confessi/core/styles/typography.dart';
 import 'package:Confessi/core/utils/numbers/is_plural.dart';
 import 'package:Confessi/core/utils/sizing/width_fraction.dart';
+import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opacity.dart';
+import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,12 +20,20 @@ class AchievementRarityNumbersDisplayTile extends StatelessWidget {
     required this.numOfRares,
     required this.numOfEpics,
     required this.numOfLegendaries,
+    required this.onTapCommons,
+    required this.onTapRares,
+    required this.onTapEpics,
+    required this.onTapLegendaries,
   });
 
   final int numOfCommons;
   final int numOfRares;
   final int numOfEpics;
   final int numOfLegendaries;
+  final VoidCallback onTapCommons;
+  final VoidCallback onTapRares;
+  final VoidCallback onTapEpics;
+  final VoidCallback onTapLegendaries;
 
   @override
   Widget build(BuildContext context) {
@@ -36,45 +46,26 @@ class AchievementRarityNumbersDisplayTile extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
-              ),
-            ),
-            padding: const EdgeInsets.all(10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "View achievements",
-                  style: kDetail.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface,
-                  ),
-                ),
-                const SizedBox(width: 5),
-                Icon(
-                  CupertinoIcons.arrow_right,
-                  size: 18,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-              ],
-            ),
-          ),
           Row(
             children: [
               Expanded(
-                child: _StatItem(
-                  rarity: AchievementRarity.common,
-                  quantity: numOfCommons,
-                  isPlural: isPlural(numOfCommons),
+                child: TouchableScale(
+                  onTap: () => onTapCommons(),
+                  child: _StatItem(
+                    rarity: AchievementRarity.common,
+                    quantity: numOfCommons,
+                    isPlural: isPlural(numOfCommons),
+                  ),
                 ),
               ),
               Expanded(
-                child: _StatItem(
-                  rarity: AchievementRarity.rare,
-                  quantity: numOfRares,
-                  isPlural: isPlural(numOfRares),
+                child: TouchableScale(
+                  onTap: () => onTapRares(),
+                  child: _StatItem(
+                    rarity: AchievementRarity.rare,
+                    quantity: numOfRares,
+                    isPlural: isPlural(numOfRares),
+                  ),
                 ),
               ),
             ],
@@ -82,17 +73,23 @@ class AchievementRarityNumbersDisplayTile extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: _StatItem(
-                  rarity: AchievementRarity.epic,
-                  quantity: numOfEpics,
-                  isPlural: isPlural(numOfEpics),
+                child: TouchableScale(
+                  onTap: () => onTapEpics(),
+                  child: _StatItem(
+                    rarity: AchievementRarity.epic,
+                    quantity: numOfEpics,
+                    isPlural: isPlural(numOfEpics),
+                  ),
                 ),
               ),
               Expanded(
-                child: _StatItem(
-                  rarity: AchievementRarity.legendary,
-                  quantity: numOfLegendaries,
-                  isPlural: isPlural(numOfLegendaries),
+                child: TouchableScale(
+                  onTap: () => onTapLegendaries(),
+                  child: _StatItem(
+                    rarity: AchievementRarity.legendary,
+                    quantity: numOfLegendaries,
+                    isPlural: isPlural(numOfLegendaries),
+                  ),
                 ),
               ),
             ],
@@ -117,6 +114,9 @@ class _StatItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      // Transparent hitbox trick - placed here so that parents using this
+      // widget don't have to repetitively add it
+      color: Colors.transparent,
       height: widthFraction(context, 1 / 3),
       padding: const EdgeInsets.all(10),
       child: Column(

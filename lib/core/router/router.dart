@@ -20,6 +20,8 @@ import '../../presentation/leaderboard/screens/home.dart';
 import '../../presentation/feed/screens/detail_view.dart';
 import '../../presentation/feed/screens/post_advanced_details.dart';
 import '../../presentation/profile/screens/account_details.dart';
+import '../../presentation/profile/screens/achievement_tab_manager.dart';
+import '../../presentation/profile/tabs/achievement_tab.dart';
 import '../../presentation/watched_universities/screens/search_universities.dart';
 import '../alt_unused/watched_universities.dart';
 import '../../presentation/feedback/screens/home.dart';
@@ -189,6 +191,9 @@ class AppRouter {
           break;
         case "/profile/account_details":
           page = const AccountDetailsScreen();
+          break;
+        case "/profile/achievements":
+          page = const AchievementTabManager();
           break;
         case "/feedback":
           page = const FeedbackHome();
