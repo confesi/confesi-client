@@ -79,7 +79,7 @@ class FeedbackSettingScreen extends StatelessWidget {
                           ],
                         ),
                         const DisclaimerText(
-                          verticalPadding: 10,
+                          topPadding: 15,
                           text: "This preference is saved locally to your device.",
                         ),
                         const SimulatedBottomSafeArea(),

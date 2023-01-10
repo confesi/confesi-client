@@ -19,6 +19,7 @@ import '../../presentation/create_post/screens/home.dart';
 import '../../presentation/leaderboard/screens/home.dart';
 import '../../presentation/feed/screens/detail_view.dart';
 import '../../presentation/feed/screens/post_advanced_details.dart';
+import '../../presentation/profile/screens/account_details.dart';
 import '../../presentation/watched_universities/screens/search_universities.dart';
 import '../alt_unused/watched_universities.dart';
 import '../../presentation/feedback/screens/home.dart';
@@ -185,6 +186,9 @@ class AppRouter {
             university: args['university'],
             year: args['year'],
           );
+          break;
+        case "/profile/account_details":
+          page = const AccountDetailsScreen();
           break;
         case "/feedback":
           page = const FeedbackHome();

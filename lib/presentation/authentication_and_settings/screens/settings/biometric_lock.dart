@@ -70,7 +70,7 @@ class _BiometricLockScreenState extends State<BiometricLockScreen> {
                         ],
                       ),
                       const DisclaimerText(
-                        verticalPadding: 10,
+                        topPadding: 15,
                         text:
                             "Enabling this forces you to unlock your saved posts, confessions, and comments with biometrics.",
                       ),

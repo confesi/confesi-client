@@ -3,6 +3,7 @@ import 'package:Confessi/core/utils/sizing/width_fraction.dart';
 import 'package:Confessi/domain/profile/entities/number_of_each_achievement_type.dart';
 import 'package:Confessi/core/alt_unused/achievement_stat_tile.dart';
 import 'package:Confessi/presentation/profile/widgets/like_hate_hottest_pageview_tile.dart';
+import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:Confessi/presentation/shared/buttons/pop.dart';
 import 'package:Confessi/presentation/shared/stat_tiles/stat_tile_group.dart';
 import 'package:Confessi/presentation/shared/stat_tiles/stat_tile_item.dart';
@@ -162,31 +163,34 @@ class _ProfileHomeState extends State<ProfileHome> with AutomaticKeepAliveClient
                             ),
                           ),
                         ),
-                        Container(
-                          padding: const EdgeInsets.all(10),
-                          margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(
-                                Radius.circular(context.watch<UserCubit>().stateAsUser.curvyEnum.borderRadius)),
-                            color: Theme.of(context).colorScheme.background,
-                            border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Edit Account Details",
-                                style: kDetail.copyWith(
-                                  color: Theme.of(context).colorScheme.onSurface,
+                        TouchableOpacity(
+                          onTap: () => Navigator.pushNamed(context, "/profile/account_details"),
+                          child: Container(
+                            padding: const EdgeInsets.all(10),
+                            margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(context.watch<UserCubit>().stateAsUser.curvyEnum.borderRadius)),
+                              color: Theme.of(context).colorScheme.background,
+                              border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Edit Account Details",
+                                  style: kDetail.copyWith(
+                                    color: Theme.of(context).colorScheme.onSurface,
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(width: 5),
-                              Icon(
-                                CupertinoIcons.arrow_right,
-                                size: 18,
-                                color: Theme.of(context).colorScheme.secondary,
-                              ),
-                            ],
+                                const SizedBox(width: 5),
+                                Icon(
+                                  CupertinoIcons.arrow_right,
+                                  size: 18,
+                                  color: Theme.of(context).colorScheme.secondary,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                         Container(

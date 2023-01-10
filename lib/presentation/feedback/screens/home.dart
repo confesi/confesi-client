@@ -1,21 +1,16 @@
+import 'package:Confessi/core/utils/sizing/bottom_safe_area.dart';
 import 'package:scrollable/exports.dart';
 
 import '../../../constants/feedback/text.dart';
-import '../../shared/behaviours/init_opacity.dart';
 import '../../shared/behaviours/init_scale.dart';
-import '../../shared/behaviours/init_transform.dart';
-import '../../shared/behaviours/keyboard_dismiss.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/buttons/pop.dart';
-import '../../shared/buttons/simple_text.dart';
 import '../../shared/layout/scrollable_area.dart';
-import '../../shared/text/disclaimer_text.dart';
 import '../../shared/textfields/expandable_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants/feedback/general.dart';
-import '../../../constants/shared/enums.dart';
 import '../../../core/styles/typography.dart';
 import '../../shared/other/text_limit_tracker.dart';
 import '../../shared/layout/appbar.dart';
@@ -61,6 +56,7 @@ class _FeedbackHomeState extends State<FeedbackHome> {
         child: Scaffold(
           backgroundColor: Theme.of(context).colorScheme.background,
           body: SafeArea(
+            bottom: false,
             child: Column(
               children: [
                 AppbarLayout(
@@ -81,26 +77,28 @@ class _FeedbackHomeState extends State<FeedbackHome> {
                   leftIcon: CupertinoIcons.xmark,
                 ),
                 Expanded(
-                  child: ScrollableArea(
-                    thumbVisible: false,
-                    child: Column(
-                      children: [
-                        InitScale(
-                          child: ExpandableTextfield(
-                            focusNode: textFocusNode,
-                            maxLines: 8,
-                            maxCharacters: maxFeedbackTextCharacterLimit,
-                            hintText: textFieldHint,
-                            controller: textEditingController,
-                            onChanged: (newValue) {
-                              print(newValue);
-                              setState(() {});
-                            },
+                  child: ScrollableView(
+                    scrollBarVisible: false,
+                    inlineBottomOrRightPadding: bottomSafeArea(context),
+                    controller: ScrollController(),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Column(
+                        children: [
+                          InitScale(
+                            child: ExpandableTextfield(
+                              focusNode: textFocusNode,
+                              maxLines: 8,
+                              maxCharacters: maxFeedbackTextCharacterLimit,
+                              hintText: textFieldHint,
+                              controller: textEditingController,
+                              onChanged: (newValue) {
+                                print(newValue);
+                              },
+                            ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: InitScale(
+                          const SizedBox(height: 10),
+                          InitScale(
                             child: PopButton(
                               topPadding: 5,
                               backgroundColor: Theme.of(context).colorScheme.secondary,
@@ -110,8 +108,8 @@ class _FeedbackHomeState extends State<FeedbackHome> {
                               icon: CupertinoIcons.up_arrow,
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),

@@ -18,13 +18,14 @@ class _SavedScreenState extends State<SavedScreen> {
   Widget build(BuildContext context) {
     return ThemedStatusBar(
       child: Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).colorScheme.shadow,
         body: SafeArea(
           bottom: false,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AppbarLayout(
+                backgroundColor: Theme.of(context).colorScheme.shadow,
                 bottomBorder: false,
                 centerWidget: Text(
                   "Saved Confessions",

@@ -11,12 +11,13 @@ class PostsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return ThemedStatusBar(
       child: Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).colorScheme.shadow,
         body: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AppbarLayout(
+                backgroundColor: Theme.of(context).colorScheme.shadow,
                 bottomBorder: false,
                 centerWidget: Text(
                   "Your Confessions",
