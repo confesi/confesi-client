@@ -23,7 +23,8 @@ class ChildPost extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.background,
-          borderRadius: const BorderRadius.all(Radius.circular(5)),
+          borderRadius:
+              BorderRadius.all(Radius.circular(context.watch<UserCubit>().stateAsUser.curvyEnum.borderRadius)),
           border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
         ),
         child: Column(

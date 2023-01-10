@@ -1,13 +1,14 @@
 import 'package:Confessi/constants/profile/enums.dart';
 import 'package:Confessi/core/utils/sizing/width_fraction.dart';
 import 'package:Confessi/domain/profile/entities/number_of_each_achievement_type.dart';
-import 'package:Confessi/presentation/profile/widgets/achievement_stat_tile.dart';
+import 'package:Confessi/core/alt_unused/achievement_stat_tile.dart';
 import 'package:Confessi/presentation/profile/widgets/like_hate_hottest_pageview_tile.dart';
 import 'package:Confessi/presentation/shared/buttons/pop.dart';
 import 'package:Confessi/presentation/shared/stat_tiles/stat_tile_group.dart';
 import 'package:Confessi/presentation/shared/stat_tiles/stat_tile_item.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../../../application/profile/cubit/profile_cubit.dart';
 import '../../../application/shared/cubit/share_cubit.dart';
 import '../../../core/styles/typography.dart';
@@ -120,9 +121,11 @@ class _ProfileHomeState extends State<ProfileHome> with AutomaticKeepAliveClient
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
+                          width: double.infinity,
                           padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 30),
                           decoration: BoxDecoration(
                             color: Theme.of(context).colorScheme.secondary,
+                            border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
                             borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(scrollDy),
                               topRight: Radius.circular(scrollDy),
@@ -147,41 +150,72 @@ class _ProfileHomeState extends State<ProfileHome> with AutomaticKeepAliveClient
                                   ),
                                   child: CachedOnlineImage(url: state.universityImgUrl, isCircle: true),
                                 ),
-                                const SizedBox(height: 30),
-                                PopButton(
-                                  backgroundColor: Theme.of(context).colorScheme.background,
-                                  textColor: Theme.of(context).colorScheme.primary,
-                                  text: state.universityFullName,
-                                  onPress: () => print("tap"),
-                                  icon: CupertinoIcons.pen,
-                                ),
+                                // const SizedBox(height: 30),
+                                // PopButton(
+                                //   backgroundColor: Theme.of(context).colorScheme.background,
+                                //   textColor: Theme.of(context).colorScheme.primary,
+                                //   text: state.universityFullName,
+                                //   onPress: () => print("tap"),
+                                //   icon: CupertinoIcons.pen,
+                                // ),
                               ],
                             ),
                           ),
                         ),
                         Container(
+                          padding: const EdgeInsets.all(10),
+                          margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
                           decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(context.watch<UserCubit>().stateAsUser.curvyEnum.borderRadius)),
                             color: Theme.of(context).colorScheme.background,
-                            border: Border(
-                              bottom: BorderSide(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
-                            ),
+                            border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Edit Account Details",
+                                style: kDetail.copyWith(
+                                  color: Theme.of(context).colorScheme.onSurface,
+                                ),
+                              ),
+                              const SizedBox(width: 5),
+                              Icon(
+                                CupertinoIcons.arrow_right,
+                                size: 18,
+                                color: Theme.of(context).colorScheme.secondary,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(context.watch<UserCubit>().stateAsUser.curvyEnum.borderRadius)),
+                            color: Theme.of(context).colorScheme.background,
+                            border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
                           ),
                           child: Row(
                             children: [
                               StatTileItem(
-                                color: Theme.of(context).colorScheme.primary,
+                                iconColor: Theme.of(context).colorScheme.primary,
+                                textColor: Theme.of(context).colorScheme.onSurface,
                                 text: "Confessions",
                                 icon: CupertinoIcons.cube_box,
                                 onTap: () => Navigator.pushNamed(context, "/home/profile/posts"),
                               ),
                               StatTileItem(
-                                color: Theme.of(context).colorScheme.primary,
+                                iconColor: Theme.of(context).colorScheme.primary,
+                                textColor: Theme.of(context).colorScheme.onSurface,
                                 text: "Saved",
                                 icon: CupertinoIcons.bookmark,
                                 onTap: () => Navigator.pushNamed(context, "/home/profile/saved"),
                               ),
                               StatTileItem(
-                                color: Theme.of(context).colorScheme.primary,
+                                iconColor: Theme.of(context).colorScheme.primary,
+                                textColor: Theme.of(context).colorScheme.onSurface,
                                 text: "Comments",
                                 icon: CupertinoIcons.chat_bubble,
                                 onTap: () => Navigator.pushNamed(context, "/home/profile/comments"),
@@ -193,7 +227,7 @@ class _ProfileHomeState extends State<ProfileHome> with AutomaticKeepAliveClient
                           color: Theme.of(context).colorScheme.shadow,
                           height: 200,
                           child: NotificationListener<ScrollUpdateNotification>(
-                            onNotification: (_) => true,
+                            onNotification: (_) => true, // Don't bubble scroll notifications
                             child: PageView(
                               controller: pageController,
                               children: [
@@ -206,7 +240,7 @@ class _ProfileHomeState extends State<ProfileHome> with AutomaticKeepAliveClient
                                 LikeHateHottestPageviewTile(
                                   header: "dislikes",
                                   percentile: state.statTileEntity.topDislikesPercentage,
-                                  pluralHeader: "dislike",
+                                  pluralHeader: "dislikes",
                                   value: state.statTileEntity.totalDislikes,
                                 ),
                                 LikeHateHottestPageviewTile(

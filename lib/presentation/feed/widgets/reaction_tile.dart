@@ -1,3 +1,6 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../../../core/utils/numbers/large_number_formatter.dart';
 import '../../shared/button_touch_effects/touchable_scale.dart';
 import 'package:flutter/cupertino.dart';
@@ -26,7 +29,8 @@ class ReactionTile extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
           color: Theme.of(context).colorScheme.surface,
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          borderRadius:
+              BorderRadius.all(Radius.circular(context.watch<UserCubit>().stateAsUser.curvyEnum.borderRadius)),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,

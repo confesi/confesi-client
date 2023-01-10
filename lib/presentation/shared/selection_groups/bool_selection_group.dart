@@ -1,3 +1,6 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import 'bool_selection_tile.dart';
 import 'package:flutter/material.dart';
 
@@ -26,7 +29,8 @@ class BoolSelectionGroup extends StatelessWidget {
         const SizedBox(height: 10),
         Container(
           decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(Radius.circular(10)),
+            borderRadius:
+                BorderRadius.all(Radius.circular(context.watch<UserCubit>().stateAsUser.curvyEnum.borderRadius)),
             border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
           ),
           child: Column(

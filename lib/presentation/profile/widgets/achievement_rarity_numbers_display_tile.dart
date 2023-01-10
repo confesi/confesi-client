@@ -5,7 +5,9 @@ import 'package:Confessi/core/utils/numbers/is_plural.dart';
 import 'package:Confessi/core/utils/sizing/width_fraction.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../../../core/converters/achievement_rarity_to_plural_string.dart';
 import '../../../core/utils/numbers/add_commas_to_number.dart';
 
@@ -28,6 +30,7 @@ class AchievementRarityNumbersDisplayTile extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
       decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(context.watch<UserCubit>().stateAsUser.curvyEnum.borderRadius)),
         color: Theme.of(context).colorScheme.background,
         border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
       ),
@@ -44,14 +47,14 @@ class AchievementRarityNumbersDisplayTile extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "Tap to view achievements",
+                  "View achievements",
                   style: kDetail.copyWith(
                     color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
                 const SizedBox(width: 5),
                 Icon(
-                  CupertinoIcons.sparkles,
+                  CupertinoIcons.arrow_right,
                   size: 18,
                   color: Theme.of(context).colorScheme.secondary,
                 ),

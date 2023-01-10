@@ -3,6 +3,7 @@ import 'package:Confessi/presentation/authentication_and_settings/screens/settin
 import 'package:Confessi/presentation/authentication_and_settings/screens/settings/text_size.dart';
 
 import '../../presentation/authentication_and_settings/screens/authentication/registration.dart';
+import '../../presentation/authentication_and_settings/screens/settings/curvy.dart';
 import '../../presentation/feed/screens/simple_detail_view.dart';
 
 import '../../application/create_post/cubit/post_cubit.dart';
@@ -196,6 +197,9 @@ class AppRouter {
           break;
         case "/settings/text_size":
           page = const TextSizeScreen();
+          break;
+        case "/settings/curvy":
+          page = const CurvyScreen();
           break;
         case "/settings/feedback":
           page = const FeedbackSettingScreen();

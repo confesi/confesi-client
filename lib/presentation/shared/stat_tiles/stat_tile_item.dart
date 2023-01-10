@@ -6,12 +6,20 @@ import 'package:flutter/material.dart';
 import '../../../core/styles/typography.dart';
 
 class StatTileItem extends StatelessWidget {
-  const StatTileItem({super.key, required this.text, required this.icon, required this.onTap, this.color});
+  const StatTileItem({
+    super.key,
+    required this.text,
+    required this.icon,
+    required this.onTap,
+    this.iconColor,
+    this.textColor,
+  });
 
   final IconData icon;
   final String text;
   final VoidCallback onTap;
-  final Color? color;
+  final Color? iconColor;
+  final Color? textColor;
 
   @override
   Widget build(BuildContext context) {
@@ -27,14 +35,14 @@ class StatTileItem extends StatelessWidget {
               children: [
                 Icon(
                   icon,
-                  color: color ?? Theme.of(context).colorScheme.onSecondary,
+                  color: iconColor ?? Theme.of(context).colorScheme.onSecondary,
                   // color: Colors.white,
                 ),
                 const SizedBox(height: 5),
                 Text(
                   text,
                   style: kDetail.copyWith(
-                    color: color ?? Theme.of(context).colorScheme.onSecondary,
+                    color: textColor ?? Theme.of(context).colorScheme.onSecondary,
                     // color: Colors.white,
                   ),
                   textAlign: TextAlign.center,

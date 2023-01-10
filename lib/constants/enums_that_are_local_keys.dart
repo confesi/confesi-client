@@ -34,3 +34,14 @@ enum ShakeForFeedbackEnum {
   enabled,
   disabled,
 }
+
+enum CurvyEnum {
+  none(0),
+  little(5),
+  moderate(10),
+  lots(15);
+
+  final double borderRadius;
+
+  const CurvyEnum(this.borderRadius);
+}

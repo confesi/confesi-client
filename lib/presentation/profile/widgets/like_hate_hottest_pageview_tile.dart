@@ -3,7 +3,9 @@ import 'package:Confessi/core/utils/numbers/is_plural.dart';
 import 'package:Confessi/presentation/shared/other/widget_or_nothing.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../../../core/utils/numbers/add_commas_to_number.dart';
 
 class LikeHateHottestPageviewTile extends StatelessWidget {
@@ -28,6 +30,7 @@ class LikeHateHottestPageviewTile extends StatelessWidget {
       margin: const EdgeInsets.all(10),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(context.watch<UserCubit>().stateAsUser.curvyEnum.borderRadius)),
         color: Theme.of(context).colorScheme.background,
         border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
       ),

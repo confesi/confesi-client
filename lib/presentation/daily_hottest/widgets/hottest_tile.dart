@@ -1,3 +1,6 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../../../core/styles/typography.dart';
 import '../../../core/utils/numbers/is_plural.dart';
 import '../../../core/utils/numbers/large_number_formatter.dart';
@@ -70,78 +73,79 @@ class _HottestTileState extends State<HottestTile> {
                     curve: Curves.decelerate,
                     height: isSelected ? constraints.maxHeight : constraints.maxHeight * .8,
                     decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(
+                          Radius.circular(context.watch<UserCubit>().stateAsUser.curvyEnum.borderRadius)),
                       color: Theme.of(context).colorScheme.background,
                       border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
+                      boxShadow: [
+                        BoxShadow(color: Theme.of(context).colorScheme.secondary.withOpacity(0.1), blurRadius: 30),
+                      ],
                     ),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.background,
-                        boxShadow: [
-                          BoxShadow(color: Theme.of(context).colorScheme.secondary.withOpacity(0.1), blurRadius: 30),
-                        ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.secondary,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(context.watch<UserCubit>().stateAsUser.curvyEnum.borderRadius),
+                                topRight:
+                                    Radius.circular(context.watch<UserCubit>().stateAsUser.curvyEnum.borderRadius)),
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                          padding: const EdgeInsets.all(10),
+                          width: double.infinity,
+                          child: Text(
+                            '${getComments()} · ${getLikes()} · ${getHates()}',
+                            style: kDetail.copyWith(
+                              color: Theme.of(context).colorScheme.onSecondary,
                             ),
-                            padding: const EdgeInsets.all(10),
-                            width: double.infinity,
-                            child: Text(
-                              '${getComments()} · ${getLikes()} · ${getHates()}',
-                              style: kDetail.copyWith(
-                                color: Theme.of(context).colorScheme.onSecondary,
-                              ),
-                              textAlign: TextAlign.center,
-                              overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.center,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        Expanded(
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 250),
+                            child: Image.asset(
+                              widget.universityImagePath,
+                              fit: BoxFit.cover,
+                              width: double.infinity,
                             ),
                           ),
-                          Expanded(
-                            child: AnimatedContainer(
-                              duration: const Duration(milliseconds: 250),
-                              child: Image.asset(
-                                widget.universityImagePath,
-                                fit: BoxFit.cover,
-                                width: double.infinity,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Stack(
-                              fit: StackFit.expand,
-                              children: [
-                                Positioned.fill(
-                                  right: 5,
-                                  child: Align(
-                                    alignment: Alignment.bottomRight,
-                                    child: Text(
-                                      '0${widget.thisIndex + 1}',
-                                      style: kFaded.copyWith(
-                                        color: Theme.of(context).colorScheme.onBackground.withOpacity(0.2),
-                                      ),
+                        ),
+                        Expanded(
+                          child: Stack(
+                            fit: StackFit.expand,
+                            children: [
+                              Positioned.fill(
+                                right: 5,
+                                child: Align(
+                                  alignment: Alignment.bottomRight,
+                                  child: Text(
+                                    '0${widget.thisIndex + 1}',
+                                    style: kFaded.copyWith(
+                                      color: Theme.of(context).colorScheme.onBackground.withOpacity(0.2),
                                     ),
                                   ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.all(20),
-                                  child: HeaderGroupText(
-                                    small: true,
-                                    expandsTopText: true,
-                                    onSecondaryColors: false,
-                                    multiLine: true,
-                                    spaceBetween: 20,
-                                    left: true,
-                                    header: widget.title.isEmpty ? widget.text : widget.title,
-                                    body: '${widget.university}, Year ${widget.year}',
-                                  ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(20),
+                                child: HeaderGroupText(
+                                  small: true,
+                                  expandsTopText: true,
+                                  onSecondaryColors: false,
+                                  multiLine: true,
+                                  spaceBetween: 20,
+                                  left: true,
+                                  header: widget.title.isEmpty ? widget.text : widget.title,
+                                  body: '${widget.university}, Year ${widget.year}',
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ),

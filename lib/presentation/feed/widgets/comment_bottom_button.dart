@@ -1,5 +1,8 @@
 import 'package:Confessi/core/styles/typography.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
 
 class CommentBottomButton extends StatelessWidget {
   const CommentBottomButton({super.key, required this.text});
@@ -14,7 +17,7 @@ class CommentBottomButton extends StatelessWidget {
       decoration: BoxDecoration(
         border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
         color: Theme.of(context).colorScheme.surface,
-        borderRadius: const BorderRadius.all(Radius.circular(5)),
+        borderRadius: BorderRadius.all(Radius.circular(context.watch<UserCubit>().stateAsUser.curvyEnum.borderRadius)),
       ),
       child: Text(
         text,

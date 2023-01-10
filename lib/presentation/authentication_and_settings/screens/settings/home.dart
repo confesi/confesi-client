@@ -99,6 +99,11 @@ class SettingsHome extends StatelessWidget {
                           text: "Text size",
                           onTap: () => Navigator.of(context).pushNamed("/settings/text_size"),
                         ),
+                        SettingTile(
+                          leftIcon: CupertinoIcons.square_fill_on_circle_fill,
+                          text: "Curviness of components",
+                          onTap: () => Navigator.of(context).pushNamed("/settings/curvy"),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 15),

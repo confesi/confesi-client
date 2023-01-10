@@ -13,8 +13,10 @@ class User extends UserState {
   final TextSizeEnum textSizeEnum;
   final ShakeForFeedbackEnum shakeForFeedbackEnum;
   final HomeViewedEnum homeViewedEnum;
+  final CurvyEnum curvyEnum;
 
   User({
+    required this.curvyEnum,
     required this.textSizeEnum,
     required this.appearanceEnum,
     required this.shakeForFeedbackEnum,
@@ -23,6 +25,7 @@ class User extends UserState {
   });
 
   User copyWith({
+    CurvyEnum? curvyEnum,
     HomeViewedEnum? homeViewedEnum,
     AppearanceEnum? appearanceEnum,
     TextSizeEnum? textSizeEnum,
@@ -31,6 +34,7 @@ class User extends UserState {
     bool? hasViewedPastOpenScreenAlready,
   }) {
     return User(
+      curvyEnum: curvyEnum ?? this.curvyEnum,
       homeViewedEnum: homeViewedEnum ?? this.homeViewedEnum,
       shakeForFeedbackEnum: shakeForFeedbackEnum ?? this.shakeForFeedbackEnum,
       textSizeEnum: textSizeEnum ?? this.textSizeEnum,
@@ -40,7 +44,7 @@ class User extends UserState {
   }
 
   @override
-  List<Object?> get props => [userType, appearanceEnum, textSizeEnum, shakeForFeedbackEnum, homeViewedEnum];
+  List<Object?> get props => [userType, appearanceEnum, textSizeEnum, shakeForFeedbackEnum, homeViewedEnum, curvyEnum];
 }
 
 /// Error retrieving critical information to create a user.
