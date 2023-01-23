@@ -32,6 +32,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/utils/sizing/height_fraction.dart';
 import '../../shared/buttons/simple_text.dart';
+import '../tabs/achievement_tab.dart';
 import '../widgets/achievement_rarity_numbers_display_tile.dart';
 import '../widgets/stat_tile.dart';
 
@@ -260,10 +261,35 @@ class _ProfileHomeState extends State<ProfileHome> with AutomaticKeepAliveClient
                           ),
                         ),
                         AchievementRarityNumbersDisplayTile(
-                          onTapCommons: () => Navigator.pushNamed(context, "/profile/achievements"),
-                          onTapRares: () => Navigator.pushNamed(context, "/profile/achievements"),
-                          onTapEpics: () => Navigator.pushNamed(context, "/profile/achievements"),
-                          onTapLegendaries: () => Navigator.pushNamed(context, "/profile/achievements"),
+                          onTapCommons: () => Navigator.pushNamed(
+                            context,
+                            "/profile/achievements",
+                            arguments: {"rarity": AchievementRarity.common},
+                          ),
+                          onTapRares: () {
+                            state.achievementTileEntities.map((e) => print(e.rarity));
+                            Navigator.pushNamed(
+                              context,
+                              "/profile/achievements",
+                              arguments: {
+                                "rarity": AchievementRarity.rare,
+                                "achievements": const [
+                                  AchievementTab(rarity: AchievementRarity.rare),
+                                  AchievementTab(rarity: AchievementRarity.rare),
+                                ]
+                              },
+                            );
+                          },
+                          onTapEpics: () => Navigator.pushNamed(
+                            context,
+                            "/profile/achievements",
+                            arguments: {"rarity": AchievementRarity.epic},
+                          ),
+                          onTapLegendaries: () => Navigator.pushNamed(
+                            context,
+                            "/profile/achievements",
+                            arguments: {"rarity": AchievementRarity.legendary},
+                          ),
                           numOfCommons: numberOfEachRarityForAchievements(state.achievementTileEntities).commons,
                           numOfRares: numberOfEachRarityForAchievements(state.achievementTileEntities).rares,
                           numOfEpics: numberOfEachRarityForAchievements(state.achievementTileEntities).epics,

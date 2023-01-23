@@ -16,7 +16,6 @@ class NetworkInfo implements INetworkInfo {
   ///
   /// Returns TRUE by default for platforms that aren't iOS or Android.
   @override
-  Future<bool> get isConnected async => Platform.isAndroid || Platform.isIOS
-      ? await connectionChecker.hasConnection
-      : true;
+  Future<bool> get isConnected async =>
+      Platform.isAndroid || Platform.isIOS ? await connectionChecker.hasConnection : true;
 }

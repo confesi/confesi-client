@@ -59,6 +59,7 @@ class AppRouter {
       "/feedback",
       "/create_post",
       "/settings",
+      "/profile/achievements"
     ];
     return fullScreenDialogRoutes.contains(routeSettings.name) ? true : false;
   }
@@ -193,7 +194,10 @@ class AppRouter {
           page = const AccountDetailsScreen();
           break;
         case "/profile/achievements":
-          page = const AchievementTabManager();
+          page = AchievementTabManager(
+            rarity: args!['rarity'],
+            achievements: args['achievements'],
+          );
           break;
         case "/feedback":
           page = const FeedbackHome();
@@ -252,6 +256,7 @@ class AppRouter {
           throw Exception("Named route ${routeSettings.name} not defined");
       }
     } catch (e) {
+      print(e);
       page = const CriticalErrorScreen();
     }
     if (isFadeAnim(routeSettings) || page is CriticalErrorScreen) {
