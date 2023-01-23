@@ -78,7 +78,7 @@ class _TouchableScaleState extends State<TouchableScale> with SingleTickerProvid
               child: Opacity(
                 opacity: -anim.value * 0.4 + 1,
                 child: Transform.scale(
-                  scale: -anim.value * 0.1 + 1,
+                  scale: -anim.value * 0.065 + 1,
                   child: widget.child,
                 ),
               ),

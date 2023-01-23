@@ -1,4 +1,5 @@
 import 'package:Confessi/constants/profile/enums.dart';
+import 'package:Confessi/core/converters/achievement_rarity_to_string.dart';
 import 'package:Confessi/core/utils/sizing/width_fraction.dart';
 import 'package:Confessi/domain/profile/entities/number_of_each_achievement_type.dart';
 import 'package:Confessi/core/alt_unused/achievement_stat_tile.dart';
@@ -6,6 +7,7 @@ import 'package:Confessi/presentation/profile/widgets/like_hate_hottest_pageview
 import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:Confessi/presentation/shared/buttons/pop.dart';
+import 'package:Confessi/presentation/shared/overlays/info_sheet.dart';
 import 'package:Confessi/presentation/shared/stat_tiles/stat_tile_group.dart';
 import 'package:Confessi/presentation/shared/stat_tiles/stat_tile_item.dart';
 import 'package:flutter/cupertino.dart';
@@ -76,6 +78,20 @@ class _ProfileHomeState extends State<ProfileHome> with AutomaticKeepAliveClient
   }
 
   double scrollDy = 0.0;
+
+  List<AchievementTab> achievementTilesToCertainRarityAchievementTabs(
+      List<AchievementTileEntity> achievementTiles, AchievementRarity desiredRarity) {
+    List<AchievementTab> tabs = [];
+    for (AchievementTileEntity i in achievementTiles) {
+      if (i.rarity == desiredRarity) tabs.add(AchievementTab(achievement: i));
+    }
+    return tabs;
+  }
+
+  void showInfoAchievementSheet(BuildContext context, AchievementRarity rarity) {
+    showInfoSheet(context, "No ${achievementRarityToString(rarity)} achievements yet!",
+        "Keep interacting on the app to earn more.");
+  }
 
   NumberOfEachAchievementType numberOfEachRarityForAchievements(List<AchievementTileEntity> achievements) {
     NumberOfEachAchievementType numberOfEachAchievementType = NumberOfEachAchievementType();
@@ -261,35 +277,56 @@ class _ProfileHomeState extends State<ProfileHome> with AutomaticKeepAliveClient
                           ),
                         ),
                         AchievementRarityNumbersDisplayTile(
-                          onTapCommons: () => Navigator.pushNamed(
-                            context,
-                            "/profile/achievements",
-                            arguments: {"rarity": AchievementRarity.common},
-                          ),
-                          onTapRares: () {
-                            state.achievementTileEntities.map((e) => print(e.rarity));
-                            Navigator.pushNamed(
-                              context,
-                              "/profile/achievements",
-                              arguments: {
-                                "rarity": AchievementRarity.rare,
-                                "achievements": const [
-                                  AchievementTab(rarity: AchievementRarity.rare),
-                                  AchievementTab(rarity: AchievementRarity.rare),
-                                ]
-                              },
-                            );
-                          },
-                          onTapEpics: () => Navigator.pushNamed(
-                            context,
-                            "/profile/achievements",
-                            arguments: {"rarity": AchievementRarity.epic},
-                          ),
-                          onTapLegendaries: () => Navigator.pushNamed(
-                            context,
-                            "/profile/achievements",
-                            arguments: {"rarity": AchievementRarity.legendary},
-                          ),
+                          onTapCommons: () =>
+                              numberOfEachRarityForAchievements(state.achievementTileEntities).commons == 0
+                                  ? showInfoAchievementSheet(context, AchievementRarity.common)
+                                  : Navigator.pushNamed(
+                                      context,
+                                      "/profile/achievements",
+                                      arguments: {
+                                        "rarity": AchievementRarity.common,
+                                        "achievements": achievementTilesToCertainRarityAchievementTabs(
+                                            state.achievementTileEntities, AchievementRarity.common),
+                                      },
+                                      // AchievementTab(achievement: i)
+                                    ),
+                          onTapRares: () => numberOfEachRarityForAchievements(state.achievementTileEntities).rares == 0
+                              ? showInfoAchievementSheet(context, AchievementRarity.rare)
+                              : Navigator.pushNamed(
+                                  context,
+                                  "/profile/achievements",
+                                  arguments: {
+                                    "rarity": AchievementRarity.rare,
+                                    "achievements": achievementTilesToCertainRarityAchievementTabs(
+                                        state.achievementTileEntities, AchievementRarity.rare),
+                                  },
+                                  // AchievementTab(achievement: i)
+                                ),
+                          onTapEpics: () => numberOfEachRarityForAchievements(state.achievementTileEntities).epics == 0
+                              ? showInfoAchievementSheet(context, AchievementRarity.epic)
+                              : Navigator.pushNamed(
+                                  context,
+                                  "/profile/achievements",
+                                  arguments: {
+                                    "rarity": AchievementRarity.epic,
+                                    "achievements": achievementTilesToCertainRarityAchievementTabs(
+                                        state.achievementTileEntities, AchievementRarity.epic),
+                                  },
+                                  // AchievementTab(achievement: i)
+                                ),
+                          onTapLegendaries: () =>
+                              numberOfEachRarityForAchievements(state.achievementTileEntities).legendaries == 0
+                                  ? showInfoAchievementSheet(context, AchievementRarity.legendary)
+                                  : Navigator.pushNamed(
+                                      context,
+                                      "/profile/achievements",
+                                      arguments: {
+                                        "rarity": AchievementRarity.legendary,
+                                        "achievements": achievementTilesToCertainRarityAchievementTabs(
+                                            state.achievementTileEntities, AchievementRarity.legendary),
+                                      },
+                                      // AchievementTab(achievement: i)
+                                    ),
                           numOfCommons: numberOfEachRarityForAchievements(state.achievementTileEntities).commons,
                           numOfRares: numberOfEachRarityForAchievements(state.achievementTileEntities).rares,
                           numOfEpics: numberOfEachRarityForAchievements(state.achievementTileEntities).epics,

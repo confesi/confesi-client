@@ -4,21 +4,21 @@ import 'package:Confessi/core/styles/typography.dart';
 import 'package:Confessi/core/utils/sizing/bottom_safe_area.dart';
 import 'package:Confessi/core/utils/sizing/top_safe_area.dart';
 import 'package:Confessi/core/utils/sizing/width_fraction.dart';
+import 'package:Confessi/data/profile/models/achievement_tile_model.dart';
+import 'package:Confessi/domain/profile/entities/achievement_tile_entity.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
 import 'package:Confessi/presentation/shared/behaviours/themed_status_bar.dart';
 import 'package:Confessi/presentation/shared/other/cached_online_image.dart';
 import 'package:flutter/material.dart';
 import 'package:scrollable/exports.dart';
 
-import '../../../core/converters/achievement_rarity_to_color.dart';
-
 class AchievementTab extends StatelessWidget {
   const AchievementTab({
     super.key,
-    required this.rarity,
+    required this.achievement,
   });
 
-  final AchievementRarity rarity;
+  final AchievementTileEntity achievement;
 
   @override
   Widget build(BuildContext context) {
@@ -46,18 +46,15 @@ class AchievementTab extends StatelessWidget {
                 shape: BoxShape.circle,
                 border: Border.all(color: Theme.of(context).colorScheme.background, width: 2),
               ),
-              child: const CachedOnlineImage(
-                  url:
-                      "https://images.pexels.com/photos/5184961/pexels-photo-5184961.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-                  isCircle: true),
+              child: CachedOnlineImage(url: achievement.achievementImgUrl, isCircle: true),
             ),
             const SizedBox(height: 30),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: widthFraction(context, 1 / 8)),
               child: Text(
-                "Super hot x4",
+                "${achievement.title} x${achievement.quantity}",
                 style: kTitle.copyWith(
-                  color: achievementRarityToOnColor(rarity),
+                  color: achievementRarityToOnColor(achievement.rarity),
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -66,9 +63,9 @@ class AchievementTab extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: widthFraction(context, 1 / 8)),
               child: Text(
-                "This is an achievement earned for doing xyz. Such is really awesome and amazing. ",
+                achievement.description,
                 style: kBody.copyWith(
-                  color: achievementRarityToOnColor(rarity),
+                  color: achievementRarityToOnColor(achievement.rarity),
                 ),
                 textAlign: TextAlign.center,
               ),
