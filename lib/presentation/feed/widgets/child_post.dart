@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../../../constants/create_post/general.dart';
 import '../../../core/styles/typography.dart';
+import '../../shared/button_touch_effects/touchable_opacity.dart';
 import '../../shared/button_touch_effects/touchable_scale.dart';
 import 'package:flutter/material.dart';
 
@@ -70,7 +71,7 @@ class ChildPost extends StatelessWidget {
   Widget build(BuildContext context) {
     return onTap == null
         ? buildBody(context)
-        : TouchableScale(
+        : TouchableOpacity(
             onTap: () => onTap!(),
             child: buildBody(context),
           );

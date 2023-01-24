@@ -1,4 +1,5 @@
 import '../../../core/utils/numbers/large_number_formatter.dart';
+import '../../shared/button_touch_effects/touchable_opacity.dart';
 import '../../shared/button_touch_effects/touchable_scale.dart';
 import 'package:flutter/material.dart';
 
@@ -41,7 +42,7 @@ class StatTile extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            child: TouchableScale(
+            child: TouchableOpacity(
               onTap: () => leftTap(),
               child: Container(
                 // Transparent hitbox trick.
@@ -73,7 +74,7 @@ class StatTile extends StatelessWidget {
           ),
           const SizedBox(width: 10),
           Expanded(
-            child: TouchableScale(
+            child: TouchableOpacity(
               onTap: () => centerTap(),
               child: Container(
                 // Transparent hitbox trick.
@@ -105,7 +106,7 @@ class StatTile extends StatelessWidget {
           ),
           const SizedBox(width: 10),
           Expanded(
-            child: TouchableScale(
+            child: TouchableOpacity(
               onTap: () => rightTap(),
               child: Container(
                 // Transparent hitbox trick.

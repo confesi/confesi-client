@@ -66,7 +66,7 @@ class _SimpleCommentSortState extends State<SimpleCommentSort> {
           ),
         ),
       ),
-      child: TouchableScale(
+      child: TouchableOpacity(
         onTap: () => showButtonOptionsSheet(
           context,
           [

@@ -49,7 +49,7 @@ class AchievementRarityNumbersDisplayTile extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: TouchableScale(
+                child: TouchableOpacity(
                   onTap: () => onTapCommons(),
                   child: _StatItem(
                     rarity: AchievementRarity.common,
@@ -59,7 +59,7 @@ class AchievementRarityNumbersDisplayTile extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: TouchableScale(
+                child: TouchableOpacity(
                   onTap: () => onTapRares(),
                   child: _StatItem(
                     rarity: AchievementRarity.rare,
@@ -73,7 +73,7 @@ class AchievementRarityNumbersDisplayTile extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: TouchableScale(
+                child: TouchableOpacity(
                   onTap: () => onTapEpics(),
                   child: _StatItem(
                     rarity: AchievementRarity.epic,
@@ -83,7 +83,7 @@ class AchievementRarityNumbersDisplayTile extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: TouchableScale(
+                child: TouchableOpacity(
                   onTap: () => onTapLegendaries(),
                   child: _StatItem(
                     rarity: AchievementRarity.legendary,

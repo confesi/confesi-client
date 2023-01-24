@@ -77,9 +77,6 @@ class _HottestTileState extends State<HottestTile> {
                           Radius.circular(context.watch<UserCubit>().stateAsUser.curvyEnum.borderRadius)),
                       color: Theme.of(context).colorScheme.background,
                       border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
-                      boxShadow: [
-                        BoxShadow(color: Theme.of(context).colorScheme.secondary.withOpacity(0.1), blurRadius: 30),
-                      ],
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

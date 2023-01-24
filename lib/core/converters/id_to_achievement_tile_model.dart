@@ -10,10 +10,9 @@ AchievementTileModel idToAchievementTileModel(String id, int quantity) {
         rarity: AchievementRarity.common,
         achievementImgUrl:
             "https://images.pexels.com/photos/1287142/pexels-photo-1287142.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-        title: "Super Hot",
+        title: "Super hot",
         description: "You are super cool, you got something on the hottest page.",
         quantity: quantity,
-        aspectRatio: 3 / 2,
       );
     case "achievement2":
       return AchievementTileModel(
@@ -23,7 +22,6 @@ AchievementTileModel idToAchievementTileModel(String id, int quantity) {
         title: "Spicy Author",
         description: "You just wrote something... SPICY.",
         quantity: quantity,
-        aspectRatio: 1 / 2,
       );
     case "achievement3":
       return AchievementTileModel(
@@ -33,7 +31,6 @@ AchievementTileModel idToAchievementTileModel(String id, int quantity) {
         title: "Gossipy!",
         description: "You gossip a lot.",
         quantity: quantity,
-        aspectRatio: 1.75,
       );
     case "achievement4":
       return AchievementTileModel(
@@ -43,7 +40,24 @@ AchievementTileModel idToAchievementTileModel(String id, int quantity) {
         title: "At it again",
         description: "Zoinx, you did it again! IDK what you did, but something...",
         quantity: quantity,
-        aspectRatio: 1.2,
+      );
+    case "achievement5":
+      return AchievementTileModel(
+        rarity: AchievementRarity.common,
+        achievementImgUrl:
+            "https://images.unsplash.com/photo-1588001832198-c15cff59b078?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80",
+        title: "Fancy comeback",
+        description: "You had it ready, they had it coming.",
+        quantity: quantity,
+      );
+    case "achievement6":
+      return AchievementTileModel(
+        rarity: AchievementRarity.common,
+        achievementImgUrl:
+            "https://images.unsplash.com/photo-1506815444479-bfdb1e96c566?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1035&q=80",
+        title: "Riding the clouds",
+        description: "You're untouchable. Seriously, they tried. They failed.",
+        quantity: quantity,
       );
     default:
       throw ConversionException();

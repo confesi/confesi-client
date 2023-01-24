@@ -42,7 +42,7 @@ class SimpleTextButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TouchableScale(
+    return TouchableOpacity(
       tapType: tapType,
       tooltip: tooltip,
       tooltipLocation: tooltipLocation,

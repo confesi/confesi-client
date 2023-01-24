@@ -1,3 +1,7 @@
+import 'package:Confessi/core/results/failures.dart';
+import 'package:dartz/dartz.dart' as dartz;
+
+import '../../../domain/shared/entities/infinite_scroll_indexable.dart';
 import '../edited_source_widgets/swipe_refresh.dart';
 import '../indicators/alert.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,7 +24,7 @@ class FeedListController extends ChangeNotifier {
   FeedListController({this.preloadBy = 8});
 
   // Items to be in the feed.
-  List<Widget> items = [];
+  List<InfiniteScrollIndexable> items = [];
   // Controller 1 for [ScrollablePositionedList].
   final ItemScrollController itemScrollController = ItemScrollController();
 
@@ -28,21 +32,21 @@ class FeedListController extends ChangeNotifier {
   final ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
 
   /// Adds an item to the list.
-  void addItem(Widget newItem) {
+  void addItem(InfiniteScrollIndexable newItem) {
     if (_isDisposed) return;
     items.add(newItem);
     notifyListeners();
   }
 
   /// Sets the items list to a whole new set of values.
-  void setItems(List<Widget> newItemList) {
+  void setItems(List<InfiniteScrollIndexable> newItemList) {
     if (_isDisposed) return;
     items = newItemList;
     notifyListeners();
   }
 
   /// Adds multiple items to the list.
-  void addItems(List<Widget> newItems) {
+  void addItems(List<InfiniteScrollIndexable> newItems) {
     if (_isDisposed) return;
 
     items.addAll(newItems);
@@ -71,7 +75,7 @@ class FeedListController extends ChangeNotifier {
   }
 
   /// Returns the last item loaded.
-  Widget lastItem() {
+  InfiniteScrollIndexable lastItem() {
     return items[itemPositionsListener.itemPositions.value.last.index];
   }
 }
@@ -93,7 +97,7 @@ class FeedList extends StatefulWidget {
   final bool hasReachedEnd;
   final Widget? header;
   final FeedListController controller;
-  final Function loadMore;
+  final Function(dartz.Either<Failure, String>) loadMore;
   final Function onErrorButtonPressed;
   final Function onEndOfFeedReachedButtonPressed;
   final Function onPullToRefresh;
@@ -125,7 +129,9 @@ class _FeedListState extends State<FeedList> {
           !widget.hasError &&
           !widget.hasReachedEnd) {
         isCurrentlyLoadingMorePosts = true;
-        await widget.loadMore();
+        await widget.loadMore(widget.controller.items.isNotEmpty
+            ? dartz.Right(widget.controller.items.last.id)
+            : dartz.Left(NoneFailure()));
         isCurrentlyLoadingMorePosts = false;
       }
     });
@@ -188,7 +194,7 @@ class _FeedListState extends State<FeedList> {
               child: buildIndicator(),
             );
           } else {
-            return widget.controller.items[index - 1];
+            return widget.controller.items[index - 1].child;
           }
         },
         itemCount: widget.controller.items.length + 2,

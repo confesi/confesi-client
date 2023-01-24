@@ -89,8 +89,8 @@ class _ProfileHomeState extends State<ProfileHome> with AutomaticKeepAliveClient
   }
 
   void showInfoAchievementSheet(BuildContext context, AchievementRarity rarity) {
-    showInfoSheet(context, "No ${achievementRarityToString(rarity)} achievements yet!",
-        "Keep interacting on the app to earn more.");
+    showInfoSheet(context, "No ${achievementRarityToString(rarity).toLowerCase()} achievements",
+        "Keep interacting on the app to earn them!");
   }
 
   NumberOfEachAchievementType numberOfEachRarityForAchievements(List<AchievementTileEntity> achievements) {
@@ -141,8 +141,18 @@ class _ProfileHomeState extends State<ProfileHome> with AutomaticKeepAliveClient
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(scrollDy / 4), topRight: Radius.circular(scrollDy / 4)),
+                              topLeft: Radius.circular(scrollDy / 3), topRight: Radius.circular(scrollDy / 3)),
                           child: CachedOnlineImage(url: state.universityImgUrl),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10, right: 10, left: 10),
+                          child: SimpleTextButton(
+                            infiniteWidth: true,
+                            bgColor: Theme.of(context).colorScheme.background,
+                            textColor: Theme.of(context).colorScheme.primary,
+                            text: "Edit account details",
+                            onTap: () => Navigator.pushNamed(context, "/profile/account_details"),
+                          ),
                         ),
                         // Container(
                         //   width: double.infinity,

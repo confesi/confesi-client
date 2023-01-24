@@ -1,6 +1,7 @@
 import '../../../application/shared/cubit/website_launcher_cubit.dart';
 import '../../../core/styles/typography.dart';
 import '../../../core/utils/sizing/width_fraction.dart';
+import '../button_touch_effects/touchable_opacity.dart';
 import '../button_touch_effects/touchable_scale.dart';
 import '../indicators/loading_cupertino.dart';
 import 'cached_online_image.dart';
@@ -108,7 +109,7 @@ class _UrlPreviewTileState extends State<UrlPreviewTile> {
 
   @override
   Widget build(BuildContext context) {
-    return TouchableScale(
+    return TouchableOpacity(
       onTap: () => context.read<WebsiteLauncherCubit>().launchPostLink(widget.url),
       child: ClipRRect(
         borderRadius: const BorderRadius.all(Radius.circular(10)),

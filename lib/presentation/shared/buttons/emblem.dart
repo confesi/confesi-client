@@ -16,7 +16,7 @@ class EmblemButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TouchableScale(
+    return TouchableOpacity(
       onTap: () => onPress(),
       child: Container(
         decoration: BoxDecoration(

@@ -8,12 +8,10 @@ class AchievementTileEntity extends Equatable {
   final String title;
   final String description;
   final int quantity;
-  final double aspectRatio;
   final AchievementRarity rarity;
 
   const AchievementTileEntity({
     required this.rarity,
-    required this.aspectRatio,
     required this.description,
     required this.achievementImgUrl,
     required this.quantity,
@@ -21,5 +19,5 @@ class AchievementTileEntity extends Equatable {
   });
 
   @override
-  List<Object?> get props => [achievementImgUrl, title, description, quantity, aspectRatio];
+  List<Object?> get props => [achievementImgUrl, title, description, quantity];
 }

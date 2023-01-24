@@ -3,6 +3,7 @@ import 'package:Confessi/application/create_post/cubit/drafts_cubit.dart';
 import 'package:Confessi/core/utils/sizing/width_fraction.dart';
 import 'package:Confessi/presentation/create_post/overlays/drafts_sheet.dart';
 import 'package:Confessi/presentation/feed/widgets/child_post.dart';
+import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:Confessi/presentation/shared/other/widget_or_nothing.dart';
 import 'package:Confessi/presentation/shared/overlays/notification_chip.dart';
@@ -365,7 +366,7 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                                         color: Colors.transparent,
                                         width: double.infinity,
                                         child: Center(
-                                          child: TouchableScale(
+                                          child: TouchableOpacity(
                                             onTap: () => showDraftsSheet(context),
                                             child: Container(
                                               // width: double.infinity,

@@ -105,7 +105,7 @@ class _ExpandableTextfieldState extends State<ExpandableTextfield> {
                     duration: const Duration(milliseconds: 250),
                     clipBehavior: Clip.antiAliasWithSaveLayer,
                     child: widget.controller.text.isNotEmpty
-                        ? TouchableScale(
+                        ? TouchableOpacity(
                             onTap: () => widget.controller.clear(),
                             child: Container(
                               // Transparent hitbox trick.

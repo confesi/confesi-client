@@ -17,27 +17,7 @@
     "achievements": [
         {
             "id": "achievement1",
-            "quantity": 3391
-        },
-        {
-            "id": "achievement1",
-            "quantity": 3391
-        },
-        {
-            "id": "achievement1",
-            "quantity": 3391
-        },
-        {
-            "id": "achievement3",
-            "quantity": 1
-        },
-        {
-            "id": "achievement3",
-            "quantity": 1
-        },
-        {
-            "id": "achievement3",
-            "quantity": 1
+            "quantity": 5
         },
         {
             "id": "achievement3",
@@ -48,8 +28,12 @@
             "quantity": 3
         },
         {
-            "id": "achievement2",
+            "id": "achievement5",
             "quantity": 8
+        },
+        {
+            "id": "achievement6",
+            "quantity": 1
         }
     ]
 }

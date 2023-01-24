@@ -12,6 +12,7 @@ import 'package:flutter/services.dart';
 
 import '../../../core/converters/achievement_rarity_to_color.dart';
 import '../../../core/utils/sizing/width_fraction.dart';
+import '../../shared/button_touch_effects/touchable_opacity.dart';
 import '../../shared/buttons/emblem.dart';
 
 class AchievementTabManager extends StatefulWidget {
@@ -56,12 +57,12 @@ class _AchievementTabManagerState extends State<AchievementTabManager> {
           children: [
             SafeArea(
               bottom: false,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
-                child: Align(
-                  alignment: Alignment.topRight,
-                  child: TouchableScale(
-                    onTap: () => Navigator.pop(context),
+              child: TouchableOpacity(
+                onTap: () => Navigator.pop(context),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
+                  child: Align(
+                    alignment: Alignment.topRight,
                     child: Container(
                       padding: const EdgeInsets.all(5),
                       decoration: BoxDecoration(
