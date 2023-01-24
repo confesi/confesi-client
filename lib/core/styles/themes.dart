@@ -49,7 +49,7 @@ class AppTheme {
       onBackground: Color.fromARGB(255, 46, 46, 46),
       surface: Color.fromARGB(255, 36, 36, 36),
       onSurface: Color(0xff7d7d7d),
-      shadow: Color.fromARGB(255, 17, 17, 17),
+      shadow: Color.fromARGB(255, 23, 23, 23),
       primaryContainer: Color(0xff333333), // Badge's light color.
       secondaryContainer: Color(0xfffde5b6), // Badge's dark color.
       onErrorContainer: Color(0xff59CE8F), // Color for post reaction

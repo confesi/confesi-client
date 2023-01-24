@@ -139,78 +139,53 @@ class _ProfileHomeState extends State<ProfileHome> with AutomaticKeepAliveClient
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 30),
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.secondary,
-                            border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(scrollDy),
-                              topRight: Radius.circular(scrollDy),
-                            ),
-                          ),
-                          child: SafeArea(
-                            bottom: false,
-                            child: Column(
-                              children: [
-                                Container(
-                                  width: widthFraction(context, 1 / 2),
-                                  height: widthFraction(context, 1 / 2),
-                                  decoration: BoxDecoration(
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Theme.of(context).colorScheme.shadow.withOpacity(0.4),
-                                        blurRadius: 30,
-                                      ),
-                                    ],
-                                    shape: BoxShape.circle,
-                                    border: Border.all(color: Theme.of(context).colorScheme.background, width: 2),
-                                  ),
-                                  child: CachedOnlineImage(url: state.universityImgUrl, isCircle: true),
-                                ),
-                                // const SizedBox(height: 30),
-                                // PopButton(
-                                //   backgroundColor: Theme.of(context).colorScheme.background,
-                                //   textColor: Theme.of(context).colorScheme.primary,
-                                //   text: state.universityFullName,
-                                //   onPress: () => print("tap"),
-                                //   icon: CupertinoIcons.pen,
-                                // ),
-                              ],
-                            ),
-                          ),
+                        ClipRRect(
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(scrollDy / 4), topRight: Radius.circular(scrollDy / 4)),
+                          child: CachedOnlineImage(url: state.universityImgUrl),
                         ),
-                        TouchableScale(
-                          onTap: () => Navigator.pushNamed(context, "/profile/account_details"),
-                          child: Container(
-                            padding: const EdgeInsets.all(10),
-                            margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(context.watch<UserCubit>().stateAsUser.curvyEnum.borderRadius)),
-                              color: Theme.of(context).colorScheme.background,
-                              border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "Edit Account Details",
-                                  style: kDetail.copyWith(
-                                    color: Theme.of(context).colorScheme.onSurface,
-                                  ),
-                                ),
-                                const SizedBox(width: 5),
-                                Icon(
-                                  CupertinoIcons.arrow_right,
-                                  size: 18,
-                                  color: Theme.of(context).colorScheme.secondary,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                        // Container(
+                        //   width: double.infinity,
+                        //   padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                        //   decoration: BoxDecoration(
+                        //     color: Theme.of(context).colorScheme.secondary,
+                        //     border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
+                        //     borderRadius: BorderRadius.only(
+                        //       topLeft: Radius.circular(scrollDy),
+                        //       topRight: Radius.circular(scrollDy),
+                        //     ),
+                        //   ),
+                        //   child: SafeArea(
+                        //     bottom: false,
+                        //     child: Column(
+                        //       children: [
+                        //         Container(
+                        //           width: widthFraction(context, 1 / 3),
+                        //           height: widthFraction(context, 1 / 3),
+                        //           decoration: BoxDecoration(
+                        //             boxShadow: [
+                        //               BoxShadow(
+                        //                 color: Theme.of(context).colorScheme.shadow.withOpacity(0.4),
+                        //                 blurRadius: 30,
+                        //               ),
+                        //             ],
+                        //             shape: BoxShape.circle,
+                        //             border: Border.all(color: Theme.of(context).colorScheme.background, width: 2),
+                        //           ),
+                        //           child: CachedOnlineImage(url: state.universityImgUrl, isCircle: true),
+                        //         ),
+                        //         const SizedBox(height: 30),
+                        //         PopButton(
+                        //           backgroundColor: Theme.of(context).colorScheme.background,
+                        //           textColor: Theme.of(context).colorScheme.primary,
+                        //           text: "Edit account details",
+                        //           onPress: () => Navigator.pushNamed(context, "/profile/account_details"),
+                        //           icon: CupertinoIcons.pen,
+                        //         ),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
                         Container(
                           margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
                           decoration: BoxDecoration(

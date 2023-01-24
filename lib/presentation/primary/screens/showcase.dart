@@ -109,6 +109,9 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
                     child: Column(
                       children: [
                         ScrollDots(
+                          bgColor: Colors.red,
+                          activeColor: Colors.red,
+                          borderColor: Colors.red,
                           verticalPadding: 40,
                           pageIndex: pageIndex,
                           pageLength: pages.length,

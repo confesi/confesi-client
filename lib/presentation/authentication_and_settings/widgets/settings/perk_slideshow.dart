@@ -66,7 +66,9 @@ class _PerkSlideshowState extends State<PerkSlideshow> {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 15),
           child: ScrollDots(
-            secondaryColors: true,
+            bgColor: Colors.red,
+            activeColor: Colors.red,
+            borderColor: Colors.red,
             pageLength: 4,
             pageIndex: pageIndex,
           ),
