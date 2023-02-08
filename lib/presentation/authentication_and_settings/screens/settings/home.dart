@@ -1,4 +1,5 @@
 import '../../../../core/utils/sizing/top_safe_area.dart';
+import '../../../../domain/authentication_and_settings/entities/user.dart';
 import '../../../primary/controllers/settings_controller.dart';
 
 import '../../../../application/shared/cubit/website_launcher_cubit.dart';
@@ -67,6 +68,11 @@ class SettingsHome extends StatelessWidget {
                           onTap: () => Navigator.of(context).pushNamed("/settings/faq"),
                         ),
                         SettingTile(
+                          leftIcon: CupertinoIcons.chat_bubble,
+                          text: "Feedback",
+                          onTap: () => Navigator.of(context).pushNamed("/settings/feedback"),
+                        ),
+                        SettingTile(
                           leftIcon: CupertinoIcons.mail,
                           text: kContactConfesiLabel,
                           onTap: () => Navigator.pushNamed(context, "/settings/contact"),
@@ -88,6 +94,16 @@ class SettingsHome extends StatelessWidget {
                           text: kSettingsAppearanceLabel,
                           onTap: () => Navigator.of(context).pushNamed("/settings/appearance"),
                         ),
+                        SettingTile(
+                          leftIcon: CupertinoIcons.textformat_size,
+                          text: "Text size",
+                          onTap: () => Navigator.of(context).pushNamed("/settings/text_size"),
+                        ),
+                        SettingTile(
+                          leftIcon: CupertinoIcons.square_fill_on_circle_fill,
+                          text: "Curviness of components",
+                          onTap: () => Navigator.of(context).pushNamed("/settings/curvy"),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 15),
@@ -108,21 +124,8 @@ class SettingsHome extends StatelessWidget {
                         SettingTile(
                           isRedText: true,
                           leftIcon: CupertinoIcons.square_arrow_right,
-                          text: kSettingsLogoutLabel,
-                          onTap: () {
-                            context.read<UserCubit>().logoutUser();
-                          },
-                        ),
-                        SettingTile(
-                          isRedText: true,
-                          leftIcon: CupertinoIcons.square_arrow_right,
-                          text: "TEMPORARY - Reset",
-                          onTap: () {
-                            context
-                                .read<UserCubit>()
-                                .setHomeViewed(HomeViewedEnum.no, context)
-                                .then((value) => context.read<UserCubit>().loadUser(false));
-                          },
+                          text: "Logout",
+                          onTap: () => context.read<UserCubit>().logoutRegisteredUser(context),
                         ),
                       ],
                     ),

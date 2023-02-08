@@ -1,3 +1,5 @@
+import 'package:Confessi/core/utils/sizing/bottom_safe_area.dart';
+
 import '../../../application/shared/cubit/share_cubit.dart';
 import '../../leaderboard/screens/home.dart';
 import '../controllers/hottest_controller.dart';
@@ -86,62 +88,126 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             key: scaffoldKey,
             body: Container(
               color: Theme.of(context).colorScheme.background,
-              child: SafeArea(
-                top: false,
-                child: Scaffold(
-                  body: TabBarView(
-                    physics: const NeverScrollableScrollPhysics(),
-                    controller: tabController,
-                    children: [
-                      ExploreHome(scaffoldKey: scaffoldKey),
-                      HottestHome(hottestController: hottestController),
-                      ProfileHome(profileController: profileController),
-                      const LeaderboardScreen(),
-                      SettingsHome(settingController: settingController),
-                    ],
+              child: Scaffold(
+                body: TabBarView(
+                  physics: const NeverScrollableScrollPhysics(),
+                  controller: tabController,
+                  children: [
+                    ExploreHome(scaffoldKey: scaffoldKey),
+                    HottestHome(hottestController: hottestController),
+                    ProfileHome(profileController: profileController),
+                    const LeaderboardScreen(),
+                    SettingsHome(settingController: settingController),
+                  ],
+                ),
+                bottomNavigationBar: Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.background,
+                    border: Border(
+                      top: BorderSide(
+                        color: Theme.of(context).colorScheme.onBackground,
+                        width: 0.8,
+                      ),
+                    ),
                   ),
-                  bottomNavigationBar: Container(
-                    decoration: BoxDecoration(
-                      border: Border(
-                        top: BorderSide(
-                          color: Theme.of(context).colorScheme.surface,
-                          width: 1,
+                  child: SafeArea(
+                    top: false,
+                    // bottom: false,
+                    child: SizedBox(
+                      height: 47,
+                      child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: TabBar(
+                          onTap: (int newIndex) {
+                            // HapticFeedback.selectionClick();
+                            if (currentIndex == 2 && newIndex == 2) {
+                              profileController.scrollToTop();
+                            } else if (currentIndex == 1 && newIndex == 1) {
+                              hottestController.scrollToFront();
+                            } else if (currentIndex == 4 && newIndex == 4) {
+                              settingController.scrollToTop();
+                            }
+                            setState(() => currentIndex = newIndex);
+                          },
+                          labelColor: Theme.of(context).colorScheme.secondary,
+                          indicatorSize: TabBarIndicatorSize.label,
+                          indicatorColor: Colors.transparent,
+                          controller: tabController,
+                          enableFeedback: true,
+                          tabs: [
+                            _BottomTab(
+                                indexMatcher: 0,
+                                currentIndex: currentIndex,
+                                icon: CupertinoIcons.compass,
+                                text: "Feed"),
+                            _BottomTab(
+                                indexMatcher: 1,
+                                currentIndex: currentIndex,
+                                icon: CupertinoIcons.flame,
+                                text: "Hottest"),
+                            _BottomTab(
+                                indexMatcher: 2,
+                                currentIndex: currentIndex,
+                                icon: CupertinoIcons.profile_circled,
+                                text: "Profile"),
+                            _BottomTab(
+                                indexMatcher: 3,
+                                currentIndex: currentIndex,
+                                icon: CupertinoIcons.chart_bar_alt_fill,
+                                text: "Rank"),
+                            _BottomTab(
+                                indexMatcher: 4,
+                                currentIndex: currentIndex,
+                                icon: CupertinoIcons.gear,
+                                text: "Settings"),
+                          ],
                         ),
                       ),
                     ),
-                    child: TabBar(
-                      onTap: (int newIndex) {
-                        // HapticFeedback.selectionClick();
-                        if (currentIndex == 2 && newIndex == 2) {
-                          profileController.scrollToTop();
-                        } else if (currentIndex == 1 && newIndex == 1) {
-                          hottestController.scrollToFront();
-                        } else if (currentIndex == 4 && newIndex == 4) {
-                          settingController.scrollToTop();
-                        }
-                        currentIndex = newIndex;
-                      },
-                      labelStyle: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
-                      unselectedLabelColor: Theme.of(context).colorScheme.onBackground,
-                      labelColor: Theme.of(context).colorScheme.secondary,
-                      indicatorSize: TabBarIndicatorSize.label,
-                      indicatorColor: Colors.transparent,
-                      controller: tabController,
-                      enableFeedback: true,
-                      tabs: const [
-                        Tab(icon: Icon(CupertinoIcons.compass)),
-                        Tab(icon: Icon(CupertinoIcons.flame)),
-                        Tab(icon: Icon(CupertinoIcons.profile_circled)),
-                        Tab(icon: Icon(CupertinoIcons.chart_bar_alt_fill)),
-                        Tab(icon: Icon(CupertinoIcons.gear)),
-                      ],
-                    ),
                   ),
-                  backgroundColor: Theme.of(context).colorScheme.background,
                 ),
               ),
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _BottomTab extends StatelessWidget {
+  const _BottomTab({
+    super.key,
+    required this.indexMatcher,
+    required this.currentIndex,
+    required this.icon,
+    required this.text,
+  });
+
+  final int currentIndex;
+  final int indexMatcher;
+  final String text;
+  final IconData icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return Tab(
+      icon: Icon(
+        icon,
+        size: 24,
+        color: currentIndex == indexMatcher
+            ? Theme.of(context).colorScheme.secondary
+            : Theme.of(context).colorScheme.onSurface,
+      ),
+      iconMargin: const EdgeInsets.only(top: 5, bottom: 2),
+      child: Text(
+        text,
+        style: kDetail.copyWith(
+          color: currentIndex == indexMatcher
+              ? Theme.of(context).colorScheme.secondary
+              : Theme.of(context).colorScheme.onSurface,
+          fontSize: 10,
+          overflow: TextOverflow.ellipsis,
         ),
       ),
     );

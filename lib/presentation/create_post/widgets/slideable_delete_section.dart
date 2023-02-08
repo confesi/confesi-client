@@ -24,7 +24,7 @@ class SlideableDeleteSection extends StatelessWidget {
         color: Theme.of(context).colorScheme.error,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 5),
-          child: TouchableScale(
+          child: TouchableOpacity(
             onTap: () {
               Slidable.of(context)?.close();
               onPress();

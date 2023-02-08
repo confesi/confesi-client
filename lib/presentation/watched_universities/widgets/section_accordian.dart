@@ -2,6 +2,7 @@ import 'dart:isolate';
 
 import '../../../core/styles/typography.dart';
 import '../../shared/behaviours/animated_cliprrect.dart';
+import '../../shared/button_touch_effects/touchable_opacity.dart';
 import '../../shared/button_touch_effects/touchable_scale.dart';
 import 'searched_university_tile.dart';
 import 'package:flutter/cupertino.dart';
@@ -48,12 +49,12 @@ class _SectionAccordianState extends State<SectionAccordian> {
                 ? Border(
                     top: BorderSide(
                       width: 0.8,
-                      color: Theme.of(context).colorScheme.surface,
+                      color: Theme.of(context).colorScheme.onBackground,
                     ),
                   )
                 : null,
           ),
-          child: TouchableScale(
+          child: TouchableOpacity(
             onTap: () {
               setState(() {
                 isOpen = !isOpen;
@@ -127,7 +128,7 @@ class _SectionAccordianState extends State<SectionAccordian> {
                 ? Border(
                     bottom: BorderSide(
                       width: 0.8,
-                      color: Theme.of(context).colorScheme.surface,
+                      color: Theme.of(context).colorScheme.onBackground,
                     ),
                   )
                 : null,

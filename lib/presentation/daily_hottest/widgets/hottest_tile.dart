@@ -1,3 +1,6 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../../../core/styles/typography.dart';
 import '../../../core/utils/numbers/is_plural.dart';
 import '../../../core/utils/numbers/large_number_formatter.dart';
@@ -70,14 +73,20 @@ class _HottestTileState extends State<HottestTile> {
                     curve: Curves.decelerate,
                     height: isSelected ? constraints.maxHeight : constraints.maxHeight * .8,
                     decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(
+                          Radius.circular(context.watch<UserCubit>().stateAsUser.curvyEnum.borderRadius)),
                       color: Theme.of(context).colorScheme.background,
-                      border: Border.all(color: Theme.of(context).colorScheme.surface, width: 1),
+                      border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
                           decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(context.watch<UserCubit>().stateAsUser.curvyEnum.borderRadius),
+                                topRight:
+                                    Radius.circular(context.watch<UserCubit>().stateAsUser.curvyEnum.borderRadius)),
                             color: Theme.of(context).colorScheme.secondary,
                           ),
                           padding: const EdgeInsets.all(10),

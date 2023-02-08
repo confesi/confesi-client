@@ -16,8 +16,8 @@ class CriticalErrorScreen extends StatelessWidget {
       child: ThemedStatusBar(
         child: Scaffold(
           backgroundColor: appearanceBrightness(context) == Brightness.light
-              ? AppTheme.light.colorScheme.background
-              : AppTheme.dark.colorScheme.background,
+              ? AppTheme.light.colorScheme.shadow
+              : AppTheme.dark.colorScheme.shadow,
           body: SafeArea(
             child: Center(
               child: ScrollableArea(

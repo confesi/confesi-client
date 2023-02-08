@@ -1,3 +1,5 @@
+import 'package:Confessi/domain/shared/entities/infinite_scroll_indexable.dart';
+
 import '../../../core/utils/numbers/large_number_formatter.dart';
 import '../../../core/utils/numbers/number_postfix.dart';
 import '../../../core/alt_unused/leaderboard_header.dart';
@@ -87,7 +89,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                       context,
                       "Home university",
                       "To change which university appears here, and in other places throughout the app, update your home university.",
-                      () => print("tap"),
+                      () => Navigator.pushNamed(context, "/profile/account_details"),
                       "Edit in settings",
                     ),
                     child: Container(
@@ -126,16 +128,18 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
           ],
         ),
         controller: controller,
-        loadMore: () {
+        loadMore: (id) {
+          print("LAST ID LOADED: $id");
           for (LeaderboardItem item in state.rankings) {
-            controller.addItem(
+            controller.addItem(InfiniteScrollIndexable(
+              "test_leaderboard_id",
               LeaderboardItemTile(
                 hottests: item.points,
                 placing: item.placing,
                 universityAbbr: item.universityName,
                 universityFullName: item.universityFullName,
               ),
-            );
+            ));
           }
         },
         onPullToRefresh: () async {

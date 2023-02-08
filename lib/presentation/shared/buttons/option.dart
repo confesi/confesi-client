@@ -1,3 +1,6 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../button_touch_effects/touchable_scale.dart';
 
 import '../behaviours/init_scale.dart';
@@ -27,7 +30,7 @@ class OptionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TouchableScale(
+    return TouchableOpacity(
       onTap: () {
         popContext ? Navigator.pop(context) : null;
         onTap();
@@ -36,7 +39,9 @@ class OptionButton extends StatelessWidget {
         margin: EdgeInsets.only(bottom: noBottomPadding ? 0 : 5),
         width: double.infinity,
         decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(5)),
+          border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
+          borderRadius:
+              BorderRadius.all(Radius.circular(context.watch<UserCubit>().stateAsUser.curvyEnum.borderRadius)),
           color: Theme.of(context).colorScheme.surface,
         ),
         child: Container(

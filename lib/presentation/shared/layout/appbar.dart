@@ -80,9 +80,10 @@ class _AppbarLayoutState extends State<AppbarLayout> {
       color: widget.backgroundColor ?? Theme.of(context).colorScheme.background,
       child: Container(
         decoration: BoxDecoration(
+          color: widget.backgroundColor ?? Theme.of(context).colorScheme.background,
           border: Border(
             bottom: BorderSide(
-              color: widget.bottomBorder ? Theme.of(context).colorScheme.surface : Colors.transparent,
+              color: widget.bottomBorder ? Theme.of(context).colorScheme.onBackground : Colors.transparent,
               width: .8,
             ),
           ),

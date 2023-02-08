@@ -1,6 +1,5 @@
 import '../../../../constants/enums_that_are_local_keys.dart';
 import '../../../shared/selection_groups/bool_selection_group.dart';
-import '../../widgets/settings/header_text.dart';
 import '../../../shared/selection_groups/bool_selection_tile.dart';
 import '../../../shared/behaviours/themed_status_bar.dart';
 import '../../../shared/layout/scrollable_area.dart';
@@ -56,7 +55,7 @@ class AppearanceScreen extends StatelessWidget {
                             BoolSelectionTile(
                               isActive: context.watch<UserCubit>().stateAsUser.appearanceEnum == AppearanceEnum.light,
                               icon: CupertinoIcons.sun_min,
-                              text: kLightAppearance,
+                              text: "Light - BETA",
                               onTap: () => context.read<UserCubit>().setAppearance(AppearanceEnum.light, context),
                             ),
                             BoolSelectionTile(
@@ -69,10 +68,9 @@ class AppearanceScreen extends StatelessWidget {
                           ],
                         ),
                         const DisclaimerText(
-                          verticalPadding: 15,
-                          text: kAppearanceBottomDisclaimerText,
+                          topPadding: 15,
+                          text: "This preference is saved locally to your device.",
                         ),
-                        const SimulatedBottomSafeArea(),
                       ],
                     ),
                   ),

@@ -73,7 +73,7 @@ class _ExpandableTextfieldState extends State<ExpandableTextfield> {
                   thickness: widget.maxLines == 1 ? 0.0 : 3.0, // 3.0 is default
                   controller: scrollController,
                   child: Padding(
-                    padding: const EdgeInsets.all(10),
+                    padding: EdgeInsets.all(widget.maxLines == 1 ? 15 : 10),
                     child: Row(
                       children: [
                         Expanded(
@@ -105,7 +105,7 @@ class _ExpandableTextfieldState extends State<ExpandableTextfield> {
                     duration: const Duration(milliseconds: 250),
                     clipBehavior: Clip.antiAliasWithSaveLayer,
                     child: widget.controller.text.isNotEmpty
-                        ? TouchableScale(
+                        ? TouchableOpacity(
                             onTap: () => widget.controller.clear(),
                             child: Container(
                               // Transparent hitbox trick.

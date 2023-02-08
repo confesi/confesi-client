@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../../../core/styles/typography.dart';
 import '../behaviours/animated_cliprrect.dart';
 
@@ -32,10 +34,9 @@ class _StepperTileState extends State<StepperTile> {
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
+          border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
           color: Theme.of(context).colorScheme.background,
-          borderRadius: const BorderRadius.all(
-            Radius.circular(5),
-          ),
+          borderRadius:  BorderRadius.all(Radius.circular(context.watch<UserCubit>().stateAsUser.curvyEnum.borderRadius)),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

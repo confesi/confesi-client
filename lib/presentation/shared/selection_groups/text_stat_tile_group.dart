@@ -21,9 +21,8 @@ class TextStatTileGroup extends StatelessWidget {
       children: [
         Text(
           text,
-          style: kTitle.copyWith(color: Theme.of(context).colorScheme.onSurface),
+          style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
           overflow: TextOverflow.ellipsis,
-          textAlign: TextAlign.center,
         ),
         const SizedBox(height: 10),
         ...tiles,

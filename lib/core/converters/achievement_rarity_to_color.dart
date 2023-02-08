@@ -6,7 +6,7 @@ import '../results/exceptions.dart';
 Color achievementRarityToColor(AchievementRarity achievementRarity) {
   switch (achievementRarity) {
     case AchievementRarity.common:
-      return Colors.grey;
+      return Colors.lightGreen;
     case AchievementRarity.rare:
       return Colors.blue;
     case AchievementRarity.epic:

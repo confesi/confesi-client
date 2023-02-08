@@ -8,11 +8,15 @@
 
 // ***** IMPORTANT *****
 
-enum ReducedAnimationsEnum {
-  // TODO: remove?
-  minimum,
-  few,
-  normal,
+enum TextSizeEnum {
+  small(0.75),
+  regular(1),
+  large(1.2),
+  veryLarge(1.5);
+
+  final double multiplier;
+
+  const TextSizeEnum(this.multiplier);
 }
 
 enum AppearanceEnum {
@@ -26,7 +30,18 @@ enum HomeViewedEnum {
   no,
 }
 
-// enum RefreshTokenEnum {
-//   hasRefreshToken,
-//   noRefreshToken,
-// }
+enum ShakeForFeedbackEnum {
+  enabled,
+  disabled,
+}
+
+enum CurvyEnum {
+  none(0),
+  little(5),
+  moderate(10),
+  lots(15);
+
+  final double borderRadius;
+
+  const CurvyEnum(this.borderRadius);
+}

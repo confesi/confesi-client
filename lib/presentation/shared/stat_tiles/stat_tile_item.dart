@@ -1,17 +1,25 @@
-import '../../shared/behaviours/init_opacity.dart';
-import '../../shared/button_touch_effects/touchable_opacity.dart';
+import '../behaviours/init_opacity.dart';
+import '../button_touch_effects/touchable_opacity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
-import '../../shared/button_touch_effects/touchable_scale.dart';
 
-class PostStatItem extends StatelessWidget {
-  const PostStatItem({super.key, required this.text, required this.icon, required this.onTap});
+class StatTileItem extends StatelessWidget {
+  const StatTileItem({
+    super.key,
+    required this.text,
+    required this.icon,
+    required this.onTap,
+    this.iconColor,
+    this.textColor,
+  });
 
   final IconData icon;
   final String text;
   final VoidCallback onTap;
+  final Color? iconColor;
+  final Color? textColor;
 
   @override
   Widget build(BuildContext context) {
@@ -27,14 +35,14 @@ class PostStatItem extends StatelessWidget {
               children: [
                 Icon(
                   icon,
-                  color: Theme.of(context).colorScheme.onSecondary,
+                  color: iconColor ?? Theme.of(context).colorScheme.onSecondary,
                   // color: Colors.white,
                 ),
                 const SizedBox(height: 5),
                 Text(
                   text,
                   style: kDetail.copyWith(
-                    color: Theme.of(context).colorScheme.onSecondary,
+                    color: textColor ?? Theme.of(context).colorScheme.onSecondary,
                     // color: Colors.white,
                   ),
                   textAlign: TextAlign.center,

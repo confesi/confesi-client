@@ -1,3 +1,6 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../button_touch_effects/touchable_scale.dart';
 import 'package:flutter/material.dart';
 
@@ -39,7 +42,7 @@ class SimpleTextButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TouchableScale(
+    return TouchableOpacity(
       tapType: tapType,
       tooltip: tooltip,
       tooltipLocation: tooltipLocation,
@@ -53,13 +56,15 @@ class SimpleTextButton extends StatelessWidget {
           width: infiniteWidth ? double.infinity : null,
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
+            border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
             color: bgColor ??
                 (secondaryColors
                     ? Theme.of(context).colorScheme.secondary
                     : thirdColors
                         ? Theme.of(context).colorScheme.onSecondary
                         : Theme.of(context).colorScheme.surface),
-            borderRadius: const BorderRadius.all(Radius.circular(5)),
+            borderRadius:
+                BorderRadius.all(Radius.circular(context.watch<UserCubit>().stateAsUser.curvyEnum.borderRadius)),
           ),
           child: Text(
             text,

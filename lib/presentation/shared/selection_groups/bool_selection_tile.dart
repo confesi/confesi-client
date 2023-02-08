@@ -1,3 +1,6 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../../../core/styles/typography.dart';
 import '../button_touch_effects/touchable_opacity.dart';
 import 'package:flutter/material.dart';
@@ -44,10 +47,14 @@ class _BoolSelectionTileState extends State<BoolSelectionTile> {
         decoration: BoxDecoration(
           color: widget.backgroundColor ?? Theme.of(context).colorScheme.background,
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(widget.topRounded ? 5 : 0),
-            topRight: Radius.circular(widget.topRounded ? 5 : 0),
-            bottomRight: Radius.circular(widget.bottomRounded ? 5 : 0),
-            bottomLeft: Radius.circular(widget.bottomRounded ? 5 : 0),
+            topLeft:
+                Radius.circular(widget.topRounded ? context.watch<UserCubit>().stateAsUser.curvyEnum.borderRadius : 0),
+            topRight:
+                Radius.circular(widget.topRounded ? context.watch<UserCubit>().stateAsUser.curvyEnum.borderRadius : 0),
+            bottomRight: Radius.circular(
+                widget.bottomRounded ? context.watch<UserCubit>().stateAsUser.curvyEnum.borderRadius : 0),
+            bottomLeft: Radius.circular(
+                widget.bottomRounded ? context.watch<UserCubit>().stateAsUser.curvyEnum.borderRadius : 0),
           ),
         ),
         child: Row(

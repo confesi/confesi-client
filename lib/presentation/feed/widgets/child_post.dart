@@ -1,5 +1,9 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../../../constants/create_post/general.dart';
 import '../../../core/styles/typography.dart';
+import '../../shared/button_touch_effects/touchable_opacity.dart';
 import '../../shared/button_touch_effects/touchable_scale.dart';
 import 'package:flutter/material.dart';
 
@@ -20,8 +24,9 @@ class ChildPost extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.background,
-          borderRadius: const BorderRadius.all(Radius.circular(5)),
-          border: Border.all(color: Theme.of(context).colorScheme.surface, width: 1),
+          borderRadius:
+              BorderRadius.all(Radius.circular(context.watch<UserCubit>().stateAsUser.curvyEnum.borderRadius)),
+          border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -30,6 +35,7 @@ class ChildPost extends StatelessWidget {
               "Replying to post:",
               style: kDetail.copyWith(
                 color: Theme.of(context).colorScheme.onSurface,
+                fontSize: kDetail.fontSize! * context.watch<UserCubit>().stateAsUser.textSizeEnum.multiplier,
               ),
               textAlign: TextAlign.left,
             ),
@@ -40,7 +46,7 @@ class ChildPost extends StatelessWidget {
                   : title,
               style: kDisplay1.copyWith(
                 color: Theme.of(context).colorScheme.primary,
-                fontSize: 17,
+                fontSize: 17 * context.watch<UserCubit>().stateAsUser.textSizeEnum.multiplier,
               ),
               overflow: TextOverflow.ellipsis,
               maxLines: 2,
@@ -51,6 +57,7 @@ class ChildPost extends StatelessWidget {
               body.length > kChildPostBodyPreviewLength ? '${body.substring(0, kChildPostBodyPreviewLength)}...' : body,
               style: kBody.copyWith(
                 color: Theme.of(context).colorScheme.primary,
+                fontSize: kBody.fontSize! * context.watch<UserCubit>().stateAsUser.textSizeEnum.multiplier,
               ),
               overflow: TextOverflow.ellipsis,
               maxLines: 2,
@@ -64,7 +71,7 @@ class ChildPost extends StatelessWidget {
   Widget build(BuildContext context) {
     return onTap == null
         ? buildBody(context)
-        : TouchableScale(
+        : TouchableOpacity(
             onTap: () => onTap!(),
             child: buildBody(context),
           );

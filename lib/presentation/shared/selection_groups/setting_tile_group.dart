@@ -20,7 +20,7 @@ class SettingTileGroup extends StatelessWidget {
       children: [
         Text(
           text,
-          style: kTitle.copyWith(
+          style: kBody.copyWith(
             color: Theme.of(context).colorScheme.onSurface,
           ),
           textAlign: TextAlign.left,

@@ -28,15 +28,28 @@ class Logout implements Usecase<Success, String> {
     // Clears the token from storage.
     return (await repository.deleteToken()).fold(
       (failure) => Left(LocalDBFailure()),
-      (success) {
+      (success) async {
         // Clears the box storing data for this user.
-        Hive.box(userId + hiveUserPartition).clear();
-        // Clears the box storing data for drafts.
-        Hive.box(userId + hiveDraftPartition).clear();
-        // Removes the token from the authorization header of the Api Client
-        api.clearToken();
-        // Returns success.
-        return Right(ApiSuccess());
+        return (await hiveClient.clearBox(userId + hiveUserPartition)).fold(
+          (failure) => Left(GeneralFailure()),
+          (success) async {
+            // Clears the box storing draft data for this user.
+            return (await hiveClient.clearBox(userId + hiveDraftPartition)).fold(
+              (failure) => Left(GeneralFailure()),
+              (success) async {
+                // Clears the box storing prefs data for this user.
+                return (await hiveClient.clearBox(userId + hivePrefsPartition)).fold(
+                  (failure) => Left(GeneralFailure()),
+                  (success) {
+                    // Removes the token from the authorization header of the Api Client
+                    api.clearToken();
+                    return Right(ApiSuccess());
+                  },
+                );
+              },
+            );
+          },
+        );
       },
     );
   }

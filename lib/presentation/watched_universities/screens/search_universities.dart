@@ -60,7 +60,7 @@ class _SearchUniversitiesScreenState extends State<SearchUniversitiesScreen> {
                   decoration: BoxDecoration(
                     border: Border(
                       bottom: BorderSide(
-                        color: Theme.of(context).colorScheme.surface,
+                        color: Theme.of(context).colorScheme.onBackground,
                         width: .8,
                       ),
                     ),

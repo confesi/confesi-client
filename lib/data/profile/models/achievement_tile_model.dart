@@ -10,7 +10,6 @@ class AchievementTileModel extends AchievementTileEntity {
     required String title,
     required String description,
     required int quantity,
-    required double aspectRatio,
     required AchievementRarity rarity,
   }) : super(
           rarity: rarity,
@@ -18,7 +17,6 @@ class AchievementTileModel extends AchievementTileEntity {
           title: title,
           description: description,
           quantity: quantity,
-          aspectRatio: aspectRatio,
         );
 
   factory AchievementTileModel.fromJson(dynamic json) {

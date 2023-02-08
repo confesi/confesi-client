@@ -141,45 +141,9 @@ class _DetailsScreenState extends State<DetailsScreen> with AutomaticKeepAliveCl
                                     ),
                                   ],
                                 ),
-                                const SizedBox(height: 15),
-                                SettingTileGroup(
-                                  text: "Audience (your home university)",
-                                  settingTiles: [
-                                    SettingTile(
-                                      noRightIcon: true,
-                                      secondaryText: "edit",
-                                      leftIcon: CupertinoIcons.sparkles,
-                                      text: "University of Victoria",
-                                      onTap: () => print("tap"),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 15),
-                                SettingTileGroup(
-                                  text: "Your year of study (optional)",
-                                  settingTiles: [
-                                    SettingTile(
-                                      secondaryText: "edit",
-                                      noRightIcon: true,
-                                      leftIcon: CupertinoIcons.sparkles,
-                                      text: "Hidden",
-                                      onTap: () => print("tap"),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 15),
-                                SettingTileGroup(
-                                  text: "Your faculty (optional)",
-                                  settingTiles: [
-                                    SettingTile(
-                                      secondaryText: "edit",
-                                      noRightIcon: true,
-                                      leftIcon: CupertinoIcons.sparkles,
-                                      text: "Hidden",
-                                      onTap: () => showFacultyPickerSheet(context),
-                                    ),
-                                  ],
-                                ),
+                                // TODO
+                                const Text(
+                                    "TODO: add something like: 'posting including these details, edit them here'"),
                               ],
                             ),
                           ),

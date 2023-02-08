@@ -1,3 +1,5 @@
+import 'package:Confessi/constants/enums_that_are_local_keys.dart';
+
 import '../../../domain/authentication_and_settings/entities/user.dart';
 
 import '../../../core/styles/typography.dart';
@@ -26,6 +28,11 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   bool shakeSheetOpen = false;
   late String introText;
 
+  bool shouldOpenFeedbackSheetOnShake(BuildContext context) {
+    UserCubit userCubit = context.read<UserCubit>();
+    return userCubit.stateIsUser && userCubit.stateAsUser.shakeForFeedbackEnum == ShakeForFeedbackEnum.enabled;
+  }
+
   @override
   void initState() {
     introText = getIntro().text;
@@ -33,14 +40,14 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     // Opens the feedback sheet when the phone is shook. Implemented on the [Splash] screen because it is only shown once per app run. Otherwise, mutliple shake listeners would be created.
     ShakeDetector.autoStart(
       onPhoneShake: () {
-        if (!shakeSheetOpen) {
+        if (!shakeSheetOpen && shouldOpenFeedbackSheetOnShake(context)) {
           shakeSheetOpen = true;
           showFeedbackSheet(context).whenComplete(() => shakeSheetOpen = false);
         }
       },
       shakeThresholdGravity: 3,
-      shakeCountResetTime: 1000,
-      minimumShakeCount: 3,
+      shakeCountResetTime: 1500,
+      minimumShakeCount: 2,
     );
     super.initState();
   }
@@ -49,21 +56,21 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   Widget build(BuildContext context) {
     return BlocListener<UserCubit, UserState>(
       listenWhen: (previous, current) => (previous.runtimeType != current.runtimeType),
+      // listenWhen: (previous, current) => true,
       listener: (context, state) {
-        if (state is OpenUser) {
-          // State is OpenUser, meaning they haven't seen the home screen yet ever.
-          print("open user");
-          Navigator.of(context).pushNamed("/open");
-        } else if (state is User) {
+        if (state is User) {
           // State is some subset of User, whether that be Guest or RegisteredUser.
           if (state.userType is RegisteredUser) {
             // State is RegisteredUser, meaning they are a registered user.
-            print("registered user");
             Navigator.of(context).pushNamed("/home");
-          } else {
-            // State is Guest, meaning they are a guest user.
-            print("guest");
-            Navigator.of(context).pushNamed("/home");
+          } else if (state.userType is Guest) {
+            // Go directly to home
+            if ((state.userType as Guest).directToHome) {
+              Navigator.of(context).pushNamed("/home");
+            } else {
+              // Go directly to open
+              Navigator.of(context).pushNamed("/open");
+            }
           }
         } else if (state is UserError) {
           // Something went vastly wrong. Push to error screen.
@@ -94,7 +101,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                 child: Center(
                   child: Text(
                     "Confesi",
-                    style: kDisplay1.copyWith(
+                    style: kSplashScreenLogo.copyWith(
                       fontSize: 34,
                       color: Theme.of(context).colorScheme.primary,
                     ),

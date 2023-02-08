@@ -22,11 +22,7 @@ const String kAppearanceGroupLabel = "Choose appearance";
 
 const String kDarkAppearance = "Dark";
 
-const String kLightAppearance = "Light";
-
 String kSystemAppearanceRealTime(BuildContext context) => "System (currently ${appearanceName(context)})";
-
-const String kAppearanceBottomDisclaimerText = "These preferences are saved locally to your device.";
 
 const String kFaqPageTitle = "FAQ";
 
@@ -127,19 +123,17 @@ const String kSettingsAppearanceLabel = "Appearance";
 
 // const String kSettingsInterfaceAdjustmentsLabel = "Interface Adjustments";
 
-const String kSettingsBiometricLockLabel = "Biometric Lock";
+const String kSettingsBiometricLockLabel = "Biometric lock";
 
 // const String kSettingsRewatchTutorialLabel = "Rewatch Onboarding Slides";
 
-const String kSettingsAccountDetailsLabel = "School Details";
+const String kSettingsAccountDetailsLabel = "School details";
 
-const String kVerifiedStudentLabel = "Verified Student Perks";
-
-const String kSettingsLogoutLabel = "Logout";
+const String kVerifiedStudentLabel = "Verified student perks";
 
 // const String kSettingsReducedAnimationsLabel = "Reduced Animations";
 
-const String kSettingsHapticFeedbackLabel = "Haptic Feedback";
+const String kSettingsHapticFeedbackLabel = "Haptic feedback";
 
 // const String kSettingsTextSizeLabel = "Text Size";
 
@@ -149,11 +143,11 @@ const String kSettingsHapticFeedbackLabel = "Haptic Feedback";
 
 // const String kSettingsBoomerModeLabel = "Boomer Mode";
 
-const String kSettingsTermsOfServiceLabel = "Terms of Service";
+const String kSettingsTermsOfServiceLabel = "Terms of service";
 
-const String kSesttingsPrivacyStatementLabel = "Privacy Statement";
+const String kSesttingsPrivacyStatementLabel = "Privacy statement";
 
-const String kSettingsDeleteAccountLabel = "Delete Account";
+const String kSettingsDeleteAccountLabel = "Delete account";
 
 const String kSettingsPersonalizationLabel = "Personalization";
 
@@ -161,9 +155,9 @@ const String kSettingsAccountLabel = "Account";
 
 const String kSettingsLegalLabel = "Legal";
 
-const String kSettingsDangerZoneLabel = "Danger Zone";
+const String kSettingsDangerZoneLabel = "Danger zone";
 
-const String kTextSizePageTitle = "Text Size";
+const String kTextSizePageTitle = "Text size";
 
 const String kTextSizeDisclaimerText = "These preferences are saved locally to your device.";
 

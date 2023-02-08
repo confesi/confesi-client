@@ -16,9 +16,16 @@ abstract class UserType extends Equatable {
 ///
 /// has a [userId] of "guest".
 class Guest extends UserType {
-  /// Gets the user's unique storage location ("guest" for all guest users).
+  final bool directToHome;
+
+  Guest({required this.directToHome});
+
+  /// Gets the user's "unique" storage location ("guest" for all guest users). Thus, they technically share prefs.
   @override
   String userId() => guestDataStorageLocation;
+
+  @override
+  List<Object?> get props => [directToHome];
 }
 
 /// A registered user is viewing the application.

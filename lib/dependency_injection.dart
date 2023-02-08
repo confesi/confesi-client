@@ -4,6 +4,9 @@ import 'package:Confessi/application/create_post/cubit/drafts_cubit.dart';
 import 'package:Confessi/core/clients/hive_client.dart';
 import 'package:Confessi/data/create_post/datasources/draft_post_datasource.dart';
 import 'package:Confessi/data/create_post/repositories/draft_repository_concrete.dart';
+import 'package:Confessi/domain/authentication_and_settings/usecases/curvy.dart';
+import 'package:Confessi/domain/authentication_and_settings/usecases/shake_for_feedback.dart';
+import 'package:Confessi/domain/authentication_and_settings/usecases/text_size.dart';
 import 'package:Confessi/domain/create_post/usecases/delete_draft.dart';
 import 'package:Confessi/domain/create_post/usecases/get_draft.dart';
 import 'package:Confessi/domain/create_post/usecases/save_draft.dart';
@@ -97,7 +100,14 @@ Future<void> init() async {
   // Registers the registration cubit.
   sl.registerFactory(() => RegisterCubit(register: sl()));
   // Registers the user cubit.
-  sl.registerFactory(() => UserCubit(logout: sl(), appearance: sl(), loadRefreshToken: sl(), homeViewed: sl()));
+  sl.registerFactory(() => UserCubit(
+      curvyUsecase: sl(),
+      logout: sl(),
+      appearance: sl(),
+      loadRefreshToken: sl(),
+      homeViewed: sl(),
+      textSize: sl(),
+      shakeForFeedback: sl()));
   // Registers the contact setting cubit.
   sl.registerFactory(() => ContactSettingCubit(copyEmailTextUsecase: sl(), openMailClientUsecase: sl()));
   // Registers the cubit that launches the website viewer.
@@ -131,7 +141,7 @@ Future<void> init() async {
   // Registers the biometric authentication usecase.
   sl.registerLazySingleton(() => BiometricAuthentication(localAuthentication: sl()));
   // Registers the appearance usecase.
-  sl.registerLazySingleton(() => Appearance(repository: sl()));
+  sl.registerLazySingleton(() => AppearanceUsecase(repository: sl()));
   // Registeres the load refresh token usecase.
   sl.registerLazySingleton(() => LoadRefreshToken(repository: sl()));
   // Registers the usecase that opens the mail client.
@@ -154,6 +164,12 @@ Future<void> init() async {
   sl.registerLazySingleton(() => GetDraftUsecase(repository: sl()));
   // Registers the delete draft usecase.
   sl.registerLazySingleton(() => DeleteDraftUsecase(repository: sl()));
+  // Registers the text size setting usecase.
+  sl.registerLazySingleton(() => TextSizeUsecase(repository: sl()));
+  // Registers the shake for feedback usecase.
+  sl.registerLazySingleton(() => ShakeForFeedbackUsecase(repository: sl()));
+  // Registers the curvy usecase.
+  sl.registerLazySingleton(() => CurvyUsecase(repository: sl()));
 
   //! Core
   // Registers custom connection checker class.

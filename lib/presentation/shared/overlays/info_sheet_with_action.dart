@@ -45,7 +45,7 @@ Future<dynamic> showInfoSheetWithAction(
                 const SizedBox(height: 30),
                 Text(
                   body,
-                  style: kTitle.copyWith(
+                  style: kBody.copyWith(
                     color: Theme.of(context).colorScheme.onSurface,
                   ),
                   textAlign: TextAlign.center,

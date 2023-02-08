@@ -1,4 +1,5 @@
 import '../../../core/styles/typography.dart';
+import '../../shared/button_touch_effects/touchable_opacity.dart';
 import '../../shared/button_touch_effects/touchable_scale.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +14,7 @@ class WatchedUniversityIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TouchableScale(
+    return TouchableOpacity(
       onTap: () => print("tapped"),
       child: Container(
         padding: const EdgeInsets.all(10),

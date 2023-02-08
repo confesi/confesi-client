@@ -48,7 +48,7 @@ class _BiometricLockScreenState extends State<BiometricLockScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 15),
+                      const SizedBox(height: 10),
                       BoolSelectionGroup(
                         text: "Biometric lock",
                         selectionTiles: [
@@ -70,7 +70,7 @@ class _BiometricLockScreenState extends State<BiometricLockScreen> {
                         ],
                       ),
                       const DisclaimerText(
-                        verticalPadding: 15,
+                        topPadding: 15,
                         text:
                             "Enabling this forces you to unlock your saved posts, confessions, and comments with biometrics.",
                       ),

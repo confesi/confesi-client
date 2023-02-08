@@ -115,24 +115,24 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
   @override
   Widget build(BuildContext context) {
     return ThemedStatusBar(
-      child: SafeArea(
-        child: BlocListener<HottestCubit, HottestState>(
-          listener: (context, state) {
+      child: BlocListener<HottestCubit, HottestState>(
+        listener: (context, state) {
+          setState(() {
+            currentIndex = 0; // To ensure the hottest tiles build and expand properly
+          });
+          if (state is Data) {
             setState(() {
-              currentIndex = 0; // To ensure the hottest tiles build and expand properly
+              headerText = state.date.isSameDate(DateTime.now())
+                  ? "Hottest Today"
+                  : "Hottest of ${state.date.readableDateFormat()}";
             });
-            if (state is Data) {
-              setState(() {
-                headerText = state.date.isSameDate(DateTime.now())
-                    ? "Hottest Today"
-                    : "Hottest of ${state.date.readableDateFormat()}";
-              });
-            }
-          },
-          child: Scaffold(
-            resizeToAvoidBottomInset: false,
-            backgroundColor: Theme.of(context).colorScheme.background,
-            body: LayoutBuilder(
+          }
+        },
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          backgroundColor: Theme.of(context).colorScheme.background,
+          body: SafeArea(
+            child: LayoutBuilder(
               builder: (context, constraints) {
                 return Container(
                     color: Theme.of(context).colorScheme.shadow,

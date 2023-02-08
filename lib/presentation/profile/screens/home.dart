@@ -1,9 +1,25 @@
+import 'package:Confessi/constants/profile/enums.dart';
+import 'package:Confessi/core/converters/achievement_rarity_to_string.dart';
+import 'package:Confessi/core/utils/sizing/width_fraction.dart';
+import 'package:Confessi/domain/profile/entities/number_of_each_achievement_type.dart';
+import 'package:Confessi/core/alt_unused/achievement_stat_tile.dart';
+import 'package:Confessi/presentation/profile/widgets/like_hate_hottest_pageview_tile.dart';
+import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opacity.dart';
+import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
+import 'package:Confessi/presentation/shared/buttons/pop.dart';
+import 'package:Confessi/presentation/shared/overlays/info_sheet.dart';
+import 'package:Confessi/presentation/shared/stat_tiles/stat_tile_group.dart';
+import 'package:Confessi/presentation/shared/stat_tiles/stat_tile_item.dart';
+import 'package:flutter/cupertino.dart';
+
+import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../../../application/profile/cubit/profile_cubit.dart';
 import '../../../application/shared/cubit/share_cubit.dart';
+import '../../../core/styles/typography.dart';
 import '../../../core/utils/numbers/is_plural.dart';
 import '../../../core/utils/sizing/top_safe_area.dart';
+import '../../../domain/profile/entities/achievement_tile_entity.dart';
 import '../../primary/controllers/profile_controller.dart';
-import '../widgets/achievement_builder.dart';
 import '../../shared/indicators/alert.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrollable/exports.dart';
@@ -14,13 +30,12 @@ import '../../shared/edited_source_widgets/swipe_refresh.dart';
 import '../../shared/indicators/loading_cupertino.dart';
 import '../../shared/other/cached_online_image.dart';
 import '../../shared/overlays/info_sheet_with_action.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/utils/sizing/height_fraction.dart';
-import '../../shared/buttons/emblem.dart';
 import '../../shared/buttons/simple_text.dart';
-import '../../shared/text/group.dart';
+import '../tabs/achievement_tab.dart';
+import '../widgets/achievement_rarity_numbers_display_tile.dart';
 import '../widgets/stat_tile.dart';
 
 class ProfileHome extends StatefulWidget {
@@ -36,6 +51,8 @@ class ProfileHome extends StatefulWidget {
 }
 
 class _ProfileHomeState extends State<ProfileHome> with AutomaticKeepAliveClientMixin {
+  late PageController pageController;
+
   @override
   bool get wantKeepAlive => true;
 
@@ -48,137 +65,264 @@ class _ProfileHomeState extends State<ProfileHome> with AutomaticKeepAliveClient
         );
   }
 
+  @override
+  void initState() {
+    pageController = PageController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
+
+  double scrollDy = 0.0;
+
+  List<AchievementTab> achievementTilesToCertainRarityAchievementTabs(
+      List<AchievementTileEntity> achievementTiles, AchievementRarity desiredRarity) {
+    List<AchievementTab> tabs = [];
+    for (AchievementTileEntity i in achievementTiles) {
+      if (i.rarity == desiredRarity) tabs.add(AchievementTab(achievement: i));
+    }
+    return tabs;
+  }
+
+  void showInfoAchievementSheet(BuildContext context, AchievementRarity rarity) {
+    showInfoSheet(context, "No ${achievementRarityToString(rarity).toLowerCase()} achievements",
+        "Keep interacting on the app to earn them!");
+  }
+
+  NumberOfEachAchievementType numberOfEachRarityForAchievements(List<AchievementTileEntity> achievements) {
+    NumberOfEachAchievementType numberOfEachAchievementType = NumberOfEachAchievementType();
+    for (AchievementTileEntity achievement in achievements) {
+      switch (achievement.rarity) {
+        case AchievementRarity.common:
+          numberOfEachAchievementType.addCommmon(achievement.quantity);
+          break;
+        case AchievementRarity.rare:
+          numberOfEachAchievementType.addRare(achievement.quantity);
+          break;
+        case AchievementRarity.epic:
+          numberOfEachAchievementType.addEpic(achievement.quantity);
+          break;
+        case AchievementRarity.legendary:
+          numberOfEachAchievementType.addLegendary(achievement.quantity);
+          break;
+      }
+    }
+    return numberOfEachAchievementType;
+  }
+
   Widget buildLoadedScreen(BuildContext context, ProfileData state) => ThemedStatusBar(
-        child: SwipeRefresh(
-          onRefresh: () async => await context.read<ProfileCubit>().reloadProfile(),
-          child: ScrollableView(
-            hapticsEnabled: false,
-            scrollBarVisible: false,
-            controller: widget.profileController.scrollController,
-            physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-            child: Column(
-              children: [
-                ClipRRect(
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
-                  ),
-                  child: SizedBox(
-                    height: heightFraction(context, 1 / 3),
-                    width: double.infinity,
-                    child: CachedOnlineImage(url: state.universityImgUrl),
-                  ),
-                ),
-                Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 15, left: 10, right: 10),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: GroupText(
-                              leftAlign: true,
-                              small: true,
-                              header: state.username,
-                              body: "${state.universityFullName} (${state.universityAbbr})",
-                            ),
-                          ),
-                          const SizedBox(width: 5),
-                          EmblemButton(
-                            backgroundColor: Theme.of(context).colorScheme.surface,
-                            icon: CupertinoIcons.lock,
-                            onPress: () => showInfoSheetWithAction(
-                              context,
-                              "This profile is private",
-                              "This profile is only visible to you. In fact, to add an extra layer of protection, you can enable biometric authentication to keep your saved posts, confessions, and comments locked.",
-                              () => Navigator.pushNamed(context, "/settings/biometric_lock"),
-                              "Edit biometric lock settings",
-                            ),
-                            iconColor: Theme.of(context).colorScheme.onSurface,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+        child: NotificationListener<ScrollUpdateNotification>(
+          onNotification: (details) {
+            if (details.metrics.pixels <= 0) {
+              setState(() {
+                scrollDy = details.metrics.pixels.abs();
+              });
+            }
+            return false;
+          },
+          child: SwipeRefresh(
+            color: Theme.of(context).colorScheme.primary,
+            backgroundColor: Theme.of(context).colorScheme.background,
+            onRefresh: () async => await context.read<ProfileCubit>().reloadProfile(),
+            child: ScrollableView(
+              hapticsEnabled: false,
+              scrollBarVisible: false,
+              controller: widget.profileController.scrollController,
+              physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+              child: Column(
+                children: [
+                  Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const SizedBox(height: 15),
+                        ClipRRect(
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(scrollDy / 3), topRight: Radius.circular(scrollDy / 3)),
+                          child: CachedOnlineImage(url: state.universityImgUrl),
+                        ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: StatTile(
-                            leftTap: () => showInfoSheetWithAction(
-                              context,
-                              "${addCommasToNumber(state.statTileEntity.totalLikes)} total ${isPlural(state.statTileEntity.totalLikes) ? "likes" : "like"}. Top ${state.statTileEntity.topLikesPercentage}% of users.",
-                              "Yup, everyone loves your content.",
-                              () => shareStatContent(context, state.statTileEntity.totalLikes,
-                                  state.statTileEntity.topLikesPercentage, "like", "likes"),
-                              "Share with friends",
-                            ),
-                            centerTap: () => showInfoSheetWithAction(
-                              context,
-                              "${addCommasToNumber(state.statTileEntity.totalHottests)} total ${isPlural(state.statTileEntity.totalHottests) ? "hottests" : "hottest"}. Top ${state.statTileEntity.topHottestsPercentage}% of users.",
-                              "Oh so popular, huh?",
-                              () => shareStatContent(context, state.statTileEntity.totalHottests,
-                                  state.statTileEntity.topHottestsPercentage, "hottest", "hottests"),
-                              "Share with friends",
-                            ),
-                            rightTap: () => showInfoSheetWithAction(
-                              context,
-                              "${addCommasToNumber(state.statTileEntity.totalDislikes)} total ${isPlural(state.statTileEntity.totalDislikes) ? "hates" : "hate"}. Top ${state.statTileEntity.topDislikesPercentage}% of users.",
-                              "It's confirmed. You're a baddie.",
-                              () => shareStatContent(context, state.statTileEntity.totalDislikes,
-                                  state.statTileEntity.topDislikesPercentage, "hate", "hates"),
-                              "Share with friends",
-                            ),
-                            leftNumber: state.statTileEntity.totalLikes,
-                            leftDescription: "Likes",
-                            centerNumber: state.statTileEntity.totalHottests,
-                            centerDescription: "Hottests",
-                            rightNumber: state.statTileEntity.totalDislikes,
-                            rightDescription: "Hates",
+                          padding: const EdgeInsets.only(top: 10, right: 10, left: 10),
+                          child: SimpleTextButton(
+                            infiniteWidth: true,
+                            bgColor: Theme.of(context).colorScheme.background,
+                            textColor: Theme.of(context).colorScheme.primary,
+                            text: "Edit account details",
+                            onTap: () => Navigator.pushNamed(context, "/profile/account_details"),
                           ),
                         ),
-                        const SizedBox(height: 10),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                        // Container(
+                        //   width: double.infinity,
+                        //   padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                        //   decoration: BoxDecoration(
+                        //     color: Theme.of(context).colorScheme.secondary,
+                        //     border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
+                        //     borderRadius: BorderRadius.only(
+                        //       topLeft: Radius.circular(scrollDy),
+                        //       topRight: Radius.circular(scrollDy),
+                        //     ),
+                        //   ),
+                        //   child: SafeArea(
+                        //     bottom: false,
+                        //     child: Column(
+                        //       children: [
+                        //         Container(
+                        //           width: widthFraction(context, 1 / 3),
+                        //           height: widthFraction(context, 1 / 3),
+                        //           decoration: BoxDecoration(
+                        //             boxShadow: [
+                        //               BoxShadow(
+                        //                 color: Theme.of(context).colorScheme.shadow.withOpacity(0.4),
+                        //                 blurRadius: 30,
+                        //               ),
+                        //             ],
+                        //             shape: BoxShape.circle,
+                        //             border: Border.all(color: Theme.of(context).colorScheme.background, width: 2),
+                        //           ),
+                        //           child: CachedOnlineImage(url: state.universityImgUrl, isCircle: true),
+                        //         ),
+                        //         const SizedBox(height: 30),
+                        //         PopButton(
+                        //           backgroundColor: Theme.of(context).colorScheme.background,
+                        //           textColor: Theme.of(context).colorScheme.primary,
+                        //           text: "Edit account details",
+                        //           onPress: () => Navigator.pushNamed(context, "/profile/account_details"),
+                        //           icon: CupertinoIcons.pen,
+                        //         ),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
+                        Container(
+                          margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(context.watch<UserCubit>().stateAsUser.curvyEnum.borderRadius)),
+                            color: Theme.of(context).colorScheme.background,
+                            border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
+                          ),
                           child: Row(
                             children: [
-                              Expanded(
-                                child: SimpleTextButton(
-                                  onTap: () => Navigator.pushNamed(context, '/home/profile/comments'),
-                                  text: "Comments",
-                                ),
+                              StatTileItem(
+                                iconColor: Theme.of(context).colorScheme.primary,
+                                textColor: Theme.of(context).colorScheme.onSurface,
+                                text: "Confessions",
+                                icon: CupertinoIcons.cube_box,
+                                onTap: () => Navigator.pushNamed(context, "/home/profile/posts"),
                               ),
-                              const SizedBox(width: 10),
-                              Expanded(
-                                child: SimpleTextButton(
-                                  onTap: () => Navigator.pushNamed(context, '/home/profile/posts'),
-                                  text: "Confessions",
-                                ),
+                              StatTileItem(
+                                iconColor: Theme.of(context).colorScheme.primary,
+                                textColor: Theme.of(context).colorScheme.onSurface,
+                                text: "Saved",
+                                icon: CupertinoIcons.bookmark,
+                                onTap: () => Navigator.pushNamed(context, "/home/profile/saved"),
+                              ),
+                              StatTileItem(
+                                iconColor: Theme.of(context).colorScheme.primary,
+                                textColor: Theme.of(context).colorScheme.onSurface,
+                                text: "Comments",
+                                icon: CupertinoIcons.chat_bubble,
+                                onTap: () => Navigator.pushNamed(context, "/home/profile/comments"),
                               ),
                             ],
                           ),
                         ),
-                        const SizedBox(height: 10),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: SimpleTextButton(
-                            infiniteWidth: true,
-                            onTap: () => Navigator.pushNamed(context, '/home/profile/saved'),
-                            text: "Saved Confessions",
+                        Container(
+                          color: Theme.of(context).colorScheme.shadow,
+                          height: 200,
+                          child: NotificationListener<ScrollUpdateNotification>(
+                            onNotification: (_) => true, // Don't bubble scroll notifications
+                            child: PageView(
+                              controller: pageController,
+                              children: [
+                                LikeHateHottestPageviewTile(
+                                  header: "like",
+                                  percentile: state.statTileEntity.topLikesPercentage,
+                                  pluralHeader: "likes",
+                                  value: state.statTileEntity.totalLikes,
+                                ),
+                                LikeHateHottestPageviewTile(
+                                  header: "dislikes",
+                                  percentile: state.statTileEntity.topDislikesPercentage,
+                                  pluralHeader: "dislikes",
+                                  value: state.statTileEntity.totalDislikes,
+                                ),
+                                LikeHateHottestPageviewTile(
+                                  header: "hottest",
+                                  percentile: state.statTileEntity.topHottestsPercentage,
+                                  pluralHeader: "hottests",
+                                  value: state.statTileEntity.totalHottests,
+                                  showSwipeSign: false,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                        const SizedBox(height: 20),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: AchievementBuilder(achievements: state.achievementTileEntities),
+                        AchievementRarityNumbersDisplayTile(
+                          onTapCommons: () =>
+                              numberOfEachRarityForAchievements(state.achievementTileEntities).commons == 0
+                                  ? showInfoAchievementSheet(context, AchievementRarity.common)
+                                  : Navigator.pushNamed(
+                                      context,
+                                      "/profile/achievements",
+                                      arguments: {
+                                        "rarity": AchievementRarity.common,
+                                        "achievements": achievementTilesToCertainRarityAchievementTabs(
+                                            state.achievementTileEntities, AchievementRarity.common),
+                                      },
+                                      // AchievementTab(achievement: i)
+                                    ),
+                          onTapRares: () => numberOfEachRarityForAchievements(state.achievementTileEntities).rares == 0
+                              ? showInfoAchievementSheet(context, AchievementRarity.rare)
+                              : Navigator.pushNamed(
+                                  context,
+                                  "/profile/achievements",
+                                  arguments: {
+                                    "rarity": AchievementRarity.rare,
+                                    "achievements": achievementTilesToCertainRarityAchievementTabs(
+                                        state.achievementTileEntities, AchievementRarity.rare),
+                                  },
+                                  // AchievementTab(achievement: i)
+                                ),
+                          onTapEpics: () => numberOfEachRarityForAchievements(state.achievementTileEntities).epics == 0
+                              ? showInfoAchievementSheet(context, AchievementRarity.epic)
+                              : Navigator.pushNamed(
+                                  context,
+                                  "/profile/achievements",
+                                  arguments: {
+                                    "rarity": AchievementRarity.epic,
+                                    "achievements": achievementTilesToCertainRarityAchievementTabs(
+                                        state.achievementTileEntities, AchievementRarity.epic),
+                                  },
+                                  // AchievementTab(achievement: i)
+                                ),
+                          onTapLegendaries: () =>
+                              numberOfEachRarityForAchievements(state.achievementTileEntities).legendaries == 0
+                                  ? showInfoAchievementSheet(context, AchievementRarity.legendary)
+                                  : Navigator.pushNamed(
+                                      context,
+                                      "/profile/achievements",
+                                      arguments: {
+                                        "rarity": AchievementRarity.legendary,
+                                        "achievements": achievementTilesToCertainRarityAchievementTabs(
+                                            state.achievementTileEntities, AchievementRarity.legendary),
+                                      },
+                                      // AchievementTab(achievement: i)
+                                    ),
+                          numOfCommons: numberOfEachRarityForAchievements(state.achievementTileEntities).commons,
+                          numOfRares: numberOfEachRarityForAchievements(state.achievementTileEntities).rares,
+                          numOfEpics: numberOfEachRarityForAchievements(state.achievementTileEntities).epics,
+                          numOfLegendaries:
+                              numberOfEachRarityForAchievements(state.achievementTileEntities).legendaries,
                         ),
-                        const SizedBox(height: 20),
                       ],
                     ),
-                  ],
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -211,16 +355,19 @@ class _ProfileHomeState extends State<ProfileHome> with AutomaticKeepAliveClient
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProfileCubit, ProfileState>(
-      builder: (context, state) {
-        return Scaffold(
-          backgroundColor: Theme.of(context).colorScheme.background,
-          body: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 200),
-            child: buildChildFromState(state),
-          ),
-        );
-      },
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.shadow,
+      body: SafeArea(
+        top: false,
+        child: BlocBuilder<ProfileCubit, ProfileState>(
+          builder: (context, state) {
+            return AnimatedSwitcher(
+              duration: const Duration(milliseconds: 250),
+              child: buildChildFromState(state),
+            );
+          },
+        ),
+      ),
     );
   }
 }

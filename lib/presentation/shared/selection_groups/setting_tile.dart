@@ -1,3 +1,6 @@
+import 'package:Confessi/application/authentication_and_settings/cubit/user_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../button_touch_effects/touchable_scale.dart';
 
 import '../../../core/styles/typography.dart';
@@ -15,6 +18,7 @@ class SettingTile extends StatelessWidget {
     this.isRedText = false,
     this.rightIcon,
     this.noRightIcon = false,
+    this.bgColor,
   });
 
   final bool noRightIcon;
@@ -24,6 +28,7 @@ class SettingTile extends StatelessWidget {
   final String? secondaryText;
   final VoidCallback onTap;
   final IconData? rightIcon;
+  final Color? bgColor;
 
   @override
   Widget build(BuildContext context) {
@@ -34,10 +39,10 @@ class SettingTile extends StatelessWidget {
         width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.background,
-          borderRadius: const BorderRadius.all(
-            Radius.circular(5),
-          ),
+          border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
+          color: bgColor ?? Theme.of(context).colorScheme.background,
+          borderRadius:
+              BorderRadius.all(Radius.circular(context.watch<UserCubit>().stateAsUser.curvyEnum.borderRadius)),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

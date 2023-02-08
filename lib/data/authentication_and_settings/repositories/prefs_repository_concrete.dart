@@ -55,4 +55,70 @@ class PrefsRepository implements IPrefsRepository {
       return Left(LocalDBFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, TextSizeEnum>> loadTextSize(
+      List enumValues, Type enumType, String userID, String storagePartitionLocation) async {
+    try {
+      return Right(await datasource.loadPref(enumValues, enumType, userID, storagePartitionLocation));
+    } on DBDefaultException {
+      return Left(DbDefaultFailure());
+    } catch (e) {
+      return Left(LocalDBFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, Success>> setTextSize(
+      TextSizeEnum settingValue, Type enumType, String userID, String storagePartitionLocation) async {
+    try {
+      return Right(await datasource.setPref(settingValue, enumType, userID, storagePartitionLocation));
+    } catch (e) {
+      return Left(LocalDBFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, ShakeForFeedbackEnum>> loadShakeForFeedback(
+      List enumValues, Type enumType, String userID, String storagePartitionLocation) async {
+    try {
+      return Right(await datasource.loadPref(enumValues, enumType, userID, storagePartitionLocation));
+    } on DBDefaultException {
+      return Left(DbDefaultFailure());
+    } catch (e) {
+      return Left(LocalDBFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, Success>> setShakeForFeedback(
+      ShakeForFeedbackEnum settingValue, Type enumType, String userID, String storagePartitionLocation) async {
+    try {
+      return Right(await datasource.setPref(settingValue, enumType, userID, storagePartitionLocation));
+    } catch (e) {
+      return Left(LocalDBFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, CurvyEnum>> loadCurvy(
+      List enumValues, Type enumType, String userID, String storagePartitionLocation) async {
+    try {
+      return Right(await datasource.loadPref(enumValues, enumType, userID, storagePartitionLocation));
+    } on DBDefaultException {
+      return Left(DbDefaultFailure());
+    } catch (e) {
+      return Left(LocalDBFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, Success>> setCurvy(
+      CurvyEnum settingValue, Type enumType, String userID, String storagePartitionLocation) async {
+    try {
+      return Right(await datasource.setPref(settingValue, enumType, userID, storagePartitionLocation));
+    } catch (e) {
+      return Left(LocalDBFailure());
+    }
+  }
 }

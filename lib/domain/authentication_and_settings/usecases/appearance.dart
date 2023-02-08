@@ -6,10 +6,10 @@ import 'package:dartz/dartz.dart';
 import '../../../constants/enums_that_are_local_keys.dart';
 import '../../../core/results/successes.dart';
 
-class Appearance implements GetSetUsecase<AppearanceEnum, List> {
+class AppearanceUsecase implements GetSetUsecase<AppearanceEnum, List> {
   final PrefsRepository repository;
 
-  const Appearance({required this.repository});
+  const AppearanceUsecase({required this.repository});
 
   @override
   Future<Either<Failure, AppearanceEnum>> get(
@@ -19,7 +19,7 @@ class Appearance implements GetSetUsecase<AppearanceEnum, List> {
     return failureOrAppearanceEnum.fold(
       (failure) {
         if (failure is DbDefaultFailure) {
-          return const Right(AppearanceEnum.system); // Default choice.
+          return const Right(AppearanceEnum.dark); // Default choice.
         }
         return Left(failure);
       },

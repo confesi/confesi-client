@@ -17,4 +17,25 @@ abstract class IPrefsRepository {
 
   Future<Either<Failure, AppearanceEnum>> loadAppearance(
       List enumValues, Type enumType, String userID, String storagePartitionLocation);
+
+  //! Text size prefs.
+  Future<Either<Failure, Success>> setTextSize(
+      TextSizeEnum settingValue, Type enumType, String userID, String storagePartitionLocation);
+
+  Future<Either<Failure, TextSizeEnum>> loadTextSize(
+      List enumValues, Type enumType, String userID, String storagePartitionLocation);
+
+  //! Curvy size prefs.
+  Future<Either<Failure, Success>> setCurvy(
+      CurvyEnum settingValue, Type enumType, String userID, String storagePartitionLocation);
+
+  Future<Either<Failure, CurvyEnum>> loadCurvy(
+      List enumValues, Type enumType, String userID, String storagePartitionLocation);
+
+  //! Shake for feedback prefs.
+  Future<Either<Failure, Success>> setShakeForFeedback(
+      ShakeForFeedbackEnum settingValue, Type enumType, String userID, String storagePartitionLocation);
+
+  Future<Either<Failure, ShakeForFeedbackEnum>> loadShakeForFeedback(
+      List enumValues, Type enumType, String userID, String storagePartitionLocation);
 }

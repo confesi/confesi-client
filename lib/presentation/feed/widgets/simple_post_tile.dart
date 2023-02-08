@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../../../core/styles/typography.dart';
 import 'child_post.dart';
 import 'reaction_tile.dart';
@@ -25,8 +27,7 @@ class _SimplePostTileState extends State<SimplePostTile> {
             width: double.infinity,
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.background,
-              borderRadius: const BorderRadius.all(Radius.circular(0)),
-              border: Border.all(color: Theme.of(context).colorScheme.surface, width: 1),
+              border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -42,7 +43,7 @@ class _SimplePostTileState extends State<SimplePostTile> {
                           "I found out all the stats profs are in a conspiracy ring together!",
                           style: kTitle.copyWith(
                             color: Theme.of(context).colorScheme.primary,
-                            fontSize: 24,
+                            fontSize: 24 * context.watch<UserCubit>().stateAsUser.textSizeEnum.multiplier,
                           ),
                           textAlign: TextAlign.left,
                         ),
@@ -76,6 +77,7 @@ class _SimplePostTileState extends State<SimplePostTile> {
                           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sapien lacus, lacinia in posuere eget, bibendum quis lectus. Pellentesque eu nulla ullamcorper dui blandit porta vel id urna...",
                           style: kBody.copyWith(
                             color: Theme.of(context).colorScheme.primary,
+                            fontSize: kBody.fontSize! * context.watch<UserCubit>().stateAsUser.textSizeEnum.multiplier,
                           ),
                           textAlign: TextAlign.left,
                         ),

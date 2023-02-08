@@ -1,6 +1,9 @@
 import 'package:Confessi/application/create_post/cubit/drafts_cubit.dart';
+import 'package:Confessi/presentation/authentication_and_settings/screens/settings/feedback.dart';
+import 'package:Confessi/presentation/authentication_and_settings/screens/settings/text_size.dart';
 
 import '../../presentation/authentication_and_settings/screens/authentication/registration.dart';
+import '../../presentation/authentication_and_settings/screens/settings/curvy.dart';
 import '../../presentation/feed/screens/simple_detail_view.dart';
 
 import '../../application/create_post/cubit/post_cubit.dart';
@@ -9,7 +12,6 @@ import '../../application/profile/cubit/profile_cubit.dart';
 
 import '../../application/authentication_and_settings/cubit/language_setting_cubit.dart';
 import '../../presentation/authentication_and_settings/screens/settings/contact.dart';
-import '../../presentation/authentication_and_settings/screens/settings/haptics.dart';
 import '../../presentation/authentication_and_settings/screens/settings/language.dart';
 import '../../presentation/authentication_and_settings/screens/settings/verified_student_manager.dart';
 import '../../presentation/create_post/screens/details.dart';
@@ -17,6 +19,9 @@ import '../../presentation/create_post/screens/home.dart';
 import '../../presentation/leaderboard/screens/home.dart';
 import '../../presentation/feed/screens/detail_view.dart';
 import '../../presentation/feed/screens/post_advanced_details.dart';
+import '../../presentation/profile/screens/account_details.dart';
+import '../../presentation/profile/screens/achievement_tab_manager.dart';
+import '../../presentation/profile/tabs/achievement_tab.dart';
 import '../../presentation/watched_universities/screens/search_universities.dart';
 import '../alt_unused/watched_universities.dart';
 import '../../presentation/feedback/screens/home.dart';
@@ -54,19 +59,20 @@ class AppRouter {
       "/feedback",
       "/create_post",
       "/settings",
+      "/profile/achievements"
     ];
     return fullScreenDialogRoutes.contains(routeSettings.name) ? true : false;
   }
 
   // Checks which routes show as a scale animation.
   bool isFadeAnim(RouteSettings routeSettings) {
-    List<String> sizeAnimDialogRoutes = [];
+    List<String> sizeAnimDialogRoutes = ["/home"];
     return sizeAnimDialogRoutes.contains(routeSettings.name) ? true : false;
   }
 
   // Checks which routes show as a size animation.
   bool isSizeAnim(RouteSettings routeSettings) {
-    List<String> fadeAnimDialogRoutes = ["/onboarding", "/open", "/home", "/prefsError"];
+    List<String> fadeAnimDialogRoutes = ["/onboarding", "/open", "/prefsError"];
     return fadeAnimDialogRoutes.contains(routeSettings.name) ? true : false;
   }
 
@@ -184,6 +190,15 @@ class AppRouter {
             year: args['year'],
           );
           break;
+        case "/profile/account_details":
+          page = const AccountDetailsScreen();
+          break;
+        case "/profile/achievements":
+          page = AchievementTabManager(
+            rarity: args!['rarity'],
+            achievements: args['achievements'],
+          );
+          break;
         case "/feedback":
           page = const FeedbackHome();
           break;
@@ -192,6 +207,15 @@ class AppRouter {
           break;
         case "/settings/appearance":
           page = const AppearanceScreen();
+          break;
+        case "/settings/text_size":
+          page = const TextSizeScreen();
+          break;
+        case "/settings/curvy":
+          page = const CurvyScreen();
+          break;
+        case "/settings/feedback":
+          page = const FeedbackSettingScreen();
           break;
         case "/settings/faq":
           page = const FAQScreen();
@@ -218,9 +242,7 @@ class AppRouter {
             child: const LanguageScreen(),
           );
           break;
-        case "/settings/haptics":
-          page = const HapticsScreen();
-          break;
+
         case "/settings/biometric_lock":
           page = const BiometricLockScreen();
           break;
@@ -234,6 +256,7 @@ class AppRouter {
           throw Exception("Named route ${routeSettings.name} not defined");
       }
     } catch (e) {
+      print(e);
       page = const CriticalErrorScreen();
     }
     if (isFadeAnim(routeSettings) || page is CriticalErrorScreen) {

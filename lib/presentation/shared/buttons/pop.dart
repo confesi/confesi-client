@@ -41,16 +41,19 @@ class PopButton extends StatelessWidget {
           EdgeInsets.only(left: horizontalPadding, right: horizontalPadding, top: topPadding, bottom: bottomPadding),
       child: IgnorePointer(
         ignoring: loading ? true : false,
-        child: TouchableScale(
+        child: TouchableOpacity(
           onTap: () => onPress(),
           child: Container(
             width: double.infinity,
             decoration: BoxDecoration(
               color: backgroundColor,
-              borderRadius: const BorderRadius.all(Radius.circular(5)),
+              borderRadius: const BorderRadius.all(Radius.circular(50)),
+              boxShadow: [
+                BoxShadow(color: Theme.of(context).colorScheme.shadow.withOpacity(0.3), blurRadius: 30),
+              ],
             ),
             child: Padding(
-              padding: const EdgeInsets.all(15),
+              padding: const EdgeInsets.all(20),
               child: Row(
                 mainAxisAlignment: justText ? MainAxisAlignment.center : MainAxisAlignment.spaceBetween,
                 children: [
