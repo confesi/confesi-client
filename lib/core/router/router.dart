@@ -1,4 +1,3 @@
-import 'package:Confessi/application/create_post/cubit/drafts_cubit.dart';
 import 'package:Confessi/presentation/authentication_and_settings/screens/settings/feedback.dart';
 import 'package:Confessi/presentation/authentication_and_settings/screens/settings/text_size.dart';
 
@@ -6,8 +5,6 @@ import '../../presentation/authentication_and_settings/screens/authentication/re
 import '../../presentation/authentication_and_settings/screens/settings/curvy.dart';
 import '../../presentation/feed/screens/simple_detail_view.dart';
 
-import '../../application/create_post/cubit/post_cubit.dart';
-import '../../application/daily_hottest/cubit/hottest_cubit.dart';
 import '../../application/profile/cubit/profile_cubit.dart';
 
 import '../../application/authentication_and_settings/cubit/language_setting_cubit.dart';
@@ -16,19 +13,15 @@ import '../../presentation/authentication_and_settings/screens/settings/language
 import '../../presentation/authentication_and_settings/screens/settings/verified_student_manager.dart';
 import '../../presentation/create_post/screens/details.dart';
 import '../../presentation/create_post/screens/home.dart';
-import '../../presentation/leaderboard/screens/home.dart';
 import '../../presentation/feed/screens/detail_view.dart';
 import '../../presentation/feed/screens/post_advanced_details.dart';
 import '../../presentation/profile/screens/account_details.dart';
 import '../../presentation/profile/screens/achievement_tab_manager.dart';
-import '../../presentation/profile/tabs/achievement_tab.dart';
 import '../../presentation/watched_universities/screens/search_universities.dart';
-import '../alt_unused/watched_universities.dart';
 import '../../presentation/feedback/screens/home.dart';
 import '../../presentation/primary/screens/critical_error.dart';
 import '../../presentation/authentication_and_settings/screens/settings/appearance.dart';
 import '../../presentation/authentication_and_settings/screens/settings/faq.dart';
-import '../../presentation/authentication_and_settings/screens/settings/home.dart';
 import '../../presentation/user_posts_and_comments/screens/comments.dart';
 import '../../presentation/user_posts_and_comments/screens/posts.dart';
 import '../../presentation/user_posts_and_comments/screens/saved.dart';
@@ -38,7 +31,6 @@ import 'package:page_transition/page_transition.dart';
 
 import '../../application/authentication_and_settings/cubit/contact_setting_cubit.dart';
 import '../../dependency_injection.dart';
-import '../alt_unused/register_tab_manager.dart';
 import '../../presentation/authentication_and_settings/screens/settings/biometric_lock.dart';
 import '../../presentation/primary/screens/home.dart';
 import '../../presentation/authentication_and_settings/screens/authentication/login.dart';
@@ -176,19 +168,9 @@ class AppRouter {
           page = const SavedScreen();
           break;
 
-        // An individual post's advanced stats.
+        // An individual post's advanced stats (sentiment analysis).
         case "/home/post/stats":
-          page = PostAdvancedDetailsScreen(
-            comments: args!['comments'],
-            universityFullName: args['university_full_name'],
-            faculty: args['faculty'],
-            genre: args['genre'],
-            hates: args['hates'],
-            likes: args['likes'],
-            saves: args['saves'],
-            university: args['university'],
-            year: args['year'],
-          );
+          page = const PostAdvancedDetailsScreen();
           break;
         case "/profile/account_details":
           page = const AccountDetailsScreen();

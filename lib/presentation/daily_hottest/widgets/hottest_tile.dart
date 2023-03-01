@@ -121,7 +121,7 @@ class _HottestTileState extends State<HottestTile> {
                                   child: Text(
                                     '0${widget.thisIndex + 1}',
                                     style: kFaded.copyWith(
-                                      color: Theme.of(context).colorScheme.onBackground.withOpacity(0.2),
+                                      color: Theme.of(context).colorScheme.onBackground.withOpacity(0.8),
                                     ),
                                   ),
                                 ),

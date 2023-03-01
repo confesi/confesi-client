@@ -4,7 +4,6 @@ import 'package:Confessi/core/utils/sizing/width_fraction.dart';
 import 'package:Confessi/presentation/create_post/overlays/drafts_sheet.dart';
 import 'package:Confessi/presentation/feed/widgets/child_post.dart';
 import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opacity.dart';
-import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:Confessi/presentation/shared/other/widget_or_nothing.dart';
 import 'package:Confessi/presentation/shared/overlays/notification_chip.dart';
 import 'package:scrollable/exports.dart';
@@ -274,7 +273,7 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                                                       textCapitalization: TextCapitalization.sentences,
                                                       keyboardType: TextInputType.multiline,
                                                       maxLines: null,
-                                                      style: kDisplay2.copyWith(
+                                                      style: kDisplay1.copyWith(
                                                           color: Theme.of(context).colorScheme.primary),
                                                       decoration: InputDecoration(
                                                         isCollapsed: true,
