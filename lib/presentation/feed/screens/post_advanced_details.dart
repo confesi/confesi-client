@@ -2,11 +2,8 @@ import 'package:Confessi/core/utils/sizing/width_fraction.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
 import 'package:pie_chart/pie_chart.dart';
 
-import '../../shared/selection_groups/text_stat_tile.dart';
-import '../../shared/selection_groups/text_stat_tile_group.dart';
 import 'package:scrollable/exports.dart';
 
-import '../../../core/utils/numbers/add_commas_to_number.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +28,7 @@ class PostAdvancedDetailsScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 AppbarLayout(
-                  bottomBorder: false,
+                  bottomBorder: true,
                   leftIcon: CupertinoIcons.xmark,
                   centerWidget: Text(
                     "Confession Sentiment",

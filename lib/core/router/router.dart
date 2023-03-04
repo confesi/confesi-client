@@ -1,5 +1,6 @@
 import 'package:Confessi/presentation/authentication_and_settings/screens/settings/feedback.dart';
 import 'package:Confessi/presentation/authentication_and_settings/screens/settings/text_size.dart';
+import 'package:Confessi/presentation/chat_feed/screens/home.dart';
 
 import '../../presentation/authentication_and_settings/screens/authentication/registration.dart';
 import '../../presentation/authentication_and_settings/screens/settings/curvy.dart';
@@ -51,7 +52,8 @@ class AppRouter {
       "/feedback",
       "/create_post",
       "/settings",
-      "/profile/achievements"
+      "/profile/achievements",
+      "/home/chat_feed"
     ];
     return fullScreenDialogRoutes.contains(routeSettings.name) ? true : false;
   }
@@ -168,6 +170,9 @@ class AppRouter {
           page = const SavedScreen();
           break;
 
+        case "/home/chat_feed":
+          page = const ChatFeedHome();
+          break;
         // An individual post's advanced stats (sentiment analysis).
         case "/home/post/stats":
           page = const PostAdvancedDetailsScreen();
