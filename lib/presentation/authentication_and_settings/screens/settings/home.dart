@@ -55,11 +55,6 @@ class SettingsHome extends StatelessWidget {
                       text: kSettingsGeneralLabel,
                       settingTiles: [
                         SettingTile(
-                          leftIcon: CupertinoIcons.star,
-                          text: "Chat feed",
-                          onTap: () => Navigator.pushNamed(context, "/home/chat_feed"),
-                        ),
-                        SettingTile(
                           leftIcon: CupertinoIcons.map,
                           text: kSettingsLanguageLabel,
                           onTap: () => Navigator.pushNamed(context, "/settings/language"),

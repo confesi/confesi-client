@@ -1,21 +1,14 @@
 import 'package:Confessi/constants/profile/enums.dart';
 import 'package:Confessi/core/converters/achievement_rarity_to_string.dart';
-import 'package:Confessi/core/utils/sizing/width_fraction.dart';
 import 'package:Confessi/domain/profile/entities/number_of_each_achievement_type.dart';
-import 'package:Confessi/core/alt_unused/achievement_stat_tile.dart';
 import 'package:Confessi/presentation/profile/widgets/like_hate_hottest_pageview_tile.dart';
-import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opacity.dart';
-import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
-import 'package:Confessi/presentation/shared/buttons/pop.dart';
 import 'package:Confessi/presentation/shared/overlays/info_sheet.dart';
-import 'package:Confessi/presentation/shared/stat_tiles/stat_tile_group.dart';
 import 'package:Confessi/presentation/shared/stat_tiles/stat_tile_item.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../../../application/profile/cubit/profile_cubit.dart';
 import '../../../application/shared/cubit/share_cubit.dart';
-import '../../../core/styles/typography.dart';
 import '../../../core/utils/numbers/is_plural.dart';
 import '../../../core/utils/sizing/top_safe_area.dart';
 import '../../../domain/profile/entities/achievement_tile_entity.dart';
@@ -29,14 +22,11 @@ import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/edited_source_widgets/swipe_refresh.dart';
 import '../../shared/indicators/loading_cupertino.dart';
 import '../../shared/other/cached_online_image.dart';
-import '../../shared/overlays/info_sheet_with_action.dart';
 import 'package:flutter/material.dart';
 
-import '../../../core/utils/sizing/height_fraction.dart';
 import '../../shared/buttons/simple_text.dart';
 import '../tabs/achievement_tab.dart';
 import '../widgets/achievement_rarity_numbers_display_tile.dart';
-import '../widgets/stat_tile.dart';
 
 class ProfileHome extends StatefulWidget {
   const ProfileHome({
@@ -142,7 +132,7 @@ class _ProfileHomeState extends State<ProfileHome> with AutomaticKeepAliveClient
                         ClipRRect(
                           borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(scrollDy / 3), topRight: Radius.circular(scrollDy / 3)),
-                          child: CachedOnlineImage(url: state.universityImgUrl),
+                          child: Center(child: CachedOnlineImage(url: state.universityImgUrl)),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 10, right: 10, left: 10),

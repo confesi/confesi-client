@@ -165,19 +165,17 @@ class _DetailsScreenState extends State<DetailsScreen> with AutomaticKeepAliveCl
                         child: BlocBuilder<CreatePostCubit, CreatePostState>(
                           // buildWhen: (previous, current) => true,
                           builder: (context, state) {
-                            return InitTransform(
-                              child: PopButton(
-                                topPadding: 15,
-                                loading: state is Loading ? true : false,
-                                justText: true,
-                                onPress: () async => await context
-                                    .read<CreatePostCubit>()
-                                    .uploadUserPost(widget.title, widget.body, widget.id),
-                                icon: CupertinoIcons.chevron_right,
-                                backgroundColor: Theme.of(context).colorScheme.secondary,
-                                textColor: Theme.of(context).colorScheme.onSecondary,
-                                text: 'Submit Confession',
-                              ),
+                            return PopButton(
+                              topPadding: 15,
+                              loading: state is Loading ? true : false,
+                              justText: true,
+                              onPress: () async => await context
+                                  .read<CreatePostCubit>()
+                                  .uploadUserPost(widget.title, widget.body, widget.id),
+                              icon: CupertinoIcons.chevron_right,
+                              backgroundColor: Theme.of(context).colorScheme.secondary,
+                              textColor: Theme.of(context).colorScheme.onSecondary,
+                              text: 'Submit Confession',
                             );
                           },
                         ),
