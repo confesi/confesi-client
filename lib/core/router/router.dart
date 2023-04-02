@@ -6,8 +6,6 @@ import '../../presentation/authentication_and_settings/screens/authentication/re
 import '../../presentation/authentication_and_settings/screens/settings/curvy.dart';
 import '../../presentation/feed/screens/simple_detail_view.dart';
 
-import '../../application/profile/cubit/profile_cubit.dart';
-
 import '../../application/authentication_and_settings/cubit/language_setting_cubit.dart';
 import '../../presentation/authentication_and_settings/screens/settings/contact.dart';
 import '../../presentation/authentication_and_settings/screens/settings/language.dart';
@@ -17,7 +15,6 @@ import '../../presentation/create_post/screens/home.dart';
 import '../../presentation/feed/screens/detail_view.dart';
 import '../../presentation/feed/screens/post_advanced_details.dart';
 import '../../presentation/profile/screens/account_details.dart';
-import '../../presentation/profile/screens/achievement_tab_manager.dart';
 import '../../presentation/watched_universities/screens/search_universities.dart';
 import '../../presentation/feedback/screens/home.dart';
 import '../../presentation/primary/screens/critical_error.dart';
@@ -99,10 +96,6 @@ class AppRouter {
               ),
               BlocProvider(
                 lazy: false,
-                create: (context) => sl<ProfileCubit>()..loadProfile(),
-              ),
-              BlocProvider(
-                lazy: false,
                 create: (context) => sl<TrendingCubit>()..fetchPosts(),
               ),
               BlocProvider(
@@ -174,12 +167,6 @@ class AppRouter {
           break;
         case "/profile/account_details":
           page = const AccountDetailsScreen();
-          break;
-        case "/profile/achievements":
-          page = AchievementTabManager(
-            rarity: args!['rarity'],
-            achievements: args['achievements'],
-          );
           break;
         case "/feedback":
           page = const FeedbackHome();

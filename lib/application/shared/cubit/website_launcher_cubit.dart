@@ -27,7 +27,7 @@ class WebsiteLauncherCubit extends Cubit<WebsiteLauncherState> {
 
   // opens our website to the home page
   void launchWebsiteHome() async {
-    (await launchWebsiteUsecase.call("https://google.com")).fold(
+    (await launchWebsiteUsecase.call("https://confesi.com")).fold(
       (failure) {
         emit(WebsiteLauncherError(message: "Unable to open website."));
       },

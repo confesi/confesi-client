@@ -48,7 +48,7 @@ dynamic showNotificationChip(
       );
     },
   );
-  Overlay.of(context)?.insert(overlay);
+  Overlay.of(context).insert(overlay);
 }
 
 class _OverlayItem extends StatefulWidget {

@@ -12,7 +12,7 @@ class CenterOverlay {
     OverlayState? overlayState = Overlay.of(context);
     OverlayEntry overlayEntry = OverlayEntry(builder: (BuildContext context) => _build(context, text));
 
-    overlayState?.insert(overlayEntry);
+    overlayState.insert(overlayEntry);
 
     if (blastConfetti) confettiItemController.blastConfetti();
 

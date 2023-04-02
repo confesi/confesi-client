@@ -55,7 +55,7 @@ class PostTile extends StatelessWidget {
   final int comments;
   final PostView postView;
   final PostChild postChild;
-  final List<Badge> badges;
+  final List<BadgeEntity> badges;
 
   Widget _buildQuoteChild(BuildContext context) {
     final ChildType childType = postChild.childType;

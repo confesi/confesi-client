@@ -1,4 +1,8 @@
+import 'package:Confessi/constants/shared/enums.dart';
 import 'package:Confessi/core/utils/sizing/bottom_safe_area.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
+import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
+import 'package:Confessi/presentation/shared/overlays/text_block_overlay.dart';
 
 import '../../../application/shared/cubit/share_cubit.dart';
 import '../../leaderboard/screens/home.dart';
@@ -81,6 +85,33 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         onWillPop: () async => false,
         child: ThemedStatusBar(
           child: Scaffold(
+            floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+            floatingActionButton: TouchableScale(
+              tapType: TapType.lightImpact,
+              // onTap: () => Navigator.pushNamed(context, "/create_post"), // TODO: add this back, the line below is just for testing
+              onTap: () => showTextBlock(context, "This it the text.", "This is the body."),
+              child: InitScale(
+                child: Container(
+                  padding: const EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.secondary,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Theme.of(context).colorScheme.secondary.withOpacity(0.5),
+                        blurRadius: 20,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: Icon(
+                    CupertinoIcons.add,
+                    color: Theme.of(context).colorScheme.onSecondary,
+                    size: 30,
+                  ),
+                ),
+              ),
+            ),
             drawerScrimColor: Colors.black.withOpacity(0.7),
             drawerEnableOpenDragGesture: false,
             drawer: const FeedDrawer(), // Reference to the "watched_universities" feature drawer (feed_drawer).
@@ -95,7 +126,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   children: [
                     ExploreHome(scaffoldKey: scaffoldKey),
                     HottestHome(hottestController: hottestController),
-                    ProfileHome(profileController: profileController),
+                    Container(),
                     const LeaderboardScreen(),
                     SettingsHome(settingController: settingController),
                   ],
@@ -119,7 +150,12 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         alignment: Alignment.bottomCenter,
                         child: TabBar(
                           onTap: (int newIndex) {
-                            // HapticFeedback.selectionClick();
+                            HapticFeedback.selectionClick();
+                            if (newIndex == 2) {
+                              Navigator.pushNamed(context, "/create_post");
+                              tabController.animateTo(currentIndex);
+                              return;
+                            }
                             if (currentIndex == 2 && newIndex == 2) {
                               profileController.scrollToTop();
                             } else if (currentIndex == 1 && newIndex == 1) {
@@ -145,11 +181,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                 currentIndex: currentIndex,
                                 icon: CupertinoIcons.flame,
                                 text: "Hottest"),
-                            _BottomTab(
-                                indexMatcher: 2,
-                                currentIndex: currentIndex,
-                                icon: CupertinoIcons.profile_circled,
-                                text: "Profile"),
+                            Container(), // TODO: this allows for a blank screen
                             _BottomTab(
                                 indexMatcher: 3,
                                 currentIndex: currentIndex,
