@@ -6,6 +6,7 @@ import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scal
 import 'package:Confessi/presentation/shared/overlays/text_block_overlay.dart';
 
 import '../../../application/shared/cubit/share_cubit.dart';
+import '../../../core/services/deep_links.dart';
 import '../../leaderboard/screens/home.dart';
 import '../controllers/hottest_controller.dart';
 import '../controllers/profile_controller.dart';
@@ -89,7 +90,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
             floatingActionButton: TouchableScale(
               tapType: TapType.lightImpact,
-              onTap: () => Navigator.pushNamed(context, "/create_post"),
+              onTap: () async {
+                (await DeepLinkService().buildLink("/post?id=55", "This is a super cool post"))
+                    .fold((link) => print("Link: $link"), (failure) => print("FAILURE!!"));
+              },
+              // onTap: () => Navigator.pushNamed(context, "/create_post"),
               // TODO: you can use this to launch the update messages; however, it is temporarily here just as a POC for testing
               // onTap: () => showTextBlock(
               //   context,
@@ -114,6 +119,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 child: InitScale(
                   child: Container(
                     padding: const EdgeInsets.all(13),
+                    margin: const EdgeInsets.only(bottom: 5),
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.secondary,
                       shape: BoxShape.circle,
@@ -154,6 +160,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   ],
                 ),
                 bottomNavigationBar: Container(
+                  padding: const EdgeInsets.only(bottom: 5),
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.background,
                     border: Border(
@@ -165,7 +172,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   ),
                   child: SafeArea(
                     top: false,
-                    // bottom: false,
                     child: SizedBox(
                       height: 47,
                       child: Align(

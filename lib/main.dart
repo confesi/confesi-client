@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart' as dartz;
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,7 +15,9 @@ import 'application/shared/cubit/share_cubit.dart';
 import 'application/shared/cubit/website_launcher_cubit.dart';
 import 'constants/enums_that_are_local_keys.dart';
 import 'constants/shared/dev.dart';
+import 'core/results/failures.dart';
 import 'core/router/router.dart';
+import 'core/services/deep_links.dart';
 import 'core/styles/themes.dart';
 import 'dependency_injection.dart';
 import 'generated/l10n.dart';
@@ -22,50 +25,15 @@ import 'presentation/primary/screens/splash.dart';
 
 void main() async {
   await init();
-  WidgetsFlutterBinding.ensureInitialized();
   // Locks the application to portait mode (facing up).
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then(
-    (value) => runApp(DevicePreview(
-      enabled: kDevicePreview, // Whether the device is in preview mode (allows previewing of app on different devices).
-      builder: (context) => MyApp(
-        appRouter: sl(),
-      ),
-    )),
-  );
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  runApp(MyApp(appRouter: sl()));
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({required this.appRouter, Key? key}) : super(key: key);
 
   final AppRouter appRouter;
-
-  // ThemeData getLightTheme(ThemeState state) {
-  //   if (state is ClassicTheme) {
-  //     return AppTheme.classicLight;
-  //   } else if (state is ElegantTheme) {
-  //     return AppTheme.elegantLight;
-  //   } else if (state is SalmonTheme) {
-  //     return AppTheme.salmonLight;
-  //   } else if (state is SciFiTheme) {
-  //     return AppTheme.sciFiLight;
-  //   } else {
-  //     return AppTheme.classicLight;
-  //   }
-  // }
-
-  // ThemeData getDarkTheme(ThemeState state) {
-  //   if (state is ClassicTheme) {
-  //     return AppTheme.classicDark;
-  //   } else if (state is ElegantTheme) {
-  //     return AppTheme.elegantDark;
-  //   } else if (state is SalmonTheme) {
-  //     return AppTheme.salmonDark;
-  //   } else if (state is SciFiTheme) {
-  //     return AppTheme.sciFiDark;
-  //   } else {
-  //     return AppTheme.classicDark;
-  //   }
-  // }
 
   ThemeMode getAppearance(AppearanceEnum state) {
     if (state == AppearanceEnum.dark) {
@@ -133,7 +101,6 @@ class MyApp extends StatelessWidget {
               Locale('fr', ''), // French, no country code
               Locale('es', ''), // Spanish, no country code
             ],
-            useInheritedMediaQuery: kDevicePreview,
             debugShowCheckedModeBanner: false,
             title: "Confesi",
             onGenerateRoute: appRouter.onGenerateRoute,
@@ -150,7 +117,7 @@ class MyApp extends StatelessWidget {
               final MediaQueryData data = MediaQuery.of(context);
               return MediaQuery(
                 // Force the textScaleFactor that's loaded from the device
-                // to lock to 1.
+                // to lock to 1 (you can change it in-app independent of the inherited scale).
                 data: data.copyWith(textScaleFactor: 1),
                 child: child!,
               );

@@ -1,29 +1,17 @@
-import 'package:Confessi/constants/profile/enums.dart';
-import 'package:Confessi/core/converters/achievement_rarity_to_string.dart';
 import 'package:Confessi/core/utils/sizing/height_fraction.dart';
-import 'package:Confessi/presentation/profile/widgets/like_hate_hottest_pageview_tile.dart';
-import 'package:Confessi/presentation/shared/overlays/info_sheet.dart';
 import 'package:Confessi/presentation/shared/stat_tiles/stat_tile_item.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
-import '../../../application/shared/cubit/share_cubit.dart';
-import '../../../core/utils/numbers/is_plural.dart';
-import '../../../core/utils/sizing/top_safe_area.dart';
 import '../../primary/controllers/profile_controller.dart';
-import '../../shared/indicators/alert.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrollable/exports.dart';
 
-import '../../../core/utils/numbers/add_commas_to_number.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
-import '../../shared/edited_source_widgets/swipe_refresh.dart';
-import '../../shared/indicators/loading_cupertino.dart';
 import '../../shared/other/cached_online_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../shared/buttons/simple_text.dart';
-import '../widgets/achievement_rarity_numbers_display_tile.dart';
 
 class ProfileHome extends StatefulWidget {
   const ProfileHome({
@@ -53,11 +41,6 @@ class _ProfileHomeState extends State<ProfileHome> with AutomaticKeepAliveClient
   void dispose() {
     pageController.dispose();
     super.dispose();
-  }
-
-  void showInfoAchievementSheet(BuildContext context, AchievementRarity rarity) {
-    showInfoSheet(context, "No ${achievementRarityToString(rarity).toLowerCase()} achievements",
-        "Keep interacting on the app to earn them!");
   }
 
   @override

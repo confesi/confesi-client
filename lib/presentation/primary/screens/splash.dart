@@ -1,10 +1,12 @@
 import 'package:Confessi/constants/enums_that_are_local_keys.dart';
+import 'package:dartz/dartz.dart' as dartz;
 
 import '../../../constants/shared/dev.dart';
+import '../../../core/results/failures.dart';
+import '../../../core/services/deep_links.dart';
 import '../../../domain/authentication_and_settings/entities/user.dart';
 
 import '../../../core/styles/typography.dart';
-import '../../../core/utils/sizing/width_fraction.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,7 +17,6 @@ import '../../../application/authentication_and_settings/cubit/register_cubit.da
 import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../../../core/generators/intro_text_generator.dart';
 import '../../shared/overlays/feedback_sheet.dart';
-import '../../../core/alt_unused/notification_chip.dart';
 import '../../shared/overlays/notification_chip.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -28,6 +29,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMixin {
   bool shakeSheetOpen = false;
   late String introText;
+  late DeepLinkStream dynamicLinkStream;
 
   bool shouldOpenFeedbackSheetOnShake(BuildContext context) {
     UserCubit userCubit = context.read<UserCubit>();
@@ -37,7 +39,9 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   @override
   void initState() {
     introText = getIntro().text;
-
+    dynamicLinkStream = DeepLinkStream();
+    link();
+    // todo: block this for unauthenticated users? Or just let them change the guest settings?
     // Opens the feedback sheet when the phone is shook. Implemented on the [Splash] screen because it is only shown once per app run. Otherwise, mutliple shake listeners would be created.
     ShakeDetector.autoStart(
       onPhoneShake: () {
@@ -51,6 +55,26 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
       minimumShakeCount: 2,
     );
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    dynamicLinkStream.dispose();
+    super.dispose();
+  }
+
+  void link() {
+    dynamicLinkStream.listen((dartz.Either<Failure, DeepLinkRoute> link) {
+      link.fold(
+        (failure) {
+          print("===================> ERROR LINK");
+        },
+        (route) {
+          print(
+              "=====================> Received dynamic link: ${route.internalRouteName()} with id ${(route as PostRoute).postId}");
+        },
+      );
+    });
   }
 
   @override
@@ -74,7 +98,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
               Navigator.of(context).pushNamed("/home");
             } else {
               // Go directly to open
-              Navigator.of(context).pushNamed("/open");
+              Navigator.of(context).pushNamed("/open"); // todo: /open
             }
           }
         } else if (state is UserError) {

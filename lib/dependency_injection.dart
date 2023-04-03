@@ -10,6 +10,7 @@ import 'package:Confessi/domain/authentication_and_settings/usecases/text_size.d
 import 'package:Confessi/domain/create_post/usecases/delete_draft.dart';
 import 'package:Confessi/domain/create_post/usecases/get_draft.dart';
 import 'package:Confessi/domain/create_post/usecases/save_draft.dart';
+import 'package:flutter/material.dart';
 
 import 'domain/authentication_and_settings/usecases/home_viewed.dart';
 import 'domain/shared/usecases/share_content.dart';
@@ -64,6 +65,8 @@ import 'domain/feed/usecases/recents.dart';
 import 'domain/feed/usecases/trending.dart';
 import 'application/feed/cubit/recents_cubit.dart';
 import 'application/feed/cubit/trending_cubit.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 // Get the GetIt instance to use for injection
 final GetIt sl = GetIt.instance;
@@ -71,8 +74,12 @@ final GetIt sl = GetIt.instance;
 /// Injects the needed dependencies for the app to run.
 Future<void> init() async {
   //! Initializing stuff
+  // Ensure everything is initialized before registering the dependencies, etc.
+  WidgetsFlutterBinding.ensureInitialized();
   // Registering Hive.
   await Hive.initFlutter();
+  // Registering Firebase
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   //! State (BLoC or Cubit)
   // // Registers the authentication cubit.

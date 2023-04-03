@@ -24,6 +24,9 @@ class GeneralFailure extends Failure {}
 /// There is no value present.
 class NoneFailure extends Failure {}
 
+/// Deep link failure.
+class DeepLinkFailure extends Failure {}
+
 //! Authentication failures
 
 /// For when password is incorrect.

@@ -78,6 +78,8 @@ dependencies:
   link_preview_generator: ^1.2.0
   any_link_preview: ^2.0.9
   pie_chart: ^5.3.2
+  firebase_core: ^2.9.0
+  firebase_dynamic_links: ^5.1.0
   # shimmer: ^2.0.0
   # open_settings: ^2.0.2
   # animated_text_kit: ^4.2.2
