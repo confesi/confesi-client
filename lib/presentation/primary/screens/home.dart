@@ -1,5 +1,6 @@
 import 'package:Confessi/constants/shared/enums.dart';
 import 'package:Confessi/core/utils/sizing/bottom_safe_area.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_rotation.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
 import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:Confessi/presentation/shared/overlays/text_block_overlay.dart';
@@ -88,26 +89,47 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
             floatingActionButton: TouchableScale(
               tapType: TapType.lightImpact,
-              // onTap: () => Navigator.pushNamed(context, "/create_post"), // TODO: add this back, the line below is just for testing
-              onTap: () => showTextBlock(context, "This it the text.", "This is the body."),
-              child: InitScale(
-                child: Container(
-                  padding: const EdgeInsets.all(15),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.secondary,
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Theme.of(context).colorScheme.secondary.withOpacity(0.5),
-                        blurRadius: 20,
-                        offset: const Offset(0, 3),
-                      ),
-                    ],
-                  ),
-                  child: Icon(
-                    CupertinoIcons.add,
-                    color: Theme.of(context).colorScheme.onSecondary,
-                    size: 30,
+              onTap: () => Navigator.pushNamed(context, "/create_post"),
+              // TODO: you can use this to launch the update messages; however, it is temporarily here just as a POC for testing
+              // onTap: () => showTextBlock(
+              //   context,
+              //   [
+              //     UpdateMessage(
+              //         title: "Bug fixes and improvements",
+              //         body:
+              //             "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
+              //         id: 1,
+              //         date: DateTime.now()),
+              //     UpdateMessage(
+              //         title: "Updating the hottest posts algorithm",
+              //         body:
+              //             "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like). It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like). It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
+              //         id: 1,
+              //         date: DateTime.now()),
+              //     UpdateMessage(title: "title", body: "body", id: 1, date: DateTime.now())
+              //   ],
+              // ),
+              child: InitRotation(
+                delayDurationInMilliseconds: 250,
+                child: InitScale(
+                  child: Container(
+                    padding: const EdgeInsets.all(13),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.secondary,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Theme.of(context).colorScheme.secondary.withOpacity(0.4),
+                          blurRadius: 20,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: Icon(
+                      CupertinoIcons.add,
+                      color: Theme.of(context).colorScheme.onSecondary,
+                      size: 30,
+                    ),
                   ),
                 ),
               ),

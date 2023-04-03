@@ -133,14 +133,20 @@ class SettingsHome extends StatelessWidget {
                         SettingTile(
                           rightIcon: CupertinoIcons.link,
                           leftIcon: CupertinoIcons.doc,
-                          text: kSettingsTermsOfServiceLabel,
+                          text: "Term of service",
                           onTap: () => context.read<WebsiteLauncherCubit>().launchWebsiteTermsOfService(),
                         ),
                         SettingTile(
                           rightIcon: CupertinoIcons.link,
                           leftIcon: CupertinoIcons.doc,
-                          text: kSesttingsPrivacyStatementLabel,
+                          text: "Privacy policy",
                           onTap: () => context.read<WebsiteLauncherCubit>().launchWebsitePrivacyStatement(),
+                        ),
+                        SettingTile(
+                          rightIcon: CupertinoIcons.link,
+                          leftIcon: CupertinoIcons.doc,
+                          text: "Community rules",
+                          onTap: () => context.read<WebsiteLauncherCubit>().launchWebsiteCommunityRules(),
                         ),
                       ],
                     ),

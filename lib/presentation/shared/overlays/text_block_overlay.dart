@@ -1,22 +1,31 @@
+import 'package:Confessi/core/utils/dates/date_from_datetime.dart';
 import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:Confessi/presentation/shared/buttons/pop.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../../../core/utils/sizing/width_fraction.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
+import '../../../core/utils/dates/human_date_from_datetime.dart';
 import '../../../core/utils/sizing/height_fraction.dart';
 
-dynamic showTextBlock(BuildContext context, String title, String body) {
+class UpdateMessage {
+  const UpdateMessage({required this.title, required this.body, required this.id, required this.date});
+
+  final String title;
+  final String body;
+  final int id;
+  final DateTime date;
+}
+
+dynamic showTextBlock(BuildContext context, List<UpdateMessage> messages) {
   OverlayEntry? overlay;
   overlay = OverlayEntry(
     builder: (context) {
       return Align(
         alignment: Alignment.topCenter,
         child: _OverlayItem(
-          title: title,
-          body: body,
+          messages: messages,
           overlay: overlay,
         ),
       );
@@ -28,13 +37,11 @@ dynamic showTextBlock(BuildContext context, String title, String body) {
 class _OverlayItem extends StatefulWidget {
   const _OverlayItem({
     Key? key,
-    required this.title,
-    required this.body,
+    required this.messages,
     required this.overlay,
   }) : super(key: key);
 
-  final String title;
-  final String body;
+  final List<UpdateMessage> messages;
   final OverlayEntry? overlay;
 
   @override
@@ -45,8 +52,13 @@ class __OverlayItemState extends State<_OverlayItem> with TickerProviderStateMix
   late AnimationController timeAnimController;
   late Animation timeAnim;
 
+  late TabController _tabController;
+
+  int _currentIndex = 0;
+
   @override
   void initState() {
+    _tabController = TabController(length: widget.messages.length, vsync: this);
     timeAnimController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 400),
@@ -57,6 +69,11 @@ class __OverlayItemState extends State<_OverlayItem> with TickerProviderStateMix
       curve: Curves.easeOutBack,
       reverseCurve: Curves.decelerate,
     );
+    _tabController.addListener(() {
+      setState(() {
+        _currentIndex = _tabController.index;
+      });
+    });
     startAnim();
     super.initState();
   }
@@ -82,106 +99,128 @@ class __OverlayItemState extends State<_OverlayItem> with TickerProviderStateMix
     });
   }
 
+  int messagesLeft() => widget.messages.length - (_currentIndex + 1);
+
+  void animateToNext() {
+    // todo: remove current thing from messages local db
+    if (_currentIndex == widget.messages.length - 1) {
+      reverseAnim();
+    } else {
+      _tabController.animateTo(_currentIndex + 1);
+    }
+  }
+
+  void skipAll() {
+    // todo: remove all things from messages local db
+    reverseAnim();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 250),
-      // Is transparent to block touch events
-      color: Colors.transparent,
-      child: Stack(
-        children: [
-          SafeArea(
-            child: Center(
-              child: Transform.scale(
-                scale: timeAnim.value,
-                child: TouchableOpacity(
-                  onTap: () => reverseAnim(),
-                  child: Container(
-                    height: heightFraction(context, 1),
-                    width: double.infinity,
-                    constraints: BoxConstraints(maxWidth: widthFraction(context, .9)),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.secondary,
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(5),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Theme.of(context).colorScheme.secondary.withOpacity(.5),
-                          blurRadius: 25,
-                          offset: const Offset(0, 0),
-                        ),
-                      ],
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(15),
-                      child: Material(
-                        color: Colors.transparent,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: SingleChildScrollView(
+    return Stack(
+      children: [
+        Center(
+          child: Transform.scale(
+            scale: timeAnim.value,
+            child: Container(
+              height: heightFraction(context, 1),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.background,
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(5),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Theme.of(context).colorScheme.background.withOpacity(.5),
+                    blurRadius: 25,
+                    offset: const Offset(0, 0),
+                  ),
+                ],
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(15),
+                child: Material(
+                  color: Colors.transparent,
+                  child: SafeArea(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Use a TabView to iterate through all the UpdateMessages
+                        Expanded(
+                          child: TabBarView(
+                            physics: const NeverScrollableScrollPhysics(),
+                            controller: _tabController,
+                            children: widget.messages.map((message) {
+                              return SingleChildScrollView(
                                 physics: const BouncingScrollPhysics(),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      widget.title,
+                                      message.title,
                                       style: kDisplay2.copyWith(
-                                        color: Theme.of(context).colorScheme.onSecondary,
+                                        color: Theme.of(context).colorScheme.primary,
                                       ),
                                       textAlign: TextAlign.left,
                                     ),
                                     const SizedBox(height: 15),
                                     Text(
-                                      widget.body,
+                                      humanDateFromDatetime(message.date),
                                       style: kBody.copyWith(
-                                        color: Theme.of(context).colorScheme.onSecondary,
+                                        color: Theme.of(context).colorScheme.onSurface,
+                                      ),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                    const SizedBox(height: 15),
+                                    Text(
+                                      message.body,
+                                      style: kBody.copyWith(
+                                        color: Theme.of(context).colorScheme.primary,
                                       ),
                                       textAlign: TextAlign.left,
                                     ),
                                   ],
                                 ),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: PopButton(
+                                onPress: () => skipAll(),
+                                icon: CupertinoIcons.arrow_right,
+                                backgroundColor: Theme.of(context).colorScheme.secondary,
+                                textColor: Theme.of(context).colorScheme.onSecondary,
+                                justText: true,
+                                text: "Skip all",
                               ),
                             ),
-                            const SizedBox(height: 10),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: PopButton(
-                                    onPress: () => print("tap"),
-                                    icon: CupertinoIcons.arrow_right,
-                                    backgroundColor: Theme.of(context).colorScheme.background,
-                                    textColor: Theme.of(context).colorScheme.primary,
-                                    justText: true,
-                                    text: "Skip",
-                                  ),
-                                ),
-                                const SizedBox(width: 15),
-                                Expanded(
-                                  child: PopButton(
-                                    onPress: () => print("tap"),
-                                    icon: CupertinoIcons.arrow_right,
-                                    backgroundColor: Theme.of(context).colorScheme.background,
-                                    textColor: Theme.of(context).colorScheme.primary,
-                                    justText: true,
-                                    text: "Next (24)",
-                                  ),
-                                ),
-                              ],
+                            const SizedBox(width: 15),
+                            Expanded(
+                              child: PopButton(
+                                onPress: () => animateToNext(),
+                                icon: CupertinoIcons.arrow_right,
+                                backgroundColor: Theme.of(context).colorScheme.secondary,
+                                textColor: Theme.of(context).colorScheme.onSecondary,
+                                justText: true,
+                                text: messagesLeft() == 0 ? "Close" : "Next (${messagesLeft()})",
+                              ),
                             ),
                           ],
                         ),
-                      ),
+                      ],
                     ),
                   ),
                 ),
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
