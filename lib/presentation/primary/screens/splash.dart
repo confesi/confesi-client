@@ -1,5 +1,6 @@
 import 'package:Confessi/constants/enums_that_are_local_keys.dart';
 
+import '../../../constants/shared/dev.dart';
 import '../../../domain/authentication_and_settings/entities/user.dart';
 
 import '../../../core/styles/typography.dart';
@@ -58,6 +59,10 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
       listenWhen: (previous, current) => (previous.runtimeType != current.runtimeType),
       // listenWhen: (previous, current) => true,
       listener: (context, state) {
+        if (kJumpToHomeScreen) {
+          Navigator.of(context).pushNamed("/home");
+        }
+
         if (state is User) {
           // State is some subset of User, whether that be Guest or RegisteredUser.
           if (state.userType is RegisteredUser) {

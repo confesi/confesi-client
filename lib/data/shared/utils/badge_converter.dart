@@ -3,13 +3,13 @@ import 'package:flutter/cupertino.dart';
 import '../../../core/results/exceptions.dart';
 import '../../../domain/shared/entities/badge.dart';
 
-List<Badge> badgeConverter(List badges) {
-  List<Badge> badgesConverted = [];
+List<BadgeEntity> badgeConverter(List badges) {
+  List<BadgeEntity> badgesConverted = [];
   for (var badge in badges) {
     switch (badge) {
       case 'LOVED':
         badgesConverted.add(
-          const Badge(
+          const BadgeEntity(
             icon: CupertinoIcons.heart,
             text: 'Loved',
           ),
@@ -17,7 +17,7 @@ List<Badge> badgeConverter(List badges) {
         break;
       case 'HATED':
         badgesConverted.add(
-          const Badge(
+          const BadgeEntity(
             icon: CupertinoIcons.flag,
             text: 'Hated',
           ),
@@ -25,7 +25,7 @@ List<Badge> badgeConverter(List badges) {
         break;
       case 'CONTROVERSIAL':
         badgesConverted.add(
-          const Badge(
+          const BadgeEntity(
             icon: CupertinoIcons.speaker_1,
             text: 'Controversial',
           ),
@@ -33,7 +33,7 @@ List<Badge> badgeConverter(List badges) {
         break;
       case 'ENGAGING':
         badgesConverted.add(
-          const Badge(
+          const BadgeEntity(
             icon: CupertinoIcons.chat_bubble,
             text: 'Engaging',
           ),
@@ -41,7 +41,7 @@ List<Badge> badgeConverter(List badges) {
         break;
       case 'FIRE':
         badgesConverted.add(
-          const Badge(
+          const BadgeEntity(
             icon: CupertinoIcons.flame,
             text: 'On Fiiiiiire',
           ),

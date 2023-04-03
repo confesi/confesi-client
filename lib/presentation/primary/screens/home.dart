@@ -1,4 +1,9 @@
+import 'package:Confessi/constants/shared/enums.dart';
 import 'package:Confessi/core/utils/sizing/bottom_safe_area.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_rotation.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
+import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
+import 'package:Confessi/presentation/shared/overlays/text_block_overlay.dart';
 
 import '../../../application/shared/cubit/share_cubit.dart';
 import '../../leaderboard/screens/home.dart';
@@ -81,6 +86,54 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         onWillPop: () async => false,
         child: ThemedStatusBar(
           child: Scaffold(
+            floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+            floatingActionButton: TouchableScale(
+              tapType: TapType.lightImpact,
+              onTap: () => Navigator.pushNamed(context, "/create_post"),
+              // TODO: you can use this to launch the update messages; however, it is temporarily here just as a POC for testing
+              // onTap: () => showTextBlock(
+              //   context,
+              //   [
+              //     UpdateMessage(
+              //         title: "Bug fixes and improvements",
+              //         body:
+              //             "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
+              //         id: 1,
+              //         date: DateTime.now()),
+              //     UpdateMessage(
+              //         title: "Updating the hottest posts algorithm",
+              //         body:
+              //             "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like). It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like). It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
+              //         id: 1,
+              //         date: DateTime.now()),
+              //     UpdateMessage(title: "title", body: "body", id: 1, date: DateTime.now())
+              //   ],
+              // ),
+              child: InitRotation(
+                delayDurationInMilliseconds: 250,
+                child: InitScale(
+                  child: Container(
+                    padding: const EdgeInsets.all(13),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.secondary,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Theme.of(context).colorScheme.secondary.withOpacity(0.4),
+                          blurRadius: 20,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: Icon(
+                      CupertinoIcons.add,
+                      color: Theme.of(context).colorScheme.onSecondary,
+                      size: 30,
+                    ),
+                  ),
+                ),
+              ),
+            ),
             drawerScrimColor: Colors.black.withOpacity(0.7),
             drawerEnableOpenDragGesture: false,
             drawer: const FeedDrawer(), // Reference to the "watched_universities" feature drawer (feed_drawer).
@@ -95,7 +148,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   children: [
                     ExploreHome(scaffoldKey: scaffoldKey),
                     HottestHome(hottestController: hottestController),
-                    ProfileHome(profileController: profileController),
+                    Container(),
                     const LeaderboardScreen(),
                     SettingsHome(settingController: settingController),
                   ],
@@ -119,7 +172,12 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         alignment: Alignment.bottomCenter,
                         child: TabBar(
                           onTap: (int newIndex) {
-                            // HapticFeedback.selectionClick();
+                            HapticFeedback.selectionClick();
+                            if (newIndex == 2) {
+                              Navigator.pushNamed(context, "/create_post");
+                              tabController.animateTo(currentIndex);
+                              return;
+                            }
                             if (currentIndex == 2 && newIndex == 2) {
                               profileController.scrollToTop();
                             } else if (currentIndex == 1 && newIndex == 1) {
@@ -145,11 +203,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                 currentIndex: currentIndex,
                                 icon: CupertinoIcons.flame,
                                 text: "Hottest"),
-                            _BottomTab(
-                                indexMatcher: 2,
-                                currentIndex: currentIndex,
-                                icon: CupertinoIcons.profile_circled,
-                                text: "Profile"),
+                            Container(), // TODO: this allows for a blank screen
                             _BottomTab(
                                 indexMatcher: 3,
                                 currentIndex: currentIndex,

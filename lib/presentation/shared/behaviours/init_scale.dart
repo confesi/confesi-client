@@ -22,6 +22,7 @@ class InitScale extends StatefulWidget {
 class InitScaleState extends State<InitScale> with SingleTickerProviderStateMixin {
   late AnimationController _animController;
   late Animation _anim;
+  bool _isDisposed = false;
 
   @override
   void initState() {
@@ -38,18 +39,26 @@ class InitScaleState extends State<InitScale> with SingleTickerProviderStateMixi
   }
 
   void startAnim() async {
+    if (_isDisposed) return;
+
     widget.delayDurationInMilliseconds == 0
         ? null
         : await Future.delayed(Duration(milliseconds: widget.delayDurationInMilliseconds));
+
+    if (_isDisposed) return;
+
     _animController.forward();
     _animController.addListener(() {
-      setState(() {});
+      if (mounted) {
+        setState(() {});
+      }
     });
   }
 
   @override
   void dispose() {
     _animController.dispose();
+    _isDisposed = true;
     super.dispose();
   }
 

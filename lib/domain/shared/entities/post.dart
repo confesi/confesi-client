@@ -21,7 +21,7 @@ class Post extends Equatable {
   final String createdDate;
   final PostChild child;
   final IconData icon;
-  final List<Badge> badges;
+  final List<BadgeEntity> badges;
 
   const Post({
     required this.id,

@@ -1,3 +1,7 @@
+import 'package:Confessi/presentation/shared/buttons/option.dart';
+import 'package:Confessi/presentation/shared/overlays/button_options_sheet.dart';
+
+import '../../shared/overlays/info_sheet.dart';
 import '../tabs/trending_feed.dart';
 import '../../shared/buttons/simple_text.dart';
 
@@ -58,9 +62,29 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
                   return AppbarLayout(
                     bottomBorder: true,
                     backgroundColor: Theme.of(context).colorScheme.background,
-                    rightIconOnPress: () => Navigator.of(context).pushNamed("/create_post"),
+                    rightIconOnPress: () => showButtonOptionsSheet(
+                      context,
+                      [
+                        OptionButton(
+                            onTap: () => Navigator.pushNamed(context, "/profile/account_details"),
+                            text: "Edit account details",
+                            icon: CupertinoIcons.pencil),
+                        OptionButton(
+                            onTap: () => Navigator.pushNamed(context, '/home/profile/saved'),
+                            text: "Saved confessions",
+                            icon: CupertinoIcons.bookmark),
+                        OptionButton(
+                            onTap: () => Navigator.pushNamed(context, '/home/profile/comments'),
+                            text: "Your comments",
+                            icon: CupertinoIcons.chat_bubble_2),
+                        OptionButton(
+                            onTap: () => Navigator.pushNamed(context, '/home/profile/posts'),
+                            text: "Your confessions",
+                            icon: CupertinoIcons.cube_box),
+                      ],
+                    ),
                     rightIconVisible: true,
-                    rightIcon: CupertinoIcons.add,
+                    rightIcon: CupertinoIcons.profile_circled,
                     centerWidget: Row(
                       children: [
                         Icon(

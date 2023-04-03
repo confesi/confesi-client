@@ -30,7 +30,7 @@ class PostModel extends Post {
     required String createdDate,
     required PostChildDataModel child,
     required IconData icon,
-    required List<Badge> badges,
+    required List<BadgeEntity> badges,
     required String universityFullName,
   }) : super(
           id: id,

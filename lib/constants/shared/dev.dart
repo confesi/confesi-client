@@ -8,3 +8,4 @@ const String kDomain = "http://localhost:3000"; // -> iOS emulator
 // const String kDomain = "http://10.0.0.173:3000"; // -> Android & iOS physical device
 
 const bool kDevicePreview = false;
+const bool kJumpToHomeScreen = true;

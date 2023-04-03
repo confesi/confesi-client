@@ -12,6 +12,7 @@ class TouchableScale extends StatefulWidget {
     this.tooltip,
     this.tapType,
     this.tooltipLocation,
+    this.opacityEnabled = true,
     Key? key,
   }) : super(key: key);
 
@@ -21,6 +22,7 @@ class TouchableScale extends StatefulWidget {
   final String? tooltip;
   final TapType? tapType;
   final TooltipLocation? tooltipLocation;
+  final bool opacityEnabled;
 
   @override
   State<TouchableScale> createState() => _TouchableScaleState();
@@ -76,9 +78,9 @@ class _TouchableScaleState extends State<TouchableScale> with SingleTickerProvid
                 animController.addListener(() => setState(() {}));
               },
               child: Opacity(
-                opacity: -anim.value * 0.4 + 1,
+                opacity: widget.opacityEnabled ? -anim.value * 0.4 + 1 : 1,
                 child: Transform.scale(
-                  scale: -anim.value * 0.065 + 1,
+                  scale: -anim.value * 0.085 + 1,
                   child: widget.child,
                 ),
               ),

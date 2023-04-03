@@ -3,6 +3,7 @@ import 'package:Confessi/application/create_post/cubit/drafts_cubit.dart';
 import 'package:Confessi/core/utils/sizing/width_fraction.dart';
 import 'package:Confessi/presentation/create_post/overlays/drafts_sheet.dart';
 import 'package:Confessi/presentation/feed/widgets/child_post.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_opacity.dart';
 import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:Confessi/presentation/shared/other/widget_or_nothing.dart';
@@ -10,6 +11,7 @@ import 'package:Confessi/presentation/shared/overlays/notification_chip.dart';
 import 'package:scrollable/exports.dart';
 
 import '../../../application/create_post/cubit/post_cubit.dart';
+import '../../../constants/shared/enums.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/other/text_limit_tracker.dart';
 import '../../shared/behaviours/init_scale.dart';
@@ -274,7 +276,7 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                                                       textCapitalization: TextCapitalization.sentences,
                                                       keyboardType: TextInputType.multiline,
                                                       maxLines: null,
-                                                      style: kDisplay2.copyWith(
+                                                      style: kDisplay1.copyWith(
                                                           color: Theme.of(context).colorScheme.primary),
                                                       decoration: InputDecoration(
                                                         isCollapsed: true,
@@ -366,10 +368,10 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                                         color: Colors.transparent,
                                         width: double.infinity,
                                         child: Center(
-                                          child: TouchableOpacity(
+                                          child: TouchableScale(
+                                            tapType: TapType.lightImpact,
                                             onTap: () => showDraftsSheet(context),
                                             child: Container(
-                                              // width: double.infinity,
                                               constraints: BoxConstraints(maxWidth: widthFraction(context, 2 / 3)),
                                               padding: const EdgeInsets.all(20),
                                               margin: const EdgeInsets.symmetric(vertical: 45),

@@ -1,12 +1,9 @@
 import '../../../../core/utils/sizing/top_safe_area.dart';
-import '../../../../domain/authentication_and_settings/entities/user.dart';
 import '../../../primary/controllers/settings_controller.dart';
 
 import '../../../../application/shared/cubit/website_launcher_cubit.dart';
-import '../../../../constants/enums_that_are_local_keys.dart';
 import '../../../shared/behaviours/themed_status_bar.dart';
 import '../../../shared/other/top_frosted_glass_area.dart';
-import '../../../../core/alt_unused/notification_chip.dart';
 import '../../../shared/overlays/notification_chip.dart';
 import '../../../shared/selection_groups/setting_tile.dart';
 import '../../../shared/selection_groups/setting_tile_group.dart';
@@ -136,14 +133,20 @@ class SettingsHome extends StatelessWidget {
                         SettingTile(
                           rightIcon: CupertinoIcons.link,
                           leftIcon: CupertinoIcons.doc,
-                          text: kSettingsTermsOfServiceLabel,
+                          text: "Term of service",
                           onTap: () => context.read<WebsiteLauncherCubit>().launchWebsiteTermsOfService(),
                         ),
                         SettingTile(
                           rightIcon: CupertinoIcons.link,
                           leftIcon: CupertinoIcons.doc,
-                          text: kSesttingsPrivacyStatementLabel,
+                          text: "Privacy policy",
                           onTap: () => context.read<WebsiteLauncherCubit>().launchWebsitePrivacyStatement(),
+                        ),
+                        SettingTile(
+                          rightIcon: CupertinoIcons.link,
+                          leftIcon: CupertinoIcons.doc,
+                          text: "Community rules",
+                          onTap: () => context.read<WebsiteLauncherCubit>().launchWebsiteCommunityRules(),
                         ),
                       ],
                     ),

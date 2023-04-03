@@ -53,7 +53,7 @@ class DetailViewScreen extends StatefulWidget {
   final String university;
   final int comments;
   final PostChild postChild;
-  final List<Badge> badges;
+  final List<BadgeEntity> badges;
 
   @override
   State<DetailViewScreen> createState() => _DetailViewScreenState();

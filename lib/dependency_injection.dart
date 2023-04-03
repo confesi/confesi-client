@@ -11,11 +11,7 @@ import 'package:Confessi/domain/create_post/usecases/delete_draft.dart';
 import 'package:Confessi/domain/create_post/usecases/get_draft.dart';
 import 'package:Confessi/domain/create_post/usecases/save_draft.dart';
 
-import 'application/profile/cubit/profile_cubit.dart';
-import 'data/profile/datasources/profile_datasource.dart';
-import 'data/profile/repositories/profile_repository_concrete.dart';
 import 'domain/authentication_and_settings/usecases/home_viewed.dart';
-import 'domain/profile/usecases/profile_data.dart';
 import 'domain/shared/usecases/share_content.dart';
 
 import 'application/shared/cubit/share_cubit.dart';
@@ -116,8 +112,6 @@ Future<void> init() async {
   sl.registerFactory(() => LanguageSettingCubit(openDeviceSettingsUsecase: sl()));
   // Registers the share cubit.
   sl.registerFactory(() => ShareCubit(shareContentUsecase: sl()));
-  // Registers the profile cubit.
-  sl.registerFactory(() => ProfileCubit(profileData: sl()));
   // Registers the draft post cubit.
   sl.registerFactory(() => DraftsCubit(getDraftUsecase: sl(), saveDraftUsecase: sl(), deleteDraftUsecase: sl()));
 
@@ -154,8 +148,6 @@ Future<void> init() async {
   sl.registerLazySingleton(() => OpenDeviceSettings());
   // Registers the share usecase.
   sl.registerLazySingleton(() => ShareContent());
-  // Registers the profile usecase
-  sl.registerLazySingleton(() => ProfileDataUsecase(repository: sl()));
   // Registeres the home viewed usecase
   sl.registerLazySingleton(() => HomeViewed(repository: sl()));
   // Registers the save draft usecase.
@@ -194,8 +186,6 @@ Future<void> init() async {
   sl.registerLazySingleton(() => CreatePostRepository(networkInfo: sl(), datasource: sl()));
   // Registers the prefs repository.
   sl.registerLazySingleton(() => PrefsRepository(datasource: sl()));
-  // Registers the profile repository.
-  sl.registerLazySingleton(() => ProfileRepository(networkInfo: sl(), datasource: sl()));
   // Registers the draft post repository.
   sl.registerLazySingleton(() => DraftPostRepository(networkInfo: sl(), datasource: sl()));
 
@@ -212,8 +202,6 @@ Future<void> init() async {
   sl.registerLazySingleton(() => CreatePostDatasource(api: sl()));
   // Registers the prefs datasource.
   sl.registerLazySingleton(() => PrefsDatasource(hiveClient: sl()));
-  // Registers the profile datasource.
-  sl.registerLazySingleton(() => ProfileDatasource(api: sl()));
   // Registers the draft post datasource.
   sl.registerLazySingleton(() => DraftPostDatasource(api: sl(), hiveClient: sl()));
 
