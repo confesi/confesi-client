@@ -1,9 +1,11 @@
 import 'package:Confessi/constants/enums_that_are_local_keys.dart';
+import 'package:Confessi/dependency_injection.dart';
 import 'package:dartz/dartz.dart' as dartz;
 
 import '../../../constants/shared/dev.dart';
 import '../../../core/results/failures.dart';
 import '../../../core/services/deep_links.dart';
+import '../../../core/services/notifications.dart';
 import '../../../domain/authentication_and_settings/entities/user.dart';
 
 import '../../../core/styles/typography.dart';
@@ -29,7 +31,6 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMixin {
   bool shakeSheetOpen = false;
   late String introText;
-  late DeepLinkStream dynamicLinkStream;
 
   bool shouldOpenFeedbackSheetOnShake(BuildContext context) {
     UserCubit userCubit = context.read<UserCubit>();
@@ -38,10 +39,10 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
 
   @override
   void initState() {
+    analytics.logEvent(name: "app_open");
     introText = getIntro().text;
-    dynamicLinkStream = DeepLinkStream();
-    link();
     // todo: block this for unauthenticated users? Or just let them change the guest settings?
+    manageDynamicLinks();
     // Opens the feedback sheet when the phone is shook. Implemented on the [Splash] screen because it is only shown once per app run. Otherwise, mutliple shake listeners would be created.
     ShakeDetector.autoStart(
       onPhoneShake: () {
@@ -59,12 +60,13 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
 
   @override
   void dispose() {
-    dynamicLinkStream.dispose();
+    sl.get<DeepLinkStream>().dispose();
+    sl.get<NotificationService>().dispose();
     super.dispose();
   }
 
-  void link() {
-    dynamicLinkStream.listen((dartz.Either<Failure, DeepLinkRoute> link) {
+  void manageDynamicLinks() {
+    sl.get<DeepLinkStream>().listen((dartz.Either<Failure, DeepLinkRoute> link) {
       link.fold(
         (failure) {
           print("===================> ERROR LINK");
@@ -80,7 +82,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   @override
   Widget build(BuildContext context) {
     return BlocListener<UserCubit, UserState>(
-      listenWhen: (previous, current) => (previous.runtimeType != current.runtimeType),
+      listenWhen: (previous, current) => previous.runtimeType != current.runtimeType,
       // listenWhen: (previous, current) => true,
       listener: (context, state) {
         if (kJumpToHomeScreen) {
@@ -98,7 +100,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
               Navigator.of(context).pushNamed("/home");
             } else {
               // Go directly to open
-              Navigator.of(context).pushNamed("/open"); // todo: /open
+              Navigator.of(context).pushNamed("/open");
             }
           }
         } else if (state is UserError) {

@@ -118,7 +118,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 delayDurationInMilliseconds: 250,
                 child: InitScale(
                   child: Container(
-                    padding: const EdgeInsets.all(13),
+                    padding: const EdgeInsets.all(12),
                     margin: const EdgeInsets.only(bottom: 5),
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.secondary,

@@ -27,6 +27,9 @@ class NoneFailure extends Failure {}
 /// Deep link failure.
 class DeepLinkFailure extends Failure {}
 
+// Notification failure if token isn't found on device.
+class NoNotifictionTokenFailure {}
+
 //! Authentication failures
 
 /// For when password is incorrect.
