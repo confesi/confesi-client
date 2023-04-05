@@ -1,10 +1,12 @@
 import 'package:Confessi/constants/enums_that_are_local_keys.dart';
 import 'package:Confessi/dependency_injection.dart';
+import 'package:Confessi/presentation/shared/overlays/text_block_overlay.dart';
 import 'package:dartz/dartz.dart' as dartz;
 
 import '../../../constants/shared/dev.dart';
 import '../../../core/results/failures.dart';
 import '../../../core/services/deep_links.dart';
+import '../../../core/services/in_app_notifications/in_app_notifications.dart';
 import '../../../core/services/notifications.dart';
 import '../../../domain/authentication_and_settings/entities/user.dart';
 
@@ -30,7 +32,6 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMixin {
   bool shakeSheetOpen = false;
-  late String introText;
 
   bool shouldOpenFeedbackSheetOnShake(BuildContext context) {
     UserCubit userCubit = context.read<UserCubit>();
@@ -39,11 +40,15 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
 
   @override
   void initState() {
-    analytics.logEvent(name: "app_open");
-    introText = getIntro().text;
-    // todo: block this for unauthenticated users? Or just let them change the guest settings?
     manageDynamicLinks();
-    // Opens the feedback sheet when the phone is shook. Implemented on the [Splash] screen because it is only shown once per app run. Otherwise, mutliple shake listeners would be created.
+    manageNotifications();
+    loadInAppMessages();
+    startShakeListener();
+    super.initState();
+  }
+
+  // Opens the feedback sheet when the phone is shook. Implemented on the [Splash] screen because it is only shown once per app run. Otherwise, mutliple shake listeners would be created.
+  void startShakeListener() {
     ShakeDetector.autoStart(
       onPhoneShake: () {
         if (!shakeSheetOpen && shouldOpenFeedbackSheetOnShake(context)) {
@@ -55,13 +60,50 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
       shakeCountResetTime: 1500,
       minimumShakeCount: 2,
     );
-    super.initState();
+  }
+
+  Future<void> loadInAppMessages() async {
+    (await sl.get<InAppMessageService>().getAllMessages()).fold(
+      (failure) => showNotificationChip(context, "Failed to retrieve update messages from server."),
+      (messages) => messages.isEmpty
+          ? null
+          : showTextBlock(
+              context,
+              messages
+                  .map(
+                    (e) => UpdateMessage(title: e.title, body: e.content, id: e.id, date: e.date),
+                  )
+                  .toList(),
+            ),
+    );
+  }
+
+  void manageNotifications() {
+    sl.get<NotificationService>().onMessage((message) {
+      sl.get<NotificationService>().fcmDeletagor(
+            message: message,
+            onNotification: (title, body) =>
+                showNotificationChip(context, "$title\n$body", notificationType: NotificationType.success),
+            onUpdateMessage: (title, body) => sl.get<InAppMessageService>().addMessage(title, body),
+          );
+      print("======================> Message received in app: ${message.notification?.body}");
+    });
+    sl.get<NotificationService>().onMessageOpenedApp((message) {
+      sl.get<NotificationService>().fcmDeletagor(
+            message: message,
+            onNotification: (title, body) =>
+                showNotificationChip(context, "$title\n$body", notificationType: NotificationType.success),
+            onUpdateMessage: (title, body) => sl.get<InAppMessageService>().addMessage(title, body),
+          );
+      print("======================> Message opened app: ${message.notification?.body}");
+    });
   }
 
   @override
   void dispose() {
     sl.get<DeepLinkStream>().dispose();
     sl.get<NotificationService>().dispose();
+    sl.get<InAppMessageService>().dispose();
     super.dispose();
   }
 
@@ -73,7 +115,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
         },
         (route) {
           print(
-              "=====================> Received dynamic link: ${route.internalRouteName()} with id ${(route as PostRoute).postId}");
+              "=====================> Received dynamic link: ${route.routeName()} with id ${(route as PostRoute).postId}");
         },
       );
     });

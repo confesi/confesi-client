@@ -9,7 +9,7 @@ import '../results/failures.dart';
 //! route interface
 
 abstract class DeepLinkRoute {
-  String internalRouteName();
+  String routeName();
 }
 
 //! routes
@@ -25,7 +25,7 @@ class PostRoute extends DeepLinkRoute {
   }
 
   @override
-  String internalRouteName() => "/home/detail";
+  String routeName() => externalRouteName;
 }
 
 //! logic
@@ -63,8 +63,10 @@ class DeepLinkService {
           ),
         ),
       );
+      print("LINK:  $link");
       return Left(link.shortUrl.toString());
-    } catch (_) {
+    } catch (e) {
+      print("FAIL 1 $e");
       return Right(DeepLinkFailure());
     }
   }
@@ -94,6 +96,7 @@ class DeepLinkStream {
         return Left(DeepLinkFailure());
       }
     } catch (_) {
+      print("FAIL 2");
       return Left(DeepLinkFailure());
     }
   }

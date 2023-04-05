@@ -1,5 +1,6 @@
 import 'package:Confessi/constants/shared/enums.dart';
 import 'package:Confessi/core/utils/sizing/bottom_safe_area.dart';
+import 'package:Confessi/dependency_injection.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_rotation.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
 import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
@@ -90,10 +91,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
             floatingActionButton: TouchableScale(
               tapType: TapType.lightImpact,
-              onTap: () async {
-                (await DeepLinkService().buildLink("/post?id=55", "This is a super cool post"))
-                    .fold((link) => print("Link: $link"), (failure) => print("FAILURE!!"));
-              },
+              onTap: () async => (await sl.get<DeepLinkService>().buildLink("/post?id=55", "This is a super cool post"))
+                  .fold((link) => print("Link: $link"), (failure) => print("FAILURE!!")),
               // onTap: () => Navigator.pushNamed(context, "/create_post"),
               // TODO: you can use this to launch the update messages; however, it is temporarily here just as a POC for testing
               // onTap: () => showTextBlock(

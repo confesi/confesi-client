@@ -27,9 +27,10 @@ enum NotificationDuration {
 dynamic showNotificationChip(
   BuildContext context,
   String text, {
-  int maxLines = 3,
+  int maxLines = 4,
   NotificationType notificationType = NotificationType.failure,
   NotificationDuration notificationDuration = NotificationDuration.regular,
+  VoidCallback? onTap,
 }) {
   OverlayEntry? overlay;
   overlay = OverlayEntry(
@@ -38,6 +39,7 @@ dynamic showNotificationChip(
         alignment: Alignment.topCenter,
         child: SafeArea(
           child: _OverlayItem(
+            onTap: onTap,
             text: text,
             overlay: overlay,
             maxLines: maxLines,
@@ -59,8 +61,10 @@ class _OverlayItem extends StatefulWidget {
     required this.notificationChipType,
     required this.maxLines,
     required this.notificationDuration,
+    required this.onTap,
   }) : super(key: key);
 
+  final VoidCallback? onTap;
   final String text;
   final OverlayEntry? overlay;
   final NotificationType notificationChipType;
@@ -153,30 +157,36 @@ class __OverlayItemState extends State<_OverlayItem> with TickerProviderStateMix
         },
         child: Transform.scale(
           scale: timeAnim.value,
-          child: Container(
-            width: double.infinity,
-            margin: const EdgeInsets.only(top: 10),
-            constraints: BoxConstraints(maxWidth: widthFraction(context, .8)),
-            decoration: BoxDecoration(
-              color: widget.notificationChipType == NotificationType.failure
-                  ? Theme.of(context).colorScheme.error
-                  : Theme.of(context).colorScheme.surfaceTint,
-              borderRadius: const BorderRadius.all(
-                Radius.circular(5),
+          child: GestureDetector(
+            onTap: () {
+              reverseAnimEarly();
+              if (widget.onTap != null) widget.onTap!();
+            },
+            child: Container(
+              width: double.infinity,
+              margin: const EdgeInsets.only(top: 10),
+              constraints: BoxConstraints(maxWidth: widthFraction(context, .95)),
+              decoration: BoxDecoration(
+                color: widget.notificationChipType == NotificationType.failure
+                    ? Theme.of(context).colorScheme.error
+                    : Theme.of(context).colorScheme.surfaceTint,
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(5),
+                ),
               ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Material(
-                color: Colors.transparent,
-                child: Text(
-                  widget.text,
-                  style: kTitle.copyWith(
-                    color: Theme.of(context).colorScheme.onError,
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Material(
+                  color: Colors.transparent,
+                  child: Text(
+                    widget.text,
+                    style: kBody.copyWith(
+                      color: Theme.of(context).colorScheme.onError,
+                    ),
+                    maxLines: widget.maxLines,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
                   ),
-                  maxLines: widget.maxLines,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
                 ),
               ),
             ),

@@ -89,8 +89,10 @@ Future<void> init() async {
   sl.registerLazySingleton(() => NotificationService()..initAndroidNotifications());
   // Registers in-app notifications service.
   sl.registerLazySingleton(() => InAppMessageService());
-  // Registers the deep-link service.
+  // Registers the deep-link stream service.
   sl.registerLazySingleton(() => DeepLinkStream());
+  // Registers the deep-link creation service.
+  sl.registerLazySingleton(() => DeepLinkService());
 
   //! State (BLoC or Cubit)
   // // Registers the authentication cubit.

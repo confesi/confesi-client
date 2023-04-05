@@ -1,4 +1,7 @@
+import 'package:Confessi/core/services/in_app_notifications/in_app_notifications.dart';
 import 'package:Confessi/core/utils/dates/date_from_datetime.dart';
+import 'package:Confessi/core/utils/sizing/width_fraction.dart';
+import 'package:Confessi/dependency_injection.dart';
 import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:Confessi/presentation/shared/buttons/pop.dart';
 import 'package:flutter/cupertino.dart';
@@ -102,7 +105,7 @@ class __OverlayItemState extends State<_OverlayItem> with TickerProviderStateMix
   int messagesLeft() => widget.messages.length - (_currentIndex + 1);
 
   void animateToNext() {
-    // todo: remove current thing from messages local db
+    sl.get<InAppMessageService>().deleteMessage(widget.messages[_currentIndex].id);
     if (_currentIndex == widget.messages.length - 1) {
       reverseAnim();
     } else {
@@ -111,7 +114,7 @@ class __OverlayItemState extends State<_OverlayItem> with TickerProviderStateMix
   }
 
   void skipAll() {
-    // todo: remove all things from messages local db
+    sl.get<InAppMessageService>().deleteAllMessages();
     reverseAnim();
   }
 
@@ -124,20 +127,8 @@ class __OverlayItemState extends State<_OverlayItem> with TickerProviderStateMix
             scale: timeAnim.value,
             child: Container(
               height: heightFraction(context, 1),
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.background,
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(5),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Theme.of(context).colorScheme.background.withOpacity(.5),
-                    blurRadius: 25,
-                    offset: const Offset(0, 0),
-                  ),
-                ],
-              ),
+              width: widthFraction(context, 1),
+              color: Theme.of(context).colorScheme.background,
               child: Padding(
                 padding: const EdgeInsets.all(15),
                 child: Material(

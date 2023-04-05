@@ -1,5 +1,6 @@
 import 'package:Confessi/core/services/notifications.dart';
 import 'package:dartz/dartz.dart' as dartz;
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -16,6 +17,7 @@ import 'application/shared/cubit/share_cubit.dart';
 import 'application/shared/cubit/website_launcher_cubit.dart';
 import 'constants/enums_that_are_local_keys.dart';
 import 'core/router/router.dart';
+import 'core/services/in_app_notifications/in_app_notifications.dart';
 import 'core/styles/themes.dart';
 import 'dependency_injection.dart';
 import 'generated/l10n.dart';
@@ -25,8 +27,14 @@ import 'presentation/primary/screens/splash.dart';
 @pragma('vm:entry-point') // Needed so this function isn't moved during release compilation.
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print("======================> BG handler called");
+  await Firebase.initializeApp();
   // InAppMessageService inAppMessageService = InAppMessageService();
   // inAppMessageService.addMessage(message);
+  NotificationService().fcmDeletagor(
+    message: message,
+    onNotification: (title, body) => null, // do nothing since this will be handled natively
+    onUpdateMessage: (title, body) => InAppMessageService().addMessage(title, body),
+  );
 }
 
 void main() async {
@@ -40,12 +48,7 @@ void main() async {
   sl.get<NotificationService>().token.then((token) {
     token.fold((l) => print(l), (r) => print(r));
   }); // todo: save this to device storage or on new token save it (initialize with context then so I can use the usecases to set prefs? Or STORE SEPERATELY?)
-  sl.get<NotificationService>().onMessage((message) {
-    print("======================> Message received in app: ${message.notification?.body}");
-  });
-  sl.get<NotificationService>().onMessageOpenedApp((message) {
-    print("======================> Message opened app: ${message.notification?.body}");
-  });
+
   sl.get<NotificationService>().onTokenRefresh((token) {
     print("======================> Token refreshed: $token");
   });

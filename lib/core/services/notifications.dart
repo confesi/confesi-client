@@ -4,6 +4,7 @@ import 'package:dartz/dartz.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class EmptyTokenFailure {}
@@ -58,6 +59,27 @@ class NotificationService {
       return Left(EmptyTokenFailure());
     } else {
       return Right(token);
+    }
+  }
+
+  void fcmDeletagor({
+    required RemoteMessage message,
+    required Function(String title, String body) onUpdateMessage,
+    required Function(String title, String body) onNotification,
+  }) {
+    String? dataType = message.data['type'];
+    if (dataType == 'update_message') {
+      String? title = message.data['title'];
+      String? body = message.data['body'];
+      if (title == null || body == null) return;
+      onUpdateMessage(title, body);
+    } else {
+      RemoteNotification? notification = message.notification;
+      if (notification == null) return;
+      String? title = notification.title;
+      String? body = notification.body;
+      if (title == null || body == null) return;
+      onNotification(title, body);
     }
   }
 

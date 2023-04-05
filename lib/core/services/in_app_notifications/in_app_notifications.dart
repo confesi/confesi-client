@@ -16,26 +16,19 @@ class InAppMessageService {
   InAppMessageService() : _db = AppDb();
 
   // insert a message
-  Future<Either<MessageFailure, int>> addMessage(RemoteMessage message) async {
-    final notification = message.notification;
-    if (notification != null) {
-      final title = notification.title;
-      final body = notification.body;
-      if (title != null || body != null) {
-        try {
-          int insertionId = await _db.insertMessage(
-            MessageCompanion(
-              title: drift.Value(title ?? ""),
-              content: drift.Value(body ?? ""),
-            ),
-          );
-          return Right(insertionId);
-        } catch (_) {
-          return Left(MessageFailure());
-        }
-      }
+  Future<Either<MessageFailure, int>> addMessage(String title, String body) async {
+    try {
+      int insertionId = await _db.insertMessage(
+        MessageCompanion(
+          title: drift.Value(title),
+          content: drift.Value(body),
+          date: drift.Value(DateTime.now()),
+        ),
+      );
+      return Right(insertionId);
+    } catch (_) {
+      return Left(MessageFailure());
     }
-    return Left(MessageFailure());
   }
 
   // fetch all messages

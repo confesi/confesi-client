@@ -8,6 +8,7 @@ import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opac
 import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:Confessi/presentation/shared/other/widget_or_nothing.dart';
 import 'package:Confessi/presentation/shared/overlays/notification_chip.dart';
+import 'package:confetti/confetti.dart';
 import 'package:scrollable/exports.dart';
 
 import '../../../application/create_post/cubit/post_cubit.dart';
@@ -27,7 +28,7 @@ import '../../../core/generators/hint_text_generator.dart';
 import '../../../core/styles/typography.dart';
 import '../../shared/layout/appbar.dart';
 import '../../shared/layout/scrollable_area.dart';
-import '../../shared/overlays/center_overlay_message.dart';
+import '../overlays/confetti_blaster.dart';
 import '../../shared/overlays/info_sheet.dart';
 
 // TODO: move to feature constants file and document?
@@ -154,7 +155,7 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
               if (state is SuccessfullySubmitted) {
                 clearTextfields();
                 Navigator.popUntil(context, ModalRoute.withName('/home'));
-                CenterOverlay().show(context, "Posted", blastConfetti: true);
+                showNotificationChip(context, "Posted successfully", notificationType: NotificationType.success);
               }
             },
             child: ThemedStatusBar(
