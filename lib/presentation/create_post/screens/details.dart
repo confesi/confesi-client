@@ -80,7 +80,7 @@ class _DetailsScreenState extends State<DetailsScreen> with AutomaticKeepAliveCl
                                 rightIcon: CupertinoIcons.info,
                                 rightIconVisible: true,
                                 rightIconOnPress: () => showInfoSheet(context, "Confessing",
-                                    "Please be civil when posting, but have fun! All confessions are anonymous, excluding the details provided here."),
+                                    "Please be civil when posting, but have fun! All confessions are anonymous, excluding the details provided here plus your school, and your faculty and year of study if you provided them."),
                               ),
                             ),
                             Expanded(
@@ -139,9 +139,6 @@ class _DetailsScreenState extends State<DetailsScreen> with AutomaticKeepAliveCl
                                         ),
                                       ],
                                     ),
-                                    // TODO
-                                    const Text(
-                                        "TODO: add something like: 'posting including these details, edit them here'"),
                                   ],
                                 ),
                               ),
@@ -151,8 +148,8 @@ class _DetailsScreenState extends State<DetailsScreen> with AutomaticKeepAliveCl
                       ),
                       Container(
                         decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.background,
-                            border: Border(top: BorderSide(color: Theme.of(context).colorScheme.surface, width: 0.8))),
+                          color: Theme.of(context).colorScheme.background,
+                        ),
                         child: SafeArea(
                           top: false,
                           child: Padding(

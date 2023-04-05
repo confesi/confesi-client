@@ -5,13 +5,13 @@ class InitRotation extends StatefulWidget {
   const InitRotation({
     super.key,
     required this.child,
-    this.durationOfScaleInMilliseconds = 450,
+    this.durationOfAnimInMs = 450,
     this.delayDurationInMilliseconds = 0,
     this.addedToRotation = 0,
   });
 
   final Widget child;
-  final int durationOfScaleInMilliseconds;
+  final int durationOfAnimInMs;
   final int delayDurationInMilliseconds;
   final double addedToRotation;
 
@@ -27,7 +27,7 @@ class InitRotationState extends State<InitRotation> with SingleTickerProviderSta
   void initState() {
     _animController = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: widget.durationOfScaleInMilliseconds),
+      duration: Duration(milliseconds: widget.durationOfAnimInMs),
     );
     _anim = CurvedAnimation(
       parent: _animController,

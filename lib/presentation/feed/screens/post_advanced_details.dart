@@ -1,5 +1,7 @@
 import 'package:Confessi/core/utils/sizing/width_fraction.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_rotation.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:pie_chart/pie_chart.dart';
 
 import 'package:scrollable/exports.dart';
@@ -55,7 +57,7 @@ class PostAdvancedDetailsScreen extends StatelessWidget {
                           },
                           animationDuration: const Duration(milliseconds: 800),
                           chartLegendSpacing: 55,
-                          colorList: const [Colors.red, Colors.blue, Colors.yellow],
+                          colorList: const [Colors.green, Colors.red, Colors.yellow],
                           chartType: ChartType.ring,
                           legendOptions: LegendOptions(
                             showLegendsInRow: false,

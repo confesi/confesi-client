@@ -184,6 +184,10 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                         rightIconVisible: true,
                         rightIcon: CupertinoIcons.arrow_right,
                         rightIconOnPress: () {
+                          if (titleController.text.trim().isEmpty && bodyController.text.trim().isEmpty) {
+                            showNotificationChip(context, "You can't post... nothing!");
+                            return;
+                          }
                           Navigator.of(context).pushNamed('/home/create_post/details', arguments: {
                             'title': titleController.text,
                             'body': bodyController.text,

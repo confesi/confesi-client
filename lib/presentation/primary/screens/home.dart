@@ -3,6 +3,7 @@ import 'package:Confessi/core/utils/sizing/bottom_safe_area.dart';
 import 'package:Confessi/dependency_injection.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_rotation.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:Confessi/presentation/shared/overlays/text_block_overlay.dart';
 
@@ -113,28 +114,26 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               //     UpdateMessage(title: "title", body: "body", id: 1, date: DateTime.now())
               //   ],
               // ),
-              child: InitRotation(
-                delayDurationInMilliseconds: 250,
-                child: InitScale(
-                  child: Container(
-                    padding: const EdgeInsets.all(12),
-                    margin: const EdgeInsets.only(bottom: 5),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.secondary,
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Theme.of(context).colorScheme.secondary.withOpacity(0.4),
-                          blurRadius: 20,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: Icon(
-                      CupertinoIcons.add,
-                      color: Theme.of(context).colorScheme.onSecondary,
-                      size: 30,
-                    ),
+              child: InitTransform(
+                // delayDurationInMilliseconds: 250,
+                child: Container(
+                  padding: const EdgeInsets.all(14),
+                  margin: const EdgeInsets.only(bottom: 5),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.secondary,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Theme.of(context).colorScheme.secondary.withOpacity(0.4),
+                        blurRadius: 20,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: Icon(
+                    CupertinoIcons.add,
+                    color: Theme.of(context).colorScheme.onSecondary,
+                    size: 30,
                   ),
                 ),
               ),
@@ -159,7 +158,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   ],
                 ),
                 bottomNavigationBar: Container(
-                  padding: const EdgeInsets.only(bottom: 5),
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.background,
                     border: Border(

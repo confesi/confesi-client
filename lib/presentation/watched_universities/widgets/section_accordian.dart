@@ -54,7 +54,7 @@ class _SectionAccordianState extends State<SectionAccordian> {
                   )
                 : null,
           ),
-          child: TouchableOpacity(
+          child: TouchableScale(
             onTap: () {
               setState(() {
                 isOpen = !isOpen;

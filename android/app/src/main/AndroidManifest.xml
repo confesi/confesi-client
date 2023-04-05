@@ -18,7 +18,7 @@
     </queries>
 	<!-- ADDED FOR URL LAUNCHER - END -->
    <application
-        android:label="flutter_mobile_client"
+        android:label="Confesi"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
