@@ -129,6 +129,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
       listener: (context, state) {
         if (kJumpToHomeScreen) {
           Navigator.of(context).pushNamed("/home");
+          return;
         }
 
         if (state is User) {

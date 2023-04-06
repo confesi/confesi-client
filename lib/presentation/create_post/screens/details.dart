@@ -44,8 +44,6 @@ class _DetailsScreenState extends State<DetailsScreen> with AutomaticKeepAliveCl
         if (state is Error) {
           showNotificationChip(context, state.message, notificationDuration: NotificationDuration.regular);
         } else if (state is SuccessfullySubmitted) {
-          // blast confetti
-          print("BLAST");
           ConfettiBlaster().show(context);
         }
       },

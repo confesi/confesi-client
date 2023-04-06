@@ -43,28 +43,7 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
     } else if (state is Data && state.posts.isNotEmpty) {
       return GestureDetector(
         onTap: () {
-          Navigator.pushNamed(
-            context,
-            '/home/detail',
-            arguments: {
-              'id': state.posts[currentIndex].id,
-              'badges': state.posts[currentIndex].badges,
-              'post_child': state.posts[currentIndex].child,
-              'icon': state.posts[currentIndex].icon,
-              'genre': state.posts[currentIndex].genre,
-              'time': state.posts[currentIndex].createdDate,
-              'faculty': state.posts[currentIndex].faculty,
-              'text': state.posts[currentIndex].text,
-              'title': state.posts[currentIndex].title,
-              'likes': state.posts[currentIndex].likes,
-              'hates': state.posts[currentIndex].hates,
-              'comments': state.posts[currentIndex].comments,
-              'year': state.posts[currentIndex].year,
-              'university': state.posts[currentIndex].university,
-              'university_full_name': state.posts[currentIndex].universityFullName,
-              'postView': PostView.detailView
-            },
-          );
+          Navigator.pushNamed(context, "/home/simplified_detail");
         },
         child: PageView(
             controller: widget.hottestController.pageController,

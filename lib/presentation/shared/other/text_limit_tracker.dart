@@ -17,40 +17,41 @@ class TextLimitTracker extends StatelessWidget {
     } else if (value > .7) {
       return "Slow down...";
     } else {
-      return "Character limit";
+      return "Limit";
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        SizedBox(
-          height: 16,
-          width: 16,
-          child: CircularProgressIndicator(
-            strokeWidth: 3,
-            backgroundColor: Theme.of(context).colorScheme.onBackground,
-            color: value >= 1 ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.primary,
-            value: value,
+        Flexible(
+          child: SizedBox(
+            height: 16,
+            width: 16,
+            child: CircularProgressIndicator(
+              strokeWidth: 3,
+              backgroundColor: Theme.of(context).colorScheme.onBackground,
+              color: value >= 1 ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.primary,
+              value: value,
+            ),
           ),
         ),
+        const SizedBox(width: 5),
         noText
             ? Container()
-            : Row(
-                children: [
-                  const SizedBox(width: 10),
-                  Text(
-                    'Limit',
-                    key: UniqueKey(),
-                    style: kTitle.copyWith(
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                    textAlign: TextAlign.left,
-                    overflow: TextOverflow.ellipsis,
-                  )
-                ],
+            : Flexible(
+                child: Text(
+                  getText(),
+                  style: kTitle.copyWith(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  textAlign: TextAlign.left,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
       ],
     );

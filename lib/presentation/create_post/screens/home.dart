@@ -171,8 +171,11 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                         centerWidget: AnimatedSwitcher(
                           duration: const Duration(milliseconds: 250),
                           child: focusedField != FocusedField.none
-                              ? TextLimitTracker(
-                                  value: getLimitPercent(),
+                              ? SizedBox(
+                                  width: widthFraction(context, 1),
+                                  child: TextLimitTracker(
+                                    value: getLimitPercent(),
+                                  ),
                                 )
                               : Text(
                                   'Confess Anonymously',

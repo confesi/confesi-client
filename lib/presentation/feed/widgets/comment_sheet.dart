@@ -1,3 +1,5 @@
+import 'package:Confessi/core/utils/sizing/width_fraction.dart';
+
 import '../../shared/other/text_limit_tracker.dart';
 import 'package:flutter/material.dart';
 
@@ -40,28 +42,20 @@ class _CommentSheetState extends State<CommentSheet> with TickerProviderStateMix
     showAnim = CurvedAnimation(parent: showAnimController, curve: Curves.linear);
     popAnimController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 200),
+      duration: const Duration(milliseconds: 350),
     );
     popAnim = CurvedAnimation(parent: popAnimController, curve: Curves.linear);
     super.initState();
   }
 
   void manageAnim() {
-    setState(() {});
     if (commentController.text.isEmpty) {
       popAnimController.reverse();
       showAnimController.forward();
     } else {
-      showAnimController.reverse().then((value) {
-        popAnimController.forward();
-      });
+      showAnimController.reverse();
+      popAnimController.forward();
     }
-    showAnimController.addListener(() {
-      setState(() {});
-    });
-    popAnimController.addListener(() {
-      setState(() {});
-    });
   }
 
   @override
@@ -79,83 +73,49 @@ class _CommentSheetState extends State<CommentSheet> with TickerProviderStateMix
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ExpandableTextfield(
-                hintText: "What's your take?",
-                maxLines: 8,
-                minLines: 1,
-                maxCharacters: widget.maxCharacters,
-                onChanged: (value) {
-                  setState(() {
-                    commentLength = value.length;
-                  });
-                  manageAnim();
-                },
-                controller: commentController,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: AnimatedSize(
-                  clipBehavior: Clip.none,
-                  duration: const Duration(milliseconds: 200),
-                  child: commentController.text.isEmpty
-                      ? Container()
-                      : Opacity(
-                          opacity: popAnim.value,
-                          child: Opacity(
-                            opacity: showAnim.value == 0.0 ? 1.0 : 0.0,
-                            child: Align(
-                              alignment: Alignment.centerRight,
-                              child: Padding(
-                                padding: const EdgeInsets.only(bottom: 15, top: 5),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    SimpleTextButton(
-                                      tooltipLocation: TooltipLocation.above,
-                                      text: 'delete',
-                                      tooltip: 'delete your comment',
-                                      isErrorText: true,
-                                      onTap: () {
-                                        // Clears text.
-                                        commentController.clear();
-                                        // Pushes down oard (unfocus).
-                                        FocusScope.of(context).unfocus();
-                                      },
-                                    ),
-                                    const SizedBox(width: 15),
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: TextLimitTracker(
-                                        noText: true,
-                                        value: commentLength / widget.maxCharacters,
-                                      ),
-                                    ),
-                                    const SizedBox(width: 5),
-                                    const Spacer(),
-                                    SimpleTextButton(
-                                      tapType: TapType.strongImpact,
-                                      tooltipLocation: TooltipLocation.above,
-                                      text: 'post',
-                                      tooltip: 'submit comment to thread',
-                                      onTap: () {
-                                        // Pushes down keyboard (unfocus).
-                                        FocusScope.of(context).unfocus();
-                                        // Pseudo 'Submits' the comment.
-                                        widget.onSubmit(commentController.text);
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
+          ExpandableTextfield(
+            hintText: "What's your take?",
+            maxLines: 4,
+            minLines: 1,
+            maxCharacters: widget.maxCharacters,
+            onChanged: (value) {
+              setState(() {
+                commentLength = value.length;
+              });
+              manageAnim();
+            },
+            controller: commentController,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: Row(
+              children: [
+                SimpleTextButton(
+                  tooltipLocation: TooltipLocation.above,
+                  text: 'Cancel really long text',
+                  isErrorText: true,
+                  onTap: () {
+                    commentController.clear();
+                    FocusScope.of(context).unfocus();
+                  },
                 ),
-              ),
-            ],
+                Expanded(
+                  child: TextLimitTracker(
+                    noText: false,
+                    value: commentLength / widget.maxCharacters,
+                  ),
+                ),
+                SimpleTextButton(
+                  tapType: TapType.strongImpact,
+                  tooltipLocation: TooltipLocation.above,
+                  text: 'Post',
+                  onTap: () {
+                    FocusScope.of(context).unfocus();
+                    widget.onSubmit(commentController.text);
+                  },
+                ),
+              ],
+            ),
           ),
         ],
       ),

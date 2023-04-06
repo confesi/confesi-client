@@ -86,6 +86,7 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
                     rightIconVisible: true,
                     rightIcon: CupertinoIcons.profile_circled,
                     centerWidget: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
                           CupertinoIcons.chevron_back,
