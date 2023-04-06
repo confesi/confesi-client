@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:keyboard_attachable/keyboard_attachable.dart';
+import 'package:scrollable/exports.dart';
 
 import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../../../core/styles/typography.dart';
@@ -54,172 +55,181 @@ class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
   Widget build(BuildContext context) {
     return OneThemeStatusBar(
         brightness: Brightness.light,
-        child: Scaffold(
-          backgroundColor: Theme.of(context).colorScheme.background,
-          body: FooterLayout(
-            footer: Container(
-              decoration: BoxDecoration(
-                border: Border(
-                  top: BorderSide(
-                    color: Theme.of(context).colorScheme.onBackground,
-                    width: 0.8,
-                  ),
-                ),
-              ),
-              child: SafeArea(
-                top: false,
-                child: KeyboardAttachable(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: CommentSheet(
-                      onSubmit: (comment) => print(comment),
-                      maxCharacters: 10,
+        child: KeyboardDismiss(
+          child: Scaffold(
+            backgroundColor: Theme.of(context).colorScheme.background,
+            body: FooterLayout(
+              footer: Container(
+                decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.background,
+                    border: Border(
+                      top: BorderSide(
+                        color: Theme.of(context).colorScheme.onBackground,
+                        width: 0.8,
+                      ),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Theme.of(context).colorScheme.shadow.withOpacity(0.5),
+                        blurRadius: 20,
+                        spreadRadius: 15,
+                      ),
+                    ]),
+                child: SafeArea(
+                  top: false,
+                  child: KeyboardAttachable(
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: CommentSheet(
+                        onSubmit: (comment) => print(comment),
+                        maxCharacters: 10,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            child: Column(
-              children: [
-                StatTileGroup(
-                  icon1OnPress: () => Navigator.pop(context),
-                  icon2OnPress: () => print("tap"),
-                  icon3OnPress: () => print("tap"),
-                  icon4OnPress: () => print("tap"),
-                  icon5OnPress: () => print("tap"),
-                ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    physics: const BouncingScrollPhysics(),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(height: 15),
-                                  Text(
-                                    "I found out all the stats profs are in a conspiracy ring together!",
-                                    style: kTitle.copyWith(
-                                      color: Theme.of(context).colorScheme.primary,
-                                      fontSize: 24 * context.watch<UserCubit>().stateAsUser.textSizeEnum.multiplier,
-                                    ),
-                                    textAlign: TextAlign.left,
-                                  ),
-                                  const SizedBox(height: 15),
-                                  Wrap(
-                                    runSpacing: 10,
-                                    spacing: 10,
-                                    children: [
-                                      SimpleTextButton(
-                                        onTap: () => buildOptionsSheet(context),
-                                        text: "Advanced options",
+              child: Column(
+                children: [
+                  StatTileGroup(
+                    icon1OnPress: () => Navigator.pop(context),
+                    icon2OnPress: () => print("tap"),
+                    icon3OnPress: () => print("tap"),
+                    icon4OnPress: () => print("tap"),
+                    icon5OnPress: () => print("tap"),
+                  ),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      physics: const BouncingScrollPhysics(),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const SizedBox(height: 15),
+                                    Text(
+                                      "I found out all the stats profs are in a conspiracy ring together!",
+                                      style: kTitle.copyWith(
+                                        color: Theme.of(context).colorScheme.primary,
+                                        fontSize: 24 * context.watch<UserCubit>().stateAsUser.textSizeEnum.multiplier,
                                       ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 15),
-                                  Text(
-                                    "Year 1 Computer Science / Politics / 22min ago / University of Victoria",
-                                    style: kDetail.copyWith(
-                                      color: Theme.of(context).colorScheme.onSurface,
-                                      fontSize: kDetail.fontSize! *
-                                          context.watch<UserCubit>().stateAsUser.textSizeEnum.multiplier,
+                                      textAlign: TextAlign.left,
                                     ),
-                                    textAlign: TextAlign.left,
-                                  ),
-                                  const SizedBox(height: 15),
-                                  Text(
-                                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec blandit ex eu nunc mattis auctor. Nam accumsan malesuada quam in egestas. Ut interdum efficitur purus, quis facilisis massa lobortis a. Nullam pharetra vel lacus faucibus accumsan.",
-                                    style: kBody.copyWith(
-                                      color: Theme.of(context).colorScheme.primary,
-                                      fontSize: kBody.fontSize! *
-                                          context.watch<UserCubit>().stateAsUser.textSizeEnum.multiplier,
+                                    const SizedBox(height: 15),
+                                    Wrap(
+                                      runSpacing: 10,
+                                      spacing: 10,
+                                      children: [
+                                        SimpleTextButton(
+                                          onTap: () => buildOptionsSheet(context),
+                                          text: "Advanced options",
+                                        ),
+                                      ],
                                     ),
-                                    textAlign: TextAlign.left,
-                                  ),
-                                  const SizedBox(height: 15),
-                                  // const CommentSortTile(),
-                                  // SimpleTextButton(
-                                  //   infiniteWidth: true,
-                                  //   onTap: () => print("tap"),
-                                  //   text: "Sort by: most liked",
-                                  // ),
-                                  SimpleCommentSort(
-                                    onSwitch: (sortMode) => print(sortMode),
-                                  ),
-                                  // const CommentTile(
-                                  //   likes: 3,
-                                  //   hates: 3,
-                                  //   text: "text",
-                                  //   depth: CommentDepth.one,
-                                  // ),
-                                  const SimpleCommentRootGroup(
-                                    root: SimpleCommentTile(depth: CommentDepth.root),
-                                    subTree: [
-                                      SimpleCommentRootGroup(
-                                        root: SimpleCommentTile(depth: CommentDepth.one),
-                                        subTree: [
-                                          SimpleCommentRootGroup(
-                                            root: SimpleCommentTile(depth: CommentDepth.two),
-                                            subTree: [
-                                              SimpleCommentRootGroup(
-                                                root: SimpleCommentTile(depth: CommentDepth.three),
-                                                subTree: [],
-                                              ),
-                                            ],
-                                          ),
-                                          SimpleCommentRootGroup(
-                                            root: SimpleCommentTile(depth: CommentDepth.two),
-                                            subTree: [],
-                                          ),
-                                        ],
+                                    const SizedBox(height: 15),
+                                    Text(
+                                      "Year 1 Computer Science / Politics / 22min ago / University of Victoria",
+                                      style: kDetail.copyWith(
+                                        color: Theme.of(context).colorScheme.onSurface,
+                                        fontSize: kDetail.fontSize! *
+                                            context.watch<UserCubit>().stateAsUser.textSizeEnum.multiplier,
                                       ),
-                                    ],
-                                  ),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                    const SizedBox(height: 15),
+                                    Text(
+                                      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec blandit ex eu nunc mattis auctor. Nam accumsan malesuada quam in egestas. Ut interdum efficitur purus, quis facilisis massa lobortis a. Nullam pharetra vel lacus faucibus accumsan.",
+                                      style: kBody.copyWith(
+                                        color: Theme.of(context).colorScheme.primary,
+                                        fontSize: kBody.fontSize! *
+                                            context.watch<UserCubit>().stateAsUser.textSizeEnum.multiplier,
+                                      ),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                    const SizedBox(height: 15),
+                                    // const CommentSortTile(),
+                                    // SimpleTextButton(
+                                    //   infiniteWidth: true,
+                                    //   onTap: () => print("tap"),
+                                    //   text: "Sort by: most liked",
+                                    // ),
+                                    SimpleCommentSort(
+                                      onSwitch: (sortMode) => print(sortMode),
+                                    ),
+                                    // const CommentTile(
+                                    //   likes: 3,
+                                    //   hates: 3,
+                                    //   text: "text",
+                                    //   depth: CommentDepth.one,
+                                    // ),
+                                    const SimpleCommentRootGroup(
+                                      root: SimpleCommentTile(depth: CommentDepth.root),
+                                      subTree: [
+                                        SimpleCommentRootGroup(
+                                          root: SimpleCommentTile(depth: CommentDepth.one),
+                                          subTree: [
+                                            SimpleCommentRootGroup(
+                                              root: SimpleCommentTile(depth: CommentDepth.two),
+                                              subTree: [
+                                                SimpleCommentRootGroup(
+                                                  root: SimpleCommentTile(depth: CommentDepth.three),
+                                                  subTree: [],
+                                                ),
+                                              ],
+                                            ),
+                                            SimpleCommentRootGroup(
+                                              root: SimpleCommentTile(depth: CommentDepth.two),
+                                              subTree: [],
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
 
-                                  // const SimpleCommentTile(depth: CommentDepth.one),
-                                  // const SimpleCommentTile(depth: CommentDepth.two),
-                                  // const SimpleCommentTile(depth: CommentDepth.three),
-                                  // const SimpleCommentTile(depth: CommentDepth.three),
-                                  // const SimpleCommentTile(depth: CommentDepth.four),
-                                  // const SimpleCommentTile(depth: CommentDepth.three),
+                                    // const SimpleCommentTile(depth: CommentDepth.one),
+                                    // const SimpleCommentTile(depth: CommentDepth.two),
+                                    // const SimpleCommentTile(depth: CommentDepth.three),
+                                    // const SimpleCommentTile(depth: CommentDepth.three),
+                                    // const SimpleCommentTile(depth: CommentDepth.four),
+                                    // const SimpleCommentTile(depth: CommentDepth.three),
 
-                                  // const SimpleCommentTile(depth: CommentDepth.root),
-                                  // const SimpleCommentTile(depth: CommentDepth.one),
-                                  // const SimpleCommentTile(depth: CommentDepth.two),
-                                  // const SimpleCommentTile(depth: CommentDepth.three),
-                                  // const SimpleCommentTile(depth: CommentDepth.four),
-                                  // const SimpleCommentTile(depth: CommentDepth.four),
-                                  // const SimpleCommentTile(depth: CommentDepth.four),
-                                  // const SimpleCommentTile(depth: CommentDepth.root),
-                                  // const SimpleCommentTile(depth: CommentDepth.one),
-                                  // const SimpleCommentTile(depth: CommentDepth.two),
-                                  // const SimpleCommentTile(depth: CommentDepth.three),
-                                  // const SimpleCommentTile(depth: CommentDepth.two),
-                                  // const SimpleCommentTile(depth: CommentDepth.three),
-                                  // const SimpleCommentTile(depth: CommentDepth.root),
-                                  // const SimpleCommentTile(depth: CommentDepth.root),
-                                  // const SimpleCommentTile(depth: CommentDepth.root),
-                                  // const SimpleCommentTile(depth: CommentDepth.one),
-                                  // const SimpleCommentTile(depth: CommentDepth.root),
+                                    // const SimpleCommentTile(depth: CommentDepth.root),
+                                    // const SimpleCommentTile(depth: CommentDepth.one),
+                                    // const SimpleCommentTile(depth: CommentDepth.two),
+                                    // const SimpleCommentTile(depth: CommentDepth.three),
+                                    // const SimpleCommentTile(depth: CommentDepth.four),
+                                    // const SimpleCommentTile(depth: CommentDepth.four),
+                                    // const SimpleCommentTile(depth: CommentDepth.four),
+                                    // const SimpleCommentTile(depth: CommentDepth.root),
+                                    // const SimpleCommentTile(depth: CommentDepth.one),
+                                    // const SimpleCommentTile(depth: CommentDepth.two),
+                                    // const SimpleCommentTile(depth: CommentDepth.three),
+                                    // const SimpleCommentTile(depth: CommentDepth.two),
+                                    // const SimpleCommentTile(depth: CommentDepth.three),
+                                    // const SimpleCommentTile(depth: CommentDepth.root),
+                                    // const SimpleCommentTile(depth: CommentDepth.root),
+                                    // const SimpleCommentTile(depth: CommentDepth.root),
+                                    // const SimpleCommentTile(depth: CommentDepth.one),
+                                    // const SimpleCommentTile(depth: CommentDepth.root),
 
-                                  const SizedBox(height: 15),
-                                ],
+                                    const SizedBox(height: 15),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        // SizedBox(height: bottomSafeArea(context)),
-                      ],
+                            ],
+                          ),
+                          // SizedBox(height: bottomSafeArea(context)),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ));

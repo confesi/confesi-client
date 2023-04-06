@@ -30,7 +30,7 @@ class OptionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TouchableOpacity(
+    return TouchableScale(
       onTap: () {
         popContext ? Navigator.pop(context) : null;
         onTap();

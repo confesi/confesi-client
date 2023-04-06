@@ -28,19 +28,17 @@ class TextLimitTracker extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Flexible(
-          child: SizedBox(
-            height: 16,
-            width: 16,
-            child: CircularProgressIndicator(
-              strokeWidth: 3,
-              backgroundColor: Theme.of(context).colorScheme.onBackground,
-              color: value >= 1 ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.primary,
-              value: value,
-            ),
+        SizedBox(
+          height: 16,
+          width: 16,
+          child: CircularProgressIndicator(
+            strokeWidth: 3,
+            backgroundColor: Theme.of(context).colorScheme.onBackground,
+            color: value >= 1 ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.primary,
+            value: value,
           ),
         ),
-        const SizedBox(width: 5),
+        const SizedBox(width: 10),
         noText
             ? Container()
             : Flexible(

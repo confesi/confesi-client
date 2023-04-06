@@ -21,48 +21,12 @@ class CommentSheet extends StatefulWidget {
   State<CommentSheet> createState() => _CommentSheetState();
 }
 
-class _CommentSheetState extends State<CommentSheet> with TickerProviderStateMixin {
+class _CommentSheetState extends State<CommentSheet> {
   final TextEditingController commentController = TextEditingController();
-
-  late AnimationController showAnimController;
-  late Animation showAnim;
-
-  late AnimationController popAnimController;
-  late Animation popAnim;
-
-  int commentLength = 0;
-
-  @override
-  void initState() {
-    showAnimController = AnimationController(
-      value: 1.0,
-      vsync: this,
-      duration: const Duration(milliseconds: 200),
-    );
-    showAnim = CurvedAnimation(parent: showAnimController, curve: Curves.linear);
-    popAnimController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 350),
-    );
-    popAnim = CurvedAnimation(parent: popAnimController, curve: Curves.linear);
-    super.initState();
-  }
-
-  void manageAnim() {
-    if (commentController.text.isEmpty) {
-      popAnimController.reverse();
-      showAnimController.forward();
-    } else {
-      showAnimController.reverse();
-      popAnimController.forward();
-    }
-  }
 
   @override
   void dispose() {
     commentController.dispose();
-    showAnimController.dispose();
-    popAnimController.dispose();
     super.dispose();
   }
 
@@ -78,43 +42,50 @@ class _CommentSheetState extends State<CommentSheet> with TickerProviderStateMix
             maxLines: 4,
             minLines: 1,
             maxCharacters: widget.maxCharacters,
-            onChanged: (value) {
-              setState(() {
-                commentLength = value.length;
-              });
-              manageAnim();
-            },
+            onChanged: (_) => setState(() => {}),
             controller: commentController,
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 10),
-            child: Row(
-              children: [
-                SimpleTextButton(
-                  tooltipLocation: TooltipLocation.above,
-                  text: 'Cancel really long text',
-                  isErrorText: true,
-                  onTap: () {
-                    commentController.clear();
-                    FocusScope.of(context).unfocus();
-                  },
-                ),
-                Expanded(
-                  child: TextLimitTracker(
-                    noText: false,
-                    value: commentLength / widget.maxCharacters,
-                  ),
-                ),
-                SimpleTextButton(
-                  tapType: TapType.strongImpact,
-                  tooltipLocation: TooltipLocation.above,
-                  text: 'Post',
-                  onTap: () {
-                    FocusScope.of(context).unfocus();
-                    widget.onSubmit(commentController.text);
-                  },
-                ),
-              ],
+          AnimatedSize(
+            duration: const Duration(milliseconds: 100),
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 100),
+              child: commentController.text.isEmpty
+                  ? Container()
+                  : AnimatedScale(
+                      scale: commentController.text.isEmpty ? 0 : 1,
+                      duration: const Duration(milliseconds: 100),
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: Row(
+                          children: [
+                            SimpleTextButton(
+                              tooltipLocation: TooltipLocation.above,
+                              text: 'Cancel',
+                              isErrorText: true,
+                              onTap: () {
+                                commentController.clear();
+                                FocusScope.of(context).unfocus();
+                              },
+                            ),
+                            Expanded(
+                              child: TextLimitTracker(
+                                noText: false,
+                                value: commentController.text.length / widget.maxCharacters,
+                              ),
+                            ),
+                            SimpleTextButton(
+                              tapType: TapType.strongImpact,
+                              tooltipLocation: TooltipLocation.above,
+                              text: 'Post',
+                              onTap: () {
+                                FocusScope.of(context).unfocus();
+                                widget.onSubmit(commentController.text);
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
             ),
           ),
         ],

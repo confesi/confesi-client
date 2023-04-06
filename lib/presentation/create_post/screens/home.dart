@@ -173,8 +173,10 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                           child: focusedField != FocusedField.none
                               ? SizedBox(
                                   width: widthFraction(context, 1),
-                                  child: TextLimitTracker(
-                                    value: getLimitPercent(),
+                                  child: Center(
+                                    child: TextLimitTracker(
+                                      value: getLimitPercent(),
+                                    ),
                                   ),
                                 )
                               : Text(
