@@ -182,7 +182,7 @@ class _DraftsSheetState extends State<_DraftsSheet> {
   Widget build(BuildContext context) {
     return BlocBuilder<DraftsCubit, DraftsState>(
       builder: (context, state) => AnimatedSwitcher(
-        duration: const Duration(milliseconds: 350),
+        duration: const Duration(milliseconds: 1500),
         child: buildBody(context, state),
       ),
     );

@@ -126,6 +126,7 @@ class _DetailViewScreenState extends State<DetailViewScreen> with TickerProvider
           child: FooterLayout(
             footer: KeyboardAttachable(
               child: CommentSheet(
+                controller: CommentSheetController(),
                 onSubmit: (comment) => print(comment),
                 maxCharacters: kMaxCommentLength,
               ),

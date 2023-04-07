@@ -11,7 +11,6 @@ import 'package:scrollable/exports.dart';
 
 import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../../../core/styles/typography.dart';
-import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/buttons/option.dart';
 import '../../shared/buttons/simple_text.dart';
 import '../../shared/overlays/button_options_sheet.dart';
@@ -27,6 +26,14 @@ class SimpleDetailViewScreen extends StatefulWidget {
 }
 
 class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
+  late CommentSheetController commentSheetController;
+
+  @override
+  void initState() {
+    commentSheetController = CommentSheetController();
+    super.initState();
+  }
+
   // Show the options for this post.
   void buildOptionsSheet(BuildContext context) => showButtonOptionsSheet(context, [
         OptionButton(
@@ -81,6 +88,7 @@ class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
                     child: Padding(
                       padding: const EdgeInsets.all(10),
                       child: CommentSheet(
+                        controller: commentSheetController,
                         onSubmit: (comment) => print(comment),
                         maxCharacters: 10,
                       ),
@@ -92,10 +100,10 @@ class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
                 children: [
                   StatTileGroup(
                     icon1OnPress: () => Navigator.pop(context),
-                    icon2OnPress: () => print("tap"),
-                    icon3OnPress: () => print("tap"),
-                    icon4OnPress: () => print("tap"),
-                    icon5OnPress: () => print("tap"),
+                    icon2OnPress: () => commentSheetController.focus(),
+                    icon3OnPress: () => commentSheetController.unfocus(),
+                    icon4OnPress: () => commentSheetController.delete(),
+                    icon5OnPress: () => commentSheetController.setBlocking(!commentSheetController.isBlocking),
                   ),
                   Expanded(
                     child: SingleChildScrollView(

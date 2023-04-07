@@ -80,9 +80,9 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
 
   double getLimitPercent() {
     if (focusedField == FocusedField.title) {
-      return titleController.text.length / kPostTitleMaxLength;
+      return titleController.text.runes.length / kPostTitleMaxLength;
     } else if (focusedField == FocusedField.body) {
-      return bodyController.text.length / kPostTextMaxLength;
+      return bodyController.text.runes.length / kPostTextMaxLength;
     } else {
       // Case for when [focusedField] is [FocusedField.none]
       return 0;
