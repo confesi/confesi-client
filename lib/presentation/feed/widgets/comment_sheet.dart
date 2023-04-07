@@ -101,7 +101,7 @@ class _CommentSheetState extends State<CommentSheet> {
             AnimatedSize(
               duration: const Duration(milliseconds: 100),
               child: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 100),
+                duration: const Duration(milliseconds: 500),
                 child: commentController.text.isEmpty
                     ? Container()
                     : AnimatedScale(

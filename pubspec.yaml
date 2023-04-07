@@ -73,7 +73,7 @@ dependencies:
   permission_handler: ^10.2.0
   share_plus: ^6.3.0
   cached_network_image: ^3.2.2
-  map_launcher: ^2.4.0
+  map_launcher: ^2.5.0+1
   animated_text_kit: ^4.2.2
   link_preview_generator: ^1.2.0
   any_link_preview: ^2.0.9

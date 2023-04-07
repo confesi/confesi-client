@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:Confessi/application/create_post/cubit/drafts_cubit.dart';
+import 'package:Confessi/application/shared/cubit/maps_cubit.dart';
 import 'package:Confessi/core/clients/hive_client.dart';
 import 'package:Confessi/core/services/deep_links.dart';
 import 'package:Confessi/data/create_post/datasources/draft_post_datasource.dart';
@@ -11,6 +12,7 @@ import 'package:Confessi/domain/authentication_and_settings/usecases/text_size.d
 import 'package:Confessi/domain/create_post/usecases/delete_draft.dart';
 import 'package:Confessi/domain/create_post/usecases/get_draft.dart';
 import 'package:Confessi/domain/create_post/usecases/save_draft.dart';
+import 'package:Confessi/domain/feed/usecases/launch_maps.dart';
 import 'package:flutter/material.dart';
 
 import 'core/services/in_app_notifications/in_app_notifications.dart';
@@ -116,20 +118,25 @@ Future<void> init() async {
   // Registers the registration cubit.
   sl.registerFactory(() => RegisterCubit(register: sl()));
   // Registers the user cubit.
-  sl.registerFactory(() => UserCubit(
+  sl.registerFactory(
+    () => UserCubit(
       curvyUsecase: sl(),
       logout: sl(),
       appearance: sl(),
       loadRefreshToken: sl(),
       homeViewed: sl(),
       textSize: sl(),
-      shakeForFeedback: sl()));
+      shakeForFeedback: sl(),
+    ),
+  );
   // Registers the contact setting cubit.
   sl.registerFactory(() => ContactSettingCubit(copyEmailTextUsecase: sl(), openMailClientUsecase: sl()));
   // Registers the cubit that launches the website viewer.
   sl.registerFactory(() => WebsiteLauncherCubit(launchWebsiteUsecase: sl()));
   // Registers the cubit that opens the device's system settings.
   sl.registerFactory(() => LanguageSettingCubit(openDeviceSettingsUsecase: sl()));
+  // Registers the cubit that opens the device's native maps app.
+  sl.registerFactory(() => MapsCubit(launchMapUsecase: sl()));
   // Registers the share cubit.
   sl.registerFactory(() => ShareCubit(shareContentUsecase: sl()));
   // Registers the draft post cubit.
@@ -182,6 +189,8 @@ Future<void> init() async {
   sl.registerLazySingleton(() => ShakeForFeedbackUsecase(repository: sl()));
   // Registers the curvy usecase.
   sl.registerLazySingleton(() => CurvyUsecase(repository: sl()));
+  // Registers the usecase to open the device's native maps app.
+  sl.registerLazySingleton(() => LaunchMap());
 
   //! Core
   // Registers custom connection checker class.

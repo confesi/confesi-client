@@ -65,7 +65,7 @@ class _FeedbackHomeState extends State<FeedbackHome> {
                     duration: const Duration(milliseconds: 250),
                     child: isTextFocused
                         ? TextLimitTracker(
-                            value: textEditingController.text.length / maxFeedbackTextCharacterLimit,
+                            value: textEditingController.text.runes.length / maxFeedbackTextCharacterLimit,
                           )
                         : Text(
                             pageTitle,

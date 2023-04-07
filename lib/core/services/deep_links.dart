@@ -63,10 +63,8 @@ class DeepLinkService {
           ),
         ),
       );
-      print("LINK:  $link");
       return Left(link.shortUrl.toString());
-    } catch (e) {
-      print("FAIL 1 $e");
+    } catch (_) {
       return Right(DeepLinkFailure());
     }
   }
@@ -96,7 +94,6 @@ class DeepLinkStream {
         return Left(DeepLinkFailure());
       }
     } catch (_) {
-      print("FAIL 2");
       return Left(DeepLinkFailure());
     }
   }

@@ -1,5 +1,5 @@
+import 'package:Confessi/application/shared/cubit/maps_cubit.dart';
 import 'package:Confessi/core/services/notifications.dart';
-import 'package:dartz/dartz.dart' as dartz;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -23,13 +23,11 @@ import 'dependency_injection.dart';
 import 'generated/l10n.dart';
 import 'presentation/primary/screens/splash.dart';
 
-// FCM background messager handler. Required to be top-level.
-@pragma('vm:entry-point') // Needed so this function isn't moved during release compilation.
+// FCM background messager handler. Required to be top-level. Needs pragma to prevent function being moved during release compilation.
+@pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print("======================> BG handler called");
   await Firebase.initializeApp();
-  // InAppMessageService inAppMessageService = InAppMessageService();
-  // inAppMessageService.addMessage(message);
   NotificationService().fcmDeletagor(
     message: message,
     onNotification: (title, body) => null, // do nothing since this will be handled natively
@@ -38,20 +36,20 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 void main() async {
-  // Initializes everything that is needed for the app to run.
   await init();
-  // Initializes the background handler for messages. Required to be top-level.
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  // Locks the application to portait mode (facing up).
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  //! Streams for notifications
   sl.get<NotificationService>().token.then((token) {
     token.fold((l) => print(l), (r) => print(r));
-  }); // todo: save this to device storage or on new token save it (initialize with context then so I can use the usecases to set prefs? Or STORE SEPERATELY?)
-
-  sl.get<NotificationService>().onTokenRefresh((token) {
-    print("======================> Token refreshed: $token");
   });
+  sl.get<NotificationService>().onTokenRefresh((token) {
+    // trigger the sending of the new token to the server right away
+  });
+  // (how does this relate to guest accounts?)
+  // onAppLoad, if the fcm token != the token stored in prefs:
+  //   send new token to the server to link to the user's account
+  //   if the send is successful
+  //     set this token to the device storage
   runApp(MyApp(appRouter: sl()));
 }
 
@@ -74,17 +72,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        // Create post provider here because context of drafts needs to be accessed from functions.
+        BlocProvider(
+          lazy: false,
+          create: (context) => sl<MapsCubit>(),
+        ),
         BlocProvider(
           lazy: false,
           create: (context) => sl<DraftsCubit>(),
         ),
-        // Create post provider here because context needs to be accessed from functions.
         BlocProvider(
           lazy: false,
           create: (context) => sl<CreatePostCubit>(),
         ),
-        // Hottest provider here so context can be accessed inside the bottom sheet.
         BlocProvider(
           lazy: false,
           create: (context) => sl<HottestCubit>()..loadPosts(DateTime.now()),
@@ -99,9 +98,7 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           lazy: false,
-          // create: (context) => sl<UserCubit>()..authenticateUser(AuthenticationType.silent), // TODO: add silent auth
-          // create: (context) => sl<UserCubit>(),
-          create: (context) => sl<UserCubit>()..loadUser(true),
+          create: (context) => sl<UserCubit>()..loadUser(true), // TODO: fix auth once server is ready
         ),
         BlocProvider(
           lazy: false,

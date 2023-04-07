@@ -1,1 +1,1 @@
-const int maxFeedbackTextCharacterLimit = 2500;
+const int maxFeedbackTextCharacterLimit = 1000;
