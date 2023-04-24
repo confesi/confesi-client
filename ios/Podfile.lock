@@ -12,18 +12,18 @@ PODS:
   - Firebase/Messaging (10.7.0):
     - Firebase/CoreOnly
     - FirebaseMessaging (~> 10.7.0)
-  - firebase_analytics (10.2.0):
+  - firebase_analytics (10.2.1):
     - Firebase/Analytics (= 10.7.0)
     - firebase_core
     - Flutter
-  - firebase_core (2.9.0):
+  - firebase_core (2.10.0):
     - Firebase/CoreOnly (= 10.7.0)
     - Flutter
-  - firebase_dynamic_links (5.1.0):
+  - firebase_dynamic_links (5.1.1):
     - Firebase/DynamicLinks (= 10.7.0)
     - firebase_core
     - Flutter
-  - firebase_messaging (14.4.0):
+  - firebase_messaging (14.4.1):
     - Firebase/Messaging (= 10.7.0)
     - firebase_core
     - Flutter
@@ -137,6 +137,8 @@ PODS:
   - permission_handler_apple (9.0.4):
     - Flutter
   - PromisesObjC (2.2.0)
+  - screenshot_callback (0.0.1):
+    - Flutter
   - sensors_plus (0.0.1):
     - Flutter
   - share_plus (0.0.1):
@@ -179,6 +181,7 @@ DEPENDENCIES:
   - map_launcher (from `.symlinks/plugins/map_launcher/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/ios`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
+  - screenshot_callback (from `.symlinks/plugins/screenshot_callback/ios`)
   - sensors_plus (from `.symlinks/plugins/sensors_plus/ios`)
   - share_plus (from `.symlinks/plugins/share_plus/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/ios`)
@@ -230,6 +233,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/path_provider_foundation/ios"
   permission_handler_apple:
     :path: ".symlinks/plugins/permission_handler_apple/ios"
+  screenshot_callback:
+    :path: ".symlinks/plugins/screenshot_callback/ios"
   sensors_plus:
     :path: ".symlinks/plugins/sensors_plus/ios"
   share_plus:
@@ -245,10 +250,10 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Firebase: 0219acf760880eeec8ce479895bd7767466d9f81
-  firebase_analytics: 8954db5c9b63075214fa1b3ad2cdced9646f45a0
-  firebase_core: d85432877e814811e040e7659f9c82faeab66e04
-  firebase_dynamic_links: eb6716a5419a7b1ad5ef4860c84290c48a30be91
-  firebase_messaging: 45c0514ca78426630338a42fb7b55af962c7ccd2
+  firebase_analytics: e8e294333de66e5429d4aac365966281b4dbfb7d
+  firebase_core: 18d44f087248303a4a8f05d0099a000c46e3c77a
+  firebase_dynamic_links: 464b974eeb7a5b4b7c970062c49a3e39ff924f47
+  firebase_messaging: 90b11d16c537444a39e50b818ebe1a51ec0e38c2
   FirebaseAnalytics: f8133442ee6f8512e28ff19e62ce15398bfaeace
   FirebaseCore: e317665b9d744727a97e623edbbed009320afdd7
   FirebaseCoreInternal: 8845798510aae74703467480f71ac613788d0696
@@ -270,6 +275,7 @@ SPEC CHECKSUMS:
   path_provider_foundation: c68054786f1b4f3343858c1e1d0caaded73f0be9
   permission_handler_apple: 44366e37eaf29454a1e7b1b7d736c2cceaeb17ce
   PromisesObjC: 09985d6d70fbe7878040aa746d78236e6946d2ef
+  screenshot_callback: b173e7f4bd8d2ef14a9a5e5a77c0ac6a47578608
   sensors_plus: 5717760720f7e6acd96fdbd75b7428f5ad755ec2
   share_plus: 056a1e8ac890df3e33cb503afffaf1e9b4fbae68
   shared_preferences_foundation: 986fc17f3d3251412d18b0265f9c64113a8c2472

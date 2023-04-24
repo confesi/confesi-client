@@ -9,11 +9,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:keyboard_attachable/keyboard_attachable.dart';
 import 'package:scrollable/exports.dart';
+import 'package:screenshot_callback/screenshot_callback.dart';
 
 import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../../../application/shared/cubit/maps_cubit.dart';
 import '../../../constants/feed/general.dart';
 import '../../../core/services/deep_links.dart';
+import '../../../core/services/sharing.dart';
 import '../../../core/styles/typography.dart';
 import '../../../dependency_injection.dart';
 import '../../shared/buttons/option.dart';
@@ -33,11 +35,28 @@ class SimpleDetailViewScreen extends StatefulWidget {
 
 class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
   late CommentSheetController commentSheetController;
-
+  late ScreenshotCallback screenshotCallback;
   @override
   void initState() {
     commentSheetController = CommentSheetController();
+    screenshotCallback = ScreenshotCallback();
+    screenshotCallback.addListener(
+      () {
+        showNotificationChip(
+          context,
+          "Want to share this instead?",
+          notificationType: NotificationType.success,
+          onTap: () => Sharing().sharePost(context, "link", "title", "body", "university", "timeAgo"),
+        );
+      },
+    );
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    screenshotCallback.dispose();
+    super.dispose();
   }
 
   // Show the options for this post.

@@ -27,15 +27,14 @@ class Sharing {
 
   Future<File> _screenshot(BuildContext context, String title, String body, String university, String timeAgo) async {
     final capturedImage = await ScreenshotController().captureFromWidget(
-        buildPost(context, title, body, university, timeAgo),
+        _buildPost(context, title, body, university, timeAgo),
         delay: const Duration(milliseconds: 10));
     final directory = await getApplicationDocumentsDirectory();
     final file = File('${directory.path}/confession.png');
     return await file.writeAsBytes(capturedImage);
   }
 
-  // todo: make private
-  Widget buildPost(BuildContext context, String title, String body, String university, String timeAgo) {
+  Widget _buildPost(BuildContext context, String title, String body, String university, String timeAgo) {
     return Container(
       width: 400,
       color: Theme.of(context).colorScheme.secondary,
@@ -47,6 +46,7 @@ class Sharing {
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.background,
               border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
               boxShadow: [
                 BoxShadow(
                   color: Theme.of(context).colorScheme.shadow.withOpacity(0.5),
@@ -112,7 +112,7 @@ class Sharing {
             child: Align(
               alignment: Alignment.bottomCenter,
               child: Text(
-                "See more on Confesi",
+                "Confesi.com",
                 style: kTitle.copyWith(
                   color: Theme.of(context).colorScheme.onSecondary,
                 ),

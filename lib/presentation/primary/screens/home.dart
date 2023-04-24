@@ -76,8 +76,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
             floatingActionButton: TouchableScale(
               tapType: TapType.lightImpact,
-              // onTap: () => Navigator.pushNamed(context, "/create_post"),
-              onTap: () => Sharing().sharePost(context, "https://www.google.com", "title", "body", "uni", "timeAgo"),
+              onTap: () => Navigator.pushNamed(context, "/create_post"),
               child: InitTransform(
                 // delayDurationInMilliseconds: 250,
                 child: Container(

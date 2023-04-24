@@ -157,7 +157,7 @@ class __OverlayItemState extends State<_OverlayItem> with TickerProviderStateMix
         },
         child: Transform.scale(
           scale: timeAnim.value,
-          child: GestureDetector(
+          child: TouchableScale(
             onTap: () {
               reverseAnimEarly();
               if (widget.onTap != null) widget.onTap!();
