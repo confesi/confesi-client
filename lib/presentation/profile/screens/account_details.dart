@@ -51,7 +51,7 @@ class AccountDetailsScreen extends StatelessWidget {
                       children: [
                         const SizedBox(height: 10),
                         SettingTileGroup(
-                          text: "Audience (your home university)",
+                          text: "Your home university",
                           settingTiles: [
                             SettingTile(
                               noRightIcon: true,

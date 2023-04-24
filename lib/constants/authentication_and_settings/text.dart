@@ -129,8 +129,6 @@ const String kSettingsBiometricLockLabel = "Biometric lock";
 
 const String kSettingsAccountDetailsLabel = "School details";
 
-const String kVerifiedStudentLabel = "Verified student perks";
-
 // const String kSettingsReducedAnimationsLabel = "Reduced Animations";
 
 const String kSettingsHapticFeedbackLabel = "Haptic feedback";

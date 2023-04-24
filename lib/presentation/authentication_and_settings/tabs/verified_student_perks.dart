@@ -75,7 +75,7 @@ class _VerifiedStudentPerksTabState extends State<VerifiedStudentPerksTab> {
                   Padding(
                     padding: EdgeInsets.only(left: 10, right: 10, bottom: bottomSafeArea(context)),
                     child: Text(
-                      "Verification is done by confirming you have access to a university email address. The email itself is not linked to your account. It is only verified, and then marked as taken.",
+                      "Verifying your student email allows us to confirm you're a real student. Your email is always kept private.",
                       textScaleFactor: 1,
                       style: kDetail.copyWith(
                         color: Theme.of(context).colorScheme.onSurface,

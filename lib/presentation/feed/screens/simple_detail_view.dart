@@ -89,16 +89,6 @@ class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
         ),
       ]);
 
-  void share() async {
-    (await sl.get<DeepLinkService>().buildLink("/post?id=55", "This is a super cool post")).fold(
-      (link) {
-        print(link);
-        context.read<ShareCubit>().shareContent(context, link, "Check out this confession!");
-      },
-      (_) => showNotificationChip(context, "Error sharing confession"),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocListener<MapsCubit, MapsLauncherState>(
@@ -150,7 +140,8 @@ class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
                     StatTileGroup(
                       icon1OnPress: () => Navigator.pop(context),
                       icon2OnPress: () => commentSheetController.focus(),
-                      icon3OnPress: () => share(), // commentSheetController.unfocus()
+                      icon3OnPress: () => Sharing().sharePost(context, "link", "title", "body", "university",
+                          "timeAgo"), // commentSheetController.unfocus()
                       icon4OnPress: () => commentSheetController.delete(),
                       icon5OnPress: () => commentSheetController.setBlocking(!commentSheetController.isBlocking),
                     ),
