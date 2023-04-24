@@ -4,6 +4,9 @@ const int kPreviewQuotePostTextLength = 75;
 /// The text length of the posts displayed inside the feed before truncating.
 const int kPreviewQuotePostTitleLength = 75;
 
+/// The max comment length.
+const int kMaxCommentLength = 1000;
+
 /// The message header for the error message that is shown in the middle of the page when there's a loading error.
 const String kErrorLoadingAnyHeader = "Error loading content";
 
@@ -35,9 +38,6 @@ const int kPreviewPostTextLength = 150;
 /// A title shouldn't normally be truncated, so, in the post limit, make it 150 as well, so
 /// users know what will be displayed.
 const int kPreviewPostTitleLength = 75;
-
-/// Max length a comment can be.
-const int kMaxCommentLength = 5000;
 
 /// The title for the 'post status' field on a post's advanced details page.
 const String kPostStatusTitle = 'Post status';

@@ -115,7 +115,7 @@ class SettingsHome extends StatelessWidget {
                         SettingTile(
                           leftIcon: CupertinoIcons.helm,
                           text:
-                              kVerifiedStudentLabel, // TODO: gives you a list of perks? Some incentive to prove it? mandatory (or not cuz then easier to ban)?
+                              "Verified student", // TODO: gives you a list of perks? Some incentive to prove it? mandatory (or not cuz then easier to ban)?
                           onTap: () => Navigator.pushNamed(context, "/settings/verified_student_perks"),
                         ),
                         SettingTile(

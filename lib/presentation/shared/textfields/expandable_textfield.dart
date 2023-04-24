@@ -1,3 +1,5 @@
+import 'package:flutter/services.dart';
+
 import '../behaviours/init_scale.dart';
 import '../button_touch_effects/touchable_opacity.dart';
 import '../button_touch_effects/touchable_scale.dart';
@@ -78,8 +80,12 @@ class _ExpandableTextfieldState extends State<ExpandableTextfield> {
                       children: [
                         Expanded(
                           child: TextField(
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(widget.maxCharacters),
+                            ],
+                            maxLengthEnforcement: MaxLengthEnforcement.enforced, // keep enforcement enabled
                             scrollController: scrollController,
-                            maxLength: widget.maxCharacters,
+                            // maxLength: widget.maxCharacters,
                             onChanged: (value) => widget.onChanged(value),
                             maxLines: widget.maxLines,
                             minLines: widget.minLines,

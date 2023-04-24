@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1961130959",
+    "project_id": "confesi-2b9b9",
+    "storage_bucket": "confesi-2b9b9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1961130959:android:d304830f370856776470ba",
+        "android_client_info": {
+          "package_name": "com.example.flutter_mobile_client"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1961130959-upvp3hmclks6ds9mt3odd23ac4qpat59.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVvD8kV8PW-zsJcUWFE8NQfLTYubmwhZo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1961130959-upvp3hmclks6ds9mt3odd23ac4qpat59.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -73,8 +73,8 @@ class _VerifiedStudentEmailTabState extends State<VerifiedStudentEmailTab> {
                         BulgeTextField(
                           bottomPadding: 10,
                           topPadding: 15,
-                          topText: "Enter your UVic student email",
-                          hintText: "___@uvic.ca",
+                          topText: "Enter your student email",
+                          hintText: "___@___.___",
                           controller: textEditingController,
                         ),
                         const SizedBox(height: 45),
@@ -87,31 +87,6 @@ class _VerifiedStudentEmailTabState extends State<VerifiedStudentEmailTab> {
                           backgroundColor: Theme.of(context).colorScheme.secondary,
                           textColor: Theme.of(context).colorScheme.onSecondary,
                           text: "Send Verification Email",
-                        ),
-                        TouchableOpacity(
-                          onTap: () => showInfoSheetWithAction(
-                              context,
-                              "Home University's Email",
-                              "The email we attempt to verify is the primary student address associated with your home university, in this case, the University of Victoria. To verify under a different address, change your home university.",
-                              () => print("change home university"),
-                              "Update Home University"),
-                          child: Container(
-                            // Transparent hitbox trick.
-                            color: Colors.transparent,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "Why must I verify this type of email?",
-                                  style: kTitle.copyWith(
-                                    color: Theme.of(context).colorScheme.onSurface,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ],
-                            ),
-                          ),
                         ),
                       ],
                     ),

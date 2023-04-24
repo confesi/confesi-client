@@ -51,68 +51,66 @@ class _SimpleCommentSortState extends State<SimpleCommentSort> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      width: double.infinity,
-      decoration: BoxDecoration(
-        border: Border(
-          top: BorderSide(
-            color: Theme.of(context).colorScheme.onBackground,
-            width: 0.8,
+    return TouchableOpacity(
+      onTap: () => showButtonOptionsSheet(
+        context,
+        [
+          OptionButton(
+            onTap: () => updateCommentType(CommentSortType.best),
+            text: "Best (recommended)",
+            icon: CupertinoIcons.flame,
           ),
-          bottom: BorderSide(
-            color: Theme.of(context).colorScheme.onBackground,
-            width: 0.8,
+          OptionButton(
+            onTap: () => updateCommentType(CommentSortType.recent),
+            text: "Recent",
+            icon: CupertinoIcons.clock,
           ),
-        ),
+          OptionButton(
+            onTap: () => updateCommentType(CommentSortType.liked),
+            text: "Liked",
+            icon: CupertinoIcons.arrow_up,
+          ),
+          OptionButton(
+            onTap: () => updateCommentType(CommentSortType.hated),
+            text: "Hated",
+            icon: CupertinoIcons.arrow_down,
+          ),
+        ],
       ),
-      child: TouchableOpacity(
-        onTap: () => showButtonOptionsSheet(
-          context,
-          [
-            OptionButton(
-              onTap: () => updateCommentType(CommentSortType.best),
-              text: "Best (recommended)",
-              icon: CupertinoIcons.flame,
-            ),
-            OptionButton(
-              onTap: () => updateCommentType(CommentSortType.recent),
-              text: "Recent",
-              icon: CupertinoIcons.clock,
-            ),
-            OptionButton(
-              onTap: () => updateCommentType(CommentSortType.liked),
-              text: "Liked",
-              icon: CupertinoIcons.arrow_up,
-            ),
-            OptionButton(
-              onTap: () => updateCommentType(CommentSortType.hated),
-              text: "Hated",
-              icon: CupertinoIcons.arrow_down,
-            ),
-          ],
-        ),
-        child: Container(
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        width: double.infinity,
+        decoration: BoxDecoration(
           // Transparent hitbox trick.
           color: Colors.transparent,
-          child: Row(
-            children: [
-              Expanded(
-                child: Text(
-                  "Sorting comments by: ${commentSortTypeToString(commentSortType)}",
-                  style: kTitle.copyWith(
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                  textAlign: TextAlign.left,
-                ),
-              ),
-              const SizedBox(width: 5),
-              Icon(
-                CupertinoIcons.slider_horizontal_3,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-            ],
+          border: Border(
+            top: BorderSide(
+              color: Theme.of(context).colorScheme.onBackground,
+              width: 0.8,
+            ),
+            bottom: BorderSide(
+              color: Theme.of(context).colorScheme.onBackground,
+              width: 0.8,
+            ),
           ),
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(
+                "Sorting comments by: ${commentSortTypeToString(commentSortType)}",
+                style: kTitle.copyWith(
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                textAlign: TextAlign.left,
+              ),
+            ),
+            const SizedBox(width: 5),
+            Icon(
+              CupertinoIcons.slider_horizontal_3,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          ],
         ),
       ),
     );

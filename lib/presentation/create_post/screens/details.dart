@@ -1,3 +1,6 @@
+import 'package:Confessi/presentation/create_post/overlays/confetti_blaster.dart';
+import 'package:confetti/confetti.dart';
+import 'package:flutter/services.dart';
 import 'package:scrollable/exports.dart';
 import '../../../application/create_post/cubit/post_cubit.dart';
 import '../../shared/behaviours/nav_blocker.dart';
@@ -40,6 +43,8 @@ class _DetailsScreenState extends State<DetailsScreen> with AutomaticKeepAliveCl
       listener: (context, state) {
         if (state is Error) {
           showNotificationChip(context, state.message, notificationDuration: NotificationDuration.regular);
+        } else if (state is SuccessfullySubmitted) {
+          ConfettiBlaster().show(context);
         }
       },
       child: NavBlocker(
@@ -49,124 +54,125 @@ class _DetailsScreenState extends State<DetailsScreen> with AutomaticKeepAliveCl
             backgroundColor: Theme.of(context).colorScheme.background,
             body: SafeArea(
               bottom: false,
-              child: Column(
+              child: Stack(
                 children: [
-                  Expanded(
-                    child: Column(
-                      children: [
-                        NavBlocker(
-                          blocking: context.watch<CreatePostCubit>().state is Loading,
-                          child: AppbarLayout(
-                            bottomBorder: false,
-                            centerWidget: AnimatedSwitcher(
-                              duration: const Duration(milliseconds: 250),
-                              child: Text(
-                                'Add Details',
-                                style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.center,
+                  Column(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          children: [
+                            NavBlocker(
+                              blocking: context.watch<CreatePostCubit>().state is Loading,
+                              child: AppbarLayout(
+                                bottomBorder: false,
+                                centerWidget: AnimatedSwitcher(
+                                  duration: const Duration(milliseconds: 250),
+                                  child: Text(
+                                    'Add Details',
+                                    style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
+                                    overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                                leftIconIgnored: context.watch<CreatePostCubit>().state is Loading,
+                                rightIcon: CupertinoIcons.info,
+                                rightIconVisible: true,
+                                rightIconOnPress: () => showInfoSheet(context, "Confessing",
+                                    "Please be civil when posting, but have fun! All confessions are anonymous, excluding the details provided here plus your school, and your faculty and year of study if you provided them."),
                               ),
                             ),
-                            leftIconIgnored: context.watch<CreatePostCubit>().state is Loading,
-                            rightIcon: CupertinoIcons.info,
-                            rightIconVisible: true,
-                            rightIconOnPress: () => showInfoSheet(context, "Confessing",
-                                "Please be civil when posting, but have fun! All confessions are anonymous, excluding the details provided here."),
-                          ),
-                        ),
-                        Expanded(
-                          child: ScrollableView(
-                            physics: const BouncingScrollPhysics(),
-                            scrollBarVisible: false,
-                            hapticsEnabled: false,
-                            inlineBottomOrRightPadding: 20,
-                            padding: const EdgeInsets.symmetric(horizontal: 15),
-                            controller: ScrollController(),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                const SizedBox(height: 15),
-                                BoolSelectionGroup(
-                                  text: "Select genre",
-                                  selectionTiles: [
-                                    BoolSelectionTile(
-                                      topRounded: true,
-                                      backgroundColor: Theme.of(context).colorScheme.surface,
-                                      icon: CupertinoIcons.cube_box,
-                                      text: "General",
-                                      isActive: true,
-                                      onTap: () => print("tap"),
-                                    ),
-                                    BoolSelectionTile(
-                                      backgroundColor: Theme.of(context).colorScheme.surface,
-                                      icon: CupertinoIcons.heart,
-                                      text: "Relationships",
-                                      onTap: () => print("tap"),
-                                    ),
-                                    BoolSelectionTile(
-                                      backgroundColor: Theme.of(context).colorScheme.surface,
-                                      icon: CupertinoIcons.hammer_fill,
-                                      text: "Classess",
-                                      onTap: () => print("tap"),
-                                    ),
-                                    BoolSelectionTile(
-                                      backgroundColor: Theme.of(context).colorScheme.surface,
-                                      icon: CupertinoIcons.chat_bubble_2,
-                                      text: "Politics",
-                                      onTap: () => print("tap"),
-                                    ),
-                                    BoolSelectionTile(
-                                      backgroundColor: Theme.of(context).colorScheme.surface,
-                                      icon: CupertinoIcons.bandage,
-                                      text: "Wholesome",
-                                      onTap: () => print("tap"),
-                                    ),
-                                    BoolSelectionTile(
-                                      bottomRounded: true,
-                                      backgroundColor: Theme.of(context).colorScheme.surface,
-                                      icon: CupertinoIcons.flame,
-                                      text: "Hot Takes",
-                                      onTap: () => print("tap"),
+                            Expanded(
+                              child: ScrollableView(
+                                physics: const BouncingScrollPhysics(),
+                                scrollBarVisible: false,
+                                hapticsEnabled: false,
+                                inlineBottomOrRightPadding: 20,
+                                padding: const EdgeInsets.symmetric(horizontal: 15),
+                                controller: ScrollController(),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    const SizedBox(height: 15),
+                                    BoolSelectionGroup(
+                                      text: "Select genre",
+                                      selectionTiles: [
+                                        BoolSelectionTile(
+                                          topRounded: true,
+                                          backgroundColor: Theme.of(context).colorScheme.surface,
+                                          icon: CupertinoIcons.cube_box,
+                                          text: "General",
+                                          isActive: true,
+                                          onTap: () => print("tap"),
+                                        ),
+                                        BoolSelectionTile(
+                                          backgroundColor: Theme.of(context).colorScheme.surface,
+                                          icon: CupertinoIcons.heart,
+                                          text: "Relationships",
+                                          onTap: () => print("tap"),
+                                        ),
+                                        BoolSelectionTile(
+                                          backgroundColor: Theme.of(context).colorScheme.surface,
+                                          icon: CupertinoIcons.hammer_fill,
+                                          text: "Classess",
+                                          onTap: () => print("tap"),
+                                        ),
+                                        BoolSelectionTile(
+                                          backgroundColor: Theme.of(context).colorScheme.surface,
+                                          icon: CupertinoIcons.chat_bubble_2,
+                                          text: "Politics",
+                                          onTap: () => print("tap"),
+                                        ),
+                                        BoolSelectionTile(
+                                          backgroundColor: Theme.of(context).colorScheme.surface,
+                                          icon: CupertinoIcons.bandage,
+                                          text: "Wholesome",
+                                          onTap: () => print("tap"),
+                                        ),
+                                        BoolSelectionTile(
+                                          bottomRounded: true,
+                                          backgroundColor: Theme.of(context).colorScheme.surface,
+                                          icon: CupertinoIcons.flame,
+                                          text: "Hot Takes",
+                                          onTap: () => print("tap"),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
-                                // TODO
-                                const Text(
-                                    "TODO: add something like: 'posting including these details, edit them here'"),
-                              ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.background,
+                        ),
+                        child: SafeArea(
+                          top: false,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 15),
+                            child: BlocBuilder<CreatePostCubit, CreatePostState>(
+                              // buildWhen: (previous, current) => true,
+                              builder: (context, state) {
+                                return PopButton(
+                                  topPadding: 15,
+                                  loading: state is Loading ? true : false,
+                                  justText: true,
+                                  onPress: () async => await context
+                                      .read<CreatePostCubit>()
+                                      .uploadUserPost(widget.title, widget.body, widget.id),
+                                  icon: CupertinoIcons.chevron_right,
+                                  backgroundColor: Theme.of(context).colorScheme.secondary,
+                                  textColor: Theme.of(context).colorScheme.onSecondary,
+                                  text: 'Submit Confession',
+                                );
+                              },
                             ),
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.background,
-                        border: Border(top: BorderSide(color: Theme.of(context).colorScheme.surface, width: 0.8))),
-                    child: SafeArea(
-                      top: false,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
-                        child: BlocBuilder<CreatePostCubit, CreatePostState>(
-                          // buildWhen: (previous, current) => true,
-                          builder: (context, state) {
-                            return PopButton(
-                              topPadding: 15,
-                              loading: state is Loading ? true : false,
-                              justText: true,
-                              onPress: () async => await context
-                                  .read<CreatePostCubit>()
-                                  .uploadUserPost(widget.title, widget.body, widget.id),
-                              icon: CupertinoIcons.chevron_right,
-                              backgroundColor: Theme.of(context).colorScheme.secondary,
-                              textColor: Theme.of(context).colorScheme.onSecondary,
-                              text: 'Submit Confession',
-                            );
-                          },
-                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ],
               ),

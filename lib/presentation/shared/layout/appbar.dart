@@ -102,10 +102,7 @@ class _AppbarLayoutState extends State<AppbarLayout> {
               ),
             Expanded(
               child: Center(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: widget.centerWidget,
-                ),
+                child: widget.centerWidget,
               ),
             ),
             if (widget.rightIconVisible)

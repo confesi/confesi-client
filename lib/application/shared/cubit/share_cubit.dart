@@ -18,7 +18,7 @@ class ShareCubit extends Cubit<ShareState> {
   void shareContent(BuildContext context, String message, String subject) async {
     (await shareContentUsecase.call(ShareParams(context: context, message: message, subject: subject))).fold(
       (failure) {
-        emit(const ShareError(message: "Unexpected error. Unable to share."));
+        emit(const ShareError(message: "Unable to share content"));
       },
       (success) => {}, // Nothing needed if it works, as the share menu would clearly be opening
     );

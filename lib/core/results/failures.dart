@@ -24,6 +24,15 @@ class GeneralFailure extends Failure {}
 /// There is no value present.
 class NoneFailure extends Failure {}
 
+/// Deep link failure.
+class DeepLinkFailure extends Failure {}
+
+// Notification failure if token isn't found on device.
+class NoNotifictionTokenFailure {}
+
+// Failure for an error that occurs when sharing content.
+class ShareFailure extends Failure {}
+
 //! Authentication failures
 
 /// For when password is incorrect.

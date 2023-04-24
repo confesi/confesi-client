@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:Confessi/application/create_post/cubit/drafts_cubit.dart';
+import 'package:Confessi/application/shared/cubit/maps_cubit.dart';
 import 'package:Confessi/core/clients/hive_client.dart';
+import 'package:Confessi/core/services/deep_links.dart';
 import 'package:Confessi/data/create_post/datasources/draft_post_datasource.dart';
 import 'package:Confessi/data/create_post/repositories/draft_repository_concrete.dart';
 import 'package:Confessi/domain/authentication_and_settings/usecases/curvy.dart';
@@ -10,7 +12,11 @@ import 'package:Confessi/domain/authentication_and_settings/usecases/text_size.d
 import 'package:Confessi/domain/create_post/usecases/delete_draft.dart';
 import 'package:Confessi/domain/create_post/usecases/get_draft.dart';
 import 'package:Confessi/domain/create_post/usecases/save_draft.dart';
+import 'package:Confessi/domain/feed/usecases/launch_maps.dart';
+import 'package:flutter/material.dart';
 
+import 'core/services/in_app_notifications/in_app_notifications.dart';
+import 'core/services/notifications.dart';
 import 'domain/authentication_and_settings/usecases/home_viewed.dart';
 import 'domain/shared/usecases/share_content.dart';
 
@@ -64,15 +70,31 @@ import 'domain/feed/usecases/recents.dart';
 import 'domain/feed/usecases/trending.dart';
 import 'application/feed/cubit/recents_cubit.dart';
 import 'application/feed/cubit/trending_cubit.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
 // Get the GetIt instance to use for injection
 final GetIt sl = GetIt.instance;
+FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
 /// Injects the needed dependencies for the app to run.
 Future<void> init() async {
   //! Initializing stuff
+  // Ensure everything is initialized before registering the dependencies, etc.
+  WidgetsFlutterBinding.ensureInitialized();
   // Registering Hive.
   await Hive.initFlutter();
+  // Registering Firebase.
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  // Registers notifications service.
+  sl.registerLazySingleton(() => NotificationService()..initAndroidNotifications());
+  // Registers in-app notifications service.
+  sl.registerLazySingleton(() => InAppMessageService());
+  // Registers the deep-link stream service.
+  sl.registerLazySingleton(() => DeepLinkStream());
+  // Registers the deep-link creation service.
+  sl.registerLazySingleton(() => DeepLinkService());
 
   //! State (BLoC or Cubit)
   // // Registers the authentication cubit.
@@ -96,20 +118,25 @@ Future<void> init() async {
   // Registers the registration cubit.
   sl.registerFactory(() => RegisterCubit(register: sl()));
   // Registers the user cubit.
-  sl.registerFactory(() => UserCubit(
+  sl.registerFactory(
+    () => UserCubit(
       curvyUsecase: sl(),
       logout: sl(),
       appearance: sl(),
       loadRefreshToken: sl(),
       homeViewed: sl(),
       textSize: sl(),
-      shakeForFeedback: sl()));
+      shakeForFeedback: sl(),
+    ),
+  );
   // Registers the contact setting cubit.
   sl.registerFactory(() => ContactSettingCubit(copyEmailTextUsecase: sl(), openMailClientUsecase: sl()));
   // Registers the cubit that launches the website viewer.
   sl.registerFactory(() => WebsiteLauncherCubit(launchWebsiteUsecase: sl()));
   // Registers the cubit that opens the device's system settings.
   sl.registerFactory(() => LanguageSettingCubit(openDeviceSettingsUsecase: sl()));
+  // Registers the cubit that opens the device's native maps app.
+  sl.registerFactory(() => MapsCubit(launchMapUsecase: sl()));
   // Registers the share cubit.
   sl.registerFactory(() => ShareCubit(shareContentUsecase: sl()));
   // Registers the draft post cubit.
@@ -162,6 +189,8 @@ Future<void> init() async {
   sl.registerLazySingleton(() => ShakeForFeedbackUsecase(repository: sl()));
   // Registers the curvy usecase.
   sl.registerLazySingleton(() => CurvyUsecase(repository: sl()));
+  // Registers the usecase to open the device's native maps app.
+  sl.registerLazySingleton(() => LaunchMap());
 
   //! Core
   // Registers custom connection checker class.

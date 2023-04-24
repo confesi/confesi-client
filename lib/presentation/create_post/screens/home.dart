@@ -8,6 +8,7 @@ import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opac
 import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:Confessi/presentation/shared/other/widget_or_nothing.dart';
 import 'package:Confessi/presentation/shared/overlays/notification_chip.dart';
+import 'package:confetti/confetti.dart';
 import 'package:scrollable/exports.dart';
 
 import '../../../application/create_post/cubit/post_cubit.dart';
@@ -27,7 +28,7 @@ import '../../../core/generators/hint_text_generator.dart';
 import '../../../core/styles/typography.dart';
 import '../../shared/layout/appbar.dart';
 import '../../shared/layout/scrollable_area.dart';
-import '../../shared/overlays/center_overlay_message.dart';
+import '../overlays/confetti_blaster.dart';
 import '../../shared/overlays/info_sheet.dart';
 
 // TODO: move to feature constants file and document?
@@ -79,9 +80,9 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
 
   double getLimitPercent() {
     if (focusedField == FocusedField.title) {
-      return titleController.text.length / kPostTitleMaxLength;
+      return titleController.text.runes.length / kPostTitleMaxLength;
     } else if (focusedField == FocusedField.body) {
-      return bodyController.text.length / kPostTextMaxLength;
+      return bodyController.text.runes.length / kPostTextMaxLength;
     } else {
       // Case for when [focusedField] is [FocusedField.none]
       return 0;
@@ -154,7 +155,7 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
               if (state is SuccessfullySubmitted) {
                 clearTextfields();
                 Navigator.popUntil(context, ModalRoute.withName('/home'));
-                CenterOverlay().show(context, "Posted", blastConfetti: true);
+                showNotificationChip(context, "Posted successfully", notificationType: NotificationType.success);
               }
             },
             child: ThemedStatusBar(
@@ -170,8 +171,13 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                         centerWidget: AnimatedSwitcher(
                           duration: const Duration(milliseconds: 250),
                           child: focusedField != FocusedField.none
-                              ? TextLimitTracker(
-                                  value: getLimitPercent(),
+                              ? SizedBox(
+                                  width: widthFraction(context, 1),
+                                  child: Center(
+                                    child: TextLimitTracker(
+                                      value: getLimitPercent(),
+                                    ),
+                                  ),
                                 )
                               : Text(
                                   'Confess Anonymously',
@@ -183,6 +189,10 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                         rightIconVisible: true,
                         rightIcon: CupertinoIcons.arrow_right,
                         rightIconOnPress: () {
+                          if (titleController.text.trim().isEmpty && bodyController.text.trim().isEmpty) {
+                            showNotificationChip(context, "You can't post... nothing!");
+                            return;
+                          }
                           Navigator.of(context).pushNamed('/home/create_post/details', arguments: {
                             'title': titleController.text,
                             'body': bodyController.text,

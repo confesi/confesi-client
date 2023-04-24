@@ -11,7 +11,7 @@ class CopyEmailText implements Usecase<Success, NoParams> {
   Future<Either<Failure, Success>> call(NoParams noParams) async {
     try {
       // copy email to user clipboard
-      await Clipboard.setData(const ClipboardData(text: "support@confesi.com"));
+      await Clipboard.setData(const ClipboardData(text: "help@confesi.com"));
       return Right(ApiSuccess());
     } catch (error) {
       // return failure, so that an error state can be emitted properly inside the cubit

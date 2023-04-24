@@ -1,9 +1,7 @@
 import 'package:Confessi/constants/shared/enums.dart';
-import 'package:Confessi/core/utils/sizing/bottom_safe_area.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_rotation.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
+import 'package:Confessi/core/services/sharing.dart';
+import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
-import 'package:Confessi/presentation/shared/overlays/text_block_overlay.dart';
 
 import '../../../application/shared/cubit/share_cubit.dart';
 import '../../leaderboard/screens/home.dart';
@@ -12,10 +10,8 @@ import '../controllers/profile_controller.dart';
 import '../controllers/settings_controller.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../application/shared/cubit/website_launcher_cubit.dart';
 import '../../authentication_and_settings/screens/settings/home.dart';
 import '../../daily_hottest/screens/home.dart';
-import '../../profile/screens/home.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -72,15 +68,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             }
           },
         ),
-        BlocListener<WebsiteLauncherCubit, WebsiteLauncherState>(
-          listener: (context, state) {
-            if (state is WebsiteLauncherError) {
-              showNotificationChip(context, "error");
-              // set to base
-              context.read<WebsiteLauncherCubit>().setContactStateToBase();
-            }
-          },
-        ),
       ],
       child: WillPopScope(
         onWillPop: () async => false,
@@ -90,46 +77,26 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             floatingActionButton: TouchableScale(
               tapType: TapType.lightImpact,
               onTap: () => Navigator.pushNamed(context, "/create_post"),
-              // TODO: you can use this to launch the update messages; however, it is temporarily here just as a POC for testing
-              // onTap: () => showTextBlock(
-              //   context,
-              //   [
-              //     UpdateMessage(
-              //         title: "Bug fixes and improvements",
-              //         body:
-              //             "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
-              //         id: 1,
-              //         date: DateTime.now()),
-              //     UpdateMessage(
-              //         title: "Updating the hottest posts algorithm",
-              //         body:
-              //             "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like). It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like). It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
-              //         id: 1,
-              //         date: DateTime.now()),
-              //     UpdateMessage(title: "title", body: "body", id: 1, date: DateTime.now())
-              //   ],
-              // ),
-              child: InitRotation(
-                delayDurationInMilliseconds: 250,
-                child: InitScale(
-                  child: Container(
-                    padding: const EdgeInsets.all(13),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.secondary,
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Theme.of(context).colorScheme.secondary.withOpacity(0.4),
-                          blurRadius: 20,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: Icon(
-                      CupertinoIcons.add,
-                      color: Theme.of(context).colorScheme.onSecondary,
-                      size: 30,
-                    ),
+              child: InitTransform(
+                // delayDurationInMilliseconds: 250,
+                child: Container(
+                  padding: const EdgeInsets.all(14),
+                  margin: const EdgeInsets.only(bottom: 5),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.secondary,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Theme.of(context).colorScheme.secondary.withOpacity(0.4),
+                        blurRadius: 20,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: Icon(
+                    CupertinoIcons.add,
+                    color: Theme.of(context).colorScheme.onSecondary,
+                    size: 30,
                   ),
                 ),
               ),
@@ -165,7 +132,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   ),
                   child: SafeArea(
                     top: false,
-                    // bottom: false,
                     child: SizedBox(
                       height: 47,
                       child: Align(

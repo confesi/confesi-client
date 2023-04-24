@@ -41,7 +41,7 @@ class PopButton extends StatelessWidget {
           EdgeInsets.only(left: horizontalPadding, right: horizontalPadding, top: topPadding, bottom: bottomPadding),
       child: IgnorePointer(
         ignoring: loading ? true : false,
-        child: TouchableOpacity(
+        child: TouchableScale(
           onTap: () => onPress(),
           child: Container(
             width: double.infinity,

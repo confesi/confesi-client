@@ -1,6 +1,5 @@
 import 'package:Confessi/presentation/authentication_and_settings/screens/settings/feedback.dart';
 import 'package:Confessi/presentation/authentication_and_settings/screens/settings/text_size.dart';
-import 'package:Confessi/core/alt_unused/chat_feed/screens/home.dart';
 
 import '../../presentation/authentication_and_settings/screens/authentication/registration.dart';
 import '../../presentation/authentication_and_settings/screens/settings/curvy.dart';
@@ -12,7 +11,6 @@ import '../../presentation/authentication_and_settings/screens/settings/language
 import '../../presentation/authentication_and_settings/screens/settings/verified_student_manager.dart';
 import '../../presentation/create_post/screens/details.dart';
 import '../../presentation/create_post/screens/home.dart';
-import '../../presentation/feed/screens/detail_view.dart';
 import '../../presentation/feed/screens/post_advanced_details.dart';
 import '../../presentation/profile/screens/account_details.dart';
 import '../../presentation/watched_universities/screens/search_universities.dart';
@@ -120,26 +118,6 @@ class AppRouter {
           break;
         case "/create_post":
           page = const CreatePostHome();
-          break;
-        // Detailed view for each post (thread view, has comments, fully expanded text, etc.).
-        case '/home/detail':
-          page = DetailViewScreen(
-            genre: args!['genre'],
-            id: args['id'],
-            badges: args['badges'],
-            postChild: args['post_child'],
-            icon: args['icon'],
-            time: args['time'],
-            faculty: args['faculty'],
-            text: args['text'],
-            title: args['title'],
-            likes: args['likes'],
-            hates: args['hates'],
-            comments: args['comments'],
-            year: args['year'],
-            university: args['university'],
-            universityFullName: args['university_full_name'],
-          );
           break;
         // Simplified view for post details
         case "/home/simplified_detail":

@@ -1,4 +1,7 @@
-import 'package:device_preview/device_preview.dart';
+import 'package:Confessi/application/shared/cubit/maps_cubit.dart';
+import 'package:Confessi/core/services/notifications.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,59 +16,50 @@ import 'application/daily_hottest/cubit/hottest_cubit.dart';
 import 'application/shared/cubit/share_cubit.dart';
 import 'application/shared/cubit/website_launcher_cubit.dart';
 import 'constants/enums_that_are_local_keys.dart';
-import 'constants/shared/dev.dart';
 import 'core/router/router.dart';
+import 'core/services/in_app_notifications/in_app_notifications.dart';
 import 'core/styles/themes.dart';
 import 'dependency_injection.dart';
 import 'generated/l10n.dart';
 import 'presentation/primary/screens/splash.dart';
 
+// FCM background messager handler. Required to be top-level. Needs `pragma` to prevent function being moved during release compilation.
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  NotificationService().fcmDeletagor(
+    message: message,
+    onNotification: (title, body) => null, // do nothing since this will be handled natively
+    onUpdateMessage: (title, body) {
+      InAppMessageService inAppMessages = InAppMessageService();
+      inAppMessages.addMessage(title, body);
+      // inAppMessages.dispose(); // dispose to prevent multiple databases from being opened.
+    },
+  );
+}
+
 void main() async {
   await init();
-  WidgetsFlutterBinding.ensureInitialized();
-  // Locks the application to portait mode (facing up).
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then(
-    (value) => runApp(DevicePreview(
-      enabled: kDevicePreview, // Whether the device is in preview mode (allows previewing of app on different devices).
-      builder: (context) => MyApp(
-        appRouter: sl(),
-      ),
-    )),
-  );
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  sl.get<NotificationService>().token.then((token) {
+    token.fold((l) => print(l), (r) => print(r));
+  });
+  sl.get<NotificationService>().onTokenRefresh((token) {
+    // trigger the sending of the new token to the server right away
+  });
+  // (how does this relate to guest accounts?)
+  // onAppLoad, if the fcm token != the token stored in prefs:
+  //   send new token to the server to link to the user's account
+  //   if the send is successful
+  //     set this token to the device storage
+  runApp(MyApp(appRouter: sl()));
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({required this.appRouter, Key? key}) : super(key: key);
 
   final AppRouter appRouter;
-
-  // ThemeData getLightTheme(ThemeState state) {
-  //   if (state is ClassicTheme) {
-  //     return AppTheme.classicLight;
-  //   } else if (state is ElegantTheme) {
-  //     return AppTheme.elegantLight;
-  //   } else if (state is SalmonTheme) {
-  //     return AppTheme.salmonLight;
-  //   } else if (state is SciFiTheme) {
-  //     return AppTheme.sciFiLight;
-  //   } else {
-  //     return AppTheme.classicLight;
-  //   }
-  // }
-
-  // ThemeData getDarkTheme(ThemeState state) {
-  //   if (state is ClassicTheme) {
-  //     return AppTheme.classicDark;
-  //   } else if (state is ElegantTheme) {
-  //     return AppTheme.elegantDark;
-  //   } else if (state is SalmonTheme) {
-  //     return AppTheme.salmonDark;
-  //   } else if (state is SciFiTheme) {
-  //     return AppTheme.sciFiDark;
-  //   } else {
-  //     return AppTheme.classicDark;
-  //   }
-  // }
 
   ThemeMode getAppearance(AppearanceEnum state) {
     if (state == AppearanceEnum.dark) {
@@ -81,17 +75,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        // Create post provider here because context of drafts needs to be accessed from functions.
+        BlocProvider(
+          lazy: false,
+          create: (context) => sl<MapsCubit>(),
+        ),
         BlocProvider(
           lazy: false,
           create: (context) => sl<DraftsCubit>(),
         ),
-        // Create post provider here because context needs to be accessed from functions.
         BlocProvider(
           lazy: false,
           create: (context) => sl<CreatePostCubit>(),
         ),
-        // Hottest provider here so context can be accessed inside the bottom sheet.
         BlocProvider(
           lazy: false,
           create: (context) => sl<HottestCubit>()..loadPosts(DateTime.now()),
@@ -106,9 +101,7 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           lazy: false,
-          // create: (context) => sl<UserCubit>()..authenticateUser(AuthenticationType.silent), // TODO: add silent auth
-          // create: (context) => sl<UserCubit>(),
-          create: (context) => sl<UserCubit>()..loadUser(true),
+          create: (context) => sl<UserCubit>()..loadUser(true), // TODO: fix auth once server is ready
         ),
         BlocProvider(
           lazy: false,
@@ -133,7 +126,6 @@ class MyApp extends StatelessWidget {
               Locale('fr', ''), // French, no country code
               Locale('es', ''), // Spanish, no country code
             ],
-            useInheritedMediaQuery: kDevicePreview,
             debugShowCheckedModeBanner: false,
             title: "Confesi",
             onGenerateRoute: appRouter.onGenerateRoute,
@@ -141,16 +133,14 @@ class MyApp extends StatelessWidget {
             darkTheme: AppTheme.dark,
             themeMode: context.watch<UserCubit>().stateIsUser
                 // If state is user, then use their preferences
-                ? getAppearance(
-                    context.watch<UserCubit>().stateAsUser.appearanceEnum,
-                  )
+                ? getAppearance(context.watch<UserCubit>().stateAsUser.appearanceEnum)
                 // Otherwise, just go dark
                 : ThemeMode.dark,
             builder: (BuildContext context, Widget? child) {
               final MediaQueryData data = MediaQuery.of(context);
               return MediaQuery(
                 // Force the textScaleFactor that's loaded from the device
-                // to lock to 1.
+                // to lock to 1 (you can change it in-app independent of the inherited scale).
                 data: data.copyWith(textScaleFactor: 1),
                 child: child!,
               );

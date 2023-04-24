@@ -1,3 +1,4 @@
+import 'package:Confessi/core/services/sharing.dart';
 import 'package:flutter/material.dart';
 
 import '../../../domain/shared/entities/infinite_scroll_indexable.dart';

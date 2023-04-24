@@ -1,3 +1,4 @@
+import 'package:Confessi/presentation/shared/other/blue_tick.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -39,15 +40,25 @@ class _SimplePostTileState extends State<SimplePostTile> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "I found out all the stats profs are in a conspiracy ring together!",
-                          style: kTitle.copyWith(
-                            color: Theme.of(context).colorScheme.primary,
-                            fontSize: 24 * context.watch<UserCubit>().stateAsUser.textSizeEnum.multiplier,
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: "I found out all the stats profs are in a conspiracy ring together!",
+                                style: kTitle.copyWith(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  fontSize: 24 * context.watch<UserCubit>().stateAsUser.textSizeEnum.multiplier,
+                                ),
+                              ),
+                              const WidgetSpan(
+                                child: Padding(
+                                  padding: EdgeInsets.only(left: 10),
+                                  child: BlueTick(),
+                                ),
+                              ),
+                            ],
                           ),
-                          textAlign: TextAlign.left,
                         ),
-                        // const SizedBox(height: 15),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 15),
                           child: Wrap(
@@ -72,7 +83,6 @@ class _SimplePostTileState extends State<SimplePostTile> {
                             ],
                           ),
                         ),
-
                         Text(
                           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sapien lacus, lacinia in posuere eget, bibendum quis lectus. Pellentesque eu nulla ullamcorper dui blandit porta vel id urna...",
                           style: kBody.copyWith(
