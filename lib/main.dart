@@ -23,15 +23,18 @@ import 'dependency_injection.dart';
 import 'generated/l10n.dart';
 import 'presentation/primary/screens/splash.dart';
 
-// FCM background messager handler. Required to be top-level. Needs pragma to prevent function being moved during release compilation.
+// FCM background messager handler. Required to be top-level. Needs `pragma` to prevent function being moved during release compilation.
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  print("======================> BG handler called");
   await Firebase.initializeApp();
   NotificationService().fcmDeletagor(
     message: message,
     onNotification: (title, body) => null, // do nothing since this will be handled natively
-    onUpdateMessage: (title, body) => InAppMessageService().addMessage(title, body),
+    onUpdateMessage: (title, body) {
+      InAppMessageService inAppMessages = InAppMessageService();
+      inAppMessages.addMessage(title, body);
+      // inAppMessages.dispose(); // dispose to prevent multiple databases from being opened.
+    },
   );
 }
 
@@ -130,9 +133,7 @@ class MyApp extends StatelessWidget {
             darkTheme: AppTheme.dark,
             themeMode: context.watch<UserCubit>().stateIsUser
                 // If state is user, then use their preferences
-                ? getAppearance(
-                    context.watch<UserCubit>().stateAsUser.appearanceEnum,
-                  )
+                ? getAppearance(context.watch<UserCubit>().stateAsUser.appearanceEnum)
                 // Otherwise, just go dark
                 : ThemeMode.dark,
             builder: (BuildContext context, Widget? child) {

@@ -11,17 +11,16 @@ import 'package:drift/drift.dart';
 part 'message_db.g.dart';
 
 LazyDatabase _openConnection() {
-  // TODO: REMOVE; this allows for multiple instances and causes race conditions
-  driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
+  // // TODO: REMOVE; this allows for multiple instances and causes race conditions
+  // driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
   return LazyDatabase(() async {
     final dbFolder = await getApplicationDocumentsDirectory();
     final file = File(path.join(dbFolder.path, "message.sqlite"));
-
     return NativeDatabase(file);
   });
 }
 
-// Does throw exceptions
+// Throws exceptions
 @DriftDatabase(tables: [Message])
 class AppDb extends _$AppDb {
   AppDb() : super(_openConnection());

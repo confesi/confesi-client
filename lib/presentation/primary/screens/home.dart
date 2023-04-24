@@ -1,25 +1,17 @@
-import 'package:Confessi/application/shared/cubit/maps_cubit.dart';
 import 'package:Confessi/constants/shared/enums.dart';
-import 'package:Confessi/core/utils/sizing/bottom_safe_area.dart';
-import 'package:Confessi/dependency_injection.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_rotation.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
+import 'package:Confessi/core/services/sharing.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
-import 'package:Confessi/presentation/shared/overlays/text_block_overlay.dart';
 
 import '../../../application/shared/cubit/share_cubit.dart';
-import '../../../core/services/deep_links.dart';
 import '../../leaderboard/screens/home.dart';
 import '../controllers/hottest_controller.dart';
 import '../controllers/profile_controller.dart';
 import '../controllers/settings_controller.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../application/shared/cubit/website_launcher_cubit.dart';
 import '../../authentication_and_settings/screens/settings/home.dart';
 import '../../daily_hottest/screens/home.dart';
-import '../../profile/screens/home.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -76,15 +68,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             }
           },
         ),
-        BlocListener<WebsiteLauncherCubit, WebsiteLauncherState>(
-          listener: (context, state) {
-            if (state is WebsiteLauncherError) {
-              showNotificationChip(context, "error");
-              // set to base
-              context.read<WebsiteLauncherCubit>().setContactStateToBase();
-            }
-          },
-        ),
       ],
       child: WillPopScope(
         onWillPop: () async => false,
@@ -93,7 +76,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
             floatingActionButton: TouchableScale(
               tapType: TapType.lightImpact,
-              onTap: () => Navigator.pushNamed(context, "/create_post"),
+              // onTap: () => Navigator.pushNamed(context, "/create_post"),
+              onTap: () => Sharing().sharePost(context, "https://www.google.com", "title", "body", "uni", "timeAgo"),
               child: InitTransform(
                 // delayDurationInMilliseconds: 250,
                 child: Container(
