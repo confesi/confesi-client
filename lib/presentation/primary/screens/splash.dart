@@ -19,7 +19,6 @@ import 'package:shake/shake.dart';
 import '../../../application/authentication_and_settings/cubit/login_cubit.dart';
 import '../../../application/authentication_and_settings/cubit/register_cubit.dart';
 import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
-import '../../../core/generators/intro_text_generator.dart';
 import '../../shared/overlays/feedback_sheet.dart';
 import '../../shared/overlays/notification_chip.dart';
 
@@ -86,7 +85,6 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                 showNotificationChip(context, "$title\n$body", notificationType: NotificationType.success),
             onUpdateMessage: (title, body) => sl.get<InAppMessageService>().addMessage(title, body),
           );
-      print("======================> Message received in app: ${message.notification?.body}");
     });
     sl.get<NotificationService>().onMessageOpenedApp((message) {
       sl.get<NotificationService>().fcmDeletagor(
@@ -95,7 +93,6 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                 showNotificationChip(context, "$title\n$body", notificationType: NotificationType.success),
             onUpdateMessage: (title, body) => sl.get<InAppMessageService>().addMessage(title, body),
           );
-      print("======================> Message opened app: ${message.notification?.body}");
     });
   }
 
@@ -110,9 +107,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   void manageDynamicLinks() {
     sl.get<DeepLinkStream>().listen((dartz.Either<Failure, DeepLinkRoute> link) {
       link.fold(
-        (failure) {
-          print("===================> ERROR LINK");
-        },
+        (failure) => showNotificationChip(context, "Error opening dynamic link"),
         (route) {
           print(
               "=====================> Received dynamic link: ${route.routeName()} with id ${(route as PostRoute).postId}");
