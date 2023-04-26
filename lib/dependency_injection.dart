@@ -4,6 +4,7 @@ import 'package:Confessi/application/create_post/cubit/drafts_cubit.dart';
 import 'package:Confessi/application/shared/cubit/maps_cubit.dart';
 import 'package:Confessi/core/clients/hive_client.dart';
 import 'package:Confessi/core/services/deep_links.dart';
+import 'package:Confessi/core/services/local_data.dart';
 import 'package:Confessi/data/create_post/datasources/draft_post_datasource.dart';
 import 'package:Confessi/data/create_post/repositories/draft_repository_concrete.dart';
 import 'package:Confessi/domain/authentication_and_settings/usecases/curvy.dart';
@@ -84,7 +85,7 @@ Future<void> init() async {
   // Ensure everything is initialized before registering the dependencies, etc.
   WidgetsFlutterBinding.ensureInitialized();
   // Registering Hive.
-  await Hive.initFlutter();
+  await Hive.initFlutter(); // todo: check if this is needed after the localDataService is integrated.
   // Registering Firebase.
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   // Registers notifications service.
@@ -95,6 +96,8 @@ Future<void> init() async {
   sl.registerLazySingleton(() => DeepLinkStream());
   // Registers the deep-link creation service.
   sl.registerLazySingleton(() => DeepLinkService());
+  // Registers the local data service
+  sl.registerLazySingleton(() => LocalDataService());
 
   //! State (BLoC or Cubit)
   // // Registers the authentication cubit.

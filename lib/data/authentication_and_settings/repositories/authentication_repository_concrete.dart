@@ -74,7 +74,7 @@ class AuthenticationRepository implements IAuthenticationRepository {
     try {
       return Right(await datasource.getToken());
     } on EmptyTokenException {
-      return Left(EmptyTokenFailure());
+      return Left(EmptyDataFailure());
     } catch (e) {
       return Left(ServerFailure());
     }

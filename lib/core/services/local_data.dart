@@ -7,13 +7,27 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive_flutter/adapters.dart';
 
+part 'local_data.g.dart';
+
 // todo: make all private methods with 1 easy interface api
+// todo: simplify to just accountUser and guestUser?
+// todo: user -> type, guest, registered
+// todo: add `await`s where needed
+
+@HiveType(typeId: 6)
+enum UserType {
+  @HiveField(0)
+  guest,
+  @HiveField(1)
+  account,
+}
 
 class LocalDataService {
   Uint8List? _key;
 
   Either<Failure, Uint8List> getKey() => _key == null ? Left(LocalDBFailure()) : Right(_key!);
 
+  /// Initializes the DB. Only call once.
   Future<Either<Failure, Success>> initDb() async {
     try {
       const secureStorage = FlutterSecureStorage();
@@ -25,32 +39,65 @@ class LocalDataService {
       _key = base64Url.decode(encryptionKey!);
       await Hive.initFlutter();
       //! Register all type adapters here
-      Hive.registerAdapter<User>(UserAdapter());
+      Hive.registerAdapter(PrefsAdapter());
+      // Hive.registerAdapter(UserAdapter());
+      Hive.registerAdapter(GuestUserAdapter());
+      Hive.registerAdapter(AccountUserAdapter());
+      Hive.registerAdapter(AppThemeAdapter());
+      Hive.registerAdapter(UserTypeAdapter());
       return Right(ApiSuccess());
     } catch (_) {
       return Left(LocalDBFailure());
     }
   }
 
-  Future<Either<Failure, Success>> setPrefsDefault(String boxKey) async {
+  Prefs defaultPrefs() => Prefs(textScale: 2, theme: AppTheme.light);
+
+  String userTypeToKey(UserType user) => user == UserType.guest ? 'guest' : 'account';
+  String userToKey(User user) => user is GuestUser ? 'guest' : 'account';
+
+  Future<Either<Failure, Success>> createUserPrefs(User user) async {
     try {
-      Box<dynamic> box;
-      final encryptionKey = getKey().fold(
+      final key = getKey().fold(
         (failure) => throw failure,
         (encryptionKey) => encryptionKey,
       );
-      box = await Hive.openBox("prefs", encryptionCipher: HiveAesCipher(encryptionKey));
-      //! Default prefs
-      Prefs prefs = Prefs(textScale: 4, theme: Theme.light);
-      box.put(boxKey, prefs);
-      box.close();
+      Box<User> box;
+      box = await Hive.openBox("prefs", encryptionCipher: HiveAesCipher(key));
+      if (box.containsKey(userToKey(user))) {
+        return Left(AlreadyExistsFailure());
+      }
+      box.put(userToKey(user), user);
       return Right(ApiSuccess());
+    } catch (e) {
+      print(e);
+      return Left(LocalDBFailure());
+    }
+  }
+
+  Future<Either<Failure, User>> fetchUser() async {
+    try {
+      final key = getKey().fold(
+        (failure) => throw failure,
+        (encryptionKey) => encryptionKey,
+      );
+      final userType = (await getUserType()).fold(
+        (failure) => throw failure,
+        (userType) => userType,
+      );
+      Box<User> box;
+      box = await Hive.openBox("prefs", encryptionCipher: HiveAesCipher(key));
+      final user = box.get(userTypeToKey(userType));
+      if (user == null) {
+        return Left(EmptyDataFailure());
+      }
+      return Right(user);
     } catch (_) {
       return Left(LocalDBFailure());
     }
   }
 
-  Future<Either<Failure, User>> getUserType() async {
+  Future<Either<Failure, UserType>> getUserType() async {
     try {
       Box<dynamic> box;
       final key = getKey().fold(
@@ -58,49 +105,43 @@ class LocalDataService {
         (encryptionKey) => encryptionKey,
       );
       box = await Hive.openBox('user', encryptionCipher: HiveAesCipher(key));
-      User? user = box.get('accountType');
-      if (user == null) {
-        // assume `new` user
-        // write default
+      UserType? type = box.get('type');
+      if (type == null) {
+        await box.put('type', UserType.guest);
+        return const Right(UserType.guest);
       }
-      box.close();
-      return Right(await _prefsFromUserType(user));
+      await box.close();
+      return Right(type);
     } catch (_) {
       return Left(LocalDBFailure());
     }
   }
 
-  Future<Prefs> _prefsFromUserType(User user) async {
-    if (user is New || user is Guest) {
-      // return guest prefs
-    } else if (user is Account) {
-      // return a user account's prefs
-    } else {
-      throw Exception('Unknown user type');
-    }
-  }
-
-  Future<Either<Failure, Success>> writeToBox(
-    String location, {
+  Future<Either<Failure, Success>> updateUser({
     int? textScale,
-    Theme? theme,
+    AppTheme? theme,
   }) async {
     try {
-      Box<Prefs> box;
+      final user = (await getUserType()).fold(
+        (failure) => throw failure,
+        (user) => user,
+      );
+      Box<User> box;
       final key = getKey().fold(
         (failure) => throw failure,
         (encryptionKey) => encryptionKey,
       );
-      box = await Hive.openBox<Prefs>("prefs", encryptionCipher: HiveAesCipher(key));
-      final currentPrefs = box.get(location);
-      if (currentPrefs != null) {
+      box = await Hive.openBox<User>("prefs", encryptionCipher: HiveAesCipher(key));
+      final currentUser = box.get(userTypeToKey(user));
+      if (currentUser != null) {
         // Update only the provided fields of the current prefs object
-        final newPrefs = currentPrefs.copyWith(textScale: textScale, theme: theme);
-        box.put(location, newPrefs);
+        currentUser.prefs = currentUser.prefs.copyWith(
+          textScale: textScale,
+          theme: theme,
+        );
+        box.put(userTypeToKey(user), currentUser);
       } else {
-        // Create a new prefs object if it doesn't exist
-        //! Default prefs
-        box.put(location, Prefs(textScale: 4, theme: Theme.light));
+        return Left(LocalDBFailure());
       }
       await box.close();
       return Right(ApiSuccess());
@@ -112,11 +153,20 @@ class LocalDataService {
 
 //! Pref types
 
-enum Theme { light, dark }
+@HiveType(typeId: 5)
+enum AppTheme {
+  @HiveField(0)
+  light,
+  @HiveField(1)
+  dark,
+}
 
+@HiveType(typeId: 4)
 class Prefs {
+  @HiveField(0)
   final int textScale;
-  final Theme theme;
+  @HiveField(1)
+  final AppTheme theme;
 
   Prefs({
     required this.textScale,
@@ -125,7 +175,7 @@ class Prefs {
 
   Prefs copyWith({
     int? textScale,
-    Theme? theme,
+    AppTheme? theme,
   }) {
     return Prefs(
       textScale: textScale ?? this.textScale,
@@ -136,57 +186,22 @@ class Prefs {
 
 //! User types
 
-class User {
-  final Prefs prefs;
-  User({required this.prefs});
+@HiveType(typeId: 0)
+abstract class User {
+  @HiveField(0)
+  Prefs prefs;
+  User(this.prefs);
 }
 
-class Guest extends User {
-  Guest() : super(prefs: Prefs(textScale: 4, theme: Theme.light));
+@HiveType(typeId: 1)
+class GuestUser extends User {
+  GuestUser(Prefs prefs) : super(prefs);
 }
 
-class New extends User {}
-
-class Account extends User {
+@HiveType(typeId: 3)
+class AccountUser extends User {
+  @HiveField(1)
   final String token;
 
-  Account({required this.token});
-}
-
-class UserAdapter extends TypeAdapter<User> {
-  @override
-  final typeId = 0;
-
-  @override
-  User read(BinaryReader reader) {
-    final type = reader.readByte();
-    switch (type) {
-      case 0:
-        return New();
-      case 1:
-        return Guest();
-      case 2:
-        final fields = reader.readMap();
-        final token = fields['token'] as String;
-        return Account(token: token);
-      default:
-        throw Exception('Unknown user type');
-    }
-  }
-
-  @override
-  void write(BinaryWriter writer, User obj) {
-    if (obj is New) {
-      writer.writeByte(0);
-    } else if (obj is Guest) {
-      writer.writeByte(1);
-    } else if (obj is Account) {
-      writer.writeByte(2);
-      writer.writeMap({
-        "token": obj.token,
-      });
-    } else {
-      throw Exception('Unknown user type');
-    }
-  }
+  AccountUser(this.token, Prefs prefs) : super(prefs);
 }

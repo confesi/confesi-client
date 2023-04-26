@@ -1,3 +1,5 @@
+import 'package:Confessi/core/services/local_data.dart';
+import 'package:Confessi/dependency_injection.dart';
 import 'package:Confessi/presentation/create_post/overlays/confetti_blaster.dart';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/services.dart';
@@ -136,6 +138,42 @@ class _DetailsScreenState extends State<DetailsScreen> with AutomaticKeepAliveCl
                                           onTap: () => print("tap"),
                                         ),
                                       ],
+                                    ),
+                                    TextButton(
+                                      onPressed: () async {
+                                        print(await sl.get<LocalDataService>().initDb());
+                                      },
+                                      child: Text("init"),
+                                    ),
+                                    TextButton(
+                                      onPressed: () async {
+                                        (await sl.get<LocalDataService>().getUserType())
+                                            .fold((failure) => print(failure), (user) => print(user));
+                                      },
+                                      child: Text("userType"),
+                                    ),
+                                    TextButton(
+                                      onPressed: () async {
+                                        (await sl
+                                                .get<LocalDataService>()
+                                                .createUserPrefs(GuestUser(sl.get<LocalDataService>().defaultPrefs())))
+                                            .fold((failure) => print(failure), (success) => print(success));
+                                      },
+                                      child: Text("set user (GUEST or account)"),
+                                    ),
+                                    TextButton(
+                                      onPressed: () async {
+                                        (await sl.get<LocalDataService>().fetchUser())
+                                            .fold((failure) => print(failure), (user) => print(user.prefs.textScale));
+                                      },
+                                      child: Text("fetch user"),
+                                    ),
+                                    TextButton(
+                                      onPressed: () async {
+                                        (await sl.get<LocalDataService>().updateUser(textScale: 3))
+                                            .fold((failure) => print(failure), (success) => print(success));
+                                      },
+                                      child: Text("update user to XX"),
                                     ),
                                   ],
                                 ),

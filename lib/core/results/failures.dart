@@ -110,5 +110,8 @@ class LocalDBFailure extends Failure {}
 /// A failure for when a setting is unwritten locally, meaning, it's default.
 class DbDefaultFailure extends Failure {}
 
-/// For when the received token from secure storage is null/empty.
-class EmptyTokenFailure extends Failure {}
+/// For when the received data is empty/doesn't exist.
+class EmptyDataFailure extends Failure {}
+
+/// For when something already exists
+class AlreadyExistsFailure extends Failure {}

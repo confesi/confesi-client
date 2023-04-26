@@ -20,7 +20,7 @@ class LoadRefreshToken implements Usecase<TokenType, NoParams> {
     return failureOrRefreshToken.fold(
       (failure) {
         // User doesn't have a refresh token already (new user)
-        if (failure is EmptyTokenFailure) {
+        if (failure is EmptyDataFailure) {
           return Right(NoToken());
           // Something went wrong that we didn't expect when pulling from the local db
         } else {
