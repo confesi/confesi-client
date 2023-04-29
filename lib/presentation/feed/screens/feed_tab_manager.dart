@@ -1,7 +1,7 @@
 import 'package:Confessi/presentation/shared/buttons/option.dart';
+import 'package:Confessi/presentation/shared/other/zoomable.dart';
 import 'package:Confessi/presentation/shared/overlays/button_options_sheet.dart';
 
-import '../../shared/overlays/info_sheet.dart';
 import '../tabs/trending_feed.dart';
 import '../../shared/buttons/simple_text.dart';
 
@@ -58,6 +58,13 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
             color: Theme.of(context).colorScheme.background,
             child: Column(
               children: [
+                Zoomable(
+                  child: Image.asset(
+                    "assets/images/universities/sfu.jpeg",
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                  ),
+                ),
                 Builder(builder: (context) {
                   return AppbarLayout(
                     bottomBorder: true,

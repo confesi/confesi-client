@@ -75,17 +75,6 @@ class _LanguageScreenState extends State<LanguageScreen> {
                           ],
                         ),
                         const SizedBox(height: 10),
-                        SettingTileGroup(
-                          text: "Want another language added?",
-                          settingTiles: [
-                            SettingTile(
-                              leftIcon: CupertinoIcons.chat_bubble,
-                              text: "Give us feedback",
-                              onTap: () => Navigator.of(context).pushNamed("/feedback"),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 10),
                         const TextStatTileGroup(
                           text: "Supported languages",
                           tiles: [
