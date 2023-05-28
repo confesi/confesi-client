@@ -1,6 +1,8 @@
 import 'package:Confessi/constants/shared/enums.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../../application/shared/cubit/share_cubit.dart';
 import '../../leaderboard/screens/home.dart';
@@ -75,7 +77,12 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
             floatingActionButton: TouchableScale(
               tapType: TapType.lightImpact,
-              onTap: () => Navigator.pushNamed(context, "/create_post"),
+              // onTap: () => Navigator.pushNamed(context, "/create_post"),
+              onTap: () async {
+                await FirebaseAuth.instance
+                    .createUserWithEmailAndPassword(email: "client3@example.com", password: "password");
+                print(await FirebaseAuth.instance.currentUser!.getIdToken(true));
+              },
               child: InitTransform(
                 // delayDurationInMilliseconds: 250,
                 child: Container(

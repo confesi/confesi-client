@@ -20,13 +20,14 @@ import 'core/router/router.dart';
 import 'core/services/in_app_notifications/in_app_notifications.dart';
 import 'core/styles/themes.dart';
 import 'dependency_injection.dart';
+import 'firebase_options.dart';
 import 'generated/l10n.dart';
 import 'presentation/primary/screens/splash.dart';
 
 // FCM background messager handler. Required to be top-level. Needs `pragma` to prevent function being moved during release compilation.
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform, name: "confesi-server-dev");
   NotificationService().fcmDeletagor(
     message: message,
     onNotification: (title, body) => null, // do nothing since this will be handled natively

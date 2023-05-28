@@ -92,6 +92,7 @@ dependencies:
   screenshot: ^2.1.0
   screenshot_callback: ^2.0.3
   hive_generator: ^2.0.0
+  firebase_auth: ^4.6.1
   # shimmer: ^2.0.0
   # open_settings: ^2.0.2
   # animated_text_kit: ^4.2.2

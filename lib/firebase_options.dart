@@ -44,40 +44,40 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBQoiQ_GTAkzekU5BmwRI1hQa9alQzf3C4',
-    appId: '1:1961130959:web:e3abec0242c420746470ba',
-    messagingSenderId: '1961130959',
-    projectId: 'confesi-2b9b9',
-    authDomain: 'confesi-2b9b9.firebaseapp.com',
-    storageBucket: 'confesi-2b9b9.appspot.com',
-    measurementId: 'G-2R52JKK9N8',
+    apiKey: 'AIzaSyCVKH-y09R3b1T74ZU_t2YS7qNmgHBl8UU',
+    appId: '1:136477109824:web:f95bd68da0cf86a923b9a5',
+    messagingSenderId: '136477109824',
+    projectId: 'confesi-server-dev',
+    authDomain: 'confesi-server-dev.firebaseapp.com',
+    storageBucket: 'confesi-server-dev.appspot.com',
+    measurementId: 'G-CXZP5RE27J',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCVvD8kV8PW-zsJcUWFE8NQfLTYubmwhZo',
-    appId: '1:1961130959:android:d304830f370856776470ba',
-    messagingSenderId: '1961130959',
-    projectId: 'confesi-2b9b9',
-    storageBucket: 'confesi-2b9b9.appspot.com',
+    apiKey: 'AIzaSyDuW_NNrzhaQ5M4TjhxVSz6LgeNJRAQuQk',
+    appId: '1:136477109824:android:db0a1b5d644cfa7c23b9a5',
+    messagingSenderId: '136477109824',
+    projectId: 'confesi-server-dev',
+    storageBucket: 'confesi-server-dev.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDSPsnrXC0YsiUpSdTjRjl2Bmch7fD9lXc',
-    appId: '1:1961130959:ios:dd7cc0611ea3269d6470ba',
-    messagingSenderId: '1961130959',
-    projectId: 'confesi-2b9b9',
-    storageBucket: 'confesi-2b9b9.appspot.com',
-    iosClientId: '1961130959-i899428q83cccd3iblg476eu9ekoic09.apps.googleusercontent.com',
+    apiKey: 'AIzaSyDu0pfSj4Sb_TvbTETfgwt22FS21Es0YNI',
+    appId: '1:136477109824:ios:74f41d419b8f6e9423b9a5',
+    messagingSenderId: '136477109824',
+    projectId: 'confesi-server-dev',
+    storageBucket: 'confesi-server-dev.appspot.com',
+    iosClientId: '136477109824-72l0bmk336r530cno1gs9cn8dmrgdf4b.apps.googleusercontent.com',
     iosBundleId: 'com.example.flutterMobileClient',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyDSPsnrXC0YsiUpSdTjRjl2Bmch7fD9lXc',
-    appId: '1:1961130959:ios:dd7cc0611ea3269d6470ba',
-    messagingSenderId: '1961130959',
-    projectId: 'confesi-2b9b9',
-    storageBucket: 'confesi-2b9b9.appspot.com',
-    iosClientId: '1961130959-i899428q83cccd3iblg476eu9ekoic09.apps.googleusercontent.com',
+    apiKey: 'AIzaSyDu0pfSj4Sb_TvbTETfgwt22FS21Es0YNI',
+    appId: '1:136477109824:ios:74f41d419b8f6e9423b9a5',
+    messagingSenderId: '136477109824',
+    projectId: 'confesi-server-dev',
+    storageBucket: 'confesi-server-dev.appspot.com',
+    iosClientId: '136477109824-72l0bmk336r530cno1gs9cn8dmrgdf4b.apps.googleusercontent.com',
     iosBundleId: 'com.example.flutterMobileClient',
   );
 }

@@ -11,7 +11,6 @@ class MessageFailure {}
 
 class InAppMessageService {
   final AppDb _db;
-  final _disposed = false;
 
   InAppMessageService() : _db = AppDb();
 
