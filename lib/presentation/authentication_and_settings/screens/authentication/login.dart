@@ -1,12 +1,10 @@
 import '../../../../core/utils/sizing/bottom_safe_area.dart';
-import '../../../../core/utils/sizing/height_fraction.dart';
 import 'package:scrollable/exports.dart';
 
 import '../../../../constants/authentication_and_settings/text.dart';
 import '../../../shared/behaviours/nav_blocker.dart';
 import '../../../shared/behaviours/themed_status_bar.dart';
 import '../../../shared/layout/appbar.dart';
-import '../../../shared/layout/scrollable_area.dart';
 import '../../../shared/text_animations/typewriter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,11 +12,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../application/authentication_and_settings/cubit/login_cubit.dart';
 import '../../../../core/styles/typography.dart';
-import '../../../shared/behaviours/keyboard_dismiss.dart';
 import '../../../shared/button_touch_effects/touchable_opacity.dart';
 import '../../../shared/buttons/pop.dart';
-import '../../../shared/layout/minimal_appbar.dart';
-import '../../../shared/textfields/bulge_textfield.dart';
 import '../../../shared/textfields/expandable_textfield.dart';
 
 class LoginScreen extends StatefulWidget {

@@ -1,17 +1,11 @@
 import '../../../../application/authentication_and_settings/cubit/user_cubit.dart';
-import '../../../../constants/enums_that_are_local_keys.dart';
-import '../../../shared/text_animations/typewriter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/utils/sizing/height_fraction.dart';
-import '../../../../core/utils/sizing/width_breakpoint_fraction.dart';
-import '../../../shared/behaviours/init_scale.dart';
 import '../../../shared/behaviours/themed_status_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../constants/authentication_and_settings/text.dart';
-import '../../../../core/styles/typography.dart';
 import '../../../shared/buttons/pop.dart';
 
 class OpenScreen extends StatelessWidget {

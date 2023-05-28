@@ -116,10 +116,14 @@ class _ZoomableState extends State<Zoomable> with TickerProviderStateMixin {
   TransformationController transformController = TransformationController();
   final double _maxScale = 2.5;
 
+  TapDownDetails? _tapDetails;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onDoubleTapDown: (TapDownDetails details) => _zoomDelegator(details),
+      onTapDown: (details) => _tapDetails = details,
+      onLongPress: () => _zoomIn(_tapDetails!),
       child: ScrollConfiguration(
         behavior: ScrollConfiguration.of(context).copyWith(
           physics: const BouncingScrollPhysics(),

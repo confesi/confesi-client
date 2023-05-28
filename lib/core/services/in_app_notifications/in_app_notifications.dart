@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'message_db.dart';
 import 'package:drift/drift.dart' as drift;

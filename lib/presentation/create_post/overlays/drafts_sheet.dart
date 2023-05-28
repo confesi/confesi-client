@@ -55,7 +55,7 @@ Future<dynamic> showDraftsSheet(BuildContext context) {
 }
 
 class _DraftsSheet extends StatefulWidget {
-  const _DraftsSheet({super.key});
+  const _DraftsSheet();
 
   @override
   State<_DraftsSheet> createState() => _DraftsSheetState();

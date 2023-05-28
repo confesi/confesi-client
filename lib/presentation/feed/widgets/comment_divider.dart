@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 
 import '../../../constants/shared/enums.dart';
 import '../../shared/buttons/option.dart';
-import '../../shared/buttons/simple_text.dart';
 import '../../shared/overlays/button_options_sheet.dart';
 
 class CommentDivider extends StatelessWidget {

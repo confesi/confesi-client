@@ -3,12 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../../../core/utils/numbers/is_plural.dart';
 import '../../../core/utils/numbers/number_postfix.dart';
-import '../../shared/other/cached_online_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 import '../../../core/styles/typography.dart';
-import '../../../core/utils/sizing/height_fraction.dart';
 
 class LeaderboardItemTile extends StatelessWidget {
   const LeaderboardItemTile({

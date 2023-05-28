@@ -1,5 +1,3 @@
-import '../button_touch_effects/touchable_scale.dart';
-import 'package:flutter/cupertino.dart';
 
 import '../button_touch_effects/touchable_opacity.dart';
 import 'package:flutter/material.dart';

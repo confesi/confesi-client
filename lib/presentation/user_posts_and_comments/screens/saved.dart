@@ -1,10 +1,8 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/layout/appbar.dart';
-import '../../shared/layout/top_tabs.dart';
 
 class SavedScreen extends StatefulWidget {
   const SavedScreen({super.key});

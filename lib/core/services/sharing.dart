@@ -1,9 +1,7 @@
 import 'dart:io';
 
 import 'package:Confessi/core/styles/typography.dart';
-import 'package:Confessi/core/utils/sizing/width_fraction.dart';
 import 'package:dartz/dartz.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';

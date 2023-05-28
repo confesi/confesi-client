@@ -1,4 +1,3 @@
-import '../../../core/utils/sizing/width_fraction.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

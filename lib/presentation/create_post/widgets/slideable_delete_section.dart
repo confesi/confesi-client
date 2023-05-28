@@ -1,11 +1,8 @@
-import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../../../core/styles/typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-import '../../../constants/shared/enums.dart';
 import '../../shared/button_touch_effects/touchable_opacity.dart';
 
 class SlideableDeleteSection extends StatelessWidget {

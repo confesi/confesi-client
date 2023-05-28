@@ -1,5 +1,4 @@
 import '../../shared/button_touch_effects/touchable_opacity.dart';
-import 'watched_university_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

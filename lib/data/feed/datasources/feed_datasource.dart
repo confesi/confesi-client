@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import '../../../core/clients/api_client.dart';
 
-import '../../../core/alt_unused/http_client.dart';
 import '../../../core/results/exceptions.dart';
 import '../../../domain/shared/entities/post.dart';
 import '../../shared/models/post_model.dart';

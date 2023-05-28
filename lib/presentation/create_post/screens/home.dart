@@ -25,8 +25,6 @@ import '../../../core/generators/hint_text_generator.dart';
 import '../../../core/styles/typography.dart';
 import '../../shared/layout/appbar.dart';
 import '../../shared/layout/scrollable_area.dart';
-import '../overlays/confetti_blaster.dart';
-import '../../shared/overlays/info_sheet.dart';
 
 // TODO: move to feature constants file and document?
 enum FocusedField {

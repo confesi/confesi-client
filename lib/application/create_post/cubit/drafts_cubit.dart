@@ -1,12 +1,9 @@
-import 'package:Confessi/core/results/failures.dart';
 import 'package:Confessi/domain/create_post/entities/draft_post_entity.dart';
 import 'package:Confessi/domain/create_post/usecases/delete_draft.dart';
 import 'package:Confessi/domain/create_post/usecases/get_draft.dart';
 import 'package:Confessi/domain/create_post/usecases/save_draft.dart';
 import 'package:bloc/bloc.dart';
-import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 part 'drafts_state.dart';
 

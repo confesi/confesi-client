@@ -1,7 +1,6 @@
 import '../indicators/loading_cupertino.dart';
 
 import '../button_touch_effects/touchable_opacity.dart';
-import '../indicators/loading_material.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';

@@ -18,7 +18,6 @@ import '../../presentation/feedback/screens/home.dart';
 import '../../presentation/primary/screens/critical_error.dart';
 import '../../presentation/authentication_and_settings/screens/settings/appearance.dart';
 import '../../presentation/authentication_and_settings/screens/settings/faq.dart';
-import '../alt_unused/comments.dart';
 import '../../presentation/user_posts_and_comments/screens/posts.dart';
 import '../../presentation/user_posts_and_comments/screens/saved.dart';
 import 'package:flutter/material.dart';

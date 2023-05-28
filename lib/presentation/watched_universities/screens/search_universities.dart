@@ -1,19 +1,13 @@
 import '../../../core/rate_limiters/debouncer.dart';
-import '../../../core/styles/typography.dart';
 import '../../../core/utils/sizing/bottom_safe_area.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/button_touch_effects/touchable_opacity.dart';
-import '../../shared/button_touch_effects/touchable_scale.dart';
-import '../../shared/buttons/simple_text.dart';
 import '../../shared/textfields/expandable_textfield.dart';
 import '../widgets/searched_university_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:keyboard_attachable/keyboard_attachable.dart';
 import 'package:scrollable/exports.dart';
 
-import '../../shared/buttons/emblem.dart';
-import '../../shared/buttons/pop.dart';
 
 class SearchUniversitiesScreen extends StatefulWidget {
   const SearchUniversitiesScreen({super.key});

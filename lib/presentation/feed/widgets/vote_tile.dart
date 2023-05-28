@@ -1,5 +1,4 @@
 import '../../../core/styles/typography.dart';
-import '../../shared/behaviours/init_scale.dart';
 import '../../shared/button_touch_effects/touchable_opacity.dart';
 import 'package:flutter/material.dart';
 

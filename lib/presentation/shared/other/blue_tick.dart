@@ -1,9 +1,6 @@
 import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opacity.dart';
-import 'package:Confessi/presentation/shared/overlays/info_sheet.dart';
 import 'package:Confessi/presentation/shared/overlays/info_sheet_with_action.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter/material.dart';
 
 class BlueTick extends StatelessWidget {

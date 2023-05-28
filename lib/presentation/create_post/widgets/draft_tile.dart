@@ -1,12 +1,5 @@
-import 'package:Confessi/presentation/create_post/widgets/slideable_delete_section.dart';
-import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:Confessi/presentation/shared/other/widget_or_nothing.dart';
-import 'package:dartz/dartz.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../../../core/styles/typography.dart';
 

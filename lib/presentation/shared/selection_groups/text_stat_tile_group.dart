@@ -1,4 +1,3 @@
-import 'bool_selection_tile.dart';
 import 'text_stat_tile.dart';
 import 'package:flutter/material.dart';
 

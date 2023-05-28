@@ -1,7 +1,5 @@
 import 'package:Confessi/data/authentication_and_settings/repositories/authentication_repository_concrete.dart';
 
-import '../../../constants/enums_that_are_local_keys.dart';
-import '../../../data/authentication_and_settings/repositories/prefs_repository_concrete.dart';
 import '../entities/refresh_token.dart';
 import 'package:dartz/dartz.dart';
 

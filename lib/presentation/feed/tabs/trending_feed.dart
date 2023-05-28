@@ -4,7 +4,6 @@ import 'package:Confessi/presentation/shared/indicators/alert.dart';
 
 import '../../../constants/shared/error_messages.dart';
 import '../../shared/indicators/loading_cupertino.dart';
-import '../../shared/indicators/loading_material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

@@ -6,7 +6,6 @@ import '../../../core/network/connection_info.dart';
 import '../../../core/results/exceptions.dart';
 import '../../../core/results/failures.dart';
 import '../../../core/results/successes.dart';
-import '../../../domain/authentication_and_settings/entities/access_token.dart';
 import '../../../domain/authentication_and_settings/entities/tokens.dart';
 import '../../../domain/authentication_and_settings/repositories/authentication_repository_interface.dart';
 import '../datasources/authentication_datasource.dart';

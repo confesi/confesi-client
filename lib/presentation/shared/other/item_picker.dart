@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
-import '../behaviours/init_scale.dart';
 
 class ItemPicker extends StatelessWidget {
   const ItemPicker({super.key, required this.options, required this.onChange});
@@ -46,7 +45,7 @@ class ItemPicker extends StatelessWidget {
 }
 
 class _ItemPickerText extends StatelessWidget {
-  const _ItemPickerText({super.key, required this.text});
+  const _ItemPickerText({required this.text});
 
   final String text;
 

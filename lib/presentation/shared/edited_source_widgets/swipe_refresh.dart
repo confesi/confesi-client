@@ -5,7 +5,6 @@
 import 'dart:async';
 import 'dart:math' as math;
 
-import 'package:Confessi/presentation/shared/indicators/loading_material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -129,12 +128,7 @@ class SwipeRefresh extends StatefulWidget {
     this.semanticsValue,
     this.strokeWidth = RefreshProgressIndicator.defaultStrokeWidth,
     this.triggerMode = RefreshIndicatorTriggerMode.onEdge,
-  })  : assert(child != null),
-        assert(onRefresh != null),
-        assert(notificationPredicate != null),
-        assert(strokeWidth != null),
-        assert(triggerMode != null),
-        super(key: key);
+  })  : super(key: key);
 
   /// The widget below this widget in the tree.
   ///
@@ -325,8 +319,9 @@ class SwipeRefreshState extends State<SwipeRefresh> with TickerProviderStateMixi
         break;
     }
     if (indicatorAtTopNow != _isIndicatorAtTop) {
-      if (_mode == _RefreshIndicatorMode.drag || _mode == _RefreshIndicatorMode.armed)
+      if (_mode == _RefreshIndicatorMode.drag || _mode == _RefreshIndicatorMode.armed) {
         _dismiss(_RefreshIndicatorMode.canceled);
+      }
     } else if (notification is ScrollUpdateNotification) {
       if (_mode == _RefreshIndicatorMode.drag || _mode == _RefreshIndicatorMode.armed) {
         if ((notification.metrics.axisDirection == AxisDirection.down && notification.metrics.extentBefore > 0.0) ||
@@ -379,7 +374,7 @@ class SwipeRefreshState extends State<SwipeRefresh> with TickerProviderStateMixi
   bool _handleGlowNotification(OverscrollIndicatorNotification notification) {
     if (notification.depth != 0 || !notification.leading) return false;
     if (_mode == _RefreshIndicatorMode.drag) {
-      notification.disallowGlow();
+      notification.disallowIndicator();
       return true;
     }
     return false;
@@ -456,7 +451,6 @@ class SwipeRefreshState extends State<SwipeRefresh> with TickerProviderStateMixi
         .animateTo(1.0 / _kDragSizeFactorLimit, duration: _kIndicatorSnapDuration)
         .then<void>((void value) {
       if (mounted && _mode == _RefreshIndicatorMode.snap) {
-        assert(widget.onRefresh != null);
         setState(() {
           // Show the indeterminate progress indicator.
           _mode = _RefreshIndicatorMode.refresh;
@@ -465,7 +459,7 @@ class SwipeRefreshState extends State<SwipeRefresh> with TickerProviderStateMixi
         final Future<void> refreshResult = widget.onRefresh();
         HapticFeedback.lightImpact();
         assert(() {
-          if (refreshResult == null)
+          if (refreshResult == null) {
             FlutterError.reportError(FlutterErrorDetails(
               exception: FlutterError(
                 'The onRefresh callback returned null.\n'
@@ -474,6 +468,7 @@ class SwipeRefreshState extends State<SwipeRefresh> with TickerProviderStateMixi
               context: ErrorDescription('when calling onRefresh'),
               library: 'material library',
             ));
+          }
           return true;
         }());
         if (refreshResult == null) return;

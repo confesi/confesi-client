@@ -1,17 +1,12 @@
 import 'package:Confessi/domain/shared/entities/infinite_scroll_indexable.dart';
 
-import '../../../core/utils/numbers/large_number_formatter.dart';
-import '../../../core/utils/numbers/number_postfix.dart';
-import '../../../core/alt_unused/leaderboard_header.dart';
 import '../widgets/leaderboard_item_tile.dart';
-import '../../profile/widgets/stat_tile.dart';
 import '../../shared/button_touch_effects/touchable_opacity.dart';
 import '../../shared/indicators/loading_cupertino.dart';
 import '../../shared/other/feed_list.dart';
 import '../../shared/overlays/info_sheet_with_action.dart';
 
 import '../../../constants/leaderboard/general.dart';
-import '../../../core/utils/numbers/is_plural.dart';
 import '../../../domain/leaderboard/entities/leaderboard_item.dart';
 import '../../../generated/l10n.dart';
 import '../../shared/indicators/alert.dart';
@@ -21,7 +16,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../constants/daily_hottest/general.dart';
 import '../../../core/styles/typography.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/overlays/info_sheet.dart';

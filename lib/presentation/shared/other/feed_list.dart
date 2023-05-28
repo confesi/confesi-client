@@ -208,7 +208,7 @@ class _FeedListState extends State<FeedList> {
 //! Feed alert widget
 
 class _FeedListIndicator extends StatelessWidget {
-  const _FeedListIndicator({super.key, this.message, this.onClick, required this.isLoading});
+  const _FeedListIndicator({this.message, this.onClick, required this.isLoading});
 
   final String? message;
   final VoidCallback? onClick;

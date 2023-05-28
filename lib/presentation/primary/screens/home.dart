@@ -1,5 +1,4 @@
 import 'package:Confessi/constants/shared/enums.dart';
-import 'package:Confessi/core/services/sharing.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
 
@@ -109,9 +108,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             body: Container(
               color: Theme.of(context).colorScheme.background,
               child: Scaffold(
-                body: TabBarView(
-                  physics: const NeverScrollableScrollPhysics(),
-                  controller: tabController,
+                body: IndexedStack(
+                  index: currentIndex,
                   children: [
                     ExploreHome(scaffoldKey: scaffoldKey),
                     HottestHome(hottestController: hottestController),
@@ -197,7 +195,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
 class _BottomTab extends StatelessWidget {
   const _BottomTab({
-    super.key,
     required this.indexMatcher,
     required this.currentIndex,
     required this.icon,

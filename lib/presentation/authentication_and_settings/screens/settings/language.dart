@@ -1,7 +1,6 @@
 import '../../../../application/authentication_and_settings/cubit/language_setting_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/alt_unused/notification_chip.dart';
 import '../../../shared/overlays/notification_chip.dart';
 import '../../../shared/selection_groups/setting_tile.dart';
 import '../../../shared/selection_groups/setting_tile_group.dart';

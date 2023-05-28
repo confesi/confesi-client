@@ -1,9 +1,7 @@
 import '../../../constants/local_storage_keys.dart';
 import '../../../core/clients/api_client.dart';
 
-import '../../../core/alt_unused/http_client.dart';
 import 'package:dartz/dartz.dart';
-import 'package:hive/hive.dart';
 
 import '../../../core/clients/hive_client.dart';
 import '../../../core/results/failures.dart';

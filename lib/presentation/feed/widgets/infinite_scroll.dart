@@ -1,7 +1,6 @@
 import '../../shared/behaviours/overscroll.dart';
 import '../../shared/indicators/loading_cupertino.dart';
 import 'post_tile.dart';
-import '../../shared/indicators/loading_material.dart';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

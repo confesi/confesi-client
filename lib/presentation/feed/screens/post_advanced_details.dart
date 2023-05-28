@@ -1,7 +1,5 @@
 import 'package:Confessi/core/utils/sizing/width_fraction.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_rotation.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_scale.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:pie_chart/pie_chart.dart';
 
 import 'package:scrollable/exports.dart';

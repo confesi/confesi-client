@@ -1,8 +1,4 @@
-import 'package:Confessi/core/services/local_data.dart';
-import 'package:Confessi/dependency_injection.dart';
 import 'package:Confessi/presentation/create_post/overlays/confetti_blaster.dart';
-import 'package:confetti/confetti.dart';
-import 'package:flutter/services.dart';
 import 'package:scrollable/exports.dart';
 import '../../../application/create_post/cubit/post_cubit.dart';
 import '../../shared/behaviours/nav_blocker.dart';
