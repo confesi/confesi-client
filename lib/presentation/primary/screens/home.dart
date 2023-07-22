@@ -1,8 +1,8 @@
 import 'package:Confessi/constants/shared/enums.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 import '../../../application/shared/cubit/share_cubit.dart';
 import '../../leaderboard/screens/home.dart';
@@ -79,9 +79,18 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               tapType: TapType.lightImpact,
               // onTap: () => Navigator.pushNamed(context, "/create_post"),
               onTap: () async {
+                await FirebaseAuth.instance.signOut();
                 await FirebaseAuth.instance
-                    .createUserWithEmailAndPassword(email: "client3@example.com", password: "password");
-                print(await FirebaseAuth.instance.currentUser!.getIdToken(true));
+                    .signInWithEmailAndPassword(email: "johnwickwashere@uvic.ca", password: "mysecurepw\$");
+                // .createUserWithEmailAndPassword(email: "user1@example.edu", password: "mysecurepw");
+                // print(await FirebaseAuth.instance.currentUser!.getIdToken(true));
+                // print((await FirebaseAuth.instance.currentUser!.getIdTokenResult(true)).claims);
+                // print((await FirebaseAuth.instance.currentUser!.getIdToken(true)));
+                final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+                _firebaseMessaging.getToken().then((String? token) {
+                  assert(token != null);
+                  print("Push Messaging token: $token");
+                });
               },
               child: InitTransform(
                 // delayDurationInMilliseconds: 250,
