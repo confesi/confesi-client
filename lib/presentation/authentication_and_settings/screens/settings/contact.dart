@@ -1,5 +1,4 @@
 import '../../../../application/authentication_and_settings/cubit/contact_setting_cubit.dart';
-import '../../../../core/alt_unused/notification_chip.dart';
 import '../../../shared/overlays/notification_chip.dart';
 import '../../../shared/selection_groups/setting_tile.dart';
 import '../../../shared/selection_groups/setting_tile_group.dart';
@@ -9,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrollable/exports.dart';
 
-import '../../../../constants/authentication_and_settings/text.dart';
 import '../../../../core/styles/typography.dart';
 import '../../../../core/utils/sizing/bottom_safe_area.dart';
 import '../../../shared/layout/appbar.dart';

@@ -2,7 +2,6 @@ import '../../../application/shared/cubit/website_launcher_cubit.dart';
 import '../../../core/styles/typography.dart';
 import '../../../core/utils/sizing/width_fraction.dart';
 import '../button_touch_effects/touchable_opacity.dart';
-import '../button_touch_effects/touchable_scale.dart';
 import '../indicators/loading_cupertino.dart';
 import 'cached_online_image.dart';
 import 'package:any_link_preview/any_link_preview.dart';

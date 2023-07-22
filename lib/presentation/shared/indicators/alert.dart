@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
 import 'loading_cupertino.dart';
-import 'loading_material.dart';
 
 class AlertIndicator extends StatelessWidget {
   const AlertIndicator({

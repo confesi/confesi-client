@@ -1,6 +1,4 @@
 import 'package:Confessi/core/clients/hive_client.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:hive/hive.dart';
 
 import '../../../core/results/exceptions.dart';
 import '../../../core/results/successes.dart';

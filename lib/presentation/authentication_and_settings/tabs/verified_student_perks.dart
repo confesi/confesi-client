@@ -52,9 +52,9 @@ class _VerifiedStudentPerksTabState extends State<VerifiedStudentPerksTab> {
                       distancebetweenHapticEffectsDuringScroll: 50,
                       hapticEffectAtEdge: HapticType.medium,
                       controller: ScrollController(),
-                      child: Column(
+                      child: const Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
+                        children: [
                           SizedBox(height: 15),
                           PerkSlideshow(),
                         ],

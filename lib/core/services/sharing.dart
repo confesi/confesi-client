@@ -1,9 +1,7 @@
 import 'dart:io';
 
 import 'package:Confessi/core/styles/typography.dart';
-import 'package:Confessi/core/utils/sizing/width_fraction.dart';
 import 'package:dartz/dartz.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
@@ -41,12 +39,12 @@ class Sharing {
       child: Stack(
         children: [
           Container(
-            margin: const EdgeInsets.symmetric(vertical: 60, horizontal: 20),
+            margin: const EdgeInsets.symmetric(vertical: 80, horizontal: 20),
             padding: const EdgeInsets.all(13),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.background,
               border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
-              borderRadius: const BorderRadius.all(Radius.circular(10)),
+              borderRadius: const BorderRadius.all(Radius.circular(5)),
               boxShadow: [
                 BoxShadow(
                   color: Theme.of(context).colorScheme.shadow.withOpacity(0.5),

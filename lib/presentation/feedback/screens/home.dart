@@ -5,7 +5,6 @@ import '../../../constants/feedback/text.dart';
 import '../../shared/behaviours/init_scale.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/buttons/pop.dart';
-import '../../shared/layout/scrollable_area.dart';
 import '../../shared/textfields/expandable_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

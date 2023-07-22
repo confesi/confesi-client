@@ -1,34 +1,41 @@
 {
   "project_info": {
-    "project_number": "1961130959",
-    "project_id": "confesi-2b9b9",
-    "storage_bucket": "confesi-2b9b9.appspot.com"
+    "project_number": "136477109824",
+    "project_id": "confesi-server-dev",
+    "storage_bucket": "confesi-server-dev.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1961130959:android:d304830f370856776470ba",
+        "mobilesdk_app_id": "1:136477109824:android:db0a1b5d644cfa7c23b9a5",
         "android_client_info": {
-          "package_name": "com.example.flutter_mobile_client"
+          "package_name": "com.confesi.app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1961130959-upvp3hmclks6ds9mt3odd23ac4qpat59.apps.googleusercontent.com",
+          "client_id": "136477109824-72tk4nhnbopaboegpa7c50f4ohi6uovb.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCVvD8kV8PW-zsJcUWFE8NQfLTYubmwhZo"
+          "current_key": "AIzaSyDuW_NNrzhaQ5M4TjhxVSz6LgeNJRAQuQk"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1961130959-upvp3hmclks6ds9mt3odd23ac4qpat59.apps.googleusercontent.com",
+              "client_id": "136477109824-72tk4nhnbopaboegpa7c50f4ohi6uovb.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "136477109824-72l0bmk336r530cno1gs9cn8dmrgdf4b.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.confesi.app"
+              }
             }
           ]
         }

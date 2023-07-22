@@ -1,12 +1,5 @@
-import '../../../core/utils/sizing/height_fraction.dart';
-import '../widgets/settings/perk_slideshow.dart';
-import '../../shared/behaviours/keyboard_dismiss.dart';
-import '../../shared/overlays/info_sheet.dart';
-import '../../shared/overlays/info_sheet_with_action.dart';
-import '../../shared/text/link.dart';
 import '../../shared/textfields/bulge_textfield.dart';
 
-import '../../shared/button_touch_effects/touchable_opacity.dart';
 import '../../shared/buttons/pop.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import 'package:flutter/cupertino.dart';

@@ -1,37 +1,37 @@
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/cupertino.dart' as f;
+import 'package:google_fonts/google_fonts.dart' as gf;
 
 /// Faded text style - meant for decorative background numbers or display values. Not for primary reading.
-var kFaded = GoogleFonts.inter(
-  textStyle: const TextStyle(fontSize: 105, fontWeight: FontWeight.bold),
+var kFaded = gf.GoogleFonts.inter(
+  textStyle: const f.TextStyle(fontSize: 105, fontWeight: f.FontWeight.bold),
 );
 
 /// Faded text style - meant for decorative background numbers or display values. Not for primary reading.
-var kSplashScreenLogo = GoogleFonts.arimaMadurai(
-  textStyle: const TextStyle(fontSize: 105, fontWeight: FontWeight.bold),
+var kSplashScreenLogo = gf.GoogleFonts.arimaMadurai(
+  textStyle: const f.TextStyle(fontSize: 105, fontWeight: f.FontWeight.bold),
 );
 
 /// Large text style - meant for display, but with sans serif style.
-var kDisplay1 = GoogleFonts.inter(
-  textStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 26),
+var kDisplay1 = gf.GoogleFonts.inter(
+  textStyle: const f.TextStyle(fontWeight: f.FontWeight.w600, fontSize: 26),
 );
 
 /// Very big text style.
-var kDisplay2 = GoogleFonts.inter(
-  textStyle: const TextStyle(fontSize: 34, fontWeight: FontWeight.w600),
+var kDisplay2 = gf.GoogleFonts.inter(
+  textStyle: const f.TextStyle(fontSize: 34, fontWeight: f.FontWeight.w600),
 );
 
 /// Big text style.
-var kTitle = GoogleFonts.inter(
-  textStyle: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
+var kTitle = gf.GoogleFonts.inter(
+  textStyle: const f.TextStyle(fontSize: 17, fontWeight: f.FontWeight.w600),
 );
 
 /// Normal text style.
-var kBody = GoogleFonts.inter(
-  textStyle: const TextStyle(fontSize: 17, fontWeight: FontWeight.normal),
+var kBody = gf.GoogleFonts.inter(
+  textStyle: const f.TextStyle(fontSize: 17, fontWeight: f.FontWeight.normal),
 );
 
 /// Details/small text style.
-var kDetail = GoogleFonts.inter(
-  textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.normal),
+var kDetail = gf.GoogleFonts.inter(
+  textStyle: const f.TextStyle(fontSize: 15, fontWeight: f.FontWeight.normal),
 );

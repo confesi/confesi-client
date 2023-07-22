@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>1961130959-i899428q83cccd3iblg476eu9ekoic09.apps.googleusercontent.com</string>
+	<string>136477109824-72l0bmk336r530cno1gs9cn8dmrgdf4b.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.1961130959-i899428q83cccd3iblg476eu9ekoic09</string>
+	<string>com.googleusercontent.apps.136477109824-72l0bmk336r530cno1gs9cn8dmrgdf4b</string>
 	<key>API_KEY</key>
-	<string>AIzaSyDSPsnrXC0YsiUpSdTjRjl2Bmch7fD9lXc</string>
+	<string>AIzaSyDu0pfSj4Sb_TvbTETfgwt22FS21Es0YNI</string>
 	<key>GCM_SENDER_ID</key>
-	<string>1961130959</string>
+	<string>136477109824</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.example.flutterMobileClient</string>
 	<key>PROJECT_ID</key>
-	<string>confesi-2b9b9</string>
+	<string>confesi-server-dev</string>
 	<key>STORAGE_BUCKET</key>
-	<string>confesi-2b9b9.appspot.com</string>
+	<string>confesi-server-dev.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:1961130959:ios:dd7cc0611ea3269d6470ba</string>
+	<string>1:136477109824:ios:74f41d419b8f6e9423b9a5</string>
 </dict>
 </plist>

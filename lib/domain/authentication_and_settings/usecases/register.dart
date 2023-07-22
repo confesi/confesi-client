@@ -1,6 +1,5 @@
 import '../../../core/clients/api_client.dart';
 
-import '../../../core/alt_unused/http_client.dart';
 import '../../../core/results/successes.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';

@@ -3,9 +3,7 @@ import 'package:scrollable/exports.dart';
 
 import '../../../../core/utils/sizing/height_fraction.dart';
 import 'item_row_tile.dart';
-import '../../../shared/behaviours/simulated_bottom_safe_area.dart';
 import '../../../shared/layout/line.dart';
-import '../../../shared/layout/scrollable_area.dart';
 import '../../../shared/textfields/bulge_textfield.dart';
 import 'package:flutter/material.dart';
 
@@ -61,7 +59,7 @@ class __SheetBodyState extends State<_SheetBody> {
           padding: EdgeInsets.only(
               left: 30,
               right: 30,
-              top: textFieldFocused ? MediaQueryData.fromWindow(WidgetsBinding.instance.window).padding.top : 0),
+              top: textFieldFocused ? MediaQueryData.fromView(WidgetsBinding.instance.window).padding.top : 0),
           child: Column(
             children: [
               Expanded(

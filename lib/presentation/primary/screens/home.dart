@@ -1,7 +1,8 @@
 import 'package:Confessi/constants/shared/enums.dart';
-import 'package:Confessi/core/services/sharing.dart';
 import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
 import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 import '../../../application/shared/cubit/share_cubit.dart';
 import '../../leaderboard/screens/home.dart';
@@ -76,7 +77,21 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
             floatingActionButton: TouchableScale(
               tapType: TapType.lightImpact,
-              onTap: () => Navigator.pushNamed(context, "/create_post"),
+              // onTap: () => Navigator.pushNamed(context, "/create_post"),
+              onTap: () async {
+                await FirebaseAuth.instance.signOut();
+                await FirebaseAuth.instance
+                    .signInWithEmailAndPassword(email: "johnwickwashere@uvic.ca", password: "mysecurepw\$");
+                // .createUserWithEmailAndPassword(email: "user1@example.edu", password: "mysecurepw");
+                // print(await FirebaseAuth.instance.currentUser!.getIdToken(true));
+                // print((await FirebaseAuth.instance.currentUser!.getIdTokenResult(true)).claims);
+                // print((await FirebaseAuth.instance.currentUser!.getIdToken(true)));
+                final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+                _firebaseMessaging.getToken().then((String? token) {
+                  assert(token != null);
+                  print("Push Messaging token: $token");
+                });
+              },
               child: InitTransform(
                 // delayDurationInMilliseconds: 250,
                 child: Container(
@@ -109,9 +124,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             body: Container(
               color: Theme.of(context).colorScheme.background,
               child: Scaffold(
-                body: TabBarView(
-                  physics: const NeverScrollableScrollPhysics(),
-                  controller: tabController,
+                body: IndexedStack(
+                  index: currentIndex,
                   children: [
                     ExploreHome(scaffoldKey: scaffoldKey),
                     HottestHome(hottestController: hottestController),
@@ -197,7 +211,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
 class _BottomTab extends StatelessWidget {
   const _BottomTab({
-    super.key,
     required this.indexMatcher,
     required this.currentIndex,
     required this.icon,

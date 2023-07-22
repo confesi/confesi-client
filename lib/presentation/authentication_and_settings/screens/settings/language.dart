@@ -1,7 +1,6 @@
 import '../../../../application/authentication_and_settings/cubit/language_setting_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/alt_unused/notification_chip.dart';
 import '../../../shared/overlays/notification_chip.dart';
 import '../../../shared/selection_groups/setting_tile.dart';
 import '../../../shared/selection_groups/setting_tile_group.dart';
@@ -71,17 +70,6 @@ class _LanguageScreenState extends State<LanguageScreen> {
                               leftIcon: CupertinoIcons.map,
                               text: "System settings",
                               onTap: () => context.read<LanguageSettingCubit>().openDeviceSettings(),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 10),
-                        SettingTileGroup(
-                          text: "Want another language added?",
-                          settingTiles: [
-                            SettingTile(
-                              leftIcon: CupertinoIcons.chat_bubble,
-                              text: "Give us feedback",
-                              onTap: () => Navigator.of(context).pushNamed("/feedback"),
                             ),
                           ],
                         ),

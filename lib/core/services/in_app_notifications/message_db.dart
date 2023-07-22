@@ -5,7 +5,6 @@ import 'package:drift/native.dart';
 
 import 'message_table.dart';
 
-import 'message_db.dart';
 import 'package:drift/drift.dart';
 
 part 'message_db.g.dart';

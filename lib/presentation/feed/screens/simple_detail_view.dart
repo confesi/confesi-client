@@ -1,6 +1,4 @@
-import 'package:Confessi/application/shared/cubit/share_cubit.dart';
 import 'package:Confessi/constants/feed/enums.dart';
-import 'package:Confessi/presentation/feed/widgets/comment_tile.dart';
 import 'package:Confessi/presentation/feed/widgets/simple_comment_root_group.dart';
 import 'package:Confessi/presentation/feed/widgets/simple_comment_tile.dart';
 import 'package:Confessi/presentation/shared/behaviours/one_theme_status_bar.dart';
@@ -14,10 +12,8 @@ import 'package:screenshot_callback/screenshot_callback.dart';
 import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../../../application/shared/cubit/maps_cubit.dart';
 import '../../../constants/feed/general.dart';
-import '../../../core/services/deep_links.dart';
 import '../../../core/services/sharing.dart';
 import '../../../core/styles/typography.dart';
-import '../../../dependency_injection.dart';
 import '../../shared/buttons/option.dart';
 import '../../shared/buttons/simple_text.dart';
 import '../../shared/overlays/button_options_sheet.dart';

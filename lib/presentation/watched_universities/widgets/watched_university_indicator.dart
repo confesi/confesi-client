@@ -1,6 +1,5 @@
 import '../../../core/styles/typography.dart';
 import '../../shared/button_touch_effects/touchable_opacity.dart';
-import '../../shared/button_touch_effects/touchable_scale.dart';
 import 'package:flutter/material.dart';
 
 enum WatchedIndicatorType {

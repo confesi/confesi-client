@@ -1,4 +1,3 @@
-import '../../../../generated/l10n.dart';
 import 'perk_tile.dart';
 import '../../../primary/widgets/scroll_dots.dart';
 import 'package:flutter/material.dart';

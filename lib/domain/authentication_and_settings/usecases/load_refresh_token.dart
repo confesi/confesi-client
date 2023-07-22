@@ -1,7 +1,5 @@
 import 'package:Confessi/data/authentication_and_settings/repositories/authentication_repository_concrete.dart';
 
-import '../../../constants/enums_that_are_local_keys.dart';
-import '../../../data/authentication_and_settings/repositories/prefs_repository_concrete.dart';
 import '../entities/refresh_token.dart';
 import 'package:dartz/dartz.dart';
 
@@ -20,7 +18,7 @@ class LoadRefreshToken implements Usecase<TokenType, NoParams> {
     return failureOrRefreshToken.fold(
       (failure) {
         // User doesn't have a refresh token already (new user)
-        if (failure is EmptyTokenFailure) {
+        if (failure is EmptyDataFailure) {
           return Right(NoToken());
           // Something went wrong that we didn't expect when pulling from the local db
         } else {

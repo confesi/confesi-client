@@ -2,18 +2,13 @@ import 'package:Confessi/domain/authentication_and_settings/usecases/curvy.dart'
 import 'package:Confessi/domain/authentication_and_settings/usecases/shake_for_feedback.dart';
 import 'package:Confessi/domain/authentication_and_settings/usecases/text_size.dart';
 import 'package:Confessi/presentation/shared/overlays/notification_chip.dart';
-import 'package:dartz/dartz.dart';
 
-import '../../../constants/authentication_and_settings/enums.dart';
-import '../../../core/results/failures.dart';
 import '../../../domain/authentication_and_settings/usecases/home_viewed.dart';
 
 import '../../../constants/local_storage_keys.dart';
 import '../../../core/utils/tokens/user_id_from_jwt.dart';
 import '../../../domain/authentication_and_settings/entities/refresh_token.dart';
 import '../../../domain/authentication_and_settings/entities/user.dart';
-import '../../../core/alt_unused/silent_authentication.dart';
-import '../../../core/alt_unused/notification_chip.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';

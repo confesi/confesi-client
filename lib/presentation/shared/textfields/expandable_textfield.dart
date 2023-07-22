@@ -2,7 +2,6 @@ import 'package:flutter/services.dart';
 
 import '../behaviours/init_scale.dart';
 import '../button_touch_effects/touchable_opacity.dart';
-import '../button_touch_effects/touchable_scale.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

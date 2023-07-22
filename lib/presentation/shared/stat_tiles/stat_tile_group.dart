@@ -1,6 +1,4 @@
 import 'stat_tile_item.dart';
-import '../behaviours/init_opacity.dart';
-import '../behaviours/init_scale.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

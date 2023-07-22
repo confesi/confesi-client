@@ -2,17 +2,12 @@ import 'package:Confessi/core/utils/sizing/bottom_safe_area.dart';
 import 'package:Confessi/presentation/shared/text/disclaimer_text.dart';
 import 'package:scrollable/exports.dart';
 
-import '../../../../constants/enums_that_are_local_keys.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../application/authentication_and_settings/cubit/user_cubit.dart';
-import '../../../../constants/authentication_and_settings/text.dart';
 import '../../../../core/styles/typography.dart';
 import '../../create_post/widgets/faculty_picker_sheet.dart';
-import '../../shared/behaviours/simulated_bottom_safe_area.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/layout/appbar.dart';
 import '../../shared/selection_groups/setting_tile.dart';

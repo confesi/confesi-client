@@ -1,7 +1,6 @@
 import 'package:Confessi/data/create_post/repositories/draft_repository_concrete.dart';
 import 'package:Confessi/domain/create_post/entities/draft_post_entity.dart';
 import 'package:dartz/dartz.dart';
-import 'package:equatable/equatable.dart';
 
 import '../../../core/results/failures.dart';
 import '../../../core/usecases/single_usecase.dart';

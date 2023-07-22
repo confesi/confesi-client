@@ -1,7 +1,3 @@
-import 'package:Confessi/application/authentication_and_settings/cubit/user_cubit.dart';
-import 'package:Confessi/constants/enums_that_are_local_keys.dart';
-import 'package:Confessi/presentation/shared/other/widget_or_nothing.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/styles/typography.dart';
 import '../../../core/utils/sizing/height_fraction.dart';
@@ -9,7 +5,6 @@ import '../../../core/utils/sizing/width_breakpoint_fraction.dart';
 import '../behaviours/init_scale.dart';
 import '../buttons/simple_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import '../layout/swipebar.dart';
 

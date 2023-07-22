@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../constants/authentication_and_settings/text.dart';
 
 /// Gets the app's appearance name.
 ///

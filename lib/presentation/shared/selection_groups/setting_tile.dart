@@ -1,7 +1,6 @@
 import 'package:Confessi/application/authentication_and_settings/cubit/user_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../button_touch_effects/touchable_scale.dart';
 
 import '../../../core/styles/typography.dart';
 import '../button_touch_effects/touchable_opacity.dart';
