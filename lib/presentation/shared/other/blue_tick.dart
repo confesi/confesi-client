@@ -1,5 +1,5 @@
-import 'package:Confessi/presentation/shared/button_touch_effects/touchable_opacity.dart';
-import 'package:Confessi/presentation/shared/overlays/info_sheet_with_action.dart';
+import '../button_touch_effects/touchable_opacity.dart';
+import '../overlays/info_sheet_with_action.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

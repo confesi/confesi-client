@@ -1,5 +1,4 @@
-import 'package:Confessi/core/clients/hive_client.dart';
-
+import '../../../core/clients/hive_client.dart';
 import '../../../core/results/exceptions.dart';
 import '../../../core/results/successes.dart';
 import '../../../core/utils/enums/enum_name.dart';

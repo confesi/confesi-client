@@ -1,16 +1,15 @@
 // TODO: outdated; old style, complex ui
 
-import 'package:Confessi/presentation/shared/indicators/alert.dart';
-
-import '../../../constants/shared/error_messages.dart';
-import '../../shared/indicators/loading_cupertino.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../application/feed/cubit/trending_cubit.dart';
 import '../../../constants/feed/enums.dart';
 import '../../../constants/feed/general.dart';
+import '../../../constants/shared/error_messages.dart';
+import '../../shared/indicators/alert.dart';
+import '../../shared/indicators/loading_cupertino.dart';
 import '../../shared/overlays/snackbar.dart';
-import '../../../application/feed/cubit/trending_cubit.dart';
 import '../widgets/infinite_scroll.dart';
 
 class ExploreTrending extends StatefulWidget {

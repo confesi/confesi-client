@@ -1,4 +1,4 @@
-import 'package:Confessi/domain/create_post/entities/draft_post_entity.dart';
+import '../../../domain/create_post/entities/draft_post_entity.dart';
 
 class DraftPostModel extends DraftPostEntity {
   const DraftPostModel({

@@ -1,7 +1,7 @@
-import 'package:Confessi/domain/create_post/entities/draft_post_entity.dart';
-import 'package:Confessi/domain/create_post/usecases/delete_draft.dart';
-import 'package:Confessi/domain/create_post/usecases/get_draft.dart';
-import 'package:Confessi/domain/create_post/usecases/save_draft.dart';
+import '../../../domain/create_post/entities/draft_post_entity.dart';
+import '../../../domain/create_post/usecases/delete_draft.dart';
+import '../../../domain/create_post/usecases/get_draft.dart';
+import '../../../domain/create_post/usecases/save_draft.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 

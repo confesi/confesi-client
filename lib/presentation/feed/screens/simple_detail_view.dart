@@ -1,7 +1,7 @@
-import 'package:Confessi/constants/feed/enums.dart';
-import 'package:Confessi/presentation/feed/widgets/simple_comment_root_group.dart';
-import 'package:Confessi/presentation/feed/widgets/simple_comment_tile.dart';
-import 'package:Confessi/presentation/shared/behaviours/one_theme_status_bar.dart';
+import '../../../constants/feed/enums.dart';
+import '../widgets/simple_comment_root_group.dart';
+import '../widgets/simple_comment_tile.dart';
+import '../../shared/behaviours/one_theme_status_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

@@ -1,4 +1,4 @@
-import 'package:Confessi/core/utils/sizing/bottom_safe_area.dart';
+import '../../../core/utils/sizing/bottom_safe_area.dart';
 import 'package:scrollable/exports.dart';
 
 import '../../../constants/feedback/text.dart';

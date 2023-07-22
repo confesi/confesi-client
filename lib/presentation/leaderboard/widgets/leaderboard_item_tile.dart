@@ -1,4 +1,4 @@
-import 'package:Confessi/core/utils/numbers/add_commas_to_number.dart';
+import '../../../core/utils/numbers/add_commas_to_number.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../application/authentication_and_settings/cubit/user_cubit.dart';

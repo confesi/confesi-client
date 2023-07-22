@@ -1,4 +1,4 @@
-import 'package:Confessi/data/create_post/repositories/draft_repository_concrete.dart';
+import '../../../data/create_post/repositories/draft_repository_concrete.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 

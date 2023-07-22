@@ -1,5 +1,5 @@
-import 'package:Confessi/application/shared/cubit/maps_cubit.dart';
-import 'package:Confessi/core/services/notifications.dart';
+import 'application/shared/cubit/maps_cubit.dart';
+import 'core/services/notifications.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';

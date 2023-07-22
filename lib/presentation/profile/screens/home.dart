@@ -1,5 +1,5 @@
-import 'package:Confessi/core/utils/sizing/height_fraction.dart';
-import 'package:Confessi/presentation/shared/stat_tiles/stat_tile_item.dart';
+import '../../../core/utils/sizing/height_fraction.dart';
+import '../../shared/stat_tiles/stat_tile_item.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../../application/authentication_and_settings/cubit/user_cubit.dart';

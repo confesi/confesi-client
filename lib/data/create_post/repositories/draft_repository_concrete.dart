@@ -1,11 +1,11 @@
-import 'package:Confessi/domain/create_post/usecases/save_draft.dart';
+import '../../../domain/create_post/usecases/save_draft.dart';
 import 'package:dartz/dartz.dart';
 
-import 'package:Confessi/domain/create_post/entities/draft_post_entity.dart';
+import '../../../domain/create_post/entities/draft_post_entity.dart';
 
-import 'package:Confessi/core/results/successes.dart';
+import '../../../core/results/successes.dart';
 
-import 'package:Confessi/core/results/failures.dart';
+import '../../../core/results/failures.dart';
 
 import '../../../core/network/connection_info.dart';
 import '../../../domain/create_post/repositories/draft_repository_interface.dart';

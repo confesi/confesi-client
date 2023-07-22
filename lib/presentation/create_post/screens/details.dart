@@ -1,4 +1,4 @@
-import 'package:Confessi/presentation/create_post/overlays/confetti_blaster.dart';
+import '../overlays/confetti_blaster.dart';
 import 'package:scrollable/exports.dart';
 import '../../../application/create_post/cubit/post_cubit.dart';
 import '../../shared/behaviours/nav_blocker.dart';

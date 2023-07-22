@@ -1,6 +1,6 @@
-import 'package:Confessi/presentation/shared/buttons/option.dart';
-import 'package:Confessi/presentation/shared/other/zoomable.dart';
-import 'package:Confessi/presentation/shared/overlays/button_options_sheet.dart';
+import '../../shared/buttons/option.dart';
+import '../../shared/other/zoomable.dart';
+import '../../shared/overlays/button_options_sheet.dart';
 
 import '../tabs/trending_feed.dart';
 import '../../shared/buttons/simple_text.dart';

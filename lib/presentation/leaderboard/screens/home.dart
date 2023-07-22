@@ -1,4 +1,4 @@
-import 'package:Confessi/domain/shared/entities/infinite_scroll_indexable.dart';
+import '../../../domain/shared/entities/infinite_scroll_indexable.dart';
 
 import '../widgets/leaderboard_item_tile.dart';
 import '../../shared/button_touch_effects/touchable_opacity.dart';

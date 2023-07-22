@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
+import 'package:drift/drift.dart' as drift;
 
 import 'message_db.dart';
-import 'package:drift/drift.dart' as drift;
 
 // todo: ALWAYS USE A SINGLE VERSION OF THIS CLASS TO AVOID RACE CONDITIONS:
 // todo: REMOVE `driftRuntimeOptions.dontWarnAboutMultipleDatabases = true`

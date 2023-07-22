@@ -1,6 +1,6 @@
-import 'package:Confessi/constants/enums_that_are_local_keys.dart';
-import 'package:Confessi/dependency_injection.dart';
-import 'package:Confessi/presentation/shared/overlays/text_block_overlay.dart';
+import '../../../constants/enums_that_are_local_keys.dart';
+import '../../../dependency_injection.dart';
+import '../../shared/overlays/text_block_overlay.dart';
 import 'package:dartz/dartz.dart' as dartz;
 
 import '../../../constants/shared/dev.dart';

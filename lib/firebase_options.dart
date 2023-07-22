@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDuW_NNrzhaQ5M4TjhxVSz6LgeNJRAQuQk',
-    appId: '1:136477109824:android:59ee474b57b0032623b9a5',
+    appId: '1:136477109824:android:7cee42e581a0aaef23b9a5',
     messagingSenderId: '136477109824',
     projectId: 'confesi-server-dev',
     storageBucket: 'confesi-server-dev.appspot.com',
@@ -59,7 +59,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyDu0pfSj4Sb_TvbTETfgwt22FS21Es0YNI',
-    appId: '1:136477109824:ios:21dcf35ded8876b323b9a5',
+    appId: '1:136477109824:ios:81ebae5aa4c5b48c23b9a5',
     messagingSenderId: '136477109824',
     projectId: 'confesi-server-dev',
     storageBucket: 'confesi-server-dev.appspot.com',

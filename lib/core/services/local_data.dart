@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
-import 'package:Confessi/core/results/failures.dart';
-import 'package:Confessi/core/results/successes.dart';
+import '../results/failures.dart';
+import '../results/successes.dart';
 import 'package:dartz/dartz.dart';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';

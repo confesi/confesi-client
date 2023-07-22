@@ -1,6 +1,6 @@
-import 'package:Confessi/constants/shared/enums.dart';
-import 'package:Confessi/presentation/shared/behaviours/init_transform.dart';
-import 'package:Confessi/presentation/shared/button_touch_effects/touchable_scale.dart';
+import '../../../constants/shared/enums.dart';
+import '../../shared/behaviours/init_transform.dart';
+import '../../shared/button_touch_effects/touchable_scale.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 

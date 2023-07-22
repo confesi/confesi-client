@@ -1,7 +1,8 @@
-import '../../../domain/shared/usecases/share_content.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+
+import '../../../domain/shared/usecases/share_content.dart';
 
 part 'share_state.dart';
 

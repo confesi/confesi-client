@@ -1,5 +1,5 @@
-import 'package:Confessi/presentation/authentication_and_settings/screens/settings/feedback.dart';
-import 'package:Confessi/presentation/authentication_and_settings/screens/settings/text_size.dart';
+import '../../presentation/authentication_and_settings/screens/settings/feedback.dart';
+import '../../presentation/authentication_and_settings/screens/settings/text_size.dart';
 
 import '../../presentation/authentication_and_settings/screens/authentication/registration.dart';
 import '../../presentation/authentication_and_settings/screens/settings/curvy.dart';

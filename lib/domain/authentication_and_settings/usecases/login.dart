@@ -1,10 +1,9 @@
-import '../../../core/clients/api_client.dart';
-
-import '../../../core/results/successes.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
+import '../../../core/clients/api_client.dart';
 import '../../../core/results/failures.dart';
+import '../../../core/results/successes.dart';
 import '../../../core/usecases/single_usecase.dart';
 import '../../../data/authentication_and_settings/repositories/authentication_repository_concrete.dart';
 

@@ -1,5 +1,5 @@
-import 'package:Confessi/core/utils/sizing/bottom_safe_area.dart';
-import 'package:Confessi/presentation/shared/text/disclaimer_text.dart';
+import '../../../core/utils/sizing/bottom_safe_area.dart';
+import '../../shared/text/disclaimer_text.dart';
 import 'package:scrollable/exports.dart';
 
 

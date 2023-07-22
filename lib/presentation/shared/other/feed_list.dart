@@ -1,4 +1,4 @@
-import 'package:Confessi/core/results/failures.dart';
+import '../../../core/results/failures.dart';
 import 'package:dartz/dartz.dart' as dartz;
 
 import '../../../domain/shared/entities/infinite_scroll_indexable.dart';

@@ -1,5 +1,5 @@
-import 'package:Confessi/domain/create_post/entities/draft_post_entity.dart';
-import 'package:Confessi/domain/create_post/usecases/save_draft.dart';
+import '../entities/draft_post_entity.dart';
+import '../usecases/save_draft.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../../core/results/failures.dart';

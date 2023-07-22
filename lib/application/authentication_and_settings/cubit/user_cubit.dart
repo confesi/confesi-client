@@ -1,7 +1,7 @@
-import 'package:Confessi/domain/authentication_and_settings/usecases/curvy.dart';
-import 'package:Confessi/domain/authentication_and_settings/usecases/shake_for_feedback.dart';
-import 'package:Confessi/domain/authentication_and_settings/usecases/text_size.dart';
-import 'package:Confessi/presentation/shared/overlays/notification_chip.dart';
+import '../../../domain/authentication_and_settings/usecases/curvy.dart';
+import '../../../domain/authentication_and_settings/usecases/shake_for_feedback.dart';
+import '../../../domain/authentication_and_settings/usecases/text_size.dart';
+import '../../../presentation/shared/overlays/notification_chip.dart';
 
 import '../../../domain/authentication_and_settings/usecases/home_viewed.dart';
 

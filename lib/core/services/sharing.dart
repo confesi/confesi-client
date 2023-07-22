@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:Confessi/core/styles/typography.dart';
+import '../styles/typography.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';

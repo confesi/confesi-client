@@ -1,9 +1,9 @@
-import '../../../core/results/successes.dart';
 import 'package:dartz/dartz.dart';
+import 'package:map_launcher/map_launcher.dart';
 
 import '../../../core/results/failures.dart';
+import '../../../core/results/successes.dart';
 import '../../../core/usecases/single_usecase.dart';
-import 'package:map_launcher/map_launcher.dart';
 
 class LaunchMap implements Usecase<Success, MapParams> {
   @override

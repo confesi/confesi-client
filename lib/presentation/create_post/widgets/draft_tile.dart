@@ -1,4 +1,4 @@
-import 'package:Confessi/presentation/shared/other/widget_or_nothing.dart';
+import '../../shared/other/widget_or_nothing.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';

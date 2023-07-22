@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:dartz/dartz.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 
@@ -37,8 +38,8 @@ class DeepLinkService {
   static const imageUri =
       "https://matthewtrent.me/assets/biz-low-res.png"; // todo: replace with real image (perhaps a post preview?)
   static const linkDescription = "Check it out on the Confesi app";
-  static const androidPackageName = "com.example.flutter_mobile_client";
-  static const iOSBundleId = "com.example.flutterMobileClient";
+  static const androidPackageName = "com.confesi.app";
+  static const iOSBundleId = "com.confesi.app";
   static const iOSAppStoreId = "123456789"; // TODO: change with real app store id
 
   Future<Either<String, DeepLinkFailure>> buildLink(String linkData, String mediaPreviewTitle) async {

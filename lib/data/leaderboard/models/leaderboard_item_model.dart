@@ -1,7 +1,6 @@
-import '../../shared/utils/university_full_name_converter.dart';
 import '../../../domain/leaderboard/entities/leaderboard_item.dart';
-
 import '../../shared/utils/image_path_converter.dart';
+import '../../shared/utils/university_full_name_converter.dart';
 
 class LeaderboardItemModel extends LeaderboardItem {
   const LeaderboardItemModel({

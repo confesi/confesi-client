@@ -1,12 +1,12 @@
-import 'package:Confessi/application/authentication_and_settings/cubit/user_cubit.dart';
-import 'package:Confessi/application/create_post/cubit/drafts_cubit.dart';
-import 'package:Confessi/core/utils/sizing/bottom_safe_area.dart';
-import 'package:Confessi/domain/create_post/entities/draft_post_entity.dart';
-import 'package:Confessi/presentation/create_post/widgets/draft_tile.dart';
-import 'package:Confessi/presentation/shared/indicators/alert.dart';
-import 'package:Confessi/presentation/shared/indicators/loading_cupertino.dart';
-import 'package:Confessi/presentation/shared/overlays/info_sheet.dart';
-import 'package:Confessi/presentation/shared/overlays/notification_chip.dart';
+import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
+import '../../../application/create_post/cubit/drafts_cubit.dart';
+import '../../../core/utils/sizing/bottom_safe_area.dart';
+import '../../../domain/create_post/entities/draft_post_entity.dart';
+import '../widgets/draft_tile.dart';
+import '../../shared/indicators/alert.dart';
+import '../../shared/indicators/loading_cupertino.dart';
+import '../../shared/overlays/info_sheet.dart';
+import '../../shared/overlays/notification_chip.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
