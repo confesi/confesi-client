@@ -58,13 +58,6 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
             color: Theme.of(context).colorScheme.background,
             child: Column(
               children: [
-                Zoomable(
-                  child: Image.asset(
-                    "assets/images/universities/sfu.jpeg",
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                  ),
-                ),
                 Builder(builder: (context) {
                   return AppbarLayout(
                     bottomBorder: true,

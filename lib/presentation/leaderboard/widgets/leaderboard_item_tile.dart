@@ -1,3 +1,4 @@
+import 'package:Confessi/core/utils/numbers/add_commas_to_number.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
@@ -58,7 +59,7 @@ class LeaderboardItemTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "$universityFullName / $universityAbbr",
+                  "$universityFullName • $universityAbbr",
                   style: kDetail.copyWith(
                     color: Theme.of(context).colorScheme.primary,
                   ),
@@ -66,7 +67,9 @@ class LeaderboardItemTile extends StatelessWidget {
                 ),
                 const SizedBox(height: 5),
                 Text(
-                  isPlural(hottests) ? "$hottests hottests" : "$hottests hottest",
+                  isPlural(hottests)
+                      ? "${addCommasToNumber(hottests)} hottests"
+                      : "${addCommasToNumber(hottests)} hottest",
                   style: kDetail.copyWith(
                     color: Theme.of(context).colorScheme.onSurface,
                   ),

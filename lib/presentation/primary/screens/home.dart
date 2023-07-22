@@ -34,25 +34,19 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   late TabController tabController;
   bool shakeSheetOpen = false;
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
-  late ProfileController profileController; // Controls the profile page, allows for running methods to it.
-  late HottestController hottestController; // Controls the hottests page, allows for running methods to it.
-  late SettingController settingController; // Controls the settings page, allows for running methods to it.
 
   int currentIndex = 0; // The current index of the tab open.
 
   @override
   void initState() {
     tabController = TabController(vsync: this, length: 5);
-    profileController = ProfileController();
-    hottestController = HottestController();
-    settingController = SettingController();
+
     super.initState();
   }
 
   @override
   void dispose() {
     tabController.dispose();
-    profileController.dispose();
     super.dispose();
   }
 
@@ -74,50 +68,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         onWillPop: () async => false,
         child: ThemedStatusBar(
           child: Scaffold(
-            floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-            floatingActionButton: TouchableScale(
-              tapType: TapType.lightImpact,
-              // onTap: () => Navigator.pushNamed(context, "/create_post"),
-              onTap: () async {
-                await FirebaseAuth.instance.signOut();
-                await FirebaseAuth.instance
-                    .signInWithEmailAndPassword(email: "johnwickwashere@uvic.ca", password: "mysecurepw\$");
-                // .createUserWithEmailAndPassword(email: "user1@example.edu", password: "mysecurepw");
-                // print(await FirebaseAuth.instance.currentUser!.getIdToken(true));
-                // print((await FirebaseAuth.instance.currentUser!.getIdTokenResult(true)).claims);
-                // print((await FirebaseAuth.instance.currentUser!.getIdToken(true)));
-                final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
-                _firebaseMessaging.getToken().then((String? token) {
-                  assert(token != null);
-                  print("Push Messaging token: $token");
-                });
-              },
-              child: InitTransform(
-                // delayDurationInMilliseconds: 250,
-                child: Container(
-                  padding: const EdgeInsets.all(14),
-                  margin: const EdgeInsets.only(bottom: 5),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.secondary,
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Theme.of(context).colorScheme.secondary.withOpacity(0.4),
-                        blurRadius: 20,
-                        offset: const Offset(0, 3),
-                      ),
-                    ],
-                  ),
-                  child: Icon(
-                    CupertinoIcons.add,
-                    color: Theme.of(context).colorScheme.onSecondary,
-                    size: 30,
-                  ),
-                ),
-              ),
-            ),
             drawerScrimColor: Colors.black.withOpacity(0.7),
-            drawerEnableOpenDragGesture: false,
+            drawerEnableOpenDragGesture: currentIndex == 0,
             drawer: const FeedDrawer(), // Reference to the "watched_universities" feature drawer (feed_drawer).
             resizeToAvoidBottomInset: false,
             key: scaffoldKey,
@@ -128,10 +80,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   index: currentIndex,
                   children: [
                     ExploreHome(scaffoldKey: scaffoldKey),
-                    HottestHome(hottestController: hottestController),
-                    Container(),
+                    const HottestHome(),
                     const LeaderboardScreen(),
-                    SettingsHome(settingController: settingController),
+                    Container(),
+                    const SettingsHome(),
                   ],
                 ),
                 bottomNavigationBar: Container(
@@ -146,57 +98,40 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   ),
                   child: SafeArea(
                     top: false,
-                    child: SizedBox(
-                      height: 47,
-                      child: Align(
-                        alignment: Alignment.bottomCenter,
-                        child: TabBar(
-                          onTap: (int newIndex) {
-                            HapticFeedback.selectionClick();
-                            if (newIndex == 2) {
-                              Navigator.pushNamed(context, "/create_post");
-                              tabController.animateTo(currentIndex);
-                              return;
-                            }
-                            if (currentIndex == 2 && newIndex == 2) {
-                              profileController.scrollToTop();
-                            } else if (currentIndex == 1 && newIndex == 1) {
-                              hottestController.scrollToFront();
-                            } else if (currentIndex == 4 && newIndex == 4) {
-                              settingController.scrollToTop();
-                            }
-                            setState(() => currentIndex = newIndex);
-                          },
-                          labelColor: Theme.of(context).colorScheme.secondary,
-                          indicatorSize: TabBarIndicatorSize.label,
-                          indicatorColor: Colors.transparent,
-                          controller: tabController,
-                          enableFeedback: true,
-                          tabs: [
-                            _BottomTab(
-                                indexMatcher: 0,
-                                currentIndex: currentIndex,
-                                icon: CupertinoIcons.compass,
-                                text: "Feed"),
-                            _BottomTab(
-                                indexMatcher: 1,
-                                currentIndex: currentIndex,
-                                icon: CupertinoIcons.flame,
-                                text: "Hottest"),
-                            Container(), // TODO: this allows for a blank screen
-                            _BottomTab(
-                                indexMatcher: 3,
-                                currentIndex: currentIndex,
-                                icon: CupertinoIcons.chart_bar_alt_fill,
-                                text: "Rank"),
-                            _BottomTab(
-                                indexMatcher: 4,
-                                currentIndex: currentIndex,
-                                icon: CupertinoIcons.gear,
-                                text: "Settings"),
-                          ],
+                    child: TabBar(
+                      onTap: (int newIndex) => setState(() => currentIndex = newIndex),
+                      labelColor: Theme.of(context).colorScheme.secondary,
+                      indicatorSize: TabBarIndicatorSize.label,
+                      indicatorColor: Colors.transparent,
+                      controller: tabController,
+                      enableFeedback: true,
+                      tabs: [
+                        _BottomTab(
+                          indexMatcher: 0,
+                          currentIndex: currentIndex,
+                          icon: CupertinoIcons.compass,
                         ),
-                      ),
+                        _BottomTab(
+                          indexMatcher: 1,
+                          currentIndex: currentIndex,
+                          icon: CupertinoIcons.flame,
+                        ),
+                        _BottomTab(
+                          indexMatcher: 2,
+                          currentIndex: currentIndex,
+                          icon: CupertinoIcons.chart_bar_alt_fill,
+                        ),
+                        _BottomTab(
+                          indexMatcher: 3,
+                          currentIndex: currentIndex,
+                          icon: CupertinoIcons.bell,
+                        ),
+                        _BottomTab(
+                          indexMatcher: 4,
+                          currentIndex: currentIndex,
+                          icon: CupertinoIcons.gear,
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -214,12 +149,10 @@ class _BottomTab extends StatelessWidget {
     required this.indexMatcher,
     required this.currentIndex,
     required this.icon,
-    required this.text,
   });
 
   final int currentIndex;
   final int indexMatcher;
-  final String text;
   final IconData icon;
 
   @override
@@ -233,16 +166,6 @@ class _BottomTab extends StatelessWidget {
             : Theme.of(context).colorScheme.onSurface,
       ),
       iconMargin: const EdgeInsets.only(top: 5, bottom: 2),
-      child: Text(
-        text,
-        style: kDetail.copyWith(
-          color: currentIndex == indexMatcher
-              ? Theme.of(context).colorScheme.secondary
-              : Theme.of(context).colorScheme.onSurface,
-          fontSize: 10,
-          overflow: TextOverflow.ellipsis,
-        ),
-      ),
     );
   }
 }

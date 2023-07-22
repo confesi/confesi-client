@@ -17,9 +17,7 @@ import '../../shared/indicators/alert.dart';
 import '../../shared/layout/appbar.dart';
 
 class HottestHome extends StatefulWidget {
-  const HottestHome({Key? key, required this.hottestController}) : super(key: key);
-
-  final HottestController hottestController;
+  const HottestHome({Key? key}) : super(key: key);
 
   @override
   State<HottestHome> createState() => _HottestHomeState();
@@ -30,6 +28,19 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
   bool get wantKeepAlive => true;
 
   int currentIndex = 0;
+  late PageController pageController;
+
+  @override
+  void initState() {
+    pageController = PageController(initialPage: 0, viewportFraction: 0.9);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
 
   Widget buildChild(BuildContext context, HottestState state) {
     if (state is Loading) {
@@ -43,7 +54,7 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
           Navigator.pushNamed(context, "/home/simplified_detail");
         },
         child: PageView(
-            controller: widget.hottestController.pageController,
+            controller: pageController,
             physics: const BouncingScrollPhysics(),
             onPageChanged: (selectedIndex) {
               // HapticFeedback.lightImpact();

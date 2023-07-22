@@ -18,10 +18,7 @@ import '../../../../constants/authentication_and_settings/text.dart';
 class SettingsHome extends StatelessWidget {
   const SettingsHome({
     super.key,
-    required this.settingController,
   });
-
-  final SettingController settingController;
 
   @override
   Widget build(BuildContext context) {
@@ -39,12 +36,12 @@ class SettingsHome extends StatelessWidget {
           body: TopFrostedGlassArea(
             color: Theme.of(context).colorScheme.shadow,
             child: ScrollableView(
+              controller: ScrollController(),
               inlineTopOrLeftPadding: topSafeArea(context),
               scrollBarVisible: false,
               physics: const BouncingScrollPhysics(),
               hapticsEnabled: false,
               inlineBottomOrRightPadding: 15,
-              controller: settingController.scrollController,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Column(
