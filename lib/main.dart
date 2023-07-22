@@ -17,45 +17,12 @@ import 'application/shared/cubit/share_cubit.dart';
 import 'application/shared/cubit/website_launcher_cubit.dart';
 import 'constants/enums_that_are_local_keys.dart';
 import 'core/router/router.dart';
-import 'core/services/in_app_notifications/in_app_notifications.dart';
 import 'core/styles/themes.dart';
 import 'dependency_injection.dart';
-import 'firebase_options.dart';
 import 'generated/l10n.dart';
 import 'presentation/primary/screens/splash.dart';
 
-// FCM background messager handler. Required to be top-level. Needs `pragma` to prevent function being moved during release compilation.
-@pragma('vm:entry-point')
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform, name: "confesi-server-dev");
-  NotificationService().fcmDeletagor(
-    message: message,
-    onNotification: (title, body) => null, // do nothing since this will be handled natively
-    onUpdateMessage: (title, body) {
-      InAppMessageService inAppMessages = InAppMessageService();
-      inAppMessages.addMessage(title, body);
-      // inAppMessages.dispose(); // dispose to prevent multiple databases from being opened.
-    },
-  );
-}
-
-void main() async {
-  await init();
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  sl.get<NotificationService>().token.then((token) {
-    token.fold((l) => print(l), (r) => print(r));
-  });
-  sl.get<NotificationService>().onTokenRefresh((token) {
-    // trigger the sending of the new token to the server right away
-  });
-  // (how does this relate to guest accounts?)
-  // onAppLoad, if the fcm token != the token stored in prefs:
-  //   send new token to the server to link to the user's account
-  //   if the send is successful
-  //     set this token to the device storage
-  runApp(MyApp(appRouter: sl()));
-}
+void main() async => await init().then((_) => analytics.logAppOpen().then((value) => runApp(MyApp(appRouter: sl()))));
 
 class MyApp extends StatelessWidget {
   const MyApp({required this.appRouter, Key? key}) : super(key: key);

@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 import '../../../application/shared/cubit/share_cubit.dart';
+import '../../../dependency_injection.dart';
 import '../../leaderboard/screens/home.dart';
 import '../controllers/hottest_controller.dart';
 import '../controllers/profile_controller.dart';
@@ -99,7 +100,18 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   child: SafeArea(
                     top: false,
                     child: TabBar(
-                      onTap: (int newIndex) => setState(() => currentIndex = newIndex),
+                      onTap: (int newIndex) {
+                        setState(() => currentIndex = newIndex);
+                        if (newIndex == 2) {
+                          throw Exception();
+                        }
+                        analytics.logEvent(
+                          name: "tab_view",
+                          parameters: {
+                            "tab": newIndex,
+                          },
+                        );
+                      },
                       labelColor: Theme.of(context).colorScheme.secondary,
                       indicatorSize: TabBarIndicatorSize.label,
                       indicatorColor: Colors.transparent,

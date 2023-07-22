@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:Confessi/application/create_post/cubit/drafts_cubit.dart';
 import 'package:Confessi/application/shared/cubit/maps_cubit.dart';
@@ -14,7 +15,10 @@ import 'package:Confessi/domain/create_post/usecases/delete_draft.dart';
 import 'package:Confessi/domain/create_post/usecases/get_draft.dart';
 import 'package:Confessi/domain/create_post/usecases/save_draft.dart';
 import 'package:Confessi/domain/feed/usecases/launch_maps.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'core/services/in_app_notifications/in_app_notifications.dart';
 import 'core/services/notifications.dart';
@@ -74,20 +78,65 @@ import 'application/feed/cubit/trending_cubit.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+
+// FCM background messager handler. Required to be top-level. Needs `pragma` to prevent function being moved during release compilation.
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform, name: "confesi-server-dev");
+  NotificationService().fcmDeletagor(
+    message: message,
+    onNotification: (title, body) => null, // do nothing since this will be handled natively
+    onUpdateMessage: (title, body) {
+      InAppMessageService inAppMessages = InAppMessageService();
+      inAppMessages.addMessage(title, body);
+      // inAppMessages.dispose(); // dispose to prevent multiple databases from being opened.
+    },
+  );
+}
 
 // Get the GetIt instance to use for injection
 final GetIt sl = GetIt.instance;
 FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
+Future<void> initFirebase() async {
+  // init project
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  // crashlytics
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+  FlutterError.onError = (errorDetails) {
+    FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+  };
+  PlatformDispatcher.instance.onError = (error, stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
+  // appcheck
+  await FirebaseAppCheck.instance.activate(
+    androidProvider: AndroidProvider.playIntegrity,
+    appleProvider: AppleProvider.appAttestWithDeviceCheckFallback,
+  );
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  sl.get<NotificationService>().token.then((token) {
+    token.fold((l) => print(l), (r) => print(r));
+  });
+  sl.get<NotificationService>().onTokenRefresh((token) {
+    // trigger the sending of the new token to the server right away
+  });
+  // (how does this relate to guest accounts?) => need to ONLY show notifications if same user is logged in
+  // onAppLoad, if the fcm token != the token stored in prefs:
+  //   send new token to the server to link to the user's account
+  //   if the send is successful
+  //     set this token to the device storage
+}
+
 /// Injects the needed dependencies for the app to run.
 Future<void> init() async {
   //! Initializing stuff
-  // Ensure everything is initialized before registering the dependencies, etc.
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   // Registering Hive.
   await Hive.initFlutter(); // todo: check if this is needed after the localDataService is integrated.
-  // Registering Firebase.
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   // Registers notifications service.
   sl.registerLazySingleton(() => NotificationService()..initAndroidNotifications());
   // Registers in-app notifications service.
@@ -244,4 +293,8 @@ Future<void> init() async {
   sl.registerLazySingleton(() => const FlutterSecureStorage());
   // Registers the package that allows us to use biometric authentication.
   sl.registerLazySingleton(() => LocalAuthentication());
+
+  //! Firebase
+  // Registering Firebase.
+  await initFirebase();
 }

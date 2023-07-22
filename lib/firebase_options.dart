@@ -17,7 +17,10 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return web;
+      throw UnsupportedError(
+        'DefaultFirebaseOptions have not been configured for web - '
+        'you can reconfigure this by running the FlutterFire CLI again.',
+      );
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -25,7 +28,10 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -43,19 +49,9 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCVKH-y09R3b1T74ZU_t2YS7qNmgHBl8UU',
-    appId: '1:136477109824:web:f95bd68da0cf86a923b9a5',
-    messagingSenderId: '136477109824',
-    projectId: 'confesi-server-dev',
-    authDomain: 'confesi-server-dev.firebaseapp.com',
-    storageBucket: 'confesi-server-dev.appspot.com',
-    measurementId: 'G-CXZP5RE27J',
-  );
-
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDuW_NNrzhaQ5M4TjhxVSz6LgeNJRAQuQk',
-    appId: '1:136477109824:android:db0a1b5d644cfa7c23b9a5',
+    appId: '1:136477109824:android:59ee474b57b0032623b9a5',
     messagingSenderId: '136477109824',
     projectId: 'confesi-server-dev',
     storageBucket: 'confesi-server-dev.appspot.com',
@@ -63,21 +59,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyDu0pfSj4Sb_TvbTETfgwt22FS21Es0YNI',
-    appId: '1:136477109824:ios:74f41d419b8f6e9423b9a5',
+    appId: '1:136477109824:ios:21dcf35ded8876b323b9a5',
     messagingSenderId: '136477109824',
     projectId: 'confesi-server-dev',
     storageBucket: 'confesi-server-dev.appspot.com',
-    iosClientId: '136477109824-72l0bmk336r530cno1gs9cn8dmrgdf4b.apps.googleusercontent.com',
-    iosBundleId: 'com.example.flutterMobileClient',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyDu0pfSj4Sb_TvbTETfgwt22FS21Es0YNI',
-    appId: '1:136477109824:ios:74f41d419b8f6e9423b9a5',
-    messagingSenderId: '136477109824',
-    projectId: 'confesi-server-dev',
-    storageBucket: 'confesi-server-dev.appspot.com',
-    iosClientId: '136477109824-72l0bmk336r530cno1gs9cn8dmrgdf4b.apps.googleusercontent.com',
-    iosBundleId: 'com.example.flutterMobileClient',
+    iosClientId: '136477109824-v84a1ohr381pim85bcsj5ege57t14jm4.apps.googleusercontent.com',
+    iosBundleId: 'com.confesi.app',
   );
 }

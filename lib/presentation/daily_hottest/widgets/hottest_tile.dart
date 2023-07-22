@@ -51,8 +51,8 @@ class _HottestTileState extends State<HottestTile> {
       : '${largeNumberFormatter(widget.likes)} like';
 
   String getHates() => isPlural(widget.hates)
-      ? '${largeNumberFormatter(widget.hates)} hates'
-      : '${largeNumberFormatter(widget.hates)} hate';
+      ? '${largeNumberFormatter(widget.hates)} dislikes'
+      : '${largeNumberFormatter(widget.hates)} dislike';
 
   @override
   Widget build(BuildContext context) {
