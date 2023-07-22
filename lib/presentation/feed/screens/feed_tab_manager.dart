@@ -1,3 +1,8 @@
+import 'dart:convert';
+
+import 'package:confesi/core/remote_config/config.dart';
+import 'package:confesi/dependency_injection.dart';
+
 import '../../shared/buttons/option.dart';
 import '../../shared/other/zoomable.dart';
 import '../../shared/overlays/button_options_sheet.dart';
@@ -96,7 +101,9 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
                         const SizedBox(width: 5),
                         SimpleTextButton(
                           onTap: () => changeFeed(),
-                          text: selectedFeedType == SelectedFeedType.trending ? "Trending Now" : "Recents",
+                          text: selectedFeedType == SelectedFeedType.trending
+                              ? "Trending Now"
+                              : sl.get<RemoteConfig>().messages.welcomeMessage,
                         ),
                         const SizedBox(width: 5),
                         Icon(

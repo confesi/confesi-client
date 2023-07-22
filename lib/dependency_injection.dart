@@ -1,5 +1,10 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:ui';
+
+import 'dart:convert';
+import 'package:confesi/core/remote_config/config.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
 import 'application/create_post/cubit/drafts_cubit.dart';
 import 'application/shared/cubit/maps_cubit.dart';
@@ -79,6 +84,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 
 // FCM background messager handler. Required to be top-level. Needs `pragma` to prevent function being moved during release compilation.
 @pragma('vm:entry-point')
@@ -98,6 +104,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 // Get the GetIt instance to use for injection
 final GetIt sl = GetIt.instance;
 FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+final remoteConfig = FirebaseRemoteConfig.instance;
 
 Future<void> initFirebase() async {
   // init project
@@ -111,6 +118,8 @@ Future<void> initFirebase() async {
     FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
     return true;
   };
+  // remote config
+  await initRemoteConfig();
   // appcheck
   await FirebaseAppCheck.instance.activate(
     androidProvider: AndroidProvider.playIntegrity,
@@ -297,4 +306,24 @@ Future<void> init() async {
   //! Firebase
   // Registering Firebase.
   await initFirebase();
+}
+
+// todo: if it's the user's first time in the app, FORCE load the remote config values.
+Future<void> initRemoteConfig() async {
+  // settings
+  await remoteConfig.setConfigSettings(RemoteConfigSettings(
+    fetchTimeout: const Duration(minutes: 1),
+    minimumFetchInterval: const Duration(hours: 0), // 12-hours is recommended by Firebase
+  ));
+
+  // default
+  final jsonString = await rootBundle.loadString('assets/remote_config.json');
+  await remoteConfig.setDefaults(<String, dynamic>{"config": json.encode(jsonString)});
+
+  // set to dependency injection
+  RemoteConfig root = RemoteConfig.fromJson(json.decode(remoteConfig.getString("config")));
+  sl.registerLazySingleton(() => root);
+
+  // fetch new values for next time (don't await)
+  remoteConfig.fetchAndActivate();
 }

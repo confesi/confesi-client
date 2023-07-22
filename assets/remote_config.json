@@ -1,0 +1,10 @@
+{
+    "messages": {
+        "welcome_message": "Welcome",
+        "other_message": "Hello, there!"
+    },
+    "app_features": {
+        "feature_one_enabled": false,
+        "feature_two_enabled": true
+    }
+}

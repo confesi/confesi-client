@@ -1,5 +1,5 @@
 name: confesi
-description: A fullstack application targeted towards university students
+description: mobile client
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -131,7 +131,9 @@ flutter:
     - assets/images/showcase/
     - assets/images/universities/
     - assets/images/achievements/
+    - assets/remote_config.json
     - assets/dummy_json/
+    
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
   # For details regarding adding assets from package dependencies, see

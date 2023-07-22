@@ -1,25 +1,12 @@
-import '../../../constants/shared/enums.dart';
-import '../../shared/behaviours/init_transform.dart';
-import '../../shared/button_touch_effects/touchable_scale.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-
 import '../../../application/shared/cubit/share_cubit.dart';
 import '../../../dependency_injection.dart';
 import '../../leaderboard/screens/home.dart';
-import '../controllers/hottest_controller.dart';
-import '../controllers/profile_controller.dart';
-import '../controllers/settings_controller.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../authentication_and_settings/screens/settings/home.dart';
 import '../../daily_hottest/screens/home.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
-import '../../../core/styles/typography.dart';
 import '../../feed/screens/feed_tab_manager.dart';
 import '../../shared/overlays/notification_chip.dart';
 import '../../watched_universities/drawers/feed_drawer.dart';
