@@ -8,15 +8,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scrollable/exports.dart';
 
-
-class SearchUniversitiesScreen extends StatefulWidget {
-  const SearchUniversitiesScreen({super.key});
+class SearchSchoolsScreen extends StatefulWidget {
+  const SearchSchoolsScreen({super.key});
 
   @override
-  State<SearchUniversitiesScreen> createState() => _SearchUniversitiesScreenState();
+  State<SearchSchoolsScreen> createState() => _SearchSchoolsScreenState();
 }
 
-class _SearchUniversitiesScreenState extends State<SearchUniversitiesScreen> {
+class _SearchSchoolsScreenState extends State<SearchSchoolsScreen> {
   late TextEditingController _textEditingController;
   final Debouncer _debouncer = Debouncer();
 

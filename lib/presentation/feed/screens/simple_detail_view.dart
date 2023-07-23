@@ -72,7 +72,7 @@ class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
         OptionButton(
           text: "Sentiment analysis",
           icon: CupertinoIcons.doc_text,
-          onTap: () => router.go(
+          onTap: () => router.push(
               "/home/posts/sentiment"), // todo: remove hard coding and dynamically go to the correct post's sentiment analysis
         ),
         OptionButton(

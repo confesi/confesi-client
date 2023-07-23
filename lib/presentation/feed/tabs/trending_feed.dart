@@ -10,7 +10,6 @@ import '../../../constants/shared/error_messages.dart';
 import '../../shared/indicators/alert.dart';
 import '../../shared/indicators/loading_cupertino.dart';
 import '../../shared/overlays/snackbar.dart';
-import '../widgets/infinite_scroll.dart';
 
 class ExploreTrending extends StatefulWidget {
   const ExploreTrending({Key? key}) : super(key: key);
@@ -34,12 +33,7 @@ class _ExploreTrendingState extends State<ExploreTrending> with AutomaticKeepAli
       );
     } else {
       final hasPosts = state as HasPosts;
-      return InfiniteScroll(
-        feedState: hasPosts.feedState,
-        onLoad: () => trendingCubit.fetchPosts(),
-        onRefresh: () => trendingCubit.refreshPosts(),
-        items: hasPosts.posts,
-      );
+      return Container();
     }
   }
 

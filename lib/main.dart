@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -53,18 +55,26 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
-  // todo: clear data
+  StreamSubscription<User?>? _authStateSubscription;
+
   @override
   void initState() {
-    updateAuthState();
     super.initState();
+    updateAuthState();
+  }
+
+  @override
+  void dispose() {
+    // Dispose of the stream subscription when the widget is disposed
+    _authStateSubscription?.cancel();
+    super.dispose();
   }
 
   Future<void> updateAuthState() async {
     // delay for the splash screen
     await Future.delayed(const Duration(milliseconds: 500));
-    await sl.get<FirebaseAuth>().signOut();
-    sl.get<FirebaseAuth>().authStateChanges().listen((User? user) {
+    // await sl.get<FirebaseAuth>().signOut();
+    _authStateSubscription = sl.get<FirebaseAuth>().authStateChanges().listen((User? user) {
       if (user == null) {
         // router.push("/verify-email"); // todo: remove
         router.go("/open");

@@ -21,7 +21,7 @@ class _SimplePostTileState extends State<SimplePostTile> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => router.go("/home/posts/detail"),
+      onTap: () => router.push("/home/posts/detail"),
       child: Padding(
         padding: const EdgeInsets.only(top: 5, left: 5, right: 5),
         child: ClipRRect(

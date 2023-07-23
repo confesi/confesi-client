@@ -66,7 +66,7 @@ class _FeedDrawerState extends State<FeedDrawer> {
                     padding: const EdgeInsets.all(10),
                     child: SimpleTextButton(
                       infiniteWidth: true,
-                      onTap: () => router.go("/schools/search"),
+                      onTap: () => router.push("/schools/search"),
                       text: "Edit home university",
                     ),
                   ),
@@ -74,7 +74,7 @@ class _FeedDrawerState extends State<FeedDrawer> {
                     padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
                     child: SimpleTextButton(
                       infiniteWidth: true,
-                      onTap: () => router.go("/schools/search"),
+                      onTap: () => router.push("/schools/search"),
                       text: "Edit watched universities",
                     ),
                   ),

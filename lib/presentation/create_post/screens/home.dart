@@ -190,7 +190,7 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                             showNotificationChip(context, "You can't post... nothing!");
                             return;
                           }
-                          router.go("/create");
+                          router.push("/create");
                           FocusScope.of(context).unfocus();
                         },
                         leftIconVisible: true,

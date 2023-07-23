@@ -72,23 +72,23 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
                       context,
                       [
                         OptionButton(
-                            onTap: () => router.go("/home/profile/account"),
+                            onTap: () => router.push("/home/profile/account"),
                             text: "Edit account details",
                             icon: CupertinoIcons.pencil),
                         OptionButton(
-                            onTap: () => router.go("/home/profile/saved/posts"),
+                            onTap: () => router.push("/home/profile/saved/posts"),
                             text: "Saved confessions",
                             icon: CupertinoIcons.bookmark),
                         OptionButton(
-                            onTap: () => router.go("/home/profile/saved/comments"),
+                            onTap: () => router.push("/home/profile/saved/comments"),
                             text: "Saved comments",
                             icon: CupertinoIcons.bookmark),
                         OptionButton(
-                            onTap: () => router.go('/home/profile/comments'),
+                            onTap: () => router.push('/home/profile/comments'),
                             text: "Your comments",
                             icon: CupertinoIcons.chat_bubble_2),
                         OptionButton(
-                            onTap: () => router.go('/home/profile/posts'),
+                            onTap: () => router.push('/home/profile/posts'),
                             text: "Your confessions",
                             icon: CupertinoIcons.cube_box),
                       ],

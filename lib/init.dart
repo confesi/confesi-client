@@ -66,7 +66,6 @@ import 'application/authentication_and_settings/cubit/register_cubit.dart';
 import 'application/authentication_and_settings/cubit/user_cubit.dart';
 import 'application/shared/cubit/website_launcher_cubit.dart';
 import 'core/network/connection_info.dart';
-import 'core/router/router.dart';
 import 'data/authentication_and_settings/datasources/authentication_datasource.dart';
 import 'data/authentication_and_settings/repositories/authentication_repository_concrete.dart';
 import 'domain/authentication_and_settings/usecases/login.dart';
@@ -115,6 +114,7 @@ Future<void> initFirebase() async {
   };
   // appcheck
   await FirebaseAppCheck.instance.activate(
+    webRecaptchaSiteKey: 'recaptcha-v3-site-key',
     androidProvider: AndroidProvider.playIntegrity,
     appleProvider: AppleProvider.appAttestWithDeviceCheckFallback,
   );

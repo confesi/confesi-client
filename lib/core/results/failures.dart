@@ -15,6 +15,9 @@ class ServerFailure extends Failure {}
 /// Something went wrong with the connection!
 class ConnectionFailure extends Failure {}
 
+/// Request timed out.
+class TimeoutFailure extends Failure {}
+
 /// When input fields are blank that need to be filled in.
 class FieldsBlankFailure extends Failure {}
 

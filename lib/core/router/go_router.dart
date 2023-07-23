@@ -1,7 +1,12 @@
 import 'package:confesi/presentation/authentication_and_settings/screens/authentication/login.dart';
 import 'package:confesi/presentation/authentication_and_settings/screens/authentication/open.dart';
 import 'package:confesi/presentation/authentication_and_settings/screens/authentication/verify_email.dart';
+import 'package:confesi/presentation/authentication_and_settings/screens/settings/contact.dart';
+import 'package:confesi/presentation/authentication_and_settings/screens/settings/curvy.dart';
+import 'package:confesi/presentation/authentication_and_settings/screens/settings/faq.dart';
 import 'package:confesi/presentation/authentication_and_settings/screens/settings/feedback.dart';
+import 'package:confesi/presentation/authentication_and_settings/screens/settings/language.dart';
+import 'package:confesi/presentation/authentication_and_settings/screens/settings/text_size.dart';
 import 'package:confesi/presentation/create_post/screens/home.dart';
 import 'package:confesi/presentation/feed/screens/post_advanced_details.dart';
 import 'package:confesi/presentation/feed/screens/simple_detail_view.dart';
@@ -12,6 +17,7 @@ import 'package:confesi/presentation/primary/screens/splash.dart';
 import 'package:confesi/presentation/profile/screens/account_details.dart';
 import 'package:confesi/presentation/user_posts_and_comments/screens/posts.dart';
 import 'package:confesi/presentation/user_posts_and_comments/screens/saved.dart';
+import 'package:confesi/presentation/watched_universities/screens/search_universities.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 
@@ -50,15 +56,16 @@ final GoRouter router = GoRouter(
         path: '/home/profile/saved/posts',
         builder: (BuildContext context, GoRouterState state) => const YourSavedPosts()),
     GoRoute(path: '/feedback', builder: (BuildContext context, GoRouterState state) => const FeedbackSettingScreen()),
-    GoRoute(path: '/settings/faq', builder: (BuildContext context, GoRouterState state) => const YourPostsScreen()),
+    GoRoute(path: '/settings/faq', builder: (BuildContext context, GoRouterState state) => const FAQScreen()),
+    GoRoute(path: '/settings/language', builder: (BuildContext context, GoRouterState state) => const LanguageScreen()),
     GoRoute(
-        path: '/settings/language', builder: (BuildContext context, GoRouterState state) => const YourPostsScreen()),
+        path: '/settings/feedback',
+        builder: (BuildContext context, GoRouterState state) => const FeedbackSettingScreen()),
+    GoRoute(path: '/settings/contact', builder: (BuildContext context, GoRouterState state) => const ContactScreen()),
     GoRoute(
-        path: '/settings/feedback', builder: (BuildContext context, GoRouterState state) => const YourPostsScreen()),
-    GoRoute(path: '/settings/contact', builder: (BuildContext context, GoRouterState state) => const YourPostsScreen()),
+        path: '/settings/text-size', builder: (BuildContext context, GoRouterState state) => const TextSizeScreen()),
+    GoRoute(path: '/settings/curvy', builder: (BuildContext context, GoRouterState state) => const CurvyScreen()),
     GoRoute(
-        path: '/settings/text-size', builder: (BuildContext context, GoRouterState state) => const YourPostsScreen()),
-    GoRoute(path: '/settings/curvy', builder: (BuildContext context, GoRouterState state) => const YourPostsScreen()),
-    GoRoute(path: '/schools/search', builder: (BuildContext context, GoRouterState state) => const YourPostsScreen()),
+        path: '/schools/search', builder: (BuildContext context, GoRouterState state) => const SearchSchoolsScreen()),
   ],
 );

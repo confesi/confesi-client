@@ -37,7 +37,8 @@ class LeaderboardItemTile extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            padding: const EdgeInsets.all(10),
+            width: 100,
+            padding: const EdgeInsets.all(15),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.secondary,
               // shape: BoxShape.circle,
@@ -50,7 +51,6 @@ class LeaderboardItemTile extends StatelessWidget {
                 color: Theme.of(context).colorScheme.onSecondary,
               ),
               textAlign: TextAlign.center,
-              overflow: TextOverflow.ellipsis,
             ),
           ),
           const SizedBox(width: 10),

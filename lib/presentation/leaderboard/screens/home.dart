@@ -84,7 +84,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                       context,
                       "Home university",
                       "To change which university appears here, and in other places throughout the app, update your home university.",
-                      () => router.go("/home/profile/account"),
+                      () => router.push("/home/profile/account"),
                       "Edit in settings",
                     ),
                     child: Container(

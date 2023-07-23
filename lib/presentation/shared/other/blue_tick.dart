@@ -10,7 +10,7 @@ class BlueTick extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TouchableOpacity(
-      onTap: () => showInfoSheet(context, "Verified student", "We've confirmed that this is a real student"),
+      onTap: () => showInfoSheet(context, "Verified student", "We've confirmed that this is a real student."),
       child: Container(
         padding: const EdgeInsets.all(3),
         decoration: const BoxDecoration(

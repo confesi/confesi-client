@@ -1,4 +1,6 @@
 import 'package:confesi/core/router/go_router.dart';
+import 'package:confesi/init.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../../../core/utils/sizing/top_safe_area.dart';
 import '../../../primary/controllers/settings_controller.dart';
@@ -56,22 +58,22 @@ class SettingsHome extends StatelessWidget {
                         SettingTile(
                           leftIcon: CupertinoIcons.map,
                           text: kSettingsLanguageLabel,
-                          onTap: () => router.go("/settings/language"),
+                          onTap: () => router.push("/settings/language"),
                         ),
                         SettingTile(
                           leftIcon: CupertinoIcons.question_circle,
                           text: kSettingsFaqLabel,
-                          onTap: () => router.go("/settings/faq"),
+                          onTap: () => router.push("/settings/faq"),
                         ),
                         SettingTile(
                           leftIcon: CupertinoIcons.chat_bubble,
                           text: "Feedback",
-                          onTap: () => router.go("/settings/feedback"),
+                          onTap: () => router.push("/settings/feedback"),
                         ),
                         SettingTile(
                           leftIcon: CupertinoIcons.mail,
                           text: kContactConfesiLabel,
-                          onTap: () => router.go("/settings/contact"),
+                          onTap: () => router.push("/settings/contact"),
                         ),
                         SettingTile(
                           rightIcon: CupertinoIcons.link,
@@ -88,17 +90,17 @@ class SettingsHome extends StatelessWidget {
                         SettingTile(
                           leftIcon: CupertinoIcons.color_filter,
                           text: kSettingsAppearanceLabel,
-                          onTap: () => router.go("/settings/appearance"),
+                          onTap: () => router.push("/settings/appearance"),
                         ),
                         SettingTile(
                           leftIcon: CupertinoIcons.textformat_size,
                           text: "Text size",
-                          onTap: () => router.go("/settings/text-size"),
+                          onTap: () => router.push("/settings/text-size"),
                         ),
                         SettingTile(
                           leftIcon: CupertinoIcons.square_fill_on_circle_fill,
                           text: "Curviness of components",
-                          onTap: () => router.go("/settings/curvy"),
+                          onTap: () => router.push("/settings/curvy"),
                         ),
                       ],
                     ),
@@ -110,7 +112,10 @@ class SettingsHome extends StatelessWidget {
                           isRedText: true,
                           leftIcon: CupertinoIcons.square_arrow_right,
                           text: "Logout",
-                          onTap: () => context.read<UserCubit>().logoutRegisteredUser(context),
+                          onTap: () async {
+                            context.read<UserCubit>().logoutRegisteredUser(context);
+                            await sl.get<FirebaseAuth>().signOut(); // todo: temp
+                          },
                         ),
                       ],
                     ),
