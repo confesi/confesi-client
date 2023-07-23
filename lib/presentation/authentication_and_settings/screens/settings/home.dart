@@ -53,16 +53,16 @@ class SettingsHome extends StatelessWidget {
                   children: [
                     const SizedBox(height: 15),
                     SettingTileGroup(
-                      text: kSettingsGeneralLabel,
+                      text: "General",
                       settingTiles: [
                         SettingTile(
                           leftIcon: CupertinoIcons.map,
-                          text: kSettingsLanguageLabel,
+                          text: "Language",
                           onTap: () => router.push("/settings/language"),
                         ),
                         SettingTile(
                           leftIcon: CupertinoIcons.question_circle,
-                          text: kSettingsFaqLabel,
+                          text: "FAQ",
                           onTap: () => router.push("/settings/faq"),
                         ),
                         SettingTile(
@@ -72,24 +72,24 @@ class SettingsHome extends StatelessWidget {
                         ),
                         SettingTile(
                           leftIcon: CupertinoIcons.mail,
-                          text: kContactConfesiLabel,
+                          text: "Contact us",
                           onTap: () => router.push("/settings/contact"),
                         ),
                         SettingTile(
                           rightIcon: CupertinoIcons.link,
                           leftIcon: CupertinoIcons.sidebar_left,
-                          text: kSettingsOurWebsiteLinkLabel,
+                          text: "Our website",
                           onTap: () => context.read<WebsiteLauncherCubit>().launchWebsiteHome(),
                         ),
                       ],
                     ),
                     const SizedBox(height: 15),
                     SettingTileGroup(
-                      text: kSettingsPersonalizationLabel,
+                      text: "Personalization",
                       settingTiles: [
                         SettingTile(
                           leftIcon: CupertinoIcons.color_filter,
-                          text: kSettingsAppearanceLabel,
+                          text: "Appearance",
                           onTap: () => router.push("/settings/appearance"),
                         ),
                         SettingTile(
@@ -106,7 +106,7 @@ class SettingsHome extends StatelessWidget {
                     ),
                     const SizedBox(height: 15),
                     SettingTileGroup(
-                      text: kSettingsAccountLabel,
+                      text: "Account",
                       settingTiles: [
                         SettingTile(
                           isRedText: true,
@@ -121,7 +121,7 @@ class SettingsHome extends StatelessWidget {
                     ),
                     const SizedBox(height: 15),
                     SettingTileGroup(
-                      text: kSettingsLegalLabel,
+                      text: "Legal",
                       settingTiles: [
                         SettingTile(
                           rightIcon: CupertinoIcons.link,

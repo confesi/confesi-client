@@ -1,4 +1,5 @@
 import '../../../../constants/enums_that_are_local_keys.dart';
+import '../../../../core/utils/styles/appearance_name.dart';
 import '../../../shared/selection_groups/bool_selection_group.dart';
 import '../../../shared/selection_groups/bool_selection_tile.dart';
 import '../../../shared/behaviours/themed_status_bar.dart';
@@ -9,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../application/authentication_and_settings/cubit/user_cubit.dart';
-import '../../../../constants/authentication_and_settings/text.dart';
 import '../../../../core/styles/typography.dart';
 import '../../../shared/layout/appbar.dart';
 
@@ -27,7 +27,7 @@ class AppearanceScreen extends StatelessWidget {
               AppbarLayout(
                 backgroundColor: Theme.of(context).colorScheme.shadow,
                 centerWidget: Text(
-                  kAppearancePageTitle,
+                  "Settings",
                   style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
@@ -42,13 +42,13 @@ class AppearanceScreen extends StatelessWidget {
                       children: [
                         const SizedBox(height: 10),
                         BoolSelectionGroup(
-                          text: kAppearanceGroupLabel,
+                          text: "Choose appearance",
                           selectionTiles: [
                             BoolSelectionTile(
                               topRounded: true,
                               isActive: context.watch<UserCubit>().stateAsUser.appearanceEnum == AppearanceEnum.system,
                               icon: CupertinoIcons.device_laptop,
-                              text: kSystemAppearanceRealTime(context),
+                              text: "System (currently ${appearanceName(context)})",
                               onTap: () => context.read<UserCubit>().setAppearance(AppearanceEnum.system, context),
                             ),
                             BoolSelectionTile(
@@ -61,7 +61,7 @@ class AppearanceScreen extends StatelessWidget {
                               bottomRounded: true,
                               isActive: context.watch<UserCubit>().stateAsUser.appearanceEnum == AppearanceEnum.dark,
                               icon: CupertinoIcons.moon,
-                              text: kDarkAppearance,
+                              text: "Dark",
                               onTap: () => context.read<UserCubit>().setAppearance(AppearanceEnum.dark, context),
                             ),
                           ],

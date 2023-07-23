@@ -31,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
 
   @override
   void initState() {
-    typewriterController = TypewriterController(fullText: kLoginTypewriter);
+    typewriterController = TypewriterController(fullText: "Let's log you in.");
     typewriterController.forward();
     scrollController = ScrollController();
     usernameEmailController.clear();
@@ -110,7 +110,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                 icon: CupertinoIcons.chevron_right,
                                 backgroundColor: Theme.of(context).colorScheme.secondary,
                                 textColor: Theme.of(context).colorScheme.onSecondary,
-                                text: kLoginButtonText,
+                                text: "Login",
                               ),
                               const SizedBox(height: 15),
                               TouchableOpacity(
@@ -123,7 +123,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                     children: [
                                       Expanded(
                                         child: Text(
-                                          kForgotPasswordText,
+                                          "Forget your password?",
                                           style: kTitle.copyWith(
                                             color: Theme.of(context).colorScheme.onSurface,
                                           ),

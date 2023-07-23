@@ -44,9 +44,9 @@ class _SectionAccordianState extends State<SectionAccordian> {
             border: widget.topBorder
                 ? Border(
                     top: BorderSide(
-                        width: 0.8,
-                        color: Theme.of(context).colorScheme.onBackground,
-                        strokeAlign: BorderSide.strokeAlignCenter),
+                      width: 0.8,
+                      color: Theme.of(context).colorScheme.onBackground,
+                    ),
                   )
                 : null,
           ),
@@ -124,7 +124,6 @@ class _SectionAccordianState extends State<SectionAccordian> {
                 ? Border(
                     bottom: BorderSide(
                       width: 0.8,
-                      strokeAlign: BorderSide.strokeAlignCenter,
                       color: Theme.of(context).colorScheme.onBackground,
                     ),
                   )

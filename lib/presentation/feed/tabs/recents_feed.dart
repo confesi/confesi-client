@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../domain/shared/entities/infinite_scroll_indexable.dart';
 import '../../shared/other/feed_list.dart';
-import '../widgets/simple_post_tile.dart';
+import '../widgets/post_tile.dart';
 
 class ExploreRecents extends StatefulWidget {
   const ExploreRecents({Key? key}) : super(key: key);

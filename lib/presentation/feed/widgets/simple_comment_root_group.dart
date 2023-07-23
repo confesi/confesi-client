@@ -46,19 +46,3 @@ class _SimpleCommentRootGroupState extends State<SimpleCommentRootGroup> {
     );
   }
 }
-
-
-// !_isExpanded
-//                     ? TouchableOpacity(
-//                         onTap: () => setState(() => _isExpanded = !_isExpanded),
-//                         child: Container(
-//                           color: Theme.of(context).colorScheme.surface,
-//                           padding: const EdgeInsets.all(10),
-//                           width: double.infinity,
-//                           child: Text(
-//                             "Expand",
-//                             style: kDetail.copyWith(color: Theme.of(context).colorScheme.primary),
-//                           ),
-//                         ),
-//                       )
-//                     : Container(),

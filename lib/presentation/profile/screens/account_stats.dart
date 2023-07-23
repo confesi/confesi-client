@@ -54,34 +54,31 @@ class _AccountProfileStatsState extends State<AccountProfileStats> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 10),
-                        StatTile(
+                        const StatTile(
                           leftNumber: 21231,
-                          leftDescription: "likes",
+                          leftDescription: "Likes",
                           centerNumber: 1312,
-                          centerDescription: "hottests",
+                          centerDescription: "Hottests",
                           rightNumber: 32,
-                          rightDescription: "dislikes",
-                          leftTap: () => print("tap"),
-                          centerTap: () => print("tap"),
-                          rightTap: () => print("tap"),
+                          rightDescription: "Dislikes",
                         ),
                         const SizedBox(height: 10),
                         const TextStatTileGroup(
-                          text: "Supported languages",
+                          text: "How you compare to others",
                           tiles: [
                             TextStatTile(
                               topRounded: true,
-                              leftText: "English",
-                              rightText: "en",
+                              leftText: "Likes",
+                              rightText: "top 10%",
                             ),
                             TextStatTile(
-                              leftText: "French",
-                              rightText: "fr",
+                              leftText: "Hottests",
+                              rightText: "top 10%",
                             ),
                             TextStatTile(
                               bottomRounded: true,
-                              leftText: "Spanish",
-                              rightText: "es",
+                              leftText: "Dislikes",
+                              rightText: "top 3.5%",
                             ),
                           ],
                         ),

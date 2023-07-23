@@ -51,8 +51,8 @@ class FeedbackSettingScreen extends StatelessWidget {
                           settingTiles: [
                             SettingTile(
                               leftIcon: CupertinoIcons.chat_bubble,
-                              text: kSettingsFeedbackLabel,
-                              onTap: () =>router.push("/settings/feedback"),
+                              text: "Feedback",
+                              onTap: () => router.push("/settings/feedback"),
                             ),
                           ],
                         ),

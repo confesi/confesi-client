@@ -30,7 +30,10 @@ class _SimplePostTileState extends State<SimplePostTile> {
             width: double.infinity,
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.background,
-              border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8,strokeAlign: BorderSide.strokeAlignCenter),
+              border: Border.all(
+                  color: Theme.of(context).colorScheme.onBackground,
+                  width: 0.8,
+                  strokeAlign: BorderSide.strokeAlignCenter),
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

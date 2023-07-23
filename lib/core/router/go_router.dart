@@ -10,7 +10,7 @@ import 'package:confesi/presentation/authentication_and_settings/screens/setting
 import 'package:confesi/presentation/authentication_and_settings/screens/settings/text_size.dart';
 import 'package:confesi/presentation/create_post/screens/home.dart';
 import 'package:confesi/presentation/feed/screens/post_advanced_details.dart';
-import 'package:confesi/presentation/feed/screens/simple_detail_view.dart';
+import 'package:confesi/presentation/feed/screens/post_detail_view.dart';
 import 'package:confesi/presentation/primary/screens/critical_error.dart';
 import 'package:confesi/presentation/primary/screens/home.dart';
 import 'package:confesi/presentation/primary/screens/showcase.dart';

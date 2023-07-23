@@ -12,24 +12,10 @@ class SimpleCommentTile extends StatelessWidget {
     super.key,
     required this.depth,
     this.isGettingRepliedTo = false,
-    // required this.onDownvote,
-    // required this.onReply,
-    // required this.onUpvote,
-    // required this.text,
-    // required this.timeAgo,
-    // required this.university,
-    // required this.vote,
   });
 
   final CommentDepth depth;
   final bool isGettingRepliedTo;
-  // final String text;
-  // final String timeAgo;
-  // final String university;
-  // final VoidCallback onReply;
-  // final VoidCallback onUpvote;
-  // final VoidCallback onDownvote;
-  // final int vote;
 
   double get commentDepthAdditivePadding {
     switch (depth) {

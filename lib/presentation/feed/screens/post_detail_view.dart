@@ -108,10 +108,7 @@ class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
                   decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.background,
                       border: Border(
-                        top: BorderSide(
-                          color: Theme.of(context).colorScheme.onBackground,
-                          width: 0.8,strokeAlign: BorderSide.strokeAlignCenter
-                        ),
+                        top: BorderSide(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
                       ),
                       boxShadow: [
                         BoxShadow(
