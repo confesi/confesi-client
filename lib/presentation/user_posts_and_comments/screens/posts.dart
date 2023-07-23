@@ -4,8 +4,8 @@ import '../../../core/styles/typography.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/layout/appbar.dart';
 
-class PostsScreen extends StatelessWidget {
-  const PostsScreen({super.key});
+class YourPostsScreen extends StatelessWidget {
+  const YourPostsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -81,13 +81,13 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                 textStyle: kDisplay1.copyWith(color: Theme.of(context).colorScheme.primary),
                                 controller: typewriterController,
                               ),
-                              const SizedBox(height: 15),
+                              const SizedBox(height: 30),
                               ExpandableTextfield(
                                 maxLines: 1,
                                 color: Theme.of(context).colorScheme.background,
                                 controller: usernameEmailController,
                                 onChanged: (newValue) => print(newValue),
-                                hintText: "Username or email",
+                                hintText: "Email",
                               ),
                               const SizedBox(height: 15),
                               ExpandableTextfield(

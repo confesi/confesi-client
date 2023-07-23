@@ -1,3 +1,4 @@
+import 'package:confesi/core/router/go_router.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
@@ -28,7 +29,7 @@ class HeaderWithLinkText extends StatelessWidget {
         LinkText(
           topPadding: 5,
           bottomPadding: 15,
-          onPress: () => Navigator.of(context).pushNamed("/onboarding"),
+          onPress: () => router.push("/onboarding"),
           linkText: "Tap here.",
           text: "View tips again? ",
         ),

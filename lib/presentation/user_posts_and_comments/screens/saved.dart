@@ -4,14 +4,14 @@ import '../../../core/styles/typography.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/layout/appbar.dart';
 
-class SavedScreen extends StatefulWidget {
-  const SavedScreen({super.key});
+class YourSavedPosts extends StatefulWidget {
+  const YourSavedPosts({super.key});
 
   @override
-  State<SavedScreen> createState() => _SavedScreenState();
+  State<YourSavedPosts> createState() => _YourSavedPostsState();
 }
 
-class _SavedScreenState extends State<SavedScreen> {
+class _YourSavedPostsState extends State<YourSavedPosts> {
   @override
   Widget build(BuildContext context) {
     return ThemedStatusBar(

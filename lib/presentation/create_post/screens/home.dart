@@ -1,3 +1,5 @@
+import 'package:confesi/core/router/go_router.dart';
+
 import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../../../application/create_post/cubit/drafts_cubit.dart';
 import '../../../core/utils/sizing/width_fraction.dart';
@@ -188,11 +190,7 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                             showNotificationChip(context, "You can't post... nothing!");
                             return;
                           }
-                          Navigator.of(context).pushNamed('/home/create_post/details', arguments: {
-                            'title': titleController.text,
-                            'body': bodyController.text,
-                            'id': repliedPostChildId, // TODO: add the id later (can be null?)
-                          });
+                          router.go("/create");
                           FocusScope.of(context).unfocus();
                         },
                         leftIconVisible: true,

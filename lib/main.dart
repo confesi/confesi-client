@@ -1,3 +1,12 @@
+import 'package:device_preview/device_preview.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import 'application/authentication_and_settings/cubit/contact_setting_cubit.dart';
+import 'application/authentication_and_settings/cubit/language_setting_cubit.dart';
+import 'application/feed/cubit/recents_cubit.dart';
+import 'application/feed/cubit/trending_cubit.dart';
+import 'application/leaderboard/cubit/leaderboard_cubit.dart';
+import 'application/profile/cubit/biometrics_cubit.dart';
 import 'application/shared/cubit/maps_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,18 +20,29 @@ import 'application/daily_hottest/cubit/hottest_cubit.dart';
 import 'application/shared/cubit/share_cubit.dart';
 import 'application/shared/cubit/website_launcher_cubit.dart';
 import 'constants/enums_that_are_local_keys.dart';
-import 'core/router/router.dart';
+import 'core/router/go_router.dart';
 import 'core/styles/themes.dart';
 import 'init.dart';
-import 'presentation/primary/screens/splash.dart';
 
-void main() async => await init().then((_) => analytics.logAppOpen().then((value) => runApp(MyApp(appRouter: sl()))));
+void main() async => await init().then(
+      (_) => analytics.logAppOpen().then(
+            (value) => runApp(
+              MaterialApp(
+                debugShowCheckedModeBanner: false,
+                home: DevicePreview(builder: (context) => const MyApp()),
+              ),
+            ),
+          ),
+    );
 
-class MyApp extends StatelessWidget {
-  const MyApp({required this.appRouter, Key? key}) : super(key: key);
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
 
-  final AppRouter appRouter;
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
 
+class _MyAppState extends State<MyApp> {
   ThemeMode getAppearance(AppearanceEnum state) {
     if (state == AppearanceEnum.dark) {
       return ThemeMode.dark;
@@ -31,6 +51,35 @@ class MyApp extends StatelessWidget {
     } else {
       return ThemeMode.system;
     }
+  }
+
+  // todo: clear data
+  @override
+  void initState() {
+    updateAuthState();
+    super.initState();
+  }
+
+  Future<void> updateAuthState() async {
+    // delay for the splash screen
+    await Future.delayed(const Duration(milliseconds: 500));
+    await sl.get<FirebaseAuth>().signOut();
+    sl.get<FirebaseAuth>().authStateChanges().listen((User? user) {
+      if (user == null) {
+        // router.push("/verify-email"); // todo: remove
+        router.go("/open");
+      } else {
+        if (user.isAnonymous) {
+          router.go("/home");
+        } else {
+          if (user.emailVerified) {
+            router.go("/home");
+          } else {
+            router.go("/verify-email");
+          }
+        }
+      }
+    });
   }
 
   @override
@@ -49,10 +98,7 @@ class MyApp extends StatelessWidget {
           lazy: false,
           create: (context) => sl<CreatePostCubit>(),
         ),
-        BlocProvider(
-          lazy: false,
-          create: (context) => sl<HottestCubit>()..loadPosts(DateTime.now()),
-        ),
+        BlocProvider(lazy: false, create: (context) => sl<HottestCubit>()..loadPosts(DateTime.now())),
         BlocProvider(
           lazy: false,
           create: (context) => sl<WebsiteLauncherCubit>(),
@@ -73,13 +119,39 @@ class MyApp extends StatelessWidget {
           lazy: false,
           create: (context) => sl<RegisterCubit>(),
         ),
+        BlocProvider(
+          lazy: false,
+          create: (context) => sl<LeaderboardCubit>()..loadRankings(),
+        ),
+        BlocProvider(
+          lazy: false,
+          create: (context) => sl<TrendingCubit>()..fetchPosts(),
+        ),
+        BlocProvider(
+          lazy: false,
+          create: (context) => sl<RecentsCubit>(),
+        ),
+        BlocProvider(
+          lazy: false,
+          create: (context) => sl<BiometricsCubit>(),
+        ),
+        BlocProvider(
+          lazy: false,
+          create: (context) => sl<ContactSettingCubit>(),
+        ),
+        BlocProvider(
+          lazy: false,
+          create: (context) => sl<LanguageSettingCubit>(),
+        ),
       ],
       child: Builder(
         builder: (context) {
-          return MaterialApp(
+          return MaterialApp.router(
+            routeInformationProvider: router.routeInformationProvider,
+            routeInformationParser: router.routeInformationParser,
+            routerDelegate: router.routerDelegate,
             debugShowCheckedModeBanner: false,
             title: "Confesi",
-            onGenerateRoute: appRouter.onGenerateRoute,
             theme: AppTheme.light,
             darkTheme: AppTheme.dark,
             themeMode: context.watch<UserCubit>().stateIsUser
@@ -96,7 +168,6 @@ class MyApp extends StatelessWidget {
                 child: child!,
               );
             },
-            home: const SplashScreen(),
           );
         },
       ),

@@ -1,3 +1,5 @@
+import 'package:confesi/core/router/go_router.dart';
+
 import '../../primary/controllers/hottest_controller.dart';
 import '../../shared/indicators/loading_cupertino.dart';
 
@@ -51,7 +53,7 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
     } else if (state is Data && state.posts.isNotEmpty) {
       return GestureDetector(
         onTap: () {
-          Navigator.pushNamed(context, "/home/simplified_detail");
+          router.go("/home/posts/detail");
         },
         child: PageView(
             controller: pageController,

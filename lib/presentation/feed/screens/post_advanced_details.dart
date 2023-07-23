@@ -11,8 +11,8 @@ import 'package:flutter/material.dart';
 import '../../../core/styles/typography.dart';
 import '../../shared/layout/appbar.dart';
 
-class PostAdvancedDetailsScreen extends StatelessWidget {
-  const PostAdvancedDetailsScreen({
+class SentimentAnalysisScreen extends StatelessWidget {
+  const SentimentAnalysisScreen({
     Key? key,
   }) : super(key: key);
 

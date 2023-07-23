@@ -87,30 +87,31 @@ class PostTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => postView == PostView.feedView
-          ? Navigator.pushNamed(
-              context,
-              '/home/detail',
-              arguments: {
-                'id': id,
-                'badges': badges,
-                'post_child': postChild,
-                'icon': icon,
-                'genre': genre,
-                'time': time,
-                'faculty': faculty,
-                'text': text,
-                'title': title,
-                'likes': likes,
-                'hates': hates,
-                'comments': comments,
-                'year': year,
-                'university': university,
-                'university_full_name': universityFullName,
-                'postView': PostView.detailView
-              },
-            )
-          : FocusManager.instance.primaryFocus?.unfocus(),
+      onTap: () => {}, // todo: deal with? dead old not used stuff?
+      // onTap: () => postView == PostView.feedView
+      //     ? Navigator.pushNamed(
+      //         context,
+      //         '/home/detail',
+      //         arguments: {
+      //           'id': id,
+      //           'badges': badges,
+      //           'post_child': postChild,
+      //           'icon': icon,
+      //           'genre': genre,
+      //           'time': time,
+      //           'faculty': faculty,
+      //           'text': text,
+      //           'title': title,
+      //           'likes': likes,
+      //           'hates': hates,
+      //           'comments': comments,
+      //           'year': year,
+      //           'university': university,
+      //           'university_full_name': universityFullName,
+      //           'postView': PostView.detailView
+      //         },
+      //       )
+      //     : FocusManager.instance.primaryFocus?.unfocus(),
       child: Container(
         color: Theme.of(context).colorScheme.background,
         padding: const EdgeInsets.all(15),
@@ -158,46 +159,35 @@ class PostTile extends StatelessWidget {
                         text: "Share",
                         icon: CupertinoIcons.share,
                         onTap: () => context.read<ShareCubit>().shareContent(
-                            context, "View the confession here: https://example.com", "Share this confession!"),
+                            context,
+                            "View the confession here: https://example.com",
+                            "Share this confession!"), // todo: remove hard code
                       ),
-                      OptionButton(
-                          text: "Quote",
-                          icon: CupertinoIcons.paperplane,
-                          onTap: () {
-                            print("$title, $text, $id"); // TODO: REMOVE
-                            Navigator.of(context).pushNamed(
-                              '/home/create_replied_post',
-                              arguments: {
-                                'title': title,
-                                'body': text,
-                                'id': id,
-                              },
-                            );
-                          }),
                       OptionButton(
                         text: "Save",
                         icon: CupertinoIcons.bookmark,
                         onTap: () => print("tap"),
                       ),
-                      OptionButton(
-                        text: "Details",
-                        icon: CupertinoIcons.info,
-                        onTap: () => Navigator.pushNamed(
-                          context,
-                          '/home/post/stats',
-                          arguments: {
-                            'comments': comments,
-                            'faculty': faculty,
-                            'genre': genre,
-                            'hates': hates,
-                            'likes': likes,
-                            'saves': 999999, // TODO: implement saves
-                            'university': university,
-                            'year': year,
-                            'university_full_name': universityFullName,
-                          },
-                        ),
-                      ),
+                      // todo: dead code?
+                      // OptionButton(
+                      //   text: "Details",
+                      //   icon: CupertinoIcons.info,
+                      //   onTap: () => Navigator.pushNamed(
+                      //     context,
+                      //     '/home/post/stats',
+                      //     arguments: {
+                      //       'comments': comments,
+                      //       'faculty': faculty,
+                      //       'genre': genre,
+                      //       'hates': hates,
+                      //       'likes': likes,
+                      //       'saves': 999999, // TODO: implement saves
+                      //       'university': university,
+                      //       'year': year,
+                      //       'university_full_name': universityFullName,
+                      //     },
+                      //   ),
+                      // ),
                       OptionButton(
                         text: "Report",
                         icon: CupertinoIcons.flag,

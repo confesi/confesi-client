@@ -1,11 +1,14 @@
-import '../../../../application/authentication_and_settings/cubit/user_cubit.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:confesi/core/router/go_router.dart';
+import 'package:confesi/init.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
+import '../../../../core/styles/typography.dart';
 import '../../../../core/utils/sizing/height_fraction.dart';
 import '../../../shared/behaviours/themed_status_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../shared/button_touch_effects/touchable_opacity.dart';
 import '../../../shared/buttons/pop.dart';
 
 class OpenScreen extends StatelessWidget {
@@ -29,7 +32,7 @@ class OpenScreen extends StatelessWidget {
                   const Text("TODO: add graphic here"), // TODO Add a graphic here
                   const Spacer(),
                   PopButton(
-                    onPress: () => context.read<UserCubit>().setHomeViewedThenReloadUser(context),
+                    onPress: () async => await sl.get<FirebaseAuth>().signInAnonymously(),
                     icon: CupertinoIcons.arrow_right,
                     backgroundColor: Theme.of(context).colorScheme.background,
                     textColor: Theme.of(context).colorScheme.onSurface,
@@ -37,7 +40,7 @@ class OpenScreen extends StatelessWidget {
                     bottomPadding: 5,
                   ),
                   PopButton(
-                    onPress: () => Navigator.of(context).pushNamed("/login"),
+                    onPress: () => router.push("/login"),
                     icon: CupertinoIcons.arrow_right,
                     backgroundColor: Theme.of(context).colorScheme.background,
                     textColor: Theme.of(context).colorScheme.onSurface,
@@ -45,7 +48,7 @@ class OpenScreen extends StatelessWidget {
                     bottomPadding: 30,
                   ),
                   PopButton(
-                    onPress: () => Navigator.of(context).pushNamed("/register"),
+                    onPress: () => router.push("/register"),
                     icon: CupertinoIcons.arrow_right,
                     backgroundColor: Theme.of(context).colorScheme.secondary,
                     textColor: Theme.of(context).colorScheme.onSecondary,

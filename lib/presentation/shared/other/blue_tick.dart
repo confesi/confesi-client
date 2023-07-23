@@ -1,5 +1,6 @@
+import 'package:confesi/presentation/shared/overlays/info_sheet.dart';
+
 import '../button_touch_effects/touchable_opacity.dart';
-import '../overlays/info_sheet_with_action.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -9,8 +10,7 @@ class BlueTick extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TouchableOpacity(
-      onTap: () => showInfoSheetWithAction(context, "Verified student", "We've confirmed that this is a real student.",
-          () => Navigator.pushNamed(context, "/settings/verified_student_perks"), "Verify yourself"),
+      onTap: () => showInfoSheet(context, "Verified student", "We've confirmed that this is a real student"),
       child: Container(
         padding: const EdgeInsets.all(3),
         decoration: const BoxDecoration(

@@ -1,3 +1,4 @@
+import 'package:confesi/core/router/go_router.dart';
 
 import '../../../core/styles/typography.dart';
 import '../../../core/utils/sizing/height_fraction.dart';
@@ -51,7 +52,7 @@ Future<dynamic> showFeedbackSheet(BuildContext context) {
                       infiniteWidth: true,
                       onTap: () {
                         Navigator.pop(context);
-                        Navigator.of(context).pushNamed("/feedback");
+                        router.push("/settings/feedback");
                       },
                       text: "Give us feedback",
                     ),

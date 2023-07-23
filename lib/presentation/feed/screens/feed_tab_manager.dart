@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:confesi/core/router/go_router.dart';
 import 'package:confesi/core/services/remote_config/remote_config.dart';
 import 'package:confesi/init.dart';
 
@@ -71,19 +72,23 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
                       context,
                       [
                         OptionButton(
-                            onTap: () => Navigator.pushNamed(context, "/profile/account_details"),
+                            onTap: () => router.go("/home/profile/account"),
                             text: "Edit account details",
                             icon: CupertinoIcons.pencil),
                         OptionButton(
-                            onTap: () => Navigator.pushNamed(context, '/home/profile/saved'),
+                            onTap: () => router.go("/home/profile/saved/posts"),
                             text: "Saved confessions",
                             icon: CupertinoIcons.bookmark),
                         OptionButton(
-                            onTap: () => Navigator.pushNamed(context, '/home/profile/comments'),
+                            onTap: () => router.go("/home/profile/saved/comments"),
+                            text: "Saved comments",
+                            icon: CupertinoIcons.bookmark),
+                        OptionButton(
+                            onTap: () => router.go('/home/profile/comments'),
                             text: "Your comments",
                             icon: CupertinoIcons.chat_bubble_2),
                         OptionButton(
-                            onTap: () => Navigator.pushNamed(context, '/home/profile/posts'),
+                            onTap: () => router.go('/home/profile/posts'),
                             text: "Your confessions",
                             icon: CupertinoIcons.cube_box),
                       ],

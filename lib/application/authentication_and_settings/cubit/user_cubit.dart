@@ -41,14 +41,14 @@ class UserCubit extends Cubit<UserState> {
   }) : super(UserLoading());
 
   /// Checks if the current state is user
-  bool get stateIsUser => state is User;
+  bool get stateIsUser => state is SomeUser;
 
-  /// Get the state assuming its [User].
+  /// Get the state assuming its [SomeUser].
   ///
-  /// This can throw an exception if state is not [User]!
-  User get stateAsUser => state as User;
+  /// This can throw an exception if state is not [SomeUser]!
+  SomeUser get stateAsUser => state as SomeUser;
 
-  /// Returns userId assuming state is [User].
+  /// Returns userId assuming state is [SomeUser].
   String userId() => stateAsUser.userType.userId();
 
   /// Logs out the user.
@@ -56,7 +56,7 @@ class UserCubit extends Cubit<UserState> {
   /// Shows message on error logging out.
   void logoutRegisteredUser(BuildContext context) async {
     // if (state is User && stateAsUser.userType is RegisteredUser) {
-    if (state is User) {
+    if (state is SomeUser) {
       final failureOrSuccess = await logout.call(stateAsUser.userType.userId());
       failureOrSuccess.fold(
         (failure) {
@@ -140,7 +140,7 @@ class UserCubit extends Cubit<UserState> {
                             (userId) {
                               // On succesfully decrypting token, emit a user object of type RegisteredUser.
                               emit(
-                                User(
+                                SomeUser(
                                   curvyEnum: curvyEnum,
                                   homeViewedEnum: HomeViewedEnum.yes,
                                   shakeForFeedbackEnum: shakeForFeedbackEnum,
@@ -167,7 +167,7 @@ class UserCubit extends Cubit<UserState> {
                                 //
                                 // If user doesn't have refresh token, then they're a Guest.
                                 emit(
-                                  User(
+                                  SomeUser(
                                     curvyEnum: curvyEnum,
                                     homeViewedEnum: HomeViewedEnum.yes,
                                     appearanceEnum: appearanceEnum,
@@ -180,7 +180,7 @@ class UserCubit extends Cubit<UserState> {
                                 // The user has not yet seen the home screen. Thus, they must be new. So, we should
                                 // show them the open screen.
                                 emit(
-                                  User(
+                                  SomeUser(
                                     curvyEnum: curvyEnum,
                                     homeViewedEnum: HomeViewedEnum.no,
                                     appearanceEnum: appearanceEnum,

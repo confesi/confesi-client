@@ -7,7 +7,7 @@ abstract class UserState extends Equatable {
 }
 
 /// There is currently a user, whether that be a [Guest] or a [RegisteredUser].
-class User extends UserState {
+class SomeUser extends UserState {
   final UserType userType;
   final AppearanceEnum appearanceEnum;
   final TextSizeEnum textSizeEnum;
@@ -15,7 +15,7 @@ class User extends UserState {
   final HomeViewedEnum homeViewedEnum;
   final CurvyEnum curvyEnum;
 
-  User({
+  SomeUser({
     required this.curvyEnum,
     required this.textSizeEnum,
     required this.appearanceEnum,
@@ -24,7 +24,7 @@ class User extends UserState {
     required this.userType,
   });
 
-  User copyWith({
+  SomeUser copyWith({
     CurvyEnum? curvyEnum,
     HomeViewedEnum? homeViewedEnum,
     AppearanceEnum? appearanceEnum,
@@ -33,7 +33,7 @@ class User extends UserState {
     UserType? userType,
     bool? hasViewedPastOpenScreenAlready,
   }) {
-    return User(
+    return SomeUser(
       curvyEnum: curvyEnum ?? this.curvyEnum,
       homeViewedEnum: homeViewedEnum ?? this.homeViewedEnum,
       shakeForFeedbackEnum: shakeForFeedbackEnum ?? this.shakeForFeedbackEnum,

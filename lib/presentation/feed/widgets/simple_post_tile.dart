@@ -1,3 +1,5 @@
+import 'package:confesi/core/router/go_router.dart';
+
 import '../../shared/other/blue_tick.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +21,7 @@ class _SimplePostTileState extends State<SimplePostTile> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.pushNamed(context, "/home/simplified_detail"),
+      onTap: () => router.go("/home/posts/detail"),
       child: Padding(
         padding: const EdgeInsets.only(top: 5, left: 5, right: 5),
         child: ClipRRect(

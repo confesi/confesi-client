@@ -1,3 +1,5 @@
+import 'package:confesi/core/router/go_router.dart';
+
 import '../../../domain/shared/entities/infinite_scroll_indexable.dart';
 
 import '../widgets/leaderboard_item_tile.dart';
@@ -8,7 +10,6 @@ import '../../shared/overlays/info_sheet_with_action.dart';
 
 import '../../../constants/leaderboard/general.dart';
 import '../../../domain/leaderboard/entities/leaderboard_item.dart';
-import '../../../generated/l10n.dart';
 import '../../shared/indicators/alert.dart';
 import '../../shared/layout/appbar.dart';
 import '../../../application/leaderboard/cubit/leaderboard_cubit.dart';
@@ -83,7 +84,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                       context,
                       "Home university",
                       "To change which university appears here, and in other places throughout the app, update your home university.",
-                      () => Navigator.pushNamed(context, "/profile/account_details"),
+                      () => router.go("/home/profile/account"),
                       "Edit in settings",
                     ),
                     child: Container(
@@ -123,7 +124,6 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
         ),
         controller: controller,
         loadMore: (id) {
-          print("LAST ID LOADED: $id");
           for (LeaderboardItem item in state.rankings) {
             controller.addItem(InfiniteScrollIndexable(
               "test_leaderboard_id",

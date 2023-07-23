@@ -35,10 +35,10 @@ class AuthenticationRepository implements IAuthenticationRepository {
 
   /// Registers the user.
   @override
-  Future<Either<Failure, Tokens>> register(String username, String password, String email) async {
+  Future<Either<Failure, Tokens>> register(String password, String email) async {
     if (await networkInfo.isConnected) {
       try {
-        return Right(await datasource.register(username, password, email));
+        return Right(await datasource.register(password, email));
       } catch (e) {
         return Left(exceptionToFailure(e));
       }

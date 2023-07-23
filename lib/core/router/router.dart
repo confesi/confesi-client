@@ -130,14 +130,14 @@ class AppRouter {
           );
           break;
         case '/home/profile/posts':
-          page = const PostsScreen();
+          page = const YourPostsScreen();
           break;
         case '/home/profile/saved':
-          page = const SavedScreen();
+          page = const YourSavedPosts();
           break;
         // An individual post's advanced stats (sentiment analysis).
         case "/home/post/stats":
-          page = const PostAdvancedDetailsScreen();
+          page = const SentimentAnalysisScreen();
           break;
         case "/profile/account_details":
           page = const AccountDetailsScreen();

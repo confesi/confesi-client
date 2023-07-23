@@ -17,7 +17,7 @@ class Register implements Usecase<Success, RegisterParams> {
   /// Registers the user.
   @override
   Future<Either<Failure, Success>> call(RegisterParams params) async {
-    final tokens = await repository.register(params.username, params.password, params.email);
+    final tokens = await repository.register(params.password, params.email);
     return tokens.fold(
       (failure) => Left(failure),
       (token) async {
@@ -35,12 +35,11 @@ class Register implements Usecase<Success, RegisterParams> {
 }
 
 class RegisterParams extends Equatable {
-  final String username;
   final String email;
   final String password;
 
-  const RegisterParams({required this.username, required this.email, required this.password});
+  const RegisterParams({required this.email, required this.password});
 
   @override
-  List<Object?> get props => [username, email, password];
+  List<Object?> get props => [email, password];
 }

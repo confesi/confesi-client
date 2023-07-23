@@ -1,3 +1,5 @@
+import 'package:confesi/core/router/go_router.dart';
+
 import '../../../core/utils/sizing/height_fraction.dart';
 import '../../shared/stat_tiles/stat_tile_item.dart';
 import 'package:flutter/cupertino.dart';
@@ -68,7 +70,7 @@ class _ProfileHomeState extends State<ProfileHome> with AutomaticKeepAliveClient
                     bgColor: Theme.of(context).colorScheme.background,
                     textColor: Theme.of(context).colorScheme.primary,
                     text: "Edit account details",
-                    onTap: () => Navigator.pushNamed(context, "/profile/account_details"),
+                    onTap: () => router.go("/home/profile/account"),
                   ),
                 ),
                 Container(
@@ -84,23 +86,30 @@ class _ProfileHomeState extends State<ProfileHome> with AutomaticKeepAliveClient
                       StatTileItem(
                         iconColor: Theme.of(context).colorScheme.primary,
                         textColor: Theme.of(context).colorScheme.onSurface,
-                        text: "Confessions",
+                        text: "Your confessions",
                         icon: CupertinoIcons.cube_box,
-                        onTap: () => Navigator.pushNamed(context, "/home/profile/posts"),
+                        onTap: () => router.go("/home/profile/posts"),
                       ),
                       StatTileItem(
                         iconColor: Theme.of(context).colorScheme.primary,
                         textColor: Theme.of(context).colorScheme.onSurface,
-                        text: "Saved",
-                        icon: CupertinoIcons.bookmark,
-                        onTap: () => Navigator.pushNamed(context, "/home/profile/saved"),
-                      ),
-                      StatTileItem(
-                        iconColor: Theme.of(context).colorScheme.primary,
-                        textColor: Theme.of(context).colorScheme.onSurface,
-                        text: "Comments",
+                        text: "Your comments",
                         icon: CupertinoIcons.chat_bubble,
-                        onTap: () => Navigator.pushNamed(context, "/home/profile/comments"),
+                        onTap: () => router.go("/home/profile/comments"),
+                      ),
+                      StatTileItem(
+                        iconColor: Theme.of(context).colorScheme.primary,
+                        textColor: Theme.of(context).colorScheme.onSurface,
+                        text: "Saved confessions",
+                        icon: CupertinoIcons.bookmark,
+                        onTap: () => router.go("/home/profile/saved/posts"),
+                      ),
+                      StatTileItem(
+                        iconColor: Theme.of(context).colorScheme.primary,
+                        textColor: Theme.of(context).colorScheme.onSurface,
+                        text: "Saved comments",
+                        icon: CupertinoIcons.bookmark,
+                        onTap: () => router.go("/home/profile/saved/comments"),
                       ),
                     ],
                   ),

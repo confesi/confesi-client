@@ -1,3 +1,4 @@
+import 'package:confesi/core/router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:scrollable/exports.dart';
 
@@ -65,7 +66,7 @@ class _FeedDrawerState extends State<FeedDrawer> {
                     padding: const EdgeInsets.all(10),
                     child: SimpleTextButton(
                       infiniteWidth: true,
-                      onTap: () => Navigator.pushNamed(context, "/search_universities"),
+                      onTap: () => router.go("/schools/search"),
                       text: "Edit home university",
                     ),
                   ),
@@ -73,7 +74,7 @@ class _FeedDrawerState extends State<FeedDrawer> {
                     padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
                     child: SimpleTextButton(
                       infiniteWidth: true,
-                      onTap: () => Navigator.pushNamed(context, "/search_universities"),
+                      onTap: () => router.go("/schools/search"),
                       text: "Edit watched universities",
                     ),
                   ),

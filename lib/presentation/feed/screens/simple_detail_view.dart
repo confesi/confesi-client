@@ -1,3 +1,5 @@
+import 'package:confesi/core/router/go_router.dart';
+
 import '../../../constants/feed/enums.dart';
 import '../widgets/simple_comment_root_group.dart';
 import '../widgets/simple_comment_tile.dart';
@@ -70,7 +72,8 @@ class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
         OptionButton(
           text: "Sentiment analysis",
           icon: CupertinoIcons.doc_text,
-          onTap: () => Navigator.pushNamed(context, "/home/post/stats"), // todo: remove hard coding
+          onTap: () => router.go(
+              "/home/posts/sentiment"), // todo: remove hard coding and dynamically go to the correct post's sentiment analysis
         ),
         OptionButton(
           text: "School location",

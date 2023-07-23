@@ -1,3 +1,5 @@
+import 'package:confesi/core/router/go_router.dart';
+
 import '../../../constants/enums_that_are_local_keys.dart';
 import '../../../init.dart';
 import '../../shared/overlays/text_block_overlay.dart';
@@ -118,62 +120,35 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<UserCubit, UserState>(
-      listenWhen: (previous, current) => previous.runtimeType != current.runtimeType,
+    return BlocListener<RegisterCubit, RegisterState>(
       listener: (context, state) {
-        if (kJumpToHomeScreen) {
-          Navigator.of(context).pushNamed("/home");
-          return;
-        }
-        if (state is User) {
-          // State is some subset of User, whether that be Guest or RegisteredUser.
-          if (state.userType is RegisteredUser) {
-            // State is RegisteredUser, meaning they are a registered user.
-            Navigator.of(context).pushNamed("/home");
-          } else if (state.userType is Guest) {
-            // Go directly to home
-            if ((state.userType as Guest).directToHome) {
-              Navigator.of(context).pushNamed("/home");
-            } else {
-              // Go directly to open
-              Navigator.of(context).pushNamed("/open");
-            }
-          }
-        } else if (state is UserError) {
-          // Something went vastly wrong. Push to error screen.
-          Navigator.of(context).pushNamed("/prefsError");
+        if (state is EnteringRegisterData && state.hasError) {
+          showNotificationChip(context, state.errorMessage);
+        } else if (state is RegisterSuccess) {
+          // context.read<UserCubit>().authenticateUser(AuthenticationType.register); // TODO: fix
         }
       },
-      child: BlocListener<RegisterCubit, RegisterState>(
+      child: BlocListener<LoginCubit, LoginState>(
         listener: (context, state) {
-          if (state is EnteringRegisterData && state.hasError) {
+          if (state is EnteringLoginData && state.hasError) {
             showNotificationChip(context, state.errorMessage);
-          } else if (state is RegisterSuccess) {
-            // context.read<UserCubit>().authenticateUser(AuthenticationType.register); // TODO: fix
+          } else if (state is LoginSuccess) {
+            // context.read<UserCubit>().authenticateUser(AuthenticationType.login); // TODO: fix
           }
         },
-        child: BlocListener<LoginCubit, LoginState>(
-          listener: (context, state) {
-            if (state is EnteringLoginData && state.hasError) {
-              showNotificationChip(context, state.errorMessage);
-            } else if (state is LoginSuccess) {
-              // context.read<UserCubit>().authenticateUser(AuthenticationType.login); // TODO: fix
-            }
-          },
-          child: ThemedStatusBar(
-            child: Scaffold(
-              backgroundColor: Theme.of(context).colorScheme.shadow,
-              body: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: Center(
-                  child: Text(
-                    "Confesi",
-                    style: kSplashScreenLogo.copyWith(
-                      fontSize: 34,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                    textAlign: TextAlign.center,
+        child: ThemedStatusBar(
+          child: Scaffold(
+            backgroundColor: Theme.of(context).colorScheme.shadow,
+            body: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Center(
+                child: Text(
+                  "Confesi",
+                  style: kSplashScreenLogo.copyWith(
+                    fontSize: 34,
+                    color: Theme.of(context).colorScheme.primary,
                   ),
+                  textAlign: TextAlign.center,
                 ),
               ),
             ),

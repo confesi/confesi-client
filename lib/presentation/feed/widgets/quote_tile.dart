@@ -23,28 +23,29 @@ class QuoteTile extends StatelessWidget {
       tooltipLocation: TooltipLocation.above,
       child: GestureDetector(
         onTap: () {
-          FocusManager.instance.primaryFocus?.unfocus();
-          Navigator.pushNamed(
-            context,
-            '/home/detail',
-            arguments: {
-              'badges': post.badges,
-              'post_child': post.child,
-              'icon': post.icon,
-              'genre': post.genre,
-              'time': post.createdDate,
-              'faculty': post.faculty,
-              'text': post.text,
-              'title': post.title,
-              'likes': post.likes,
-              'hates': post.hates,
-              'comments': post.comments,
-              'year': post.year,
-              'university': post.university,
-              'postView': PostView.detailView,
-              'university_full_name': post.universityFullName,
-            },
-          );
+          // todo: dead code? old unused?
+          // FocusManager.instance.primaryFocus?.unfocus();
+          // Navigator.pushNamed(
+          //   context,
+          //   '/home/detail',
+          //   arguments: {
+          //     'badges': post.badges,
+          //     'post_child': post.child,
+          //     'icon': post.icon,
+          //     'genre': post.genre,
+          //     'time': post.createdDate,
+          //     'faculty': post.faculty,
+          //     'text': post.text,
+          //     'title': post.title,
+          //     'likes': post.likes,
+          //     'hates': post.hates,
+          //     'comments': post.comments,
+          //     'year': post.year,
+          //     'university': post.university,
+          //     'postView': PostView.detailView,
+          //     'university_full_name': post.universityFullName,
+          //   },
+          // );
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

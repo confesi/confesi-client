@@ -13,7 +13,7 @@ abstract class IAuthenticationDatasource {
   Future<String> getToken();
   Future<Success> setToken(String token);
   Future<Success> deleteToken();
-  Future<TokensModel> register(String username, String password, String email);
+  Future<TokensModel> register(String password, String email);
   Future<TokensModel> login(String usernameOrEmail, String password);
 }
 
@@ -57,12 +57,11 @@ class AuthenticationDatasource implements IAuthenticationDatasource {
 
   /// Registers the user. Returns token upon being successful.
   @override
-  Future<TokensModel> register(String username, String password, String email) async {
+  Future<TokensModel> register(String password, String email) async {
     return (await api.req(
       Method.post,
       "/users/register",
       {
-        "username": username,
         "password": password,
         "email": email,
       },

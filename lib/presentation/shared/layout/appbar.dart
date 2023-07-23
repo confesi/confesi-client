@@ -1,3 +1,4 @@
+import 'package:confesi/core/router/go_router.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -48,7 +49,7 @@ class _AppbarLayoutState extends State<AppbarLayout> {
               widget.leftIconOnPress!();
             } else {
               FocusScope.of(context).unfocus();
-              Navigator.pop(context);
+              router.pop();
             }
           },
           child: Container(

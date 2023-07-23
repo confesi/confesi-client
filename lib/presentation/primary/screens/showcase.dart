@@ -1,3 +1,4 @@
+import 'package:confesi/core/router/go_router.dart';
 import 'package:flutter/material.dart';
 
 import '../../shared/behaviours/one_theme_status_bar.dart';
@@ -70,7 +71,7 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
     if (widget.isRewatching) {
       Navigator.pop(context);
     } else {
-      Navigator.pushNamed(context, "/home");
+      router.go("/home");
     }
   }
 

@@ -1,4 +1,5 @@
 import '../../../../application/authentication_and_settings/cubit/register_cubit.dart';
+import '../../../../core/router/go_router.dart';
 import '../../../shared/behaviours/nav_blocker.dart';
 import '../../../shared/behaviours/themed_status_bar.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,7 +23,6 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
-  TextEditingController usernameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   late ScrollController scrollController;
@@ -33,7 +33,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     typewriterController = TypewriterController(fullText: "Let's get you started.");
     typewriterController.forward();
     scrollController = ScrollController();
-    usernameController.clear();
     passwordController.clear();
     emailController.clear();
     super.initState();
@@ -41,7 +40,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   @override
   void dispose() {
-    usernameController.dispose();
     passwordController.dispose();
     emailController.dispose();
     scrollController.dispose();
@@ -82,21 +80,22 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                 textStyle: kDisplay1.copyWith(color: Theme.of(context).colorScheme.primary),
                                 controller: typewriterController,
                               ),
-                              const SizedBox(height: 15),
+                              const SizedBox(height: 30),
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "We only accept school emails to ensure you are a student. These are kept private.",
+                                  style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                                  textAlign: TextAlign.left,
+                                ),
+                              ),
+                              const SizedBox(height: 30),
                               ExpandableTextfield(
                                 maxLines: 1,
                                 color: Theme.of(context).colorScheme.background,
                                 controller: emailController,
                                 onChanged: (newValue) => print(newValue),
                                 hintText: "Email",
-                              ),
-                              const SizedBox(height: 15),
-                              ExpandableTextfield(
-                                maxLines: 1,
-                                color: Theme.of(context).colorScheme.background,
-                                controller: usernameController,
-                                onChanged: (newValue) => print(newValue),
-                                hintText: "Username",
                               ),
                               const SizedBox(height: 15),
                               ExpandableTextfield(
@@ -112,8 +111,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                 justText: true,
                                 onPress: () {
                                   FocusScope.of(context).unfocus();
-                                  context.read<RegisterCubit>().registerUser(
-                                      usernameController.text, passwordController.text, emailController.text);
+                                  context
+                                      .read<RegisterCubit>()
+                                      .registerUser(passwordController.text, emailController.text);
                                 },
                                 icon: CupertinoIcons.chevron_right,
                                 backgroundColor: Theme.of(context).colorScheme.secondary,
@@ -122,7 +122,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               ),
                               const SizedBox(height: 15),
                               TouchableOpacity(
-                                onTap: () => Navigator.pushNamed(context, "/login"),
+                                onTap: () => router.push("/login"),
                                 child: Container(
                                   // Transparent hitbox trick.
                                   color: Colors.transparent,

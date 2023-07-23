@@ -1,3 +1,5 @@
+import 'package:confesi/core/router/go_router.dart';
+
 import '../../../../core/utils/sizing/top_safe_area.dart';
 import '../../../primary/controllers/settings_controller.dart';
 
@@ -54,22 +56,22 @@ class SettingsHome extends StatelessWidget {
                         SettingTile(
                           leftIcon: CupertinoIcons.map,
                           text: kSettingsLanguageLabel,
-                          onTap: () => Navigator.pushNamed(context, "/settings/language"),
+                          onTap: () => router.go("/settings/language"),
                         ),
                         SettingTile(
                           leftIcon: CupertinoIcons.question_circle,
                           text: kSettingsFaqLabel,
-                          onTap: () => Navigator.of(context).pushNamed("/settings/faq"),
+                          onTap: () => router.go("/settings/faq"),
                         ),
                         SettingTile(
                           leftIcon: CupertinoIcons.chat_bubble,
                           text: "Feedback",
-                          onTap: () => Navigator.of(context).pushNamed("/settings/feedback"),
+                          onTap: () => router.go("/settings/feedback"),
                         ),
                         SettingTile(
                           leftIcon: CupertinoIcons.mail,
                           text: kContactConfesiLabel,
-                          onTap: () => Navigator.pushNamed(context, "/settings/contact"),
+                          onTap: () => router.go("/settings/contact"),
                         ),
                         SettingTile(
                           rightIcon: CupertinoIcons.link,
@@ -86,17 +88,17 @@ class SettingsHome extends StatelessWidget {
                         SettingTile(
                           leftIcon: CupertinoIcons.color_filter,
                           text: kSettingsAppearanceLabel,
-                          onTap: () => Navigator.of(context).pushNamed("/settings/appearance"),
+                          onTap: () => router.go("/settings/appearance"),
                         ),
                         SettingTile(
                           leftIcon: CupertinoIcons.textformat_size,
                           text: "Text size",
-                          onTap: () => Navigator.of(context).pushNamed("/settings/text_size"),
+                          onTap: () => router.go("/settings/text-size"),
                         ),
                         SettingTile(
                           leftIcon: CupertinoIcons.square_fill_on_circle_fill,
                           text: "Curviness of components",
-                          onTap: () => Navigator.of(context).pushNamed("/settings/curvy"),
+                          onTap: () => router.go("/settings/curvy"),
                         ),
                       ],
                     ),
@@ -104,17 +106,6 @@ class SettingsHome extends StatelessWidget {
                     SettingTileGroup(
                       text: kSettingsAccountLabel,
                       settingTiles: [
-                        SettingTile(
-                          leftIcon: CupertinoIcons.shield,
-                          text: kSettingsBiometricLockLabel,
-                          onTap: () => Navigator.pushNamed(context, "/settings/biometric_lock"),
-                        ),
-                        SettingTile(
-                          leftIcon: CupertinoIcons.helm,
-                          text:
-                              "Verified student", // TODO: gives you a list of perks? Some incentive to prove it? mandatory (or not cuz then easier to ban)?
-                          onTap: () => Navigator.pushNamed(context, "/settings/verified_student_perks"),
-                        ),
                         SettingTile(
                           isRedText: true,
                           leftIcon: CupertinoIcons.square_arrow_right,

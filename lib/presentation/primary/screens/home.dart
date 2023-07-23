@@ -89,9 +89,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     child: TabBar(
                       onTap: (int newIndex) {
                         setState(() => currentIndex = newIndex);
-                        if (newIndex == 2) {
-                          throw Exception();
-                        }
                         analytics.logEvent(
                           name: "tab_view",
                           parameters: {

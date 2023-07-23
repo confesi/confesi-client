@@ -1,3 +1,5 @@
+import 'package:confesi/core/router/go_router.dart';
+
 import '../../../../constants/enums_that_are_local_keys.dart';
 import '../../../shared/selection_groups/bool_selection_group.dart';
 import '../../../shared/selection_groups/bool_selection_tile.dart';
@@ -50,7 +52,7 @@ class FeedbackSettingScreen extends StatelessWidget {
                             SettingTile(
                               leftIcon: CupertinoIcons.chat_bubble,
                               text: kSettingsFeedbackLabel,
-                              onTap: () => Navigator.of(context).pushNamed("/feedback"),
+                              onTap: () =>router.push("/settings/feedback"),
                             ),
                           ],
                         ),
