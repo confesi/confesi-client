@@ -1,8 +1,9 @@
 import 'package:confesi/core/router/go_router.dart';
+import 'package:confesi/presentation/notifications/widgets/notification_tile.dart';
 
 import '../../../domain/shared/entities/infinite_scroll_indexable.dart';
 
-import '../widgets/leaderboard_item_tile.dart';
+import '../../leaderboard/widgets/leaderboard_item_tile.dart';
 import '../../shared/button_touch_effects/touchable_opacity.dart';
 import '../../shared/indicators/loading_cupertino.dart';
 import '../../shared/other/feed_list.dart';
@@ -19,29 +20,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/styles/typography.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
-import '../../shared/overlays/info_sheet.dart';
 
-class LeaderboardScreen extends StatefulWidget {
-  const LeaderboardScreen({Key? key}) : super(key: key);
+class NotificationsScreen extends StatefulWidget {
+  const NotificationsScreen({Key? key}) : super(key: key);
 
   @override
-  State<LeaderboardScreen> createState() => _LeaderboardScreenState();
+  State<NotificationsScreen> createState() => _NotificationsScreenState();
 }
 
-class _LeaderboardScreenState extends State<LeaderboardScreen> {
+class _NotificationsScreenState extends State<NotificationsScreen> {
   late FeedListController controller;
-  bool scrolledDownFromTop = false;
 
   @override
   void initState() {
     controller = FeedListController();
-    controller.addListener(() {
-      if (controller.scrolledDownFromTop != scrolledDownFromTop) {
-        setState(() {
-          scrolledDownFromTop = controller.scrolledDownFromTop;
-        });
-      }
-    });
     super.initState();
   }
 
@@ -59,53 +51,14 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
       );
     } else if (state is Data && state.rankings.isNotEmpty) {
       return FeedList(
-        header: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 30),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Text(
-                "Your school",
-                style: kDisplay1.copyWith(
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-                textAlign: TextAlign.left,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            const SizedBox(height: 5),
-            const LeaderboardItemTile(
-              hottests: 13,
-              placing: 435,
-              universityAbbr: "UVIC",
-              universityFullName: "University of Victoria",
-            ),
-            const SizedBox(height: 30),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Text(
-                "The others",
-                style: kDisplay1.copyWith(
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-                textAlign: TextAlign.left,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            const SizedBox(height: 5),
-          ],
-        ),
         controller: controller,
         loadMore: (id) {
           for (LeaderboardItem item in state.rankings) {
             controller.addItem(InfiniteScrollIndexable(
               "test_leaderboard_id",
-              LeaderboardItemTile(
-                hottests: item.points,
-                placing: item.placing,
-                universityAbbr: item.universityName,
-                universityFullName: item.universityFullName,
+              const NotificationTile(
+                title: "Here is a cool title from a notification",
+                body: "This is the body of the notification. It can possibly be a little bit longer.",
               ),
             ));
           }
@@ -146,16 +99,15 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                 AppbarLayout(
                   bottomBorder: true,
                   centerWidget: Text(
-                    "School Leaderboard",
+                    "Notifications",
                     style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
                   ),
-                  rightIcon: scrolledDownFromTop ? CupertinoIcons.arrow_up_to_line : CupertinoIcons.info,
+                  rightIcon: CupertinoIcons.info,
                   rightIconVisible: true,
-                  rightIconOnPress: () => scrolledDownFromTop
-                      ? controller.scrollToTop()
-                      : showInfoSheet(context, kLeaderboardInfoHeader, kLeaderboardInfoBody),
+                  rightIconOnPress: () => showInfoSheetWithAction(context, "Push notifications",
+                      "Edit your push notifications in settings.", () => print("tap"), "Edit"),
                   leftIconVisible: false,
                 ),
                 Expanded(

@@ -1,4 +1,5 @@
 import 'package:confesi/core/router/go_router.dart';
+import 'package:confesi/presentation/shared/other/widget_or_nothing.dart';
 
 import '../../../application/shared/cubit/share_cubit.dart';
 import '../../../init.dart';
@@ -6,6 +7,7 @@ import '../../leaderboard/screens/home.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../authentication_and_settings/screens/settings/home.dart';
 import '../../daily_hottest/screens/home.dart';
+import '../../notifications/screens/home.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -73,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     const HottestHome(),
                     const SettingsHome(),
                     const LeaderboardScreen(),
-                    Container(),
+                    const NotificationsScreen(),
                   ],
                 ),
                 bottomNavigationBar: Container(
@@ -121,6 +123,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           icon: CupertinoIcons.chart_bar_alt_fill,
                         ),
                         _BottomTab(
+                          hasNotification: true,
                           indexMatcher: 4,
                           currentIndex: currentIndex,
                           icon: CupertinoIcons.bell,
@@ -143,21 +146,42 @@ class _BottomTab extends StatelessWidget {
     required this.indexMatcher,
     required this.currentIndex,
     required this.icon,
+    this.hasNotification = false,
   });
 
   final int currentIndex;
   final int indexMatcher;
   final IconData icon;
+  final bool hasNotification;
 
   @override
   Widget build(BuildContext context) {
     return Tab(
-      icon: Icon(
-        icon,
-        size: 24,
-        color: currentIndex == indexMatcher
-            ? Theme.of(context).colorScheme.secondary
-            : Theme.of(context).colorScheme.onSurface,
+      icon: Padding(
+        padding: const EdgeInsets.only(top: 10),
+        child: Column(
+          children: [
+            Icon(
+              icon,
+              size: 24,
+              color: currentIndex == indexMatcher
+                  ? Theme.of(context).colorScheme.secondary
+                  : Theme.of(context).colorScheme.onSurface,
+            ),
+            WidgetOrNothing(
+              showWidget: hasNotification,
+              child: Container(
+                margin: const EdgeInsets.only(top: 5),
+                height: 5,
+                width: 5,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.error,
+                  shape: BoxShape.circle,
+                ),
+              ),
+            )
+          ],
+        ),
       ),
       iconMargin: const EdgeInsets.only(top: 5, bottom: 2),
     );
