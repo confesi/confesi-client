@@ -17,10 +17,10 @@ class HeaderText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: verticalPadding ? 10 : 0),
+      padding: EdgeInsets.symmetric(vertical: verticalPadding ? 15 : 0),
       child: Text(
         text,
-        style: kTitle.copyWith(color: Theme.of(context).colorScheme.onSurface),
+        style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
         textScaleFactor: textFactor1 ? 1 : null,
         overflow: TextOverflow.ellipsis,
         maxLines: 3,

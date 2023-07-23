@@ -25,6 +25,7 @@ class SettingTileGroup extends StatelessWidget {
           ),
           textAlign: TextAlign.left,
         ),
+        const SizedBox(height: 5),
         ...settingTiles,
       ],
     );

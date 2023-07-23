@@ -1,3 +1,4 @@
+import 'package:confesi/data/create_post/datasources/create_post_datasource.dart';
 import 'package:confesi/presentation/authentication_and_settings/screens/authentication/login.dart';
 import 'package:confesi/presentation/authentication_and_settings/screens/authentication/open.dart';
 import 'package:confesi/presentation/authentication_and_settings/screens/authentication/verify_email.dart';
@@ -6,8 +7,9 @@ import 'package:confesi/presentation/authentication_and_settings/screens/setting
 import 'package:confesi/presentation/authentication_and_settings/screens/settings/curvy.dart';
 import 'package:confesi/presentation/authentication_and_settings/screens/settings/faq.dart';
 import 'package:confesi/presentation/authentication_and_settings/screens/settings/feedback.dart';
-import 'package:confesi/presentation/authentication_and_settings/screens/settings/language.dart';
+import 'package:confesi/presentation/authentication_and_settings/screens/settings/home.dart';
 import 'package:confesi/presentation/authentication_and_settings/screens/settings/text_size.dart';
+import 'package:confesi/presentation/create_post/screens/details.dart';
 import 'package:confesi/presentation/create_post/screens/home.dart';
 import 'package:confesi/presentation/feed/screens/post_advanced_details.dart';
 import 'package:confesi/presentation/feed/screens/post_detail_view.dart';
@@ -34,7 +36,25 @@ final GoRouter router = GoRouter(
     GoRoute(path: '/login', builder: (BuildContext context, GoRouterState state) => const LoginScreen()),
     GoRoute(path: '/register', builder: (BuildContext context, GoRouterState state) => const RegistrationScreen()),
     GoRoute(path: '/verify-email', builder: (BuildContext context, GoRouterState state) => const VerifyEmailScreen()),
-    GoRoute(path: '/create', builder: (BuildContext context, GoRouterState state) => const CreatePostHome()),
+    GoRoute(
+      path: '/create',
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: const CreatePostHome(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            // Change the opacity of the screen using a Curve based on the animation's value
+            var tween = CurveTween(curve: Curves.easeInOut);
+            var curvedAnimation = tween.animate(animation);
+            return SlideTransition(
+              position: Tween<Offset>(begin: const Offset(0, 1), end: Offset.zero).animate(curvedAnimation),
+              child: child,
+            );
+          },
+        );
+      },
+    ),
+    GoRoute(path: '/create/details', builder: (BuildContext context, GoRouterState state) => const CreatePostDetails()),
     GoRoute(path: '/onboarding', builder: (BuildContext context, GoRouterState state) => const ShowcaseScreen()),
     GoRoute(path: '/home', builder: (BuildContext context, GoRouterState state) => const HomeScreen()),
     GoRoute(
@@ -61,8 +81,9 @@ final GoRouter router = GoRouter(
         path: '/home/profile/saved/posts',
         builder: (BuildContext context, GoRouterState state) => const YourSavedPosts()),
     GoRoute(path: '/feedback', builder: (BuildContext context, GoRouterState state) => const FeedbackSettingScreen()),
+    GoRoute(path: '/settings', builder: (BuildContext context, GoRouterState state) => const SettingsHome()),
+
     GoRoute(path: '/settings/faq', builder: (BuildContext context, GoRouterState state) => const FAQScreen()),
-    GoRoute(path: '/settings/language', builder: (BuildContext context, GoRouterState state) => const LanguageScreen()),
     GoRoute(
         path: '/settings/appearance', builder: (BuildContext context, GoRouterState state) => const AppearanceScreen()),
     GoRoute(

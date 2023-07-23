@@ -1,8 +1,10 @@
 import 'package:confesi/core/router/go_router.dart';
+import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 
 import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../../../application/create_post/cubit/drafts_cubit.dart';
 import '../../../core/utils/sizing/width_fraction.dart';
+import '../../../domain/create_post/entities/draft_post_entity.dart';
 import '../overlays/drafts_sheet.dart';
 import '../../feed/widgets/child_post.dart';
 import '../../shared/button_touch_effects/touchable_scale.dart';
@@ -88,9 +90,22 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
 
   late String titleHint;
   late String bodyHint;
+  // preload for the drafts sheet
+  List<DraftPostEntity> draftEntities = [];
+
+  void loadDrafts() async {
+    await context.read<DraftsCubit>().getDrafts(context.read<UserCubit>().userId()).then((drafts) async {
+      if (mounted) {
+        setState(() {
+          draftEntities = drafts.reversed.toList();
+        });
+      }
+    });
+  }
 
   @override
   void initState() {
+    loadDrafts();
     repliedPostChildId = widget.id;
     repliedPostChildBody = widget.body;
     repliedPostChildTitle = widget.title;
@@ -190,7 +205,7 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                             showNotificationChip(context, "You can't post... nothing!");
                             return;
                           }
-                          router.push("/create");
+                          router.push("/create/details");
                           FocusScope.of(context).unfocus();
                         },
                         leftIconVisible: true,
@@ -371,9 +386,9 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                                         color: Colors.transparent,
                                         width: double.infinity,
                                         child: Center(
-                                          child: TouchableScale(
+                                          child: TouchableOpacity(
                                             tapType: TapType.lightImpact,
-                                            onTap: () => showDraftsSheet(context),
+                                            onTap: () => showDraftsSheet(context, draftEntities),
                                             child: Container(
                                               constraints: BoxConstraints(maxWidth: widthFraction(context, 2 / 3)),
                                               padding: const EdgeInsets.all(20),

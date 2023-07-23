@@ -39,10 +39,11 @@ class _FAQScreenState extends State<FAQScreen> {
             ),
             Expanded(
               child: ScrollableView(
+                controller: ScrollController(),
                 scrollBarVisible: false,
+                physics: const BouncingScrollPhysics(),
                 hapticsEnabled: false,
                 inlineBottomOrRightPadding: bottomSafeArea(context),
-                controller: ScrollController(),
                 child: const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10),
                   child: Column(

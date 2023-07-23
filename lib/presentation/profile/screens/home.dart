@@ -5,7 +5,6 @@ import '../../shared/stat_tiles/stat_tile_item.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
-import '../../primary/controllers/profile_controller.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrollable/exports.dart';
 
@@ -18,10 +17,7 @@ import '../../shared/buttons/simple_text.dart';
 class ProfileHome extends StatefulWidget {
   const ProfileHome({
     super.key,
-    required this.profileController,
   });
-
-  final ProfileController profileController;
 
   @override
   State<ProfileHome> createState() => _ProfileHomeState();
@@ -79,7 +75,10 @@ class _ProfileHomeState extends State<ProfileHome> with AutomaticKeepAliveClient
                     borderRadius: BorderRadius.all(
                         Radius.circular(context.watch<UserCubit>().stateAsUser.curvyEnum.borderRadius)),
                     color: Theme.of(context).colorScheme.background,
-                    border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8,strokeAlign: BorderSide.strokeAlignCenter),
+                    border: Border.all(
+                        color: Theme.of(context).colorScheme.onBackground,
+                        width: 0.8,
+                        strokeAlign: BorderSide.strokeAlignCenter),
                   ),
                   child: Row(
                     children: [

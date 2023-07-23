@@ -1,20 +1,15 @@
 import 'package:confesi/presentation/profile/widgets/stat_tile.dart';
-import 'package:confesi/presentation/shared/buttons/simple_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scrollable/exports.dart';
 
 import '../../../core/styles/typography.dart';
 import '../../../core/utils/sizing/bottom_safe_area.dart';
-import '../../create_post/widgets/faculty_picker_sheet.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/buttons/pop.dart';
 import '../../shared/layout/appbar.dart';
-import '../../shared/selection_groups/setting_tile.dart';
-import '../../shared/selection_groups/setting_tile_group.dart';
 import '../../shared/selection_groups/text_stat_tile.dart';
 import '../../shared/selection_groups/text_stat_tile_group.dart';
-import '../../shared/text/disclaimer_text.dart';
 
 class AccountProfileStats extends StatefulWidget {
   const AccountProfileStats({super.key});

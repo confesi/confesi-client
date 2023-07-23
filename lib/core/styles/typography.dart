@@ -13,7 +13,7 @@ var kSplashScreenLogo = gf.GoogleFonts.montserrat(
 
 /// Large text style - meant for display, but with sans serif style.
 var kDisplay1 = gf.GoogleFonts.inter(
-  textStyle: const f.TextStyle(fontWeight: f.FontWeight.w600, fontSize: 26),
+  textStyle: const f.TextStyle(fontWeight: f.FontWeight.w800, fontSize: 26),
 );
 
 /// Very big text style.

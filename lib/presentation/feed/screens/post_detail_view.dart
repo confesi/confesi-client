@@ -161,10 +161,10 @@ class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
                                           const SizedBox(height: 15),
                                           Text(
                                             "I found out all the stats profs are in a conspiracy ring together!",
-                                            style: kTitle.copyWith(
+                                            style: kDisplay1.copyWith(
                                               color: Theme.of(context).colorScheme.primary,
                                               fontSize:
-                                                  24 * context.watch<UserCubit>().stateAsUser.textSizeEnum.multiplier,
+                                                  26 * context.watch<UserCubit>().stateAsUser.textSizeEnum.multiplier,
                                             ),
                                             textAlign: TextAlign.left,
                                           ),

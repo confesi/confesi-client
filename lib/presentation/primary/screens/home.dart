@@ -1,3 +1,5 @@
+import 'package:confesi/core/router/go_router.dart';
+
 import '../../../application/shared/cubit/share_cubit.dart';
 import '../../../init.dart';
 import '../../leaderboard/screens/home.dart';
@@ -69,38 +71,34 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   children: [
                     ExploreHome(scaffoldKey: scaffoldKey),
                     const HottestHome(),
+                    const SettingsHome(),
                     const LeaderboardScreen(),
                     Container(),
-                    const SettingsHome(),
                   ],
                 ),
                 bottomNavigationBar: Container(
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.background,
                     border: Border(
-                      top: BorderSide(
-                        color: Theme.of(context).colorScheme.onBackground,
-                        width: 0.8
-                      ),
+                      top: BorderSide(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
                     ),
                   ),
                   child: SafeArea(
                     top: false,
                     child: TabBar(
                       onTap: (int newIndex) {
-                        setState(() => currentIndex = newIndex);
-                        analytics.logEvent(
-                          name: "tab_view",
-                          parameters: {
-                            "tab": newIndex,
-                          },
-                        );
+                        if (newIndex == 2) {
+                          // create post
+                          router.push("/create");
+                          return;
+                        } else {
+                          setState(() => currentIndex = newIndex);
+                        }
                       },
                       labelColor: Theme.of(context).colorScheme.secondary,
                       indicatorSize: TabBarIndicatorSize.label,
                       indicatorColor: Colors.transparent,
                       controller: tabController,
-                      enableFeedback: true,
                       tabs: [
                         _BottomTab(
                           indexMatcher: 0,
@@ -115,17 +113,17 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         _BottomTab(
                           indexMatcher: 2,
                           currentIndex: currentIndex,
-                          icon: CupertinoIcons.chart_bar_alt_fill,
+                          icon: CupertinoIcons.add,
                         ),
                         _BottomTab(
                           indexMatcher: 3,
                           currentIndex: currentIndex,
-                          icon: CupertinoIcons.bell,
+                          icon: CupertinoIcons.chart_bar_alt_fill,
                         ),
                         _BottomTab(
                           indexMatcher: 4,
                           currentIndex: currentIndex,
-                          icon: CupertinoIcons.gear,
+                          icon: CupertinoIcons.bell,
                         ),
                       ],
                     ),

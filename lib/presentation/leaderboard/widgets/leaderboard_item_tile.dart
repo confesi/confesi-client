@@ -27,7 +27,8 @@ class LeaderboardItemTile extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(left: 5, right: 5, top: 5),
       decoration: BoxDecoration(
-        border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8,strokeAlign: BorderSide.strokeAlignCenter),
+        border: Border.all(
+            color: Theme.of(context).colorScheme.onBackground, width: 0.8, strokeAlign: BorderSide.strokeAlignCenter),
         color: Theme.of(context).colorScheme.background,
         borderRadius: BorderRadius.all(Radius.circular(context.watch<UserCubit>().stateAsUser.curvyEnum.borderRadius)),
       ),

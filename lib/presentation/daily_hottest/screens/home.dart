@@ -112,7 +112,7 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
                 : "Hottest of ${state.date.readableDateFormat()}";
           }
           setState(() {
-            currentIndex = 0;
+            currentIndex = currentIndex;
           });
         },
         child: Scaffold(

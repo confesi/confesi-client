@@ -50,9 +50,9 @@ class _SimplePostTileState extends State<SimplePostTile> {
                             children: [
                               TextSpan(
                                 text: "I found out all the stats profs are in a conspiracy ring together!",
-                                style: kTitle.copyWith(
+                                style: kDisplay1.copyWith(
                                   color: Theme.of(context).colorScheme.primary,
-                                  fontSize: 24 * context.watch<UserCubit>().stateAsUser.textSizeEnum.multiplier,
+                                  fontSize: 26 * context.watch<UserCubit>().stateAsUser.textSizeEnum.multiplier,
                                 ),
                               ),
                               const WidgetSpan(

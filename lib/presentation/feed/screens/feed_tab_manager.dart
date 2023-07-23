@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:confesi/core/router/go_router.dart';
 import 'package:confesi/core/services/remote_config/remote_config.dart';
 import 'package:confesi/init.dart';
+import 'package:confesi/presentation/shared/behaviours/init_scale.dart';
+import 'package:confesi/presentation/shared/buttons/circle_emoji_button.dart';
 
 import '../../shared/buttons/option.dart';
 import '../../shared/other/zoomable.dart';
@@ -72,6 +74,8 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
                       context,
                       [
                         OptionButton(
+                            onTap: () => router.push("/settings"), text: "Settings", icon: CupertinoIcons.gear),
+                        OptionButton(
                             onTap: () => router.push("/home/profile/stats"),
                             text: "Your stats",
                             icon: CupertinoIcons.chart_bar_square),
@@ -102,24 +106,27 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
                     centerWidget: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
-                          CupertinoIcons.chevron_back,
-                          color: Theme.of(context).colorScheme.onSurface,
-                          size: 20,
+                        // Icon(
+                        //   CupertinoIcons.chevron_back,
+                        //   color: Theme.of(context).colorScheme.onSurface,
+                        //   size: 20,
+                        // ),
+                        // const SizedBox(width: 5),
+                        InitScale(
+                          child: CircleEmojiButton(
+                            onTap: () => changeFeed(),
+                            text: selectedFeedType == SelectedFeedType.trending ? "Hot 🔥" : "New ⏳",
+                            // text: selectedFeedType == SelectedFeedType.trending
+                            //     ? sl.get<RemoteConfigService>().config.getString('trending_feed_btn_title')
+                            //     : sl.get<RemoteConfigService>().config.getString('recents_feed_btn_title'),
+                          ),
                         ),
-                        const SizedBox(width: 5),
-                        SimpleTextButton(
-                          onTap: () => changeFeed(),
-                          text: selectedFeedType == SelectedFeedType.trending
-                              ? sl.get<RemoteConfigService>().config.getString('trending_feed_btn_title')
-                              : sl.get<RemoteConfigService>().config.getString('recents_feed_btn_title'),
-                        ),
-                        const SizedBox(width: 5),
-                        Icon(
-                          CupertinoIcons.chevron_forward,
-                          color: Theme.of(context).colorScheme.onSurface,
-                          size: 20,
-                        ),
+                        // const SizedBox(width: 5),
+                        // Icon(
+                        //   CupertinoIcons.chevron_forward,
+                        //   color: Theme.of(context).colorScheme.onSurface,
+                        //   size: 20,
+                        // ),
                       ],
                     ),
                     leftIconVisible: true,

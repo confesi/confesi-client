@@ -1,5 +1,4 @@
 import '../../../core/utils/sizing/width_fraction.dart';
-import '../../../generated/l10n.dart';
 import '../buttons/simple_text.dart';
 import 'package:flutter/material.dart';
 

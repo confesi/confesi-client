@@ -15,23 +15,16 @@ import '../../../core/styles/typography.dart';
 import '../../shared/buttons/pop.dart';
 import '../../shared/layout/appbar.dart';
 
-class DetailsScreen extends StatefulWidget {
-  const DetailsScreen({
+class CreatePostDetails extends StatefulWidget {
+  const CreatePostDetails({
     Key? key,
-    required this.title,
-    required this.body,
-    required this.id,
   }) : super(key: key);
 
-  final String title;
-  final String body;
-  final String? id;
-
   @override
-  State<DetailsScreen> createState() => _DetailsScreenState();
+  State<CreatePostDetails> createState() => _CreatePostDetailsState();
 }
 
-class _DetailsScreenState extends State<DetailsScreen> with AutomaticKeepAliveClientMixin {
+class _CreatePostDetailsState extends State<CreatePostDetails> with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 
@@ -195,7 +188,7 @@ class _DetailsScreenState extends State<DetailsScreen> with AutomaticKeepAliveCl
                                   justText: true,
                                   onPress: () async => await context
                                       .read<CreatePostCubit>()
-                                      .uploadUserPost(widget.title, widget.body, widget.id),
+                                      .uploadUserPost("widget.title", "widget.body", "widget.id"),
                                   icon: CupertinoIcons.chevron_right,
                                   backgroundColor: Theme.of(context).colorScheme.secondary,
                                   textColor: Theme.of(context).colorScheme.onSecondary,
