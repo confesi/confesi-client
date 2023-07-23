@@ -25,7 +25,7 @@ class ChildPost extends StatelessWidget {
           color: Theme.of(context).colorScheme.background,
           borderRadius:
               BorderRadius.all(Radius.circular(context.watch<UserCubit>().stateAsUser.curvyEnum.borderRadius)),
-          border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
+          border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8,strokeAlign: BorderSide.strokeAlignCenter),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

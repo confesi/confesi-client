@@ -15,7 +15,7 @@ class CommentBottomButton extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-        border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
+        border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8,strokeAlign: BorderSide.strokeAlignCenter),
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.all(Radius.circular(context.watch<UserCubit>().stateAsUser.curvyEnum.borderRadius)),
       ),

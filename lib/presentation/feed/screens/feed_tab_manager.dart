@@ -72,6 +72,10 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
                       context,
                       [
                         OptionButton(
+                            onTap: () => router.push("/home/profile/stats"),
+                            text: "Your stats",
+                            icon: CupertinoIcons.chart_bar_square),
+                        OptionButton(
                             onTap: () => router.push("/home/profile/account"),
                             text: "Edit account details",
                             icon: CupertinoIcons.pencil),

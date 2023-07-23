@@ -1,7 +1,6 @@
 import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
 import '../../../core/styles/typography.dart';
 import '../button_touch_effects/touchable_opacity.dart';
 import 'package:flutter/cupertino.dart';
@@ -38,7 +37,7 @@ class SettingTile extends StatelessWidget {
         width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
         decoration: BoxDecoration(
-          border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
+          border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8,strokeAlign: BorderSide.strokeAlignCenter),
           color: bgColor ?? Theme.of(context).colorScheme.background,
           borderRadius:
               BorderRadius.all(Radius.circular(context.watch<UserCubit>().stateAsUser.curvyEnum.borderRadius)),

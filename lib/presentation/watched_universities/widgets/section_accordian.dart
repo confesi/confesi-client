@@ -1,4 +1,3 @@
-
 import '../../../core/styles/typography.dart';
 import '../../shared/behaviours/animated_cliprrect.dart';
 import '../../shared/button_touch_effects/touchable_scale.dart';
@@ -45,9 +44,9 @@ class _SectionAccordianState extends State<SectionAccordian> {
             border: widget.topBorder
                 ? Border(
                     top: BorderSide(
-                      width: 0.8,
-                      color: Theme.of(context).colorScheme.onBackground,
-                    ),
+                        width: 0.8,
+                        color: Theme.of(context).colorScheme.onBackground,
+                        strokeAlign: BorderSide.strokeAlignCenter),
                   )
                 : null,
           ),
@@ -125,6 +124,7 @@ class _SectionAccordianState extends State<SectionAccordian> {
                 ? Border(
                     bottom: BorderSide(
                       width: 0.8,
+                      strokeAlign: BorderSide.strokeAlignCenter,
                       color: Theme.of(context).colorScheme.onBackground,
                     ),
                   )

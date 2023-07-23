@@ -18,7 +18,7 @@ class EmblemButton extends StatelessWidget {
       onTap: () => onPress(),
       child: Container(
         decoration: BoxDecoration(
-          border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
+          border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8,strokeAlign: BorderSide.strokeAlignCenter),
           color: backgroundColor,
           shape: BoxShape.circle,
         ),

@@ -83,14 +83,8 @@ class _SimpleCommentSortState extends State<SimpleCommentSort> {
           // Transparent hitbox trick.
           color: Colors.transparent,
           border: Border(
-            top: BorderSide(
-              color: Theme.of(context).colorScheme.onBackground,
-              width: 0.8,
-            ),
-            bottom: BorderSide(
-              color: Theme.of(context).colorScheme.onBackground,
-              width: 0.8,
-            ),
+            top: BorderSide(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
+            bottom: BorderSide(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
           ),
         ),
         child: Row(

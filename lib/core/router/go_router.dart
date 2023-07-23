@@ -1,6 +1,7 @@
 import 'package:confesi/presentation/authentication_and_settings/screens/authentication/login.dart';
 import 'package:confesi/presentation/authentication_and_settings/screens/authentication/open.dart';
 import 'package:confesi/presentation/authentication_and_settings/screens/authentication/verify_email.dart';
+import 'package:confesi/presentation/authentication_and_settings/screens/settings/appearance.dart';
 import 'package:confesi/presentation/authentication_and_settings/screens/settings/contact.dart';
 import 'package:confesi/presentation/authentication_and_settings/screens/settings/curvy.dart';
 import 'package:confesi/presentation/authentication_and_settings/screens/settings/faq.dart';
@@ -22,6 +23,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 
 import '../../presentation/authentication_and_settings/screens/authentication/registration.dart';
+import '../../presentation/profile/screens/account_stats.dart';
 
 final GoRouter router = GoRouter(
   initialLocation: "/",
@@ -45,6 +47,9 @@ final GoRouter router = GoRouter(
         path: '/home/profile/account',
         builder: (BuildContext context, GoRouterState state) => const AccountDetailsScreen()),
     GoRoute(
+        path: '/home/profile/stats',
+        builder: (BuildContext context, GoRouterState state) => const AccountProfileStats()),
+    GoRoute(
         path: '/home/profile/posts', builder: (BuildContext context, GoRouterState state) => const YourPostsScreen()),
     GoRoute(
         path: '/home/profile/comments',
@@ -58,6 +63,8 @@ final GoRouter router = GoRouter(
     GoRoute(path: '/feedback', builder: (BuildContext context, GoRouterState state) => const FeedbackSettingScreen()),
     GoRoute(path: '/settings/faq', builder: (BuildContext context, GoRouterState state) => const FAQScreen()),
     GoRoute(path: '/settings/language', builder: (BuildContext context, GoRouterState state) => const LanguageScreen()),
+    GoRoute(
+        path: '/settings/appearance', builder: (BuildContext context, GoRouterState state) => const AppearanceScreen()),
     GoRoute(
         path: '/settings/feedback',
         builder: (BuildContext context, GoRouterState state) => const FeedbackSettingScreen()),

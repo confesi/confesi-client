@@ -31,7 +31,8 @@ class DraftTile extends StatelessWidget {
           border: Border(
             bottom: BorderSide(
               color: Theme.of(context).colorScheme.onBackground,
-              width: 0.8,
+              width: 0.8
+              ,strokeAlign: BorderSide.strokeAlignCenter
             ),
           ),
         ),

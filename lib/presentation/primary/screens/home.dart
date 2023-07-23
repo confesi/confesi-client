@@ -80,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     border: Border(
                       top: BorderSide(
                         color: Theme.of(context).colorScheme.onBackground,
-                        width: 0.8,
+                        width: 0.8
                       ),
                     ),
                   ),

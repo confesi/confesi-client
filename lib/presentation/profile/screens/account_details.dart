@@ -2,7 +2,6 @@ import '../../../core/utils/sizing/bottom_safe_area.dart';
 import '../../shared/text/disclaimer_text.dart';
 import 'package:scrollable/exports.dart';
 
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

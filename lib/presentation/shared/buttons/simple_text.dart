@@ -55,7 +55,7 @@ class SimpleTextButton extends StatelessWidget {
           width: infiniteWidth ? double.infinity : null,
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-            border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
+            border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8,strokeAlign: BorderSide.strokeAlignCenter),
             color: bgColor ??
                 (secondaryColors
                     ? Theme.of(context).colorScheme.secondary

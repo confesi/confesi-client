@@ -43,7 +43,7 @@ class Sharing {
             padding: const EdgeInsets.all(13),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.background,
-              border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
+              border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8,strokeAlign: BorderSide.strokeAlignCenter),
               borderRadius: const BorderRadius.all(Radius.circular(5)),
               boxShadow: [
                 BoxShadow(

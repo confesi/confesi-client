@@ -27,56 +27,54 @@ class LeaderboardItemTile extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(left: 5, right: 5, top: 5),
       decoration: BoxDecoration(
-        border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
+        border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8,strokeAlign: BorderSide.strokeAlignCenter),
         color: Theme.of(context).colorScheme.background,
         borderRadius: BorderRadius.all(Radius.circular(context.watch<UserCubit>().stateAsUser.curvyEnum.borderRadius)),
       ),
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.symmetric(vertical: 10),
       width: double.infinity,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Container(
-            width: 100,
-            padding: const EdgeInsets.all(15),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.secondary,
-              // shape: BoxShape.circle,
-              borderRadius:
-                  BorderRadius.all(Radius.circular(context.watch<UserCubit>().stateAsUser.curvyEnum.borderRadius)),
-            ),
-            child: Text(
-              "$placing${numberPostfix(placing)}",
-              style: kTitle.copyWith(
-                color: Theme.of(context).colorScheme.onSecondary,
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Text(
+                "$placing${numberPostfix(placing)}",
+                style: kTitle.copyWith(
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+                textAlign: TextAlign.center,
               ),
-              textAlign: TextAlign.center,
             ),
           ),
-          const SizedBox(width: 10),
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "$universityFullName • $universityAbbr",
-                  style: kDetail.copyWith(
-                    color: Theme.of(context).colorScheme.primary,
+            flex: 3,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "$universityFullName • $universityAbbr",
+                    style: kDetail.copyWith(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    textAlign: TextAlign.left,
                   ),
-                  textAlign: TextAlign.left,
-                ),
-                const SizedBox(height: 5),
-                Text(
-                  isPlural(hottests)
-                      ? "${addCommasToNumber(hottests)} hottests"
-                      : "${addCommasToNumber(hottests)} hottest",
-                  style: kDetail.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface,
+                  const SizedBox(height: 5),
+                  Text(
+                    isPlural(hottests)
+                        ? "${addCommasToNumber(hottests)} hottests"
+                        : "${addCommasToNumber(hottests)} hottest",
+                    style: kDetail.copyWith(
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                    textAlign: TextAlign.left,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  textAlign: TextAlign.left,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ],

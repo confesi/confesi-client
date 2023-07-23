@@ -1,4 +1,5 @@
 import 'package:confesi/core/router/go_router.dart';
+import 'package:flutter/services.dart';
 
 import '../../shared/indicators/loading_cupertino.dart';
 
@@ -58,7 +59,7 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
             controller: pageController,
             physics: const BouncingScrollPhysics(),
             onPageChanged: (selectedIndex) {
-              // HapticFeedback.lightImpact();
+              HapticFeedback.lightImpact();
               setState(() {
                 currentIndex = selectedIndex;
               });
@@ -105,16 +106,14 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
     return ThemedStatusBar(
       child: BlocListener<HottestCubit, HottestState>(
         listener: (context, state) {
-          setState(() {
-            currentIndex = 0; // To ensure the hottest tiles build and expand properly
-          });
           if (state is Data) {
-            setState(() {
-              headerText = state.date.isSameDate(DateTime.now())
-                  ? "Hottest Today"
-                  : "Hottest of ${state.date.readableDateFormat()}";
-            });
+            headerText = state.date.isSameDate(DateTime.now())
+                ? "Hottest Today"
+                : "Hottest of ${state.date.readableDateFormat()}";
           }
+          setState(() {
+            currentIndex = 0;
+          });
         },
         child: Scaffold(
           resizeToAvoidBottomInset: false,

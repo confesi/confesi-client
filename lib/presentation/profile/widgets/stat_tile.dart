@@ -32,8 +32,8 @@ class StatTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
-        color: Theme.of(context).colorScheme.surface,
+        border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8,strokeAlign: BorderSide.strokeAlignCenter),
+        color: Theme.of(context).colorScheme.background,
         borderRadius: const BorderRadius.all(
           Radius.circular(5),
         ),
