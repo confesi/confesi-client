@@ -1,6 +1,6 @@
 import '../../../core/services/in_app_notifications/in_app_notifications.dart';
 import '../../../core/utils/sizing/width_fraction.dart';
-import '../../../dependency_injection.dart';
+import '../../../init.dart';
 import '../buttons/pop.dart';
 import 'package:flutter/cupertino.dart';
 

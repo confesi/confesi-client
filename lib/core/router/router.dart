@@ -25,7 +25,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
 
 import '../../application/authentication_and_settings/cubit/contact_setting_cubit.dart';
-import '../../dependency_injection.dart';
+import '../../init.dart';
 import '../../presentation/authentication_and_settings/screens/settings/biometric_lock.dart';
 import '../../presentation/primary/screens/home.dart';
 import '../../presentation/authentication_and_settings/screens/authentication/login.dart';

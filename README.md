@@ -33,9 +33,9 @@ flutter run --release
 
 ### Editing the Firebase Remote Config
 
-The remote config JSON file is found in `~/assets/remote_config.json`. Its associated model class is found in `~/lib/core/remote_config/config.dart` and should exactly represent the JSON.
+The remote config representative JSON map is found in `~/lib/core/services/remote_config/remote_config.dart`. Edit this when updating the Firebase project's Remote Config in the dashboard.
 
-In the Firebase cloud dashboard, however, there is an additional key of `"config"` needed to ensure it is a single map. Our implementation handles this in `~/lib/dependency_injection.dart`. Other than that additional key, the cloud JSON, should *exactly* match the local one.
+Always ensure every key **exists**. Do not just "remove" keys without ensuring they aren't being used by some version of the app.
  
 ### If something isn't working...
 

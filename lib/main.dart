@@ -1,11 +1,6 @@
 import 'application/shared/cubit/maps_cubit.dart';
-import 'core/services/notifications.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'application/authentication_and_settings/cubit/login_cubit.dart';
 import 'application/authentication_and_settings/cubit/register_cubit.dart';
@@ -18,8 +13,7 @@ import 'application/shared/cubit/website_launcher_cubit.dart';
 import 'constants/enums_that_are_local_keys.dart';
 import 'core/router/router.dart';
 import 'core/styles/themes.dart';
-import 'dependency_injection.dart';
-import 'generated/l10n.dart';
+import 'init.dart';
 import 'presentation/primary/screens/splash.dart';
 
 void main() async => await init().then((_) => analytics.logAppOpen().then((value) => runApp(MyApp(appRouter: sl()))));
@@ -83,17 +77,6 @@ class MyApp extends StatelessWidget {
       child: Builder(
         builder: (context) {
           return MaterialApp(
-            localizationsDelegates: const [
-              S.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: const [
-              Locale('en', ''), // English, no country code; English first, so it's default/fallback
-              Locale('fr', ''), // French, no country code
-              Locale('es', ''), // Spanish, no country code
-            ],
             debugShowCheckedModeBanner: false,
             title: "Confesi",
             onGenerateRoute: appRouter.onGenerateRoute,

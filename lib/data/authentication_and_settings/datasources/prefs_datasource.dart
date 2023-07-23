@@ -1,4 +1,4 @@
-import '../../../core/clients/hive_client.dart';
+import '../../../core/services/hive/hive_client.dart';
 import '../../../core/results/exceptions.dart';
 import '../../../core/results/successes.dart';
 import '../../../core/utils/enums/enum_name.dart';
@@ -13,7 +13,7 @@ abstract class IPrefsDatasource {
 }
 
 class PrefsDatasource implements IPrefsDatasource {
-  final HiveClient hiveClient;
+  final HiveService hiveClient;
 
   const PrefsDatasource({required this.hiveClient});
 

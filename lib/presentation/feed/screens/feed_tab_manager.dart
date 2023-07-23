@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:confesi/core/services/remote_config/remote_config.dart';
-import 'package:confesi/dependency_injection.dart';
+import 'package:confesi/init.dart';
 
 import '../../shared/buttons/option.dart';
 import '../../shared/other/zoomable.dart';

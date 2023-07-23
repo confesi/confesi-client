@@ -172,7 +172,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                 AppbarLayout(
                   bottomBorder: true,
                   centerWidget: Text(
-                    S.of(context).leaderboard_home_page_title,
+                    "School Leaderboard",
                     style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,

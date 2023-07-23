@@ -5,7 +5,7 @@ import 'package:confesi/core/services/remote_config/remote_config.dart';
 
 import 'application/create_post/cubit/drafts_cubit.dart';
 import 'application/shared/cubit/maps_cubit.dart';
-import 'core/clients/hive_client.dart';
+import 'core/services/hive/hive_client.dart';
 import 'core/services/deep_links.dart';
 import 'core/services/local_data.dart';
 import 'data/create_post/datasources/draft_post_datasource.dart';
@@ -263,7 +263,7 @@ Future<void> init() async {
   // Registers the custom api client class.
   sl.registerLazySingleton(() => ApiClient());
   // Registers the custom hive client class.
-  sl.registerLazySingleton(() => HiveClient());
+  sl.registerLazySingleton(() => HiveService());
 
   //! Repositories
   // Registers the authentication repository.

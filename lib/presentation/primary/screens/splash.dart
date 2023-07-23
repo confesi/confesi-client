@@ -1,5 +1,5 @@
 import '../../../constants/enums_that_are_local_keys.dart';
-import '../../../dependency_injection.dart';
+import '../../../init.dart';
 import '../../shared/overlays/text_block_overlay.dart';
 import 'package:dartz/dartz.dart' as dartz;
 

@@ -131,7 +131,6 @@ flutter:
     - assets/images/showcase/
     - assets/images/universities/
     - assets/images/achievements/
-    - assets/remote_config.json
     - assets/dummy_json/
     
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -1,4 +1,4 @@
-import '../../../core/clients/hive_client.dart';
+import '../../../core/services/hive/hive_client.dart';
 import '../models/draft_post_model.dart';
 import '../../../domain/create_post/entities/draft_post_entity.dart';
 import '../../../domain/create_post/usecases/save_draft.dart';
@@ -16,7 +16,7 @@ abstract class IDraftPostDatasource {
 
 class DraftPostDatasource implements IDraftPostDatasource {
   final ApiClient api;
-  final HiveClient hiveClient;
+  final HiveService hiveClient;
 
   DraftPostDatasource({required this.api, required this.hiveClient});
 

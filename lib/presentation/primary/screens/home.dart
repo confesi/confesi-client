@@ -1,5 +1,5 @@
 import '../../../application/shared/cubit/share_cubit.dart';
-import '../../../dependency_injection.dart';
+import '../../../init.dart';
 import '../../leaderboard/screens/home.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../authentication_and_settings/screens/settings/home.dart';
