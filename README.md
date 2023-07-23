@@ -25,10 +25,10 @@
 flutter run
 ```
 
-**To run in profile mode (slightly faster):**
+**To run in release mode (fast, no debug tools):**
 
 ```sh
-flutter run --profile
+flutter run --release
 ```
 
 ### Editing the Firebase Remote Config

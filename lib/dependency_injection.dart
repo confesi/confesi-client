@@ -1,10 +1,7 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:ui';
 
-import 'dart:convert';
-import 'package:confesi/core/remote_config/config.dart';
-import 'package:flutter/services.dart' show rootBundle;
+import 'package:confesi/core/services/remote_config/remote_config.dart';
 
 import 'application/create_post/cubit/drafts_cubit.dart';
 import 'application/shared/cubit/maps_cubit.dart';
@@ -104,11 +101,8 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 // Get the GetIt instance to use for injection
 final GetIt sl = GetIt.instance;
 FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-final remoteConfig = FirebaseRemoteConfig.instance;
 
 Future<void> initFirebase() async {
-  // init project
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   // crashlytics
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   FlutterError.onError = (errorDetails) {
@@ -118,8 +112,6 @@ Future<void> initFirebase() async {
     FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
     return true;
   };
-  // remote config
-  await initRemoteConfig();
   // appcheck
   await FirebaseAppCheck.instance.activate(
     androidProvider: AndroidProvider.playIntegrity,
@@ -141,11 +133,17 @@ Future<void> initFirebase() async {
 
 /// Injects the needed dependencies for the app to run.
 Future<void> init() async {
-  //! Initializing stuff
+  //! Required first inits
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   // Registering Hive.
   await Hive.initFlutter(); // todo: check if this is needed after the localDataService is integrated.
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  //! Already-singletons
+  sl.registerLazySingleton(() => FirebaseRemoteConfig.instance);
+
+  //! Services
   // Registers notifications service.
   sl.registerLazySingleton(() => NotificationService()..initAndroidNotifications());
   // Registers in-app notifications service.
@@ -156,6 +154,10 @@ Future<void> init() async {
   sl.registerLazySingleton(() => DeepLinkService());
   // Registers the local data service
   sl.registerLazySingleton(() => LocalDataService());
+  // Registers the remote config service
+  final remoteConfigService = RemoteConfigService(sl());
+  await remoteConfigService.init();
+  sl.registerLazySingleton(() => remoteConfigService);
 
   //! State (BLoC or Cubit)
   // // Registers the authentication cubit.
@@ -306,24 +308,4 @@ Future<void> init() async {
   //! Firebase
   // Registering Firebase.
   await initFirebase();
-}
-
-// todo: if it's the user's first time in the app, FORCE load the remote config values.
-Future<void> initRemoteConfig() async {
-  // settings
-  await remoteConfig.setConfigSettings(RemoteConfigSettings(
-    fetchTimeout: const Duration(minutes: 1),
-    minimumFetchInterval: const Duration(hours: 0), // 12-hours is recommended by Firebase
-  ));
-
-  // default
-  final jsonString = await rootBundle.loadString('assets/remote_config.json');
-  await remoteConfig.setDefaults(<String, dynamic>{"config": json.encode(jsonString)});
-
-  // set to dependency injection
-  RemoteConfig root = RemoteConfig.fromJson(json.decode(remoteConfig.getString("config")));
-  sl.registerLazySingleton(() => root);
-
-  // fetch new values for next time (don't await)
-  remoteConfig.fetchAndActivate();
 }
