@@ -11,7 +11,7 @@ import 'package:confesi/presentation/authentication_and_settings/screens/setting
 import 'package:confesi/presentation/authentication_and_settings/screens/settings/text_size.dart';
 import 'package:confesi/presentation/create_post/screens/details.dart';
 import 'package:confesi/presentation/create_post/screens/home.dart';
-import 'package:confesi/presentation/feed/screens/post_advanced_details.dart';
+import 'package:confesi/presentation/feed/screens/post_sentiment_analysis.dart';
 import 'package:confesi/presentation/feed/screens/post_detail_view.dart';
 import 'package:confesi/presentation/feedback/screens/home.dart';
 import 'package:confesi/presentation/primary/screens/critical_error.dart';

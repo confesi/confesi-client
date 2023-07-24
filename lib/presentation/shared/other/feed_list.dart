@@ -1,3 +1,5 @@
+import 'package:flutter/services.dart';
+
 import '../../../core/results/failures.dart';
 import 'package:dartz/dartz.dart' as dartz;
 
@@ -57,7 +59,9 @@ class FeedListController extends ChangeNotifier {
   void scrollToTop() {
     if (_isDisposed) return;
 
-    itemScrollController.scrollTo(index: 0, duration: const Duration(milliseconds: 350));
+    itemScrollController
+        .scrollTo(index: 0, duration: const Duration(milliseconds: 350))
+        .then((value) => HapticFeedback.lightImpact());
   }
 
   /// Clears the list.

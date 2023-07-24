@@ -29,9 +29,9 @@ import 'init.dart';
 void main() async => await init().then(
       (_) => analytics.logAppOpen().then(
             (value) => runApp(
-              MaterialApp(
+              const MaterialApp(
                 debugShowCheckedModeBanner: false,
-                home: DevicePreview(builder: (context) => const MyApp()),
+                home: MyApp(),
               ),
             ),
           ),

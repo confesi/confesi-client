@@ -34,7 +34,7 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
 
   @override
   void initState() {
-    pageController = PageController(initialPage: 0, viewportFraction: 0.9);
+    pageController = PageController(initialPage: 0, viewportFraction: 0.95);
     super.initState();
   }
 
@@ -105,15 +105,16 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
   Widget build(BuildContext context) {
     return ThemedStatusBar(
       child: BlocListener<HottestCubit, HottestState>(
-        listener: (context, state) {
+        listenWhen: (previous, current) => true,
+        listener: (context, state) async {
           if (state is Data) {
             headerText = state.date.isSameDate(DateTime.now())
                 ? "Hottest Today"
                 : "Hottest of ${state.date.readableDateFormat()}";
           }
-          setState(() {
-            currentIndex = currentIndex;
-          });
+          if (pageController.hasClients) {
+            pageController.animateToPage(0, duration: const Duration(milliseconds: 250), curve: Curves.easeInOut);
+          }
         },
         child: Scaffold(
           resizeToAvoidBottomInset: false,

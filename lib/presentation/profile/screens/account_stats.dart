@@ -74,24 +74,19 @@ class _AccountProfileStatsState extends State<AccountProfileStats> {
                           rightDescription: "Dislikes",
                         ),
                         const SizedBox(height: 15),
-                        const TextStatTileGroup(
-                          text: "How you compare to others",
-                          tiles: [
-                            TextStatTile(
-                              topRounded: true,
-                              leftText: "Likes",
-                              rightText: "top 10%",
-                            ),
-                            TextStatTile(
-                              leftText: "Hottests",
-                              rightText: "top 10%",
-                            ),
-                            TextStatTile(
-                              bottomRounded: true,
-                              leftText: "Dislikes",
-                              rightText: "top 3.5%",
-                            ),
-                          ],
+                        TextStatTile(
+                          topRounded: true,
+                          leftText: "Likes",
+                          rightText: "top 10%",
+                        ),
+                        TextStatTile(
+                          leftText: "Hottests",
+                          rightText: "top 10%",
+                        ),
+                        TextStatTile(
+                          bottomRounded: true,
+                          leftText: "Dislikes",
+                          rightText: "top 3.5%",
                         ),
                         const SizedBox(height: 15),
                         RectangleTileGroup(

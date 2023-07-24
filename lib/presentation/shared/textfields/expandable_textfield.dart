@@ -74,7 +74,7 @@ class _ExpandableTextfieldState extends State<ExpandableTextfield> {
                   thickness: widget.maxLines == 1 ? 0.0 : 3.0, // 3.0 is default
                   controller: scrollController,
                   child: Padding(
-                    padding: EdgeInsets.all(widget.maxLines == 1 ? 15 : 10),
+                    padding: const EdgeInsets.all(8),
                     child: Row(
                       children: [
                         Expanded(
@@ -104,31 +104,6 @@ class _ExpandableTextfieldState extends State<ExpandableTextfield> {
                 ),
               ),
             ),
-            widget.maxLines == 1
-                ? AnimatedSize(
-                    curve: Curves.decelerate,
-                    duration: const Duration(milliseconds: 250),
-                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                    child: widget.controller.text.isNotEmpty
-                        ? TouchableOpacity(
-                            onTap: () => widget.controller.clear(),
-                            child: Container(
-                              // Transparent hitbox trick.
-                              color: Colors.transparent,
-                              height: kBody.fontSize! + 22,
-                              padding: EdgeInsets.only(left: widget.controller.text.isNotEmpty ? 10 : 0),
-                              child: InitScale(
-                                delayDurationInMilliseconds: 150,
-                                child: Icon(
-                                  CupertinoIcons.trash,
-                                  color: Theme.of(context).colorScheme.onSurface,
-                                ),
-                              ),
-                            ),
-                          )
-                        : Container(),
-                  )
-                : Container(),
           ],
         ),
       ),

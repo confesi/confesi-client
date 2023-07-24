@@ -34,7 +34,7 @@ class RectangleTile extends StatefulWidget {
 class _RectangleTileState extends State<RectangleTile> {
   Widget buildChild(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 5),
+      margin: const EdgeInsets.only(bottom: 15),
       width: double.infinity,
       decoration: BoxDecoration(
         color: widget.backgroundColor ?? Theme.of(context).colorScheme.background,

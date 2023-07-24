@@ -1,6 +1,7 @@
 import 'package:confesi/core/router/go_router.dart';
 
 import '../../../constants/feed/enums.dart';
+import '../methods/show_post_options.dart';
 import '../widgets/simple_comment_root_group.dart';
 import '../widgets/simple_comment_tile.dart';
 import '../../shared/behaviours/one_theme_status_bar.dart';
@@ -56,32 +57,6 @@ class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
     screenshotCallback.dispose();
     super.dispose();
   }
-
-  // Show the options for this post.
-  void buildOptionsSheet(BuildContext context) => showButtonOptionsSheet(context, [
-        OptionButton(
-          text: "Save",
-          icon: CupertinoIcons.bookmark,
-          onTap: () => print("tap"),
-        ),
-        OptionButton(
-          text: "Sentiment analysis",
-          icon: CupertinoIcons.doc_text,
-          onTap: () => router.push(
-              "/home/posts/sentiment"), // todo: remove hard coding and dynamically go to the correct post's sentiment analysis
-        ),
-        OptionButton(
-          text: "School location",
-          icon: CupertinoIcons.map,
-          onTap: () =>
-              context.read<MapsCubit>().launchMapAtLocation(48.4634, -123.3117, "UVIC"), // todo: remove hard coding
-        ),
-        OptionButton(
-          text: "Report",
-          icon: CupertinoIcons.flag,
-          onTap: () => print("tap"),
-        ),
-      ]);
 
   @override
   Widget build(BuildContext context) {
