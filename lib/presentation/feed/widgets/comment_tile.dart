@@ -203,8 +203,6 @@ class CommentTile extends StatelessWidget {
                                 ),
                               ),
                               TouchableOpacity(
-                                tooltip: 'comment options',
-                                tooltipLocation: TooltipLocation.above,
                                 onTap: () => showOptions(context),
                                 child: Container(
                                   // Transparent container hitbox trick.

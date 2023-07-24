@@ -8,7 +8,6 @@ class AnimatedSimpleTextButton extends StatelessWidget {
   const AnimatedSimpleTextButton({
     required this.onTap,
     required this.text,
-    this.tooltip,
     this.isErrorText = false,
     this.tooltipLocation,
     this.tapType = TapType.none,
@@ -18,7 +17,6 @@ class AnimatedSimpleTextButton extends StatelessWidget {
 
   final bool useSecondaryColors;
   final Function onTap;
-  final String? tooltip;
   final String text;
   final bool isErrorText;
   final TooltipLocation? tooltipLocation;
@@ -28,8 +26,6 @@ class AnimatedSimpleTextButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TouchableOpacity(
       tapType: tapType,
-      tooltip: tooltip,
-      tooltipLocation: tooltipLocation,
       onTap: () => onTap(),
       child: Container(
         padding: const EdgeInsets.all(10),

@@ -1,16 +1,17 @@
-import 'text_stat_tile.dart';
+import 'package:confesi/presentation/shared/selection_groups/rectangle_selection_tile.dart';
+
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
 
-class TextStatTileGroup extends StatelessWidget {
-  const TextStatTileGroup({
+class RectangleTileGroup extends StatelessWidget {
+  const RectangleTileGroup({
     super.key,
     required this.text,
     required this.tiles,
   });
 
-  final List<TextStatTile> tiles;
+  final List<RectangleTile> tiles;
   final String text;
 
   @override
@@ -23,7 +24,7 @@ class TextStatTileGroup extends StatelessWidget {
           style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
           overflow: TextOverflow.ellipsis,
         ),
-        const SizedBox(height: 15),
+        const SizedBox(height: 10),
         ...tiles,
       ],
     );

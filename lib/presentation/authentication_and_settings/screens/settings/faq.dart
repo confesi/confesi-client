@@ -38,7 +38,9 @@ class _FAQScreenState extends State<FAQScreen> {
               ),
             ),
             Expanded(
-              child: ScrollableView(
+              child: ScrollableView
+              (
+                
                 controller: ScrollController(),
                 scrollBarVisible: false,
                 physics: const BouncingScrollPhysics(),

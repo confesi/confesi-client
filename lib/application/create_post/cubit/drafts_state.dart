@@ -31,18 +31,12 @@ class DraftsError extends DraftsState {
 class LoadedFromDraft extends DraftsState {
   final String title;
   final String body;
-  final String? repliedPostId;
-  final String? repliedPostTitle;
-  final String? repliedPostBody;
 
   const LoadedFromDraft({
     required this.body,
-    required this.repliedPostId,
     required this.title,
-    required this.repliedPostBody,
-    required this.repliedPostTitle,
   });
 
   @override
-  List<Object?> get props => [title, body, repliedPostId];
+  List<Object?> get props => [title, body];
 }

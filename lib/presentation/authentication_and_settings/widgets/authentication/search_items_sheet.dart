@@ -94,6 +94,8 @@ class __SheetBodyState extends State<_SheetBody> {
                     LineLayout(color: Theme.of(context).colorScheme.onBackground),
                     Expanded(
                       child: ScrollableView(
+                          physics: const BouncingScrollPhysics(),
+
                         inlineBottomOrRightPadding: bottomSafeArea(context),
                         scrollBarVisible: false,
                         controller: ScrollController(),

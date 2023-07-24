@@ -19,6 +19,7 @@ class NotificationTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.background,
         border: Border(
           bottom: BorderSide(
             color: Theme.of(context).colorScheme.onBackground,

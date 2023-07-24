@@ -49,6 +49,8 @@ class _VerifiedStudentPerksTabState extends State<VerifiedStudentPerksTab> {
                 children: [
                   Expanded(
                     child: ScrollableView(
+                          physics: const BouncingScrollPhysics(),
+
                       distancebetweenHapticEffectsDuringScroll: 50,
                       hapticEffectAtEdge: HapticType.medium,
                       controller: ScrollController(),

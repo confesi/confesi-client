@@ -49,6 +49,8 @@ class _ProfileHomeState extends State<ProfileHome> with AutomaticKeepAliveClient
         top: false,
         child: ThemedStatusBar(
           child: ScrollableView(
+                          physics: const BouncingScrollPhysics(),
+
             controller: ScrollController(),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,

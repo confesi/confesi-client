@@ -33,9 +33,6 @@ class DraftPostDatasource implements IDraftPostDatasource {
       DraftPostModel(
         title: saveDraftPostParams.draftPostEntity.title,
         body: saveDraftPostParams.draftPostEntity.body,
-        repliedPostId: saveDraftPostParams.draftPostEntity.repliedPostId,
-        repliedPostBody: saveDraftPostParams.draftPostEntity.repliedPostBody,
-        repliedPostTitle: saveDraftPostParams.draftPostEntity.repliedPostTitle,
       ).toJson(),
     );
     return ApiSuccess();

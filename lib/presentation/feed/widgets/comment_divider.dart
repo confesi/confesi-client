@@ -19,8 +19,6 @@ class CommentDivider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TouchableOpacity(
-      tooltip: 'comment sorting + number of comments',
-      tooltipLocation: TooltipLocation.above,
       onTap: () => showButtonOptionsSheet(
         context,
         [

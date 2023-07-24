@@ -37,8 +37,7 @@ class SettingTile extends StatelessWidget {
         width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
         decoration: BoxDecoration(
-          border: Border.all(
-              color: Theme.of(context).colorScheme.onBackground, width: 0.8, strokeAlign: BorderSide.strokeAlignCenter),
+          border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
           color: bgColor ?? Theme.of(context).colorScheme.background,
           borderRadius:
               BorderRadius.all(Radius.circular(context.watch<UserCubit>().stateAsUser.curvyEnum.borderRadius)),

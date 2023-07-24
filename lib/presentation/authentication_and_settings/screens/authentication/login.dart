@@ -69,6 +69,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                       ),
                       Expanded(
                         child: ScrollableView(
+                          physics: const BouncingScrollPhysics(),
                           inlineBottomOrRightPadding: bottomSafeArea(context),
                           scrollBarVisible: false,
                           padding: const EdgeInsets.symmetric(horizontal: 15),

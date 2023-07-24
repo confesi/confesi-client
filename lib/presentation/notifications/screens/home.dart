@@ -106,8 +106,12 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                   ),
                   rightIcon: CupertinoIcons.info,
                   rightIconVisible: true,
-                  rightIconOnPress: () => showInfoSheetWithAction(context, "Push notifications",
-                      "Edit your push notifications in settings.", () => print("tap"), "Edit"),
+                  rightIconOnPress: () => showInfoSheetWithAction(
+                      context,
+                      "Notifications",
+                      "Edit your notification preferences in settings.",
+                      () => router.push("/settings/notifications"),
+                      "Edit"),
                   leftIconVisible: false,
                 ),
                 Expanded(

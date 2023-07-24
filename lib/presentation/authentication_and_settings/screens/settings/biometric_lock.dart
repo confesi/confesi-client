@@ -39,6 +39,8 @@ class _BiometricLockScreenState extends State<BiometricLockScreen> {
             ),
             Expanded(
               child: ScrollableView(
+                          physics: const BouncingScrollPhysics(),
+
                 inlineBottomOrRightPadding: bottomSafeArea(context) * 2,
                 distancebetweenHapticEffectsDuringScroll: 50,
                 hapticEffectAtEdge: HapticType.medium,

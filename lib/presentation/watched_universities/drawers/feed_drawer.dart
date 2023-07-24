@@ -55,6 +55,7 @@ class _FeedDrawerState extends State<FeedDrawer> {
           ),
           Expanded(
             child: ScrollableView(
+              
               physics: const BouncingScrollPhysics(),
               hapticsEnabled: false,
               inlineBottomOrRightPadding: bottomSafeArea(context),

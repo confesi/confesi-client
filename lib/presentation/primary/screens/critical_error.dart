@@ -1,3 +1,4 @@
+import 'package:confesi/init.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/themes.dart';
@@ -6,8 +7,19 @@ import '../../../core/utils/styles/appearance_type.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/layout/scrollable_area.dart';
 
-class CriticalErrorScreen extends StatelessWidget {
+class CriticalErrorScreen extends StatefulWidget {
   const CriticalErrorScreen({super.key});
+
+  @override
+  State<CriticalErrorScreen> createState() => _CriticalErrorScreenState();
+}
+
+class _CriticalErrorScreenState extends State<CriticalErrorScreen> {
+  @override
+  void initState() {
+    analytics.logEvent(name: "critical_error_screen");
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +38,6 @@ class CriticalErrorScreen extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // TODO: Add sad, but branded, image here.
                       Text(
                         "So, something went really wrong...",
                         style: kTitle.copyWith(
@@ -38,7 +49,7 @@ class CriticalErrorScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 30),
                       Text(
-                        "Usually, this is because your device couldn't load/access your account's local data. Please try closing and re-opening the app, or contacting support.",
+                        "Close and reopen the app. If the problem persists, please contact support.",
                         style: kBody.copyWith(
                           color: appearanceBrightness(context) == Brightness.light
                               ? AppTheme.light.colorScheme.primary

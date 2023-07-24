@@ -31,7 +31,10 @@ class BoolSelectionGroup extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius:
                 BorderRadius.all(Radius.circular(context.watch<UserCubit>().stateAsUser.curvyEnum.borderRadius)),
-            border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8,strokeAlign: BorderSide.strokeAlignCenter),
+            border: Border.all(
+                color: Theme.of(context).colorScheme.onBackground,
+                width: 0.8,
+                strokeAlign: BorderSide.strokeAlignOutside),
           ),
           child: Column(
             children: selectionTiles,

@@ -43,7 +43,6 @@ class _BoolSelectionTileState extends State<BoolSelectionTile> {
     return TouchableOpacity(
       onTap: () => widget.onTap(),
       child: Container(
-        width: double.infinity,
         decoration: BoxDecoration(
           color: widget.backgroundColor ?? Theme.of(context).colorScheme.background,
           borderRadius: BorderRadius.only(
@@ -59,6 +58,7 @@ class _BoolSelectionTileState extends State<BoolSelectionTile> {
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
               child: Padding(
@@ -67,25 +67,22 @@ class _BoolSelectionTileState extends State<BoolSelectionTile> {
                   children: [
                     Icon(widget.icon, color: widget.secondaryColor),
                     const SizedBox(width: 15),
-                    Expanded(
+                    Flexible(
                       child: Text(
                         widget.text,
                         style: kTitle.copyWith(
                           color: widget.foregroundColor ?? Theme.of(context).colorScheme.primary,
                         ),
-                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     widget.secondaryText != null
-                        ? Expanded(
-                            child: Text(
-                              widget.secondaryText!,
-                              textAlign: TextAlign.right,
-                              style: kTitle.copyWith(
-                                color: widget.secondaryColor ?? Theme.of(context).colorScheme.onSurface,
-                              ),
-                              overflow: TextOverflow.ellipsis,
+                        ? Text(
+                            widget.secondaryText!,
+                            textAlign: TextAlign.right,
+                            style: kTitle.copyWith(
+                              color: widget.secondaryColor ?? Theme.of(context).colorScheme.onSurface,
                             ),
+                            overflow: TextOverflow.ellipsis,
                           )
                         : Container(),
                     widget.secondaryText != null ? const SizedBox(width: 10) : Container(),

@@ -51,6 +51,8 @@ class _ContactScreenState extends State<ContactScreen> {
               ),
               Expanded(
                 child: ScrollableView(
+                          physics: const BouncingScrollPhysics(),
+
                   inlineBottomOrRightPadding: bottomSafeArea(context),
                   distancebetweenHapticEffectsDuringScroll: 50,
                   hapticEffectAtEdge: HapticType.medium,

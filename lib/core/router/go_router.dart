@@ -13,6 +13,7 @@ import 'package:confesi/presentation/create_post/screens/details.dart';
 import 'package:confesi/presentation/create_post/screens/home.dart';
 import 'package:confesi/presentation/feed/screens/post_advanced_details.dart';
 import 'package:confesi/presentation/feed/screens/post_detail_view.dart';
+import 'package:confesi/presentation/feedback/screens/home.dart';
 import 'package:confesi/presentation/primary/screens/critical_error.dart';
 import 'package:confesi/presentation/primary/screens/home.dart';
 import 'package:confesi/presentation/primary/screens/showcase.dart';
@@ -25,9 +26,11 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 
 import '../../presentation/authentication_and_settings/screens/authentication/registration.dart';
+import '../../presentation/authentication_and_settings/screens/settings/notifications.dart';
 import '../../presentation/profile/screens/account_stats.dart';
 
 final GoRouter router = GoRouter(
+  onException: (context, state, router) => router.go("/error"),
   initialLocation: "/",
   routes: <GoRoute>[
     GoRoute(path: '/', builder: (BuildContext context, GoRouterState state) => const SplashScreen()),
@@ -42,6 +45,24 @@ final GoRouter router = GoRouter(
         return CustomTransitionPage(
           key: state.pageKey,
           child: const CreatePostHome(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            // Change the opacity of the screen using a Curve based on the animation's value
+            var tween = CurveTween(curve: Curves.easeInOut);
+            var curvedAnimation = tween.animate(animation);
+            return SlideTransition(
+              position: Tween<Offset>(begin: const Offset(0, 1), end: Offset.zero).animate(curvedAnimation),
+              child: child,
+            );
+          },
+        );
+      },
+    ),
+    GoRoute(
+      path: '/feedback',
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: const FeedbackHome(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             // Change the opacity of the screen using a Curve based on the animation's value
             var tween = CurveTween(curve: Curves.easeInOut);
@@ -84,6 +105,9 @@ final GoRouter router = GoRouter(
     GoRoute(path: '/settings', builder: (BuildContext context, GoRouterState state) => const SettingsHome()),
 
     GoRoute(path: '/settings/faq', builder: (BuildContext context, GoRouterState state) => const FAQScreen()),
+    GoRoute(
+        path: '/settings/notifications',
+        builder: (BuildContext context, GoRouterState state) => const NotificationsSettingScreen()),
     GoRoute(
         path: '/settings/appearance', builder: (BuildContext context, GoRouterState state) => const AppearanceScreen()),
     GoRoute(

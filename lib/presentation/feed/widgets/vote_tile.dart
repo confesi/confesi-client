@@ -26,8 +26,6 @@ class VoteTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TouchableOpacity(
-      tooltip: tooltip,
-      tooltipLocation: tooltipLocation,
       onTap: () => onTap(),
       child: Container(
         padding: const EdgeInsets.all(10),

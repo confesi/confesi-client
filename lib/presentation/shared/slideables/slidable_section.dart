@@ -30,8 +30,6 @@ class SlidableSection extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 5),
           child: TouchableOpacity(
-            tooltipLocation: TooltipLocation.above,
-            tooltip: tooltip,
             onTap: () {
               Slidable.of(context)?.close();
               onPress();

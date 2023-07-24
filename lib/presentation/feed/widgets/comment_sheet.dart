@@ -112,7 +112,6 @@ class _CommentSheetState extends State<CommentSheet> {
                           child: Row(
                             children: [
                               SimpleTextButton(
-                                tooltipLocation: TooltipLocation.above,
                                 text: 'Cancel',
                                 isErrorText: true,
                                 onTap: () => widget.controller.delete(),
@@ -125,7 +124,6 @@ class _CommentSheetState extends State<CommentSheet> {
                               ),
                               SimpleTextButton(
                                 tapType: TapType.strongImpact,
-                                tooltipLocation: TooltipLocation.above,
                                 text: 'Post',
                                 onTap: () {
                                   widget.onSubmit(commentController.text);

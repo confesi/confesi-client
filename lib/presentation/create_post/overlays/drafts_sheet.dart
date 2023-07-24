@@ -84,14 +84,7 @@ class _DraftsSheetState extends State<_DraftsSheet> {
 
   void openDraft(BuildContext context, int index) {
     context.read<DraftsCubit>().loadFromDraft(
-          context.read<UserCubit>().userId(),
-          index,
-          draftEntities[index].title,
-          draftEntities[index].body,
-          draftEntities[index].repliedPostId,
-          draftEntities[index].repliedPostTitle,
-          draftEntities[index].repliedPostBody,
-        );
+        context.read<UserCubit>().userId(), index, draftEntities[index].title, draftEntities[index].body);
   }
 
   Widget buildBody(BuildContext context, DraftsState state) {

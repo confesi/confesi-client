@@ -1,4 +1,3 @@
-import '../behaviours/tool_tip.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -9,20 +8,14 @@ class TouchableOpacity extends StatefulWidget {
     this.tappable = true,
     required this.child,
     required this.onTap,
-    this.tooltip,
     this.tapType,
-    this.tooltipLocation,
-    this.fadeSplashOut = true,
     Key? key,
   }) : super(key: key);
 
   final Widget child;
-  final bool fadeSplashOut;
   final Function onTap;
   final bool tappable;
-  final String? tooltip;
   final TapType? tapType;
-  final TooltipLocation? tooltipLocation;
 
   @override
   State<TouchableOpacity> createState() => _TouchableOpacityState();
@@ -35,7 +28,7 @@ class _TouchableOpacityState extends State<TouchableOpacity> with SingleTickerPr
   @override
   void initState() {
     animController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 0), reverseDuration: const Duration(milliseconds: 400));
+        vsync: this, duration: const Duration(milliseconds: 50), reverseDuration: const Duration(milliseconds: 400));
     anim = CurvedAnimation(parent: animController, curve: Curves.linear, reverseCurve: Curves.linear);
     super.initState();
   }
@@ -47,57 +40,38 @@ class _TouchableOpacityState extends State<TouchableOpacity> with SingleTickerPr
   }
 
   void startAnim() async {
-    animController.forward().then((value) {
-      if (widget.fadeSplashOut) animController.reverse();
-    });
-    animController.addListener(() {
-      setState(() {});
-    });
-  }
-
-  void reverseAnim() {
-    animController.reverse();
-    animController.addListener(() {
-      setState(() {});
-    });
+    animController.forward().then((value) => animController.reverse());
+    animController.addListener(() => setState(() {}));
   }
 
   @override
   Widget build(BuildContext context) {
-    return ToolTip(
-      tooltipLocation: widget.tooltipLocation,
-      message: widget.tooltip,
-      child: widget.tappable
-          ? GestureDetector(
-              onTapDown: (_) => setState(() {
-                animController.forward();
-                animController.addListener(() {
-                  setState(() {});
-                });
-              }),
-              onTapCancel: () => setState(() {
-                animController.reverse();
-                animController.addListener(() {
-                  setState(() {});
-                });
-              }),
-              onTap: () {
-                widget.onTap();
-                if (widget.tapType != null) {
-                  if (widget.tapType == TapType.lightImpact) {
-                    HapticFeedback.lightImpact();
-                  } else if (widget.tapType == TapType.strongImpact) {
-                    HapticFeedback.heavyImpact();
-                  }
+    return widget.tappable
+        ? GestureDetector(
+            onTapDown: (_) {
+              animController.forward();
+              animController.addListener(() => setState(() {}));
+            },
+            onTapCancel: () {
+              animController.reverse();
+              animController.addListener(() => setState(() {}));
+            },
+            onTap: () {
+              widget.onTap();
+              if (widget.tapType != null) {
+                if (widget.tapType == TapType.lightImpact) {
+                  HapticFeedback.lightImpact();
+                } else if (widget.tapType == TapType.strongImpact) {
+                  HapticFeedback.heavyImpact();
                 }
-                startAnim();
-              },
-              child: Opacity(
-                opacity: -anim.value * 0.65 + 1,
-                child: widget.child,
-              ),
-            )
-          : widget.child,
-    );
+              }
+              startAnim();
+            },
+            child: Opacity(
+              opacity: -anim.value * 0.65 + 1,
+              child: widget.child,
+            ),
+          )
+        : widget.child;
   }
 }

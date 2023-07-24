@@ -42,6 +42,7 @@ class SentimentAnalysisScreen extends StatelessWidget {
                 Expanded(
                   child: Center(
                     child: ScrollableView(
+                      physics: const BouncingScrollPhysics(),
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       controller: ScrollController(),
                       child: InitScale(

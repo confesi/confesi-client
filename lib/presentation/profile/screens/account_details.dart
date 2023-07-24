@@ -35,6 +35,8 @@ class AccountDetailsScreen extends StatelessWidget {
               ),
               Expanded(
                 child: ScrollableView(
+                          physics: const BouncingScrollPhysics(),
+
                   inlineBottomOrRightPadding: bottomSafeArea(context),
                   controller: ScrollController(),
                   scrollBarVisible: false,

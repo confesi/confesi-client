@@ -11,9 +11,7 @@ class SimpleTextButton extends StatelessWidget {
   const SimpleTextButton({
     required this.onTap,
     required this.text,
-    this.tooltip,
     this.isErrorText = false,
-    this.tooltipLocation,
     this.tapType = TapType.none,
     this.infiniteWidth = false,
     this.horizontalPadding = 0,
@@ -32,10 +30,8 @@ class SimpleTextButton extends StatelessWidget {
   final bool thirdColors;
   final double horizontalPadding;
   final Function onTap;
-  final String? tooltip;
   final String text;
   final bool isErrorText;
-  final TooltipLocation? tooltipLocation;
   final TapType tapType;
   final bool infiniteWidth;
 
@@ -43,8 +39,6 @@ class SimpleTextButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TouchableOpacity(
       tapType: tapType,
-      tooltip: tooltip,
-      tooltipLocation: tooltipLocation,
       onTap: () => onTap(),
       child: AnimatedSize(
         duration: const Duration(milliseconds: 175),
@@ -55,7 +49,10 @@ class SimpleTextButton extends StatelessWidget {
           width: infiniteWidth ? double.infinity : null,
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-            border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8,strokeAlign: BorderSide.strokeAlignCenter),
+            border: Border.all(
+                color: Theme.of(context).colorScheme.onBackground,
+                width: 0.8,
+                strokeAlign: BorderSide.strokeAlignCenter),
             color: bgColor ??
                 (secondaryColors
                     ? Theme.of(context).colorScheme.secondary

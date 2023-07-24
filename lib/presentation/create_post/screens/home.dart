@@ -6,8 +6,6 @@ import '../../../application/create_post/cubit/drafts_cubit.dart';
 import '../../../core/utils/sizing/width_fraction.dart';
 import '../../../domain/create_post/entities/draft_post_entity.dart';
 import '../overlays/drafts_sheet.dart';
-import '../../feed/widgets/child_post.dart';
-import '../../shared/button_touch_effects/touchable_scale.dart';
 import '../../shared/other/widget_or_nothing.dart';
 import '../../shared/overlays/notification_chip.dart';
 import 'package:scrollable/exports.dart';
@@ -16,7 +14,6 @@ import '../../../application/create_post/cubit/post_cubit.dart';
 import '../../../constants/shared/enums.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/other/text_limit_tracker.dart';
-import '../../shared/behaviours/init_scale.dart';
 import '../../shared/buttons/option.dart';
 import '../../shared/overlays/button_options_sheet.dart';
 import 'package:flutter/cupertino.dart';
@@ -39,15 +36,8 @@ enum FocusedField {
 
 class CreatePostHome extends StatefulWidget {
   const CreatePostHome({
-    this.title,
-    this.body,
-    this.id,
     Key? key,
   }) : super(key: key);
-
-  final String? title;
-  final String? body;
-  final String? id;
 
   @override
   State<CreatePostHome> createState() => _CreatePostHomeState();
@@ -62,10 +52,6 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
   final FocusNode bodyFocusNode = FocusNode();
   final TextEditingController titleController = TextEditingController();
   final TextEditingController bodyController = TextEditingController();
-
-  late String? repliedPostChildId;
-  late String? repliedPostChildTitle;
-  late String? repliedPostChildBody;
 
   FocusedField focusedField = FocusedField.none;
 
@@ -106,9 +92,6 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
   @override
   void initState() {
     loadDrafts();
-    repliedPostChildId = widget.id;
-    repliedPostChildBody = widget.body;
-    repliedPostChildTitle = widget.title;
     HintText hintText = getHint();
     titleHint = hintText.title;
     bodyHint = hintText.body;
@@ -152,9 +135,6 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
           setState(() {
             titleController.text = state.title;
             bodyController.text = state.body;
-            repliedPostChildId = state.repliedPostId;
-            repliedPostChildBody = state.repliedPostBody;
-            repliedPostChildTitle = state.repliedPostTitle;
           });
           showNotificationChip(context, "Draft loaded", notificationType: NotificationType.success);
         }
@@ -230,13 +210,8 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                                         print('save draft');
                                         context
                                             .read<DraftsCubit>()
-                                            .saveDraft(
-                                                context.read<UserCubit>().userId(),
-                                                titleController.text,
-                                                bodyController.text,
-                                                repliedPostChildId,
-                                                repliedPostChildTitle,
-                                                repliedPostChildBody)
+                                            .saveDraft(context.read<UserCubit>().userId(), titleController.text,
+                                                bodyController.text)
                                             .then((success) {
                                           if (success) {
                                             clearTextfields();
@@ -340,21 +315,7 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                                                       ),
                                                     ),
                                                   ),
-                                                  repliedPostChildTitle != null && repliedPostChildBody != null
-                                                      ? Column(
-                                                          children: [
-                                                            const SizedBox(
-                                                              height: 20,
-                                                            ),
-                                                            InitScale(
-                                                              child: ChildPost(
-                                                                body: repliedPostChildBody as String,
-                                                                title: repliedPostChildTitle as String,
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        )
-                                                      : Container(),
+
                                                   const SizedBox(
                                                     height: 30,
                                                   ), // Adds some padding to the bottom.

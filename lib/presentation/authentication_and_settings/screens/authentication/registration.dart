@@ -68,6 +68,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       ),
                       Expanded(
                         child: ScrollableView(
+                          physics: const BouncingScrollPhysics(),
+
                           inlineBottomOrRightPadding: bottomSafeArea(context),
                           scrollBarVisible: false,
                           padding: const EdgeInsets.symmetric(horizontal: 15),

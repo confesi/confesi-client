@@ -74,6 +74,11 @@ class SettingsHome extends StatelessWidget {
                                 onTap: () => router.push("/settings/faq"),
                               ),
                               SettingTile(
+                                leftIcon: CupertinoIcons.bell,
+                                text: "Notifications",
+                                onTap: () => router.push("/settings/notifications"),
+                              ),
+                              SettingTile(
                                 leftIcon: CupertinoIcons.chat_bubble,
                                 text: "Feedback",
                                 onTap: () => router.push("/settings/feedback"),

@@ -70,37 +70,7 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
                   return AppbarLayout(
                     bottomBorder: true,
                     backgroundColor: Theme.of(context).colorScheme.background,
-                    rightIconOnPress: () => showButtonOptionsSheet(
-                      context,
-                      [
-                        OptionButton(
-                            onTap: () => router.push("/settings"), text: "Settings", icon: CupertinoIcons.gear),
-                        OptionButton(
-                            onTap: () => router.push("/home/profile/stats"),
-                            text: "Your stats",
-                            icon: CupertinoIcons.chart_bar_square),
-                        OptionButton(
-                            onTap: () => router.push("/home/profile/account"),
-                            text: "Edit account details",
-                            icon: CupertinoIcons.pencil),
-                        OptionButton(
-                            onTap: () => router.push("/home/profile/saved/posts"),
-                            text: "Saved confessions",
-                            icon: CupertinoIcons.bookmark),
-                        OptionButton(
-                            onTap: () => router.push("/home/profile/saved/comments"),
-                            text: "Saved comments",
-                            icon: CupertinoIcons.bookmark),
-                        OptionButton(
-                            onTap: () => router.push('/home/profile/comments'),
-                            text: "Your comments",
-                            icon: CupertinoIcons.chat_bubble_2),
-                        OptionButton(
-                            onTap: () => router.push('/home/profile/posts'),
-                            text: "Your confessions",
-                            icon: CupertinoIcons.cube_box),
-                      ],
-                    ),
+                    rightIconOnPress: () => router.push("/home/profile/stats"),
                     rightIconVisible: true,
                     rightIcon: CupertinoIcons.profile_circled,
                     centerWidget: Row(

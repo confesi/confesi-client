@@ -13,7 +13,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../application/authentication_and_settings/cubit/user_cubit.dart';
-import '../../../../constants/authentication_and_settings/text.dart';
 import '../../../../core/styles/typography.dart';
 import '../../../shared/behaviours/simulated_bottom_safe_area.dart';
 import '../../../shared/layout/appbar.dart';
@@ -52,7 +51,7 @@ class FeedbackSettingScreen extends StatelessWidget {
                             SettingTile(
                               leftIcon: CupertinoIcons.chat_bubble,
                               text: "Feedback",
-                              onTap: () => router.push("/settings/feedback"),
+                              onTap: () => router.push("/feedback"),
                             ),
                           ],
                         ),

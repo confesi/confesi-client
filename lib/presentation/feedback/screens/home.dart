@@ -77,6 +77,8 @@ class _FeedbackHomeState extends State<FeedbackHome> {
                 ),
                 Expanded(
                   child: ScrollableView(
+                          physics: const BouncingScrollPhysics(),
+
                     scrollBarVisible: false,
                     inlineBottomOrRightPadding: bottomSafeArea(context),
                     controller: ScrollController(),

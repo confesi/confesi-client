@@ -21,16 +21,12 @@ class DraftsCubit extends Cubit<DraftsState> {
   /// Saves a draft post.
   ///
   /// Returns [true] if saving was successful.
-  Future<bool> saveDraft(String userId, String title, String body, String? repliedPostId, String? repliedPostTitle,
-      String? repliedPostBody) async {
+  Future<bool> saveDraft(String userId, String title, String body) async {
     final failureOrSuccess = await saveDraftUsecase.call(
       SaveDraftPostParams(
         draftPostEntity: DraftPostEntity(
           body: body,
-          repliedPostId: repliedPostId,
           title: title,
-          repliedPostBody: repliedPostBody,
-          repliedPostTitle: repliedPostTitle,
         ),
         userId: userId,
       ),
@@ -79,18 +75,13 @@ class DraftsCubit extends Cubit<DraftsState> {
     int indexOfLoadedDraft,
     String title,
     String body,
-    String? repliedPostId,
-    String? repliedPostTitle,
-    String? repliedPostBody,
   ) async {
     // If deleting draft is successful, then load it.
     if (await deleteDraft(userId, indexOfLoadedDraft)) {
       emit(LoadedFromDraft(
-          body: body,
-          title: title,
-          repliedPostId: repliedPostId,
-          repliedPostBody: repliedPostBody,
-          repliedPostTitle: repliedPostTitle));
+        body: body,
+        title: title,
+      ));
     } else {
       // Else, emit an error loading the draft.
       emit(const DraftsError(message: "Error loading selected draft."));

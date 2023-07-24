@@ -60,11 +60,6 @@ class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
   // Show the options for this post.
   void buildOptionsSheet(BuildContext context) => showButtonOptionsSheet(context, [
         OptionButton(
-          text: "Quote",
-          icon: CupertinoIcons.paperplane,
-          onTap: () => print("tap"),
-        ),
-        OptionButton(
           text: "Save",
           icon: CupertinoIcons.bookmark,
           onTap: () => print("tap"),
