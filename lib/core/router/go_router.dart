@@ -21,9 +21,12 @@ import 'package:flutter/material.dart';
 import '../../presentation/authentication_and_settings/screens/authentication/login.dart';
 import '../../presentation/authentication_and_settings/screens/authentication/registration.dart';
 import '../../presentation/authentication_and_settings/screens/authentication/verify_email.dart';
+import '../../presentation/authentication_and_settings/screens/settings/appearance.dart';
+import '../../presentation/authentication_and_settings/screens/settings/curvy.dart';
 import '../../presentation/authentication_and_settings/screens/settings/notifications.dart';
 import '../../presentation/authentication_and_settings/screens/settings/text_size.dart';
 import '../../presentation/feed/screens/post_detail_view.dart';
+import '../../presentation/primary/screens/splash.dart';
 import '../../presentation/profile/screens/account_stats.dart';
 
 final GoRouter router = GoRouter(
@@ -36,6 +39,25 @@ final GoRouter router = GoRouter(
     GoRoute(path: '/login', builder: (BuildContext context, GoRouterState state) => const LoginScreen()),
     GoRoute(path: '/register', builder: (BuildContext context, GoRouterState state) => const RegistrationScreen()),
     GoRoute(path: '/verify-email', builder: (BuildContext context, GoRouterState state) => const VerifyEmailScreen()),
+    GoRoute(
+      path: '/home',
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: const HomeScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            // Change the opacity of the screen using a Curve based on the animation's value
+            var tween = CurveTween(curve: Curves.easeInOut);
+            var curvedAnimation = tween.animate(animation);
+            return FadeTransition(
+              opacity: curvedAnimation, // Use the curvedAnimation for opacity
+              child: child,
+            );
+          },
+        );
+      },
+    ),
+
     GoRoute(
       path: '/create',
       pageBuilder: (context, state) {
@@ -74,7 +96,6 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(path: '/create/details', builder: (BuildContext context, GoRouterState state) => const CreatePostDetails()),
     GoRoute(path: '/onboarding', builder: (BuildContext context, GoRouterState state) => const ShowcaseScreen()),
-    GoRoute(path: '/home', builder: (BuildContext context, GoRouterState state) => const HomeScreen()),
     GoRoute(
         path: '/home/posts/detail',
         builder: (BuildContext context, GoRouterState state) => const SimpleDetailViewScreen()),

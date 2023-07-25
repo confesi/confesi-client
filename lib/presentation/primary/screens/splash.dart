@@ -18,9 +18,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shake/shake.dart';
 
-import '../../../application/authentication_and_settings/cubit/login_cubit.dart';
-import '../../../application/authentication_and_settings/cubit/register_cubit.dart';
-import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../../shared/overlays/feedback_sheet.dart';
 import '../../shared/overlays/notification_chip.dart';
 
@@ -34,33 +31,12 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMixin {
   bool shakeSheetOpen = false;
 
-  bool shouldOpenFeedbackSheetOnShake(BuildContext context) {
-    UserCubit userCubit = context.read<UserCubit>();
-    return userCubit.stateIsUser && userCubit.stateAsUser.shakeForFeedbackEnum == ShakeForFeedbackEnum.enabled;
-  }
-
   @override
   void initState() {
     manageDynamicLinks();
     manageNotifications();
     loadInAppMessages();
-    startShakeListener();
     super.initState();
-  }
-
-  // Opens the feedback sheet when the phone is shook. Implemented on the [Splash] screen because it is only shown once per app run. Otherwise, mutliple shake listeners would be created.
-  void startShakeListener() {
-    ShakeDetector.autoStart(
-      onPhoneShake: () {
-        if (!shakeSheetOpen && shouldOpenFeedbackSheetOnShake(context)) {
-          shakeSheetOpen = true;
-          showFeedbackSheet(context).whenComplete(() => shakeSheetOpen = false);
-        }
-      },
-      shakeThresholdGravity: 3,
-      shakeCountResetTime: 1500,
-      minimumShakeCount: 2,
-    );
   }
 
   Future<void> loadInAppMessages() async {
@@ -120,37 +96,19 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<RegisterCubit, RegisterState>(
-      listener: (context, state) {
-        if (state is EnteringRegisterData && state.hasError) {
-          showNotificationChip(context, state.errorMessage);
-        } else if (state is RegisterSuccess) {
-          // context.read<UserCubit>().authenticateUser(AuthenticationType.register); // TODO: fix
-        }
-      },
-      child: BlocListener<LoginCubit, LoginState>(
-        listener: (context, state) {
-          if (state is EnteringLoginData && state.hasError) {
-            showNotificationChip(context, state.errorMessage);
-          } else if (state is LoginSuccess) {
-            // context.read<UserCubit>().authenticateUser(AuthenticationType.login); // TODO: fix
-          }
-        },
-        child: ThemedStatusBar(
-          child: Scaffold(
-            backgroundColor: Theme.of(context).colorScheme.shadow,
-            body: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: Center(
-                child: Text(
-                  "Confesi",
-                  style: kSplashScreenLogo.copyWith(
-                    fontSize: 34,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
+    return ThemedStatusBar(
+      child: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.shadow,
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: Center(
+            child: Text(
+              "Confesi",
+              style: kSplashScreenLogo.copyWith(
+                fontSize: 34,
+                color: Theme.of(context).colorScheme.primary,
               ),
+              textAlign: TextAlign.center,
             ),
           ),
         ),

@@ -1,4 +1,3 @@
-import '../../../../constants/enums_that_are_local_keys.dart';
 import '../../../../core/utils/styles/appearance_name.dart';
 import '../../../shared/selection_groups/bool_selection_group.dart';
 import '../../../shared/selection_groups/bool_selection_tile.dart';
@@ -7,9 +6,7 @@ import '../../../shared/layout/scrollable_area.dart';
 import '../../../shared/text/disclaimer_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../../../../core/styles/typography.dart';
 import '../../../shared/layout/appbar.dart';
 
@@ -46,23 +43,23 @@ class AppearanceScreen extends StatelessWidget {
                           selectionTiles: [
                             BoolSelectionTile(
                               topRounded: true,
-                              isActive: context.watch<UserCubit>().stateAsUser.appearanceEnum == AppearanceEnum.system,
+                              isActive: true,
                               icon: CupertinoIcons.device_laptop,
                               text: "System (currently ${appearanceName(context)})",
-                              onTap: () => context.read<UserCubit>().setAppearance(AppearanceEnum.system, context),
+                              onTap: () => {},
                             ),
                             BoolSelectionTile(
-                              isActive: context.watch<UserCubit>().stateAsUser.appearanceEnum == AppearanceEnum.light,
+                              isActive: true,
                               icon: CupertinoIcons.sun_min,
                               text: "Light - BETA",
-                              onTap: () => context.read<UserCubit>().setAppearance(AppearanceEnum.light, context),
+                              onTap: () => {},
                             ),
                             BoolSelectionTile(
                               bottomRounded: true,
-                              isActive: context.watch<UserCubit>().stateAsUser.appearanceEnum == AppearanceEnum.dark,
+                              isActive: true,
                               icon: CupertinoIcons.moon,
                               text: "Dark",
-                              onTap: () => context.read<UserCubit>().setAppearance(AppearanceEnum.dark, context),
+                              onTap: () => {},
                             ),
                           ],
                         ),

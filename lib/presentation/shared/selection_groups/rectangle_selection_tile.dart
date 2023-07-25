@@ -1,7 +1,6 @@
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../../../core/styles/typography.dart';
 import 'package:flutter/material.dart';
 
@@ -40,7 +39,7 @@ class _RectangleTileState extends State<RectangleTile> {
         color: widget.backgroundColor ?? Theme.of(context).colorScheme.background,
         border: Border.all(
             color: Theme.of(context).colorScheme.onBackground, width: 0.8, strokeAlign: BorderSide.strokeAlignCenter),
-        borderRadius: BorderRadius.all(Radius.circular(context.watch<UserCubit>().stateAsUser.curvyEnum.borderRadius)),
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 15),

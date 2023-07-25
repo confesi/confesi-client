@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../../../core/styles/typography.dart';
 
 class HeaderGroupText extends StatelessWidget {
@@ -28,10 +27,7 @@ class HeaderGroupText extends StatelessWidget {
 
   Widget buildTopText(BuildContext context) => Text(
         header,
-        style: kDisplay1.copyWith(
-          color: Theme.of(context).colorScheme.primary,
-          fontSize: 26 * context.watch<UserCubit>().stateAsUser.textSizeEnum.multiplier,
-        ),
+        style: kDisplay1.copyWith(color: Theme.of(context).colorScheme.primary),
         textAlign: left ? TextAlign.left : TextAlign.center,
         overflow: TextOverflow.ellipsis,
         maxLines: multiLine ? 5 : null,

@@ -82,14 +82,12 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
                         //   size: 20,
                         // ),
                         // const SizedBox(width: 5),
-                        InitScale(
-                          child: CircleEmojiButton(
-                            onTap: () => changeFeed(),
-                            text: selectedFeedType == SelectedFeedType.trending ? "Hot 🔥" : "New ⏳",
-                            // text: selectedFeedType == SelectedFeedType.trending
-                            //     ? sl.get<RemoteConfigService>().config.getString('trending_feed_btn_title')
-                            //     : sl.get<RemoteConfigService>().config.getString('recents_feed_btn_title'),
-                          ),
+                        CircleEmojiButton(
+                          onTap: () => changeFeed(),
+                          text: selectedFeedType == SelectedFeedType.trending ? "Hot 🔥" : "New ⏳",
+                          // text: selectedFeedType == SelectedFeedType.trending
+                          //     ? sl.get<RemoteConfigService>().config.getString('trending_feed_btn_title')
+                          //     : sl.get<RemoteConfigService>().config.getString('recents_feed_btn_title'),
                         ),
                         // const SizedBox(width: 5),
                         // Icon(

@@ -4,6 +4,7 @@ import 'package:confesi/core/services/hive/hive_client.dart';
 import 'package:confesi/core/services/user_auth/user_auth_service.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 import 'application/authentication_and_settings/cubit/contact_setting_cubit.dart';
 import 'application/authentication_and_settings/cubit/language_setting_cubit.dart';
@@ -72,7 +73,7 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> updateAuthState() async {
     // delay for the splash screen
-    await Future.delayed(const Duration(milliseconds: 500));
+    await Future.delayed(const Duration(milliseconds: 1000));
     // await sl.get<FirebaseAuth>().signOut();
     _authStateSubscription = sl.get<FirebaseAuth>().authStateChanges().listen((User? user) {
       if (user == null) {

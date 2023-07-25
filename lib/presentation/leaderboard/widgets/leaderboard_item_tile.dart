@@ -1,7 +1,6 @@
 import '../../../core/utils/numbers/add_commas_to_number.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../../../core/utils/numbers/is_plural.dart';
 import '../../../core/utils/numbers/number_postfix.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +29,7 @@ class LeaderboardItemTile extends StatelessWidget {
         border: Border.all(
             color: Theme.of(context).colorScheme.onBackground, width: 0.8, strokeAlign: BorderSide.strokeAlignCenter),
         color: Theme.of(context).colorScheme.background,
-        borderRadius: BorderRadius.all(Radius.circular(context.watch<UserCubit>().stateAsUser.curvyEnum.borderRadius)),
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
       ),
       padding: const EdgeInsets.symmetric(vertical: 10),
       width: double.infinity,

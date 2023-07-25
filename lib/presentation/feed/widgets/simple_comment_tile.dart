@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../../../constants/feed/enums.dart';
 import 'comment_bottom_button.dart';
 
@@ -92,7 +91,6 @@ class SimpleCommentTile extends StatelessWidget {
                       "25m / University of British Columbia",
                       style: kDetail.copyWith(
                         color: Theme.of(context).colorScheme.onSurface,
-                        fontSize: kDetail.fontSize! * context.watch<UserCubit>().stateAsUser.textSizeEnum.multiplier,
                       ),
                       textAlign: TextAlign.left,
                     ),
@@ -101,7 +99,6 @@ class SimpleCommentTile extends StatelessWidget {
                       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam porttitor accumsan turpis at ornare. Ut est massa, scelerisque quis felis id, posuere pellentesque ante.",
                       style: kDetail.copyWith(
                         color: Theme.of(context).colorScheme.primary,
-                        fontSize: kDetail.fontSize! * context.watch<UserCubit>().stateAsUser.textSizeEnum.multiplier,
                       ),
                       textAlign: TextAlign.left,
                     ),
@@ -129,8 +126,6 @@ class SimpleCommentTile extends StatelessWidget {
                                   "Reply",
                                   style: kDetail.copyWith(
                                     color: Theme.of(context).colorScheme.onSurface,
-                                    fontSize: kDetail.fontSize! *
-                                        context.watch<UserCubit>().stateAsUser.textSizeEnum.multiplier,
                                   ),
                                 ),
                               ],
@@ -166,8 +161,6 @@ class SimpleCommentTile extends StatelessWidget {
                                   "43.1k",
                                   style: kDetail.copyWith(
                                     color: Theme.of(context).colorScheme.onSurface,
-                                    fontSize: kDetail.fontSize! *
-                                        context.watch<UserCubit>().stateAsUser.textSizeEnum.multiplier,
                                   ),
                                 ),
                                 const SizedBox(width: 5),

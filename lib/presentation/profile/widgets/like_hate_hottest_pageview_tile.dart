@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../../../core/utils/numbers/add_commas_to_number.dart';
 
 class LikeHateHottestPageviewTile extends StatelessWidget {
@@ -30,7 +29,7 @@ class LikeHateHottestPageviewTile extends StatelessWidget {
       margin: const EdgeInsets.all(10),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(context.watch<UserCubit>().stateAsUser.curvyEnum.borderRadius)),
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
         color: Theme.of(context).colorScheme.background,
         border: Border.all(
             color: Theme.of(context).colorScheme.onBackground, width: 0.8, strokeAlign: BorderSide.strokeAlignCenter),

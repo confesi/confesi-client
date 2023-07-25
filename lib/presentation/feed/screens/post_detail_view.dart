@@ -17,6 +17,7 @@ import '../../shared/overlays/notification_chip.dart';
 import '../../shared/stat_tiles/stat_tile_group.dart';
 import '../widgets/comment_sheet.dart';
 import '../widgets/simple_comment_sort.dart';
+import '../widgets/simple_comment_tile.dart';
 
 class SimpleDetailViewScreen extends StatefulWidget {
   const SimpleDetailViewScreen({super.key});
@@ -153,8 +154,6 @@ class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
                                             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec blandit ex eu nunc mattis auctor. Nam accumsan malesuada quam in egestas. Ut interdum efficitur purus, quis facilisis massa lobortis a. Nullam pharetra vel lacus faucibus accumsan.",
                                             style: kBody.copyWith(
                                               color: Theme.of(context).colorScheme.primary,
-                                              fontSize: kBody.fontSize! *
-                                                  context.watch<UserCubit>().stateAsUser.textSizeEnum.multiplier,
                                             ),
                                             textAlign: TextAlign.left,
                                           ),

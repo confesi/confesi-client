@@ -1,4 +1,5 @@
 import 'package:confesi/core/router/go_router.dart';
+import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:flutter/services.dart';
 
 import '../../shared/indicators/loading_cupertino.dart';
@@ -7,6 +8,7 @@ import '../../../application/daily_hottest/cubit/hottest_cubit.dart';
 import '../../../constants/leaderboard/general.dart';
 import '../../../core/extensions/dates/two_dates_same.dart';
 import '../../../core/extensions/dates/readable_date_format.dart';
+import '../widgets/hottest_tile.dart';
 import '../widgets/date_picker_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -50,23 +52,21 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
         child: LoadingCupertinoIndicator(),
       );
     } else if (state is Data && state.posts.isNotEmpty) {
-      return GestureDetector(
-        onTap: () {
-          router.push("/home/posts/detail");
-        },
-        child: PageView(
-            controller: pageController,
-            physics: const BouncingScrollPhysics(),
-            onPageChanged: (selectedIndex) {
-              HapticFeedback.lightImpact();
-              setState(() {
-                currentIndex = selectedIndex;
-              });
-            },
-            children: state.posts
-                .asMap()
-                .entries
-                .map((post) => HottestTile(
+      return PageView(
+          controller: pageController,
+          physics: const BouncingScrollPhysics(),
+          onPageChanged: (selectedIndex) {
+            HapticFeedback.lightImpact();
+            setState(() {
+              currentIndex = selectedIndex;
+            });
+          },
+          children: state.posts
+              .asMap()
+              .entries
+              .map((post) => TouchableScale(
+                    onTap: () => router.push("/home/posts/detail"),
+                    child: HottestTile(
                       currentIndex: currentIndex,
                       thisIndex: post.key,
                       universityImagePath: post.value.universityImagePath,
@@ -77,14 +77,14 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
                       text: post.value.text,
                       university: post.value.university,
                       year: post.value.year,
-                    ))
-                .toList()
-                .sublist(
-                    0,
-                    state.posts.length > kMaxDisplayedHottestDailyPosts
-                        ? kMaxDisplayedHottestDailyPosts
-                        : state.posts.length)),
-      );
+                    ),
+                  ))
+              .toList()
+              .sublist(
+                  0,
+                  state.posts.length > kMaxDisplayedHottestDailyPosts
+                      ? kMaxDisplayedHottestDailyPosts
+                      : state.posts.length));
     } else {
       final error = state as Error;
       return Center(

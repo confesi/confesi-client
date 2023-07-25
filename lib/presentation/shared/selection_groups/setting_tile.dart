@@ -1,4 +1,3 @@
-import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/styles/typography.dart';
@@ -39,8 +38,7 @@ class SettingTile extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
           color: bgColor ?? Theme.of(context).colorScheme.background,
-          borderRadius:
-              BorderRadius.all(Radius.circular(context.watch<UserCubit>().stateAsUser.curvyEnum.borderRadius)),
+          borderRadius: const BorderRadius.all(Radius.circular(20)),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';

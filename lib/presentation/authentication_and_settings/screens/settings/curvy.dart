@@ -8,7 +8,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../../../../core/styles/typography.dart';
 import '../../../shared/behaviours/simulated_bottom_safe_area.dart';
 import '../../../shared/layout/appbar.dart';
@@ -46,29 +45,29 @@ class CurvyScreen extends StatelessWidget {
                           selectionTiles: [
                             BoolSelectionTile(
                               topRounded: true,
-                              isActive: context.watch<UserCubit>().stateAsUser.curvyEnum == CurvyEnum.none,
+                              isActive: true,
                               icon: CupertinoIcons.sparkles,
                               text: "No curves",
-                              onTap: () => context.read<UserCubit>().setCurvy(CurvyEnum.none, context),
+                              onTap: () => {},
                             ),
                             BoolSelectionTile(
-                              isActive: context.watch<UserCubit>().stateAsUser.curvyEnum == CurvyEnum.little,
+                              isActive: true,
                               icon: CupertinoIcons.sparkles,
                               text: "Small curves",
-                              onTap: () => context.read<UserCubit>().setCurvy(CurvyEnum.little, context),
+                              onTap: () => {},
                             ),
                             BoolSelectionTile(
-                              isActive: context.watch<UserCubit>().stateAsUser.curvyEnum == CurvyEnum.moderate,
+                              isActive: true,
                               icon: CupertinoIcons.sparkles,
                               text: "Regular curves",
-                              onTap: () => context.read<UserCubit>().setCurvy(CurvyEnum.moderate, context),
+                              onTap: () => {},
                             ),
                             BoolSelectionTile(
-                              isActive: context.watch<UserCubit>().stateAsUser.curvyEnum == CurvyEnum.lots,
+                              isActive: true,
                               bottomRounded: true,
                               icon: CupertinoIcons.sparkles,
                               text: "Super curvy",
-                              onTap: () => context.read<UserCubit>().setCurvy(CurvyEnum.lots, context),
+                              onTap: () => {},
                             ),
                           ],
                         ),

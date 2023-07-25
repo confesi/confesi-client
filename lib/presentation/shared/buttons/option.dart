@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../../../core/styles/typography.dart';
 import '../button_touch_effects/touchable_opacity.dart';
 
@@ -36,8 +35,7 @@ class OptionButton extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border.all(
               color: Theme.of(context).colorScheme.onBackground, width: 0.8, strokeAlign: BorderSide.strokeAlignCenter),
-          borderRadius:
-              BorderRadius.all(Radius.circular(context.watch<UserCubit>().stateAsUser.curvyEnum.borderRadius)),
+          borderRadius: const BorderRadius.all(Radius.circular(20)),
           color: Theme.of(context).colorScheme.surface,
         ),
         child: Container(

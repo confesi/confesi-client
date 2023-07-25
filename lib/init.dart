@@ -6,13 +6,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'application/shared/cubit/maps_cubit.dart';
 import 'core/services/hive/hive_client.dart';
 import 'core/services/deep_links.dart';
-import 'data/create_post/datasources/draft_post_datasource.dart';
-import 'data/create_post/repositories/draft_repository_concrete.dart';
-import 'domain/authentication_and_settings/usecases/curvy.dart';
-import 'domain/authentication_and_settings/usecases/shake_for_feedback.dart';
-import 'domain/authentication_and_settings/usecases/text_size.dart';
-import 'domain/create_post/usecases/delete_draft.dart';
-import 'domain/create_post/usecases/get_draft.dart';
 import 'domain/feed/usecases/launch_maps.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -20,7 +13,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'core/services/in_app_notifications/in_app_notifications.dart';
 import 'core/services/notifications.dart';
-import 'domain/authentication_and_settings/usecases/home_viewed.dart';
 import 'domain/shared/usecases/share_content.dart';
 import 'application/shared/cubit/share_cubit.dart';
 import 'core/clients/api_client.dart';
@@ -32,8 +24,6 @@ import 'data/daily_hottest/datasources/daily_hottest_datasource.dart';
 import 'data/leaderboard/datasources/leaderboard_datasource.dart';
 import 'data/daily_hottest/repositories/daily_hottest_repository_concrete.dart';
 import 'data/leaderboard/repositories/leaderboard_repository_concrete.dart';
-import 'data/authentication_and_settings/datasources/prefs_datasource.dart';
-import 'data/authentication_and_settings/repositories/prefs_repository_concrete.dart';
 import 'domain/authentication_and_settings/usecases/copy_email_text.dart';
 import 'domain/authentication_and_settings/usecases/launch_website.dart';
 import 'domain/authentication_and_settings/usecases/open_mail_client.dart';
@@ -45,7 +35,6 @@ import 'application/create_post/cubit/post_cubit.dart';
 import 'application/daily_hottest/cubit/hottest_cubit.dart';
 import 'application/leaderboard/cubit/leaderboard_cubit.dart';
 import 'application/profile/cubit/biometrics_cubit.dart';
-import 'domain/authentication_and_settings/usecases/appearance.dart';
 import 'domain/authentication_and_settings/usecases/load_refresh_token.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
@@ -53,13 +42,11 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:local_auth/local_auth.dart';
 import 'application/authentication_and_settings/cubit/contact_setting_cubit.dart';
-import 'application/authentication_and_settings/cubit/user_cubit.dart';
 import 'application/shared/cubit/website_launcher_cubit.dart';
 import 'core/network/connection_info.dart';
 import 'data/authentication_and_settings/datasources/authentication_datasource.dart';
 import 'data/authentication_and_settings/repositories/authentication_repository_concrete.dart';
 import 'domain/authentication_and_settings/usecases/login.dart';
-import 'domain/authentication_and_settings/usecases/logout.dart';
 import 'domain/authentication_and_settings/usecases/register.dart';
 import 'data/feed/datasources/feed_datasource.dart';
 import 'data/feed/repositories/feed_repository_concrete.dart';
@@ -93,6 +80,8 @@ final GetIt sl = GetIt.instance;
 FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
 Future<void> initFirebase() async {
+  // init
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   // crashlytics
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   FlutterError.onError = (errorDetails) {
@@ -102,6 +91,11 @@ Future<void> initFirebase() async {
     FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
     return true;
   };
+  // remote config
+  // Registers the remote config service
+  final remoteConfigService = RemoteConfigService(sl());
+  await remoteConfigService.init();
+  sl.registerLazySingleton(() => remoteConfigService);
   // appcheck
   await FirebaseAppCheck.instance.activate(
     webRecaptchaSiteKey: 'recaptcha-v3-site-key',
@@ -128,8 +122,14 @@ Future<void> init() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   // Registering Hive.
-  await Hive.initFlutter(); // todo: check if this is needed after the localDataService is integrated.
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  //! External
+  // Registers connection checker package.
+  sl.registerLazySingleton(() => InternetConnectionChecker());
+  // Registers the secure storage package.
+  sl.registerLazySingleton(() => const FlutterSecureStorage());
+  // Registers the package that allows us to use biometric authentication.
+  sl.registerLazySingleton(() => LocalAuthentication());
 
   //! Already-singletons
   sl.registerLazySingleton(() => FirebaseRemoteConfig.instance);
@@ -145,10 +145,6 @@ Future<void> init() async {
   sl.registerLazySingleton(() => DeepLinkStream());
   // Registers the deep-link creation service.
   sl.registerLazySingleton(() => DeepLinkService());
-  // Registers the remote config service
-  final remoteConfigService = RemoteConfigService(sl());
-  await remoteConfigService.init();
-  sl.registerLazySingleton(() => remoteConfigService);
 
   //! State (BLoC or Cubit)  // // Registers the authentication cubit.
   // sl.registerFactory(() => AuthenticationCubit(register: sl(), login: sl(), logout: sl(), silentAuthentication: sl()));
@@ -166,18 +162,6 @@ Future<void> init() async {
   sl.registerFactory(() => BiometricsCubit(biometricAuthentication: sl()));
   // Registers the prefs cubit.
   // sl.registerFactory(() => PrefsCubit(appearance: sl(), loadRefreshToken: sl(), firstTime: sl()));
-  // Registers the user cubit.
-  sl.registerFactory(
-    () => UserCubit(
-      curvyUsecase: sl(),
-      logout: sl(),
-      appearance: sl(),
-      loadRefreshToken: sl(),
-      homeViewed: sl(),
-      textSize: sl(),
-      shakeForFeedback: sl(),
-    ),
-  );
   // Registers the contact setting cubit.
   sl.registerFactory(() => ContactSettingCubit(copyEmailTextUsecase: sl(), openMailClientUsecase: sl()));
   // Registers the cubit that launches the website viewer.
@@ -194,8 +178,6 @@ Future<void> init() async {
   sl.registerLazySingleton(() => Register(repository: sl(), api: sl()));
   // Registers the login usecase.
   sl.registerLazySingleton(() => Login(repository: sl(), api: sl()));
-  // Registers the logout usecase.
-  sl.registerLazySingleton(() => Logout(repository: sl(), api: sl(), hiveClient: sl()));
   // Registers the recents feed usecase.
   sl.registerLazySingleton(() => Recents(repository: sl()));
   // Registers the trending feed usecase.
@@ -208,10 +190,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => UploadPost(repository: sl()));
   // Registers the biometric authentication usecase.
   sl.registerLazySingleton(() => BiometricAuthentication(localAuthentication: sl()));
-  // Registers the appearance usecase.
-  sl.registerLazySingleton(() => AppearanceUsecase(repository: sl()));
-  // Registeres the load refresh token usecase.
-  sl.registerLazySingleton(() => LoadRefreshToken(repository: sl()));
+
   // Registers the usecase that opens the mail client.
   sl.registerLazySingleton(() => OpenMailClient());
   // Registers the usecase that copies the email text for support.
@@ -222,18 +201,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => OpenDeviceSettings());
   // Registers the share usecase.
   sl.registerLazySingleton(() => ShareContent());
-  // Registeres the home viewed usecase
-  sl.registerLazySingleton(() => HomeViewed(repository: sl()));
-  // Registers the get draft usecase.
-  sl.registerLazySingleton(() => GetDraftUsecase(repository: sl()));
-  // Registers the delete draft usecase.
-  sl.registerLazySingleton(() => DeleteDraftUsecase(repository: sl()));
-  // Registers the text size setting usecase.
-  sl.registerLazySingleton(() => TextSizeUsecase(repository: sl()));
-  // Registers the shake for feedback usecase.
-  sl.registerLazySingleton(() => ShakeForFeedbackUsecase(repository: sl()));
-  // Registers the curvy usecase.
-  sl.registerLazySingleton(() => CurvyUsecase(repository: sl()));
+
   // Registers the usecase to open the device's native maps app.
   sl.registerLazySingleton(() => LaunchMap());
 
@@ -258,10 +226,6 @@ Future<void> init() async {
   sl.registerLazySingleton(() => DailyHottestRepository(networkInfo: sl(), datasource: sl()));
   // Registers the create post repository.
   sl.registerLazySingleton(() => CreatePostRepository(networkInfo: sl(), datasource: sl()));
-  // Registers the prefs repository.
-  sl.registerLazySingleton(() => PrefsRepository(datasource: sl()));
-  // Registers the draft post repository.
-  sl.registerLazySingleton(() => DraftPostRepository(networkInfo: sl(), datasource: sl()));
 
   //! Data sources
   // Registers the authentication datasource.
@@ -274,18 +238,6 @@ Future<void> init() async {
   sl.registerLazySingleton(() => DailyHottestDatasource(api: sl()));
   // Registers the create post datasource.
   sl.registerLazySingleton(() => CreatePostDatasource(api: sl()));
-  // Registers the prefs datasource.
-  sl.registerLazySingleton(() => PrefsDatasource(hiveClient: sl()));
-  // Registers the draft post datasource.
-  sl.registerLazySingleton(() => DraftPostDatasource(api: sl(), hiveClient: sl()));
-
-  //! External
-  // Registers connection checker package.
-  sl.registerLazySingleton(() => InternetConnectionChecker());
-  // Registers the secure storage package.
-  sl.registerLazySingleton(() => const FlutterSecureStorage());
-  // Registers the package that allows us to use biometric authentication.
-  sl.registerLazySingleton(() => LocalAuthentication());
 
   //! Firebase
   // Registering Firebase.

@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants/shared/enums.dart';
@@ -59,8 +58,7 @@ class SimpleTextButton extends StatelessWidget {
                     : thirdColors
                         ? Theme.of(context).colorScheme.onSecondary
                         : Theme.of(context).colorScheme.surface),
-            borderRadius:
-                BorderRadius.all(Radius.circular(context.watch<UserCubit>().stateAsUser.curvyEnum.borderRadius)),
+            borderRadius: const BorderRadius.all(Radius.circular(20)),
           ),
           child: Text(
             text,

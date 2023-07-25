@@ -4,7 +4,6 @@ import '../../../core/utils/sizing/height_fraction.dart';
 import '../../shared/stat_tiles/stat_tile_item.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrollable/exports.dart';
 
@@ -49,8 +48,7 @@ class _ProfileHomeState extends State<ProfileHome> with AutomaticKeepAliveClient
         top: false,
         child: ThemedStatusBar(
           child: ScrollableView(
-                          physics: const BouncingScrollPhysics(),
-
+            physics: const BouncingScrollPhysics(),
             controller: ScrollController(),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -74,8 +72,7 @@ class _ProfileHomeState extends State<ProfileHome> with AutomaticKeepAliveClient
                 Container(
                   margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(
-                        Radius.circular(context.watch<UserCubit>().stateAsUser.curvyEnum.borderRadius)),
+                    borderRadius: const BorderRadius.all(Radius.circular(20)),
                     color: Theme.of(context).colorScheme.background,
                     border: Border.all(
                         color: Theme.of(context).colorScheme.onBackground,
