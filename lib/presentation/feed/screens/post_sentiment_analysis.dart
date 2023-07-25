@@ -18,66 +18,62 @@ class SentimentAnalysisScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: ThemedStatusBar(
-        child: Scaffold(
-          backgroundColor: Theme.of(context).colorScheme.background,
-          body: SafeArea(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                AppbarLayout(
-                  bottomBorder: true,
-                  leftIcon: CupertinoIcons.xmark,
-                  centerWidget: Text(
-                    "Confession Sentiment",
-                    style: kTitle.copyWith(
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.center,
+    return ThemedStatusBar(
+      child: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.background,
+        body: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              AppbarLayout(
+                bottomBorder: true,
+                centerWidget: Text(
+                  "Confession Sentiment",
+                  style: kTitle.copyWith(
+                    color: Theme.of(context).colorScheme.primary,
                   ),
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
                 ),
-                Expanded(
-                  child: Center(
-                    child: ScrollableView(
-                      physics: const BouncingScrollPhysics(),
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      controller: ScrollController(),
-                      child: InitScale(
-                        child: PieChart(
-                          chartRadius: widthFraction(context, .75),
-                          ringStrokeWidth: 20,
-                          dataMap: const {
-                            "Positive": 5,
-                            "Negative": 4,
-                            "Neutral": 2,
-                          },
-                          animationDuration: const Duration(milliseconds: 800),
-                          chartLegendSpacing: 55,
-                          colorList: const [Colors.green, Colors.red, Colors.yellow],
-                          chartType: ChartType.ring,
-                          legendOptions: LegendOptions(
-                            showLegendsInRow: false,
-                            legendPosition: LegendPosition.bottom,
-                            showLegends: true,
-                            legendShape: BoxShape.circle,
-                            legendTextStyle: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
-                          ),
-                          chartValuesOptions: ChartValuesOptions(
-                            chartValueStyle: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
-                            showChartValueBackground: false,
-                            showChartValues: true,
-                            showChartValuesInPercentage: true,
-                          ),
+              ),
+              Expanded(
+                child: Center(
+                  child: ScrollableView(
+                    physics: const BouncingScrollPhysics(),
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    controller: ScrollController(),
+                    child: InitScale(
+                      child: PieChart(
+                        chartRadius: widthFraction(context, .75),
+                        ringStrokeWidth: 20,
+                        dataMap: const {
+                          "Positive": 5,
+                          "Negative": 4,
+                          "Neutral": 2,
+                        },
+                        animationDuration: const Duration(milliseconds: 800),
+                        chartLegendSpacing: 55,
+                        colorList: const [Colors.green, Colors.red, Colors.yellow],
+                        chartType: ChartType.ring,
+                        legendOptions: LegendOptions(
+                          showLegendsInRow: false,
+                          legendPosition: LegendPosition.bottom,
+                          showLegends: true,
+                          legendShape: BoxShape.circle,
+                          legendTextStyle: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                        ),
+                        chartValuesOptions: ChartValuesOptions(
+                          chartValueStyle: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
+                          showChartValueBackground: false,
+                          showChartValues: true,
+                          showChartValuesInPercentage: true,
                         ),
                       ),
                     ),
                   ),
-                )
-              ],
-            ),
+                ),
+              )
+            ],
           ),
         ),
       ),

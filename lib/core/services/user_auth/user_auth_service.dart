@@ -1,4 +1,5 @@
 import 'package:confesi/core/services/hive/hive_client.dart';
+import 'package:confesi/core/services/user_auth/user_auth_data.dart';
 
 class UserAuthService {
   UserAuthState state = UserAuthLoading();
@@ -6,21 +7,27 @@ class UserAuthService {
   final HiveService hive;
   UserAuthService(this.hive);
 
-  Future<void> setData() async {
+  Future<void> getData(String uid) async {
     state = UserAuthData();
-    print("================================================> set data");
+    hive.openBoxByClass<UserAuthData>().then((box) {
+      final user = box.get(uid);
+      if (user == null) {
+        state = UserAuthNoData();
+      } else {
+        state = UserAuthData();
+      }
+    });
   }
 
   Future<void> setNoData() async {
     state = UserAuthNoData();
-    print("================================================> set NO data");
   }
 }
+
+enum ThemePref { light, dark, system }
 
 class UserAuthState {}
 
 class UserAuthLoading extends UserAuthState {}
 
 class UserAuthNoData extends UserAuthState {}
-
-class UserAuthData extends UserAuthState {}

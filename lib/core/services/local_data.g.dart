@@ -37,39 +37,45 @@ class PrefsAdapter extends TypeAdapter<Prefs> {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) || other is PrefsAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
+      identical(this, other) ||
+      other is PrefsAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }
 
-// class UserAdapter extends TypeAdapter<User> {
-//   @override
-//   final int typeId = 0;
+class UserAdapter extends TypeAdapter<User> {
+  @override
+  final int typeId = 0;
 
-//   @override
-//   User read(BinaryReader reader) {
-//     final numOfFields = reader.readByte();
-//     final fields = <int, dynamic>{
-//       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
-//     };
-//     return User(
-//       fields[0] as Prefs,
-//     );
-//   }
+  @override
+  User read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return User(
+      fields[0] as Prefs,
+    );
+  }
 
-//   @override
-//   void write(BinaryWriter writer, User obj) {
-//     writer
-//       ..writeByte(1)
-//       ..writeByte(0)
-//       ..write(obj.prefs);
-//   }
+  @override
+  void write(BinaryWriter writer, User obj) {
+    writer
+      ..writeByte(1)
+      ..writeByte(0)
+      ..write(obj.prefs);
+  }
 
-//   @override
-//   int get hashCode => typeId.hashCode;
+  @override
+  int get hashCode => typeId.hashCode;
 
-//   @override
-//   bool operator ==(Object other) =>
-//       identical(this, other) || other is UserAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
-// }
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is UserAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
 
 class GuestUserAdapter extends TypeAdapter<GuestUser> {
   @override
@@ -99,7 +105,10 @@ class GuestUserAdapter extends TypeAdapter<GuestUser> {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) || other is GuestUserAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
+      identical(this, other) ||
+      other is GuestUserAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }
 
 class AccountUserAdapter extends TypeAdapter<AccountUser> {
@@ -134,7 +143,9 @@ class AccountUserAdapter extends TypeAdapter<AccountUser> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is AccountUserAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
+      other is AccountUserAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }
 
 class UserTypeAdapter extends TypeAdapter<UserType> {
@@ -170,7 +181,10 @@ class UserTypeAdapter extends TypeAdapter<UserType> {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) || other is UserTypeAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
+      identical(this, other) ||
+      other is UserTypeAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }
 
 class AppThemeAdapter extends TypeAdapter<AppTheme> {
@@ -206,5 +220,8 @@ class AppThemeAdapter extends TypeAdapter<AppTheme> {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) || other is AppThemeAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
+      identical(this, other) ||
+      other is AppThemeAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }

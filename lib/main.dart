@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:confesi/core/services/hive/hive_client.dart';
 import 'package:confesi/core/services/user_auth/user_auth_service.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -24,6 +25,7 @@ import 'application/shared/cubit/share_cubit.dart';
 import 'application/shared/cubit/website_launcher_cubit.dart';
 import 'constants/enums_that_are_local_keys.dart';
 import 'core/router/go_router.dart';
+import 'core/services/user_auth/user_auth_data.dart';
 import 'core/styles/themes.dart';
 import 'init.dart';
 
@@ -60,14 +62,15 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    super.initState();
     updateAuthState();
+    super.initState();
   }
 
   @override
   void dispose() {
     // Dispose of the stream subscription when the widget is disposed
     _authStateSubscription?.cancel();
+    sl.get<HiveService>().dispose();
     super.dispose();
   }
 
@@ -82,7 +85,7 @@ class _MyAppState extends State<MyApp> {
             .setNoData()
             .then((_) => sl.get<UserAuthService>().state is UserAuthNoData ? router.go("/open") : router.go("/error"));
       } else {
-        sl.get<UserAuthService>().setData().then((_) {
+        sl.get<UserAuthService>().getData(sl.get<FirebaseAuth>().currentUser!.uid).then((_) {
           if (sl.get<UserAuthService>().state is! UserAuthData) {
             router.go("/error");
             return;

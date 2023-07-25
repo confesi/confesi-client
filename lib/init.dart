@@ -258,7 +258,9 @@ Future<void> init() async {
   // Registers the custom api client class.
   sl.registerLazySingleton(() => ApiClient());
   // Registers the custom hive client class.
-  sl.registerLazySingleton(() => HiveService());
+  HiveService hiveService = HiveService(sl());
+  await hiveService.init();
+  sl.registerLazySingleton(() => hiveService);
 
   //! Repositories
   // Registers the authentication repository.
