@@ -15,10 +15,6 @@ import 'application/shared/cubit/maps_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'application/authentication_and_settings/cubit/login_cubit.dart';
-import 'application/authentication_and_settings/cubit/register_cubit.dart';
-import 'application/authentication_and_settings/cubit/user_cubit.dart';
-import 'application/create_post/cubit/drafts_cubit.dart';
 import 'application/create_post/cubit/post_cubit.dart';
 import 'application/daily_hottest/cubit/hottest_cubit.dart';
 import 'application/shared/cubit/share_cubit.dart';
@@ -109,15 +105,10 @@ class _MyAppState extends State<MyApp> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(lazy: false, create: (context) => sl<MapsCubit>()),
-        BlocProvider(lazy: false, create: (context) => sl<DraftsCubit>()),
         BlocProvider(lazy: false, create: (context) => sl<CreatePostCubit>()),
         BlocProvider(lazy: false, create: (context) => sl<HottestCubit>()..loadPosts(DateTime.now())),
         BlocProvider(lazy: false, create: (context) => sl<WebsiteLauncherCubit>()),
         BlocProvider(lazy: false, create: (context) => sl<ShareCubit>()),
-        BlocProvider(
-            lazy: false, create: (context) => sl<UserCubit>()..loadUser(true)), // TODO: fix auth once server is ready
-        BlocProvider(lazy: false, create: (context) => sl<LoginCubit>()),
-        BlocProvider(lazy: false, create: (context) => sl<RegisterCubit>()),
         BlocProvider(lazy: false, create: (context) => sl<LeaderboardCubit>()..loadRankings()),
         BlocProvider(lazy: false, create: (context) => sl<TrendingCubit>()..fetchPosts()),
         BlocProvider(lazy: false, create: (context) => sl<RecentsCubit>()),
@@ -135,11 +126,7 @@ class _MyAppState extends State<MyApp> {
             title: "Confesi",
             theme: AppTheme.light,
             darkTheme: AppTheme.dark,
-            themeMode: context.watch<UserCubit>().stateIsUser
-                // If state is user, then use their preferences
-                ? getAppearance(context.watch<UserCubit>().stateAsUser.appearanceEnum)
-                // Otherwise, just go dark
-                : ThemeMode.dark,
+            themeMode: ThemeMode.dark,
             builder: (BuildContext context, Widget? child) {
               final MediaQueryData data = MediaQuery.of(context);
               return MediaQuery(

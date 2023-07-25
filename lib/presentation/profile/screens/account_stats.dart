@@ -1,22 +1,17 @@
 import 'package:confesi/presentation/profile/widgets/stat_tile.dart';
-import 'package:confesi/presentation/shared/selection_groups/rectangle_selection_tile.dart';
 import 'package:confesi/presentation/shared/selection_groups/rectangle_tile_group.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrollable/exports.dart';
 
-import '../../../application/shared/cubit/website_launcher_cubit.dart';
 import '../../../core/router/go_router.dart';
 import '../../../core/styles/typography.dart';
 import '../../../core/utils/sizing/bottom_safe_area.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
-import '../../shared/buttons/pop.dart';
 import '../../shared/layout/appbar.dart';
 import '../../shared/selection_groups/setting_tile.dart';
 import '../../shared/selection_groups/setting_tile_group.dart';
 import '../../shared/selection_groups/text_stat_tile.dart';
-import '../../shared/selection_groups/text_stat_tile_group.dart';
 
 class AccountProfileStats extends StatefulWidget {
   const AccountProfileStats({super.key});

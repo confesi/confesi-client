@@ -3,11 +3,9 @@ import 'dart:ui';
 import 'package:confesi/core/services/remote_config/remote_config.dart';
 import 'package:confesi/core/services/user_auth/user_auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'application/create_post/cubit/drafts_cubit.dart';
 import 'application/shared/cubit/maps_cubit.dart';
 import 'core/services/hive/hive_client.dart';
 import 'core/services/deep_links.dart';
-import 'core/services/local_data.dart';
 import 'data/create_post/datasources/draft_post_datasource.dart';
 import 'data/create_post/repositories/draft_repository_concrete.dart';
 import 'domain/authentication_and_settings/usecases/curvy.dart';
@@ -15,7 +13,6 @@ import 'domain/authentication_and_settings/usecases/shake_for_feedback.dart';
 import 'domain/authentication_and_settings/usecases/text_size.dart';
 import 'domain/create_post/usecases/delete_draft.dart';
 import 'domain/create_post/usecases/get_draft.dart';
-import 'domain/create_post/usecases/save_draft.dart';
 import 'domain/feed/usecases/launch_maps.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -56,8 +53,6 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:local_auth/local_auth.dart';
 import 'application/authentication_and_settings/cubit/contact_setting_cubit.dart';
-import 'application/authentication_and_settings/cubit/login_cubit.dart';
-import 'application/authentication_and_settings/cubit/register_cubit.dart';
 import 'application/authentication_and_settings/cubit/user_cubit.dart';
 import 'application/shared/cubit/website_launcher_cubit.dart';
 import 'core/network/connection_info.dart';
@@ -150,8 +145,6 @@ Future<void> init() async {
   sl.registerLazySingleton(() => DeepLinkStream());
   // Registers the deep-link creation service.
   sl.registerLazySingleton(() => DeepLinkService());
-  // Registers the local data service
-  sl.registerLazySingleton(() => LocalDataService());
   // Registers the remote config service
   final remoteConfigService = RemoteConfigService(sl());
   await remoteConfigService.init();
@@ -173,10 +166,6 @@ Future<void> init() async {
   sl.registerFactory(() => BiometricsCubit(biometricAuthentication: sl()));
   // Registers the prefs cubit.
   // sl.registerFactory(() => PrefsCubit(appearance: sl(), loadRefreshToken: sl(), firstTime: sl()));
-  // Registers the login cubit.
-  sl.registerFactory(() => LoginCubit(login: sl()));
-  // Registers the registration cubit.
-  sl.registerFactory(() => RegisterCubit(register: sl()));
   // Registers the user cubit.
   sl.registerFactory(
     () => UserCubit(
@@ -199,8 +188,6 @@ Future<void> init() async {
   sl.registerFactory(() => MapsCubit(launchMapUsecase: sl()));
   // Registers the share cubit.
   sl.registerFactory(() => ShareCubit(shareContentUsecase: sl()));
-  // Registers the draft post cubit.
-  sl.registerFactory(() => DraftsCubit(getDraftUsecase: sl(), saveDraftUsecase: sl(), deleteDraftUsecase: sl()));
 
   //! Usecases
   // Registers the register usecase.
@@ -237,8 +224,6 @@ Future<void> init() async {
   sl.registerLazySingleton(() => ShareContent());
   // Registeres the home viewed usecase
   sl.registerLazySingleton(() => HomeViewed(repository: sl()));
-  // Registers the save draft usecase.
-  sl.registerLazySingleton(() => SaveDraftUsecase(repository: sl()));
   // Registers the get draft usecase.
   sl.registerLazySingleton(() => GetDraftUsecase(repository: sl()));
   // Registers the delete draft usecase.

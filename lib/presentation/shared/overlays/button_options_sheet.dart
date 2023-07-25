@@ -1,7 +1,7 @@
-import '../buttons/option.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../buttons/option.dart';
 import '../layout/swipebar.dart';
 
 Future<dynamic> showButtonOptionsSheet(BuildContext context, List<OptionButton> buttons,
