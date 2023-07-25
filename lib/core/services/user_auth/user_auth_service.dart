@@ -1,8 +1,27 @@
 import 'package:confesi/core/services/hive/hive_client.dart';
 import 'package:confesi/core/services/user_auth/user_auth_data.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:riverpod/riverpod.dart';
 
-class UserAuthService {
+import '../../../init.dart';
+
+// access the authService
+final authService = StateProvider((ref) {
+  final userAuthService = sl.get<UserAuthService>();
+  return userAuthService.data();
+});
+
+class UserAuthService extends ChangeNotifier {
   UserAuthState state = UserAuthLoading();
+
+  UserAuthData get def => UserAuthData(
+        themePref: ThemePref.system,
+      );
+
+  UserAuthData data() {
+    if (state is UserAuthData) return state as UserAuthData;
+    return def;
+  }
 
   final HiveService hive;
   UserAuthService(this.hive);
@@ -14,6 +33,7 @@ class UserAuthService {
     } catch (_) {
       state = UserAuthError();
     }
+    notifyListeners();
   }
 
   Future<void> getData(String uid) async {
@@ -21,11 +41,11 @@ class UserAuthService {
       final box = await hive.openBoxByClass<UserAuthData>(); // Use await here
       final user = box.get(uid);
       if (user == null) {
-        // todo: defaults?
-        print("case 1");
-        state = UserAuthData();
+        // default
+        state = def;
       } else {
-        print("case 2");
+        print(user.themePref);
+        // return the user
         state = user;
       }
     } catch (_) {
@@ -40,6 +60,7 @@ class UserAuthService {
     } catch (_) {
       state = UserAuthError();
     }
+    notifyListeners();
   }
 }
 

@@ -15,18 +15,3 @@ class UserAuthData extends HiveObject with UserAuthState {
 
   UserAuthData({this.themePref = ThemePref.system});
 }
-
-class ThemePrefAdapter extends TypeAdapter<ThemePref> {
-  @override
-  final int typeId = 2; // Choose a unique typeId for the enum
-
-  @override
-  ThemePref read(BinaryReader reader) {
-    return ThemePref.values[reader.readInt()];
-  }
-
-  @override
-  void write(BinaryWriter writer, ThemePref obj) {
-    writer.writeInt(obj.index);
-  }
-}

@@ -35,7 +35,20 @@ class UserAuthDataAdapter extends TypeAdapter<UserAuthData> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is UserAuthDataAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
+      other is UserAuthDataAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
+}
+
+class ThemePrefAdapter extends TypeAdapter<ThemePref> {
+  @override
+  final int typeId = 2; // Choose a unique typeId for the enum
+
+  @override
+  ThemePref read(BinaryReader reader) {
+    return ThemePref.values[reader.readInt()];
+  }
+
+  @override
+  void write(BinaryWriter writer, ThemePref obj) {
+    writer.writeInt(obj.index);
+  }
 }

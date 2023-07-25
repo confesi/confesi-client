@@ -49,10 +49,27 @@ class _ExploreRecentsState extends State<ExploreRecents> {
       child: Column(
         children: [
           TextButton(
-              onPressed: () => sl
-                  .get<UserAuthService>()
-                  .saveData(UserAuthData(themePref: ThemePref.light), sl.get<FirebaseAuth>().currentUser!.uid),
-              child: Text("save")),
+            onPressed: () => sl
+                .get<UserAuthService>()
+                .saveData(UserAuthData(themePref: ThemePref.light), sl.get<FirebaseAuth>().currentUser!.uid),
+            child: Text(
+              "set light",
+            ),
+          ),
+          TextButton(
+            onPressed: () => sl
+                .get<UserAuthService>()
+                .saveData(UserAuthData(themePref: ThemePref.dark), sl.get<FirebaseAuth>().currentUser!.uid),
+            child: Text(
+              "set dark",
+            ),
+          ),
+          TextButton(
+            onPressed: () => sl.get<UserAuthService>().getData(sl.get<FirebaseAuth>().currentUser!.uid),
+            child: Text(
+              "get",
+            ),
+          ),
           // Row(
           //   children: [
           //     TextButton(onPressed: () => feedListController.addItem(const SimplePostTile()), child: Text("add item")),
