@@ -1,8 +1,6 @@
 import '../../shared/behaviours/animated_cliprrect.dart';
 import 'package:flutter/material.dart';
 
-import 'simple_comment_tile.dart';
-
 class SimpleCommentRootGroup extends StatefulWidget {
   const SimpleCommentRootGroup({
     super.key,

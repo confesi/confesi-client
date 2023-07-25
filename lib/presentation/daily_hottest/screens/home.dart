@@ -7,7 +7,6 @@ import '../../../application/daily_hottest/cubit/hottest_cubit.dart';
 import '../../../constants/leaderboard/general.dart';
 import '../../../core/extensions/dates/two_dates_same.dart';
 import '../../../core/extensions/dates/readable_date_format.dart';
-import '../widgets/hottest_tile.dart';
 import '../widgets/date_picker_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

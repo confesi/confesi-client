@@ -13,7 +13,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../../../../core/styles/typography.dart';
 import '../../../shared/behaviours/simulated_bottom_safe_area.dart';
 import '../../../shared/layout/appbar.dart';

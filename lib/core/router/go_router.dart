@@ -1,23 +1,16 @@
 import 'package:confesi/data/create_post/datasources/create_post_datasource.dart';
-import 'package:confesi/presentation/authentication_and_settings/screens/authentication/login.dart';
 import 'package:confesi/presentation/authentication_and_settings/screens/authentication/open.dart';
-import 'package:confesi/presentation/authentication_and_settings/screens/authentication/verify_email.dart';
-import 'package:confesi/presentation/authentication_and_settings/screens/settings/appearance.dart';
 import 'package:confesi/presentation/authentication_and_settings/screens/settings/contact.dart';
-import 'package:confesi/presentation/authentication_and_settings/screens/settings/curvy.dart';
 import 'package:confesi/presentation/authentication_and_settings/screens/settings/faq.dart';
 import 'package:confesi/presentation/authentication_and_settings/screens/settings/feedback.dart';
 import 'package:confesi/presentation/authentication_and_settings/screens/settings/home.dart';
-import 'package:confesi/presentation/authentication_and_settings/screens/settings/text_size.dart';
 import 'package:confesi/presentation/create_post/screens/details.dart';
 import 'package:confesi/presentation/create_post/screens/home.dart';
 import 'package:confesi/presentation/feed/screens/post_sentiment_analysis.dart';
-import 'package:confesi/presentation/feed/screens/post_detail_view.dart';
 import 'package:confesi/presentation/feedback/screens/home.dart';
 import 'package:confesi/presentation/primary/screens/critical_error.dart';
 import 'package:confesi/presentation/primary/screens/home.dart';
 import 'package:confesi/presentation/primary/screens/showcase.dart';
-import 'package:confesi/presentation/primary/screens/splash.dart';
 import 'package:confesi/presentation/profile/screens/account_details.dart';
 import 'package:confesi/presentation/user_posts_and_comments/screens/posts.dart';
 import 'package:confesi/presentation/user_posts_and_comments/screens/saved.dart';
@@ -25,8 +18,12 @@ import 'package:confesi/presentation/watched_universities/screens/search_univers
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 
+import '../../presentation/authentication_and_settings/screens/authentication/login.dart';
 import '../../presentation/authentication_and_settings/screens/authentication/registration.dart';
+import '../../presentation/authentication_and_settings/screens/authentication/verify_email.dart';
 import '../../presentation/authentication_and_settings/screens/settings/notifications.dart';
+import '../../presentation/authentication_and_settings/screens/settings/text_size.dart';
+import '../../presentation/feed/screens/post_detail_view.dart';
 import '../../presentation/profile/screens/account_stats.dart';
 
 final GoRouter router = GoRouter(

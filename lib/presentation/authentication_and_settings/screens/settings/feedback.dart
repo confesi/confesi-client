@@ -3,6 +3,8 @@ import 'package:confesi/core/router/go_router.dart';
 import '../../../../constants/enums_that_are_local_keys.dart';
 import '../../../shared/behaviours/themed_status_bar.dart';
 import '../../../shared/layout/scrollable_area.dart';
+import '../../../shared/selection_groups/bool_selection_group.dart';
+import '../../../shared/selection_groups/bool_selection_tile.dart';
 import '../../../shared/selection_groups/setting_tile.dart';
 import '../../../shared/selection_groups/setting_tile_group.dart';
 import '../../../shared/text/disclaimer_text.dart';
@@ -58,21 +60,17 @@ class FeedbackSettingScreen extends StatelessWidget {
                           selectionTiles: [
                             BoolSelectionTile(
                               topRounded: true,
-                              isActive: context.watch<UserCubit>().stateAsUser.shakeForFeedbackEnum ==
-                                  ShakeForFeedbackEnum.enabled,
+                              isActive: true,
                               icon: CupertinoIcons.check_mark,
                               text: "Enabled",
-                              onTap: () =>
-                                  context.read<UserCubit>().setShakeForFeedback(ShakeForFeedbackEnum.enabled, context),
+                              onTap: () => {},
                             ),
                             BoolSelectionTile(
                               bottomRounded: true,
-                              isActive: context.watch<UserCubit>().stateAsUser.shakeForFeedbackEnum ==
-                                  ShakeForFeedbackEnum.disabled,
+                              isActive: true,
                               icon: CupertinoIcons.xmark,
                               text: "Disabled",
-                              onTap: () =>
-                                  context.read<UserCubit>().setShakeForFeedback(ShakeForFeedbackEnum.disabled, context),
+                              onTap: () => {},
                             ),
                           ],
                         ),

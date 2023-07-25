@@ -9,6 +9,7 @@ import '../../../core/styles/typography.dart';
 import '../../../core/utils/sizing/bottom_safe_area.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/layout/appbar.dart';
+import '../../shared/selection_groups/rectangle_selection_tile.dart';
 import '../../shared/selection_groups/setting_tile.dart';
 import '../../shared/selection_groups/setting_tile_group.dart';
 import '../../shared/selection_groups/text_stat_tile.dart';

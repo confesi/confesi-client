@@ -10,7 +10,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../application/authentication_and_settings/cubit/login_cubit.dart';
 import '../../../../core/styles/typography.dart';
 import '../../../shared/button_touch_effects/touchable_opacity.dart';
 import '../../../shared/buttons/pop.dart';
@@ -50,104 +49,97 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginCubit, LoginState>(
-      builder: (context, state) {
-        return NavBlocker(
-          blocking: state is LoginLoading,
-          child: ThemedStatusBar(
-            child: KeyboardDismiss(
-              child: Scaffold(
-                resizeToAvoidBottomInset: true,
-                backgroundColor: Theme.of(context).colorScheme.shadow,
-                body: SafeArea(
-                  bottom: false,
-                  child: Column(
-                    children: [
-                      AppbarLayout(
-                        backgroundColor: Theme.of(context).colorScheme.shadow,
-                        centerWidget: Container(),
-                      ),
-                      Expanded(
-                        child: ScrollableView(
-                          physics: const BouncingScrollPhysics(),
-                          inlineBottomOrRightPadding: bottomSafeArea(context),
-                          scrollBarVisible: false,
-                          padding: const EdgeInsets.symmetric(horizontal: 15),
-                          controller: ScrollController(),
-                          hapticsEnabled: false,
-                          child: Column(
-                            children: [
-                              const SizedBox(height: 15),
-                              TypewriterText(
-                                textStyle: kDisplay1.copyWith(color: Theme.of(context).colorScheme.primary),
-                                controller: typewriterController,
-                              ),
-                              const SizedBox(height: 30),
-                              ExpandableTextfield(
-                                maxLines: 1,
-                                color: Theme.of(context).colorScheme.background,
-                                controller: usernameEmailController,
-                                onChanged: (newValue) => print(newValue),
-                                hintText: "Email",
-                              ),
-                              const SizedBox(height: 15),
-                              ExpandableTextfield(
-                                maxLines: 1,
-                                color: Theme.of(context).colorScheme.background,
-                                controller: passwordController,
-                                onChanged: (newValue) => print(newValue),
-                                hintText: "Password",
-                              ),
-                              const SizedBox(height: 30),
-                              PopButton(
-                                loading: state is LoginLoading, // state is UserLoading ? true : false
-                                justText: true,
-                                onPress: () {
-                                  FocusScope.of(context).unfocus();
-                                  context
-                                      .read<LoginCubit>()
-                                      .loginUser(usernameEmailController.text, passwordController.text);
-                                },
-                                icon: CupertinoIcons.chevron_right,
-                                backgroundColor: Theme.of(context).colorScheme.secondary,
-                                textColor: Theme.of(context).colorScheme.onSecondary,
-                                text: "Login",
-                              ),
-                              const SizedBox(height: 15),
-                              TouchableOpacity(
-                                onTap: () => print("tap"), // TODO: Implement
-                                child: Container(
-                                  // Transparent hitbox trick.
-                                  color: Colors.transparent,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          "Forget your password?",
-                                          style: kTitle.copyWith(
-                                            color: Theme.of(context).colorScheme.onSurface,
-                                          ),
-                                          textAlign: TextAlign.center,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
+    return NavBlocker(
+      blocking: true, // todo
+      child: ThemedStatusBar(
+        child: KeyboardDismiss(
+          child: Scaffold(
+            resizeToAvoidBottomInset: true,
+            backgroundColor: Theme.of(context).colorScheme.shadow,
+            body: SafeArea(
+              bottom: false,
+              child: Column(
+                children: [
+                  AppbarLayout(
+                    backgroundColor: Theme.of(context).colorScheme.shadow,
+                    centerWidget: Container(),
                   ),
-                ),
+                  Expanded(
+                    child: ScrollableView(
+                      physics: const BouncingScrollPhysics(),
+                      inlineBottomOrRightPadding: bottomSafeArea(context),
+                      scrollBarVisible: false,
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      controller: ScrollController(),
+                      hapticsEnabled: false,
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 15),
+                          TypewriterText(
+                            textStyle: kDisplay1.copyWith(color: Theme.of(context).colorScheme.primary),
+                            controller: typewriterController,
+                          ),
+                          const SizedBox(height: 30),
+                          ExpandableTextfield(
+                            maxLines: 1,
+                            color: Theme.of(context).colorScheme.background,
+                            controller: usernameEmailController,
+                            onChanged: (newValue) => print(newValue),
+                            hintText: "Email",
+                          ),
+                          const SizedBox(height: 15),
+                          ExpandableTextfield(
+                            maxLines: 1,
+                            color: Theme.of(context).colorScheme.background,
+                            controller: passwordController,
+                            onChanged: (newValue) => print(newValue),
+                            hintText: "Password",
+                          ),
+                          const SizedBox(height: 30),
+                          PopButton(
+                            loading: true, // state is UserLoading ? true : false // todo
+                            justText: true,
+                            onPress: () {
+                              FocusScope.of(context).unfocus();
+                            },
+                            icon: CupertinoIcons.chevron_right,
+                            backgroundColor: Theme.of(context).colorScheme.secondary,
+                            textColor: Theme.of(context).colorScheme.onSecondary,
+                            text: "Login",
+                          ),
+                          const SizedBox(height: 15),
+                          TouchableOpacity(
+                            onTap: () => print("tap"), // TODO: Implement
+                            child: Container(
+                              // Transparent hitbox trick.
+                              color: Colors.transparent,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      "Forget your password?",
+                                      style: kTitle.copyWith(
+                                        color: Theme.of(context).colorScheme.onSurface,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }

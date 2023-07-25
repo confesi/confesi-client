@@ -2,10 +2,9 @@ import 'package:confesi/core/router/go_router.dart';
 import 'package:confesi/presentation/shared/other/widget_or_nothing.dart';
 
 import '../../../application/shared/cubit/share_cubit.dart';
-import '../../../init.dart';
+import '../../authentication_and_settings/screens/settings/home.dart';
 import '../../leaderboard/screens/home.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../authentication_and_settings/screens/settings/home.dart';
 import '../../daily_hottest/screens/home.dart';
 import '../../notifications/screens/home.dart';
 import '../../shared/behaviours/themed_status_bar.dart';

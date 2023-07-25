@@ -4,8 +4,8 @@ import 'package:confesi/core/router/go_router.dart';
 import 'package:confesi/core/services/remote_config/remote_config.dart';
 import 'package:confesi/init.dart';
 import 'package:confesi/presentation/shared/behaviours/init_scale.dart';
-import 'package:confesi/presentation/shared/buttons/circle_emoji_button.dart';
 
+import '../../shared/buttons/circle_emoji_button.dart';
 import '../../shared/buttons/option.dart';
 import '../../shared/other/zoomable.dart';
 import '../../shared/overlays/button_options_sheet.dart';

@@ -1,15 +1,11 @@
 import 'package:confesi/core/router/go_router.dart';
-import 'package:confesi/presentation/notifications/widgets/notification_tile.dart';
 
 import '../../../domain/shared/entities/infinite_scroll_indexable.dart';
 
-import '../../leaderboard/widgets/leaderboard_item_tile.dart';
-import '../../shared/button_touch_effects/touchable_opacity.dart';
 import '../../shared/indicators/loading_cupertino.dart';
 import '../../shared/other/feed_list.dart';
 import '../../shared/overlays/info_sheet_with_action.dart';
 
-import '../../../constants/leaderboard/general.dart';
 import '../../../domain/leaderboard/entities/leaderboard_item.dart';
 import '../../shared/indicators/alert.dart';
 import '../../shared/layout/appbar.dart';
@@ -20,6 +16,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/styles/typography.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
+import '../widgets/notification_tile.dart';
 
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({Key? key}) : super(key: key);

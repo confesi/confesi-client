@@ -1,3 +1,4 @@
+import 'package:confesi/presentation/shared/selection_groups/rectangle_selection_tile.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';

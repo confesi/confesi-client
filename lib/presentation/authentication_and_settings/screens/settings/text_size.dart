@@ -8,7 +8,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../../../../core/styles/typography.dart';
 import '../../../shared/behaviours/simulated_bottom_safe_area.dart';
 import '../../../shared/layout/appbar.dart';
@@ -46,29 +45,29 @@ class TextSizeScreen extends StatelessWidget {
                           selectionTiles: [
                             BoolSelectionTile(
                               topRounded: true,
-                              isActive: context.watch<UserCubit>().stateAsUser.textSizeEnum == TextSizeEnum.small,
+                              isActive: true,
                               icon: CupertinoIcons.sparkles,
                               text: "Small",
-                              onTap: () => context.read<UserCubit>().setTextSize(TextSizeEnum.small, context),
+                              onTap: () => {},
                             ),
                             BoolSelectionTile(
-                              isActive: context.watch<UserCubit>().stateAsUser.textSizeEnum == TextSizeEnum.regular,
+                              isActive: true,
                               icon: CupertinoIcons.sparkles,
                               text: "Regular",
-                              onTap: () => context.read<UserCubit>().setTextSize(TextSizeEnum.regular, context),
+                              onTap: () => {},
                             ),
                             BoolSelectionTile(
-                              isActive: context.watch<UserCubit>().stateAsUser.textSizeEnum == TextSizeEnum.large,
+                              isActive: true,
                               icon: CupertinoIcons.sparkles,
                               text: "Large",
-                              onTap: () => context.read<UserCubit>().setTextSize(TextSizeEnum.large, context),
+                              onTap: () => {},
                             ),
                             BoolSelectionTile(
-                              isActive: context.watch<UserCubit>().stateAsUser.textSizeEnum == TextSizeEnum.veryLarge,
+                              isActive: true,
                               bottomRounded: true,
                               icon: CupertinoIcons.sparkles,
                               text: "Boomer large",
-                              onTap: () => context.read<UserCubit>().setTextSize(TextSizeEnum.veryLarge, context),
+                              onTap: () => {},
                             ),
                           ],
                         ),

@@ -18,8 +18,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrollable/exports.dart';
 
-import '../../../../application/authentication_and_settings/cubit/user_cubit.dart';
-
 class SettingsHome extends StatelessWidget {
   const SettingsHome({
     super.key,
@@ -126,7 +124,6 @@ class SettingsHome extends StatelessWidget {
                                 leftIcon: CupertinoIcons.square_arrow_right,
                                 text: "Logout",
                                 onTap: () async {
-                                  context.read<UserCubit>().logoutRegisteredUser(context);
                                   await sl.get<FirebaseAuth>().signOut(); // todo: temp
                                 },
                               ),

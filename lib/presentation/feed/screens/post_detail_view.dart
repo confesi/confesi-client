@@ -1,25 +1,18 @@
-import 'package:confesi/core/router/go_router.dart';
-
 import '../../../constants/feed/enums.dart';
 import '../methods/show_post_options.dart';
 import '../widgets/simple_comment_root_group.dart';
-import '../widgets/simple_comment_tile.dart';
 import '../../shared/behaviours/one_theme_status_bar.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:keyboard_attachable/keyboard_attachable.dart';
 import 'package:scrollable/exports.dart';
 import 'package:screenshot_callback/screenshot_callback.dart';
 
-import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../../../application/shared/cubit/maps_cubit.dart';
 import '../../../constants/feed/general.dart';
 import '../../../core/services/sharing.dart';
 import '../../../core/styles/typography.dart';
-import '../../shared/buttons/option.dart';
 import '../../shared/buttons/simple_text.dart';
-import '../../shared/overlays/button_options_sheet.dart';
 import '../../shared/overlays/notification_chip.dart';
 import '../../shared/stat_tiles/stat_tile_group.dart';
 import '../widgets/comment_sheet.dart';
@@ -133,8 +126,6 @@ class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
                                             "I found out all the stats profs are in a conspiracy ring together!",
                                             style: kDisplay1.copyWith(
                                               color: Theme.of(context).colorScheme.primary,
-                                              fontSize:
-                                                  26 * context.watch<UserCubit>().stateAsUser.textSizeEnum.multiplier,
                                             ),
                                             textAlign: TextAlign.left,
                                           ),
@@ -154,8 +145,6 @@ class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
                                             "Year 1 Computer Science / Politics / 22min ago / University of Victoria",
                                             style: kDetail.copyWith(
                                               color: Theme.of(context).colorScheme.onSurface,
-                                              fontSize: kDetail.fontSize! *
-                                                  context.watch<UserCubit>().stateAsUser.textSizeEnum.multiplier,
                                             ),
                                             textAlign: TextAlign.left,
                                           ),

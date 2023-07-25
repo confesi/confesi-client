@@ -10,7 +10,6 @@ import '../../../application/authentication_and_settings/cubit/user_cubit.dart';
 import '../../../core/styles/typography.dart';
 import '../methods/show_post_options.dart';
 import 'child_post.dart';
-import 'reaction_tile.dart';
 
 class SimplePostTile extends StatefulWidget {
   const SimplePostTile({super.key});
@@ -112,7 +111,6 @@ class _SimplePostTileState extends State<SimplePostTile> {
                               text: "I found out all the stats profs are in a conspiracy ring together!",
                               style: kDisplay1.copyWith(
                                 color: Theme.of(context).colorScheme.primary,
-                                fontSize: 26 * context.watch<UserCubit>().stateAsUser.textSizeEnum.multiplier,
                               ),
                             ),
                             const WidgetSpan(
@@ -131,7 +129,6 @@ class _SimplePostTileState extends State<SimplePostTile> {
                         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sapien lacus, lacinia in posuere eget, bibendum quis lectus. Pellentesque eu nulla ullamcorper dui blandit porta vel id urna...",
                         style: kBody.copyWith(
                           color: Theme.of(context).colorScheme.primary,
-                          fontSize: kBody.fontSize! * context.watch<UserCubit>().stateAsUser.textSizeEnum.multiplier,
                         ),
                         textAlign: TextAlign.left,
                       ),
