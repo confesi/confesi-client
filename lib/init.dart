@@ -1,9 +1,8 @@
 import 'dart:async';
 import 'dart:ui';
-
 import 'package:confesi/core/services/remote_config/remote_config.dart';
+import 'package:confesi/core/services/user_auth/user_auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
 import 'application/create_post/cubit/drafts_cubit.dart';
 import 'application/shared/cubit/maps_cubit.dart';
 import 'core/services/hive/hive_client.dart';
@@ -22,16 +21,13 @@ import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'core/services/in_app_notifications/in_app_notifications.dart';
 import 'core/services/notifications.dart';
 import 'domain/authentication_and_settings/usecases/home_viewed.dart';
 import 'domain/shared/usecases/share_content.dart';
-
 import 'application/shared/cubit/share_cubit.dart';
 import 'core/clients/api_client.dart';
 import 'domain/authentication_and_settings/usecases/open_device_settings.dart';
-
 import 'application/authentication_and_settings/cubit/language_setting_cubit.dart';
 import 'data/create_post/datasources/create_post_datasource.dart';
 import 'data/create_post/repositories/create_post_repository_concrete.dart';
@@ -59,7 +55,6 @@ import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:local_auth/local_auth.dart';
-
 import 'application/authentication_and_settings/cubit/contact_setting_cubit.dart';
 import 'application/authentication_and_settings/cubit/login_cubit.dart';
 import 'application/authentication_and_settings/cubit/register_cubit.dart';
@@ -146,6 +141,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => FirebaseAuth.instance);
 
   //! Services
+  sl.registerLazySingleton(() => UserAuthService(sl()));
   // Registers notifications service.
   sl.registerLazySingleton(() => NotificationService()..initAndroidNotifications());
   // Registers in-app notifications service.
@@ -161,8 +157,7 @@ Future<void> init() async {
   await remoteConfigService.init();
   sl.registerLazySingleton(() => remoteConfigService);
 
-  //! State (BLoC or Cubit)
-  // // Registers the authentication cubit.
+  //! State (BLoC or Cubit)  // // Registers the authentication cubit.
   // sl.registerFactory(() => AuthenticationCubit(register: sl(), login: sl(), logout: sl(), silentAuthentication: sl()));
   // Registers the recents cubit.
   sl.registerFactory(() => RecentsCubit(recents: sl()));

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:confesi/core/services/user_auth/user_auth_service.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -29,9 +30,9 @@ import 'init.dart';
 void main() async => await init().then(
       (_) => analytics.logAppOpen().then(
             (value) => runApp(
-              const MaterialApp(
+              MaterialApp(
                 debugShowCheckedModeBanner: false,
-                home: MyApp(),
+                home: DevicePreview(builder: (context) => const MyApp()),
               ),
             ),
           ),
@@ -76,9 +77,17 @@ class _MyAppState extends State<MyApp> {
     // await sl.get<FirebaseAuth>().signOut();
     _authStateSubscription = sl.get<FirebaseAuth>().authStateChanges().listen((User? user) {
       if (user == null) {
-        // router.push("/verify-email"); // todo: remove
-        router.go("/open");
+        sl
+            .get<UserAuthService>()
+            .setNoData()
+            .then((_) => sl.get<UserAuthService>().state is UserAuthNoData ? router.go("/open") : router.go("/error"));
       } else {
+        sl.get<UserAuthService>().setData().then((_) {
+          if (sl.get<UserAuthService>().state is! UserAuthData) {
+            router.go("/error");
+            return;
+          }
+        });
         if (user.isAnonymous) {
           router.go("/home");
         } else {
@@ -96,63 +105,22 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          lazy: false,
-          create: (context) => sl<MapsCubit>(),
-        ),
-        BlocProvider(
-          lazy: false,
-          create: (context) => sl<DraftsCubit>(),
-        ),
-        BlocProvider(
-          lazy: false,
-          create: (context) => sl<CreatePostCubit>(),
-        ),
+        BlocProvider(lazy: false, create: (context) => sl<MapsCubit>()),
+        BlocProvider(lazy: false, create: (context) => sl<DraftsCubit>()),
+        BlocProvider(lazy: false, create: (context) => sl<CreatePostCubit>()),
         BlocProvider(lazy: false, create: (context) => sl<HottestCubit>()..loadPosts(DateTime.now())),
+        BlocProvider(lazy: false, create: (context) => sl<WebsiteLauncherCubit>()),
+        BlocProvider(lazy: false, create: (context) => sl<ShareCubit>()),
         BlocProvider(
-          lazy: false,
-          create: (context) => sl<WebsiteLauncherCubit>(),
-        ),
-        BlocProvider(
-          lazy: false,
-          create: (context) => sl<ShareCubit>(),
-        ),
-        BlocProvider(
-          lazy: false,
-          create: (context) => sl<UserCubit>()..loadUser(true), // TODO: fix auth once server is ready
-        ),
-        BlocProvider(
-          lazy: false,
-          create: (context) => sl<LoginCubit>(),
-        ),
-        BlocProvider(
-          lazy: false,
-          create: (context) => sl<RegisterCubit>(),
-        ),
-        BlocProvider(
-          lazy: false,
-          create: (context) => sl<LeaderboardCubit>()..loadRankings(),
-        ),
-        BlocProvider(
-          lazy: false,
-          create: (context) => sl<TrendingCubit>()..fetchPosts(),
-        ),
-        BlocProvider(
-          lazy: false,
-          create: (context) => sl<RecentsCubit>(),
-        ),
-        BlocProvider(
-          lazy: false,
-          create: (context) => sl<BiometricsCubit>(),
-        ),
-        BlocProvider(
-          lazy: false,
-          create: (context) => sl<ContactSettingCubit>(),
-        ),
-        BlocProvider(
-          lazy: false,
-          create: (context) => sl<LanguageSettingCubit>(),
-        ),
+            lazy: false, create: (context) => sl<UserCubit>()..loadUser(true)), // TODO: fix auth once server is ready
+        BlocProvider(lazy: false, create: (context) => sl<LoginCubit>()),
+        BlocProvider(lazy: false, create: (context) => sl<RegisterCubit>()),
+        BlocProvider(lazy: false, create: (context) => sl<LeaderboardCubit>()..loadRankings()),
+        BlocProvider(lazy: false, create: (context) => sl<TrendingCubit>()..fetchPosts()),
+        BlocProvider(lazy: false, create: (context) => sl<RecentsCubit>()),
+        BlocProvider(lazy: false, create: (context) => sl<BiometricsCubit>()),
+        BlocProvider(lazy: false, create: (context) => sl<ContactSettingCubit>()),
+        BlocProvider(lazy: false, create: (context) => sl<LanguageSettingCubit>()),
       ],
       child: Builder(
         builder: (context) {
