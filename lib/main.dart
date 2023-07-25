@@ -74,20 +74,17 @@ class _MyAppState extends State<MyApp> {
   Future<void> updateAuthState() async {
     // delay for the splash screen
     await Future.delayed(const Duration(milliseconds: 1000));
-    // await sl.get<FirebaseAuth>().signOut();
-    _authStateSubscription = sl.get<FirebaseAuth>().authStateChanges().listen((User? user) {
+    _authStateSubscription = sl.get<FirebaseAuth>().authStateChanges().listen((User? user) async {
       if (user == null) {
-        sl
-            .get<UserAuthService>()
-            .setNoData()
-            .then((_) => sl.get<UserAuthService>().state is UserAuthNoData ? router.go("/open") : router.go("/error"));
+        router.go("/open");
       } else {
-        sl.get<UserAuthService>().getData(sl.get<FirebaseAuth>().currentUser!.uid).then((_) {
-          if (sl.get<UserAuthService>().state is! UserAuthData) {
-            router.go("/error");
-            return;
-          }
-        });
+        await sl.get<UserAuthService>().getData(sl.get<FirebaseAuth>().currentUser!.uid);
+        if (sl.get<UserAuthService>().state is! UserAuthData) {
+          router.go("/error");
+          return;
+        } else {
+          print((sl.get<UserAuthService>().state as UserAuthData).themePref);
+        }
         if (user.isAnonymous) {
           router.go("/home");
         } else {
@@ -98,6 +95,7 @@ class _MyAppState extends State<MyApp> {
           }
         }
       }
+      print(sl.get<UserAuthService>().state);
     });
   }
 

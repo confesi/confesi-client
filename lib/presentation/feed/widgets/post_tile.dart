@@ -1,7 +1,10 @@
 import 'package:confesi/core/router/go_router.dart';
+import 'package:confesi/core/services/user_auth/user_auth_data.dart';
 import 'package:confesi/presentation/feed/widgets/reaction_tile.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 
+import '../../../core/services/user_auth/user_auth_service.dart';
+import '../../../init.dart';
 import '../../shared/other/blue_tick.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -108,7 +111,7 @@ class _SimplePostTileState extends State<SimplePostTile> {
                         text: TextSpan(
                           children: [
                             TextSpan(
-                              text: "I found out all the stats profs are in a conspiracy ring together!",
+                              text: "This is the title of a confession",
                               style: kDisplay1.copyWith(
                                 color: Theme.of(context).colorScheme.primary,
                               ),

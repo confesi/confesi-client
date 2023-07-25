@@ -84,7 +84,7 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
                         // const SizedBox(width: 5),
                         CircleEmojiButton(
                           onTap: () => changeFeed(),
-                          text: selectedFeedType == SelectedFeedType.trending ? "Hot 🔥" : "New ⏳",
+                          text: selectedFeedType == SelectedFeedType.trending ? "Trending 🔥" : "New ⏳",
                           // text: selectedFeedType == SelectedFeedType.trending
                           //     ? sl.get<RemoteConfigService>().config.getString('trending_feed_btn_title')
                           //     : sl.get<RemoteConfigService>().config.getString('recents_feed_btn_title'),

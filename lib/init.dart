@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 import 'package:confesi/core/services/remote_config/remote_config.dart';
+import 'package:confesi/core/services/user_auth/user_auth_data.dart';
 import 'package:confesi/core/services/user_auth/user_auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'application/shared/cubit/maps_cubit.dart';
@@ -135,8 +136,21 @@ Future<void> init() async {
   sl.registerLazySingleton(() => FirebaseRemoteConfig.instance);
   sl.registerLazySingleton(() => FirebaseAuth.instance);
 
+  //! Core
+  // Registers custom connection checker class.
+  sl.registerLazySingleton(() => NetworkInfo(sl()));
+  // Registers the custom api client class.
+  sl.registerLazySingleton(() => ApiClient());
+  // Registers the custom hive client class.
+  HiveService hiveService = HiveService(sl());
+  await hiveService.init();
+  sl.registerLazySingleton(() => hiveService);
+
   //! Services
-  sl.registerLazySingleton(() => UserAuthService(sl()));
+  UserAuthService userAuthService = UserAuthService(sl());
+  userAuthService.hive.registerAdapter<UserAuthData>(UserAuthDataAdapter());
+  userAuthService.hive.registerAdapter(ThemePrefAdapter());
+  sl.registerLazySingleton(() => userAuthService);
   // Registers notifications service.
   sl.registerLazySingleton(() => NotificationService()..initAndroidNotifications());
   // Registers in-app notifications service.
@@ -204,16 +218,6 @@ Future<void> init() async {
 
   // Registers the usecase to open the device's native maps app.
   sl.registerLazySingleton(() => LaunchMap());
-
-  //! Core
-  // Registers custom connection checker class.
-  sl.registerLazySingleton(() => NetworkInfo(sl()));
-  // Registers the custom api client class.
-  sl.registerLazySingleton(() => ApiClient());
-  // Registers the custom hive client class.
-  HiveService hiveService = HiveService(sl());
-  await hiveService.init();
-  sl.registerLazySingleton(() => hiveService);
 
   //! Repositories
   // Registers the authentication repository.

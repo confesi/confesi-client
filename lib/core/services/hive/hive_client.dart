@@ -12,8 +12,8 @@ class HiveService {
 
   HiveService(this.flutterSecureStorage);
 
-  void registerAdapter(TypeAdapter<dynamic> adapter) {
-    Hive.registerAdapter(adapter);
+  void registerAdapter<T>(TypeAdapter<T> adapter) {
+    Hive.registerAdapter<T>(adapter);
   }
 
   Future<void> init() async => await Hive.initFlutter();

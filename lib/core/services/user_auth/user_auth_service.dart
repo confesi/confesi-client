@@ -7,26 +7,45 @@ class UserAuthService {
   final HiveService hive;
   UserAuthService(this.hive);
 
-  Future<void> getData(String uid) async {
-    state = UserAuthData();
-    hive.openBoxByClass<UserAuthData>().then((box) {
-      final user = box.get(uid);
-      if (user == null) {
-        state = UserAuthNoData();
-      } else {
-        state = UserAuthData();
-      }
-    });
+  Future<void> saveData(UserAuthData user, String uid) async {
+    try {
+      hive.openBoxByClass<UserAuthData>().then((box) async => await box.put(uid, user));
+      state = user;
+    } catch (_) {
+      state = UserAuthError();
+    }
   }
 
-  Future<void> setNoData() async {
-    state = UserAuthNoData();
+  Future<void> getData(String uid) async {
+    try {
+      final box = await hive.openBoxByClass<UserAuthData>(); // Use await here
+      final user = box.get(uid);
+      if (user == null) {
+        // todo: defaults?
+        print("case 1");
+        state = UserAuthData();
+      } else {
+        print("case 2");
+        state = user;
+      }
+    } catch (_) {
+      state = UserAuthError();
+    }
+  }
+
+  Future<void> clearData() async {
+    try {
+      hive.openBoxByClass<UserAuthData>().then((box) => box.clear());
+      state = UserAuthNoData();
+    } catch (_) {
+      state = UserAuthError();
+    }
   }
 }
 
-enum ThemePref { light, dark, system }
-
 class UserAuthState {}
+
+class UserAuthError extends UserAuthState {}
 
 class UserAuthLoading extends UserAuthState {}
 
