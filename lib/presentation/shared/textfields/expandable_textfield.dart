@@ -19,9 +19,11 @@ class ExpandableTextfield extends StatefulWidget {
     this.padding,
     this.color,
     this.obscured = false,
+    this.autoCorrectAndCaps = true,
     Key? key,
   }) : super(key: key);
 
+  final bool autoCorrectAndCaps;
   final bool obscured;
   final EdgeInsets? padding;
   final TextEditingController controller;
@@ -88,6 +90,9 @@ class _ExpandableTextfieldState extends State<ExpandableTextfield> {
                             ],
                             maxLengthEnforcement: MaxLengthEnforcement.enforced, // keep enforcement enabled
                             scrollController: scrollController,
+                            autocorrect: widget.autoCorrectAndCaps,
+                            textCapitalization:
+                                widget.autoCorrectAndCaps ? TextCapitalization.sentences : TextCapitalization.none,
                             // maxLength: widget.maxCharacters,
                             onChanged: (value) => widget.onChanged(value),
                             maxLines: widget.maxLines,

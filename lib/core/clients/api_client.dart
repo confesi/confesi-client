@@ -60,7 +60,7 @@ class ApiClient {
         }
       }
     }
-    url = kDomain + url; // root domain
+    url = domain + url; // root domain
     late Response response;
     switch (method) {
       case Method.post:

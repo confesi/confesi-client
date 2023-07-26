@@ -15,6 +15,7 @@ final authService = StateProvider((ref) {
 class UserAuthService extends ChangeNotifier {
   UserAuthState state = UserAuthLoading();
   bool isAnon = true;
+  String email = "";
 
   UserAuthData get def => UserAuthData(
         themePref: ThemePref.system,
@@ -35,6 +36,12 @@ class UserAuthService extends ChangeNotifier {
     } catch (_) {
       state = UserAuthError();
     }
+    notifyListeners();
+  }
+
+  Future<void> clearCurrentExtraData() async {
+    isAnon = true;
+    email = "";
     notifyListeners();
   }
 

@@ -6,6 +6,7 @@ import 'package:confesi/presentation/shared/other/widget_or_nothing.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../application/authentication_and_settings/cubit/auth_flow_cubit.dart';
 import '../../../../core/styles/typography.dart';
 import '../../../../core/utils/sizing/top_safe_area.dart';
 
@@ -128,13 +129,8 @@ class SettingsHome extends StatelessWidget {
                                 leftIcon: CupertinoIcons.square_arrow_right,
                                 text: isAnon ? "Logout of guest account" : "Logout",
                                 onTap: () async {
-                                  await sl.get<UserAuthService>().clearData().then((value) async {
-                                    if (sl.get<UserAuthService>().state is UserAuthNoData) {
-                                      await sl.get<FirebaseAuth>().signOut();
-                                    } else {
-                                      showNotificationChip(context, "Something went wrong");
-                                    }
-                                  });
+                                  FocusScope.of(context).unfocus();
+                                  await context.read<AuthFlowCubit>().logout();
                                 },
                               ),
                               if (isAnon)

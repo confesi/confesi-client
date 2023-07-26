@@ -72,7 +72,14 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> updateAuthState() async {
-    // delay for the splash screen
+    // clear user data
+    // todo: disabled
+    sl.get<UserAuthService>().clearCurrentExtraData();
+    _authStateSubscription = sl.get<FirebaseAuth>().idTokenChanges().listen((User? user) async {
+      if (sl.get<FirebaseAuth>().currentUser.isDisabled) {
+        router.go("/disabled");
+      }
+    });
     _authStateSubscription = sl.get<FirebaseAuth>().authStateChanges().listen((User? user) async {
       if (user == null) {
         await Future.delayed(const Duration(milliseconds: 500)); // wait on the splash screen to avoid jank
@@ -89,6 +96,7 @@ class _MyAppState extends State<MyApp> {
           router.go("/home");
         } else {
           sl.get<UserAuthService>().isAnon = false;
+          sl.get<UserAuthService>().email = user.email!;
           if (user.emailVerified) {
             router.go("/home");
           } else {
@@ -124,6 +132,7 @@ class _MyAppState extends State<MyApp> {
           builder: (context) {
             final data = Provider.of<UserAuthService>(context, listen: true).data();
             return BlocListener<AuthFlowCubit, AuthFlowState>(
+              listenWhen: (previous, current) => true, // listen for every change
               listener: (context, state) {
                 if (state is AuthFlowEnteringData && state.mode is EnteringError) {
                   showNotificationChip(context, (state.mode as EnteringError).message);

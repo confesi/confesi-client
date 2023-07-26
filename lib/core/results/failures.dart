@@ -5,6 +5,13 @@ abstract class Failure extends Equatable {
   List<Object> get props => [];
 }
 
+abstract class FailureWithMsg extends Equatable {
+  @override
+  List<Object> get props => [];
+
+  String get message;
+}
+
 // Failures usually have a 1-1 mapping with exceptions.
 
 //! General failures

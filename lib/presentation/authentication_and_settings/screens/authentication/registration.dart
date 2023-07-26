@@ -36,6 +36,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     scrollController = ScrollController();
     passwordController.clear();
     emailController.clear();
+    context.read<AuthFlowCubit>().setEmptyFields();
     super.initState();
   }
 
@@ -93,6 +94,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           ),
                           const SizedBox(height: 30),
                           ExpandableTextfield(
+                            autoCorrectAndCaps: false,
                             maxLines: 1,
                             controller: emailController,
                             onChanged: (newValue) => print(newValue),
@@ -100,6 +102,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           ),
                           const SizedBox(height: 15),
                           ExpandableTextfield(
+                            autoCorrectAndCaps: false,
                             obscured: true,
                             maxLines: 1,
                             controller: passwordController,
@@ -108,6 +111,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           ),
                           const SizedBox(height: 15),
                           ExpandableTextfield(
+                            autoCorrectAndCaps: false,
                             obscured: true,
                             maxLines: 1,
                             controller: passwordConfirmController,

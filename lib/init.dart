@@ -102,7 +102,7 @@ Future<void> initFirebase() async {
   await FirebaseAppCheck.instance.activate(
     webRecaptchaSiteKey: 'recaptcha-v3-site-key',
     androidProvider: AndroidProvider.playIntegrity,
-    appleProvider: AppleProvider.appAttestWithDeviceCheckFallback,
+    appleProvider: AppleProvider.appAttest,
   );
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   sl.get<NotificationService>().token.then((token) {

@@ -1,10 +1,13 @@
+import 'package:confesi/application/authentication_and_settings/cubit/auth_flow_cubit.dart';
 import 'package:confesi/init.dart';
 import 'package:confesi/presentation/shared/overlays/notification_chip.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/router/go_router.dart';
 import 'package:scrollable/exports.dart';
 
+import '../../../../core/services/user_auth/user_auth_service.dart';
 import '../../../shared/behaviours/themed_status_bar.dart';
 import '../../../shared/text_animations/typewriter.dart';
 import 'package:flutter/cupertino.dart';
@@ -63,7 +66,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> with TickerProvid
                     ),
                     const SizedBox(height: 30),
                     Text(
-                      "Click the link sent to: me@matthewtrent.me",
+                      "Click the link sent to: ${sl.get<UserAuthService>().email}",
                       style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
                       textAlign: TextAlign.center,
                     ),
@@ -71,6 +74,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> with TickerProvid
                     PopButton(
                       justText: true,
                       onPress: () {
+                        // todo: reload token
                         if (sl.get<FirebaseAuth>().currentUser != null &&
                             sl.get<FirebaseAuth>().currentUser!.emailVerified) {
                           router.go("/home");
@@ -85,38 +89,40 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> with TickerProvid
                     ),
                     const SizedBox(height: 15),
                     PopButton(
+                      loading: context.watch<AuthFlowCubit>().isLoading,
                       justText: true,
-                      onPress: () {
-                        // todo: resend, or error because it's been done too much
-                      },
+                      onPress: () async => await context.read<AuthFlowCubit>().resendVerificationEmail(),
                       icon: CupertinoIcons.chevron_right,
                       backgroundColor: Theme.of(context).colorScheme.surface,
                       textColor: Theme.of(context).colorScheme.onSurface,
                       text: "Resend verification email",
                     ),
                     const SizedBox(height: 15),
-                    TouchableOpacity(
-                      onTap: () {
-                        FocusScope.of(context).unfocus();
-                        router.go("/open");
-                      },
-                      child: Container(
-                        // Transparent hitbox trick.
-                        color: Colors.transparent,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                "Go back",
-                                style: kTitle.copyWith(
-                                  color: Theme.of(context).colorScheme.onSurface,
+                    AbsorbPointer(
+                      absorbing: context.watch<AuthFlowCubit>().isLoading,
+                      child: TouchableOpacity(
+                        onTap: () async {
+                          FocusScope.of(context).unfocus();
+                          await context.read<AuthFlowCubit>().logout();
+                        },
+                        child: Container(
+                          // Transparent hitbox trick.
+                          color: Colors.transparent,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  "Logout",
+                                  style: kTitle.copyWith(
+                                    color: Theme.of(context).colorScheme.onSurface,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
-                                textAlign: TextAlign.center,
-                                overflow: TextOverflow.ellipsis,
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),

@@ -38,6 +38,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
     scrollController = ScrollController();
     emailController.clear();
     passwordController.clear();
+    context.read<AuthFlowCubit>().setEmptyFields();
     super.initState();
   }
 
@@ -85,6 +86,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                           ),
                           const SizedBox(height: 30),
                           ExpandableTextfield(
+                            autoCorrectAndCaps: false,
                             maxLines: 1,
                             controller: emailController,
                             onChanged: (newValue) => print(newValue),
@@ -92,6 +94,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                           ),
                           const SizedBox(height: 15),
                           ExpandableTextfield(
+                            autoCorrectAndCaps: false,
                             obscured: true,
                             maxLines: 1,
                             controller: passwordController,

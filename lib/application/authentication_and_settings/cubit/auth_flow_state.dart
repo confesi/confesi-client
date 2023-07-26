@@ -44,6 +44,10 @@ class AuthFlowEnteringData extends AuthFlowState {
     this.mode = const EnteringRegular(),
   });
 
+  // override object equality to always be false if and only if email and password aren't the same
+  @override
+  bool operator ==(Object other) => other is AuthFlowEnteringData && other.email == email && other.password == password;
+
   @override
   List<Object> get props => [email, password, mode];
 

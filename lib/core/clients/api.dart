@@ -3,7 +3,9 @@ import 'dart:convert';
 
 import 'package:confesi/constants/shared/dev.dart';
 import 'package:confesi/core/results/failures.dart';
+import 'package:confesi/init.dart';
 import 'package:dartz/dartz.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 
 /// The different RESTful API verbs.
@@ -13,6 +15,26 @@ enum Method {
   patch,
   put,
   delete,
+}
+
+class ApiServerFailure extends FailureWithMsg {
+  @override
+  final String message = "Server failure.";
+}
+
+class ApiConnectionFailure extends FailureWithMsg {
+  @override
+  final String message = "Connection failure.";
+}
+
+class ApiTooManyRequests extends FailureWithMsg {
+  @override
+  final String message = "Too many requests.";
+}
+
+class ApiTimeoutFailure extends FailureWithMsg {
+  @override
+  final String message = "Timeout failure.";
 }
 
 String apiVerbToString(Method method) {
@@ -43,35 +65,56 @@ class Api {
   void setTimeout(Duration timeout) => _timeout = timeout;
   void addHeader(String key, String value) => _headers[key] = value;
 
-  Future<Either<Failure, http.Response>> req(
+  Future<bool> _getBearerToken() async {
+    if (sl.get<FirebaseAuth>().currentUser != null) {
+      try {
+        IdTokenResult token = await sl.get<FirebaseAuth>().currentUser!.getIdTokenResult();
+        if (token.token != null) {
+          setToken(token.token!);
+          return true;
+        } else {
+          return false;
+        }
+      } catch (_) {
+        return false;
+      }
+    }
+    return false;
+  }
+
+  Future<Either<FailureWithMsg, http.Response>> req(
     Method method,
+    bool needsBearerToken,
     String endpoint,
     Map<String, dynamic> body,
   ) async {
     try {
+      if (needsBearerToken) {
+        if (!await _getBearerToken()) {
+          return Left(ApiServerFailure());
+        }
+      }
       var request = http.Request(
         apiVerbToString(method),
-        Uri.parse(kDomain + endpoint),
+        Uri.parse(domain + endpoint),
       );
       request.body = jsonEncode(body);
       http.StreamedResponse response = await request.send().timeout(_timeout);
 
-      // Handle 5xx status codes
+      // handle any 5xx status codes
       if (response.statusCode.toString()[0] == "5") {
-        return Left(ServerFailure());
+        return Left(ApiServerFailure());
+      } else if (response.statusCode == 429) {
+        return Left(ApiTooManyRequests());
       }
-
-      // Handle successful response
+      // "success"
       return Right(await http.Response.fromStream(response));
     } on http.ClientException catch (_) {
-      // Handle connection error
-      return Left(ConnectionFailure());
+      return Left(ApiConnectionFailure());
     } on TimeoutException catch (_) {
-      // Handle timeout error
-      return Left(TimeoutFailure());
+      return Left(ApiTimeoutFailure());
     } catch (e) {
-      // Handle any other unexpected error
-      return Left(GeneralFailure());
+      return Left(ApiServerFailure());
     }
   }
 }
