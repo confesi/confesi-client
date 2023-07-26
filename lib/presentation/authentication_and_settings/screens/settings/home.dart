@@ -1,7 +1,10 @@
 import 'package:confesi/core/router/go_router.dart';
+import 'package:confesi/core/services/user_auth/user_auth_service.dart';
 import 'package:confesi/core/utils/sizing/bottom_safe_area.dart';
 import 'package:confesi/init.dart';
+import 'package:confesi/presentation/shared/other/widget_or_nothing.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../core/styles/typography.dart';
 import '../../../../core/utils/sizing/top_safe_area.dart';
@@ -25,6 +28,7 @@ class SettingsHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isAnon = Provider.of<UserAuthService>(context, listen: true).isAnon;
     return BlocListener<WebsiteLauncherCubit, WebsiteLauncherState>(
       listener: (context, state) {
         if (state is WebsiteLauncherError) {
@@ -122,11 +126,23 @@ class SettingsHome extends StatelessWidget {
                               SettingTile(
                                 isRedText: true,
                                 leftIcon: CupertinoIcons.square_arrow_right,
-                                text: "Logout",
+                                text: isAnon ? "Logout of guest account" : "Logout",
                                 onTap: () async {
-                                  await sl.get<FirebaseAuth>().signOut(); // todo: temp
+                                  await sl.get<UserAuthService>().clearData().then((value) async {
+                                    if (sl.get<UserAuthService>().state is UserAuthNoData) {
+                                      await sl.get<FirebaseAuth>().signOut();
+                                    } else {
+                                      showNotificationChip(context, "Something went wrong");
+                                    }
+                                  });
                                 },
                               ),
+                              if (isAnon)
+                                SettingTile(
+                                  leftIcon: CupertinoIcons.person_add_solid,
+                                  text: "Upgrade to full account",
+                                  onTap: () => print("tap"),
+                                ),
                             ],
                           ),
                           const SizedBox(height: 15),

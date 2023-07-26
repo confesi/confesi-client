@@ -1,3 +1,4 @@
+import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter/material.dart';
@@ -36,7 +37,7 @@ class SimpleTextButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TouchableOpacity(
+    return TouchableScale(
       tapType: tapType,
       onTap: () => onTap(),
       child: AnimatedSize(

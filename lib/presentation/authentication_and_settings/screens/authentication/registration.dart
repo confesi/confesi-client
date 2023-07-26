@@ -1,3 +1,4 @@
+import '../../../../application/authentication_and_settings/cubit/auth_flow_cubit.dart';
 import '../../../../core/router/go_router.dart';
 import '../../../shared/behaviours/nav_blocker.dart';
 import '../../../shared/behaviours/themed_status_bar.dart';
@@ -24,6 +25,7 @@ class RegistrationScreen extends StatefulWidget {
 class _RegistrationScreenState extends State<RegistrationScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController passwordConfirmController = TextEditingController();
   late ScrollController scrollController;
   late TypewriterController typewriterController;
 
@@ -39,6 +41,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   @override
   void dispose() {
+    passwordConfirmController.dispose();
     passwordController.dispose();
     emailController.dispose();
     scrollController.dispose();
@@ -49,7 +52,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   @override
   Widget build(BuildContext context) {
     return NavBlocker(
-      blocking: true, // todo
+      blocking: context.watch<AuthFlowCubit>().isLoading,
       child: ThemedStatusBar(
         child: KeyboardDismiss(
           child: Scaffold(
@@ -62,6 +65,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   AppbarLayout(
                     backgroundColor: Theme.of(context).colorScheme.shadow,
                     centerWidget: Container(),
+                    leftIconDisabled: context.watch<AuthFlowCubit>().isLoading,
                   ),
                   Expanded(
                     child: ScrollableView(
@@ -90,25 +94,34 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           const SizedBox(height: 30),
                           ExpandableTextfield(
                             maxLines: 1,
-                            color: Theme.of(context).colorScheme.background,
                             controller: emailController,
                             onChanged: (newValue) => print(newValue),
                             hintText: "Email",
                           ),
                           const SizedBox(height: 15),
                           ExpandableTextfield(
+                            obscured: true,
                             maxLines: 1,
-                            color: Theme.of(context).colorScheme.background,
                             controller: passwordController,
                             onChanged: (newValue) => print(newValue),
                             hintText: "Password",
                           ),
+                          const SizedBox(height: 15),
+                          ExpandableTextfield(
+                            obscured: true,
+                            maxLines: 1,
+                            controller: passwordConfirmController,
+                            onChanged: (newValue) => print(newValue),
+                            hintText: "Confirm password",
+                          ),
                           const SizedBox(height: 30),
                           PopButton(
-                            loading: true, // state is UserLoading ? true : false // todo
+                            loading: context.watch<AuthFlowCubit>().isLoading,
                             justText: true,
                             onPress: () {
                               FocusScope.of(context).unfocus();
+                              context.read<AuthFlowCubit>().register(
+                                  emailController.text, passwordController.text, passwordConfirmController.text);
                             },
                             icon: CupertinoIcons.chevron_right,
                             backgroundColor: Theme.of(context).colorScheme.secondary,

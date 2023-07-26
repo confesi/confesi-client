@@ -1,3 +1,6 @@
+import 'package:confesi/application/authentication_and_settings/cubit/auth_flow_cubit.dart';
+import 'package:confesi/core/results/failures.dart';
+
 import '../../../../core/utils/sizing/bottom_safe_area.dart';
 import 'package:scrollable/exports.dart';
 
@@ -23,7 +26,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin {
-  TextEditingController usernameEmailController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   late ScrollController scrollController;
   late TypewriterController typewriterController;
@@ -33,14 +36,14 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
     typewriterController = TypewriterController(fullText: "Let's log you in.");
     typewriterController.forward();
     scrollController = ScrollController();
-    usernameEmailController.clear();
+    emailController.clear();
     passwordController.clear();
     super.initState();
   }
 
   @override
   void dispose() {
-    usernameEmailController.dispose();
+    emailController.dispose();
     passwordController.dispose();
     scrollController.dispose();
     typewriterController.dispose();
@@ -50,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
   @override
   Widget build(BuildContext context) {
     return NavBlocker(
-      blocking: true, // todo
+      blocking: context.watch<AuthFlowCubit>().isLoading,
       child: ThemedStatusBar(
         child: KeyboardDismiss(
           child: Scaffold(
@@ -63,6 +66,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                   AppbarLayout(
                     backgroundColor: Theme.of(context).colorScheme.shadow,
                     centerWidget: Container(),
+                    leftIconDisabled: context.watch<AuthFlowCubit>().isLoading,
                   ),
                   Expanded(
                     child: ScrollableView(
@@ -82,25 +86,25 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                           const SizedBox(height: 30),
                           ExpandableTextfield(
                             maxLines: 1,
-                            color: Theme.of(context).colorScheme.background,
-                            controller: usernameEmailController,
+                            controller: emailController,
                             onChanged: (newValue) => print(newValue),
                             hintText: "Email",
                           ),
                           const SizedBox(height: 15),
                           ExpandableTextfield(
+                            obscured: true,
                             maxLines: 1,
-                            color: Theme.of(context).colorScheme.background,
                             controller: passwordController,
                             onChanged: (newValue) => print(newValue),
                             hintText: "Password",
                           ),
                           const SizedBox(height: 30),
                           PopButton(
-                            loading: true, // state is UserLoading ? true : false // todo
+                            loading: context.watch<AuthFlowCubit>().isLoading,
                             justText: true,
                             onPress: () {
                               FocusScope.of(context).unfocus();
+                              context.read<AuthFlowCubit>().login(emailController.text, passwordController.text);
                             },
                             icon: CupertinoIcons.chevron_right,
                             backgroundColor: Theme.of(context).colorScheme.secondary,

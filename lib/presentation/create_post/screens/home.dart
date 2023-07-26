@@ -1,5 +1,6 @@
 import 'package:confesi/core/router/go_router.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
+import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
 
 import '../../../core/utils/sizing/width_fraction.dart';
 import '../../../domain/create_post/entities/draft_post_entity.dart';
@@ -308,7 +309,7 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                                       color: Colors.transparent,
                                       width: double.infinity,
                                       child: Center(
-                                        child: TouchableOpacity(
+                                        child: TouchableScale(
                                           tapType: TapType.lightImpact,
                                           onTap: () => {}, // todo
                                           child: Container(

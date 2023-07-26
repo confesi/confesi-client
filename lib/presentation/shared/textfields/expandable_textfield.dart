@@ -18,9 +18,11 @@ class ExpandableTextfield extends StatefulWidget {
     this.focusNode,
     this.padding,
     this.color,
+    this.obscured = false,
     Key? key,
   }) : super(key: key);
 
+  final bool obscured;
   final EdgeInsets? padding;
   final TextEditingController controller;
   final Function(String) onChanged;
@@ -66,8 +68,9 @@ class _ExpandableTextfieldState extends State<ExpandableTextfield> {
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
-                  color: widget.color ?? Theme.of(context).colorScheme.surface,
+                  color: widget.color ?? Theme.of(context).colorScheme.background,
                   borderRadius: const BorderRadius.all(Radius.circular(5)),
+                  border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
                 ),
                 child: CupertinoScrollbar(
                   thumbVisibility: widget.maxLines == 1 ? false : true,
@@ -79,6 +82,7 @@ class _ExpandableTextfieldState extends State<ExpandableTextfield> {
                       children: [
                         Expanded(
                           child: TextField(
+                            obscureText: widget.obscured,
                             inputFormatters: [
                               LengthLimitingTextInputFormatter(widget.maxCharacters),
                             ],

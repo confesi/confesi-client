@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:confesi/application/authentication_and_settings/cubit/auth_flow_cubit.dart';
 import 'package:confesi/core/services/hive/hive_client.dart';
 import 'package:confesi/core/services/user_auth/user_auth_service.dart';
+import 'package:confesi/presentation/shared/overlays/notification_chip.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -30,10 +32,7 @@ import 'init.dart';
 void main() async => await init().then(
       (_) => analytics.logAppOpen().then(
             (value) => runApp(
-              MaterialApp(
-                debugShowCheckedModeBanner: false,
-                home: DevicePreview(builder: (context) => const MyApp()),
-              ),
+              const MaterialApp(debugShowCheckedModeBanner: false, home: MyApp()),
             ),
           ),
     );
@@ -74,22 +73,22 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> updateAuthState() async {
     // delay for the splash screen
-    await Future.delayed(const Duration(milliseconds: 1000));
     _authStateSubscription = sl.get<FirebaseAuth>().authStateChanges().listen((User? user) async {
       if (user == null) {
+        await Future.delayed(const Duration(milliseconds: 500)); // wait on the splash screen to avoid jank
         router.go("/open");
       } else {
         await sl.get<UserAuthService>().getData(sl.get<FirebaseAuth>().currentUser!.uid);
+        await Future.delayed(const Duration(milliseconds: 500)); // wait on the splash screen to avoid jank
         if (sl.get<UserAuthService>().state is! UserAuthData) {
           router.go("/error");
           return;
-        } else {
-          // put the data to a class that everyone listens to
-          print((sl.get<UserAuthService>().state as UserAuthData).themePref);
         }
         if (user.isAnonymous) {
+          sl.get<UserAuthService>().isAnon = true;
           router.go("/home");
         } else {
+          sl.get<UserAuthService>().isAnon = false;
           if (user.emailVerified) {
             router.go("/home");
           } else {
@@ -97,14 +96,15 @@ class _MyAppState extends State<MyApp> {
           }
         }
       }
-      print(sl.get<UserAuthService>().state);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<UserAuthService>(
-      create: (context) => sl<UserAuthService>(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => sl<UserAuthService>(), lazy: false),
+      ],
       child: MultiBlocProvider(
         providers: [
           BlocProvider(lazy: false, create: (context) => sl<MapsCubit>()),
@@ -118,32 +118,40 @@ class _MyAppState extends State<MyApp> {
           BlocProvider(lazy: false, create: (context) => sl<BiometricsCubit>()),
           BlocProvider(lazy: false, create: (context) => sl<ContactSettingCubit>()),
           BlocProvider(lazy: false, create: (context) => sl<LanguageSettingCubit>()),
+          BlocProvider(lazy: false, create: (context) => sl<AuthFlowCubit>()),
         ],
         child: Builder(
           builder: (context) {
-            final themePref = Provider.of<UserAuthService>(context, listen: true).data().themePref;
-            return MaterialApp.router(
-              routeInformationProvider: router.routeInformationProvider,
-              routeInformationParser: router.routeInformationParser,
-              routerDelegate: router.routerDelegate,
-              debugShowCheckedModeBanner: false,
-              title: "Confesi",
-              theme: AppTheme.light,
-              darkTheme: AppTheme.dark,
-              themeMode: themePref == ThemePref.system
-                  ? ThemeMode.system
-                  : themePref == ThemePref.light
-                      ? ThemeMode.light
-                      : ThemeMode.dark,
-              builder: (BuildContext context, Widget? child) {
-                final MediaQueryData data = MediaQuery.of(context);
-                return MediaQuery(
-                  // Force the textScaleFactor that's loaded from the device
-                  // to lock to 1 (you can change it in-app independent of the inherited scale).
-                  data: data.copyWith(textScaleFactor: 1),
-                  child: child!,
-                );
+            final data = Provider.of<UserAuthService>(context, listen: true).data();
+            return BlocListener<AuthFlowCubit, AuthFlowState>(
+              listener: (context, state) {
+                if (state is AuthFlowEnteringData && state.mode is EnteringError) {
+                  showNotificationChip(context, (state.mode as EnteringError).message);
+                }
               },
+              child: MaterialApp.router(
+                routeInformationProvider: router.routeInformationProvider,
+                routeInformationParser: router.routeInformationParser,
+                routerDelegate: router.routerDelegate,
+                debugShowCheckedModeBanner: false,
+                title: "Confesi",
+                theme: AppTheme.light,
+                darkTheme: AppTheme.dark,
+                themeMode: data.themePref == ThemePref.system
+                    ? ThemeMode.system
+                    : data.themePref == ThemePref.light
+                        ? ThemeMode.light
+                        : ThemeMode.dark,
+                builder: (BuildContext context, Widget? child) {
+                  final MediaQueryData data = MediaQuery.of(context);
+                  return MediaQuery(
+                    // Force the textScaleFactor that's loaded from the device
+                    // to lock to 1 (you can change it in-app independent of the inherited scale).
+                    data: data.copyWith(textScaleFactor: 1),
+                    child: child!,
+                  );
+                },
+              ),
             );
           },
         ),

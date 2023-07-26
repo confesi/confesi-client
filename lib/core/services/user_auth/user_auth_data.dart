@@ -15,3 +15,14 @@ class UserAuthData extends HiveObject with UserAuthState {
 
   UserAuthData({this.themePref = ThemePref.system});
 }
+
+// copyWith
+extension UserAuthDataCopyWith on UserAuthData {
+  UserAuthData copyWith({
+    ThemePref? themePref,
+  }) {
+    return UserAuthData(
+      themePref: themePref ?? this.themePref,
+    );
+  }
+}

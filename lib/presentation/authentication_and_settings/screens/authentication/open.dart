@@ -2,13 +2,11 @@ import 'package:confesi/core/router/go_router.dart';
 import 'package:confesi/init.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '../../../../core/styles/typography.dart';
 import '../../../../core/utils/sizing/height_fraction.dart';
 import '../../../shared/behaviours/themed_status_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../shared/button_touch_effects/touchable_opacity.dart';
 import '../../../shared/buttons/pop.dart';
 
 class OpenScreen extends StatelessWidget {
@@ -34,7 +32,7 @@ class OpenScreen extends StatelessWidget {
                   PopButton(
                     onPress: () async => await sl.get<FirebaseAuth>().signInAnonymously(),
                     icon: CupertinoIcons.arrow_right,
-                    backgroundColor: Theme.of(context).colorScheme.background,
+                    backgroundColor: Theme.of(context).colorScheme.surface,
                     textColor: Theme.of(context).colorScheme.onSurface,
                     text: "Try as guest",
                     bottomPadding: 5,
@@ -42,7 +40,7 @@ class OpenScreen extends StatelessWidget {
                   PopButton(
                     onPress: () => router.push("/login"),
                     icon: CupertinoIcons.arrow_right,
-                    backgroundColor: Theme.of(context).colorScheme.background,
+                    backgroundColor: Theme.of(context).colorScheme.surface,
                     textColor: Theme.of(context).colorScheme.onSurface,
                     text: "Login",
                     bottomPadding: 30,

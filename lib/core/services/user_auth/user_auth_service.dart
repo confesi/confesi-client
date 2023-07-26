@@ -1,5 +1,6 @@
 import 'package:confesi/core/services/hive/hive_client.dart';
 import 'package:confesi/core/services/user_auth/user_auth_data.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:riverpod/riverpod.dart';
 
@@ -13,6 +14,7 @@ final authService = StateProvider((ref) {
 
 class UserAuthService extends ChangeNotifier {
   UserAuthState state = UserAuthLoading();
+  bool isAnon = true;
 
   UserAuthData get def => UserAuthData(
         themePref: ThemePref.system,
@@ -44,13 +46,13 @@ class UserAuthService extends ChangeNotifier {
         // default
         state = def;
       } else {
-        print(user.themePref);
         // return the user
         state = user;
       }
     } catch (_) {
       state = UserAuthError();
     }
+    notifyListeners();
   }
 
   Future<void> clearData() async {

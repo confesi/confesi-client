@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:ui';
+import 'package:confesi/application/authentication_and_settings/cubit/auth_flow_cubit.dart';
 import 'package:confesi/core/services/remote_config/remote_config.dart';
 import 'package:confesi/core/services/user_auth/user_auth_data.dart';
 import 'package:confesi/core/services/user_auth/user_auth_service.dart';
@@ -168,6 +169,8 @@ Future<void> init() async {
   sl.registerFactory(() => TrendingCubit(trending: sl()));
   // Registers the leaderboard cubit.
   sl.registerFactory(() => LeaderboardCubit(ranking: sl()));
+  // Registers the auth flow cubit.
+  sl.registerFactory(() => AuthFlowCubit());
   // Registers the daily hottest cubit.
   sl.registerFactory(() => HottestCubit(posts: sl()));
   // Registers the create post cubit.
