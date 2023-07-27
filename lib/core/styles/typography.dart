@@ -18,7 +18,7 @@ var kDisplay1 = gf.GoogleFonts.inter(
 
 /// Very big text style.
 var kDisplay2 = gf.GoogleFonts.inter(
-  textStyle: const f.TextStyle(fontSize: 34, fontWeight: f.FontWeight.w600),
+  textStyle: const f.TextStyle(fontWeight: f.FontWeight.w800, fontSize: 34),
 );
 
 /// Big text style.

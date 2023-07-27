@@ -65,7 +65,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> with TickerPr
                       style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
                     ),
                     leftIconDisabled: context.watch<AuthFlowCubit>().isLoading,
-                    leftIcon: CupertinoIcons.xmark,
                   ),
                   Expanded(
                     child: ScrollableView(
@@ -81,7 +80,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> with TickerPr
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              "This email will only send if the account exists.",
+                              "This will only send if the account exists. You're limited to 3 reset emails per hour. Don't spam.",
                               style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
                               textAlign: TextAlign.left,
                             ),

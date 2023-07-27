@@ -67,7 +67,10 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                 children: [
                   AppbarLayout(
                     backgroundColor: Theme.of(context).colorScheme.shadow,
-                    centerWidget: Container(),
+                    centerWidget: Text(
+                      "Login",
+                      style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
+                    ),
                     leftIconDisabled: context.watch<AuthFlowCubit>().isLoading,
                   ),
                   Expanded(
@@ -80,11 +83,6 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                       hapticsEnabled: false,
                       child: Column(
                         children: [
-                          const SizedBox(height: 15),
-                          TypewriterText(
-                            textStyle: kDisplay1.copyWith(color: Theme.of(context).colorScheme.primary),
-                            controller: typewriterController,
-                          ),
                           const SizedBox(height: 15),
                           ExpandableTextfield(
                             keyboardType: TextInputType.emailAddress,

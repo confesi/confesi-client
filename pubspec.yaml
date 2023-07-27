@@ -135,6 +135,7 @@ flutter:
     - assets/images/universities/
     - assets/images/achievements/
     - assets/dummy_json/
+    - assets/images/logos/
     
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

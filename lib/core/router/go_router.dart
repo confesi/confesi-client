@@ -36,28 +36,12 @@ final GoRouter router = GoRouter(
   routes: <GoRoute>[
     GoRoute(path: '/', builder: (BuildContext context, GoRouterState state) => const SplashScreen()),
     GoRoute(path: '/error', builder: (BuildContext context, GoRouterState state) => const CriticalErrorScreen()),
-    GoRoute(path: '/open', builder: (BuildContext context, GoRouterState state) => const OpenScreen()),
     GoRoute(path: '/login', builder: (BuildContext context, GoRouterState state) => const LoginScreen()),
     GoRoute(path: '/register', builder: (BuildContext context, GoRouterState state) => const RegistrationScreen()),
     GoRoute(path: '/verify-email', builder: (BuildContext context, GoRouterState state) => const VerifyEmailScreen()),
     GoRoute(
-      path: '/reset-password',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const ResetPasswordScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            // Change the opacity of the screen using a Curve based on the animation's value
-            var tween = CurveTween(curve: Curves.easeInOut);
-            var curvedAnimation = tween.animate(animation);
-            return SlideTransition(
-              position: Tween<Offset>(begin: const Offset(0, 1), end: Offset.zero).animate(curvedAnimation),
-              child: child,
-            );
-          },
-        );
-      },
-    ),
+        path: '/reset-password', builder: (BuildContext context, GoRouterState state) => const ResetPasswordScreen()),
+    GoRoute(path: '/open', builder: (BuildContext context, GoRouterState state) => const OpenScreen()),
 
     GoRoute(
       path: '/home',

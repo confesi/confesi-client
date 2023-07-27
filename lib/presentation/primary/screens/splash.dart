@@ -1,4 +1,5 @@
 import 'package:confesi/core/router/go_router.dart';
+import 'package:confesi/presentation/shared/behaviours/init_scale.dart';
 
 import '../../../constants/enums_that_are_local_keys.dart';
 import '../../../init.dart';
@@ -102,13 +103,19 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Center(
-            child: Text(
-              "Confesi",
-              style: kSplashScreenLogo.copyWith(
-                fontSize: 34,
-                color: Theme.of(context).colorScheme.primary,
+            child: InitScale(
+              child: FractionallySizedBox(
+                widthFactor: 0.5,
+                child: Hero(
+                  tag: "logo",
+                  child: AspectRatio(
+                    aspectRatio: 1,
+                    child: Image.asset(
+                      "assets/images/logos/logo_transparent.png",
+                    ),
+                  ),
+                ),
               ),
-              textAlign: TextAlign.center,
             ),
           ),
         ),

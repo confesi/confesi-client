@@ -4,6 +4,7 @@ import 'package:confesi/init.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/styles/typography.dart';
 import '../../../../core/utils/sizing/height_fraction.dart';
 import '../../../shared/behaviours/themed_status_bar.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,11 +21,6 @@ class OpenScreen extends StatefulWidget {
 
 class _OpenScreenState extends State<OpenScreen> {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => false, // disables back button
@@ -39,7 +35,27 @@ class _OpenScreenState extends State<OpenScreen> {
               padding: EdgeInsets.symmetric(horizontal: 30, vertical: heightFraction(context, 1 / 10)),
               child: Column(
                 children: [
-                  const Text("TODO: add graphic here"), // TODO Add a graphic here
+                  const SizedBox(height: 15),
+                  FractionallySizedBox(
+                    widthFactor: 0.5,
+                    child: TweenAnimationBuilder<double>(
+                      duration: const Duration(milliseconds: 800), // Adjust duration as needed
+                      tween: Tween<double>(begin: 0, end: 1),
+                      curve: Curves.bounceOut, // Use different curves for different effects
+                      builder: (BuildContext context, double value, Widget? child) {
+                        return Transform.scale(
+                          scale: value,
+                          child: child,
+                        );
+                      },
+                      child: AspectRatio(
+                        aspectRatio: 1,
+                        child: Image.asset(
+                          "assets/images/logos/logo_transparent.png",
+                        ),
+                      ),
+                    ),
+                  ),
                   const Spacer(),
                   PopButton(
                     onPress: () async => context.read<AuthFlowCubit>().registerAnon(),

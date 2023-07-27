@@ -7,6 +7,7 @@ import 'package:confesi/presentation/shared/overlays/notification_chip.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import 'application/authentication_and_settings/cubit/contact_setting_cubit.dart';
@@ -36,7 +37,23 @@ void main() async => await init().then(
                 debugShowCheckedModeBanner: false,
                 theme: AppTheme.light,
                 darkTheme: AppTheme.dark,
-                home: const MyApp(),
+                home: MultiBlocProvider(
+                  providers: [
+                    BlocProvider(lazy: false, create: (context) => sl<MapsCubit>()),
+                    BlocProvider(lazy: false, create: (context) => sl<CreatePostCubit>()),
+                    BlocProvider(lazy: false, create: (context) => sl<HottestCubit>()..loadPosts(DateTime.now())),
+                    BlocProvider(lazy: false, create: (context) => sl<WebsiteLauncherCubit>()),
+                    BlocProvider(lazy: false, create: (context) => sl<ShareCubit>()),
+                    BlocProvider(lazy: false, create: (context) => sl<LeaderboardCubit>()..loadRankings()),
+                    BlocProvider(lazy: false, create: (context) => sl<TrendingCubit>()..fetchPosts()),
+                    BlocProvider(lazy: false, create: (context) => sl<RecentsCubit>()),
+                    BlocProvider(lazy: false, create: (context) => sl<BiometricsCubit>()),
+                    BlocProvider(lazy: false, create: (context) => sl<ContactSettingCubit>()),
+                    BlocProvider(lazy: false, create: (context) => sl<LanguageSettingCubit>()),
+                    BlocProvider(lazy: false, create: (context) => sl<AuthFlowCubit>()),
+                  ],
+                  child: const MyApp(),
+                ),
               ),
             ),
           ),
@@ -79,31 +96,37 @@ class _MyAppState extends State<MyApp> {
   Future<void> updateAuthState() async {
     // clear user data
     // todo: disabled?
+    sl.get<UserAuthService>().clearCurrentExtraData();
     _authStateSubscription = sl.get<FirebaseAuth>().userChanges().listen((User? user) async {
-      sl.get<UserAuthService>().clearCurrentExtraData();
-      print("TRIGGGGGGGGGGGGGGGGGGERED2");
       if (user == null) {
-        await Future.delayed(const Duration(milliseconds: 500)); // wait on the splash screen to avoid jank
-        router.go("/open");
+        await Future.delayed(const Duration(milliseconds: 500)).then((value) {
+          HapticFeedback.lightImpact();
+          router.go("/open");
+          context.read<AuthFlowCubit>().emitDefault();
+        });
       } else {
         await sl.get<UserAuthService>().getData(sl.get<FirebaseAuth>().currentUser!.uid);
-        await Future.delayed(const Duration(milliseconds: 500)); // wait on the splash screen to avoid jank
-        if (sl.get<UserAuthService>().state is! UserAuthData) {
-          router.go("/error");
-          return;
-        }
-        if (user.isAnonymous) {
-          sl.get<UserAuthService>().isAnon = true;
-          router.go("/home");
-        } else {
-          sl.get<UserAuthService>().isAnon = false;
-          sl.get<UserAuthService>().email = user.email!;
-          if (user.emailVerified) {
+        await Future.delayed(const Duration(milliseconds: 500)).then((value) {
+          HapticFeedback.lightImpact();
+          if (sl.get<UserAuthService>().state is! UserAuthData) {
+            router.go("/error");
+            context.read<AuthFlowCubit>().emitDefault();
+            return;
+          }
+          if (user.isAnonymous) {
+            sl.get<UserAuthService>().isAnon = true;
             router.go("/home");
           } else {
-            router.go("/verify-email");
+            sl.get<UserAuthService>().isAnon = false;
+            sl.get<UserAuthService>().email = user.email!;
+            if (user.emailVerified) {
+              router.go("/home");
+            } else {
+              router.go("/verify-email");
+            }
           }
-        }
+          context.read<AuthFlowCubit>().emitDefault();
+        });
       }
     });
   }
@@ -114,60 +137,41 @@ class _MyAppState extends State<MyApp> {
       providers: [
         ChangeNotifierProvider(create: (context) => sl<UserAuthService>(), lazy: false),
       ],
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider(lazy: false, create: (context) => sl<MapsCubit>()),
-          BlocProvider(lazy: false, create: (context) => sl<CreatePostCubit>()),
-          BlocProvider(lazy: false, create: (context) => sl<HottestCubit>()..loadPosts(DateTime.now())),
-          BlocProvider(lazy: false, create: (context) => sl<WebsiteLauncherCubit>()),
-          BlocProvider(lazy: false, create: (context) => sl<ShareCubit>()),
-          BlocProvider(lazy: false, create: (context) => sl<LeaderboardCubit>()..loadRankings()),
-          BlocProvider(lazy: false, create: (context) => sl<TrendingCubit>()..fetchPosts()),
-          BlocProvider(lazy: false, create: (context) => sl<RecentsCubit>()),
-          BlocProvider(lazy: false, create: (context) => sl<BiometricsCubit>()),
-          BlocProvider(lazy: false, create: (context) => sl<ContactSettingCubit>()),
-          BlocProvider(lazy: false, create: (context) => sl<LanguageSettingCubit>()),
-          BlocProvider(lazy: false, create: (context) => sl<AuthFlowCubit>()),
-        ],
-        child: Builder(
-          builder: (context) {
-            final data = Provider.of<UserAuthService>(context, listen: true).data();
-            return BlocListener<AuthFlowCubit, AuthFlowState>(
-              listenWhen: (previous, current) => true, // listen for every change
-              listener: (context, state) {
-                if (state is AuthFlowNotification) {
-                  print(Theme.of(context).colorScheme.surfaceTint);
-                  showNotificationChip(context, state.message,
-                      notificationType:
-                          state.type == NotificationType.success ? NotificationType.success : NotificationType.failure);
-                }
+      child: Builder(
+        builder: (context) {
+          final data = Provider.of<UserAuthService>(context, listen: true).data();
+          return BlocListener<AuthFlowCubit, AuthFlowState>(
+            listenWhen: (previous, current) => true, // listen for every change
+            listener: (context, state) {
+              if (state is AuthFlowNotification) {
+                showNotificationChip(context, state.message, notificationType: state.type);
+              }
+            },
+            child: MaterialApp.router(
+              routeInformationProvider: router.routeInformationProvider,
+              routeInformationParser: router.routeInformationParser,
+              routerDelegate: router.routerDelegate,
+              debugShowCheckedModeBanner: false,
+              title: "Confesi",
+              theme: AppTheme.light,
+              darkTheme: AppTheme.dark,
+              themeMode: data.themePref == ThemePref.system
+                  ? ThemeMode.system
+                  : data.themePref == ThemePref.light
+                      ? ThemeMode.light
+                      : ThemeMode.dark,
+              builder: (BuildContext context, Widget? child) {
+                final MediaQueryData data = MediaQuery.of(context);
+                return MediaQuery(
+                  // Force the textScaleFactor that's loaded from the device
+                  // to lock to 1 (you can change it in-app independent of the inherited scale).
+                  data: data.copyWith(textScaleFactor: 1),
+                  child: child!,
+                );
               },
-              child: MaterialApp.router(
-                routeInformationProvider: router.routeInformationProvider,
-                routeInformationParser: router.routeInformationParser,
-                routerDelegate: router.routerDelegate,
-                debugShowCheckedModeBanner: false,
-                title: "Confesi",
-                theme: AppTheme.light,
-                darkTheme: AppTheme.dark,
-                themeMode: data.themePref == ThemePref.system
-                    ? ThemeMode.system
-                    : data.themePref == ThemePref.light
-                        ? ThemeMode.light
-                        : ThemeMode.dark,
-                builder: (BuildContext context, Widget? child) {
-                  final MediaQueryData data = MediaQuery.of(context);
-                  return MediaQuery(
-                    // Force the textScaleFactor that's loaded from the device
-                    // to lock to 1 (you can change it in-app independent of the inherited scale).
-                    data: data.copyWith(textScaleFactor: 1),
-                    child: child!,
-                  );
-                },
-              ),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }

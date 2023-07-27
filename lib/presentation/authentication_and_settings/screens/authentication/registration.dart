@@ -66,7 +66,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 children: [
                   AppbarLayout(
                     backgroundColor: Theme.of(context).colorScheme.shadow,
-                    centerWidget: Container(),
+                    centerWidget: Text(
+                      "Registration",
+                      style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
+                    ),
                     leftIconDisabled: context.watch<AuthFlowCubit>().isLoading,
                   ),
                   Expanded(
@@ -80,15 +83,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       child: Column(
                         children: [
                           const SizedBox(height: 15),
-                          TypewriterText(
-                            textStyle: kDisplay1.copyWith(color: Theme.of(context).colorScheme.primary),
-                            controller: typewriterController,
-                          ),
-                          const SizedBox(height: 15),
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              "We only accept school emails to ensure you are a student. These are kept private.",
+                              "We only accept your official school email to ensure you are a student. This is kept private and only used for registration.",
                               style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
                               textAlign: TextAlign.left,
                             ),

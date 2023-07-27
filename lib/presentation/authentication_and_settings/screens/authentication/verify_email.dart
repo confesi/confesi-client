@@ -51,109 +51,125 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> with TickerProvid
             child: Center(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Please verify your email.",
-                      style: kDisplay1.copyWith(color: Theme.of(context).colorScheme.primary),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 30),
-                    RichText(
-                      textAlign: TextAlign.center,
-                      text: TextSpan(
-                        style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
-                        children: [
-                          TextSpan(
-                            text: "Click the link sent to: ",
-                            style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
-                          ),
-                          TextSpan(
-                            text: sl.get<UserAuthService>().email,
-                            style: kBody.copyWith(color: Theme.of(context).colorScheme.secondary),
-                          ),
-                        ],
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Please verify your email.",
+                        style: kDisplay1.copyWith(color: Theme.of(context).colorScheme.primary),
+                        textAlign: TextAlign.center,
                       ),
-                    ),
-                    const SizedBox(height: 15),
-                    RichText(
-                      textAlign: TextAlign.center,
-                      text: TextSpan(
-                        style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
-                        children: [
-                          TextSpan(
-                            text: "The email's subject is \"",
-                            style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
-                          ),
-                          TextSpan(
-                            text: "Confesi Email Verification",
-                            style: kBody.copyWith(color: Theme.of(context).colorScheme.secondary),
-                          ),
-                          TextSpan(
-                            text: "\". It may appear in your junk mail.",
-                            style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
-                          ),
-                        ],
+                      const SizedBox(height: 30),
+                      RichText(
+                        textAlign: TextAlign.center,
+                        text: TextSpan(
+                          style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                          children: [
+                            TextSpan(
+                              text: "Click the link sent to: ",
+                              style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                            ),
+                            TextSpan(
+                              text: sl.get<UserAuthService>().email,
+                              style: kBody.copyWith(color: Theme.of(context).colorScheme.secondary),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 30),
-                    AbsorbPointer(
-                      absorbing: context.watch<AuthFlowCubit>().isLoading,
-                      child: PopButton(
-                        loading: context.watch<AuthFlowCubit>().isLoading,
-                        justText: true,
-                        onPress: () => context.read<AuthFlowCubit>().refreshToken(),
-                        icon: CupertinoIcons.chevron_right,
-                        backgroundColor: Theme.of(context).colorScheme.secondary,
-                        textColor: Theme.of(context).colorScheme.onSecondary,
-                        text: "I've verified my email",
+                      const SizedBox(height: 15),
+                      RichText(
+                        textAlign: TextAlign.center,
+                        text: TextSpan(
+                          style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                          children: [
+                            TextSpan(
+                              text: "The email's subject is \"",
+                              style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                            ),
+                            TextSpan(
+                              text: "Confesi Email Verification",
+                              style: kBody.copyWith(color: Theme.of(context).colorScheme.secondary),
+                            ),
+                            TextSpan(
+                              text: "\". It may appear in your junk mail.",
+                              style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 15),
-                    AbsorbPointer(
-                      absorbing: context.watch<AuthFlowCubit>().isLoading,
-                      child: PopButton(
-                        loading: context.watch<AuthFlowCubit>().isLoading,
-                        justText: true,
-                        onPress: () async => await context.read<AuthFlowCubit>().sendVerificationEmail(),
-                        icon: CupertinoIcons.chevron_right,
-                        backgroundColor: Theme.of(context).colorScheme.surface,
-                        textColor: Theme.of(context).colorScheme.onSurface,
-                        text: "Resend verification email",
+                      const SizedBox(height: 15),
+                      RichText(
+                        textAlign: TextAlign.center,
+                        text: TextSpan(
+                          style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                          children: [
+                            TextSpan(
+                              text: "As a safety precaution, unverified accounts are reset within 2 days.",
+                              style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 15),
-                    AbsorbPointer(
-                      absorbing: context.watch<AuthFlowCubit>().isLoading,
-                      child: TouchableOpacity(
-                        onTap: () async {
-                          FocusScope.of(context).unfocus();
-                          await context.read<AuthFlowCubit>().logout();
-                        },
-                        child: Container(
-                          // Transparent hitbox trick.
-                          color: Colors.transparent,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  "Logout",
-                                  style: kTitle.copyWith(
-                                    color: Theme.of(context).colorScheme.onSurface,
+                      const SizedBox(height: 30),
+                      AbsorbPointer(
+                        absorbing: context.watch<AuthFlowCubit>().isLoading,
+                        child: PopButton(
+                          loading: context.watch<AuthFlowCubit>().isLoading,
+                          justText: true,
+                          onPress: () => context.read<AuthFlowCubit>().refreshToken(),
+                          icon: CupertinoIcons.chevron_right,
+                          backgroundColor: Theme.of(context).colorScheme.secondary,
+                          textColor: Theme.of(context).colorScheme.onSecondary,
+                          text: "I've verified my email",
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      AbsorbPointer(
+                        absorbing: context.watch<AuthFlowCubit>().isLoading,
+                        child: PopButton(
+                          loading: context.watch<AuthFlowCubit>().isLoading,
+                          justText: true,
+                          onPress: () async => await context.read<AuthFlowCubit>().sendVerificationEmail(),
+                          icon: CupertinoIcons.chevron_right,
+                          backgroundColor: Theme.of(context).colorScheme.surface,
+                          textColor: Theme.of(context).colorScheme.onSurface,
+                          text: "Resend verification email",
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      AbsorbPointer(
+                        absorbing: context.watch<AuthFlowCubit>().isLoading,
+                        child: TouchableOpacity(
+                          onTap: () async {
+                            FocusScope.of(context).unfocus();
+                            await context.read<AuthFlowCubit>().logout();
+                          },
+                          child: Container(
+                            // Transparent hitbox trick.
+                            color: Colors.transparent,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    "Logout",
+                                    style: kTitle.copyWith(
+                                      color: Theme.of(context).colorScheme.onSurface,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                  textAlign: TextAlign.center,
-                                  overflow: TextOverflow.ellipsis,
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),

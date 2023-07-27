@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:confesi/constants/shared/dev.dart';
 import 'package:confesi/core/results/failures.dart';
@@ -149,7 +150,7 @@ class Api {
       }
       // "success"
       return Right(response);
-    } on http.ClientException catch (_) {
+    } on SocketException catch (_) {
       return Left(ApiConnectionFailure());
     } on TimeoutException catch (_) {
       return Left(ApiTimeoutFailure());

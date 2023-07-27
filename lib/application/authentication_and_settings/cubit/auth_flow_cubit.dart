@@ -3,6 +3,7 @@ import 'package:confesi/core/clients/api.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../../../constants/shared/dev.dart';
 import '../../../core/services/user_auth/user_auth_service.dart';
 import '../../../init.dart';
 import '../../../presentation/shared/overlays/notification_chip.dart';
@@ -14,8 +15,20 @@ class AuthFlowCubit extends Cubit<AuthFlowState> {
 
   bool get isLoading => state is AuthFlowLoading;
 
+  void emitDefault() {
+    print("==============================================================> default");
+    emit(AuthFlowDefault());
+  }
+
   Future<void> sendPasswordResetEmail(String email) async {
     emit(AuthFlowLoading());
+
+    if (email.isEmpty) {
+      emit(const AuthFlowNotification("Email is empty", NotificationType.failure));
+      emit(AuthFlowDefault());
+      return;
+    }
+
     (await Api().req(Method.post, false, "/api/v1/auth/send-password-reset-email", {"email": email}))
         .fold((failure) => emit(AuthFlowNotification(failure.message(), NotificationType.failure)), (response) async {
       if (response.statusCode.toString()[0] == "4") {
@@ -26,7 +39,6 @@ class AuthFlowCubit extends Cubit<AuthFlowState> {
         emit(const AuthFlowNotification("Unknown error", NotificationType.failure));
       }
     });
-    emit(AuthFlowDefault());
   }
 
   Future<void> sendVerificationEmail() async {
@@ -41,7 +53,6 @@ class AuthFlowCubit extends Cubit<AuthFlowState> {
         emit(const AuthFlowNotification("Unknown error", NotificationType.failure));
       }
     });
-    emit(AuthFlowDefault());
   }
 
   Future<void> logout() async {
@@ -57,7 +68,6 @@ class AuthFlowCubit extends Cubit<AuthFlowState> {
         emit(const AuthFlowNotification("Unknown error", NotificationType.failure));
       }
     });
-    emit(AuthFlowDefault());
   }
 
   Future<void> registerAnon() async {
@@ -70,7 +80,6 @@ class AuthFlowCubit extends Cubit<AuthFlowState> {
     } catch (_) {
       emit(const AuthFlowNotification("Unknown error", NotificationType.failure));
     }
-    emit(AuthFlowDefault());
   }
 
   Future<void> login(String email, String password) async {
@@ -94,7 +103,6 @@ class AuthFlowCubit extends Cubit<AuthFlowState> {
     } catch (e) {
       emit(const AuthFlowNotification("Unknown error", NotificationType.failure));
     }
-    emit(AuthFlowDefault());
   }
 
   Future<void> refreshToken() async {
@@ -127,8 +135,6 @@ class AuthFlowCubit extends Cubit<AuthFlowState> {
       emit(const AuthFlowNotification("Unknown error", NotificationType.failure));
       return;
     }
-
-    emit(AuthFlowDefault());
   }
 
   Future<void> register(String email, String password, String confirmPassword) async {
@@ -136,6 +142,13 @@ class AuthFlowCubit extends Cubit<AuthFlowState> {
 
     if (password != confirmPassword) {
       emit(const AuthFlowNotification("Passwords don't match", NotificationType.failure));
+      emit(AuthFlowDefault());
+      return;
+    }
+
+    if (password.length < passwordMinLength) {
+      emit(const AuthFlowNotification(
+          "Password must be at least $passwordMinLength characters", NotificationType.failure));
       emit(AuthFlowDefault());
       return;
     }
@@ -166,6 +179,5 @@ class AuthFlowCubit extends Cubit<AuthFlowState> {
         }
       },
     );
-    emit(AuthFlowDefault());
   }
 }
