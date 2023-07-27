@@ -5,157 +5,167 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../../core/services/user_auth/user_auth_service.dart';
 import '../../../init.dart';
+import '../../../presentation/shared/overlays/notification_chip.dart';
 
 part 'auth_flow_state.dart';
 
 class AuthFlowCubit extends Cubit<AuthFlowState> {
-  AuthFlowCubit() : super(const AuthFlowEnteringData());
+  AuthFlowCubit() : super(AuthFlowDefault());
 
-  bool get isLoading => state is AuthFlowEnteringData && (state as AuthFlowEnteringData).mode is EnteringLoading;
+  bool get isLoading => state is AuthFlowLoading;
 
-  void setEmptyFields() async {
-    if (state is AuthFlowEnteringData) {
-      final AuthFlowEnteringData currentState = state as AuthFlowEnteringData;
-      emit(currentState.copyWith(email: "", password: ""));
-    }
+  Future<void> sendPasswordResetEmail() async {
+    emit(AuthFlowLoading());
+    (await Api().req(Method.post, true, "/api/v1/auth/send-password-reset-email", {}))
+        .fold((failure) => emit(AuthFlowNotification(failure.message, NotificationType.failure)), (response) async {
+      if (response.statusCode.toString()[0] == "4") {
+        emit(const AuthFlowNotification("TODO: 4XX", NotificationType.failure));
+      } else if (response.statusCode.toString()[0] == "2") {
+        emit(const AuthFlowNotification("Password reset email sent", NotificationType.success));
+      } else {
+        emit(const AuthFlowNotification("Unknown error", NotificationType.failure));
+      }
+    });
+    emit(AuthFlowDefault());
   }
 
-  Future<void> resendVerificationEmail() async {
-    if (state is AuthFlowEnteringData) {
-      final enteringState = state as AuthFlowEnteringData;
-      emit(enteringState.copyWith(mode: const EnteringLoading()));
-      (await Api().req(Method.post, true, "/api/v1/auth/resend-verification-email", {}))
-          .fold((failure) => emit(enteringState.copyWith(mode: EnteringError(failure.message))), (response) async {
-        if (response.statusCode.toString()[0] == "4") {
-          emit(enteringState.copyWith(mode: const EnteringError("TODO: error message here")));
-        } else if (sl.get<FirebaseAuth>().currentUser != null && response.statusCode.toString()[0] == "2") {
-          try {
-            // don't care if this works or fails
-            IdTokenResult token = await sl.get<FirebaseAuth>().currentUser!.getIdTokenResult(true);
-          } catch (_) {}
-        } else {
-          emit(enteringState.copyWith(mode: const EnteringError("Unknown error.")));
-          return;
-        }
-      });
-      emit(enteringState.copyWith(mode: const EnteringRegular()));
-    }
+  Future<void> sendVerificationEmail() async {
+    emit(AuthFlowLoading());
+    (await Api().req(Method.post, true, "/api/v1/auth/resend-verification-email", {}))
+        .fold((failure) => emit(AuthFlowNotification(failure.message, NotificationType.failure)), (response) async {
+      if (response.statusCode.toString()[0] == "4") {
+        emit(const AuthFlowNotification("TODO: 4XX", NotificationType.failure));
+      } else if (response.statusCode.toString()[0] == "2") {
+        emit(const AuthFlowNotification("Password reset email sent", NotificationType.success));
+      } else {
+        emit(const AuthFlowNotification("Unknown error", NotificationType.failure));
+      }
+    });
+    emit(AuthFlowDefault());
   }
 
   Future<void> logout() async {
-    emit(const AuthFlowEnteringData(mode: EnteringLoading()));
+    emit(AuthFlowLoading());
     await sl.get<UserAuthService>().clearData().then((value) async {
       if (sl.get<UserAuthService>().state is UserAuthNoData) {
         try {
           await sl.get<FirebaseAuth>().signOut();
         } catch (_) {
-          emit(const AuthFlowEnteringData(mode: EnteringError("Couldn't log out. Try again later.")));
+          emit(const AuthFlowNotification("Unknown error", NotificationType.failure));
         }
       } else {
-        emit(const AuthFlowEnteringData(mode: EnteringError("Couldn't log out. Try again later.")));
+        emit(const AuthFlowNotification("Unknown error", NotificationType.failure));
       }
     });
+    emit(AuthFlowDefault());
   }
 
   Future<void> registerAnon() async {
-    if (state is AuthFlowEnteringData) {
-      final enteringState = state as AuthFlowEnteringData;
-      emit(enteringState.copyWith(mode: const EnteringLoading()));
-      try {
-        await sl.get<FirebaseAuth>().signInAnonymously();
-      } catch (_) {
-        emit(enteringState.copyWith(mode: const EnteringError('An error occurred. Please try again later.')));
+    emit(AuthFlowLoading());
+    try {
+      UserCredential user = await sl.get<FirebaseAuth>().signInAnonymously();
+      if (user.user == null) {
+        emit(const AuthFlowNotification("Unknown error", NotificationType.failure));
       }
+    } catch (_) {
+      emit(const AuthFlowNotification("Unknown error", NotificationType.failure));
     }
+    emit(AuthFlowDefault());
   }
 
   Future<void> login(String email, String password) async {
-    if (state is AuthFlowEnteringData) {
-      final enteringState = state as AuthFlowEnteringData;
-      emit(enteringState.copyWith(mode: const EnteringLoading()));
-      try {
-        await sl.get<FirebaseAuth>().signInWithEmailAndPassword(email: email, password: password);
-        // catch all firebase auth exceptions
-      } on FirebaseAuthException catch (e) {
-        if (e.code == 'user-not-found') {
-          emit(enteringState.copyWith(mode: const EnteringError('No user found for that email.')));
-        } else if (e.code == 'wrong-password') {
-          emit(enteringState.copyWith(mode: const EnteringError('Wrong password provided for that user.')));
-        } else if (e.code == 'invalid-email') {
-          emit(enteringState.copyWith(mode: const EnteringError('Invalid email provided.')));
-        } else {
-          emit(enteringState.copyWith(mode: const EnteringError('An error occurred. Please try again later.')));
-        }
-      } catch (e) {
-        emit(enteringState.copyWith(mode: const EnteringError('An error occurred. Please try again later.')));
+    emit(AuthFlowLoading());
+    try {
+      UserCredential user = await sl.get<FirebaseAuth>().signInWithEmailAndPassword(email: email, password: password);
+      if (user.user == null) {
+        emit(const AuthFlowNotification("Unknown error", NotificationType.failure));
       }
+      // catch all firebase auth exceptions
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        emit(const AuthFlowNotification("User not found", NotificationType.failure));
+      } else if (e.code == 'wrong-password') {
+        emit(const AuthFlowNotification("Wrong password", NotificationType.failure));
+      } else if (e.code == 'invalid-email') {
+        emit(const AuthFlowNotification("Invalid email", NotificationType.failure));
+      } else {
+        emit(const AuthFlowNotification("Unknown error", NotificationType.failure));
+      }
+    } catch (e) {
+      emit(const AuthFlowNotification("Unknown error", NotificationType.failure));
     }
+    emit(AuthFlowDefault());
   }
 
   Future<void> refreshToken() async {
-    if (state is AuthFlowEnteringData) {
-      final enteringState = state as AuthFlowEnteringData;
-      emit(enteringState.copyWith(mode: const EnteringLoading()));
-      try {
-        // don't care if this works or fails
-        IdTokenResult token = await sl.get<FirebaseAuth>().currentUser!.getIdTokenResult(true);
-        if (token.token != null) {
-          // todo OG onTap body
-        } else {
-          emit(enteringState.copyWith(mode: const EnteringError("Temporary error, try again later.")));
-        }
-      } catch (_) {
-        emit(enteringState.copyWith(mode: const EnteringError("Temporary error, try again later.")));
+    emit(AuthFlowLoading());
+
+    try {
+      final firebaseAuth = sl.get<FirebaseAuth>();
+      final currentUser = firebaseAuth.currentUser;
+
+      if (currentUser == null) {
+        emit(const AuthFlowNotification("Unknown error", NotificationType.failure));
+        return;
       }
+
+      // refresh old account
+      await currentUser.reload();
+      // get new user
+      final refreshedUser = firebaseAuth.currentUser;
+      if (refreshedUser == null) {
+        emit(const AuthFlowNotification("Unknown error", NotificationType.failure));
+        return;
+      }
+      if (!refreshedUser.emailVerified) {
+        emit(const AuthFlowNotification("Not verified", NotificationType.failure));
+        return;
+      } else {
+        emit(const AuthFlowNotification("Verified", NotificationType.success));
+      }
+    } catch (_) {
+      emit(const AuthFlowNotification("Unknown error", NotificationType.failure));
+      return;
     }
+
+    emit(AuthFlowDefault());
   }
 
   Future<void> register(String email, String password, String confirmPassword) async {
-    if (state is AuthFlowEnteringData) {
-      final enteringState = state as AuthFlowEnteringData;
-      emit(enteringState.copyWith(mode: const EnteringLoading()));
-      if (password != confirmPassword) {
-        emit(enteringState.copyWith(mode: const EnteringError("Passwords don't match")));
-        return;
-      }
-      (await Api().req(
-        Method.post,
-        false,
-        "/api/v1/auth/register",
-        <String, dynamic>{
-          "email": email,
-          "password": password,
-        },
-      ))
-          .fold(
-        (failure) => emit(enteringState.copyWith(mode: EnteringError(failure.message))),
-        (response) async {
-          if (response.statusCode.toString()[0] == "4") {
-            emit(enteringState.copyWith(mode: const EnteringError("TODO: error message here")));
-          } else {
+    emit(AuthFlowLoading());
+
+    if (password != confirmPassword) {
+      emit(const AuthFlowNotification("Passwords don't match", NotificationType.failure));
+      emit(AuthFlowDefault());
+      return;
+    }
+
+    (await Api().req(
+      Method.post,
+      false,
+      "/api/v1/auth/register",
+      <String, dynamic>{
+        "email": email,
+        "password": password,
+      },
+    ))
+        .fold(
+      (failure) => emit(AuthFlowNotification(failure.message, NotificationType.failure)),
+      (response) async {
+        if (response.statusCode.toString()[0] == "4") {
+          emit(const AuthFlowNotification("TODO: 4XX", NotificationType.failure));
+        } else {
+          try {
             var res = await sl.get<FirebaseAuth>().signInWithEmailAndPassword(email: email, password: password);
             if (res.user == null) {
-              emit(enteringState.copyWith(
-                  mode: const EnteringError("Account successfully created, but couldn't log in.")));
+              emit(const AuthFlowNotification("Unknown error", NotificationType.failure));
             }
+          } catch (_) {
+            emit(const AuthFlowNotification("Registered, but unable to login", NotificationType.failure));
           }
-        },
-      );
-      emit(enteringState.copyWith(mode: const EnteringRegular(), email: email, password: password));
-    }
-  }
-
-  void updateEmail(String value) {
-    if (state is AuthFlowEnteringData) {
-      final AuthFlowEnteringData currentState = state as AuthFlowEnteringData;
-      emit(currentState.copyWith(email: value));
-    }
-  }
-
-  void updatePassword(String value) {
-    if (state is AuthFlowEnteringData) {
-      final AuthFlowEnteringData currentState = state as AuthFlowEnteringData;
-      emit(currentState.copyWith(password: value));
-    }
+        }
+      },
+    );
+    emit(AuthFlowDefault());
   }
 }

@@ -65,7 +65,7 @@ class Api {
   void setTimeout(Duration timeout) => _timeout = timeout;
   void addHeader(String key, String value) => _headers[key] = value;
 
-  Future<bool> _getBearerToken() async {
+  Future<bool> _getSetBearerToken() async {
     if (sl.get<FirebaseAuth>().currentUser != null) {
       try {
         IdTokenResult token = await sl.get<FirebaseAuth>().currentUser!.getIdTokenResult();
@@ -90,7 +90,7 @@ class Api {
   ) async {
     try {
       if (needsBearerToken) {
-        if (!await _getBearerToken()) {
+        if (!await _getSetBearerToken()) {
           return Left(ApiServerFailure());
         }
       }
@@ -99,21 +99,33 @@ class Api {
         Uri.parse(domain + endpoint),
       );
       request.body = jsonEncode(body);
-      http.StreamedResponse response = await request.send().timeout(_timeout);
+      request.headers.addAll(_headers);
+      http.StreamedResponse streamResponse = await request.send().timeout(_timeout);
+
+      http.Response response = await http.Response.fromStream(streamResponse);
+
+      if (debugMode) {
+        print("------------- debug api req logger ------------");
+        print("${streamResponse.statusCode} ${streamResponse.reasonPhrase}");
+        print("Headers: ${streamResponse.headers}");
+        print("Body: ${response.body}");
+        print("-----------------------------------------------");
+      }
 
       // handle any 5xx status codes
-      if (response.statusCode.toString()[0] == "5") {
+      if (streamResponse.statusCode.toString()[0] == "5") {
         return Left(ApiServerFailure());
-      } else if (response.statusCode == 429) {
+      } else if (streamResponse.statusCode == 429) {
         return Left(ApiTooManyRequests());
       }
       // "success"
-      return Right(await http.Response.fromStream(response));
+      return Right(response);
     } on http.ClientException catch (_) {
       return Left(ApiConnectionFailure());
     } on TimeoutException catch (_) {
       return Left(ApiTimeoutFailure());
     } catch (e) {
+      print(e);
       return Left(ApiServerFailure());
     }
   }

@@ -1,31 +1,5 @@
 part of 'auth_flow_cubit.dart';
 
-abstract class EnteringMode extends Equatable {
-  const EnteringMode();
-}
-
-class EnteringError extends EnteringMode {
-  final String message;
-
-  const EnteringError(this.message);
-
-  @override
-  List<Object?> get props => [message];
-}
-
-class EnteringRegular extends EnteringMode {
-  const EnteringRegular();
-
-  @override
-  List<Object?> get props => [];
-}
-
-class EnteringLoading extends EnteringMode {
-  const EnteringLoading();
-  @override
-  List<Object?> get props => [];
-}
-
 abstract class AuthFlowState extends Equatable {
   const AuthFlowState();
 
@@ -33,33 +7,20 @@ abstract class AuthFlowState extends Equatable {
   List<Object> get props => [];
 }
 
-class AuthFlowEnteringData extends AuthFlowState {
-  final String email;
-  final String password;
-  final EnteringMode mode;
+class AuthFlowDefault extends AuthFlowState {}
 
-  const AuthFlowEnteringData({
-    this.email = "",
-    this.password = "",
-    this.mode = const EnteringRegular(),
-  });
+class AuthFlowNotification extends AuthFlowState {
+  final String message;
+  final NotificationType type;
 
-  // override object equality to always be false if and only if email and password aren't the same
+  const AuthFlowNotification(this.message, this.type);
+
+  // ovverride equality so that all notifications are different
   @override
-  bool operator ==(Object other) => other is AuthFlowEnteringData && other.email == email && other.password == password;
+  bool operator ==(Object other) => false;
 
   @override
-  List<Object> get props => [email, password, mode];
-
-  AuthFlowEnteringData copyWith({
-    String? email,
-    String? password,
-    EnteringMode? mode,
-  }) {
-    return AuthFlowEnteringData(
-      email: email ?? this.email,
-      password: password ?? this.password,
-      mode: mode ?? this.mode,
-    );
-  }
+  List<Object> get props => [message, type];
 }
+
+class AuthFlowLoading extends AuthFlowState {}

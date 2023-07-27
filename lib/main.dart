@@ -32,7 +32,12 @@ import 'init.dart';
 void main() async => await init().then(
       (_) => analytics.logAppOpen().then(
             (value) => runApp(
-              const MaterialApp(debugShowCheckedModeBanner: false, home: MyApp()),
+              MaterialApp(
+                debugShowCheckedModeBanner: false,
+                theme: AppTheme.light,
+                darkTheme: AppTheme.dark,
+                home: const MyApp(),
+              ),
             ),
           ),
     );
@@ -73,14 +78,10 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> updateAuthState() async {
     // clear user data
-    // todo: disabled
-    sl.get<UserAuthService>().clearCurrentExtraData();
-    _authStateSubscription = sl.get<FirebaseAuth>().idTokenChanges().listen((User? user) async {
-      if (sl.get<FirebaseAuth>().currentUser.isDisabled) {
-        router.go("/disabled");
-      }
-    });
-    _authStateSubscription = sl.get<FirebaseAuth>().authStateChanges().listen((User? user) async {
+    // todo: disabled?
+    _authStateSubscription = sl.get<FirebaseAuth>().userChanges().listen((User? user) async {
+      sl.get<UserAuthService>().clearCurrentExtraData();
+      print("TRIGGGGGGGGGGGGGGGGGGERED2");
       if (user == null) {
         await Future.delayed(const Duration(milliseconds: 500)); // wait on the splash screen to avoid jank
         router.go("/open");
@@ -134,8 +135,11 @@ class _MyAppState extends State<MyApp> {
             return BlocListener<AuthFlowCubit, AuthFlowState>(
               listenWhen: (previous, current) => true, // listen for every change
               listener: (context, state) {
-                if (state is AuthFlowEnteringData && state.mode is EnteringError) {
-                  showNotificationChip(context, (state.mode as EnteringError).message);
+                if (state is AuthFlowNotification) {
+                  print(Theme.of(context).colorScheme.surfaceTint);
+                  showNotificationChip(context, state.message,
+                      notificationType:
+                          state.type == NotificationType.success ? NotificationType.success : NotificationType.failure);
                 }
               },
               child: MaterialApp.router(

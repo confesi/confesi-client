@@ -20,9 +20,13 @@ class ExpandableTextfield extends StatefulWidget {
     this.color,
     this.obscured = false,
     this.autoCorrectAndCaps = true,
+    this.keyboardType = TextInputType.text,
+    this.enableSuggestions = false,
     Key? key,
   }) : super(key: key);
 
+  final bool enableSuggestions;
+  final TextInputType keyboardType;
   final bool autoCorrectAndCaps;
   final bool obscured;
   final EdgeInsets? padding;
@@ -84,6 +88,9 @@ class _ExpandableTextfieldState extends State<ExpandableTextfield> {
                       children: [
                         Expanded(
                           child: TextField(
+                            autofocus: false,
+                            enableSuggestions: widget.enableSuggestions,
+                            enableInteractiveSelection: !widget.obscured,
                             obscureText: widget.obscured,
                             inputFormatters: [
                               LengthLimitingTextInputFormatter(widget.maxCharacters),
@@ -97,7 +104,7 @@ class _ExpandableTextfieldState extends State<ExpandableTextfield> {
                             onChanged: (value) => widget.onChanged(value),
                             maxLines: widget.maxLines,
                             minLines: widget.minLines,
-                            keyboardType: TextInputType.multiline,
+                            keyboardType: widget.keyboardType,
                             focusNode: widget.focusNode ?? focusNode,
                             controller: widget.controller,
                             style: kBody.copyWith(color: Theme.of(context).colorScheme.primary),

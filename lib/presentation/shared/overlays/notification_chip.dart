@@ -1,4 +1,3 @@
-
 import '../button_touch_effects/touchable_scale.dart';
 
 import '../../../core/utils/sizing/width_fraction.dart';

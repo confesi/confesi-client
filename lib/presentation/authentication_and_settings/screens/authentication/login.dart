@@ -1,6 +1,7 @@
 import 'package:confesi/application/authentication_and_settings/cubit/auth_flow_cubit.dart';
 import 'package:confesi/core/results/failures.dart';
 
+import '../../../../constants/shared/dev.dart';
 import '../../../../core/utils/sizing/bottom_safe_area.dart';
 import 'package:scrollable/exports.dart';
 
@@ -38,7 +39,6 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
     scrollController = ScrollController();
     emailController.clear();
     passwordController.clear();
-    context.read<AuthFlowCubit>().setEmptyFields();
     super.initState();
   }
 
@@ -86,10 +86,15 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                           ),
                           const SizedBox(height: 30),
                           ExpandableTextfield(
+                            keyboardType: TextInputType.emailAddress,
                             autoCorrectAndCaps: false,
                             maxLines: 1,
                             controller: emailController,
-                            onChanged: (newValue) => print(newValue),
+                            onChanged: (newValue) {
+                              if (debugMode) {
+                                print(newValue);
+                              }
+                            },
                             hintText: "Email",
                           ),
                           const SizedBox(height: 15),
@@ -98,7 +103,11 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                             obscured: true,
                             maxLines: 1,
                             controller: passwordController,
-                            onChanged: (newValue) => print(newValue),
+                            onChanged: (newValue) {
+                              if (debugMode) {
+                                print(newValue);
+                              }
+                            },
                             hintText: "Password",
                           ),
                           const SizedBox(height: 30),

@@ -21,7 +21,6 @@ class OpenScreen extends StatefulWidget {
 class _OpenScreenState extends State<OpenScreen> {
   @override
   void initState() {
-    context.read<AuthFlowCubit>().setEmptyFields();
     super.initState();
   }
 

@@ -8,19 +8,19 @@ import '../../../core/styles/typography.dart';
 import '../indicators/loading_cupertino.dart';
 
 class PopButton extends StatelessWidget {
-  const PopButton(
-      {this.topPadding = 0.0,
-      this.bottomPadding = 0.0,
-      required this.backgroundColor,
-      required this.textColor,
-      required this.text,
-      this.horizontalPadding = 0.0,
-      required this.onPress,
-      required this.icon,
-      this.justText = false,
-      this.loading = false,
-      Key? key})
-      : super(key: key);
+  const PopButton({
+    this.topPadding = 0.0,
+    this.bottomPadding = 0.0,
+    required this.backgroundColor,
+    required this.textColor,
+    required this.text,
+    this.horizontalPadding = 0.0,
+    required this.onPress,
+    required this.icon,
+    this.justText = false,
+    this.loading = false,
+    Key? key,
+  }) : super(key: key);
 
   final bool loading;
   final bool justText;
@@ -39,7 +39,7 @@ class PopButton extends StatelessWidget {
       padding:
           EdgeInsets.only(left: horizontalPadding, right: horizontalPadding, top: topPadding, bottom: bottomPadding),
       child: IgnorePointer(
-        ignoring: loading ? true : false,
+        ignoring: loading,
         child: TouchableScale(
           onTap: () => onPress(),
           child: Container(
@@ -61,33 +61,23 @@ class PopButton extends StatelessWidget {
                       height: 24,
                       child: Align(
                         alignment: justText ? Alignment.center : Alignment.centerLeft,
-                        child: AnimatedSwitcher(
-                          duration: const Duration(milliseconds: 250),
-                          child: loading
-                              ? Padding(
-                                  padding: const EdgeInsets.only(top: 2),
-                                  child: LoadingCupertinoIndicator(color: textColor),
-                                )
-                              : Text(
-                                  text,
-                                  textScaleFactor: 1,
-                                  style: kTitle.copyWith(
-                                    color: textColor,
-                                  ),
-                                  textAlign: justText ? TextAlign.center : TextAlign.left,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                        ),
+                        child: loading
+                            ? Padding(
+                                padding: const EdgeInsets.only(top: 2),
+                                child: LoadingCupertinoIndicator(color: textColor),
+                              )
+                            : Text(
+                                text,
+                                textScaleFactor: 1,
+                                style: kTitle.copyWith(color: textColor),
+                                textAlign: justText ? TextAlign.center : TextAlign.left,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                       ),
                     ),
                   ),
-                  justText ? Container() : const SizedBox(width: 5),
-                  justText
-                      ? Container()
-                      : Icon(
-                          icon,
-                          color: textColor,
-                        ),
+                  if (!justText) const SizedBox(width: 5), // Use if condition for conditional widget rendering
+                  if (!justText) Icon(icon, color: textColor), // Use if condition for conditional widget rendering
                 ],
               ),
             ),

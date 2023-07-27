@@ -1,3 +1,5 @@
+import 'package:confesi/constants/shared/dev.dart';
+
 import '../../../../application/authentication_and_settings/cubit/auth_flow_cubit.dart';
 import '../../../../core/router/go_router.dart';
 import '../../../shared/behaviours/nav_blocker.dart';
@@ -36,7 +38,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     scrollController = ScrollController();
     passwordController.clear();
     emailController.clear();
-    context.read<AuthFlowCubit>().setEmptyFields();
     super.initState();
   }
 
@@ -94,10 +95,15 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           ),
                           const SizedBox(height: 30),
                           ExpandableTextfield(
+                            keyboardType: TextInputType.emailAddress,
                             autoCorrectAndCaps: false,
                             maxLines: 1,
                             controller: emailController,
-                            onChanged: (newValue) => print(newValue),
+                            onChanged: (newValue) {
+                              if (debugMode) {
+                                print(newValue);
+                              }
+                            },
                             hintText: "Email",
                           ),
                           const SizedBox(height: 15),
@@ -106,7 +112,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             obscured: true,
                             maxLines: 1,
                             controller: passwordController,
-                            onChanged: (newValue) => print(newValue),
+                            onChanged: (newValue) {
+                              if (debugMode) {
+                                print(newValue);
+                              }
+                            },
                             hintText: "Password",
                           ),
                           const SizedBox(height: 15),
@@ -115,7 +125,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             obscured: true,
                             maxLines: 1,
                             controller: passwordConfirmController,
-                            onChanged: (newValue) => print(newValue),
+                            onChanged: (newValue) {
+                              if (debugMode) {
+                                print(newValue);
+                              }
+                            },
                             hintText: "Confirm password",
                           ),
                           const SizedBox(height: 30),
@@ -130,7 +144,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             icon: CupertinoIcons.chevron_right,
                             backgroundColor: Theme.of(context).colorScheme.secondary,
                             textColor: Theme.of(context).colorScheme.onSecondary,
-                            text: "Complete registration",
+                            text: "Register",
                           ),
                           const SizedBox(height: 15),
                           TouchableOpacity(
