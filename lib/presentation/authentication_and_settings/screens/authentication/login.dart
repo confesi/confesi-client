@@ -31,12 +31,11 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   late ScrollController scrollController;
-  late TypewriterController typewriterController;
+  FocusNode emailFocusNode = FocusNode();
+  FocusNode passwordFocusNode = FocusNode();
 
   @override
   void initState() {
-    typewriterController = TypewriterController(fullText: "Let's log you in.");
-    typewriterController.forward();
     scrollController = ScrollController();
     emailController.clear();
     passwordController.clear();
@@ -45,10 +44,11 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
 
   @override
   void dispose() {
+    passwordFocusNode.dispose();
+    emailFocusNode.dispose();
     emailController.dispose();
     passwordController.dispose();
     scrollController.dispose();
-    typewriterController.dispose();
     super.dispose();
   }
 
@@ -74,48 +74,39 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                     leftIconDisabled: context.watch<AuthFlowCubit>().isLoading,
                   ),
                   Expanded(
-                    child: ScrollableView(
+                    child: SingleChildScrollView(
                       physics: const BouncingScrollPhysics(),
-                      inlineBottomOrRightPadding: bottomSafeArea(context),
-                      scrollBarVisible: false,
                       padding: const EdgeInsets.symmetric(horizontal: 15),
-                      controller: ScrollController(),
-                      hapticsEnabled: false,
+                      controller: scrollController,
                       child: Column(
                         children: [
                           const SizedBox(height: 15),
                           ExpandableTextfield(
+                            focusNode: emailFocusNode,
                             keyboardType: TextInputType.emailAddress,
                             autoCorrectAndCaps: false,
                             maxLines: 1,
                             controller: emailController,
-                            onChanged: (newValue) {
-                              if (debugMode) {
-                                print(newValue);
-                              }
-                            },
                             hintText: "Email",
                           ),
                           const SizedBox(height: 15),
                           ExpandableTextfield(
+                            focusNode: passwordFocusNode,
                             autoCorrectAndCaps: false,
                             obscured: true,
                             maxLines: 1,
                             controller: passwordController,
-                            onChanged: (newValue) {
-                              if (debugMode) {
-                                print(newValue);
-                              }
-                            },
                             hintText: "Password",
                           ),
                           const SizedBox(height: 30),
                           PopButton(
                             loading: context.watch<AuthFlowCubit>().isLoading,
                             justText: true,
-                            onPress: () {
+                            onPress: () async {
                               FocusScope.of(context).unfocus();
-                              context.read<AuthFlowCubit>().login(emailController.text, passwordController.text);
+                              passwordFocusNode.unfocus();
+                              emailFocusNode.unfocus();
+                              await context.read<AuthFlowCubit>().login(emailController.text, passwordController.text);
                             },
                             icon: CupertinoIcons.chevron_right,
                             backgroundColor: Theme.of(context).colorScheme.secondary,
@@ -145,6 +136,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                               ),
                             ),
                           ),
+                          SizedBox(height: bottomSafeArea(context)),
                         ],
                       ),
                     ),

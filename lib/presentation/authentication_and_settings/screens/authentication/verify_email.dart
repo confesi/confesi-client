@@ -1,13 +1,16 @@
 import 'package:confesi/application/authentication_and_settings/cubit/auth_flow_cubit.dart';
 import 'package:confesi/init.dart';
+import 'package:confesi/presentation/shared/behaviours/animated_bobbing.dart';
 import 'package:confesi/presentation/shared/overlays/notification_chip.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_shake_animated/flutter_shake_animated.dart';
 
 import '../../../../core/router/go_router.dart';
 import 'package:scrollable/exports.dart';
 
 import '../../../../core/services/user_auth/user_auth_service.dart';
+import '../../../../core/utils/sizing/bottom_safe_area.dart';
 import '../../../shared/behaviours/themed_status_bar.dart';
 import '../../../shared/text_animations/typewriter.dart';
 import 'package:flutter/cupertino.dart';
@@ -57,8 +60,28 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> with TickerProvid
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      Bobbing(
+                        child: FractionallySizedBox(
+                          widthFactor: 0.15,
+                          child: Hero(
+                            tag: "logo",
+                            child: AspectRatio(
+                              aspectRatio: 1,
+                              child: ShakeWidget(
+                                duration: const Duration(milliseconds: 800),
+                                shakeConstant: ShakeDefaultConstant1(),
+                                autoPlay: context.watch<AuthFlowCubit>().isLoading,
+                                child: Image.asset(
+                                  "assets/images/logos/logo_transparent.png",
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 30),
                       Text(
-                        "Please verify your email.",
+                        "Please verify your email",
                         style: kDisplay1.copyWith(color: Theme.of(context).colorScheme.primary),
                         textAlign: TextAlign.center,
                       ),
@@ -69,7 +92,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> with TickerProvid
                           style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
                           children: [
                             TextSpan(
-                              text: "Click the link sent to: ",
+                              text: "Click the link in the email sent to ",
                               style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
                             ),
                             TextSpan(
@@ -86,28 +109,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> with TickerProvid
                           style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
                           children: [
                             TextSpan(
-                              text: "The email's subject is \"",
-                              style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
-                            ),
-                            TextSpan(
-                              text: "Confesi Email Verification",
-                              style: kBody.copyWith(color: Theme.of(context).colorScheme.secondary),
-                            ),
-                            TextSpan(
-                              text: "\". It may appear in your junk mail.",
-                              style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 15),
-                      RichText(
-                        textAlign: TextAlign.center,
-                        text: TextSpan(
-                          style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
-                          children: [
-                            TextSpan(
-                              text: "As a safety precaution, unverified accounts are reset within 2 days.",
+                              text: "As a safety precaution, unverified accounts are reset quickly.",
                               style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
                             ),
                           ],
@@ -168,6 +170,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> with TickerProvid
                           ),
                         ),
                       ),
+                      SizedBox(height: bottomSafeArea(context)),
                     ],
                   ),
                 ),

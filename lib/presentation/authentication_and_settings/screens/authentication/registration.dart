@@ -29,12 +29,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController passwordConfirmController = TextEditingController();
   late ScrollController scrollController;
-  late TypewriterController typewriterController;
 
   @override
   void initState() {
-    typewriterController = TypewriterController(fullText: "Let's get you started.");
-    typewriterController.forward();
     scrollController = ScrollController();
     passwordController.clear();
     emailController.clear();
@@ -47,7 +44,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     passwordController.dispose();
     emailController.dispose();
     scrollController.dispose();
-    typewriterController.dispose();
     super.dispose();
   }
 
@@ -73,13 +69,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     leftIconDisabled: context.watch<AuthFlowCubit>().isLoading,
                   ),
                   Expanded(
-                    child: ScrollableView(
+                    child: SingleChildScrollView(
                       physics: const BouncingScrollPhysics(),
-                      inlineBottomOrRightPadding: bottomSafeArea(context),
-                      scrollBarVisible: false,
                       padding: const EdgeInsets.symmetric(horizontal: 15),
-                      controller: ScrollController(),
-                      hapticsEnabled: false,
+                      controller: scrollController,
                       child: Column(
                         children: [
                           const SizedBox(height: 15),
@@ -97,11 +90,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             autoCorrectAndCaps: false,
                             maxLines: 1,
                             controller: emailController,
-                            onChanged: (newValue) {
-                              if (debugMode) {
-                                print(newValue);
-                              }
-                            },
                             hintText: "Email",
                           ),
                           const SizedBox(height: 15),
@@ -110,11 +98,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             obscured: true,
                             maxLines: 1,
                             controller: passwordController,
-                            onChanged: (newValue) {
-                              if (debugMode) {
-                                print(newValue);
-                              }
-                            },
                             hintText: "Password",
                           ),
                           const SizedBox(height: 15),
@@ -123,20 +106,15 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             obscured: true,
                             maxLines: 1,
                             controller: passwordConfirmController,
-                            onChanged: (newValue) {
-                              if (debugMode) {
-                                print(newValue);
-                              }
-                            },
                             hintText: "Confirm password",
                           ),
                           const SizedBox(height: 30),
                           PopButton(
                             loading: context.watch<AuthFlowCubit>().isLoading,
                             justText: true,
-                            onPress: () {
+                            onPress: () async {
                               FocusScope.of(context).unfocus();
-                              context.read<AuthFlowCubit>().register(
+                              await context.read<AuthFlowCubit>().register(
                                   emailController.text, passwordController.text, passwordConfirmController.text);
                             },
                             icon: CupertinoIcons.chevron_right,
@@ -167,6 +145,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               ),
                             ),
                           ),
+                          SizedBox(height: bottomSafeArea(context)),
                         ],
                       ),
                     ),

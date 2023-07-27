@@ -66,16 +66,18 @@ class CommentSheet extends StatefulWidget {
 class _CommentSheetState extends State<CommentSheet> {
   final TextEditingController commentController = TextEditingController();
   final FocusNode textFocusNode = FocusNode();
+  bool isDisposed = false;
 
   @override
   void initState() {
     widget.controller._init(commentController, textFocusNode);
-    widget.controller.addListener(() => setState(() => {}));
+    widget.controller.addListener(() => isDisposed ? null : setState(() => {}));
     super.initState();
   }
 
   @override
   void dispose() {
+    isDisposed = true;
     widget.controller.dispose();
     super.dispose();
   }
@@ -95,7 +97,6 @@ class _CommentSheetState extends State<CommentSheet> {
               maxLines: 4,
               minLines: 1,
               maxCharacters: widget.maxCharacters,
-              onChanged: (_) => setState(() => {}),
               controller: commentController,
             ),
             AnimatedSize(

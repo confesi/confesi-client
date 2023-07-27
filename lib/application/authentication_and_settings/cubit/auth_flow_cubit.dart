@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:confesi/core/clients/api.dart';
+import 'package:confesi/core/router/go_router.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -48,7 +49,7 @@ class AuthFlowCubit extends Cubit<AuthFlowState> {
       if (response.statusCode.toString()[0] == "4") {
         emit(const AuthFlowNotification("TODO: 4XX", NotificationType.failure));
       } else if (response.statusCode.toString()[0] == "2") {
-        emit(const AuthFlowNotification("Password reset email sent", NotificationType.success));
+        emit(const AuthFlowNotification("Verification email sent", NotificationType.success));
       } else {
         emit(const AuthFlowNotification("Unknown error", NotificationType.failure));
       }
@@ -175,6 +176,7 @@ class AuthFlowCubit extends Cubit<AuthFlowState> {
             }
           } catch (_) {
             emit(const AuthFlowNotification("Registered, but unable to login", NotificationType.failure));
+            router.go("/login");
           }
         }
       },

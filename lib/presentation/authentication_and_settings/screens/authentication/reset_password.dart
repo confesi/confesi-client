@@ -91,11 +91,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> with TickerPr
                             autoCorrectAndCaps: false,
                             maxLines: 1,
                             controller: emailController,
-                            onChanged: (newValue) {
-                              if (debugMode) {
-                                print(newValue);
-                              }
-                            },
                             hintText: "Your account's email",
                           ),
                           const SizedBox(height: 30),

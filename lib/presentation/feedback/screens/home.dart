@@ -77,8 +77,7 @@ class _FeedbackHomeState extends State<FeedbackHome> {
                 ),
                 Expanded(
                   child: ScrollableView(
-                          physics: const BouncingScrollPhysics(),
-
+                    physics: const BouncingScrollPhysics(),
                     scrollBarVisible: false,
                     inlineBottomOrRightPadding: bottomSafeArea(context),
                     controller: ScrollController(),
@@ -93,9 +92,6 @@ class _FeedbackHomeState extends State<FeedbackHome> {
                               maxCharacters: maxFeedbackTextCharacterLimit,
                               hintText: textFieldHint,
                               controller: textEditingController,
-                              onChanged: (newValue) {
-                                print(newValue);
-                              },
                             ),
                           ),
                           const SizedBox(height: 10),

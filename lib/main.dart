@@ -101,27 +101,35 @@ class _MyAppState extends State<MyApp> {
       if (user == null) {
         await Future.delayed(const Duration(milliseconds: 500)).then((value) {
           HapticFeedback.lightImpact();
+          print("PUSH OPEN");
           router.go("/open");
           context.read<AuthFlowCubit>().emitDefault();
         });
       } else {
         await sl.get<UserAuthService>().getData(sl.get<FirebaseAuth>().currentUser!.uid);
         await Future.delayed(const Duration(milliseconds: 500)).then((value) {
-          HapticFeedback.lightImpact();
           if (sl.get<UserAuthService>().state is! UserAuthData) {
+            print("PUSH ERROR");
+
             router.go("/error");
             context.read<AuthFlowCubit>().emitDefault();
             return;
           }
           if (user.isAnonymous) {
             sl.get<UserAuthService>().isAnon = true;
+            print("PUSH HOME");
+
             router.go("/home");
           } else {
             sl.get<UserAuthService>().isAnon = false;
             sl.get<UserAuthService>().email = user.email!;
             if (user.emailVerified) {
+              print("PUSH HOME VERIFIED");
+
               router.go("/home");
             } else {
+              print("PUSH VERIFY");
+
               router.go("/verify-email");
             }
           }

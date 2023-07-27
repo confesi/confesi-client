@@ -77,12 +77,6 @@ class _SearchSchoolsScreenState extends State<SearchSchoolsScreen> {
                         child: ExpandableTextfield(
                           maxLines: 1,
                           controller: _textEditingController,
-                          onChanged: (newValue) {
-                            _debouncer.run(() {
-                              print(newValue);
-                              //perform search here
-                            });
-                          },
                           hintText: "Search universities",
                         ),
                       ),
