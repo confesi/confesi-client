@@ -1,5 +1,6 @@
 import 'package:confesi/data/create_post/datasources/create_post_datasource.dart';
 import 'package:confesi/presentation/authentication_and_settings/screens/authentication/open.dart';
+import 'package:confesi/presentation/authentication_and_settings/screens/authentication/reset_password.dart';
 import 'package:confesi/presentation/authentication_and_settings/screens/settings/contact.dart';
 import 'package:confesi/presentation/authentication_and_settings/screens/settings/faq.dart';
 import 'package:confesi/presentation/authentication_and_settings/screens/settings/feedback.dart';
@@ -39,6 +40,25 @@ final GoRouter router = GoRouter(
     GoRoute(path: '/login', builder: (BuildContext context, GoRouterState state) => const LoginScreen()),
     GoRoute(path: '/register', builder: (BuildContext context, GoRouterState state) => const RegistrationScreen()),
     GoRoute(path: '/verify-email', builder: (BuildContext context, GoRouterState state) => const VerifyEmailScreen()),
+    GoRoute(
+      path: '/reset-password',
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: const ResetPasswordScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            // Change the opacity of the screen using a Curve based on the animation's value
+            var tween = CurveTween(curve: Curves.easeInOut);
+            var curvedAnimation = tween.animate(animation);
+            return SlideTransition(
+              position: Tween<Offset>(begin: const Offset(0, 1), end: Offset.zero).animate(curvedAnimation),
+              child: child,
+            );
+          },
+        );
+      },
+    ),
+
     GoRoute(
       path: '/home',
       pageBuilder: (context, state) {

@@ -84,7 +84,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             textStyle: kDisplay1.copyWith(color: Theme.of(context).colorScheme.primary),
                             controller: typewriterController,
                           ),
-                          const SizedBox(height: 30),
+                          const SizedBox(height: 15),
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
@@ -93,7 +93,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               textAlign: TextAlign.left,
                             ),
                           ),
-                          const SizedBox(height: 30),
+                          const SizedBox(height: 15),
                           ExpandableTextfield(
                             keyboardType: TextInputType.emailAddress,
                             autoCorrectAndCaps: false,

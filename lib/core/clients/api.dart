@@ -3,10 +3,13 @@ import 'dart:convert';
 
 import 'package:confesi/constants/shared/dev.dart';
 import 'package:confesi/core/results/failures.dart';
+import 'package:confesi/core/utils/numbers/is_plural.dart';
 import 'package:confesi/init.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
+
+import '../utils/numbers/add_commas_to_number.dart';
 
 /// The different RESTful API verbs.
 enum Method {
@@ -19,22 +22,37 @@ enum Method {
 
 class ApiServerFailure extends FailureWithMsg {
   @override
-  final String message = "Server failure.";
+  String message() => "Server error";
 }
 
 class ApiConnectionFailure extends FailureWithMsg {
   @override
-  final String message = "Connection failure.";
+  String message() => "Connection error";
 }
 
-class ApiTooManyRequests extends FailureWithMsg {
+class ApiTooManyGlobalRequests extends FailureWithMsg {
+  final int resetInSeconds;
+
+  ApiTooManyGlobalRequests(this.resetInSeconds);
+
   @override
-  final String message = "Too many requests.";
+  String message() =>
+      "Too many requests, wait ${addCommasToNumber(resetInSeconds)} ${isPlural(resetInSeconds) ? "seconds" : "second"}";
+}
+
+class ApiTooManyEmailRequests extends FailureWithMsg {
+  final int resetInSeconds;
+
+  ApiTooManyEmailRequests(this.resetInSeconds);
+
+  @override
+  String message() =>
+      "Too many email requests, wait ${addCommasToNumber(resetInSeconds)} ${isPlural(resetInSeconds) ? "seconds" : "second"}";
 }
 
 class ApiTimeoutFailure extends FailureWithMsg {
   @override
-  final String message = "Timeout failure.";
+  String message() => "Connection timeout error";
 }
 
 String apiVerbToString(Method method) {
@@ -116,7 +134,18 @@ class Api {
       if (streamResponse.statusCode.toString()[0] == "5") {
         return Left(ApiServerFailure());
       } else if (streamResponse.statusCode == 429) {
-        return Left(ApiTooManyRequests());
+        // check if response.body["error"] = "too many requests" safetly
+        try {
+          if (response.body.contains("too many emails sent")) {
+            return Left(ApiTooManyEmailRequests(int.parse(json.decode(response.body)["value"]["reset_in_seconds"])));
+          } else {
+            // from the X-Ratelimit-Reset header
+            return Left(ApiTooManyGlobalRequests(int.parse(response.headers["x-ratelimit-reset"]!)));
+          }
+        } catch (e) {
+          print(e);
+          return Left(ApiServerFailure());
+        }
       }
       // "success"
       return Right(response);

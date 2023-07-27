@@ -26,12 +26,9 @@ class VerifyEmailScreen extends StatefulWidget {
 
 class _VerifyEmailScreenState extends State<VerifyEmailScreen> with TickerProviderStateMixin {
   late ScrollController scrollController;
-  late TypewriterController typewriterController;
 
   @override
   void initState() {
-    typewriterController = TypewriterController(fullText: "Please verify your email.");
-    typewriterController.forward();
     scrollController = ScrollController();
     super.initState();
   }
@@ -39,7 +36,6 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> with TickerProvid
   @override
   void dispose() {
     scrollController.dispose();
-    typewriterController.dispose();
     super.dispose();
   }
 

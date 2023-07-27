@@ -9,7 +9,7 @@ abstract class FailureWithMsg extends Equatable {
   @override
   List<Object> get props => [];
 
-  String get message;
+  String message();
 }
 
 // Failures usually have a 1-1 mapping with exceptions.

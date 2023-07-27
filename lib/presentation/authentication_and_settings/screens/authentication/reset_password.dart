@@ -1,54 +1,47 @@
 import 'package:confesi/application/authentication_and_settings/cubit/auth_flow_cubit.dart';
-import 'package:confesi/core/results/failures.dart';
-import 'package:confesi/core/router/go_router.dart';
+import 'package:confesi/init.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../constants/shared/dev.dart';
-import '../../../../core/utils/sizing/bottom_safe_area.dart';
 import 'package:scrollable/exports.dart';
 
-import '../../../../constants/authentication_and_settings/text.dart';
+import '../../../../constants/shared/dev.dart';
+import '../../../../core/router/go_router.dart';
+import '../../../../core/services/user_auth/user_auth_service.dart';
+import '../../../../core/utils/sizing/bottom_safe_area.dart';
 import '../../../shared/behaviours/nav_blocker.dart';
 import '../../../shared/behaviours/themed_status_bar.dart';
 import '../../../shared/layout/appbar.dart';
 import '../../../shared/text_animations/typewriter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/styles/typography.dart';
 import '../../../shared/button_touch_effects/touchable_opacity.dart';
 import '../../../shared/buttons/pop.dart';
 import '../../../shared/textfields/expandable_textfield.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class ResetPasswordScreen extends StatefulWidget {
+  const ResetPasswordScreen({Key? key}) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+class _ResetPasswordScreenState extends State<ResetPasswordScreen> with TickerProviderStateMixin {
   late ScrollController scrollController;
-  late TypewriterController typewriterController;
+  late TextEditingController emailController;
 
   @override
   void initState() {
-    typewriterController = TypewriterController(fullText: "Let's log you in.");
-    typewriterController.forward();
     scrollController = ScrollController();
-    emailController.clear();
-    passwordController.clear();
+    emailController = TextEditingController();
     super.initState();
   }
 
   @override
   void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
     scrollController.dispose();
-    typewriterController.dispose();
+    emailController.dispose();
     super.dispose();
   }
 
@@ -67,8 +60,12 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                 children: [
                   AppbarLayout(
                     backgroundColor: Theme.of(context).colorScheme.shadow,
-                    centerWidget: Container(),
+                    centerWidget: Text(
+                      "Reset Password",
+                      style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
+                    ),
                     leftIconDisabled: context.watch<AuthFlowCubit>().isLoading,
+                    leftIcon: CupertinoIcons.xmark,
                   ),
                   Expanded(
                     child: ScrollableView(
@@ -81,9 +78,13 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                       child: Column(
                         children: [
                           const SizedBox(height: 15),
-                          TypewriterText(
-                            textStyle: kDisplay1.copyWith(color: Theme.of(context).colorScheme.primary),
-                            controller: typewriterController,
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "This email will only send if the account exists.",
+                              style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                              textAlign: TextAlign.left,
+                            ),
                           ),
                           const SizedBox(height: 15),
                           ExpandableTextfield(
@@ -96,20 +97,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                 print(newValue);
                               }
                             },
-                            hintText: "Email",
-                          ),
-                          const SizedBox(height: 15),
-                          ExpandableTextfield(
-                            autoCorrectAndCaps: false,
-                            obscured: true,
-                            maxLines: 1,
-                            controller: passwordController,
-                            onChanged: (newValue) {
-                              if (debugMode) {
-                                print(newValue);
-                              }
-                            },
-                            hintText: "Password",
+                            hintText: "Your account's email",
                           ),
                           const SizedBox(height: 30),
                           PopButton(
@@ -117,35 +105,12 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                             justText: true,
                             onPress: () {
                               FocusScope.of(context).unfocus();
-                              context.read<AuthFlowCubit>().login(emailController.text, passwordController.text);
+                              context.read<AuthFlowCubit>().sendPasswordResetEmail(emailController.text);
                             },
                             icon: CupertinoIcons.chevron_right,
                             backgroundColor: Theme.of(context).colorScheme.secondary,
                             textColor: Theme.of(context).colorScheme.onSecondary,
-                            text: "Login",
-                          ),
-                          const SizedBox(height: 15),
-                          TouchableOpacity(
-                            onTap: () => router.push("/reset-password"),
-                            child: Container(
-                              // Transparent hitbox trick.
-                              color: Colors.transparent,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      "Forget your password?",
-                                      style: kTitle.copyWith(
-                                        color: Theme.of(context).colorScheme.onSurface,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                            text: "Send",
                           ),
                         ],
                       ),

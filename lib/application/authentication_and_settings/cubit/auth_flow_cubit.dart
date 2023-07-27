@@ -14,10 +14,10 @@ class AuthFlowCubit extends Cubit<AuthFlowState> {
 
   bool get isLoading => state is AuthFlowLoading;
 
-  Future<void> sendPasswordResetEmail() async {
+  Future<void> sendPasswordResetEmail(String email) async {
     emit(AuthFlowLoading());
-    (await Api().req(Method.post, true, "/api/v1/auth/send-password-reset-email", {}))
-        .fold((failure) => emit(AuthFlowNotification(failure.message, NotificationType.failure)), (response) async {
+    (await Api().req(Method.post, false, "/api/v1/auth/send-password-reset-email", {"email": email}))
+        .fold((failure) => emit(AuthFlowNotification(failure.message(), NotificationType.failure)), (response) async {
       if (response.statusCode.toString()[0] == "4") {
         emit(const AuthFlowNotification("TODO: 4XX", NotificationType.failure));
       } else if (response.statusCode.toString()[0] == "2") {
@@ -32,7 +32,7 @@ class AuthFlowCubit extends Cubit<AuthFlowState> {
   Future<void> sendVerificationEmail() async {
     emit(AuthFlowLoading());
     (await Api().req(Method.post, true, "/api/v1/auth/resend-verification-email", {}))
-        .fold((failure) => emit(AuthFlowNotification(failure.message, NotificationType.failure)), (response) async {
+        .fold((failure) => emit(AuthFlowNotification(failure.message(), NotificationType.failure)), (response) async {
       if (response.statusCode.toString()[0] == "4") {
         emit(const AuthFlowNotification("TODO: 4XX", NotificationType.failure));
       } else if (response.statusCode.toString()[0] == "2") {
@@ -150,7 +150,7 @@ class AuthFlowCubit extends Cubit<AuthFlowState> {
       },
     ))
         .fold(
-      (failure) => emit(AuthFlowNotification(failure.message, NotificationType.failure)),
+      (failure) => emit(AuthFlowNotification(failure.message(), NotificationType.failure)),
       (response) async {
         if (response.statusCode.toString()[0] == "4") {
           emit(const AuthFlowNotification("TODO: 4XX", NotificationType.failure));
