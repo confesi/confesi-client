@@ -1,3 +1,5 @@
+import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
+
 import '../../../core/router/go_router.dart';
 import '../../shared/button_touch_effects/touchable_scale.dart';
 import 'package:flutter/services.dart';
@@ -62,7 +64,12 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
           ),
         );
       }
-      return PageView(
+      return GestureDetector(
+        onTap: () {
+          print(state.posts[currentIndex].id);
+          router.push("/home/posts/detail");
+        },
+        child: PageView(
           controller: pageController,
           physics: const BouncingScrollPhysics(),
           onPageChanged: (selectedIndex) {
@@ -72,20 +79,20 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
           children: state.posts
               .asMap()
               .entries
-              .map((post) => TouchableScale(
-                    onTap: () => router.push("/home/posts/detail"),
-                    child: HottestTile(
-                      currentIndex: currentIndex,
-                      thisIndex: post.key,
-                      post: post.value,
-                    ),
+              .map((post) => HottestTile(
+                    currentIndex: currentIndex,
+                    thisIndex: post.key,
+                    post: post.value,
                   ))
               .toList()
               .sublist(
-                  0,
-                  state.posts.length > kMaxDisplayedHottestDailyPosts
-                      ? kMaxDisplayedHottestDailyPosts
-                      : state.posts.length));
+                0,
+                state.posts.length > kMaxDisplayedHottestDailyPosts
+                    ? kMaxDisplayedHottestDailyPosts
+                    : state.posts.length,
+              ),
+        ),
+      );
     } else {
       final error = state as DailyHottestError;
       return Center(

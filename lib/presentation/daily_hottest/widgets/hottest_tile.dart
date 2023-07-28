@@ -70,7 +70,7 @@ class _HottestTileState extends State<HottestTile> {
                         Container(
                           decoration: BoxDecoration(
                             borderRadius:
-                                const BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+                                const BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(20)),
                             color: Theme.of(context).colorScheme.secondary,
                           ),
                           padding: const EdgeInsets.all(10),
@@ -120,7 +120,7 @@ class _HottestTileState extends State<HottestTile> {
                                   left: true,
                                   header: widget.post.title.isEmpty ? widget.post.content : widget.post.title,
                                   body:
-                                      '${widget.post.school.name}${widget.post.yearOfStudy.type != null ? ", Year ${widget.post.yearOfStudy.type}" : ''}${widget.post.faculty.faculty != null ? ", ${widget.post.faculty.faculty}" : ''}',
+                                      '${widget.post.school.name}${widget.post.yearOfStudy.type != null ? "\nYear ${widget.post.yearOfStudy.type}" : ''}${widget.post.faculty.faculty != null ? "\n${widget.post.faculty.faculty}" : ''}',
                                 ),
                               ),
                             ],

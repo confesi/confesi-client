@@ -76,7 +76,7 @@ class _SentimentAnalysisScreenState extends State<SentimentAnalysisScreen> {
                                 ringStrokeWidth: 10,
                                 dataMap: {
                                   "😁 Positive": state.sentimentAnalysis.positive.toDouble(),
-                                  "😭 Negative": state.sentimentAnalysis.negative.toDouble(),
+                                  "🤬 Negative": state.sentimentAnalysis.negative.toDouble(),
                                   "😐 Neutral": state.sentimentAnalysis.neutral.toDouble(),
                                 },
                                 animationDuration: const Duration(milliseconds: 500),
