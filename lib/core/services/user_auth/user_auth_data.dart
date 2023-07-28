@@ -8,21 +8,28 @@ part 'user_auth_data.g.dart';
 
 enum ThemePref { light, dark, system }
 
+enum ProfanityFilter { on, off }
+
 @HiveType(typeId: 1)
 class UserAuthData extends HiveObject with UserAuthState {
   @HiveField(0)
   final ThemePref themePref;
 
-  UserAuthData({this.themePref = ThemePref.system});
+  @HiveField(6)
+  final ProfanityFilter profanityFilter;
+
+  UserAuthData({this.themePref = ThemePref.system, this.profanityFilter = ProfanityFilter.off});
 }
 
 // copyWith
 extension UserAuthDataCopyWith on UserAuthData {
   UserAuthData copyWith({
     ThemePref? themePref,
+    ProfanityFilter? profanityFilter,
   }) {
     return UserAuthData(
       themePref: themePref ?? this.themePref,
+      profanityFilter: profanityFilter ?? this.profanityFilter,
     );
   }
 }
@@ -38,6 +45,21 @@ class ThemePrefAdapter extends TypeAdapter<ThemePref> {
 
   @override
   void write(BinaryWriter writer, ThemePref obj) {
+    writer.writeInt(obj.index);
+  }
+}
+
+class ProfanityFilterAdapter extends TypeAdapter<ProfanityFilter> {
+  @override
+  final int typeId = 5; // Choose a unique typeId for the enum
+
+  @override
+  ProfanityFilter read(BinaryReader reader) {
+    return ProfanityFilter.values[reader.readInt()];
+  }
+
+  @override
+  void write(BinaryWriter writer, ProfanityFilter obj) {
     writer.writeInt(obj.index);
   }
 }

@@ -1,6 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
+
 import '../hive/hive_client.dart';
 import 'user_auth_data.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:riverpod/riverpod.dart';
 
@@ -16,9 +17,11 @@ class UserAuthService extends ChangeNotifier {
   UserAuthState state = UserAuthLoading();
   bool isAnon = true;
   String email = "";
+  String uid = "";
 
   UserAuthData get def => UserAuthData(
         themePref: ThemePref.system,
+        profanityFilter: ProfanityFilter.off,
       );
 
   UserAuthData data() {
@@ -34,7 +37,7 @@ class UserAuthService extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> saveData(UserAuthData user, String uid) async {
+  Future<void> saveData(UserAuthData user) async {
     try {
       hive.openBoxByClass<UserAuthData>().then((box) async => await box.put(uid, user));
       state = user;

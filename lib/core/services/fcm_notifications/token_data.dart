@@ -4,7 +4,7 @@ part 'token_data.g.dart';
 
 //? Whenever changed, run `flutter packages pub run build_runner build` to rebuild the generated file.
 
-@HiveType(typeId: 1)
+@HiveType(typeId: 7)
 class FcmToken extends HiveObject {
   @HiveField(0)
   final bool withUid;

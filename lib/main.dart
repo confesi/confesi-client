@@ -126,10 +126,12 @@ class _MyAppState extends State<MyApp> {
           }
           if (user.isAnonymous) {
             sl.get<UserAuthService>().isAnon = true;
+            sl.get<UserAuthService>().uid = user.uid;
             router.go("/home");
           } else {
             sl.get<UserAuthService>().isAnon = false;
             sl.get<UserAuthService>().email = user.email!;
+            sl.get<UserAuthService>().uid = user.uid;
             if (user.emailVerified) {
               router.go("/home");
             } else {

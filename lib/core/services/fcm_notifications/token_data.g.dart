@@ -8,7 +8,7 @@ part of 'token_data.dart';
 
 class FcmTokenAdapter extends TypeAdapter<FcmToken> {
   @override
-  final int typeId = 1;
+  final int typeId = 7;
 
   @override
   FcmToken read(BinaryReader reader) {

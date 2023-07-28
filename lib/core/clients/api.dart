@@ -2,8 +2,12 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:confesi/core/services/user_auth/user_auth_data.dart';
+import 'package:provider/provider.dart';
+
 import '../../constants/shared/dev.dart';
 import '../results/failures.dart';
+import '../services/user_auth/user_auth_service.dart';
 import '../utils/numbers/is_plural.dart';
 import '../../init.dart';
 import 'package:dartz/dartz.dart';
@@ -114,9 +118,18 @@ class Api {
           return Left(ApiServerFailure());
         }
       }
+      String url = domain + endpoint;
+      if (url.contains("?")) {
+        url += "&";
+      } else {
+        url += "?";
+      }
+      if (sl.get<UserAuthService>().data().profanityFilter == ProfanityFilter.on) {
+        url += "profanity=false";
+      }
       var request = http.Request(
         apiVerbToString(method),
-        Uri.parse(domain + endpoint),
+        Uri.parse(url),
       );
       request.body = jsonEncode(body);
       request.headers.addAll(_headers);
