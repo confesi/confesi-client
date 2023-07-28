@@ -10,8 +10,10 @@ class SplashScreenHintManager {
   SplashScreenHintManager._internal();
 
   final List<SplashScreenHintText> _hintTexts = [
-    SplashScreenHintText(text: 'Catch our attention here'),
-    SplashScreenHintText(text: 'Welcome'),
+    SplashScreenHintText(text: 'Get ready to ROFL'),
+    SplashScreenHintText(text: 'Here we go...'),
+    SplashScreenHintText(text: 'Woooooo'),
+    SplashScreenHintText(text: "I'm bored"),
   ];
 
   SplashScreenHintText getHint() => _hintTexts[Random().nextInt(_hintTexts.length)];

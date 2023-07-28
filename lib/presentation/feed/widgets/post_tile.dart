@@ -1,3 +1,5 @@
+import 'package:flutter/services.dart';
+
 import '../../../core/router/go_router.dart';
 import '../../../core/services/user_auth/user_auth_data.dart';
 import 'reaction_tile.dart';
@@ -26,6 +28,10 @@ class _SimplePostTileState extends State<SimplePostTile> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => router.push("/home/posts/detail"),
+      onLongPress: () {
+        HapticFeedback.lightImpact();
+        print("todo: share the post");
+      },
       child: Padding(
         padding: const EdgeInsets.only(top: 15),
         child: Container(

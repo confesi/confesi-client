@@ -17,12 +17,12 @@ class SplashScreen extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.shadow,
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: Center(
-            child: InitScale(
-              child: Stack(
-                children: [
-                  FractionallySizedBox(
-                    widthFactor: 0.5,
+          child: Stack(
+            children: [
+              Center(
+                child: FractionallySizedBox(
+                  widthFactor: 0.5,
+                  child: InitScale(
                     child: Hero(
                       tag: "logo",
                       child: AspectRatio(
@@ -33,18 +33,21 @@ class SplashScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Positioned.fill(
-                    bottom: 5,
-                    child: Text(
-                      sl.get<SplashScreenHintManager>().getHint().text,
-                      style: kDetail.copyWith(
-                        color: Theme.of(context).colorScheme.secondary,
-                      ),
-                    ),
-                  )
-                ],
+                ),
               ),
-            ),
+              Positioned.fill(
+                bottom: 9,
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Text(
+                    sl.get<SplashScreenHintManager>().getHint().text,
+                    style: kDetail.copyWith(
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                  ),
+                ),
+              )
+            ],
           ),
         ),
       ),
