@@ -102,6 +102,8 @@ class AuthFlowCubit extends Cubit<AuthFlowState> {
         emit(const AuthFlowNotification("Wrong password", NotificationType.failure));
       } else if (e.code == 'invalid-email') {
         emit(const AuthFlowNotification("Invalid email", NotificationType.failure));
+      } else if (e.code == 'user-disabled') {
+        emit(const AuthFlowNotification("Your account has been disabled", NotificationType.failure));
       } else {
         emit(const AuthFlowNotification("Unknown error", NotificationType.failure));
       }

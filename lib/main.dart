@@ -78,7 +78,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  StreamSubscription<User?>? _authStateSubscription;
+  StreamSubscription<User?>? _userChangeStream;
+  StreamSubscription<User?>? _authStateChangeStream;
 
   @override
   void initState() {
@@ -89,7 +90,8 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void dispose() {
-    _authStateSubscription?.cancel();
+    _userChangeStream?.cancel();
+    _authStateChangeStream?.cancel();
     sl.get<HiveService>().dispose();
     sl.get<NotificationService>().dispose();
     super.dispose();
@@ -98,7 +100,11 @@ class _MyAppState extends State<MyApp> {
   Future<void> startAuthListener() async {
     // clear user data
     sl.get<UserAuthService>().clearCurrentExtraData();
-    _authStateSubscription = sl.get<FirebaseAuth>().userChanges().listen((User? user) async {
+    _authStateChangeStream = sl
+        .get<FirebaseAuth>()
+        .authStateChanges()
+        .listen((User? user) => sl.get<NotificationService>().updateToken(user?.uid));
+    _userChangeStream = sl.get<FirebaseAuth>().userChanges().listen((User? user) async {
       if (user == null) {
         await Future.delayed(const Duration(milliseconds: 500)).then((value) {
           HapticFeedback.lightImpact();
@@ -106,6 +112,7 @@ class _MyAppState extends State<MyApp> {
           context.read<AuthFlowCubit>().emitDefault();
         });
       } else {
+        // print("UID: ${await sl.get<FirebaseAuth>().currentUser!.getIdToken()}");
         await sl.get<UserAuthService>().getData(sl.get<FirebaseAuth>().currentUser!.uid);
         await Future.delayed(const Duration(milliseconds: 500)).then((value) {
           if (sl.get<UserAuthService>().state is! UserAuthData) {
@@ -144,11 +151,9 @@ class _MyAppState extends State<MyApp> {
     sl.get<NotificationService>().onMessageOpenedInApp((p0) {
       print("onMessageOpenedApp: $p0");
     });
-
-    sl.get<NotificationService>().onTokenRefresh((token) {
-      // trigger the sending of the new token to the server right away
-      print("NEW TOKEN REFRESHED: $token");
-    });
+    sl
+        .get<NotificationService>()
+        .onTokenRefresh((token) => {}); // we don't care about this, since we have our own mechanism
   }
 
   @override

@@ -38,9 +38,15 @@ class HiveService {
     return _openEncryptedBox<T>(boxName);
   }
 
-  Future<void> putAtDefaultPosition<T>(T data) async {
-    final box = await openBoxByClass<T>();
-    await box.putAt(0, data);
+  Future<Either<GeneralFailure, ApiSuccess>> putAtDefaultPosition<T>(T data) async {
+    print("PUT INTO DEFAULT POS");
+    try {
+      final box = await openBoxByClass<T>();
+      await box.put(0, data);
+      return right(ApiSuccess());
+    } catch (_) {
+      return left(GeneralFailure());
+    }
   }
 
   Future<Either<EmptyDataFailure, T>> getFromBoxDefaultPosition<T>() async {
@@ -48,7 +54,7 @@ class HiveService {
     if (box.isEmpty) {
       return left(EmptyDataFailure());
     }
-    final data = box.getAt(0);
+    final data = box.get(0);
     if (data == null) {
       return left(EmptyDataFailure());
     }

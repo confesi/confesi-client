@@ -126,8 +126,12 @@ class Api {
       if (debugMode) {
         print("------------- debug api req logger ------------");
         print("${streamResponse.statusCode} ${streamResponse.reasonPhrase}");
-        print("Headers: ${streamResponse.headers}");
-        print("Body: ${response.body}");
+        print("Req endpoint: $endpoint");
+        print("Req headers: ${request.headers}");
+        print("Req body: ${request.body}");
+        print("<<<>>>");
+        print("Res headers: ${streamResponse.headers}");
+        print("Res body: ${response.body}");
         print("-----------------------------------------------");
       }
 

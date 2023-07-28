@@ -65,6 +65,7 @@ class NotificationService {
   ///
   /// This will sync the token with the server and update local storage for it if needed.
   Future<Either<Failure, ApiSuccess>> updateToken(String? uid) async {
+    print("****************************************** HIT UPDATE TOKEN ROUTE");
     final possibleCurrentFcmToken = await token;
     return possibleCurrentFcmToken.fold(
       (_) => Future.value(Left(GeneralFailure())),
@@ -74,7 +75,7 @@ class NotificationService {
         return boxResult.fold(
           (empty) async => await _saveTokenToServerAndLocalDb(uid, currentFcmToken),
           (previouslySavedFcmToken) async {
-            if (previouslySavedFcmToken.token != currentFcmToken || !previouslySavedFcmToken.withUid) {
+            if (previouslySavedFcmToken.token != currentFcmToken || previouslySavedFcmToken.withUid != (uid != null)) {
               return await _saveTokenToServerAndLocalDb(uid, currentFcmToken);
             }
             return Right(ApiSuccess());
@@ -97,8 +98,10 @@ class NotificationService {
       (_) => Left(GeneralFailure()),
       (response) async {
         if (response.statusCode.toString()[0] == "2") {
-          await sl.get<HiveService>().putAtDefaultPosition<FcmToken>(FcmToken(uid != null, token));
-          return Right(ApiSuccess());
+          return (await sl.get<HiveService>().putAtDefaultPosition<FcmToken>(FcmToken(uid != null, token))).fold(
+            (_) => Left(GeneralFailure()),
+            (success) => Right(ApiSuccess()),
+          );
         } else {
           return Left(GeneralFailure());
         }
@@ -115,32 +118,7 @@ class NotificationService {
     }
   }
 
-  void fcmDeletagor({
-    required RemoteMessage message,
-    required Function(String title, String body) onUpdateMessage,
-    required Function(String title, String body) onNotification,
-  }) {
-    String? dataType = message.data['type'];
-    if (dataType == 'update_message') {
-      String? title = message.data['title'];
-      String? body = message.data['body'];
-      if (title == null || body == null) return;
-      onUpdateMessage(title, body);
-    } else {
-      RemoteNotification? notification = message.notification;
-      if (notification == null) return;
-      String? title = notification.title;
-      String? body = notification.body;
-      if (title == null || body == null) return;
-      onNotification(title, body);
-    }
-  }
-
   Future<NotificationSettings> get settings async => await _messaging.getNotificationSettings();
-
-  void subscribeToTopic(String topic) {
-    _messaging.subscribeToTopic(topic);
-  }
 
   void onTokenRefresh(void Function(String) callback) {
     _onTokenRefreshSubscription = _messaging.onTokenRefresh.listen(callback);
