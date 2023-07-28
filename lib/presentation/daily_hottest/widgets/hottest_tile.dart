@@ -1,3 +1,4 @@
+import 'package:confesi/models/post.dart';
 import 'package:confesi/presentation/shared/other/cached_online_image.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,27 +14,13 @@ class HottestTile extends StatefulWidget {
   const HottestTile({
     required this.currentIndex,
     required this.thisIndex,
-    required this.comments,
-    required this.hates,
-    required this.likes,
-    required this.title,
-    required this.text,
-    required this.university,
-    required this.universityImagePath,
-    required this.year,
+    required this.post,
     Key? key,
   }) : super(key: key);
 
   final int currentIndex;
   final int thisIndex;
-  final int comments;
-  final int likes;
-  final int hates;
-  final String title;
-  final String text;
-  final String university;
-  final String universityImagePath;
-  final String year;
+  final Post post;
 
   @override
   State<HottestTile> createState() => _HottestTileState();
@@ -42,17 +29,13 @@ class HottestTile extends StatefulWidget {
 class _HottestTileState extends State<HottestTile> {
   bool get isSelected => widget.currentIndex == widget.thisIndex;
 
-  String getComments() => isPlural(widget.comments)
-      ? '${largeNumberFormatter(widget.comments)} comments'
-      : '${largeNumberFormatter(widget.comments)} comment';
+  String getLikes() => isPlural(widget.post.upvote)
+      ? '${largeNumberFormatter(widget.post.upvote)} likes'
+      : '${largeNumberFormatter(widget.post.upvote)} like';
 
-  String getLikes() => isPlural(widget.likes)
-      ? '${largeNumberFormatter(widget.likes)} likes'
-      : '${largeNumberFormatter(widget.likes)} like';
-
-  String getHates() => isPlural(widget.hates)
-      ? '${largeNumberFormatter(widget.hates)} dislikes'
-      : '${largeNumberFormatter(widget.hates)} dislike';
+  String getHates() => isPlural(widget.post.downvote)
+      ? '${largeNumberFormatter(widget.post.downvote)} dislikes'
+      : '${largeNumberFormatter(widget.post.downvote)} dislike';
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +76,7 @@ class _HottestTileState extends State<HottestTile> {
                           padding: const EdgeInsets.all(10),
                           width: double.infinity,
                           child: Text(
-                            '${getComments()} · ${getLikes()} · ${getHates()}',
+                            '${getLikes()} · ${getHates()}',
                             style: kDetail.copyWith(
                               color: Theme.of(context).colorScheme.onSecondary,
                             ),
@@ -106,7 +89,7 @@ class _HottestTileState extends State<HottestTile> {
                             duration: const Duration(milliseconds: 250),
                             width: double.infinity,
                             child: CachedOnlineImage(
-                              url: widget.universityImagePath,
+                              url: widget.post.school.imgUrl,
                             ),
                           ),
                         ),
@@ -133,10 +116,11 @@ class _HottestTileState extends State<HottestTile> {
                                   expandsTopText: true,
                                   onSecondaryColors: false,
                                   multiLine: true,
-                                  spaceBetween: 20,
+                                  spaceBetween: 15,
                                   left: true,
-                                  header: widget.title.isEmpty ? widget.text : widget.title,
-                                  body: '${widget.university}, Year ${widget.year}',
+                                  header: widget.post.title.isEmpty ? widget.post.content : widget.post.title,
+                                  body:
+                                      '${widget.post.school.name}${widget.post.yearOfStudy.type != null ? ", Year ${widget.post.yearOfStudy.type}" : ''}${widget.post.faculty.faculty != null ? ", ${widget.post.faculty.faculty}" : ''}',
                                 ),
                               ),
                             ],

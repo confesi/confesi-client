@@ -15,8 +15,7 @@ class DatePicker extends StatefulWidget {
 }
 
 class _DatePickerState extends State<DatePicker> {
-  DateTime selectedDate = DateTime.now();
-
+  DateTime selectedDate = DateTime.now().toUtc().subtract(const Duration(days: 1));
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -31,13 +30,13 @@ class _DatePickerState extends State<DatePicker> {
                 bottomPadding: 15,
                 justText: true,
                 onPress: () {
-                  context.read<HottestCubit>().loadDailyHottest(DateTime.now());
+                  context.read<HottestCubit>().loadYesterday();
                   Navigator.pop(context);
                 },
                 icon: CupertinoIcons.chevron_right,
                 backgroundColor: Theme.of(context).colorScheme.surface,
                 textColor: Theme.of(context).colorScheme.primary,
-                text: "Load today",
+                text: "Load yesterday",
               ),
             ),
             const SizedBox(width: 15),
@@ -46,7 +45,7 @@ class _DatePickerState extends State<DatePicker> {
                 bottomPadding: 15,
                 justText: true,
                 onPress: () {
-                  context.read<HottestCubit>().loadDailyHottest(selectedDate);
+                  context.read<HottestCubit>().loadPastDate(selectedDate);
                   Navigator.pop(context);
                 },
                 icon: CupertinoIcons.chevron_right,
@@ -65,7 +64,7 @@ class _DatePickerState extends State<DatePicker> {
               ),
             ),
             child: CupertinoDatePicker(
-              maximumDate: DateTime.now(),
+              maximumDate: DateTime.now().toUtc().subtract(const Duration(days: 1)),
               initialDateTime: selectedDate,
               mode: CupertinoDatePickerMode.date,
               onDateTimeChanged: (DateTime date) => selectedDate = date,

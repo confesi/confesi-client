@@ -103,9 +103,15 @@ final GoRouter router = GoRouter(
     GoRoute(
         path: '/home/posts/detail',
         builder: (BuildContext context, GoRouterState state) => const SimpleDetailViewScreen()),
+
     GoRoute(
-        path: '/home/posts/sentiment',
-        builder: (BuildContext context, GoRouterState state) => const SentimentAnalysisScreen()),
+      path: '/home/posts/sentiment',
+      builder: (BuildContext context, GoRouterState state) {
+        HomePostsSentimentProps props = state.extra as HomePostsSentimentProps;
+        return SentimentAnalysisScreen(props: props);
+      },
+    ),
+
     GoRoute(
         path: '/home/profile/account',
         builder: (BuildContext context, GoRouterState state) => const AccountDetailsScreen()),
@@ -143,3 +149,8 @@ final GoRouter router = GoRouter(
         path: '/schools/search', builder: (BuildContext context, GoRouterState state) => const SearchSchoolsScreen()),
   ],
 );
+
+class HomePostsSentimentProps {
+  final int postId;
+  const HomePostsSentimentProps(this.postId);
+}

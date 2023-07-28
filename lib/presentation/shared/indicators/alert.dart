@@ -11,8 +11,10 @@ class AlertIndicator extends StatelessWidget {
     required this.message,
     required this.onPress,
     this.isLoading = false,
+    this.btnMsg = "Retry",
   }) : super(key: key);
 
+  final String btnMsg;
   final String message;
   final VoidCallback onPress;
   final bool isLoading;
@@ -41,7 +43,7 @@ class AlertIndicator extends StatelessWidget {
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 15),
-                        SimpleTextButton(onTap: () => onPress(), text: "Retry"),
+                        SimpleTextButton(onTap: () => onPress(), text: btnMsg),
                       ],
                     ),
             ),

@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:confesi/core/services/fcm_notifications/token_data.dart';
 
 import 'application/authentication_and_settings/cubit/auth_flow_cubit.dart';
+import 'application/feed/cubit/sentiment_analysis_cubit.dart';
 import 'core/services/create_post_hint_text/create_post_hint_text.dart';
 import 'core/services/remote_config/remote_config.dart';
 import 'core/services/user_auth/user_auth_data.dart';
@@ -91,14 +92,10 @@ Future<void> init() async {
   //! Required first inits
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  // Registering Hive.
 
   //! External
-  // Registers connection checker package.
   sl.registerLazySingleton(() => InternetConnectionChecker());
-  // Registers the secure storage package.
   sl.registerLazySingleton(() => const FlutterSecureStorage());
-  // Registers the package that allows us to use biometric authentication.
   sl.registerLazySingleton(() => LocalAuthentication());
 
   //! Already-singletons
@@ -106,11 +103,8 @@ Future<void> init() async {
   sl.registerLazySingleton(() => FirebaseAuth.instance);
 
   //! Core
-  // Registers custom connection checker class.
   sl.registerLazySingleton(() => NetworkInfo(sl()));
-  // Registers the custom api client class.
   sl.registerLazySingleton(() => ApiClient());
-  // Registers the custom hive client class.
   HiveService hiveService = HiveService(sl());
   await hiveService.init();
   sl.registerLazySingleton(() => hiveService);
@@ -121,88 +115,51 @@ Future<void> init() async {
   userAuthService.hive.registerAdapter(ThemePrefAdapter());
   userAuthService.hive.registerAdapter(FcmTokenAdapter());
   sl.registerLazySingleton(() => userAuthService);
-  // Registers notifications service.
   sl.registerLazySingleton(() => NotificationService()..init());
   sl.registerLazySingleton(() => CreatePostHintManager());
 
   //! State (BLoC or Cubit)  // // Registers the authentication cubit.
-  // sl.registerFactory(() => AuthenticationCubit(register: sl(), login: sl(), logout: sl(), silentAuthentication: sl()));
-  // Registers the recents cubit.
   sl.registerFactory(() => RecentsCubit(recents: sl()));
-  // Registers the trending cubit.
+  sl.registerFactory(() => SentimentAnalysisCubit());
   sl.registerFactory(() => TrendingCubit(trending: sl()));
-  // Registers the leaderboard cubit.
   sl.registerFactory(() => LeaderboardCubit(ranking: sl()));
-  // Registers the auth flow cubit.
   sl.registerFactory(() => AuthFlowCubit());
-  // Registers the daily hottest cubit.
   sl.registerFactory(() => HottestCubit(posts: sl()));
-  // Registers the create post cubit.
   sl.registerFactory(() => CreatePostCubit(uploadPost: sl()));
-  // Registers the contact setting cubit.
   sl.registerFactory(() => ContactSettingCubit(copyEmailTextUsecase: sl(), openMailClientUsecase: sl()));
-  // Registers the cubit that launches the website viewer.
   sl.registerFactory(() => WebsiteLauncherCubit(launchWebsiteUsecase: sl()));
-  // Registers the cubit that opens the device's system settings.
   sl.registerFactory(() => LanguageSettingCubit(openDeviceSettingsUsecase: sl()));
-  // Registers the cubit that opens the device's native maps app.
   sl.registerFactory(() => MapsCubit(launchMapUsecase: sl()));
-  // Registers the share cubit.
   sl.registerFactory(() => ShareCubit(shareContentUsecase: sl()));
 
   //! Usecases
-  // Registers the recents feed usecase.
   sl.registerLazySingleton(() => Recents(repository: sl()));
-  // Registers the trending feed usecase.
   sl.registerLazySingleton(() => Trending(repository: sl()));
-  // Registers the leaderboard usecase.
   sl.registerLazySingleton(() => Ranking(repository: sl()));
-  // Registers the daily hottest usecase.
   sl.registerLazySingleton(() => Posts(repository: sl()));
-  // Registers the upload post usecase.
   sl.registerLazySingleton(() => UploadPost(repository: sl()));
-  // Registers the biometric authentication usecase.
   sl.registerLazySingleton(() => BiometricAuthentication(localAuthentication: sl()));
-
-  // Registers the usecase that opens the mail client.
   sl.registerLazySingleton(() => OpenMailClient());
-  // Registers the usecase that copies the email text for support.
   sl.registerLazySingleton(() => CopyEmailText());
-  // Registers the launching a website usecase.
   sl.registerLazySingleton(() => LaunchWebsite());
-  // Registers the usecase that opens a device's system settings.
   sl.registerLazySingleton(() => OpenDeviceSettings());
-  // Registers the share usecase.
   sl.registerLazySingleton(() => ShareContent());
-
-  // Registers the usecase to open the device's native maps app.
   sl.registerLazySingleton(() => LaunchMap());
 
   //! Repositories
-  // Registers the authentication repository.
   sl.registerLazySingleton(() => AuthenticationRepository(networkInfo: sl(), datasource: sl()));
-  // Registers the feed repository.
   sl.registerLazySingleton(() => FeedRepository(networkInfo: sl(), datasource: sl()));
-  // Registers the leaderboard repository.
   sl.registerLazySingleton(() => LeaderboardRepository(networkInfo: sl(), datasource: sl()));
-  // Registers the daily hottest repository.
   sl.registerLazySingleton(() => DailyHottestRepository(networkInfo: sl(), datasource: sl()));
-  // Registers the create post repository.
   sl.registerLazySingleton(() => CreatePostRepository(networkInfo: sl(), datasource: sl()));
 
   //! Data sources
-  // Registers the authentication datasource.
   sl.registerLazySingleton(() => AuthenticationDatasource(secureStorage: sl(), api: sl()));
-  // Registers the feed datasource.
   sl.registerLazySingleton(() => FeedDatasource(api: sl()));
-  // Registers the leaderboard datasource.
   sl.registerLazySingleton(() => LeaderboardDatasource(api: sl()));
-  // Registers the daily hottest datasource.
   sl.registerLazySingleton(() => DailyHottestDatasource(api: sl()));
-  // Registers the create post datasource.
   sl.registerLazySingleton(() => CreatePostDatasource(api: sl()));
 
   //! Firebase
-  // Registering Firebase.
   await initFirebase();
 }

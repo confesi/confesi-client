@@ -16,17 +16,29 @@ class HottestCubit extends Cubit<HottestState> {
 
   HottestCubit({required this.posts}) : super(DailyHottestLoading());
 
-  Future<void> loadDailyHottest(DateTime date) async {
+  Future<void> loadYesterday() async {
+    final yesterday = DateTime.now().subtract(const Duration(days: 1));
+    _loadFromDate(yesterday);
+  }
+
+  Future<void> loadPastDate(DateTime date) async {
+    _loadFromDate(date);
+  }
+
+  Future<void> _loadFromDate(DateTime date) async {
     emit(DailyHottestLoading());
     (await Api().req(Method.get, true, "/api/v1/posts/hottest?day=${date.yearMonthDay()}", {})).fold(
       (failure) => emit(DailyHottestError(message: failure.message())),
       (response) {
-        if (response.statusCode.toString()[0] == "2") {
-          print(json.decode(response.body)["value"]);
-          final posts = (json.decode(response.body)["value"] as List).map((e) => Post.fromJson(e)).toList();
-          emit(DailyHottestData(posts: posts, date: date));
-        } else {
-          emit(DailyHottestError(message: "todo: error"));
+        try {
+          if (response.statusCode.toString()[0] == "2") {
+            final posts = (json.decode(response.body)["value"] as List).map((e) => Post.fromJson(e)).toList();
+            emit(DailyHottestData(posts: posts, date: date));
+          } else {
+            emit(DailyHottestError(message: "Unknown error"));
+          }
+        } catch (_) {
+          emit(DailyHottestError(message: "Unknown error"));
         }
       },
     );

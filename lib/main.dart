@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:confesi/application/feed/cubit/sentiment_analysis_cubit.dart';
+
 import 'application/authentication_and_settings/cubit/auth_flow_cubit.dart';
 import 'core/services/hive/hive_client.dart';
 import 'core/services/user_auth/user_auth_service.dart';
@@ -51,9 +53,9 @@ void main() async => await init().then(
                 home: MultiBlocProvider(
                   providers: [
                     BlocProvider(lazy: false, create: (context) => sl<MapsCubit>()),
+                    BlocProvider(lazy: false, create: (context) => sl<SentimentAnalysisCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<CreatePostCubit>()),
-                    BlocProvider(
-                        lazy: false, create: (context) => sl<HottestCubit>()..loadDailyHottest(DateTime.now())),
+                    BlocProvider(lazy: false, create: (context) => sl<HottestCubit>()..loadYesterday()),
                     BlocProvider(lazy: false, create: (context) => sl<WebsiteLauncherCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<ShareCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<LeaderboardCubit>()..loadRankings()),
@@ -63,7 +65,7 @@ void main() async => await init().then(
                     BlocProvider(lazy: false, create: (context) => sl<LanguageSettingCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<AuthFlowCubit>()),
                   ],
-                  child: const MyApp(),
+                  child: DevicePreview(builder: (context) => const MyApp()),
                 ),
               ),
             ),
@@ -100,11 +102,13 @@ class _MyAppState extends State<MyApp> {
   Future<void> startAuthListener() async {
     // clear user data
     sl.get<UserAuthService>().clearCurrentExtraData();
-    _authStateChangeStream = sl
-        .get<FirebaseAuth>()
-        .authStateChanges()
-        .listen((User? user) => sl.get<NotificationService>().updateToken(user?.uid));
-    _userChangeStream = sl.get<FirebaseAuth>().userChanges().listen((User? user) async {
+    // _authStateChangeStream = sl
+    //     .get<FirebaseAuth>()
+    //     .authStateChanges()
+    //     .listen((User? user) => );
+    _userChangeStream = sl.get<FirebaseAuth>().authStateChanges().listen((User? user) async {
+      sl.get<NotificationService>().updateToken(user?.uid);
+      print("USER CHANGED!!!!!!!!!!!!!!");
       if (user == null) {
         await Future.delayed(const Duration(milliseconds: 500)).then((value) {
           HapticFeedback.lightImpact();

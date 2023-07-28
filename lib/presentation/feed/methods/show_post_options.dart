@@ -18,7 +18,9 @@ void buildOptionsSheet(BuildContext context) => showButtonOptionsSheet(context, 
         text: "Sentiment analysis",
         icon: CupertinoIcons.doc_text,
         onTap: () => router.push(
-            "/home/posts/sentiment"), // todo: remove hard coding and dynamically go to the correct post's sentiment analysis
+          "/home/posts/sentiment",
+          extra: const HomePostsSentimentProps(1),
+        ), // todo: remove hard coding and dynamically go to the correct post's sentiment analysis
       ),
       OptionButton(
         text: "School location",

@@ -51,15 +51,23 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
         key: ValueKey('loading'),
         child: LoadingCupertinoIndicator(),
       );
-    } else if (state is DailyHottestData && state.posts.isNotEmpty) {
+    } else if (state is DailyHottestData) {
+      if (state.posts.isEmpty) {
+        return Center(
+          key: const ValueKey('alert'),
+          child: AlertIndicator(
+            btnMsg: "Jump to yesterday",
+            message: "There are no confessions for this date",
+            onPress: () => context.read<HottestCubit>().loadYesterday(),
+          ),
+        );
+      }
       return PageView(
           controller: pageController,
           physics: const BouncingScrollPhysics(),
           onPageChanged: (selectedIndex) {
             HapticFeedback.lightImpact();
-            setState(() {
-              currentIndex = selectedIndex;
-            });
+            setState(() => currentIndex = selectedIndex);
           },
           children: state.posts
               .asMap()
@@ -69,14 +77,7 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
                     child: HottestTile(
                       currentIndex: currentIndex,
                       thisIndex: post.key,
-                      universityImagePath: post.value.school.imgUrl,
-                      comments: 9999, // todo: fix
-                      hates: post.value.downvote,
-                      likes: post.value.upvote,
-                      title: post.value.title,
-                      text: post.value.content,
-                      university: post.value.school.abbr,
-                      year: post.value.yearOfStudy.faculty ?? "99999", // todo: nullable?
+                      post: post.value,
                     ),
                   ))
               .toList()
@@ -92,13 +93,13 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
         child: AlertIndicator(
           isLoading: true, // todo: fix this
           message: error.message,
-          onPress: () => context.read<HottestCubit>().loadDailyHottest(DateTime.now()),
+          onPress: () => context.read<HottestCubit>().loadYesterday(),
         ),
       );
     }
   }
 
-  String headerText = "Hottest Today";
+  String headerText = "Yesterday's Hottest";
 
   @override
   Widget build(BuildContext context) {
@@ -107,8 +108,8 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
         listenWhen: (previous, current) => true,
         listener: (context, state) async {
           if (state is DailyHottestData) {
-            headerText = state.date.isSameDate(DateTime.now())
-                ? "Hottest Today"
+            headerText = state.date.isSameDate(DateTime.now().toUtc().subtract(const Duration(days: 1)))
+                ? headerText
                 : "Hottest of ${state.date.readableDateFormat()}";
           }
           if (pageController.hasClients) {

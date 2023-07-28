@@ -9,17 +9,17 @@ YearOfStudy yearOfStudyFromJson(String str) => YearOfStudy.fromJson(json.decode(
 String yearOfStudyToJson(YearOfStudy data) => json.encode(data.toJson());
 
 class YearOfStudy {
-  String? faculty;
+  String? type;
 
   YearOfStudy({
-    required this.faculty,
+    required this.type,
   });
 
   factory YearOfStudy.fromJson(Map<String, dynamic> json) => YearOfStudy(
-        faculty: json["faculty"],
+        type: json["type"],
       );
 
   Map<String, dynamic> toJson() => {
-        "faculty": faculty,
+        "type": type,
       };
 }
