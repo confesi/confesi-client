@@ -1,4 +1,3 @@
-import '../../../core/rate_limiters/debouncer.dart';
 import '../../../core/utils/sizing/bottom_safe_area.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/button_touch_effects/touchable_opacity.dart';
@@ -17,7 +16,6 @@ class SearchSchoolsScreen extends StatefulWidget {
 
 class _SearchSchoolsScreenState extends State<SearchSchoolsScreen> {
   late TextEditingController _textEditingController;
-  final Debouncer _debouncer = Debouncer();
 
   @override
   void initState() {

@@ -1,4 +1,5 @@
 import '../../../core/router/go_router.dart';
+import '../../../init.dart';
 import '../../shared/button_touch_effects/touchable_opacity.dart';
 import '../../shared/button_touch_effects/touchable_scale.dart';
 
@@ -20,7 +21,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../constants/create_post/general.dart';
-import '../../../core/generators/hint_text_generator.dart';
+import '../../../core/services/create_post_hint_text/create_post_hint_text.dart';
 import '../../../core/styles/typography.dart';
 import '../../shared/layout/appbar.dart';
 import '../../shared/layout/scrollable_area.dart';
@@ -79,7 +80,7 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
 
   @override
   void initState() {
-    HintText hintText = getHint();
+    HintText hintText = sl.get<CreatePostHintManager>().getHint();
     titleHint = hintText.title;
     bodyHint = hintText.body;
     titleFocusNode.addListener(() {

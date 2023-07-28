@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:confesi/core/services/fcm_notifications/token_data.dart';
 
 import 'application/authentication_and_settings/cubit/auth_flow_cubit.dart';
+import 'core/services/create_post_hint_text/create_post_hint_text.dart';
 import 'core/services/remote_config/remote_config.dart';
 import 'core/services/user_auth/user_auth_data.dart';
 import 'core/services/user_auth/user_auth_service.dart';
@@ -36,11 +37,8 @@ import 'domain/profile/usecases/biometric_authentication.dart';
 import 'application/create_post/cubit/post_cubit.dart';
 import 'application/daily_hottest/cubit/hottest_cubit.dart';
 import 'application/leaderboard/cubit/leaderboard_cubit.dart';
-import 'application/profile/cubit/biometrics_cubit.dart';
-import 'domain/authentication_and_settings/usecases/load_refresh_token.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
-import 'package:hive_flutter/adapters.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:local_auth/local_auth.dart';
 import 'application/authentication_and_settings/cubit/contact_setting_cubit.dart';
@@ -48,7 +46,6 @@ import 'application/shared/cubit/website_launcher_cubit.dart';
 import 'core/network/connection_info.dart';
 import 'data/authentication_and_settings/datasources/authentication_datasource.dart';
 import 'data/authentication_and_settings/repositories/authentication_repository_concrete.dart';
-import 'domain/authentication_and_settings/usecases/register.dart';
 import 'data/feed/datasources/feed_datasource.dart';
 import 'data/feed/repositories/feed_repository_concrete.dart';
 import 'domain/feed/usecases/recents.dart';
@@ -126,6 +123,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => userAuthService);
   // Registers notifications service.
   sl.registerLazySingleton(() => NotificationService()..init());
+  sl.registerLazySingleton(() => CreatePostHintManager());
 
   //! State (BLoC or Cubit)  // // Registers the authentication cubit.
   // sl.registerFactory(() => AuthenticationCubit(register: sl(), login: sl(), logout: sl(), silentAuthentication: sl()));
@@ -141,10 +139,6 @@ Future<void> init() async {
   sl.registerFactory(() => HottestCubit(posts: sl()));
   // Registers the create post cubit.
   sl.registerFactory(() => CreatePostCubit(uploadPost: sl()));
-  // Registers the biometrics cubit.
-  sl.registerFactory(() => BiometricsCubit(biometricAuthentication: sl()));
-  // Registers the prefs cubit.
-  // sl.registerFactory(() => PrefsCubit(appearance: sl(), loadRefreshToken: sl(), firstTime: sl()));
   // Registers the contact setting cubit.
   sl.registerFactory(() => ContactSettingCubit(copyEmailTextUsecase: sl(), openMailClientUsecase: sl()));
   // Registers the cubit that launches the website viewer.
@@ -157,8 +151,6 @@ Future<void> init() async {
   sl.registerFactory(() => ShareCubit(shareContentUsecase: sl()));
 
   //! Usecases
-  // Registers the register usecase.
-  sl.registerLazySingleton(() => Register(repository: sl(), api: sl()));
   // Registers the recents feed usecase.
   sl.registerLazySingleton(() => Recents(repository: sl()));
   // Registers the trending feed usecase.

@@ -16,7 +16,31 @@ import 'application/authentication_and_settings/cubit/language_setting_cubit.dar
 import 'application/feed/cubit/recents_cubit.dart';
 import 'application/feed/cubit/trending_cubit.dart';
 import 'application/leaderboard/cubit/leaderboard_cubit.dart';
-import 'application/profile/cubit/biometrics_cubit.dart';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import 'application/shared/cubit/maps_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -58,7 +82,6 @@ void main() async => await init().then(
                     BlocProvider(lazy: false, create: (context) => sl<LeaderboardCubit>()..loadRankings()),
                     BlocProvider(lazy: false, create: (context) => sl<TrendingCubit>()..fetchPosts()),
                     BlocProvider(lazy: false, create: (context) => sl<RecentsCubit>()),
-                    BlocProvider(lazy: false, create: (context) => sl<BiometricsCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<ContactSettingCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<LanguageSettingCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<AuthFlowCubit>()),
