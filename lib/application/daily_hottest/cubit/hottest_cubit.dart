@@ -1,32 +1,33 @@
-import '../../../domain/shared/entities/post.dart';
+import 'dart:convert';
+
 import 'package:bloc/bloc.dart';
+import 'package:confesi/core/extensions/dates/year_month_day.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
+import '../../../core/clients/api.dart';
 import '../../../domain/daily_hottest/usecases/posts.dart';
+import '../../../models/post.dart';
 
 part 'hottest_state.dart';
 
 class HottestCubit extends Cubit<HottestState> {
   final Posts posts;
 
-  HottestCubit({required this.posts}) : super(Loading());
+  HottestCubit({required this.posts}) : super(DailyHottestLoading());
 
-  Future<void> loadPosts(DateTime dateToLoad) async {
-    if (state is Error) {
-      final error = state as Error;
-      emit(Error(message: error.message, retryingAfterError: true));
-    } else {
-      emit(Loading());
-    }
-    final failureOrRankings = await posts(dateToLoad);
-    if (isClosed) return;
-    failureOrRankings.fold(
-      (failure) {
-        emit(Error(message: "todo: error"));
-      },
-      (posts) {
-        emit(Data(posts: posts, date: dateToLoad));
+  Future<void> loadDailyHottest(DateTime date) async {
+    emit(DailyHottestLoading());
+    (await Api().req(Method.get, true, "/api/v1/posts/hottest?day=${date.yearMonthDay()}", {})).fold(
+      (failure) => emit(DailyHottestError(message: failure.message())),
+      (response) {
+        if (response.statusCode.toString()[0] == "2") {
+          print(json.decode(response.body)["value"]);
+          final posts = (json.decode(response.body)["value"] as List).map((e) => Post.fromJson(e)).toList();
+          emit(DailyHottestData(posts: posts, date: date));
+        } else {
+          emit(DailyHottestError(message: "todo: error"));
+        }
       },
     );
   }

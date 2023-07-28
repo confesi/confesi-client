@@ -1,3 +1,4 @@
+import 'package:confesi/presentation/shared/other/cached_online_image.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/styles/typography.dart';
@@ -32,7 +33,7 @@ class HottestTile extends StatefulWidget {
   final String text;
   final String university;
   final String universityImagePath;
-  final int year;
+  final String year;
 
   @override
   State<HottestTile> createState() => _HottestTileState();
@@ -103,10 +104,9 @@ class _HottestTileState extends State<HottestTile> {
                         Expanded(
                           child: AnimatedContainer(
                             duration: const Duration(milliseconds: 250),
-                            child: Image.asset(
-                              widget.universityImagePath,
-                              fit: BoxFit.cover,
-                              width: double.infinity,
+                            width: double.infinity,
+                            child: CachedOnlineImage(
+                              url: widget.universityImagePath,
                             ),
                           ),
                         ),

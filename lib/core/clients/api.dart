@@ -101,6 +101,7 @@ class Api {
     return false;
   }
 
+  // todo: make return in format of {error} or {value}
   Future<Either<FailureWithMsg, http.Response>> req(
     Method method,
     bool needsBearerToken,

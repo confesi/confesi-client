@@ -17,30 +17,6 @@ import 'application/feed/cubit/recents_cubit.dart';
 import 'application/feed/cubit/trending_cubit.dart';
 import 'application/leaderboard/cubit/leaderboard_cubit.dart';
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import 'application/shared/cubit/maps_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -76,7 +52,8 @@ void main() async => await init().then(
                   providers: [
                     BlocProvider(lazy: false, create: (context) => sl<MapsCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<CreatePostCubit>()),
-                    BlocProvider(lazy: false, create: (context) => sl<HottestCubit>()..loadPosts(DateTime.now())),
+                    BlocProvider(
+                        lazy: false, create: (context) => sl<HottestCubit>()..loadDailyHottest(DateTime.now())),
                     BlocProvider(lazy: false, create: (context) => sl<WebsiteLauncherCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<ShareCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<LeaderboardCubit>()..loadRankings()),

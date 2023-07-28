@@ -72,8 +72,8 @@ final GoRouter router = GoRouter(
             // Change the opacity of the screen using a Curve based on the animation's value
             var tween = CurveTween(curve: Curves.easeInOut);
             var curvedAnimation = tween.animate(animation);
-            return SlideTransition(
-              position: Tween<Offset>(begin: const Offset(0, 1), end: Offset.zero).animate(curvedAnimation),
+            return FadeTransition(
+              opacity: curvedAnimation,
               child: child,
             );
           },

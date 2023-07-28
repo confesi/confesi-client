@@ -30,7 +30,7 @@ class _FacultyPickerState extends State<FacultyPicker> {
                 bottomPadding: 15,
                 justText: true,
                 onPress: () {
-                  context.read<HottestCubit>().loadPosts(selectedDate);
+                  context.read<HottestCubit>().loadDailyHottest(selectedDate);
                   Navigator.pop(context);
                 },
                 icon: CupertinoIcons.chevron_right,
@@ -45,7 +45,7 @@ class _FacultyPickerState extends State<FacultyPicker> {
                 bottomPadding: 15,
                 justText: true,
                 onPress: () {
-                  context.read<HottestCubit>().loadPosts(selectedDate);
+                  context.read<HottestCubit>().loadDailyHottest(selectedDate);
                   Navigator.pop(context);
                 },
                 icon: CupertinoIcons.chevron_right,

@@ -7,25 +7,24 @@ abstract class HottestState extends Equatable {
 }
 
 /// Page is loading.
-class Loading extends HottestState {}
+class DailyHottestLoading extends HottestState {}
 
 /// Error loading page.
-class Error extends HottestState {
+class DailyHottestError extends HottestState {
   final String message;
-  final bool retryingAfterError;
 
-  Error({required this.message, this.retryingAfterError = false});
+  DailyHottestError({required this.message});
 
   @override
-  List<Object?> get props => [message, retryingAfterError];
+  List<Object?> get props => [message];
 }
 
 /// Success loading page, it now has data to display.
-class Data extends HottestState {
+class DailyHottestData extends HottestState {
   final List<Post> posts;
   final DateTime date;
 
-  Data({required this.posts, required this.date});
+  DailyHottestData({required this.posts, required this.date});
 
   @override
   List<Object?> get props => [posts, date];

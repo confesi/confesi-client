@@ -46,12 +46,12 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
   }
 
   Widget buildChild(BuildContext context, HottestState state) {
-    if (state is Loading) {
+    if (state is DailyHottestLoading) {
       return const Center(
         key: ValueKey('loading'),
         child: LoadingCupertinoIndicator(),
       );
-    } else if (state is Data && state.posts.isNotEmpty) {
+    } else if (state is DailyHottestData && state.posts.isNotEmpty) {
       return PageView(
           controller: pageController,
           physics: const BouncingScrollPhysics(),
@@ -69,14 +69,14 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
                     child: HottestTile(
                       currentIndex: currentIndex,
                       thisIndex: post.key,
-                      universityImagePath: post.value.universityImagePath,
-                      comments: post.value.comments,
-                      hates: post.value.hates,
-                      likes: post.value.likes,
+                      universityImagePath: post.value.school.imgUrl,
+                      comments: 9999, // todo: fix
+                      hates: post.value.downvote,
+                      likes: post.value.upvote,
                       title: post.value.title,
-                      text: post.value.text,
-                      university: post.value.university,
-                      year: post.value.year,
+                      text: post.value.content,
+                      university: post.value.school.abbr,
+                      year: post.value.yearOfStudy.faculty ?? "99999", // todo: nullable?
                     ),
                   ))
               .toList()
@@ -86,13 +86,13 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
                       ? kMaxDisplayedHottestDailyPosts
                       : state.posts.length));
     } else {
-      final error = state as Error;
+      final error = state as DailyHottestError;
       return Center(
         key: const ValueKey('alert'),
         child: AlertIndicator(
-          isLoading: error.retryingAfterError,
+          isLoading: true, // todo: fix this
           message: error.message,
-          onPress: () => context.read<HottestCubit>().loadPosts(DateTime.now()),
+          onPress: () => context.read<HottestCubit>().loadDailyHottest(DateTime.now()),
         ),
       );
     }
@@ -106,7 +106,7 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
       child: BlocListener<HottestCubit, HottestState>(
         listenWhen: (previous, current) => true,
         listener: (context, state) async {
-          if (state is Data) {
+          if (state is DailyHottestData) {
             headerText = state.date.isSameDate(DateTime.now())
                 ? "Hottest Today"
                 : "Hottest of ${state.date.readableDateFormat()}";

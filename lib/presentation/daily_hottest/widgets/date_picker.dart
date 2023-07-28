@@ -31,7 +31,7 @@ class _DatePickerState extends State<DatePicker> {
                 bottomPadding: 15,
                 justText: true,
                 onPress: () {
-                  context.read<HottestCubit>().loadPosts(DateTime.now());
+                  context.read<HottestCubit>().loadDailyHottest(DateTime.now());
                   Navigator.pop(context);
                 },
                 icon: CupertinoIcons.chevron_right,
@@ -46,7 +46,7 @@ class _DatePickerState extends State<DatePicker> {
                 bottomPadding: 15,
                 justText: true,
                 onPress: () {
-                  context.read<HottestCubit>().loadPosts(selectedDate);
+                  context.read<HottestCubit>().loadDailyHottest(selectedDate);
                   Navigator.pop(context);
                 },
                 icon: CupertinoIcons.chevron_right,
