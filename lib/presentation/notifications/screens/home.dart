@@ -109,7 +109,6 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                       "Edit your notification preferences in settings.",
                       () => router.push("/settings/notifications"),
                       "Edit"),
-                  leftIconVisible: false,
                 ),
                 Expanded(
                   child: BlocBuilder<LeaderboardCubit, LeaderboardState>(

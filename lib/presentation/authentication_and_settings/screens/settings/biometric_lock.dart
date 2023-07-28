@@ -4,9 +4,10 @@ import 'package:scrollable/exports.dart';
 
 import '../../../../core/styles/typography.dart';
 import '../../../../core/utils/sizing/bottom_safe_area.dart';
+import '../../../shared/behaviours/simulated_bottom_safe_area.dart';
 import '../../../shared/behaviours/themed_status_bar.dart';
 import '../../../shared/layout/appbar.dart';
-import '../../../shared/selection_groups/bool_selection_group.dart';
+import '../../../shared/selection_groups/tile_group.dart';
 import '../../../shared/selection_groups/bool_selection_tile.dart';
 import '../../../shared/text/disclaimer_text.dart';
 
@@ -39,8 +40,7 @@ class _BiometricLockScreenState extends State<BiometricLockScreen> {
             ),
             Expanded(
               child: ScrollableView(
-                          physics: const BouncingScrollPhysics(),
-
+                physics: const BouncingScrollPhysics(),
                 inlineBottomOrRightPadding: bottomSafeArea(context) * 2,
                 distancebetweenHapticEffectsDuringScroll: 50,
                 hapticEffectAtEdge: HapticType.medium,
@@ -50,12 +50,10 @@ class _BiometricLockScreenState extends State<BiometricLockScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 10),
-                      BoolSelectionGroup(
+                      TileGroup(
                         text: "Biometric lock",
-                        selectionTiles: [
+                        tiles: [
                           BoolSelectionTile(
-                            topRounded: true,
                             isActive: true,
                             backgroundColor: Theme.of(context).colorScheme.background,
                             icon: CupertinoIcons.shield_slash,
@@ -76,6 +74,7 @@ class _BiometricLockScreenState extends State<BiometricLockScreen> {
                         text:
                             "Enabling this forces you to unlock your saved posts, confessions, and comments with biometrics.",
                       ),
+                      const SimulatedBottomSafeArea(),
                     ],
                   ),
                 ),

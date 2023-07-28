@@ -77,7 +77,7 @@ class _ProfileHomeState extends State<ProfileHome> with AutomaticKeepAliveClient
                     border: Border.all(
                         color: Theme.of(context).colorScheme.onBackground,
                         width: 0.8,
-                        strokeAlign: BorderSide.strokeAlignCenter),
+                        strokeAlign: BorderSide.strokeAlignInside),
                   ),
                   child: Row(
                     children: [

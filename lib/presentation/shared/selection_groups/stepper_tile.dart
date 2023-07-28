@@ -32,11 +32,12 @@ class _StepperTileState extends State<StepperTile> {
       },
       child: Container(
         width: double.infinity,
+        margin: const EdgeInsets.only(top: 10),
         decoration: BoxDecoration(
           border: Border.all(
-              color: Theme.of(context).colorScheme.onBackground, width: 0.8, strokeAlign: BorderSide.strokeAlignCenter),
+              color: Theme.of(context).colorScheme.onBackground, width: 0.8, strokeAlign: BorderSide.strokeAlignInside),
           color: Theme.of(context).colorScheme.background,
-          borderRadius: const BorderRadius.all(Radius.circular(20)),
+          borderRadius: const BorderRadius.all(Radius.circular(15)),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

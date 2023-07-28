@@ -33,13 +33,13 @@ class RectangleTile extends StatefulWidget {
 class _RectangleTileState extends State<RectangleTile> {
   Widget buildChild(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 15),
+      margin: const EdgeInsets.only(top: 10),
       width: double.infinity,
       decoration: BoxDecoration(
         color: widget.backgroundColor ?? Theme.of(context).colorScheme.background,
         border: Border.all(
-            color: Theme.of(context).colorScheme.onBackground, width: 0.8, strokeAlign: BorderSide.strokeAlignCenter),
-        borderRadius: const BorderRadius.all(Radius.circular(20)),
+            color: Theme.of(context).colorScheme.onBackground, width: 0.8, strokeAlign: BorderSide.strokeAlignInside),
+        borderRadius: const BorderRadius.all(Radius.circular(15)),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 15),
@@ -55,7 +55,7 @@ class _RectangleTileState extends State<RectangleTile> {
                     children: [
                       Icon(
                         widget.icon,
-                        color: Theme.of(context).colorScheme.primary,
+                        color: Theme.of(context).colorScheme.secondary,
                       ),
                       const SizedBox(height: 10),
                       Text(
@@ -81,7 +81,7 @@ class _RectangleTileState extends State<RectangleTile> {
                     children: [
                       Icon(
                         widget.icon,
-                        color: Theme.of(context).colorScheme.primary,
+                        color: Theme.of(context).colorScheme.secondary,
                       ),
                       const SizedBox(height: 10),
                       Text(

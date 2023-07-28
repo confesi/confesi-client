@@ -35,8 +35,8 @@ class OptionButton extends StatelessWidget {
         width: double.infinity,
         decoration: BoxDecoration(
           border: Border.all(
-              color: Theme.of(context).colorScheme.onBackground, width: 0.8, strokeAlign: BorderSide.strokeAlignCenter),
-          borderRadius: const BorderRadius.all(Radius.circular(20)),
+              color: Theme.of(context).colorScheme.onBackground, width: 0.8, strokeAlign: BorderSide.strokeAlignInside),
+          borderRadius: const BorderRadius.all(Radius.circular(15)),
           color: Theme.of(context).colorScheme.surface,
         ),
         child: Container(

@@ -1,4 +1,7 @@
 import '../../../core/router/go_router.dart';
+import '../../../core/services/splash_screen_hint_text/splash_screen_hint_text.dart';
+import '../../../core/styles/typography.dart';
+import '../../../init.dart';
 import '../../shared/behaviours/init_scale.dart';
 
 import '../../shared/behaviours/themed_status_bar.dart';
@@ -16,17 +19,30 @@ class SplashScreen extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Center(
             child: InitScale(
-              child: FractionallySizedBox(
-                widthFactor: 0.5,
-                child: Hero(
-                  tag: "logo",
-                  child: AspectRatio(
-                    aspectRatio: 1,
-                    child: Image.asset(
-                      "assets/images/logos/logo_transparent.png",
+              child: Stack(
+                children: [
+                  FractionallySizedBox(
+                    widthFactor: 0.5,
+                    child: Hero(
+                      tag: "logo",
+                      child: AspectRatio(
+                        aspectRatio: 1,
+                        child: Image.asset(
+                          "assets/images/logos/logo_transparent.png",
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                  Positioned.fill(
+                    bottom: 5,
+                    child: Text(
+                      sl.get<SplashScreenHintManager>().getHint().text,
+                      style: kDetail.copyWith(
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                    ),
+                  )
+                ],
               ),
             ),
           ),

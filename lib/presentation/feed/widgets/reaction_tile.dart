@@ -1,3 +1,5 @@
+import 'package:confesi/presentation/shared/button_touch_effects/touchable_burst.dart';
+import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/utils/numbers/large_number_formatter.dart';
@@ -26,7 +28,7 @@ class ReactionTile extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
         decoration: BoxDecoration(
           border: Border.all(
-              color: Theme.of(context).colorScheme.onBackground, width: 0.8, strokeAlign: BorderSide.strokeAlignCenter),
+              color: Theme.of(context).colorScheme.onBackground, width: 0.8, strokeAlign: BorderSide.strokeAlignInside),
           color: Theme.of(context).colorScheme.surface,
           borderRadius: const BorderRadius.all(Radius.circular(20)),
         ),

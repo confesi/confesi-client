@@ -36,9 +36,10 @@ class SettingTile extends StatelessWidget {
         width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
         decoration: BoxDecoration(
-          border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
+          border: Border.all(
+              color: Theme.of(context).colorScheme.onBackground, width: 0.8, strokeAlign: BorderSide.strokeAlignInside),
           color: bgColor ?? Theme.of(context).colorScheme.background,
-          borderRadius: const BorderRadius.all(Radius.circular(20)),
+          borderRadius: const BorderRadius.all(Radius.circular(15)),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

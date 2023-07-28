@@ -1,12 +1,10 @@
 import '../../../../core/router/go_router.dart';
 
-import '../../../../constants/enums_that_are_local_keys.dart';
 import '../../../shared/behaviours/themed_status_bar.dart';
 import '../../../shared/layout/scrollable_area.dart';
-import '../../../shared/selection_groups/bool_selection_group.dart';
+import '../../../shared/selection_groups/tile_group.dart';
 import '../../../shared/selection_groups/bool_selection_tile.dart';
 import '../../../shared/selection_groups/setting_tile.dart';
-import '../../../shared/selection_groups/setting_tile_group.dart';
 import '../../../shared/text/disclaimer_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -43,10 +41,9 @@ class FeedbackSettingScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: 10),
-                        SettingTileGroup(
+                        TileGroup(
                           text: "Send us one-time feedback",
-                          settingTiles: [
+                          tiles: [
                             SettingTile(
                               leftIcon: CupertinoIcons.chat_bubble,
                               text: "Feedback",
@@ -54,12 +51,10 @@ class FeedbackSettingScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 10),
-                        BoolSelectionGroup(
+                        TileGroup(
                           text: "Shake to give feedback",
-                          selectionTiles: [
+                          tiles: [
                             BoolSelectionTile(
-                              topRounded: true,
                               isActive: true,
                               icon: CupertinoIcons.check_mark,
                               text: "Enabled",

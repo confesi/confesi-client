@@ -58,25 +58,7 @@ class _ExploreRecentsState extends State<ExploreRecents> {
           //     TextButton(onPressed: () => showCreateAccountSheet(context), child: Text("create account")),
           //   ],
           // ),
-          TextButton(
-            onPressed: () => Provider.of<UserAuthService>(context, listen: false).saveData(
-                Provider.of<UserAuthService>(context, listen: false)
-                    .data()
-                    .copyWith(profanityFilter: ProfanityFilter.off)),
-            child: Text(
-              "set profanity OFF",
-            ),
-          ),
-          TextButton(
-            onPressed: () => Provider.of<UserAuthService>(context, listen: false).saveData(
-                Provider.of<UserAuthService>(context, listen: false)
-                    .data()
-                    .copyWith(profanityFilter: ProfanityFilter.on)),
-            child: Text(
-              "set profanity ON",
-            ),
-          ),
-          Text(Provider.of<UserAuthService>(context).data().profanityFilter.toString()),
+
           Expanded(
             child: FeedList(
               hasError: false,

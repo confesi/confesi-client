@@ -52,14 +52,14 @@ class SimpleTextButton extends StatelessWidget {
             border: Border.all(
                 color: Theme.of(context).colorScheme.onBackground,
                 width: 0.8,
-                strokeAlign: BorderSide.strokeAlignCenter),
+                strokeAlign: BorderSide.strokeAlignInside),
             color: bgColor ??
                 (secondaryColors
                     ? Theme.of(context).colorScheme.secondary
                     : thirdColors
                         ? Theme.of(context).colorScheme.onSecondary
                         : Theme.of(context).colorScheme.surface),
-            borderRadius: const BorderRadius.all(Radius.circular(20)),
+            borderRadius: const BorderRadius.all(Radius.circular(15)),
           ),
           child: Text(
             text,

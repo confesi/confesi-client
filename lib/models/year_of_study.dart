@@ -6,8 +6,6 @@ import 'dart:convert';
 
 YearOfStudy yearOfStudyFromJson(String str) => YearOfStudy.fromJson(json.decode(str));
 
-String yearOfStudyToJson(YearOfStudy data) => json.encode(data.toJson());
-
 class YearOfStudy {
   String? type;
 
@@ -18,8 +16,4 @@ class YearOfStudy {
   factory YearOfStudy.fromJson(Map<String, dynamic> json) => YearOfStudy(
         type: json["type"],
       );
-
-  Map<String, dynamic> toJson() => {
-        "type": type,
-      };
 }

@@ -1,7 +1,11 @@
+import 'package:confesi/presentation/shared/selection_groups/tile_group.dart';
+
 import '../../../../core/router/go_router.dart';
+import '../../../../core/services/user_auth/user_auth_data.dart';
 import '../../../../core/services/user_auth/user_auth_service.dart';
 import '../../../../core/utils/sizing/bottom_safe_area.dart';
 import '../../../../init.dart';
+import '../../../shared/behaviours/simulated_bottom_safe_area.dart';
 import '../../../shared/other/widget_or_nothing.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
@@ -16,11 +20,12 @@ import '../../../shared/layout/appbar.dart';
 import '../../../shared/other/top_frosted_glass_area.dart';
 import '../../../shared/overlays/notification_chip.dart';
 import '../../../shared/selection_groups/setting_tile.dart';
-import '../../../shared/selection_groups/setting_tile_group.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrollable/exports.dart';
+
+import '../../../shared/selection_groups/switch_selection_tile.dart';
 
 class SettingsHome extends StatelessWidget {
   const SettingsHome({
@@ -67,10 +72,9 @@ class SettingsHome extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const SizedBox(height: 15),
-                          SettingTileGroup(
+                          TileGroup(
                             text: "General",
-                            settingTiles: [
+                            tiles: [
                               SettingTile(
                                 leftIcon: CupertinoIcons.question_circle,
                                 text: "FAQ",
@@ -99,19 +103,45 @@ class SettingsHome extends StatelessWidget {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 15),
-                          SettingTileGroup(
+                          TileGroup(
                             text: "Personalization",
-                            settingTiles: [
+                            tiles: [
                               SettingTile(
                                 leftIcon: CupertinoIcons.color_filter,
                                 text: "Appearance",
                                 onTap: () => router.push("/settings/appearance"),
                               ),
+                              SwitchSelectionTile(
+                                bottomRounded: true,
+                                isActive:
+                                    Provider.of<UserAuthService>(context).data().profanityFilter == ProfanityFilter.on,
+                                icon: CupertinoIcons.strikethrough,
+                                text: "Profanity blocker",
+                                secondaryText:
+                                    Provider.of<UserAuthService>(context).data().profanityFilter == ProfanityFilter.on
+                                        ? "On"
+                                        : "Off",
+                                onTap: () =>
+                                    Provider.of<UserAuthService>(context, listen: false).data().profanityFilter ==
+                                            ProfanityFilter.off
+                                        ? Provider.of<UserAuthService>(context, listen: false).saveData(
+                                            Provider.of<UserAuthService>(context, listen: false)
+                                                .data()
+                                                .copyWith(profanityFilter: ProfanityFilter.on))
+                                        : Provider.of<UserAuthService>(context, listen: false).saveData(
+                                            Provider.of<UserAuthService>(context, listen: false)
+                                                .data()
+                                                .copyWith(profanityFilter: ProfanityFilter.off)),
+                              ),
                               SettingTile(
                                 leftIcon: CupertinoIcons.textformat_size,
                                 text: "Text size",
                                 onTap: () => router.push("/settings/text-size"),
+                              ),
+                              SettingTile(
+                                leftIcon: CupertinoIcons.strikethrough,
+                                text: "Profanity filter",
+                                onTap: () => router.push("/settings/profanity"),
                               ),
                               SettingTile(
                                 leftIcon: CupertinoIcons.square_fill_on_circle_fill,
@@ -120,10 +150,9 @@ class SettingsHome extends StatelessWidget {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 15),
-                          SettingTileGroup(
+                          TileGroup(
                             text: "Account",
-                            settingTiles: [
+                            tiles: [
                               SettingTile(
                                 isRedText: true,
                                 leftIcon: CupertinoIcons.square_arrow_right,
@@ -141,10 +170,9 @@ class SettingsHome extends StatelessWidget {
                                 ),
                             ],
                           ),
-                          const SizedBox(height: 15),
-                          SettingTileGroup(
+                          TileGroup(
                             text: "Legal",
-                            settingTiles: [
+                            tiles: [
                               SettingTile(
                                 rightIcon: CupertinoIcons.link,
                                 leftIcon: CupertinoIcons.doc,
@@ -163,6 +191,7 @@ class SettingsHome extends StatelessWidget {
                                 text: "Community rules",
                                 onTap: () => context.read<WebsiteLauncherCubit>().launchWebsiteCommunityRules(),
                               ),
+                              const SimulatedBottomSafeArea(),
                             ],
                           ),
                         ],

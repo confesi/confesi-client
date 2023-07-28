@@ -29,14 +29,6 @@ class HottestTile extends StatefulWidget {
 class _HottestTileState extends State<HottestTile> {
   bool get isSelected => widget.currentIndex == widget.thisIndex;
 
-  String getLikes() => isPlural(widget.post.upvote)
-      ? '${largeNumberFormatter(widget.post.upvote)} likes'
-      : '${largeNumberFormatter(widget.post.upvote)} like';
-
-  String getHates() => isPlural(widget.post.downvote)
-      ? '${largeNumberFormatter(widget.post.downvote)} dislikes'
-      : '${largeNumberFormatter(widget.post.downvote)} dislike';
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -56,30 +48,28 @@ class _HottestTileState extends State<HottestTile> {
                     curve: Curves.decelerate,
                     height: isSelected ? constraints.maxHeight : constraints.maxHeight * .8,
                     decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.all(Radius.circular(20)),
+                      borderRadius: const BorderRadius.all(Radius.circular(15)),
                       color: Theme.of(context).colorScheme.background,
                       border: Border.all(
                         color: Theme.of(context).colorScheme.onBackground,
                         width: 0.8,
-                        strokeAlign: BorderSide.strokeAlignCenter,
+                        strokeAlign: BorderSide.strokeAlignInside,
                       ),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
+                          width: double.infinity,
                           decoration: BoxDecoration(
                             borderRadius:
-                                const BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(20)),
+                                const BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
                             color: Theme.of(context).colorScheme.secondary,
                           ),
                           padding: const EdgeInsets.all(10),
-                          width: double.infinity,
                           child: Text(
-                            '${getLikes()} · ${getHates()}',
-                            style: kDetail.copyWith(
-                              color: Theme.of(context).colorScheme.onSecondary,
-                            ),
+                            widget.post.school.name,
+                            style: kTitle.copyWith(color: Theme.of(context).colorScheme.onSecondary),
                             textAlign: TextAlign.center,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -120,7 +110,7 @@ class _HottestTileState extends State<HottestTile> {
                                   left: true,
                                   header: widget.post.title.isEmpty ? widget.post.content : widget.post.title,
                                   body:
-                                      '${widget.post.school.name}${widget.post.yearOfStudy.type != null ? "\nYear ${widget.post.yearOfStudy.type}" : ''}${widget.post.faculty.faculty != null ? "\n${widget.post.faculty.faculty}" : ''}',
+                                      '${widget.post.emojis.join('  ')}${widget.post.yearOfStudy.type != null ? "\nYear ${widget.post.yearOfStudy.type}" : ''}${widget.post.faculty.faculty != null ? "\n${widget.post.faculty.faculty}" : ''}',
                                 ),
                               ),
                             ],

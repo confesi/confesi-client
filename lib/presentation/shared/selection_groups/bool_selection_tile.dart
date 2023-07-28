@@ -11,8 +11,8 @@ class BoolSelectionTile extends StatefulWidget {
     required this.text,
     required this.onTap,
     this.secondaryText,
-    this.topRounded = false,
-    this.bottomRounded = false,
+    this.topRounded = true,
+    this.bottomRounded = true,
     this.isActive = false,
     this.backgroundColor,
     this.foregroundColor,
@@ -42,13 +42,16 @@ class _BoolSelectionTileState extends State<BoolSelectionTile> {
     return TouchableOpacity(
       onTap: () => widget.onTap(),
       child: Container(
+        margin: const EdgeInsets.only(top: 10),
         decoration: BoxDecoration(
           color: widget.backgroundColor ?? Theme.of(context).colorScheme.background,
+          border: Border.all(
+              color: Theme.of(context).colorScheme.onBackground, width: 0.8, strokeAlign: BorderSide.strokeAlignInside),
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(widget.topRounded ? 20 : 0),
-            topRight: Radius.circular(widget.topRounded ? 20 : 0),
-            bottomRight: Radius.circular(widget.bottomRounded ? 20 : 0),
-            bottomLeft: Radius.circular(widget.bottomRounded ? 20 : 0),
+            topLeft: Radius.circular(widget.topRounded ? 15 : 0),
+            topRight: Radius.circular(widget.topRounded ? 15 : 0),
+            bottomRight: Radius.circular(widget.bottomRounded ? 15 : 0),
+            bottomLeft: Radius.circular(widget.bottomRounded ? 15 : 0),
           ),
         ),
         child: Row(

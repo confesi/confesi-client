@@ -1,3 +1,6 @@
+import 'package:confesi/presentation/authentication_and_settings/screens/settings/profanity.dart';
+import 'package:confesi/presentation/notifications/screens/home.dart';
+
 import '../../data/create_post/datasources/create_post_datasource.dart';
 import 'package:confesi/presentation/authentication_and_settings/screens/authentication/open.dart';
 import '../../presentation/authentication_and_settings/screens/authentication/reset_password.dart';
@@ -72,8 +75,8 @@ final GoRouter router = GoRouter(
             // Change the opacity of the screen using a Curve based on the animation's value
             var tween = CurveTween(curve: Curves.easeInOut);
             var curvedAnimation = tween.animate(animation);
-            return FadeTransition(
-              opacity: curvedAnimation,
+            return ScaleTransition(
+              scale: curvedAnimation,
               child: child,
             );
           },
@@ -133,6 +136,11 @@ final GoRouter router = GoRouter(
     GoRoute(path: '/settings', builder: (BuildContext context, GoRouterState state) => const SettingsHome()),
 
     GoRoute(path: '/settings/faq', builder: (BuildContext context, GoRouterState state) => const FAQScreen()),
+    GoRoute(
+        path: '/settings/profanity', builder: (BuildContext context, GoRouterState state) => const ProfanityScreen()),
+    GoRoute(
+        path: '/home/notifications',
+        builder: (BuildContext context, GoRouterState state) => const NotificationsScreen()),
     GoRoute(
         path: '/settings/notifications',
         builder: (BuildContext context, GoRouterState state) => const NotificationsSettingScreen()),

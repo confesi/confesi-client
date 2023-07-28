@@ -11,8 +11,6 @@ import 'faculty.dart';
 
 Post postFromJson(String str) => Post.fromJson(json.decode(str));
 
-String postToJson(Post data) => json.encode(data.toJson());
-
 class Post {
   int id;
   int createdAt;
@@ -28,6 +26,10 @@ class Post {
   DateTime? hottestOn;
   bool hidden;
   bool edited;
+  int userVote;
+  bool owner;
+  // bool saved;
+  List<String> emojis;
 
   Post({
     required this.id,
@@ -44,42 +46,30 @@ class Post {
     required this.hottestOn,
     required this.hidden,
     required this.edited,
+    required this.userVote,
+    required this.owner,
+    // required this.saved,
+    required this.emojis,
   });
 
-  factory Post.fromJson(Map<String, dynamic> json) {
-    json = json["post"];
-    return Post(
-      id: json["id"],
-      createdAt: json["created_at"],
-      updatedAt: json["updated_at"],
-      school: School.fromJson(json["school"]),
-      faculty: Faculty.fromJson(json["faculty"]),
-      yearOfStudy: YearOfStudy.fromJson(json["year_of_study"]),
-      title: json["title"],
-      content: json["content"],
-      downvote: json["downvote"],
-      upvote: json["upvote"],
-      trendingScore: json["trending_score"],
-      hottestOn: DateTime.parse(json["hottest_on"]),
-      hidden: json["hidden"],
-      edited: json["edited"],
-    );
-  }
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "created_at": createdAt,
-        "updated_at": updatedAt,
-        "school": school.toJson(),
-        "faculty": faculty.toJson(),
-        "year_of_study": yearOfStudy.toJson(),
-        "title": title,
-        "content": content,
-        "downvote": downvote,
-        "upvote": upvote,
-        "trending_score": trendingScore,
-        "hottest_on": hottestOn?.toIso8601String(),
-        "hidden": hidden,
-        "edited": edited,
-      };
+  factory Post.fromJson(Map<String, dynamic> json) => Post(
+        id: json["post"]["id"],
+        createdAt: json["post"]["created_at"],
+        updatedAt: json["post"]["updated_at"],
+        school: School.fromJson(json["post"]["school"]),
+        faculty: Faculty.fromJson(json["post"]["faculty"]),
+        yearOfStudy: YearOfStudy.fromJson(json["post"]["year_of_study"]),
+        title: json["post"]["title"],
+        content: json["post"]["content"],
+        downvote: json["post"]["downvote"],
+        upvote: json["post"]["upvote"],
+        trendingScore: json["post"]["trending_score"],
+        hottestOn: DateTime.parse(json["post"]["hottest_on"]),
+        hidden: json["post"]["hidden"],
+        edited: json["post"]["edited"],
+        userVote: json["user_vote"],
+        owner: json["owner"],
+        // saved: json["saved"],
+        emojis: List<String>.from(json["emojis"].map((x) => x)),
+      );
 }

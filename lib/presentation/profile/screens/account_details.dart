@@ -1,3 +1,5 @@
+import 'package:confesi/presentation/shared/selection_groups/tile_group.dart';
+
 import '../../../core/utils/sizing/bottom_safe_area.dart';
 import '../../shared/text/disclaimer_text.dart';
 import 'package:scrollable/exports.dart';
@@ -10,7 +12,6 @@ import '../../create_post/widgets/faculty_picker_sheet.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/layout/appbar.dart';
 import '../../shared/selection_groups/setting_tile.dart';
-import '../../shared/selection_groups/setting_tile_group.dart';
 
 class AccountDetailsScreen extends StatelessWidget {
   const AccountDetailsScreen({super.key});
@@ -46,9 +47,9 @@ class AccountDetailsScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 10),
-                        SettingTileGroup(
+                        TileGroup(
                           text: "Your home university",
-                          settingTiles: [
+                          tiles: [
                             SettingTile(
                               noRightIcon: true,
                               secondaryText: "edit",
@@ -59,9 +60,9 @@ class AccountDetailsScreen extends StatelessWidget {
                           ],
                         ),
                         const SizedBox(height: 15),
-                        SettingTileGroup(
+                        TileGroup(
                           text: "Your year of study (optional)",
-                          settingTiles: [
+                          tiles: [
                             SettingTile(
                               secondaryText: "edit",
                               noRightIcon: true,
@@ -72,9 +73,9 @@ class AccountDetailsScreen extends StatelessWidget {
                           ],
                         ),
                         const SizedBox(height: 15),
-                        SettingTileGroup(
+                        TileGroup(
                           text: "Your faculty (optional)",
-                          settingTiles: [
+                          tiles: [
                             SettingTile(
                               secondaryText: "edit",
                               noRightIcon: true,

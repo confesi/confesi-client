@@ -1,5 +1,5 @@
 import '../../../../constants/enums_that_are_local_keys.dart';
-import '../../../shared/selection_groups/bool_selection_group.dart';
+import '../../../shared/selection_groups/tile_group.dart';
 import '../../../shared/selection_groups/bool_selection_tile.dart';
 import '../../../shared/behaviours/themed_status_bar.dart';
 import '../../../shared/layout/scrollable_area.dart';
@@ -39,12 +39,10 @@ class CurvyScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: 10),
-                        BoolSelectionGroup(
+                        TileGroup(
                           text: "Adjust the curviness of in-app components",
-                          selectionTiles: [
+                          tiles: [
                             BoolSelectionTile(
-                              topRounded: true,
                               isActive: true,
                               icon: CupertinoIcons.sparkles,
                               text: "No curves",

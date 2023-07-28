@@ -24,12 +24,12 @@ class LeaderboardItemTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(left: 5, right: 5, top: 5),
+      margin: const EdgeInsets.only(left: 5, right: 5, top: 10),
       decoration: BoxDecoration(
         border: Border.all(
-            color: Theme.of(context).colorScheme.onBackground, width: 0.8, strokeAlign: BorderSide.strokeAlignCenter),
+            color: Theme.of(context).colorScheme.onBackground, width: 0.8, strokeAlign: BorderSide.strokeAlignInside),
         color: Theme.of(context).colorScheme.background,
-        borderRadius: const BorderRadius.all(Radius.circular(20)),
+        borderRadius: const BorderRadius.all(Radius.circular(15)),
       ),
       padding: const EdgeInsets.symmetric(vertical: 10),
       width: double.infinity,
@@ -38,7 +38,7 @@ class LeaderboardItemTile extends StatelessWidget {
         children: [
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Text(
                 "$placing${numberPostfix(placing)}",
                 style: kTitle.copyWith(
@@ -51,7 +51,7 @@ class LeaderboardItemTile extends StatelessWidget {
           Expanded(
             flex: 3,
             child: Padding(
-              padding: const EdgeInsets.only(right: 10),
+              padding: const EdgeInsets.only(right: 15),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

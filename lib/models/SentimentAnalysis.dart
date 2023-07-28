@@ -6,8 +6,6 @@ import 'dart:convert';
 
 SentimentAnalysis sentimentAnalysisFromJson(String str) => SentimentAnalysis.fromJson(json.decode(str));
 
-String sentimentAnalysisToJson(SentimentAnalysis data) => json.encode(data.toJson());
-
 class SentimentAnalysis {
   num positive;
   num negative;
@@ -27,11 +25,4 @@ class SentimentAnalysis {
         neutral: json["neutral"]?.toDouble(),
         compound: json["compound"]?.toDouble(),
       );
-
-  Map<String, dynamic> toJson() => {
-        "positive": positive,
-        "negative": negative,
-        "neutral": neutral,
-        "compound": compound,
-      };
 }

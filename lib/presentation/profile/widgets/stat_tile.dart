@@ -25,13 +25,12 @@ class StatTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: const EdgeInsets.only(top: 10),
       decoration: BoxDecoration(
         border: Border.all(
-            color: Theme.of(context).colorScheme.onBackground, width: 0.8, strokeAlign: BorderSide.strokeAlignCenter),
+            color: Theme.of(context).colorScheme.onBackground, width: 0.8, strokeAlign: BorderSide.strokeAlignInside),
         color: Theme.of(context).colorScheme.background,
-        borderRadius: const BorderRadius.all(
-          Radius.circular(5),
-        ),
+        borderRadius: const BorderRadius.all(Radius.circular(15)),
       ),
       child: Row(
         children: [

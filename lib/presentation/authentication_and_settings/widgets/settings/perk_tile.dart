@@ -22,7 +22,7 @@ class PerkTile extends StatelessWidget {
         // boxShadow: [BoxShadow(color: Theme.of(context).colorScheme.error, blurRadius: 10)],
         color: Theme.of(context).colorScheme.surface,
         borderRadius: const BorderRadius.all(Radius.circular(15)),
-        border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8,strokeAlign: BorderSide.strokeAlignCenter),
+        border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8,strokeAlign: BorderSide.strokeAlignInside),
       ),
       child: ClipRRect(
         borderRadius: const BorderRadius.all(Radius.circular(15)),

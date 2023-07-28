@@ -6,8 +6,6 @@ import 'dart:convert';
 
 MetaData metaDataFromJson(String str) => MetaData.fromJson(json.decode(str));
 
-String metaDataToJson(MetaData data) => json.encode(data.toJson());
-
 class MetaData {
   int userVote;
   bool owner;
@@ -27,11 +25,4 @@ class MetaData {
         saved: json["saved"],
         emojis: List<String>.from(json["emojis"].map((x) => x)),
       );
-
-  Map<String, dynamic> toJson() => {
-        "user_vote": userVote,
-        "owner": owner,
-        "saved": saved,
-        "emojis": List<dynamic>.from(emojis.map((x) => x)),
-      };
 }

@@ -46,7 +46,7 @@ class Sharing {
               border: Border.all(
                   color: Theme.of(context).colorScheme.onBackground,
                   width: 0.8,
-                  strokeAlign: BorderSide.strokeAlignCenter),
+                  strokeAlign: BorderSide.strokeAlignInside),
               borderRadius: const BorderRadius.all(Radius.circular(5)),
               boxShadow: [
                 BoxShadow(

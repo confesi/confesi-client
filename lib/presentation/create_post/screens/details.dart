@@ -5,7 +5,7 @@ import '../../shared/behaviours/nav_blocker.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/overlays/info_sheet.dart';
 import '../../shared/overlays/notification_chip.dart';
-import '../../shared/selection_groups/bool_selection_group.dart';
+import '../../shared/selection_groups/tile_group.dart';
 import '../../shared/selection_groups/bool_selection_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -84,11 +84,10 @@ class _CreatePostDetailsState extends State<CreatePostDetails> with AutomaticKee
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     const SizedBox(height: 15),
-                                    BoolSelectionGroup(
+                                    TileGroup(
                                       text: "Select genre",
-                                      selectionTiles: [
+                                      tiles: [
                                         BoolSelectionTile(
-                                          topRounded: true,
                                           backgroundColor: Theme.of(context).colorScheme.surface,
                                           icon: CupertinoIcons.cube_box,
                                           text: "General",

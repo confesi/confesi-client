@@ -6,8 +6,6 @@ import 'dart:convert';
 
 School schoolFromJson(String str) => School.fromJson(json.decode(str));
 
-String schoolToJson(School data) => json.encode(data.toJson());
-
 class School {
   String name;
   String abbr;
@@ -36,14 +34,4 @@ class School {
         domain: json["domain"],
         imgUrl: json["img_url"],
       );
-
-  Map<String, dynamic> toJson() => {
-        "name": name,
-        "abbr": abbr,
-        "lat": lat,
-        "lon": lon,
-        "daily_hottests": dailyHottests,
-        "domain": domain,
-        "img_url": imgUrl,
-      };
 }

@@ -6,6 +6,7 @@ import 'application/authentication_and_settings/cubit/auth_flow_cubit.dart';
 import 'application/feed/cubit/sentiment_analysis_cubit.dart';
 import 'core/services/create_post_hint_text/create_post_hint_text.dart';
 import 'core/services/remote_config/remote_config.dart';
+import 'core/services/splash_screen_hint_text/splash_screen_hint_text.dart';
 import 'core/services/user_auth/user_auth_data.dart';
 import 'core/services/user_auth/user_auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -118,6 +119,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => userAuthService);
   sl.registerLazySingleton(() => NotificationService()..init());
   sl.registerLazySingleton(() => CreatePostHintManager());
+  sl.registerLazySingleton(() => SplashScreenHintManager());
 
   //! State (BLoC or Cubit)  // // Registers the authentication cubit.
   sl.registerFactory(() => RecentsCubit(recents: sl()));

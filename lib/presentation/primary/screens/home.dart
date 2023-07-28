@@ -1,4 +1,6 @@
 import '../../../core/router/go_router.dart';
+import '../../profile/screens/account_details.dart';
+import '../../profile/screens/account_stats.dart';
 import '../../shared/other/widget_or_nothing.dart';
 
 import '../../../application/shared/cubit/share_cubit.dart';
@@ -73,7 +75,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     const HottestHome(),
                     const SettingsHome(),
                     const LeaderboardScreen(),
-                    const NotificationsScreen(),
+                    const AccountProfileStats(),
+                    // const NotificationsScreen(),
                   ],
                 ),
                 bottomNavigationBar: Container(
@@ -121,10 +124,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           icon: CupertinoIcons.chart_bar_alt_fill,
                         ),
                         _BottomTab(
-                          hasNotification: true,
+                          hasNotification: false,
                           indexMatcher: 4,
                           currentIndex: currentIndex,
-                          icon: CupertinoIcons.bell,
+                          icon: CupertinoIcons.profile_circled,
                         ),
                       ],
                     ),

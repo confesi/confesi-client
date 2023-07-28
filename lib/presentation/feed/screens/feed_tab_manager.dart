@@ -70,9 +70,9 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
                   return AppbarLayout(
                     bottomBorder: true,
                     backgroundColor: Theme.of(context).colorScheme.background,
-                    rightIconOnPress: () => router.push("/home/profile/stats"),
+                    rightIconOnPress: () => router.push('/home/notifications'),
                     rightIconVisible: true,
-                    rightIcon: CupertinoIcons.profile_circled,
+                    rightIcon: CupertinoIcons.bell,
                     centerWidget: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

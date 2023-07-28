@@ -1,3 +1,6 @@
+import 'package:confesi/presentation/shared/selection_groups/tile_group.dart';
+
+import '../../../shared/behaviours/simulated_bottom_safe_area.dart';
 import '../../../shared/behaviours/themed_status_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:scrollable/exports.dart';
@@ -49,13 +52,15 @@ class _FAQScreenState extends State<FAQScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      HeaderText(text: "General"),
-                      StepperTile(question: "Some question", answer: "Some answer"),
-                      SizedBox(height: 10),
-                      StepperTile(question: "Some question", answer: "Some answer"),
-                      SizedBox(height: 10),
-                      HeaderText(text: "Privacy"),
-                      StepperTile(question: "Some question", answer: "Some answer"),
+                      TileGroup(
+                        text: "Privacy",
+                        tiles: [
+                          StepperTile(question: "Some question", answer: "Some answer"),
+                          StepperTile(question: "Some question", answer: "Some answer"),
+                          StepperTile(question: "Some question", answer: "Some answer"),
+                        ],
+                      ),
+                      SimulatedBottomSafeArea(),
                     ],
                   ),
                 ),

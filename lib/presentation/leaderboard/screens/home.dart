@@ -64,7 +64,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
           children: [
             const SizedBox(height: 30),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 5),
               child: Text(
                 "Your school",
                 style: kDisplay1.copyWith(
@@ -83,7 +83,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
             ),
             const SizedBox(height: 30),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 5),
               child: Text(
                 "The others",
                 style: kDisplay1.copyWith(

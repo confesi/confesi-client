@@ -32,7 +32,7 @@ class LikeHateHottestPageviewTile extends StatelessWidget {
         borderRadius: const BorderRadius.all(Radius.circular(20)),
         color: Theme.of(context).colorScheme.background,
         border: Border.all(
-            color: Theme.of(context).colorScheme.onBackground, width: 0.8, strokeAlign: BorderSide.strokeAlignCenter),
+            color: Theme.of(context).colorScheme.onBackground, width: 0.8, strokeAlign: BorderSide.strokeAlignInside),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
