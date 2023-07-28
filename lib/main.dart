@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:confesi/application/feed/cubit/sentiment_analysis_cubit.dart';
+import 'package:confesi/constants/shared/dev.dart';
 
 import 'application/authentication_and_settings/cubit/auth_flow_cubit.dart';
 import 'core/services/hive/hive_client.dart';
@@ -65,7 +66,7 @@ void main() async => await init().then(
                     BlocProvider(lazy: false, create: (context) => sl<LanguageSettingCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<AuthFlowCubit>()),
                   ],
-                  child: DevicePreview(builder: (context) => const MyApp()),
+                  child: debugMode ? DevicePreview(builder: (context) => const MyApp()) : const MyApp(),
                 ),
               ),
             ),

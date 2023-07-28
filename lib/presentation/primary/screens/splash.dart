@@ -37,12 +37,15 @@ class SplashScreen extends StatelessWidget {
               ),
               Positioned.fill(
                 bottom: 9,
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Text(
-                    sl.get<SplashScreenHintManager>().getHint().text,
-                    style: kDetail.copyWith(
-                      color: Theme.of(context).colorScheme.onSurface,
+                child: SafeArea(
+                  top: false,
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Text(
+                      sl.get<SplashScreenHintManager>().getHint().text,
+                      style: kDetail.copyWith(
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
                     ),
                   ),
                 ),
