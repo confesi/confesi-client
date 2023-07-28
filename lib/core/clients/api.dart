@@ -162,7 +162,6 @@ class Api {
             return Left(ApiTooManyGlobalRequests(int.parse(response.headers["x-ratelimit-reset"]!)));
           }
         } catch (e) {
-          print(e);
           return Left(ApiServerFailure());
         }
       }
@@ -171,10 +170,8 @@ class Api {
     } on SocketException catch (_) {
       return Left(ApiConnectionFailure());
     } on TimeoutException catch (_) {
-      print("TIME OUT FAILURE!!!!!!!!!!!!!!");
       return Left(ApiTimeoutFailure());
     } catch (e) {
-      print(e);
       return Left(ApiServerFailure());
     }
   }

@@ -1,3 +1,5 @@
+import 'package:confesi/presentation/shared/selection_groups/switch_selection_tile.dart';
+
 import '../../../../core/router/go_router.dart';
 
 import '../../../shared/behaviours/themed_status_bar.dart';
@@ -54,23 +56,16 @@ class FeedbackSettingScreen extends StatelessWidget {
                         TileGroup(
                           text: "Shake to give feedback",
                           tiles: [
-                            BoolSelectionTile(
+                            SwitchSelectionTile(
                               isActive: true,
-                              icon: CupertinoIcons.check_mark,
-                              text: "Enabled",
-                              onTap: () => {},
-                            ),
-                            BoolSelectionTile(
-                              bottomRounded: true,
-                              isActive: true,
-                              icon: CupertinoIcons.xmark,
-                              text: "Disabled",
+                              secondaryText: "On",
+                              icon: CupertinoIcons.waveform_path,
+                              text: "Shake for feedback",
                               onTap: () => {},
                             ),
                           ],
                         ),
                         const DisclaimerText(
-                          topPadding: 15,
                           text: "This preference is saved locally to your device.",
                         ),
                         const SimulatedBottomSafeArea(),

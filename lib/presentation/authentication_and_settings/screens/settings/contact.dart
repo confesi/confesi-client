@@ -80,7 +80,6 @@ class _ContactScreenState extends State<ContactScreen> {
                           ],
                         ),
                         const DisclaimerText(
-                          topPadding: 15,
                           text: "To permanently delete your account, send us an email.",
                         ),
                         const SimulatedBottomSafeArea(),

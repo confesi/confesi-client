@@ -82,7 +82,6 @@ class AccountDetailsScreen extends StatelessWidget {
                           ],
                         ),
                         const DisclaimerText(
-                          topPadding: 15,
                           text:
                               "These details are shared alongside a confession. You can choose to keep your year and faculty hidden, but you must share your university.",
                         ),

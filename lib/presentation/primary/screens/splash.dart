@@ -36,7 +36,7 @@ class SplashScreen extends StatelessWidget {
                 ),
               ),
               Positioned.fill(
-                bottom: 9,
+                bottom: 10,
                 child: SafeArea(
                   top: false,
                   child: Align(

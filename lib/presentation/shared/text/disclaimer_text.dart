@@ -6,16 +6,14 @@ class DisclaimerText extends StatelessWidget {
   const DisclaimerText({
     Key? key,
     required this.text,
-    this.topPadding = 0,
   }) : super(key: key);
 
   final String text;
-  final double topPadding;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: topPadding),
+      padding: const EdgeInsets.only(top: 10),
       child: IntrinsicHeight(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,

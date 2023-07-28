@@ -70,7 +70,6 @@ class CurvyScreen extends StatelessWidget {
                           ],
                         ),
                         const DisclaimerText(
-                          topPadding: 15,
                           text: "This preference is saved locally to your device.",
                         ),
                         const SimulatedBottomSafeArea(),

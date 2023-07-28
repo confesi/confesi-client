@@ -13,7 +13,8 @@ class SplashScreenHintManager {
     SplashScreenHintText(text: 'Get ready to ROFL'),
     SplashScreenHintText(text: 'Here we go...'),
     SplashScreenHintText(text: 'Woooooo'),
-    SplashScreenHintText(text: "I'm bored"),
+    SplashScreenHintText(text: "Confesi FTW"),
+    SplashScreenHintText(text: "Lmao"),
   ];
 
   SplashScreenHintText getHint() => _hintTexts[Random().nextInt(_hintTexts.length)];
