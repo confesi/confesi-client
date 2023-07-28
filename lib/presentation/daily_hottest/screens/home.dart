@@ -98,7 +98,6 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
       return Center(
         key: const ValueKey('alert'),
         child: AlertIndicator(
-          isLoading: true, // todo: fix this
           message: error.message,
           onPress: () => context.read<HottestCubit>().loadYesterday(),
         ),

@@ -21,7 +21,7 @@ class DisclaimerText extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Container(
-              color: Theme.of(context).colorScheme.primary,
+              color: Theme.of(context).colorScheme.secondary,
               width: 2,
             ),
             Expanded(

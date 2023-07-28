@@ -37,6 +37,55 @@ class _SentimentAnalysisScreenState extends State<SentimentAnalysisScreen> {
     super.initState();
   }
 
+  Widget buildChild(BuildContext context, SentimentAnalysisState state) {
+    if (state is SentimentAnalysisLoading) {
+      return const LoadingCupertinoIndicator(key: ValueKey("loading"));
+    } else if (state is SentimentAnalysisData) {
+      return ScrollableView(
+        key: const ValueKey("loaded"),
+        physics: const BouncingScrollPhysics(),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        controller: ScrollController(),
+        child: InitScale(
+          child: PieChart(
+            chartRadius: widthFraction(context, .8),
+            ringStrokeWidth: 10,
+            dataMap: {
+              "😁 Positive": state.sentimentAnalysis.positive.toDouble(),
+              "🤬 Negative": state.sentimentAnalysis.negative.toDouble(),
+              "😐 Neutral": state.sentimentAnalysis.neutral.toDouble(),
+            },
+            animationDuration: const Duration(milliseconds: 500),
+            chartLegendSpacing: 55,
+            colorList: [
+              Theme.of(context).colorScheme.surfaceTint,
+              Theme.of(context).colorScheme.error,
+              Theme.of(context).colorScheme.secondary
+            ],
+            chartType: ChartType.ring,
+            legendOptions: LegendOptions(
+              legendPosition: LegendPosition.bottom,
+              legendShape: BoxShape.circle,
+              legendTextStyle: kDisplay2.copyWith(color: Theme.of(context).colorScheme.primary),
+            ),
+            chartValuesOptions: ChartValuesOptions(
+              chartValueStyle: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
+              showChartValueBackground: false,
+              showChartValues: true,
+              showChartValuesInPercentage: true,
+            ),
+          ),
+        ),
+      );
+    } else {
+      return AlertIndicator(
+        key: const ValueKey("error"),
+        message: "Error loading sentiment",
+        onPress: () => context.read<SentimentAnalysisCubit>().loadSentimentAnalysis(widget.props.postId),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return ThemedStatusBar(
@@ -59,56 +108,10 @@ class _SentimentAnalysisScreenState extends State<SentimentAnalysisScreen> {
               ),
               Expanded(
                 child: Center(
-                  child: AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 250),
-                    child: BlocBuilder<SentimentAnalysisCubit, SentimentAnalysisState>(
-                      builder: (context, state) {
-                        if (state is SentimentAnalysisLoading) {
-                          return const LoadingCupertinoIndicator();
-                        } else if (state is SentimentAnalysisData) {
-                          return ScrollableView(
-                            physics: const BouncingScrollPhysics(),
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            controller: ScrollController(),
-                            child: InitScale(
-                              child: PieChart(
-                                chartRadius: widthFraction(context, .8),
-                                ringStrokeWidth: 10,
-                                dataMap: {
-                                  "😁 Positive": state.sentimentAnalysis.positive.toDouble(),
-                                  "🤬 Negative": state.sentimentAnalysis.negative.toDouble(),
-                                  "😐 Neutral": state.sentimentAnalysis.neutral.toDouble(),
-                                },
-                                animationDuration: const Duration(milliseconds: 500),
-                                chartLegendSpacing: 55,
-                                colorList: [
-                                  Theme.of(context).colorScheme.surfaceTint,
-                                  Theme.of(context).colorScheme.error,
-                                  Theme.of(context).colorScheme.secondary
-                                ],
-                                chartType: ChartType.ring,
-                                legendOptions: LegendOptions(
-                                  legendPosition: LegendPosition.bottom,
-                                  legendShape: BoxShape.circle,
-                                  legendTextStyle: kDisplay2.copyWith(color: Theme.of(context).colorScheme.primary),
-                                ),
-                                chartValuesOptions: ChartValuesOptions(
-                                  chartValueStyle: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
-                                  showChartValueBackground: false,
-                                  showChartValues: true,
-                                  showChartValuesInPercentage: true,
-                                ),
-                              ),
-                            ),
-                          );
-                        } else {
-                          return AlertIndicator(
-                            message: "Error loading sentiment",
-                            onPress: () =>
-                                context.read<SentimentAnalysisCubit>().loadSentimentAnalysis(widget.props.postId),
-                          );
-                        }
-                      },
+                  child: BlocBuilder<SentimentAnalysisCubit, SentimentAnalysisState>(
+                    builder: (context, state) => AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 250),
+                      child: buildChild(context, state),
                     ),
                   ),
                 ),

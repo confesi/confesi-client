@@ -94,7 +94,12 @@ class _SwitchSelectionTileState extends State<SwitchSelectionTile> {
                 ),
               ),
             ),
-            CupertinoSwitch(value: widget.isActive, onChanged: (_) => widget.onTap())
+            CupertinoSwitch(
+              focusColor: Theme.of(context).colorScheme.secondary,
+              activeColor: Theme.of(context).colorScheme.secondary,
+              value: widget.isActive,
+              onChanged: (_) => widget.onTap(),
+            )
           ],
         ),
       ),

@@ -77,7 +77,7 @@ String apiVerbToString(Method method) {
 
 class Api {
   final Map<String, String> _headers = <String, String>{};
-  Duration _timeout = const Duration(seconds: 3);
+  Duration _timeout = const Duration(seconds: 5);
 
   Api() {
     _headers['Content-Type'] = 'application/json';
@@ -171,6 +171,7 @@ class Api {
     } on SocketException catch (_) {
       return Left(ApiConnectionFailure());
     } on TimeoutException catch (_) {
+      print("TIME OUT FAILURE!!!!!!!!!!!!!!");
       return Left(ApiTimeoutFailure());
     } catch (e) {
       print(e);

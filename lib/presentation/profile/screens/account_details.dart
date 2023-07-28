@@ -36,8 +36,7 @@ class AccountDetailsScreen extends StatelessWidget {
               ),
               Expanded(
                 child: ScrollableView(
-                          physics: const BouncingScrollPhysics(),
-
+                  physics: const BouncingScrollPhysics(),
                   inlineBottomOrRightPadding: bottomSafeArea(context),
                   controller: ScrollController(),
                   scrollBarVisible: false,
@@ -46,7 +45,6 @@ class AccountDetailsScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: 10),
                         TileGroup(
                           text: "Your home university",
                           tiles: [
@@ -59,7 +57,6 @@ class AccountDetailsScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 15),
                         TileGroup(
                           text: "Your year of study (optional)",
                           tiles: [
@@ -72,7 +69,6 @@ class AccountDetailsScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 15),
                         TileGroup(
                           text: "Your faculty (optional)",
                           tiles: [

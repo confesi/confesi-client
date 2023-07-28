@@ -1,3 +1,4 @@
+import 'package:confesi/presentation/shared/behaviours/simulated_bottom_safe_area.dart';
 import 'package:confesi/presentation/shared/selection_groups/tile_group.dart';
 
 import '../widgets/stat_tile.dart';
@@ -33,27 +34,25 @@ class _AccountProfileStatsState extends State<AccountProfileStats> {
             color: Theme.of(context).colorScheme.shadow,
             child: Column(
               children: [
-                SafeArea(
-                  bottom: false,
-                  child: AppbarLayout(
-                    bottomBorder: true,
-                    centerWidget: Text(
-                      "Your Private Account",
-                      style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.center,
-                    ),
-                    rightIconVisible: true,
-                    rightIcon: CupertinoIcons.gear,
-                    rightIconOnPress: () => router.push("/settings"),
-                    leftIconVisible: false,
+                AppbarLayout(
+                  bottomBorder: true,
+                  centerWidget: Text(
+                    "Your Private Account",
+                    style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
                   ),
+                  rightIconVisible: true,
+                  rightIcon: CupertinoIcons.gear,
+                  rightIconOnPress: () => router.push("/settings"),
+                  leftIconVisible: false,
                 ),
-                const SizedBox(height: 15),
                 Expanded(
                   child: ScrollableView(
+                    hapticsEnabled: false,
                     physics: const BouncingScrollPhysics(),
-                    inlineBottomOrRightPadding: bottomSafeArea(context),
+                    inlineTopOrLeftPadding: 15,
+                    inlineBottomOrRightPadding: 15,
                     controller: ScrollController(),
                     scrollBarVisible: false,
                     child: Padding(

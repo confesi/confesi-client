@@ -36,7 +36,7 @@ class _DatePickerState extends State<DatePicker> {
                 icon: CupertinoIcons.chevron_right,
                 backgroundColor: Theme.of(context).colorScheme.surface,
                 textColor: Theme.of(context).colorScheme.primary,
-                text: "Load yesterday",
+                text: "Yesterday's",
               ),
             ),
             const SizedBox(width: 15),
