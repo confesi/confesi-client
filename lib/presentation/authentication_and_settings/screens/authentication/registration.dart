@@ -14,7 +14,6 @@ import '../../../../core/utils/sizing/bottom_safe_area.dart';
 import '../../../shared/button_touch_effects/touchable_opacity.dart';
 import '../../../shared/buttons/pop.dart';
 import '../../../shared/layout/appbar.dart';
-import '../../../shared/text_animations/typewriter.dart';
 import '../../../shared/textfields/expandable_textfield.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -29,12 +28,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController passwordConfirmController = TextEditingController();
   late ScrollController scrollController;
+  FocusNode emailFocusNode = FocusNode();
+  FocusNode passwordFocusNode = FocusNode();
+  FocusNode passwordConfirmFocusNode = FocusNode();
 
   @override
   void initState() {
     scrollController = ScrollController();
-    passwordController.clear();
-    emailController.clear();
+    emailFocusNode.requestFocus();
     super.initState();
   }
 
@@ -44,6 +45,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     passwordController.dispose();
     emailController.dispose();
     scrollController.dispose();
+    emailFocusNode.dispose();
+    passwordFocusNode.dispose();
+    passwordConfirmFocusNode.dispose();
     super.dispose();
   }
 
@@ -86,6 +90,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           ),
                           const SizedBox(height: 15),
                           ExpandableTextfield(
+                            focusNode: emailFocusNode,
                             keyboardType: TextInputType.emailAddress,
                             autoCorrectAndCaps: false,
                             maxLines: 1,
@@ -94,6 +99,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           ),
                           const SizedBox(height: 15),
                           ExpandableTextfield(
+                            focusNode: passwordFocusNode,
                             autoCorrectAndCaps: false,
                             obscured: true,
                             maxLines: 1,
@@ -102,6 +108,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           ),
                           const SizedBox(height: 15),
                           ExpandableTextfield(
+                            focusNode: passwordConfirmFocusNode,
                             autoCorrectAndCaps: false,
                             obscured: true,
                             maxLines: 1,
@@ -116,6 +123,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               FocusScope.of(context).unfocus();
                               await context.read<AuthFlowCubit>().register(
                                   emailController.text, passwordController.text, passwordConfirmController.text);
+                              FocusManager.instance.primaryFocus?.unfocus();
                             },
                             icon: CupertinoIcons.chevron_right,
                             backgroundColor: Theme.of(context).colorScheme.secondary,

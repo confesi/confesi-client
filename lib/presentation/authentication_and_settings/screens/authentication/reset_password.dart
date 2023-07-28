@@ -100,6 +100,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> with TickerPr
                             onPress: () async {
                               FocusScope.of(context).unfocus();
                               await context.read<AuthFlowCubit>().sendPasswordResetEmail(emailController.text);
+                              FocusManager.instance.primaryFocus?.unfocus();
                             },
                             icon: CupertinoIcons.chevron_right,
                             backgroundColor: Theme.of(context).colorScheme.secondary,

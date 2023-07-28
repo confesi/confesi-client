@@ -56,17 +56,10 @@ class _AppbarLayoutState extends State<AppbarLayout> {
             color: Colors.transparent,
             child: Padding(
               padding: const EdgeInsets.all(15),
-              child: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 300),
-                child: Transform.translate(
-                  offset: const Offset(-4, 0),
-                  child: AnimatedOpacity(
-                    duration: const Duration(milliseconds: 250),
-                    opacity: widget.leftIconDisabled ? 0.2 : 1,
-                    child: Icon(
-                      widget.leftIcon ?? CupertinoIcons.arrow_left,
-                    ),
-                  ),
+              child: Opacity(
+                opacity: widget.leftIconDisabled ? 0.2 : 1,
+                child: Icon(
+                  widget.leftIcon ?? CupertinoIcons.arrow_left,
                 ),
               ),
             ),

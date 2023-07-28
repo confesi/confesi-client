@@ -26,13 +26,13 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  late ScrollController scrollController;
+  ScrollController scrollController = ScrollController();
   FocusNode emailFocusNode = FocusNode();
   FocusNode passwordFocusNode = FocusNode();
 
   @override
   void initState() {
-    scrollController = ScrollController();
+    emailFocusNode.requestFocus();
     super.initState();
   }
 
@@ -99,6 +99,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                             onPress: () async {
                               FocusScope.of(context).unfocus();
                               await context.read<AuthFlowCubit>().login(emailController.text, passwordController.text);
+                              FocusManager.instance.primaryFocus?.unfocus();
                             },
                             icon: CupertinoIcons.chevron_right,
                             backgroundColor: Theme.of(context).colorScheme.secondary,

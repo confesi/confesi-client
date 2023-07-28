@@ -35,7 +35,7 @@ class HiveService {
 
   Future<Box<T>> openBoxByClass<T>() async {
     final boxName = T.toString();
-    return _openEncryptedBox<T>(boxName);
+    return await _openEncryptedBox<T>(boxName);
   }
 
   Future<Either<GeneralFailure, ApiSuccess>> putAtDefaultPosition<T>(T data) async {

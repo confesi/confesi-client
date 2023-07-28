@@ -60,26 +60,6 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> with TickerProvid
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Bobbing(
-                        child: FractionallySizedBox(
-                          widthFactor: 0.15,
-                          child: Hero(
-                            tag: "logo",
-                            child: AspectRatio(
-                              aspectRatio: 1,
-                              child: ShakeWidget(
-                                duration: const Duration(milliseconds: 800),
-                                shakeConstant: ShakeDefaultConstant1(),
-                                autoPlay: context.watch<AuthFlowCubit>().isLoading,
-                                child: Image.asset(
-                                  "assets/images/logos/logo_transparent.png",
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 30),
                       Text(
                         "Please verify your email",
                         style: kDisplay1.copyWith(color: Theme.of(context).colorScheme.primary),

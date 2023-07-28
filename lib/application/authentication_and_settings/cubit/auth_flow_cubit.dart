@@ -19,7 +19,6 @@ class AuthFlowCubit extends Cubit<AuthFlowState> {
   bool get isLoading => state is AuthFlowLoading;
 
   void emitDefault() {
-    print("==============================================================> default");
     emit(AuthFlowDefault());
   }
 
