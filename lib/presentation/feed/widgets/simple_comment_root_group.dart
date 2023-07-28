@@ -1,4 +1,4 @@
-import 'package:confesi/presentation/feed/widgets/simple_comment_tile.dart';
+import 'simple_comment_tile.dart';
 
 import '../../shared/behaviours/animated_cliprrect.dart';
 import 'package:flutter/material.dart';

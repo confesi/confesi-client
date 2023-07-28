@@ -1,7 +1,7 @@
-import 'package:confesi/core/router/go_router.dart';
-import 'package:confesi/core/services/user_auth/user_auth_data.dart';
-import 'package:confesi/presentation/feed/widgets/reaction_tile.dart';
-import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
+import '../../../core/router/go_router.dart';
+import '../../../core/services/user_auth/user_auth_data.dart';
+import 'reaction_tile.dart';
+import '../../shared/button_touch_effects/touchable_opacity.dart';
 
 import '../../../core/services/user_auth/user_auth_service.dart';
 import '../../../init.dart';

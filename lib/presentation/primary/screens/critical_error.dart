@@ -1,4 +1,4 @@
-import 'package:confesi/init.dart';
+import '../../../init.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/themes.dart';

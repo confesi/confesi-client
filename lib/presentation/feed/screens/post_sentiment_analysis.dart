@@ -1,4 +1,4 @@
-import 'package:confesi/presentation/shared/behaviours/nav_blocker.dart';
+import '../../shared/behaviours/nav_blocker.dart';
 
 import '../../../core/utils/sizing/width_fraction.dart';
 import '../../shared/behaviours/init_scale.dart';

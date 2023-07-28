@@ -1,4 +1,4 @@
-import 'package:confesi/core/router/go_router.dart';
+import '../../../core/router/go_router.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';

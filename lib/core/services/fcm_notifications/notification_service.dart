@@ -1,5 +1,8 @@
 import 'dart:async';
 
+import 'package:confesi/core/services/fcm_notifications/token_data.dart';
+import 'package:confesi/core/services/hive/hive_client.dart';
+import 'package:confesi/init.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -12,8 +15,9 @@ class NotificationService {
   StreamSubscription<RemoteMessage>? _onMessageOpenedAppSubscription;
   StreamSubscription<String>? _onTokenRefreshSubscription;
 
-  Future<void> initAndroidNotifications() async {
+  Future<void> init() async {
     AndroidNotificationChannel channel = const AndroidNotificationChannel(
+      // todo: these fields
       'high_importance_channel', // id
       'High Importance Notifications', // title
       'This channel is used for important notifications.', // description
@@ -23,7 +27,7 @@ class NotificationService {
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
-    await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    await _messaging.setForegroundNotificationPresentationOptions(
       alert: true, // Required to display a heads up notification
       badge: true,
       sound: true,
@@ -47,6 +51,30 @@ class NotificationService {
       criticalAlert: criticalAlert,
       provisional: provisional,
       sound: sound,
+    );
+  }
+
+  /// Deletes the token from the FCM server and removes it from local storage.
+  Future<void> deleteTokenFromLocalDb() async => await _messaging.deleteToken();
+
+  /// Call once when auth status is known.
+  ///
+  /// This will sync the token with the server and update local storage for it if needed.
+  Future<void> updateToken(String? uid) async {
+    (await sl.get<HiveService>().getFromBoxDefaultPosition<FcmToken>()).fold(
+      (empty) => print("TODO: save token to server and then to local db -> currentFcmToken, with/withoutUid"),
+      (previouslySavedFcmToken) {
+        token.then((token) {
+          token.fold(
+            (empty) => print("TODO: error can't get current token"),
+            (currentFcmToken) {
+              if (previouslySavedFcmToken.token != currentFcmToken || !previouslySavedFcmToken.withUid) {
+                print("TODO: save token to server and then to local db -> currentFcmToken, with/withoutUid");
+              }
+            },
+          );
+        });
+      },
     );
   }
 
@@ -94,7 +122,7 @@ class NotificationService {
     _onMessageSubscription = FirebaseMessaging.onMessage.listen(callback);
   }
 
-  void onMessageOpenedApp(void Function(RemoteMessage) callback) {
+  void onMessageOpenedInApp(void Function(RemoteMessage) callback) {
     _onMessageOpenedAppSubscription = FirebaseMessaging.onMessageOpenedApp.listen(callback);
   }
 

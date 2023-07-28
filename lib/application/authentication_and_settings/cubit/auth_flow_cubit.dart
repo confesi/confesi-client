@@ -1,6 +1,8 @@
 import 'package:bloc/bloc.dart';
-import 'package:confesi/core/clients/api.dart';
-import 'package:confesi/core/router/go_router.dart';
+import 'package:confesi/core/services/fcm_notifications/notification_service.dart';
+import 'package:confesi/core/services/hive/hive_client.dart';
+import '../../../core/clients/api.dart';
+import '../../../core/router/go_router.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -58,7 +60,9 @@ class AuthFlowCubit extends Cubit<AuthFlowState> {
 
   Future<void> logout() async {
     emit(AuthFlowLoading());
-    await sl.get<UserAuthService>().clearData().then((value) async {
+    await sl.get<HiveService>().clearAllData().then((value) async {
+      await sl.get<NotificationService>().deleteTokenFromLocalDb();
+      sl.get<UserAuthService>().setNoDataState();
       if (sl.get<UserAuthService>().state is UserAuthNoData) {
         try {
           await sl.get<FirebaseAuth>().signOut();
@@ -129,8 +133,6 @@ class AuthFlowCubit extends Cubit<AuthFlowState> {
       if (!refreshedUser.emailVerified) {
         emit(const AuthFlowNotification("Not verified", NotificationType.failure));
         return;
-      } else {
-        emit(const AuthFlowNotification("Verified", NotificationType.success));
       }
     } catch (_) {
       emit(const AuthFlowNotification("Unknown error", NotificationType.failure));

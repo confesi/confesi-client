@@ -1,5 +1,5 @@
-import 'package:confesi/core/services/hive/hive_client.dart';
-import 'package:confesi/core/services/user_auth/user_auth_data.dart';
+import '../hive/hive_client.dart';
+import 'user_auth_data.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:riverpod/riverpod.dart';
@@ -29,6 +29,11 @@ class UserAuthService extends ChangeNotifier {
   final HiveService hive;
   UserAuthService(this.hive);
 
+  void setNoDataState() {
+    state = UserAuthNoData();
+    notifyListeners();
+  }
+
   Future<void> saveData(UserAuthData user, String uid) async {
     try {
       hive.openBoxByClass<UserAuthData>().then((box) async => await box.put(uid, user));
@@ -56,16 +61,6 @@ class UserAuthService extends ChangeNotifier {
         // return the user
         state = user;
       }
-    } catch (_) {
-      state = UserAuthError();
-    }
-    notifyListeners();
-  }
-
-  Future<void> clearData() async {
-    try {
-      hive.openBoxByClass<UserAuthData>().then((box) => box.clear());
-      state = UserAuthNoData();
     } catch (_) {
       state = UserAuthError();
     }

@@ -1,4 +1,4 @@
-import 'package:confesi/core/router/go_router.dart';
+import '../../../core/router/go_router.dart';
 
 import '../../../core/styles/typography.dart';
 import '../../../core/utils/sizing/height_fraction.dart';

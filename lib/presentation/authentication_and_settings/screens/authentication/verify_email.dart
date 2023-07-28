@@ -1,7 +1,7 @@
-import 'package:confesi/application/authentication_and_settings/cubit/auth_flow_cubit.dart';
-import 'package:confesi/init.dart';
-import 'package:confesi/presentation/shared/behaviours/animated_bobbing.dart';
-import 'package:confesi/presentation/shared/overlays/notification_chip.dart';
+import '../../../../application/authentication_and_settings/cubit/auth_flow_cubit.dart';
+import '../../../../init.dart';
+import '../../../shared/behaviours/animated_bobbing.dart';
+import '../../../shared/overlays/notification_chip.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_shake_animated/flutter_shake_animated.dart';

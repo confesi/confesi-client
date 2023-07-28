@@ -1,8 +1,9 @@
+import 'package:dartz/dartz.dart';
+
 import '../../../core/results/failures.dart';
 import '../../../core/usecases/single_usecase.dart';
 import '../../../data/daily_hottest/repositories/daily_hottest_repository_concrete.dart';
 import '../../shared/entities/post.dart';
-import 'package:dartz/dartz.dart';
 
 class Posts implements Usecase<List<Post>, DateTime> {
   final DailyHottestRepository repository;

@@ -1,4 +1,4 @@
-import 'package:confesi/core/router/go_router.dart';
+import '../../../../core/router/go_router.dart';
 
 import '../../../../constants/enums_that_are_local_keys.dart';
 import '../../../shared/behaviours/themed_status_bar.dart';

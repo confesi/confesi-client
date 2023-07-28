@@ -1,4 +1,4 @@
-import 'package:confesi/core/router/go_router.dart';
+import '../../../core/router/go_router.dart';
 
 import '../../../domain/shared/entities/infinite_scroll_indexable.dart';
 

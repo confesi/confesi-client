@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:confesi/constants/shared/dev.dart';
-import 'package:confesi/core/results/failures.dart';
-import 'package:confesi/core/utils/numbers/is_plural.dart';
-import 'package:confesi/init.dart';
+import '../../constants/shared/dev.dart';
+import '../results/failures.dart';
+import '../utils/numbers/is_plural.dart';
+import '../../init.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;

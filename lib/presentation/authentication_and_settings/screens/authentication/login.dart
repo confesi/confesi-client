@@ -1,16 +1,12 @@
-import 'package:confesi/application/authentication_and_settings/cubit/auth_flow_cubit.dart';
-import 'package:confesi/core/results/failures.dart';
-import 'package:confesi/core/router/go_router.dart';
+import '../../../../application/authentication_and_settings/cubit/auth_flow_cubit.dart';
+import '../../../../core/router/go_router.dart';
 
-import '../../../../constants/shared/dev.dart';
 import '../../../../core/utils/sizing/bottom_safe_area.dart';
 import 'package:scrollable/exports.dart';
 
-import '../../../../constants/authentication_and_settings/text.dart';
 import '../../../shared/behaviours/nav_blocker.dart';
 import '../../../shared/behaviours/themed_status_bar.dart';
 import '../../../shared/layout/appbar.dart';
-import '../../../shared/text_animations/typewriter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -37,8 +33,6 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
   @override
   void initState() {
     scrollController = ScrollController();
-    emailController.clear();
-    passwordController.clear();
     super.initState();
   }
 
@@ -104,8 +98,6 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                             justText: true,
                             onPress: () async {
                               FocusScope.of(context).unfocus();
-                              passwordFocusNode.unfocus();
-                              emailFocusNode.unfocus();
                               await context.read<AuthFlowCubit>().login(emailController.text, passwordController.text);
                             },
                             icon: CupertinoIcons.chevron_right,

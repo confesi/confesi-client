@@ -1,6 +1,6 @@
-import 'package:confesi/application/authentication_and_settings/cubit/auth_flow_cubit.dart';
-import 'package:confesi/core/router/go_router.dart';
-import 'package:confesi/init.dart';
+import '../../../../application/authentication_and_settings/cubit/auth_flow_cubit.dart';
+import '../../../../core/router/go_router.dart';
+import '../../../../init.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

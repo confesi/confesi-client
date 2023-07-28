@@ -1,4 +1,4 @@
-import 'package:confesi/presentation/shared/overlays/info_sheet.dart';
+import '../overlays/info_sheet.dart';
 
 import '../button_touch_effects/touchable_opacity.dart';
 import 'package:flutter/cupertino.dart';

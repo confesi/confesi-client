@@ -1,5 +1,8 @@
 import 'package:back_button_interceptor/back_button_interceptor.dart';
+import '../../../core/router/go_router.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:cupertino_will_pop_scope/cupertino_will_pop_scope.dart';
 
 class NavBlocker extends StatefulWidget {
   const NavBlocker({
@@ -18,8 +21,8 @@ class NavBlocker extends StatefulWidget {
 class _NavBlockerState extends State<NavBlocker> {
   @override
   void initState() {
-    super.initState();
     BackButtonInterceptor.add(myInterceptor);
+    super.initState();
   }
 
   @override
@@ -34,6 +37,9 @@ class _NavBlockerState extends State<NavBlocker> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.child;
+    return WillPopScope(
+      onWillPop: widget.blocking ? () => Future.value(false) : null,
+      child: widget.child,
+    );
   }
 }

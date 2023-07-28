@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:confesi/core/router/go_router.dart';
-import 'package:confesi/core/services/remote_config/remote_config.dart';
-import 'package:confesi/init.dart';
-import 'package:confesi/presentation/shared/behaviours/init_scale.dart';
+import '../../../core/router/go_router.dart';
+import '../../../core/services/remote_config/remote_config.dart';
+import '../../../init.dart';
+import '../../shared/behaviours/init_scale.dart';
 
 import '../../shared/buttons/circle_emoji_button.dart';
 import '../../shared/buttons/option.dart';

@@ -1,20 +1,20 @@
 import 'dart:async';
 import 'dart:ui';
-import 'package:confesi/application/authentication_and_settings/cubit/auth_flow_cubit.dart';
-import 'package:confesi/core/services/remote_config/remote_config.dart';
-import 'package:confesi/core/services/user_auth/user_auth_data.dart';
-import 'package:confesi/core/services/user_auth/user_auth_service.dart';
+import 'package:confesi/core/services/fcm_notifications/token_data.dart';
+
+import 'application/authentication_and_settings/cubit/auth_flow_cubit.dart';
+import 'core/services/remote_config/remote_config.dart';
+import 'core/services/user_auth/user_auth_data.dart';
+import 'core/services/user_auth/user_auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'application/shared/cubit/maps_cubit.dart';
 import 'core/services/hive/hive_client.dart';
-import 'core/services/deep_links.dart';
 import 'domain/feed/usecases/launch_maps.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'core/services/in_app_notifications/in_app_notifications.dart';
-import 'core/services/notifications.dart';
+import 'core/services/fcm_notifications/notification_service.dart';
 import 'domain/shared/usecases/share_content.dart';
 import 'application/shared/cubit/share_cubit.dart';
 import 'core/clients/api_client.dart';
@@ -48,7 +48,6 @@ import 'application/shared/cubit/website_launcher_cubit.dart';
 import 'core/network/connection_info.dart';
 import 'data/authentication_and_settings/datasources/authentication_datasource.dart';
 import 'data/authentication_and_settings/repositories/authentication_repository_concrete.dart';
-import 'domain/authentication_and_settings/usecases/login.dart';
 import 'domain/authentication_and_settings/usecases/register.dart';
 import 'data/feed/datasources/feed_datasource.dart';
 import 'data/feed/repositories/feed_repository_concrete.dart';
@@ -61,21 +60,6 @@ import 'firebase_options.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
-
-// FCM background messager handler. Required to be top-level. Needs `pragma` to prevent function being moved during release compilation.
-@pragma('vm:entry-point')
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform, name: "confesi-server-dev");
-  NotificationService().fcmDeletagor(
-    message: message,
-    onNotification: (title, body) => null, // do nothing since this will be handled natively
-    onUpdateMessage: (title, body) {
-      InAppMessageService inAppMessages = InAppMessageService();
-      inAppMessages.addMessage(title, body);
-      // inAppMessages.dispose(); // dispose to prevent multiple databases from being opened.
-    },
-  );
-}
 
 // Get the GetIt instance to use for injection
 final GetIt sl = GetIt.instance;
@@ -94,7 +78,6 @@ Future<void> initFirebase() async {
     return true;
   };
   // remote config
-  // Registers the remote config service
   final remoteConfigService = RemoteConfigService(sl());
   await remoteConfigService.init();
   sl.registerLazySingleton(() => remoteConfigService);
@@ -104,18 +87,6 @@ Future<void> initFirebase() async {
     androidProvider: AndroidProvider.playIntegrity,
     appleProvider: AppleProvider.appAttestWithDeviceCheckFallback,
   );
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  sl.get<NotificationService>().token.then((token) {
-    token.fold((l) => print(l), (r) => print(r));
-  });
-  sl.get<NotificationService>().onTokenRefresh((token) {
-    // trigger the sending of the new token to the server right away
-  });
-  // (how does this relate to guest accounts?) => need to ONLY show notifications if same user is logged in
-  // onAppLoad, if the fcm token != the token stored in prefs:
-  //   send new token to the server to link to the user's account
-  //   if the send is successful
-  //     set this token to the device storage
 }
 
 /// Injects the needed dependencies for the app to run.
@@ -151,15 +122,10 @@ Future<void> init() async {
   UserAuthService userAuthService = UserAuthService(sl());
   userAuthService.hive.registerAdapter<UserAuthData>(UserAuthDataAdapter());
   userAuthService.hive.registerAdapter(ThemePrefAdapter());
+  userAuthService.hive.registerAdapter(FcmTokenAdapter());
   sl.registerLazySingleton(() => userAuthService);
   // Registers notifications service.
-  sl.registerLazySingleton(() => NotificationService()..initAndroidNotifications());
-  // Registers in-app notifications service.
-  sl.registerLazySingleton(() => InAppMessageService());
-  // Registers the deep-link stream service.
-  sl.registerLazySingleton(() => DeepLinkStream());
-  // Registers the deep-link creation service.
-  sl.registerLazySingleton(() => DeepLinkService());
+  sl.registerLazySingleton(() => NotificationService()..init());
 
   //! State (BLoC or Cubit)  // // Registers the authentication cubit.
   // sl.registerFactory(() => AuthenticationCubit(register: sl(), login: sl(), logout: sl(), silentAuthentication: sl()));
@@ -193,8 +159,6 @@ Future<void> init() async {
   //! Usecases
   // Registers the register usecase.
   sl.registerLazySingleton(() => Register(repository: sl(), api: sl()));
-  // Registers the login usecase.
-  sl.registerLazySingleton(() => Login(repository: sl(), api: sl()));
   // Registers the recents feed usecase.
   sl.registerLazySingleton(() => Recents(repository: sl()));
   // Registers the trending feed usecase.

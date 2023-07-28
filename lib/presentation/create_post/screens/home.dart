@@ -1,6 +1,6 @@
-import 'package:confesi/core/router/go_router.dart';
-import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
-import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
+import '../../../core/router/go_router.dart';
+import '../../shared/button_touch_effects/touchable_opacity.dart';
+import '../../shared/button_touch_effects/touchable_scale.dart';
 
 import '../../../core/utils/sizing/width_fraction.dart';
 import '../../../domain/create_post/entities/draft_post_entity.dart';

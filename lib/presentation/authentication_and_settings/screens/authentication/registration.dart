@@ -1,4 +1,4 @@
-import 'package:confesi/constants/shared/dev.dart';
+import '../../../../constants/shared/dev.dart';
 
 import '../../../../application/authentication_and_settings/cubit/auth_flow_cubit.dart';
 import '../../../../core/router/go_router.dart';

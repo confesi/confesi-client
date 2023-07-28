@@ -1,5 +1,5 @@
-import 'package:confesi/application/authentication_and_settings/cubit/auth_flow_cubit.dart';
-import 'package:confesi/init.dart';
+import '../../../../application/authentication_and_settings/cubit/auth_flow_cubit.dart';
+import '../../../../init.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:scrollable/exports.dart';
@@ -97,9 +97,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> with TickerPr
                           PopButton(
                             loading: context.watch<AuthFlowCubit>().isLoading,
                             justText: true,
-                            onPress: () {
+                            onPress: () async {
                               FocusScope.of(context).unfocus();
-                              context.read<AuthFlowCubit>().sendPasswordResetEmail(emailController.text);
+                              await context.read<AuthFlowCubit>().sendPasswordResetEmail(emailController.text);
                             },
                             icon: CupertinoIcons.chevron_right,
                             backgroundColor: Theme.of(context).colorScheme.secondary,

@@ -1,8 +1,8 @@
-import 'package:confesi/core/router/go_router.dart';
-import 'package:confesi/core/services/user_auth/user_auth_service.dart';
-import 'package:confesi/core/utils/sizing/bottom_safe_area.dart';
-import 'package:confesi/init.dart';
-import 'package:confesi/presentation/shared/other/widget_or_nothing.dart';
+import '../../../../core/router/go_router.dart';
+import '../../../../core/services/user_auth/user_auth_service.dart';
+import '../../../../core/utils/sizing/bottom_safe_area.dart';
+import '../../../../init.dart';
+import '../../../shared/other/widget_or_nothing.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 

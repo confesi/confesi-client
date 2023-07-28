@@ -1,5 +1,5 @@
-import 'package:confesi/core/services/user_auth/user_auth_data.dart';
-import 'package:confesi/core/services/user_auth/user_auth_service.dart';
+import '../../../core/services/user_auth/user_auth_data.dart';
+import '../../../core/services/user_auth/user_auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -48,28 +48,6 @@ class _ExploreRecentsState extends State<ExploreRecents> {
       color: Theme.of(context).colorScheme.shadow,
       child: Column(
         children: [
-          TextButton(
-            onPressed: () => sl
-                .get<UserAuthService>()
-                .saveData(UserAuthData(themePref: ThemePref.light), sl.get<FirebaseAuth>().currentUser!.uid),
-            child: Text(
-              "set light",
-            ),
-          ),
-          TextButton(
-            onPressed: () => sl
-                .get<UserAuthService>()
-                .saveData(UserAuthData(themePref: ThemePref.dark), sl.get<FirebaseAuth>().currentUser!.uid),
-            child: Text(
-              "set dark",
-            ),
-          ),
-          TextButton(
-            onPressed: () => sl.get<UserAuthService>().getData(sl.get<FirebaseAuth>().currentUser!.uid),
-            child: Text(
-              "get",
-            ),
-          ),
           // Row(
           //   children: [
           //     TextButton(onPressed: () => feedListController.addItem(const SimplePostTile()), child: Text("add item")),

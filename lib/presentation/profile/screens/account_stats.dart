@@ -1,5 +1,5 @@
-import 'package:confesi/presentation/profile/widgets/stat_tile.dart';
-import 'package:confesi/presentation/shared/selection_groups/rectangle_tile_group.dart';
+import '../widgets/stat_tile.dart';
+import '../../shared/selection_groups/rectangle_tile_group.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scrollable/exports.dart';

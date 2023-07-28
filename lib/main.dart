@@ -1,12 +1,13 @@
 import 'dart:async';
 
-import 'package:confesi/application/authentication_and_settings/cubit/auth_flow_cubit.dart';
-import 'package:confesi/core/services/hive/hive_client.dart';
-import 'package:confesi/core/services/user_auth/user_auth_service.dart';
-import 'package:confesi/presentation/shared/overlays/notification_chip.dart';
+import 'application/authentication_and_settings/cubit/auth_flow_cubit.dart';
+import 'core/services/hive/hive_client.dart';
+import 'core/services/user_auth/user_auth_service.dart';
+import 'presentation/shared/overlays/notification_chip.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
@@ -24,11 +25,21 @@ import 'application/create_post/cubit/post_cubit.dart';
 import 'application/daily_hottest/cubit/hottest_cubit.dart';
 import 'application/shared/cubit/share_cubit.dart';
 import 'application/shared/cubit/website_launcher_cubit.dart';
-import 'constants/enums_that_are_local_keys.dart';
 import 'core/router/go_router.dart';
+import 'core/services/fcm_notifications/notification_service.dart';
 import 'core/services/user_auth/user_auth_data.dart';
 import 'core/styles/themes.dart';
+import 'firebase_options.dart';
 import 'init.dart';
+
+// FCM background messager handler. Required to be top-level. Needs `pragma` to prevent function being moved during release compilation.
+@pragma('vm:entry-point')
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  sl.get<NotificationService>().onMessage((p0) {
+    print("backgroundMessage: $p0");
+  });
+}
 
 void main() async => await init().then(
       (_) => analytics.logAppOpen().then(
@@ -67,75 +78,77 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  ThemeMode getAppearance(AppearanceEnum state) {
-    if (state == AppearanceEnum.dark) {
-      return ThemeMode.dark;
-    } else if (state == AppearanceEnum.light) {
-      return ThemeMode.light;
-    } else {
-      return ThemeMode.system;
-    }
-  }
-
   StreamSubscription<User?>? _authStateSubscription;
 
   @override
   void initState() {
-    updateAuthState();
+    startAuthListener();
+    startFcmListener();
     super.initState();
   }
 
   @override
   void dispose() {
-    // Dispose of the stream subscription when the widget is disposed
     _authStateSubscription?.cancel();
     sl.get<HiveService>().dispose();
+    sl.get<NotificationService>().dispose();
     super.dispose();
   }
 
-  Future<void> updateAuthState() async {
+  Future<void> startAuthListener() async {
     // clear user data
-    // todo: disabled?
     sl.get<UserAuthService>().clearCurrentExtraData();
     _authStateSubscription = sl.get<FirebaseAuth>().userChanges().listen((User? user) async {
       if (user == null) {
         await Future.delayed(const Duration(milliseconds: 500)).then((value) {
           HapticFeedback.lightImpact();
-          print("PUSH OPEN");
           router.go("/open");
           context.read<AuthFlowCubit>().emitDefault();
         });
       } else {
+        print("ID TOKEN: ${sl.get<FirebaseAuth>().currentUser!.getIdToken()}");
         await sl.get<UserAuthService>().getData(sl.get<FirebaseAuth>().currentUser!.uid);
         await Future.delayed(const Duration(milliseconds: 500)).then((value) {
           if (sl.get<UserAuthService>().state is! UserAuthData) {
-            print("PUSH ERROR");
-
             router.go("/error");
             context.read<AuthFlowCubit>().emitDefault();
             return;
           }
           if (user.isAnonymous) {
             sl.get<UserAuthService>().isAnon = true;
-            print("PUSH HOME");
-
             router.go("/home");
           } else {
             sl.get<UserAuthService>().isAnon = false;
             sl.get<UserAuthService>().email = user.email!;
             if (user.emailVerified) {
-              print("PUSH HOME VERIFIED");
-
               router.go("/home");
             } else {
-              print("PUSH VERIFY");
-
               router.go("/verify-email");
             }
           }
           context.read<AuthFlowCubit>().emitDefault();
         });
       }
+    });
+  }
+
+  Future<void> startFcmListener() async {
+    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+    sl.get<NotificationService>().token.then((token) {
+      token.fold((l) => print(l), (r) => print(r));
+    });
+    sl.get<NotificationService>().requestPermissions();
+    await sl.get<NotificationService>().init();
+    sl.get<NotificationService>().onMessage((p0) {
+      print("onMessage: $p0");
+    });
+    sl.get<NotificationService>().onMessageOpenedInApp((p0) {
+      print("onMessageOpenedApp: $p0");
+    });
+
+    sl.get<NotificationService>().onTokenRefresh((token) {
+      // trigger the sending of the new token to the server right away
+      print("NEW TOKEN REFRESHED: $token");
     });
   }
 

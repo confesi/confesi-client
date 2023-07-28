@@ -1,5 +1,5 @@
-import 'package:confesi/core/router/go_router.dart';
-import 'package:confesi/presentation/shared/other/widget_or_nothing.dart';
+import '../../../core/router/go_router.dart';
+import '../../shared/other/widget_or_nothing.dart';
 
 import '../../../application/shared/cubit/share_cubit.dart';
 import '../../authentication_and_settings/screens/settings/home.dart';
@@ -31,7 +31,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   @override
   void initState() {
     tabController = TabController(vsync: this, length: 5);
-
     super.initState();
   }
 
