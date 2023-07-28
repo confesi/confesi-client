@@ -106,7 +106,6 @@ class _MyAppState extends State<MyApp> {
           context.read<AuthFlowCubit>().emitDefault();
         });
       } else {
-        print("ID TOKEN: ${sl.get<FirebaseAuth>().currentUser!.getIdToken()}");
         await sl.get<UserAuthService>().getData(sl.get<FirebaseAuth>().currentUser!.uid);
         await Future.delayed(const Duration(milliseconds: 500)).then((value) {
           if (sl.get<UserAuthService>().state is! UserAuthData) {

@@ -87,7 +87,6 @@ class _ExpandableTextfieldState extends State<ExpandableTextfield> {
                         child: TextField(
                           autofocus: false,
                           enableSuggestions: widget.enableSuggestions,
-                          enableInteractiveSelection: !widget.obscured,
                           obscureText: widget.obscured,
                           inputFormatters: [
                             LengthLimitingTextInputFormatter(widget.maxCharacters),

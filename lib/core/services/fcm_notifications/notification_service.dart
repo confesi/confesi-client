@@ -1,11 +1,15 @@
 import 'dart:async';
 
+import 'package:confesi/core/clients/api.dart';
+import 'package:confesi/core/results/failures.dart';
+import 'package:confesi/core/results/successes.dart';
 import 'package:confesi/core/services/fcm_notifications/token_data.dart';
 import 'package:confesi/core/services/hive/hive_client.dart';
 import 'package:confesi/init.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:hive_flutter/adapters.dart';
 
 class EmptyTokenFailure {}
 
@@ -57,23 +61,47 @@ class NotificationService {
   /// Deletes the token from the FCM server and removes it from local storage.
   Future<void> deleteTokenFromLocalDb() async => await _messaging.deleteToken();
 
-  /// Call once when auth status is known.
+  /// Call once when auth status is known, or FCM token changes.
   ///
   /// This will sync the token with the server and update local storage for it if needed.
-  Future<void> updateToken(String? uid) async {
-    (await sl.get<HiveService>().getFromBoxDefaultPosition<FcmToken>()).fold(
-      (empty) => print("TODO: save token to server and then to local db -> currentFcmToken, with/withoutUid"),
-      (previouslySavedFcmToken) {
-        token.then((token) {
-          token.fold(
-            (empty) => print("TODO: error can't get current token"),
-            (currentFcmToken) {
-              if (previouslySavedFcmToken.token != currentFcmToken || !previouslySavedFcmToken.withUid) {
-                print("TODO: save token to server and then to local db -> currentFcmToken, with/withoutUid");
-              }
-            },
-          );
-        });
+  Future<Either<Failure, ApiSuccess>> updateToken(String? uid) async {
+    final possibleCurrentFcmToken = await token;
+    return possibleCurrentFcmToken.fold(
+      (_) => Future.value(Left(GeneralFailure())),
+      (currentFcmToken) async {
+        final hiveService = sl.get<HiveService>();
+        final boxResult = await hiveService.getFromBoxDefaultPosition<FcmToken>();
+        return boxResult.fold(
+          (empty) async => await _saveTokenToServerAndLocalDb(uid, currentFcmToken),
+          (previouslySavedFcmToken) async {
+            if (previouslySavedFcmToken.token != currentFcmToken || !previouslySavedFcmToken.withUid) {
+              return await _saveTokenToServerAndLocalDb(uid, currentFcmToken);
+            }
+            return Right(ApiSuccess());
+          },
+        );
+      },
+    );
+  }
+
+  Future<Either<Failure, ApiSuccess>> _saveTokenToServerAndLocalDb(String? uid, String token) async {
+    return (await Api().req(
+      Method.post,
+      uid != null,
+      uid != null ? "/api/v1/notifications/token-uid" : "/api/v1/notifications/token-anon",
+      {
+        "token": token,
+      },
+    ))
+        .fold(
+      (_) => Left(GeneralFailure()),
+      (response) async {
+        if (response.statusCode.toString()[0] == "2") {
+          await sl.get<HiveService>().putAtDefaultPosition<FcmToken>(FcmToken(uid != null, token));
+          return Right(ApiSuccess());
+        } else {
+          return Left(GeneralFailure());
+        }
       },
     );
   }
