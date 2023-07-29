@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart';
 
 import '../../../core/router/go_router.dart';
+import '../../../core/services/sharing.dart';
 import '../../../core/services/user_auth/user_auth_data.dart';
 import 'reaction_tile.dart';
 import '../../shared/button_touch_effects/touchable_opacity.dart';
@@ -26,12 +27,9 @@ class SimplePostTile extends StatefulWidget {
 class _SimplePostTileState extends State<SimplePostTile> {
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return TouchableOpacity(
       onTap: () => router.push("/home/posts/detail"),
-      onLongPress: () {
-        HapticFeedback.lightImpact();
-        print("todo: share the post");
-      },
+      onLongPress: () => Sharing().sharePost(context, "link", "title", "body", "university", "timeAgo"),
       child: Padding(
         padding: const EdgeInsets.only(top: 15),
         child: Container(

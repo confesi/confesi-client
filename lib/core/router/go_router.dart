@@ -1,4 +1,3 @@
-import 'package:confesi/presentation/authentication_and_settings/screens/settings/profanity.dart';
 import 'package:confesi/presentation/notifications/screens/home.dart';
 
 import '../../data/create_post/datasources/create_post_datasource.dart';
@@ -136,8 +135,7 @@ final GoRouter router = GoRouter(
     GoRoute(path: '/settings', builder: (BuildContext context, GoRouterState state) => const SettingsHome()),
 
     GoRoute(path: '/settings/faq', builder: (BuildContext context, GoRouterState state) => const FAQScreen()),
-    GoRoute(
-        path: '/settings/profanity', builder: (BuildContext context, GoRouterState state) => const ProfanityScreen()),
+
     GoRoute(
         path: '/home/notifications',
         builder: (BuildContext context, GoRouterState state) => const NotificationsScreen()),

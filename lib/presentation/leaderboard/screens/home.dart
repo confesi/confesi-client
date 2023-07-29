@@ -1,12 +1,8 @@
-import '../../../core/router/go_router.dart';
-
 import '../../../domain/shared/entities/infinite_scroll_indexable.dart';
 
 import '../widgets/leaderboard_item_tile.dart';
-import '../../shared/button_touch_effects/touchable_opacity.dart';
 import '../../shared/indicators/loading_cupertino.dart';
 import '../../shared/other/feed_list.dart';
-import '../../shared/overlays/info_sheet_with_action.dart';
 
 import '../../../constants/leaderboard/general.dart';
 import '../../../domain/leaderboard/entities/leaderboard_item.dart';
@@ -64,7 +60,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
           children: [
             const SizedBox(height: 30),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5),
+              padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Text(
                 "Your school",
                 style: kDisplay1.copyWith(
@@ -83,7 +79,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
             ),
             const SizedBox(height: 30),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5),
+              padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Text(
                 "The others",
                 style: kDisplay1.copyWith(

@@ -64,7 +64,7 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
           ),
         );
       }
-      return GestureDetector(
+      return TouchableOpacity(
         onTap: () {
           print(state.posts[currentIndex].id);
           router.push("/home/posts/detail");

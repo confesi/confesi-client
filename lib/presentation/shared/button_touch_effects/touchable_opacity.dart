@@ -8,6 +8,7 @@ class TouchableOpacity extends StatefulWidget {
     this.tappable = true,
     required this.child,
     required this.onTap,
+    this.onLongPress,
     this.tapType,
     Key? key,
   }) : super(key: key);
@@ -16,6 +17,7 @@ class TouchableOpacity extends StatefulWidget {
   final Function onTap;
   final bool tappable;
   final TapType? tapType;
+  final VoidCallback? onLongPress;
 
   @override
   State<TouchableOpacity> createState() => _TouchableOpacityState();
@@ -28,7 +30,7 @@ class _TouchableOpacityState extends State<TouchableOpacity> with SingleTickerPr
   @override
   void initState() {
     animController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 0), reverseDuration: const Duration(milliseconds: 400));
+        vsync: this, duration: const Duration(milliseconds: 50), reverseDuration: const Duration(milliseconds: 400));
     anim = CurvedAnimation(parent: animController, curve: Curves.linear, reverseCurve: Curves.linear);
     super.initState();
   }
@@ -51,6 +53,12 @@ class _TouchableOpacityState extends State<TouchableOpacity> with SingleTickerPr
             onTapDown: (_) {
               animController.forward();
               animController.addListener(() => setState(() {}));
+            },
+            onLongPress: () {
+              if (widget.onLongPress != null) {
+                widget.onLongPress!();
+                HapticFeedback.lightImpact();
+              }
             },
             onTapCancel: () {
               animController.reverse();

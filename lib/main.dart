@@ -66,7 +66,8 @@ void main() async => await init().then(
                     BlocProvider(lazy: false, create: (context) => sl<LanguageSettingCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<AuthFlowCubit>()),
                   ],
-                  child: debugMode ? DevicePreview(builder: (context) => const MyApp()) : const MyApp(),
+                  child:
+                      debugMode && devicePreview ? DevicePreview(builder: (context) => const MyApp()) : const MyApp(),
                 ),
               ),
             ),

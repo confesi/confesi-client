@@ -139,11 +139,6 @@ class SettingsHome extends StatelessWidget {
                                 onTap: () => router.push("/settings/text-size"),
                               ),
                               SettingTile(
-                                leftIcon: CupertinoIcons.strikethrough,
-                                text: "Profanity filter",
-                                onTap: () => router.push("/settings/profanity"),
-                              ),
-                              SettingTile(
                                 leftIcon: CupertinoIcons.square_fill_on_circle_fill,
                                 text: "Curviness of components",
                                 onTap: () => router.push("/settings/curvy"),

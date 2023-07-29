@@ -1,3 +1,5 @@
+import 'package:confesi/presentation/shared/selection_groups/switch_selection_tile.dart';
+
 import '../../../../core/router/go_router.dart';
 
 import '../../../../constants/enums_that_are_local_keys.dart';
@@ -46,12 +48,11 @@ class NotificationsSettingScreen extends StatelessWidget {
                         TileGroup(
                           text: "General",
                           tiles: [
-                            BoolSelectionTile(
-                              bottomRounded: true,
-                              isActive: true,
+                            SwitchSelectionTile(
                               icon: CupertinoIcons.bell,
                               text: "Pause all",
                               onTap: () => print("tap"),
+                              secondaryText: "Notifications on",
                             ),
                           ],
                         ),
