@@ -32,14 +32,14 @@ class _CreatePostDetailsState extends State<CreatePostDetails> with AutomaticKee
   Widget build(BuildContext context) {
     return BlocListener<CreatePostCubit, CreatePostState>(
       listener: (context, state) {
-        if (state is Error) {
+        if (state is PostError) {
           showNotificationChip(context, state.message, notificationDuration: NotificationDuration.regular);
-        } else if (state is SuccessfullySubmitted) {
+        } else if (state is PostSuccessfullySubmitted) {
           ConfettiBlaster().show(context);
         }
       },
       child: NavBlocker(
-        blocking: context.watch<CreatePostCubit>().state is Loading,
+        blocking: context.watch<CreatePostCubit>().state is PostLoading,
         child: ThemedStatusBar(
           child: Scaffold(
             backgroundColor: Theme.of(context).colorScheme.background,
@@ -53,7 +53,7 @@ class _CreatePostDetailsState extends State<CreatePostDetails> with AutomaticKee
                         child: Column(
                           children: [
                             NavBlocker(
-                              blocking: context.watch<CreatePostCubit>().state is Loading,
+                              blocking: context.watch<CreatePostCubit>().state is PostLoading,
                               child: AppbarLayout(
                                 bottomBorder: false,
                                 centerWidget: AnimatedSwitcher(
@@ -65,7 +65,7 @@ class _CreatePostDetailsState extends State<CreatePostDetails> with AutomaticKee
                                     textAlign: TextAlign.center,
                                   ),
                                 ),
-                                leftIconIgnored: context.watch<CreatePostCubit>().state is Loading,
+                                leftIconIgnored: context.watch<CreatePostCubit>().state is PostLoading,
                                 rightIcon: CupertinoIcons.info,
                                 rightIconVisible: true,
                                 rightIconOnPress: () => showInfoSheet(context, "Confessing",
@@ -183,11 +183,11 @@ class _CreatePostDetailsState extends State<CreatePostDetails> with AutomaticKee
                               builder: (context, state) {
                                 return PopButton(
                                   topPadding: 15,
-                                  loading: state is Loading ? true : false,
+                                  loading: state is PostLoading ? true : false,
                                   justText: true,
                                   onPress: () async => await context
                                       .read<CreatePostCubit>()
-                                      .uploadUserPost("widget.title", "widget.body", "widget.id"),
+                                      .uploadUserPost("widget.title", "widget.body"),
                                   icon: CupertinoIcons.chevron_right,
                                   backgroundColor: Theme.of(context).colorScheme.secondary,
                                   textColor: Theme.of(context).colorScheme.onSecondary,

@@ -1,3 +1,5 @@
+import 'package:confesi/core/clients/api.dart';
+
 import '../../../core/utils/validators/either_not_empty_validator.dart';
 import '../../../domain/create_post/usecases/upload_post.dart';
 import 'package:bloc/bloc.dart';
@@ -11,20 +13,29 @@ class CreatePostCubit extends Cubit<CreatePostState> {
 
   CreatePostCubit({required this.uploadPost}) : super(EnteringData());
 
-  Future<void> uploadUserPost(String title, String body, String? id) async {
-    emit(Loading());
+  Future<void> uploadUserPost(String title, String body) async {
+    emit(PostLoading());
     return eitherNotEmptyValidator(title, body).fold(
-      (failure) {
-        emit(Error(message: "Can't submit empty post"));
-      },
+      (failure) => emit(PostError(message: "Can't submit empty post")),
       (_) async {
-        final failureOrSuccess = await uploadPost.call(UploadPostParams(title: title, body: body, id: id));
-        failureOrSuccess.fold(
-          (failure) {
-            emit(Error(message: "todo: failure"));
+        (await Api().req(
+          Method.post,
+          true,
+          "/api/v1/posts/create",
+          {
+            "title": title,
+            "body": body,
           },
-          (success) {
-            emit(SuccessfullySubmitted());
+        ))
+            .fold(
+          (failure) => emit(PostError(message: failure.message())),
+          (response) {
+            if (response.statusCode.toString()[0] == "2") {
+              emit(PostSuccessfullySubmitted());
+            } else {
+              // todo: fill in the appropriate error message
+              emit(PostError(message: response.body));
+            }
           },
         );
       },

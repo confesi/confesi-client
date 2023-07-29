@@ -121,7 +121,7 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
         onWillPop: () async => false,
         child: BlocListener<CreatePostCubit, CreatePostState>(
           listener: (context, state) async {
-            if (state is SuccessfullySubmitted) {
+            if (state is PostSuccessfullySubmitted) {
               clearTextfields();
               Navigator.popUntil(context, ModalRoute.withName('/home'));
               showNotificationChip(context, "Posted successfully", notificationType: NotificationType.success);

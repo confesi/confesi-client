@@ -1,4 +1,7 @@
+import 'package:confesi/init.dart';
+
 import '../../../core/router/go_router.dart';
+import '../../../core/services/user_auth/user_auth_service.dart';
 import '../../profile/screens/account_details.dart';
 import '../../profile/screens/account_stats.dart';
 import '../../shared/other/widget_or_nothing.dart';
@@ -14,6 +17,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../feed/screens/feed_tab_manager.dart';
 import '../../shared/overlays/notification_chip.dart';
+import '../../shared/overlays/registered_users_only_sheet.dart';
 import '../../watched_universities/drawers/feed_drawer.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -92,8 +96,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       onTap: (int newIndex) {
                         if (newIndex == 2) {
                           // create post
-                          router.push("/create");
-                          return;
+                          if (sl.get<UserAuthService>().isAnon) {
+                            showRegisteredUserOnlySheet(context);
+                          } else {
+                            router.push("/create");
+                          }
                         } else {
                           setState(() => currentIndex = newIndex);
                         }

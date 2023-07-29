@@ -58,7 +58,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
         header: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 30),
+            const SizedBox(height: 15),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Text(
@@ -77,7 +77,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
               universityAbbr: "UVIC",
               universityFullName: "University of Victoria",
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 15),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Text(

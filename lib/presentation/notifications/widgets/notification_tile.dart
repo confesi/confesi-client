@@ -27,10 +27,9 @@ class NotificationTile extends StatelessWidget {
           ),
         ),
       ),
-      padding: const EdgeInsets.all(10),
       width: double.infinity,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
+        padding: const EdgeInsets.all(15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

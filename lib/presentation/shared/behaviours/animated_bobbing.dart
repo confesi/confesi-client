@@ -29,8 +29,8 @@ class BobbingState extends State<Bobbing> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final tween = TweenSequence([
-      TweenSequenceItem(tween: Tween(begin: 0.75, end: 1.0), weight: 1),
-      TweenSequenceItem(tween: Tween(begin: 1.0, end: 0.75), weight: 1),
+      TweenSequenceItem(tween: Tween(begin: 0.75, end: 1.0).chain(CurveTween(curve: Curves.easeInOut)), weight: 1),
+      TweenSequenceItem(tween: Tween(begin: 1.0, end: 0.75).chain(CurveTween(curve: Curves.easeInOut)), weight: 1),
     ]);
 
     return AnimatedBuilder(

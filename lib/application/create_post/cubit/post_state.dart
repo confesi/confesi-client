@@ -7,20 +7,20 @@ abstract class CreatePostState extends Equatable {
 }
 
 /// The post was successfully submitted.
-class SuccessfullySubmitted extends CreatePostState {}
+class PostSuccessfullySubmitted extends CreatePostState {}
 
 /// The user can enter post data under this state freely. Nothing interesting is happening.
 class EnteringData extends CreatePostState {}
 
 /// There's an error.
-class Error extends CreatePostState {
+class PostError extends CreatePostState {
   final String message;
 
-  Error({required this.message});
+  PostError({required this.message});
 
   @override
   List<Object?> get props => [message];
 }
 
 /// Post is currently loading (being sent up; awaiting server response).
-class Loading extends CreatePostState {}
+class PostLoading extends CreatePostState {}
