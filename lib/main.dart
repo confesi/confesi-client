@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:confesi/application/feed/cubit/sentiment_analysis_cubit.dart';
 import 'package:confesi/constants/shared/dev.dart';
+import 'package:confesi/presentation/create_post/overlays/confetti_blaster.dart';
 
 import 'application/authentication_and_settings/cubit/auth_flow_cubit.dart';
 import 'core/services/hive/hive_client.dart';
@@ -195,31 +196,42 @@ class _MyAppState extends State<MyApp> {
               showNotificationChip(context, state.message, notificationType: state.type);
             }
           },
-          child: Container(
-            constraints: const BoxConstraints(maxWidth: 250),
-            child: MaterialApp.router(
-              routeInformationProvider: router.routeInformationProvider,
-              routeInformationParser: router.routeInformationParser,
-              routerDelegate: router.routerDelegate,
-              debugShowCheckedModeBanner: false,
-              title: "Confesi",
-              theme: AppTheme.light,
-              darkTheme: AppTheme.dark,
-              themeMode: data.themePref == ThemePref.system
-                  ? ThemeMode.system
-                  : data.themePref == ThemePref.light
-                      ? ThemeMode.light
-                      : ThemeMode.dark,
-              builder: (BuildContext context, Widget? child) {
-                final MediaQueryData data = MediaQuery.of(context);
-                return MediaQuery(
-                  // update max width
-                  // Force the textScaleFactor that's loaded from the device
-                  // to lock to 1 (you can change it in-app independent of the inherited scale).
-                  data: data.copyWith(textScaleFactor: 1),
-                  child: child!,
-                );
-              },
+          child: BlocListener<CreatePostCubit, CreatePostState>(
+            listener: (context, state) {
+              if (state is PostError) {
+                showNotificationChip(context, state.message);
+              } else if (state is PostSuccessfullySubmitted) {
+                sl.get<ConfettiBlaster>().show(context);
+                Navigator.popUntil(context, ModalRoute.withName('/home'));
+                showNotificationChip(context, "Posted successfully", notificationType: NotificationType.success);
+              }
+            },
+            child: Container(
+              constraints: const BoxConstraints(maxWidth: 250),
+              child: MaterialApp.router(
+                routeInformationProvider: router.routeInformationProvider,
+                routeInformationParser: router.routeInformationParser,
+                routerDelegate: router.routerDelegate,
+                debugShowCheckedModeBanner: false,
+                title: "Confesi",
+                theme: AppTheme.light,
+                darkTheme: AppTheme.dark,
+                themeMode: data.themePref == ThemePref.system
+                    ? ThemeMode.system
+                    : data.themePref == ThemePref.light
+                        ? ThemeMode.light
+                        : ThemeMode.dark,
+                builder: (BuildContext context, Widget? child) {
+                  final MediaQueryData data = MediaQuery.of(context);
+                  return MediaQuery(
+                    // update max width
+                    // Force the textScaleFactor that's loaded from the device
+                    // to lock to 1 (you can change it in-app independent of the inherited scale).
+                    data: data.copyWith(textScaleFactor: 1),
+                    child: child!,
+                  );
+                },
+              ),
             ),
           ),
         );

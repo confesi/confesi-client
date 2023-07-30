@@ -18,6 +18,7 @@ class UserAuthData extends HiveObject with UserAuthState {
   @HiveField(6)
   final ProfanityFilter profanityFilter;
 
+  @HiveField(7)
   final bool isShrunkView;
 
   // default

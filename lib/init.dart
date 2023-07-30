@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 import 'package:confesi/core/services/fcm_notifications/token_data.dart';
+import 'package:confesi/presentation/create_post/overlays/confetti_blaster.dart';
 
 import 'application/authentication_and_settings/cubit/auth_flow_cubit.dart';
 import 'application/feed/cubit/sentiment_analysis_cubit.dart';
@@ -96,6 +97,7 @@ Future<void> init() async {
 
   //! Alt
   sl.registerLazySingleton(() => StreamController<User?>.broadcast());
+  sl.registerLazySingleton(() => ConfettiBlaster());
 
   //! External
   sl.registerLazySingleton(() => InternetConnectionChecker());
