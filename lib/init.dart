@@ -94,6 +94,9 @@ Future<void> init() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
+  //! Alt
+  sl.registerLazySingleton(() => StreamController<User?>.broadcast());
+
   //! External
   sl.registerLazySingleton(() => InternetConnectionChecker());
   sl.registerLazySingleton(() => const FlutterSecureStorage());
@@ -121,7 +124,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => CreatePostHintManager());
   sl.registerLazySingleton(() => SplashScreenHintManager());
 
-  //! State (BLoC or Cubit)  // // Registers the authentication cubit.
+  //! State (BLoC or Cubit)
   sl.registerFactory(() => RecentsCubit(recents: sl()));
   sl.registerFactory(() => SentimentAnalysisCubit());
   sl.registerFactory(() => TrendingCubit(trending: sl()));

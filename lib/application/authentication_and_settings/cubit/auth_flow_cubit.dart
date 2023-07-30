@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:confesi/core/services/fcm_notifications/notification_service.dart';
 import 'package:confesi/core/services/hive/hive_client.dart';
@@ -193,12 +195,7 @@ class AuthFlowCubit extends Cubit<AuthFlowState> {
               emit(const AuthFlowNotification("Unknown error", NotificationType.failure));
               return;
             }
-            if (upgradingToFullAcc) {
-              print("UPGRADING FULL");
-              await user.reload();
-              print("RELOADED");
-            }
-            ;
+            if (upgradingToFullAcc) sl.get<StreamController<User?>>().add(sl.get<FirebaseAuth>().currentUser);
           } catch (err) {
             print("THIS ROUTE e: $err");
             emit(const AuthFlowNotification("Registered, but unable to login", NotificationType.failure));

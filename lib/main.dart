@@ -83,7 +83,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   StreamSubscription<User?>? _userChangeStream;
-  StreamSubscription<User?>? _authStateChangeStream;
 
   @override
   void initState() {
@@ -94,8 +93,8 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void dispose() {
+    sl.get<StreamController<User?>>().close();
     _userChangeStream?.cancel();
-    _authStateChangeStream?.cancel();
     sl.get<HiveService>().dispose();
     sl.get<NotificationService>().dispose();
     super.dispose();
@@ -104,11 +103,8 @@ class _MyAppState extends State<MyApp> {
   Future<void> startAuthListener() async {
     // clear user data
     sl.get<UserAuthService>().clearCurrentExtraData();
-    // _authStateChangeStream = sl
-    //     .get<FirebaseAuth>()
-    //     .authStateChanges()
-    //     .listen((User? user) => );
-    _userChangeStream = sl.get<FirebaseAuth>().authStateChanges().listen((User? user) async {
+    sl.get<FirebaseAuth>().authStateChanges().listen((User? user) => sl.get<StreamController<User?>>().add(user));
+    _userChangeStream = sl.get<StreamController<User?>>().stream.listen((User? user) async {
       sl.get<NotificationService>().updateToken(user?.uid);
       print("USER CHANGED!!!!!!!!!!!!!!");
       if (user == null) {
