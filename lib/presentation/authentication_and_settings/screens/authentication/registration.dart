@@ -1,7 +1,13 @@
+import 'package:confesi/init.dart';
+import 'package:confesi/presentation/shared/other/widget_or_nothing.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
+
 import '../../../../constants/shared/dev.dart';
 
 import '../../../../application/authentication_and_settings/cubit/auth_flow_cubit.dart';
 import '../../../../core/router/go_router.dart';
+import '../../../../core/services/user_auth/user_auth_service.dart';
 import '../../../shared/behaviours/nav_blocker.dart';
 import '../../../shared/behaviours/themed_status_bar.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,7 +23,9 @@ import '../../../shared/layout/appbar.dart';
 import '../../../shared/textfields/expandable_textfield.dart';
 
 class RegistrationScreen extends StatefulWidget {
-  const RegistrationScreen({super.key});
+  const RegistrationScreen({super.key, required this.props});
+
+  final RegistrationPops props;
 
   @override
   State<RegistrationScreen> createState() => _RegistrationScreenState();
@@ -67,7 +75,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   AppbarLayout(
                     backgroundColor: Theme.of(context).colorScheme.shadow,
                     centerWidget: Text(
-                      "Registration",
+                      widget.props.upgradingToFullAccount ? "Upgrade to Full Account" : "Create Account",
                       style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
                     ),
                     leftIconDisabled: context.watch<AuthFlowCubit>().isLoading,
@@ -122,34 +130,41 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             onPress: () async {
                               FocusScope.of(context).unfocus();
                               await context.read<AuthFlowCubit>().register(
-                                  emailController.text, passwordController.text, passwordConfirmController.text);
+                                    emailController.text,
+                                    passwordController.text,
+                                    passwordConfirmController.text,
+                                    upgradingToFullAcc: widget.props.upgradingToFullAccount,
+                                  );
                               FocusManager.instance.primaryFocus?.unfocus();
                             },
                             icon: CupertinoIcons.chevron_right,
                             backgroundColor: Theme.of(context).colorScheme.secondary,
                             textColor: Theme.of(context).colorScheme.onSecondary,
-                            text: "Register",
+                            text: widget.props.upgradingToFullAccount ? "Upgrade" : "Register",
                           ),
                           const SizedBox(height: 15),
-                          TouchableOpacity(
-                            onTap: () => router.push("/login"),
-                            child: Container(
-                              // Transparent hitbox trick.
-                              color: Colors.transparent,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      "Login instead",
-                                      style: kTitle.copyWith(
-                                        color: Theme.of(context).colorScheme.onSurface,
+                          AbsorbPointer(
+                            absorbing: context.watch<AuthFlowCubit>().isLoading,
+                            child: TouchableOpacity(
+                              onTap: () => router.push("/login"),
+                              child: Container(
+                                // Transparent hitbox trick.
+                                color: Colors.transparent,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        "Login instead",
+                                        style: kTitle.copyWith(
+                                          color: Theme.of(context).colorScheme.onSurface,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                        overflow: TextOverflow.ellipsis,
                                       ),
-                                      textAlign: TextAlign.center,
-                                      overflow: TextOverflow.ellipsis,
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           ),

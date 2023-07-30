@@ -161,7 +161,7 @@ class SettingsHome extends StatelessWidget {
                                 SettingTile(
                                   leftIcon: CupertinoIcons.person_add_solid,
                                   text: "Upgrade to full account",
-                                  onTap: () => print("tap"),
+                                  onTap: () => router.push("/register", extra: const RegistrationPops(true)),
                                 ),
                             ],
                           ),

@@ -141,7 +141,8 @@ class AuthFlowCubit extends Cubit<AuthFlowState> {
     }
   }
 
-  Future<void> register(String email, String password, String confirmPassword) async {
+  Future<void> register(String email, String password, String confirmPassword,
+      {bool upgradingToFullAcc = false}) async {
     emit(AuthFlowLoading());
 
     if (password != confirmPassword) {
@@ -156,7 +157,6 @@ class AuthFlowCubit extends Cubit<AuthFlowState> {
       emit(AuthFlowDefault());
       return;
     }
-
     (await Api().req(
       Method.post,
       false,
@@ -164,6 +164,8 @@ class AuthFlowCubit extends Cubit<AuthFlowState> {
       <String, dynamic>{
         "email": email,
         "password": password,
+        "already_existing_acc_token":
+            upgradingToFullAcc ? await sl.get<FirebaseAuth>().currentUser?.getIdToken() : null,
       },
     ))
         .fold(
@@ -173,11 +175,32 @@ class AuthFlowCubit extends Cubit<AuthFlowState> {
           emit(const AuthFlowNotification("TODO: 4XX", NotificationType.failure));
         } else {
           try {
+            if (upgradingToFullAcc) {
+              final firebaseAuth = sl.get<FirebaseAuth>();
+              final currentUser = firebaseAuth.currentUser;
+              if (currentUser == null) {
+                emit(const AuthFlowNotification("Unknown error", NotificationType.failure));
+                return;
+              }
+            }
             var res = await sl.get<FirebaseAuth>().signInWithEmailAndPassword(email: email, password: password);
             if (res.user == null) {
               emit(const AuthFlowNotification("Unknown error", NotificationType.failure));
+              return;
             }
-          } catch (_) {
+            final user = sl.get<FirebaseAuth>().currentUser;
+            if (user == null) {
+              emit(const AuthFlowNotification("Unknown error", NotificationType.failure));
+              return;
+            }
+            if (upgradingToFullAcc) {
+              print("UPGRADING FULL");
+              await user.reload();
+              print("RELOADED");
+            }
+            ;
+          } catch (err) {
+            print("THIS ROUTE e: $err");
             emit(const AuthFlowNotification("Registered, but unable to login", NotificationType.failure));
             router.go("/login");
           }

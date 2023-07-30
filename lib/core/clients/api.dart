@@ -172,6 +172,7 @@ class Api {
     } on TimeoutException catch (_) {
       return Left(ApiTimeoutFailure());
     } catch (e) {
+      print(e);
       return Left(ApiServerFailure());
     }
   }

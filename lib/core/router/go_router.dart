@@ -39,7 +39,6 @@ final GoRouter router = GoRouter(
     GoRoute(path: '/', builder: (BuildContext context, GoRouterState state) => const SplashScreen()),
     GoRoute(path: '/error', builder: (BuildContext context, GoRouterState state) => const CriticalErrorScreen()),
     GoRoute(path: '/login', builder: (BuildContext context, GoRouterState state) => const LoginScreen()),
-    GoRoute(path: '/register', builder: (BuildContext context, GoRouterState state) => const RegistrationScreen()),
     GoRoute(path: '/verify-email', builder: (BuildContext context, GoRouterState state) => const VerifyEmailScreen()),
     GoRoute(
         path: '/reset-password', builder: (BuildContext context, GoRouterState state) => const ResetPasswordScreen()),
@@ -115,6 +114,14 @@ final GoRouter router = GoRouter(
     ),
 
     GoRoute(
+      path: '/register',
+      builder: (BuildContext context, GoRouterState state) {
+        RegistrationPops props = state.extra as RegistrationPops;
+        return RegistrationScreen(props: props);
+      },
+    ),
+
+    GoRoute(
         path: '/home/profile/account',
         builder: (BuildContext context, GoRouterState state) => const AccountDetailsScreen()),
     GoRoute(
@@ -159,4 +166,9 @@ final GoRouter router = GoRouter(
 class HomePostsSentimentProps {
   final int postId;
   const HomePostsSentimentProps(this.postId);
+}
+
+class RegistrationPops {
+  final bool upgradingToFullAccount;
+  const RegistrationPops(this.upgradingToFullAccount);
 }

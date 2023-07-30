@@ -161,7 +161,6 @@ class __OverlayItemState extends State<_OverlayItem> with TickerProviderStateMix
               if (widget.onTap != null) widget.onTap!();
             },
             child: Container(
-              width: double.infinity,
               margin: const EdgeInsets.only(top: 10),
               constraints: BoxConstraints(maxWidth: widthFraction(context, .95)),
               decoration: BoxDecoration(

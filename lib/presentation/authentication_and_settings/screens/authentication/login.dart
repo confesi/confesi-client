@@ -107,25 +107,28 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                             text: "Login",
                           ),
                           const SizedBox(height: 15),
-                          TouchableOpacity(
-                            onTap: () => router.push("/reset-password"),
-                            child: Container(
-                              // Transparent hitbox trick.
-                              color: Colors.transparent,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      "Forget your password?",
-                                      style: kTitle.copyWith(
-                                        color: Theme.of(context).colorScheme.onSurface,
+                          AbsorbPointer(
+                            absorbing: context.watch<AuthFlowCubit>().isLoading,
+                            child: TouchableOpacity(
+                              onTap: () => router.push("/reset-password"),
+                              child: Container(
+                                // Transparent hitbox trick.
+                                color: Colors.transparent,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        "Forget your password?",
+                                        style: kTitle.copyWith(
+                                          color: Theme.of(context).colorScheme.onSurface,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                        overflow: TextOverflow.ellipsis,
                                       ),
-                                      textAlign: TextAlign.center,
-                                      overflow: TextOverflow.ellipsis,
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           ),
