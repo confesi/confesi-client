@@ -16,8 +16,10 @@ class SettingTile extends StatelessWidget {
     this.rightIcon,
     this.noRightIcon = false,
     this.bgColor,
+    this.iconColor,
   });
 
+  final Color? iconColor;
   final bool noRightIcon;
   final bool isRedText;
   final IconData leftIcon;
@@ -46,32 +48,36 @@ class SettingTile extends StatelessWidget {
           children: [
             Icon(
               leftIcon,
-              color: isRedText ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.primary,
+              color:
+                  isRedText ? Theme.of(context).colorScheme.error : iconColor ?? Theme.of(context).colorScheme.primary,
             ),
             const SizedBox(width: 15),
             Expanded(
               child: Row(
                 children: [
-                  Expanded(
-                    child: Text(
-                      text,
-                      style: kTitle.copyWith(
-                        color: isRedText ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.primary,
-                      ),
-                      overflow: TextOverflow.ellipsis,
+                  Flexible(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          text,
+                          style: kTitle.copyWith(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                        secondaryText != null
+                            ? Text(
+                                secondaryText!,
+                                textAlign: TextAlign.right,
+                                style: kBody.copyWith(
+                                  color: Theme.of(context).colorScheme.onSurface,
+                                ),
+                              )
+                            : Container(),
+                      ],
                     ),
                   ),
-                  secondaryText != null
-                      ? Text(
-                          secondaryText!,
-                          textAlign: TextAlign.right,
-                          style: kTitle.copyWith(
-                            color: Theme.of(context).colorScheme.onSurface,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        )
-                      : Container(),
-                  SizedBox(width: noRightIcon ? 0 : 10),
+                  secondaryText != null ? const SizedBox(width: 10) : Container(),
                 ],
               ),
             ),
@@ -79,7 +85,9 @@ class SettingTile extends StatelessWidget {
                 ? Container()
                 : Icon(
                     rightIcon ?? CupertinoIcons.arrow_right,
-                    color: isRedText ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.primary,
+                    color: isRedText
+                        ? Theme.of(context).colorScheme.error
+                        : iconColor ?? Theme.of(context).colorScheme.primary,
                   ),
           ],
         ),

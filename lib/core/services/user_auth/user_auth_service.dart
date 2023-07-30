@@ -48,6 +48,7 @@ class UserAuthService extends ChangeNotifier {
   Future<void> clearCurrentExtraData() async {
     isAnon = true;
     email = "";
+    uid = "";
     notifyListeners();
   }
 

@@ -61,19 +61,17 @@ class AuthFlowCubit extends Cubit<AuthFlowState> {
 
   Future<void> logout() async {
     emit(AuthFlowLoading());
-    await sl.get<HiveService>().clearAllData().then((value) async {
-      await sl.get<NotificationService>().deleteTokenFromLocalDb();
-      sl.get<UserAuthService>().setNoDataState();
-      if (sl.get<UserAuthService>().state is UserAuthNoData) {
+    (await sl.get<HiveService>().clearAllData()).fold(
+      (failure) => emit(const AuthFlowNotification("Unknown error", NotificationType.failure)),
+      (success) async {
+        await sl.get<NotificationService>().deleteTokenFromLocalDb();
         try {
           await sl.get<FirebaseAuth>().signOut();
         } catch (_) {
           emit(const AuthFlowNotification("Unknown error", NotificationType.failure));
         }
-      } else {
-        emit(const AuthFlowNotification("Unknown error", NotificationType.failure));
-      }
-    });
+      },
+    );
   }
 
   Future<void> registerAnon() async {

@@ -6,10 +6,6 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-abstract class BoxName {
-  String boxName();
-}
-
 class HiveService {
   final FlutterSecureStorage flutterSecureStorage;
 

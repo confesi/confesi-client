@@ -83,7 +83,6 @@ class _SwitchSelectionTileState extends State<SwitchSelectionTile> {
                                   style: kBody.copyWith(
                                     color: widget.secondaryColor ?? Theme.of(context).colorScheme.onSurface,
                                   ),
-                                  overflow: TextOverflow.ellipsis,
                                 )
                               : Container(),
                         ],

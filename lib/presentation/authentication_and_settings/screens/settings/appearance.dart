@@ -1,3 +1,7 @@
+import 'package:confesi/core/services/user_auth/user_auth_data.dart';
+import 'package:confesi/core/services/user_auth/user_auth_service.dart';
+import 'package:provider/provider.dart';
+
 import '../../../../core/utils/styles/appearance_name.dart';
 import '../../../shared/behaviours/simulated_bottom_safe_area.dart';
 import '../../../shared/selection_groups/tile_group.dart';
@@ -43,23 +47,35 @@ class AppearanceScreen extends StatelessWidget {
                           text: "Choose appearance",
                           tiles: [
                             BoolSelectionTile(
-                              isActive: true,
+                              isActive: Provider.of<UserAuthService>(context).data().themePref == ThemePref.system,
                               icon: CupertinoIcons.device_laptop,
                               text: "System (currently ${appearanceName(context)})",
-                              onTap: () => {},
+                              onTap: () => Provider.of<UserAuthService>(context, listen: false).saveData(
+                                Provider.of<UserAuthService>(context, listen: false)
+                                    .data()
+                                    .copyWith(themePref: ThemePref.system),
+                              ),
                             ),
                             BoolSelectionTile(
-                              isActive: true,
+                              isActive: Provider.of<UserAuthService>(context).data().themePref == ThemePref.light,
                               icon: CupertinoIcons.sun_min,
                               text: "Light - BETA",
-                              onTap: () => {},
+                              onTap: () => Provider.of<UserAuthService>(context, listen: false).saveData(
+                                Provider.of<UserAuthService>(context, listen: false)
+                                    .data()
+                                    .copyWith(themePref: ThemePref.light),
+                              ),
                             ),
                             BoolSelectionTile(
                               bottomRounded: true,
-                              isActive: true,
+                              isActive: Provider.of<UserAuthService>(context).data().themePref == ThemePref.dark,
                               icon: CupertinoIcons.moon,
                               text: "Dark",
-                              onTap: () => {},
+                              onTap: () => Provider.of<UserAuthService>(context, listen: false).saveData(
+                                Provider.of<UserAuthService>(context, listen: false)
+                                    .data()
+                                    .copyWith(themePref: ThemePref.dark),
+                              ),
                             ),
                           ],
                         ),

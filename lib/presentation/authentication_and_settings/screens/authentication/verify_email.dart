@@ -89,7 +89,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> with TickerProvid
                           style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
                           children: [
                             TextSpan(
-                              text: "As a safety precaution, unverified accounts are reset quickly.",
+                              text: "To prevent email-squatting, unverified accounts are reset quickly.",
                               style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
                             ),
                           ],

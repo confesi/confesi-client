@@ -23,7 +23,7 @@ class UserAuthData extends HiveObject with UserAuthState {
 
   // default
   UserAuthData(
-      {this.themePref = ThemePref.system, this.profanityFilter = ProfanityFilter.off, this.isShrunkView = false});
+      {this.themePref = ThemePref.dark, this.profanityFilter = ProfanityFilter.off, this.isShrunkView = false});
 }
 
 // copyWith

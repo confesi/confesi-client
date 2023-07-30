@@ -75,7 +75,6 @@ class _CreatePostDetailsState extends State<CreatePostDetails> with AutomaticKee
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  const SizedBox(height: 15),
                                   TileGroup(
                                     text: "Select genre",
                                     tiles: [
@@ -177,8 +176,9 @@ class _CreatePostDetailsState extends State<CreatePostDetails> with AutomaticKee
                                 topPadding: 15,
                                 loading: state is PostLoading ? true : false,
                                 justText: true,
-                                onPress: () async =>
-                                    await context.read<CreatePostCubit>().uploadUserPost("widget.title", "widget.body"),
+                                onPress: () async => await context
+                                    .read<CreatePostCubit>()
+                                    .uploadUserPost("widget.title", "widget.body", "category"),
                                 icon: CupertinoIcons.chevron_right,
                                 backgroundColor: Theme.of(context).colorScheme.secondary,
                                 textColor: Theme.of(context).colorScheme.onSecondary,

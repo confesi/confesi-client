@@ -26,6 +26,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrollable/exports.dart';
 
 import '../../../shared/selection_groups/switch_selection_tile.dart';
+import '../../../shared/text/disclaimer_text.dart';
 
 class SettingsHome extends StatelessWidget {
   const SettingsHome({
@@ -72,6 +73,10 @@ class SettingsHome extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          const DisclaimerText(
+                            text:
+                                "Most of these preferences are saved locally to your device, and deleted upon logout.",
+                          ),
                           TileGroup(
                             text: "General",
                             tiles: [
@@ -168,6 +173,7 @@ class SettingsHome extends StatelessWidget {
                                 isRedText: true,
                                 leftIcon: CupertinoIcons.square_arrow_right,
                                 text: isAnon ? "Logout of guest account" : "Logout",
+                                secondaryText: isAnon ? "Guest" : sl.get<UserAuthService>().email,
                                 onTap: () async {
                                   FocusScope.of(context).unfocus();
                                   await context.read<AuthFlowCubit>().logout();
@@ -175,6 +181,7 @@ class SettingsHome extends StatelessWidget {
                               ),
                               if (isAnon)
                                 SettingTile(
+                                  iconColor: Theme.of(context).colorScheme.secondary,
                                   leftIcon: CupertinoIcons.person_add_solid,
                                   text: "Upgrade to full account",
                                   onTap: () => router.push("/register", extra: const RegistrationPops(true)),

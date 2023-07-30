@@ -32,38 +32,41 @@ Future<dynamic> showInfoSheetWithAction(
           const SwipebarLayout(),
           Padding(
             padding: EdgeInsets.only(left: 30, right: 30, bottom: bottomSafeArea(context), top: 15),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  header,
-                  style: kDisplay1.copyWith(
-                    color: Theme.of(context).colorScheme.primary,
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 450),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    header,
+                    style: kDisplay1.copyWith(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 30),
-                Text(
-                  body,
-                  style: kBody.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface,
+                  const SizedBox(height: 30),
+                  Text(
+                    body,
+                    style: kBody.copyWith(
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 30),
-                PopButton(
-                  bottomPadding: bottomSafeArea(context),
-                  justText: true,
-                  onPress: () {
-                    Navigator.pop(context);
-                    onTap();
-                  },
-                  icon: CupertinoIcons.chevron_right,
-                  backgroundColor: Theme.of(context).colorScheme.secondary,
-                  textColor: Theme.of(context).colorScheme.onSecondary,
-                  text: buttonText,
-                ),
-              ],
+                  const SizedBox(height: 30),
+                  PopButton(
+                    bottomPadding: bottomSafeArea(context),
+                    justText: true,
+                    onPress: () {
+                      Navigator.pop(context);
+                      onTap();
+                    },
+                    icon: CupertinoIcons.chevron_right,
+                    backgroundColor: Theme.of(context).colorScheme.secondary,
+                    textColor: Theme.of(context).colorScheme.onSecondary,
+                    text: buttonText,
+                  ),
+                ],
+              ),
             ),
           ),
         ],

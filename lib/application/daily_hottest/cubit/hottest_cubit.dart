@@ -28,17 +28,17 @@ class HottestCubit extends Cubit<HottestState> {
   Future<void> _loadFromDate(DateTime date) async {
     emit(DailyHottestLoading());
     (await Api().req(Method.get, true, "/api/v1/posts/hottest?day=${date.yearMonthDay()}", {})).fold(
-      (failure) => emit(DailyHottestError(message: failure.message())),
+      (failure) => emit(DailyHottestError(message: failure.message(), date: date)),
       (response) {
         try {
           if (response.statusCode.toString()[0] == "2") {
             final posts = (json.decode(response.body)["value"] as List).map((e) => Post.fromJson(e)).toList();
             emit(DailyHottestData(posts: posts, date: date));
           } else {
-            emit(DailyHottestError(message: "Unknown error"));
+            emit(DailyHottestError(message: "Unknown error", date: date));
           }
         } catch (_) {
-          emit(DailyHottestError(message: "Unknown error"));
+          emit(DailyHottestError(message: "Unknown error", date: date));
         }
       },
     );

@@ -84,8 +84,11 @@ class ShrinkView extends StatelessWidget {
     // final data = Provider.of<UserAuthService>(context, listen: true).data();
     return Center(
       // Use a SizedBox to limit the width of the entire app
-      child: SizedBox(
-        width: Provider.of<UserAuthService>(context).data().isShrunkView ? shrunkViewWidth : null,
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+            maxWidth: Provider.of<UserAuthService>(context).data().isShrunkView
+                ? shrunkViewWidth
+                : MediaQuery.of(context).size.width),
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: AppTheme.light,
@@ -132,36 +135,42 @@ class _MyAppState extends State<MyApp> {
     _userChangeStream = sl.get<StreamController<User?>>().stream.listen((User? user) async {
       sl.get<NotificationService>().updateToken(user?.uid);
       if (user == null) {
+        print("USER NULL");
         await Future.delayed(const Duration(milliseconds: 500)).then((_) {
+          sl.get<UserAuthService>().setNoDataState();
           HapticFeedback.lightImpact();
           router.go("/open");
           context.read<AuthFlowCubit>().emitDefault();
         });
       } else {
-        // print("UID: ${await sl.get<FirebaseAuth>().currentUser!.getIdToken()}");
-        await sl.get<UserAuthService>().getData(sl.get<FirebaseAuth>().currentUser!.uid);
-        await Future.delayed(const Duration(milliseconds: 500)).then((value) {
-          if (sl.get<UserAuthService>().state is! UserAuthData) {
-            router.go("/error");
-            context.read<AuthFlowCubit>().emitDefault();
-            return;
-          }
-          if (user.isAnonymous) {
-            sl.get<UserAuthService>().isAnon = true;
-            sl.get<UserAuthService>().uid = user.uid;
-            router.go("/home");
-          } else {
-            sl.get<UserAuthService>().isAnon = false;
-            sl.get<UserAuthService>().email = user.email!;
-            sl.get<UserAuthService>().uid = user.uid;
-            if (user.emailVerified) {
-              router.go("/home");
-            } else {
-              router.go("/verify-email");
-            }
-          }
-          context.read<AuthFlowCubit>().emitDefault();
-        });
+        print("USER smth");
+        await Future.delayed(const Duration(milliseconds: 500)).then(
+          (_) async {
+            sl.get<UserAuthService>().setNoDataState();
+            await sl.get<UserAuthService>().getData(sl.get<FirebaseAuth>().currentUser!.uid).then((_) {
+              if (sl.get<UserAuthService>().state is! UserAuthData) {
+                router.go("/error");
+                context.read<AuthFlowCubit>().emitDefault();
+                return;
+              }
+              if (user.isAnonymous) {
+                sl.get<UserAuthService>().isAnon = true;
+                sl.get<UserAuthService>().uid = user.uid;
+                router.go("/home");
+              } else {
+                sl.get<UserAuthService>().isAnon = false;
+                sl.get<UserAuthService>().email = user.email!;
+                sl.get<UserAuthService>().uid = user.uid;
+                if (user.emailVerified) {
+                  router.go("/home");
+                } else {
+                  router.go("/verify-email");
+                }
+              }
+              context.read<AuthFlowCubit>().emitDefault();
+            });
+          },
+        );
       }
     });
   }
@@ -173,11 +182,11 @@ class _MyAppState extends State<MyApp> {
     });
     sl.get<NotificationService>().requestPermissions();
     await sl.get<NotificationService>().init();
-    sl.get<NotificationService>().onMessage((p0) {
-      print("onMessage: $p0");
+    sl.get<NotificationService>().onMessage((msg) {
+      print("onMessage: $msg");
     });
-    sl.get<NotificationService>().onMessageOpenedInApp((p0) {
-      print("onMessageOpenedApp: $p0");
+    sl.get<NotificationService>().onMessageOpenedInApp((msg) {
+      print("onMessageOpenedApp: $msg");
     });
     sl
         .get<NotificationService>()
@@ -202,7 +211,7 @@ class _MyAppState extends State<MyApp> {
                 showNotificationChip(context, state.message);
               } else if (state is PostSuccessfullySubmitted) {
                 sl.get<ConfettiBlaster>().show(context);
-                Navigator.popUntil(context, ModalRoute.withName('/home'));
+                router.go("/home");
                 showNotificationChip(context, "Posted successfully", notificationType: NotificationType.success);
               }
             },

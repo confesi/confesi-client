@@ -13,7 +13,7 @@ class CreatePostCubit extends Cubit<CreatePostState> {
 
   CreatePostCubit({required this.uploadPost}) : super(EnteringData());
 
-  Future<void> uploadUserPost(String title, String body) async {
+  Future<void> uploadUserPost(String title, String body, String category) async {
     emit(PostLoading());
     return eitherNotEmptyValidator(title, body).fold(
       (failure) => emit(PostError(message: "Can't submit empty post")),
@@ -25,6 +25,7 @@ class CreatePostCubit extends Cubit<CreatePostState> {
           {
             "title": title,
             "body": body,
+            "category": category,
           },
         ))
             .fold(

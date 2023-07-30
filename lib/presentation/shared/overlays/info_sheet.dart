@@ -24,26 +24,29 @@ Future<dynamic> showInfoSheet(BuildContext context, String header, String body) 
           const SwipebarLayout(),
           Padding(
             padding: EdgeInsets.only(left: 30, right: 30, bottom: bottomSafeArea(context), top: 15),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  header,
-                  style: kDisplay1.copyWith(
-                    color: Theme.of(context).colorScheme.primary,
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 450),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    header,
+                    style: kDisplay1.copyWith(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 30),
-                Text(
-                  body,
-                  style: kBody.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface,
+                  const SizedBox(height: 30),
+                  Text(
+                    body,
+                    style: kBody.copyWith(
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: bottomSafeArea(context)),
-              ],
+                  SizedBox(height: bottomSafeArea(context)),
+                ],
+              ),
             ),
           ),
         ],

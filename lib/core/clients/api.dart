@@ -77,7 +77,7 @@ String apiVerbToString(Method method) {
 
 class Api {
   final Map<String, String> _headers = <String, String>{};
-  Duration _timeout = const Duration(seconds: 5);
+  Duration _timeout = const Duration(seconds: 10);
 
   Api() {
     _headers['Content-Type'] = 'application/json';

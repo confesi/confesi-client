@@ -120,6 +120,11 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
                 ? headerText
                 : "Hottest of ${state.date.readableDateFormat()}";
           }
+          if (state is DailyHottestError) {
+            headerText = state.date.isSameDate(DateTime.now().toUtc().subtract(const Duration(days: 1)))
+                ? headerText
+                : "Hottest of ${state.date.readableDateFormat()}";
+          }
           if (pageController.hasClients) {
             pageController.animateToPage(0, duration: const Duration(milliseconds: 250), curve: Curves.easeInOut);
           }
