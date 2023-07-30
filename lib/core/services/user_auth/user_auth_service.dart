@@ -19,10 +19,8 @@ class UserAuthService extends ChangeNotifier {
   String email = "";
   String uid = "";
 
-  UserAuthData get def => UserAuthData(
-        themePref: ThemePref.system,
-        profanityFilter: ProfanityFilter.off,
-      );
+  // default data
+  UserAuthData get def => UserAuthData();
 
   UserAuthData data() {
     if (state is UserAuthData) return state as UserAuthData;

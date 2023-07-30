@@ -133,6 +133,22 @@ class SettingsHome extends StatelessWidget {
                                                 .data()
                                                 .copyWith(profanityFilter: ProfanityFilter.off)),
                               ),
+                              SwitchSelectionTile(
+                                bottomRounded: true,
+                                isActive: Provider.of<UserAuthService>(context).data().isShrunkView,
+                                icon: CupertinoIcons.slider_horizontal_below_rectangle,
+                                text: "Shrunk view",
+                                secondaryText: Provider.of<UserAuthService>(context).data().isShrunkView ? "On" : "Off",
+                                onTap: () => Provider.of<UserAuthService>(context, listen: false).data().isShrunkView
+                                    ? Provider.of<UserAuthService>(context, listen: false).saveData(
+                                        Provider.of<UserAuthService>(context, listen: false)
+                                            .data()
+                                            .copyWith(isShrunkView: false))
+                                    : Provider.of<UserAuthService>(context, listen: false).saveData(
+                                        Provider.of<UserAuthService>(context, listen: false)
+                                            .data()
+                                            .copyWith(isShrunkView: true)),
+                              ),
                               SettingTile(
                                 leftIcon: CupertinoIcons.textformat_size,
                                 text: "Text size",

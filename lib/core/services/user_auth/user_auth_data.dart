@@ -18,7 +18,11 @@ class UserAuthData extends HiveObject with UserAuthState {
   @HiveField(6)
   final ProfanityFilter profanityFilter;
 
-  UserAuthData({this.themePref = ThemePref.system, this.profanityFilter = ProfanityFilter.off});
+  final bool isShrunkView;
+
+  // default
+  UserAuthData(
+      {this.themePref = ThemePref.system, this.profanityFilter = ProfanityFilter.off, this.isShrunkView = false});
 }
 
 // copyWith
@@ -26,10 +30,12 @@ extension UserAuthDataCopyWith on UserAuthData {
   UserAuthData copyWith({
     ThemePref? themePref,
     ProfanityFilter? profanityFilter,
+    bool? isShrunkView,
   }) {
     return UserAuthData(
       themePref: themePref ?? this.themePref,
       profanityFilter: profanityFilter ?? this.profanityFilter,
+      isShrunkView: isShrunkView ?? this.isShrunkView,
     );
   }
 }

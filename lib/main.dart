@@ -84,7 +84,7 @@ class ShrinkView extends StatelessWidget {
     return Center(
       // Use a SizedBox to limit the width of the entire app
       child: SizedBox(
-        width: Provider.of<UserAuthService>(context).data().profanityFilter == ProfanityFilter.on ? null : 500,
+        width: Provider.of<UserAuthService>(context).data().isShrunkView ? shrunkViewWidth : null,
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: AppTheme.light,
@@ -131,7 +131,7 @@ class _MyAppState extends State<MyApp> {
     _userChangeStream = sl.get<StreamController<User?>>().stream.listen((User? user) async {
       sl.get<NotificationService>().updateToken(user?.uid);
       if (user == null) {
-        await Future.delayed(const Duration(milliseconds: 500)).then((value) {
+        await Future.delayed(const Duration(milliseconds: 500)).then((_) {
           HapticFeedback.lightImpact();
           router.go("/open");
           context.read<AuthFlowCubit>().emitDefault();

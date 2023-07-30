@@ -8,3 +8,5 @@ const bool devicePreview = false;
 
 /// Min length for passwords.
 const int passwordMinLength = 8;
+
+const double shrunkViewWidth = 500;
