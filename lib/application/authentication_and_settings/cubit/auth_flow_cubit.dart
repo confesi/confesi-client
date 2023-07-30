@@ -127,6 +127,7 @@ class AuthFlowCubit extends Cubit<AuthFlowState> {
 
       // refresh old account
       await currentUser.reload();
+      sl.get<StreamController<User?>>().add(sl.get<FirebaseAuth>().currentUser);
       // get new user
       final refreshedUser = firebaseAuth.currentUser;
       if (refreshedUser == null) {

@@ -1,6 +1,7 @@
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 
 import '../../../core/router/go_router.dart';
+import '../../../init.dart';
 import '../../shared/button_touch_effects/touchable_scale.dart';
 import 'package:flutter/services.dart';
 
@@ -38,6 +39,7 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
   @override
   void initState() {
     pageController = PageController(initialPage: 0, viewportFraction: 0.95);
+    context.read<HottestCubit>().loadYesterday();
     super.initState();
   }
 
