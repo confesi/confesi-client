@@ -132,7 +132,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return ThemedStatusBar(
+    return ThemeStatusBar(
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
         body: SafeArea(

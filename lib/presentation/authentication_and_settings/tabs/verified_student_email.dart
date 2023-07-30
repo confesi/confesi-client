@@ -37,7 +37,7 @@ class _VerifiedStudentEmailTabState extends State<VerifiedStudentEmailTab> {
   @override
   Widget build(BuildContext context) {
     return KeyboardDismiss(
-      child: ThemedStatusBar(
+      child: ThemeStatusBar(
           child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
         body: SafeArea(

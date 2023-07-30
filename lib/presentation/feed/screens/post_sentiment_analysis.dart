@@ -1,4 +1,5 @@
 import 'package:confesi/application/feed/cubit/sentiment_analysis_cubit.dart';
+import 'package:confesi/core/utils/sizing/height_fraction.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -48,7 +49,7 @@ class _SentimentAnalysisScreenState extends State<SentimentAnalysisScreen> {
         controller: ScrollController(),
         child: InitScale(
           child: PieChart(
-            chartRadius: widthFraction(context, .8),
+            chartRadius: heightFraction(context, .4),
             ringStrokeWidth: 10,
             dataMap: {
               "😁 Positive": state.sentimentAnalysis.positive.toDouble(),
@@ -88,7 +89,7 @@ class _SentimentAnalysisScreenState extends State<SentimentAnalysisScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return ThemedStatusBar(
+    return ThemeStatusBar(
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
         body: SafeArea(

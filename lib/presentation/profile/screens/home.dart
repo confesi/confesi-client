@@ -46,7 +46,7 @@ class _ProfileHomeState extends State<ProfileHome> with AutomaticKeepAliveClient
       backgroundColor: Theme.of(context).colorScheme.shadow,
       body: SafeArea(
         top: false,
-        child: ThemedStatusBar(
+        child: ThemeStatusBar(
           child: ScrollableView(
             physics: const BouncingScrollPhysics(),
             controller: ScrollController(),

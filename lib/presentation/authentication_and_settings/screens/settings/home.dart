@@ -43,7 +43,7 @@ class SettingsHome extends StatelessWidget {
           context.read<WebsiteLauncherCubit>().setContactStateToBase();
         }
       },
-      child: ThemedStatusBar(
+      child: ThemeStatusBar(
         child: Scaffold(
           backgroundColor: Theme.of(context).colorScheme.shadow,
           body: SafeArea(
@@ -116,7 +116,7 @@ class SettingsHome extends StatelessWidget {
                                 isActive:
                                     Provider.of<UserAuthService>(context).data().profanityFilter == ProfanityFilter.on,
                                 icon: CupertinoIcons.strikethrough,
-                                text: "Profanity blocker",
+                                text: "Profanity filter",
                                 secondaryText:
                                     Provider.of<UserAuthService>(context).data().profanityFilter == ProfanityFilter.on
                                         ? "On"

@@ -111,7 +111,7 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
 
   @override
   Widget build(BuildContext context) {
-    return ThemedStatusBar(
+    return ThemeStatusBar(
       child: BlocListener<HottestCubit, HottestState>(
         listenWhen: (previous, current) => true,
         listener: (context, state) async {

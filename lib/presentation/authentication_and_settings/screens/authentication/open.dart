@@ -25,7 +25,7 @@ class _OpenScreenState extends State<OpenScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => false, // disables back button
-      child: ThemedStatusBar(
+      child: ThemeStatusBar(
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           backgroundColor: Theme.of(context).colorScheme.shadow,

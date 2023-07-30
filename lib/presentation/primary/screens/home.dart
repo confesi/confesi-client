@@ -62,15 +62,15 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       ],
       child: WillPopScope(
         onWillPop: () async => false,
-        child: ThemedStatusBar(
+        child: ThemeStatusBar(
           child: Scaffold(
+            backgroundColor: Theme.of(context).colorScheme.background,
             drawerScrimColor: Colors.black.withOpacity(0.7),
             drawerEnableOpenDragGesture: currentIndex == 0,
             drawer: const FeedDrawer(), // Reference to the "watched_universities" feature drawer (feed_drawer).
             resizeToAvoidBottomInset: false,
             key: scaffoldKey,
-            body: Container(
-              color: Theme.of(context).colorScheme.background,
+            body: Center(
               child: Scaffold(
                 body: IndexedStack(
                   index: currentIndex,

@@ -23,7 +23,7 @@ class NotificationsSettingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ThemedStatusBar(
+    return ThemeStatusBar(
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.shadow,
         body: SafeArea(

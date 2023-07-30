@@ -40,7 +40,7 @@ class _CreatePostDetailsState extends State<CreatePostDetails> with AutomaticKee
       },
       child: NavBlocker(
         blocking: context.watch<CreatePostCubit>().state is PostLoading,
-        child: ThemedStatusBar(
+        child: ThemeStatusBar(
           child: Scaffold(
             backgroundColor: Theme.of(context).colorScheme.background,
             body: SafeArea(

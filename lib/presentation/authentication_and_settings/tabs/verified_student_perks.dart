@@ -23,7 +23,7 @@ class VerifiedStudentPerksTab extends StatefulWidget {
 class _VerifiedStudentPerksTabState extends State<VerifiedStudentPerksTab> {
   @override
   Widget build(BuildContext context) {
-    return ThemedStatusBar(
+    return ThemeStatusBar(
         child: Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: SafeArea(
@@ -49,8 +49,7 @@ class _VerifiedStudentPerksTabState extends State<VerifiedStudentPerksTab> {
                 children: [
                   Expanded(
                     child: ScrollableView(
-                          physics: const BouncingScrollPhysics(),
-
+                      physics: const BouncingScrollPhysics(),
                       distancebetweenHapticEffectsDuringScroll: 50,
                       hapticEffectAtEdge: HapticType.medium,
                       controller: ScrollController(),

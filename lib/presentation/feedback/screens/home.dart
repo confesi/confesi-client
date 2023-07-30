@@ -51,7 +51,7 @@ class _FeedbackHomeState extends State<FeedbackHome> {
   @override
   Widget build(BuildContext context) {
     return KeyboardDismiss(
-      child: ThemedStatusBar(
+      child: ThemeStatusBar(
         child: Scaffold(
           backgroundColor: Theme.of(context).colorScheme.background,
           body: SafeArea(

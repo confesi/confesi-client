@@ -17,7 +17,7 @@ class CurvyScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ThemedStatusBar(
+    return ThemeStatusBar(
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.shadow,
         body: SafeArea(

@@ -25,7 +25,7 @@ class _CriticalErrorScreenState extends State<CriticalErrorScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => false,
-      child: ThemedStatusBar(
+      child: ThemeStatusBar(
         child: Scaffold(
           backgroundColor: appearanceBrightness(context) == Brightness.light
               ? AppTheme.light.colorScheme.shadow

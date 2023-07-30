@@ -44,7 +44,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> with TickerProvid
 
   @override
   Widget build(BuildContext context) {
-    return ThemedStatusBar(
+    return ThemeStatusBar(
       child: KeyboardDismiss(
         child: Scaffold(
           resizeToAvoidBottomInset: true,

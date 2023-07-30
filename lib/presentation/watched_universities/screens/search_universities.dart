@@ -38,7 +38,7 @@ class _SearchSchoolsScreenState extends State<SearchSchoolsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return ThemedStatusBar(
+    return ThemeStatusBar(
       child: KeyboardDismiss(
         child: Scaffold(
           backgroundColor: Theme.of(context).colorScheme.background,

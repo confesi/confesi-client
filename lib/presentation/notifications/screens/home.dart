@@ -84,7 +84,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return ThemedStatusBar(
+    return ThemeStatusBar(
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
         body: SafeArea(

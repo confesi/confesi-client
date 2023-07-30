@@ -33,7 +33,7 @@ class _ContactScreenState extends State<ContactScreen> {
         }
         context.read<ContactSettingCubit>().setContactStateToBase();
       },
-      child: ThemedStatusBar(
+      child: ThemeStatusBar(
           child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.shadow,
         body: SafeArea(

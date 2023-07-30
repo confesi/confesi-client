@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class ThemedStatusBar extends StatelessWidget {
-  const ThemedStatusBar({super.key, required this.child});
+class ThemeStatusBar extends StatelessWidget {
+  const ThemeStatusBar({super.key, required this.child});
 
   final Widget child;
 
@@ -10,7 +10,9 @@ class ThemedStatusBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnnotatedRegion(
       value: Theme.of(context).brightness == Brightness.dark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
-      child: child,
+      child: Center(
+        child: child,
+      ),
     );
   }
 }

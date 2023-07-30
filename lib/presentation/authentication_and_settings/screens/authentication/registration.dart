@@ -63,7 +63,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   Widget build(BuildContext context) {
     return NavBlocker(
       blocking: context.watch<AuthFlowCubit>().isLoading,
-      child: ThemedStatusBar(
+      child: ThemeStatusBar(
         child: KeyboardDismiss(
           child: Scaffold(
             resizeToAvoidBottomInset: true,

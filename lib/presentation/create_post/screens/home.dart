@@ -127,7 +127,7 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
               showNotificationChip(context, "Posted successfully", notificationType: NotificationType.success);
             }
           },
-          child: ThemedStatusBar(
+          child: ThemeStatusBar(
             child: Scaffold(
               resizeToAvoidBottomInset: true,
               backgroundColor: Theme.of(context).colorScheme.background,

@@ -47,11 +47,11 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 void main() async => await init().then(
       (_) => analytics.logAppOpen().then(
             (value) => runApp(
-              MaterialApp(
-                debugShowCheckedModeBanner: false,
-                theme: AppTheme.light,
-                darkTheme: AppTheme.dark,
-                home: MultiBlocProvider(
+              MultiProvider(
+                providers: [
+                  ChangeNotifierProvider(create: (context) => sl<UserAuthService>(), lazy: true),
+                ],
+                child: MultiBlocProvider(
                   providers: [
                     BlocProvider(lazy: false, create: (context) => sl<MapsCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<SentimentAnalysisCubit>()),
@@ -66,13 +66,35 @@ void main() async => await init().then(
                     BlocProvider(lazy: false, create: (context) => sl<LanguageSettingCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<AuthFlowCubit>()),
                   ],
-                  child:
-                      debugMode && devicePreview ? DevicePreview(builder: (context) => const MyApp()) : const MyApp(),
+                  child: debugMode && devicePreview
+                      ? DevicePreview(builder: (context) => const ShrinkView())
+                      : const ShrinkView(),
                 ),
               ),
             ),
           ),
     );
+
+class ShrinkView extends StatelessWidget {
+  const ShrinkView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // final data = Provider.of<UserAuthService>(context, listen: true).data();
+    return Center(
+      // Use a SizedBox to limit the width of the entire app
+      child: SizedBox(
+        width: Provider.of<UserAuthService>(context).data().profanityFilter == ProfanityFilter.on ? null : 500,
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.light,
+          darkTheme: AppTheme.dark,
+          home: const MyApp(),
+        ),
+      ),
+    );
+  }
+}
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -86,8 +108,10 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    startAuthListener();
     startFcmListener();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      startAuthListener();
+    });
     super.initState();
   }
 
@@ -106,7 +130,6 @@ class _MyAppState extends State<MyApp> {
     sl.get<FirebaseAuth>().authStateChanges().listen((User? user) => sl.get<StreamController<User?>>().add(user));
     _userChangeStream = sl.get<StreamController<User?>>().stream.listen((User? user) async {
       sl.get<NotificationService>().updateToken(user?.uid);
-      print("USER CHANGED!!!!!!!!!!!!!!");
       if (user == null) {
         await Future.delayed(const Duration(milliseconds: 500)).then((value) {
           HapticFeedback.lightImpact();
@@ -162,20 +185,18 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => sl<UserAuthService>(), lazy: false),
-      ],
-      child: Builder(
-        builder: (context) {
-          final data = Provider.of<UserAuthService>(context, listen: true).data();
-          return BlocListener<AuthFlowCubit, AuthFlowState>(
-            listenWhen: (previous, current) => true, // listen for every change
-            listener: (context, state) {
-              if (state is AuthFlowNotification) {
-                showNotificationChip(context, state.message, notificationType: state.type);
-              }
-            },
+    return Builder(
+      builder: (context) {
+        final data = Provider.of<UserAuthService>(context, listen: true).data();
+        return BlocListener<AuthFlowCubit, AuthFlowState>(
+          listenWhen: (previous, current) => true, // listen for every change
+          listener: (context, state) {
+            if (state is AuthFlowNotification) {
+              showNotificationChip(context, state.message, notificationType: state.type);
+            }
+          },
+          child: Container(
+            constraints: const BoxConstraints(maxWidth: 250),
             child: MaterialApp.router(
               routeInformationProvider: router.routeInformationProvider,
               routeInformationParser: router.routeInformationParser,
@@ -192,6 +213,7 @@ class _MyAppState extends State<MyApp> {
               builder: (BuildContext context, Widget? child) {
                 final MediaQueryData data = MediaQuery.of(context);
                 return MediaQuery(
+                  // update max width
                   // Force the textScaleFactor that's loaded from the device
                   // to lock to 1 (you can change it in-app independent of the inherited scale).
                   data: data.copyWith(textScaleFactor: 1),
@@ -199,9 +221,9 @@ class _MyAppState extends State<MyApp> {
                 );
               },
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }
