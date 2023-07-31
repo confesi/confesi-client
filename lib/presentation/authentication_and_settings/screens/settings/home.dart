@@ -1,4 +1,5 @@
 import 'package:confesi/presentation/shared/overlays/info_sheet.dart';
+import 'package:confesi/presentation/shared/overlays/registered_users_only_sheet.dart';
 import 'package:confesi/presentation/shared/selection_groups/tile_group.dart';
 
 import '../../../../core/router/go_router.dart';
@@ -84,7 +85,13 @@ class SettingsHome extends StatelessWidget {
                               SettingTile(
                                 leftIcon: CupertinoIcons.pencil,
                                 text: "School, faculty, and year",
-                                onTap: () => router.push("/home/profile/account"),
+                                onTap: () {
+                                  if (sl.get<UserAuthService>().isAnon) {
+                                    showRegisteredUserOnlySheet(context);
+                                  } else {
+                                    router.push("/home/profile/account");
+                                  }
+                                },
                               ),
                             ],
                           ),
@@ -153,7 +160,7 @@ class SettingsHome extends StatelessWidget {
                                 bottomRounded: true,
                                 isActive: Provider.of<UserAuthService>(context).data().isShrunkView,
                                 icon: CupertinoIcons.slider_horizontal_below_rectangle,
-                                text: "Shrunk view",
+                                text: "Shrink view",
                                 secondaryText: Provider.of<UserAuthService>(context).data().isShrunkView ? "On" : "Off",
                                 onTap: () => Provider.of<UserAuthService>(context, listen: false).data().isShrunkView
                                     ? Provider.of<UserAuthService>(context, listen: false).saveData(

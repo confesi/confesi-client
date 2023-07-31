@@ -1,4 +1,6 @@
 import 'package:confesi/application/shared/cubit/account_details_cubit.dart';
+import 'package:confesi/constants/shared/dev.dart';
+import 'package:confesi/core/router/go_router.dart';
 import 'package:confesi/presentation/shared/indicators/loading_cupertino.dart';
 import 'package:confesi/presentation/shared/selection_groups/tile_group.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,7 +14,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/styles/typography.dart';
-import '../../create_post/widgets/faculty_picker_sheet.dart';
+import '../../user/widgets/picker_selector.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/layout/appbar.dart';
 import '../../shared/selection_groups/setting_tile.dart';
@@ -37,7 +39,13 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
         key: ValueKey("loading"),
         child: LoadingCupertinoIndicator(),
       );
-    } else if (state is AccountDetailsData) {
+    } else if (state is AccountDetailsTrueData || state is AccountDetailsEphemeral) {
+      late final AccData data;
+      if (state is AccountDetailsTrueData) {
+        data = state.data;
+      } else {
+        data = (state as AccountDetailsEphemeral).data;
+      }
       return Align(
         key: const ValueKey("data"),
         alignment: Alignment.topCenter,
@@ -58,8 +66,8 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
                       secondaryText: "Required",
                       leftIcon: CupertinoIcons.sparkles,
                       rightIcon: CupertinoIcons.pen,
-                      text: state.school,
-                      onTap: () => print("tap"),
+                      text: data.school,
+                      onTap: () => router.push('/schools/search'),
                     ),
                   ],
                 ),
@@ -70,16 +78,16 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
                       secondaryText: "Optional",
                       leftIcon: CupertinoIcons.sparkles,
                       rightIcon: CupertinoIcons.pen,
-                      text: state.yearOfStudy ?? "Hidden",
-                      onTap: () => print("tap"),
+                      text: data.yearOfStudy ?? "Hidden",
+                      onTap: () => showPickerSheet(
+                        context,
+                        yearsOfStudy,
+                        (idx) => context.read<AccountDetailsCubit>().updateYearOfStudy(yearsOfStudy[idx]),
+                        () => context.read<AccountDetailsCubit>().deleteYearOfStudy(),
+                        true,
+                      ),
                     ),
                   ],
-                ),
-                TextButton(
-                  onPressed: () => context.read<AccountDetailsCubit>().updateSchool("University of British Columbia"),
-                  child: const Text(
-                    "temp update",
-                  ),
                 ),
                 TileGroup(
                   text: "Your faculty",
@@ -88,8 +96,14 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
                       secondaryText: "Optional",
                       leftIcon: CupertinoIcons.sparkles,
                       rightIcon: CupertinoIcons.pen,
-                      text: state.faculty ?? "Hidden",
-                      onTap: () => showFacultyPickerSheet(context),
+                      text: data.faculty ?? "Hidden",
+                      onTap: () => showPickerSheet(
+                        context,
+                        faculties,
+                        (idx) => context.read<AccountDetailsCubit>().updateFaculty(faculties[idx]),
+                        () => context.read<AccountDetailsCubit>().deleteFaculty(),
+                        true,
+                      ),
                     ),
                   ],
                 ),

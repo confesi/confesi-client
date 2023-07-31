@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:confesi/application/feed/cubit/sentiment_analysis_cubit.dart';
 import 'package:confesi/constants/shared/dev.dart';
+import 'package:confesi/core/results/failures.dart';
 import 'package:confesi/presentation/create_post/overlays/confetti_blaster.dart';
 
 import 'application/authentication_and_settings/cubit/auth_flow_cubit.dart';
@@ -221,8 +222,8 @@ class _MyAppState extends State<MyApp> {
             },
             child: BlocListener<AccountDetailsCubit, AccountDetailsState>(
               listener: (context, state) {
-                if (state is AccountDetailsData && state.errorMsg != null) {
-                  showNotificationChip(context, state.errorMsg!);
+                if (state is AccountDetailsTrueData && state.err is Err) {
+                  showNotificationChip(context, (state.err as Err).message);
                 }
               },
               child: Container(

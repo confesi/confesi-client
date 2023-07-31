@@ -18,33 +18,60 @@ class AccountDetailsError extends AccountDetailsState {
   List<Object> get props => [message];
 }
 
-class AccountDetailsData extends AccountDetailsState {
-  final String school;
-  final String? yearOfStudy;
-  final String? faculty;
-  final String? errorMsg;
+class AccountDetailsTrueData extends AccountDetailsState {
+  final AccData data;
+  final PossibleError err;
 
-  const AccountDetailsData({
-    required this.school,
-    required this.yearOfStudy,
-    required this.faculty,
-    this.errorMsg,
+  const AccountDetailsTrueData({
+    required this.err,
+    required this.data,
   });
 
   @override
-  List<Object> get props => [errorMsg ?? '', school, yearOfStudy ?? '', faculty ?? ''];
+  List<Object> get props => [data, err];
 
-  AccountDetailsData copyWith({
-    String? school,
-    String? yearOfStudy,
-    String? faculty,
-    String? errorMsg,
+  AccountDetailsTrueData copyWith({
+    PossibleError? err,
+    AccData? data,
   }) {
-    return AccountDetailsData(
-      school: school ?? this.school,
-      yearOfStudy: yearOfStudy ?? this.yearOfStudy,
-      faculty: faculty ?? this.faculty,
-      errorMsg: errorMsg ?? this.errorMsg,
+    return AccountDetailsTrueData(
+      err: err ?? this.err,
+      data: data ?? this.data,
     );
   }
+}
+
+class AccountDetailsEphemeral extends AccountDetailsState {
+  final AccData data;
+
+  const AccountDetailsEphemeral({
+    required this.data,
+  });
+
+  @override
+  List<Object> get props => [data];
+
+  AccountDetailsEphemeral copyWith({
+    PossibleError? err,
+    AccData? data,
+  }) {
+    return AccountDetailsEphemeral(
+      data: data ?? this.data,
+    );
+  }
+}
+
+class AccData extends Equatable {
+  final String school;
+  final String? yearOfStudy;
+  final String? faculty;
+
+  const AccData({
+    required this.school,
+    required this.yearOfStudy,
+    required this.faculty,
+  });
+
+  @override
+  List<Object?> get props => [school, yearOfStudy, faculty];
 }

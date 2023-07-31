@@ -14,6 +14,18 @@ abstract class FailureWithMsg extends Equatable {
 
 // Failures usually have a 1-1 mapping with exceptions.
 
+//! Err variant
+
+abstract class PossibleError {}
+
+class Err extends PossibleError {
+  final String message;
+
+  Err(this.message);
+}
+
+class NoErr extends PossibleError {}
+
 //! General failures
 
 /// Classic server failure, the "catch all" failure.

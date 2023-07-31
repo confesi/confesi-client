@@ -140,7 +140,7 @@ class _CreatePostDetailsState extends State<CreatePostDetails> with AutomaticKee
                                 icon: CupertinoIcons.chevron_right,
                                 backgroundColor: Theme.of(context).colorScheme.secondary,
                                 textColor: Theme.of(context).colorScheme.onSecondary,
-                                text: 'Submit Confession',
+                                text: 'Submit confession',
                               );
                             },
                           ),
