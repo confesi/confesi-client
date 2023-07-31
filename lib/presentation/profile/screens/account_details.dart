@@ -28,7 +28,7 @@ class AccountDetailsScreen extends StatelessWidget {
               AppbarLayout(
                 backgroundColor: Theme.of(context).colorScheme.shadow,
                 centerWidget: Text(
-                  "Account details",
+                  "In-App Details",
                   style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
@@ -49,8 +49,7 @@ class AccountDetailsScreen extends StatelessWidget {
                           text: "Your home university",
                           tiles: [
                             SettingTile(
-                              noRightIcon: true,
-                              secondaryText: "edit",
+                              secondaryText: "Required",
                               leftIcon: CupertinoIcons.sparkles,
                               text: "University of Victoria",
                               onTap: () => print("tap"),
@@ -58,11 +57,10 @@ class AccountDetailsScreen extends StatelessWidget {
                           ],
                         ),
                         TileGroup(
-                          text: "Your year of study (optional)",
+                          text: "Your year of study",
                           tiles: [
                             SettingTile(
-                              secondaryText: "edit",
-                              noRightIcon: true,
+                              secondaryText: "Optional",
                               leftIcon: CupertinoIcons.sparkles,
                               text: "Hidden",
                               onTap: () => print("tap"),
@@ -70,11 +68,10 @@ class AccountDetailsScreen extends StatelessWidget {
                           ],
                         ),
                         TileGroup(
-                          text: "Your faculty (optional)",
+                          text: "Your faculty",
                           tiles: [
                             SettingTile(
-                              secondaryText: "edit",
-                              noRightIcon: true,
+                              secondaryText: "Optional",
                               leftIcon: CupertinoIcons.sparkles,
                               text: "Hidden",
                               onTap: () => showFacultyPickerSheet(context),
@@ -82,8 +79,7 @@ class AccountDetailsScreen extends StatelessWidget {
                           ],
                         ),
                         const DisclaimerText(
-                          text:
-                              "These details are shared alongside a confession. You can choose to keep your year and faculty hidden, but you must share your university.",
+                          text: "These details are shared alongside confessions.",
                         ),
                       ],
                     ),

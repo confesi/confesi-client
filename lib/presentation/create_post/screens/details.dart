@@ -124,17 +124,19 @@ class _CreatePostDetailsState extends State<CreatePostDetails> with AutomaticKee
                             builder: (context, state) {
                               return PopButton(
                                 topPadding: 15,
-                                loading: state is PostLoading ? true : false,
+                                loading: state is PostLoading,
                                 justText: true,
-                                onPress: () async => await context.read<CreatePostCubit>().uploadUserPost(
-                                      context.read<PostCategoriesCubit>().data.title,
-                                      context.read<PostCategoriesCubit>().data.body,
-                                      context
-                                          .read<PostCategoriesCubit>()
-                                          .data
-                                          .categories[context.read<PostCategoriesCubit>().data.selectedIndex]
-                                          .name,
-                                    ),
+                                onPress: () async {
+                                  await context.read<CreatePostCubit>().uploadUserPost(
+                                        context.read<PostCategoriesCubit>().data.title,
+                                        context.read<PostCategoriesCubit>().data.body,
+                                        context
+                                            .read<PostCategoriesCubit>()
+                                            .data
+                                            .categories[context.read<PostCategoriesCubit>().data.selectedIndex]
+                                            .name,
+                                      );
+                                },
                                 icon: CupertinoIcons.chevron_right,
                                 backgroundColor: Theme.of(context).colorScheme.secondary,
                                 textColor: Theme.of(context).colorScheme.onSecondary,

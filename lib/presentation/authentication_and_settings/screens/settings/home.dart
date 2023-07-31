@@ -1,3 +1,4 @@
+import 'package:confesi/presentation/shared/overlays/info_sheet.dart';
 import 'package:confesi/presentation/shared/selection_groups/tile_group.dart';
 
 import '../../../../core/router/go_router.dart';
@@ -60,6 +61,10 @@ class SettingsHome extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
                   ),
+                  rightIconVisible: true,
+                  rightIcon: CupertinoIcons.info,
+                  rightIconOnPress: () => showInfoSheet(context, "Preferences",
+                      "Most of these preferences are saved locally to your device, and are deleted upon logout."),
                 ),
                 Expanded(
                   child: ScrollableView(
@@ -69,13 +74,19 @@ class SettingsHome extends StatelessWidget {
                     hapticsEnabled: false,
                     inlineBottomOrRightPadding: bottomSafeArea(context),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const DisclaimerText(
-                            text:
-                                "Most of these preferences are saved locally to your device, and are deleted upon logout.",
+                          TileGroup(
+                            text: "In-app details",
+                            tiles: [
+                              SettingTile(
+                                leftIcon: CupertinoIcons.pencil,
+                                text: "School, faculty, and year",
+                                onTap: () => router.push("/home/profile/account"),
+                              ),
+                            ],
                           ),
                           TileGroup(
                             text: "General",

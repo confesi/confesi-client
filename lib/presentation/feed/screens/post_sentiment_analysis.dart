@@ -45,7 +45,7 @@ class _SentimentAnalysisScreenState extends State<SentimentAnalysisScreen> {
       return ScrollableView(
         key: const ValueKey("loaded"),
         physics: const BouncingScrollPhysics(),
-        padding: const EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 15),
         controller: ScrollController(),
         child: InitScale(
           child: PieChart(
@@ -89,35 +89,42 @@ class _SentimentAnalysisScreenState extends State<SentimentAnalysisScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return ThemeStatusBar(
-      child: Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.background,
-        body: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              AppbarLayout(
-                bottomBorder: true,
-                centerWidget: Text(
-                  "Confession Sentiment",
-                  style: kTitle.copyWith(
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              Expanded(
-                child: Center(
-                  child: BlocBuilder<SentimentAnalysisCubit, SentimentAnalysisState>(
-                    builder: (context, state) => AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 250),
-                      child: buildChild(context, state),
+    return Container(
+      color: Theme.of(context).colorScheme.background,
+      child: ThemeStatusBar(
+        child: SafeArea(
+          bottom: false,
+          child: Scaffold(
+            backgroundColor: Theme.of(context).colorScheme.shadow,
+            body: SafeArea(
+              top: false,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  AppbarLayout(
+                    bottomBorder: true,
+                    centerWidget: Text(
+                      "Confession Sentiment",
+                      style: kTitle.copyWith(
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
                     ),
                   ),
-                ),
-              )
-            ],
+                  Expanded(
+                    child: Center(
+                      child: BlocBuilder<SentimentAnalysisCubit, SentimentAnalysisState>(
+                        builder: (context, state) => AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 250),
+                          child: buildChild(context, state),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
           ),
         ),
       ),

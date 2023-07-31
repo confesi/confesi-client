@@ -61,7 +61,7 @@ class _AccountProfileStatsState extends State<AccountProfileStats> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Your stats",
+                            "Your stats (estimates)",
                             style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -101,16 +101,6 @@ class _AccountProfileStatsState extends State<AccountProfileStats> {
                                 icon: CupertinoIcons.cube_box,
                                 leftText: "Your comments",
                                 rightText: "Your confessions",
-                              ),
-                            ],
-                          ),
-                          TileGroup(
-                            text: "Your details",
-                            tiles: [
-                              SettingTile(
-                                leftIcon: CupertinoIcons.pencil,
-                                text: "School, faculty, and year",
-                                onTap: () => router.push("/home/profile/account"),
                               ),
                             ],
                           ),

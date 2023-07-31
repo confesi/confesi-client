@@ -21,7 +21,7 @@ class PostCategoriesData extends PostCategoriesState {
   });
 
   @override
-  List<Object> get props => [categories, selectedIndex];
+  List<Object> get props => [categories, selectedIndex, title, body];
 }
 
 class PostCategory {

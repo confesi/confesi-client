@@ -33,7 +33,6 @@ class PostCategoriesCubit extends Cubit<PostCategoriesState> {
 
   void updateTitle(String text) {
     if (state is PostCategoriesData) {
-      print("UPDATE TITLE TO: $text");
       emit(
         PostCategoriesData(
           title: text,
@@ -72,7 +71,6 @@ class PostCategoriesCubit extends Cubit<PostCategoriesState> {
   }
 
   void resetCategoryAndText() {
-    print("RESET CALLED");
     if (state is PostCategoriesData) {
       emit(
         PostCategoriesData(

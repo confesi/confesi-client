@@ -57,13 +57,9 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
 
   FocusedField focusedField = FocusedField.none;
 
-  void setNoFocus() => setState(() {
-        focusedField = FocusedField.none;
-      });
+  void setNoFocus() => setState(() => focusedField = FocusedField.none);
 
-  void setFocus(FocusedField focus) => setState(() {
-        focusedField = focus;
-      });
+  void setFocus(FocusedField focus) => setState(() => focusedField = focus);
 
   double getLimitPercent() {
     if (focusedField == FocusedField.title) {
@@ -221,6 +217,7 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                                                     titleController.selection = TextSelection.fromPosition(
                                                       TextPosition(offset: titleController.text.length),
                                                     );
+                                                    setState(() {});
                                                   },
                                                   controller: titleController,
                                                   focusNode: titleFocusNode,
@@ -259,6 +256,7 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                                                       bodyController.selection = TextSelection.fromPosition(
                                                         TextPosition(offset: bodyController.text.length),
                                                       );
+                                                      setState(() {});
                                                     },
                                                     inputFormatters: [
                                                       LengthLimitingTextInputFormatter(kPostTextMaxLength),

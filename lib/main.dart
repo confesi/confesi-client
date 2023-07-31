@@ -58,6 +58,7 @@ void main() async => await init().then(
                     BlocProvider(lazy: false, create: (context) => sl<MapsCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<SentimentAnalysisCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<CreatePostCubit>()),
+                    BlocProvider(lazy: false, create: (context) => sl<PostCategoriesCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<HottestCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<WebsiteLauncherCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<ShareCubit>()),
@@ -67,7 +68,6 @@ void main() async => await init().then(
                     BlocProvider(lazy: false, create: (context) => sl<ContactSettingCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<LanguageSettingCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<AuthFlowCubit>()),
-                    BlocProvider(lazy: false, create: (context) => sl<PostCategoriesCubit>()),
                   ],
                   child: debugMode && devicePreview
                       ? DevicePreview(builder: (context) => const ShrinkView())

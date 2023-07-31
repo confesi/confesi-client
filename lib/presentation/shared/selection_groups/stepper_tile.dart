@@ -1,3 +1,4 @@
+import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,7 +25,7 @@ class _StepperTileState extends State<StepperTile> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return TouchableOpacity(
       onTap: () {
         setState(() {
           isOpen = !isOpen;
