@@ -75,7 +75,7 @@ class SettingsHome extends StatelessWidget {
                         children: [
                           const DisclaimerText(
                             text:
-                                "Most of these preferences are saved locally to your device, and deleted upon logout.",
+                                "Most of these preferences are saved locally to your device, and are deleted upon logout.",
                           ),
                           TileGroup(
                             text: "General",

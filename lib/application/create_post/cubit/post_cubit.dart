@@ -14,9 +14,10 @@ class CreatePostCubit extends Cubit<CreatePostState> {
   CreatePostCubit({required this.uploadPost}) : super(EnteringData());
 
   Future<void> uploadUserPost(String title, String body, String category) async {
+    print("$title, $body, $category");
     emit(PostLoading());
     return eitherNotEmptyValidator(title, body).fold(
-      (failure) => emit(PostError(message: "Can't submit empty post")),
+      (failure) => emit(PostError(message: "Can't submit empty confession")),
       (_) async {
         (await Api().req(
           Method.post,

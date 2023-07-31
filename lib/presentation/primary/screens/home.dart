@@ -1,3 +1,5 @@
+import 'package:confesi/application/create_post/cubit/post_categories_cubit.dart';
+import 'package:confesi/application/create_post/cubit/post_cubit.dart';
 import 'package:confesi/init.dart';
 
 import '../../../core/router/go_router.dart';
@@ -100,6 +102,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                             showRegisteredUserOnlySheet(context);
                           } else {
                             router.push("/create");
+                            context.read<PostCategoriesCubit>().resetCategoryAndText();
                           }
                         } else {
                           setState(() => currentIndex = newIndex);

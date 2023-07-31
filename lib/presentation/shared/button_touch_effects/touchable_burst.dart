@@ -4,21 +4,18 @@ import 'package:flutter/services.dart';
 class TouchableBurst extends StatefulWidget {
   const TouchableBurst({
     required this.child,
-    this.hasHapticFeedback = true,
     required this.onTap,
     super.key,
   });
 
   final Widget child;
-  final bool hasHapticFeedback;
   final VoidCallback onTap;
 
   @override
   State<TouchableBurst> createState() => _TouchableBurstState();
 }
 
-class _TouchableBurstState extends State<TouchableBurst>
-    with SingleTickerProviderStateMixin {
+class _TouchableBurstState extends State<TouchableBurst> with SingleTickerProviderStateMixin {
   late AnimationController animController;
   late Animation anim;
 
@@ -26,13 +23,8 @@ class _TouchableBurstState extends State<TouchableBurst>
   void initState() {
     super.initState();
     animController = AnimationController(
-        vsync: this,
-        duration: const Duration(milliseconds: 0),
-        reverseDuration: const Duration(milliseconds: 200));
-    anim = CurvedAnimation(
-        parent: animController,
-        curve: Curves.decelerate,
-        reverseCurve: Curves.decelerate);
+        vsync: this, duration: const Duration(milliseconds: 0), reverseDuration: const Duration(milliseconds: 200));
+    anim = CurvedAnimation(parent: animController, curve: Curves.decelerate, reverseCurve: Curves.decelerate);
   }
 
   void startAnim() async {
@@ -61,12 +53,12 @@ class _TouchableBurstState extends State<TouchableBurst>
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        widget.hasHapticFeedback ? HapticFeedback.lightImpact() : null;
+        HapticFeedback.lightImpact();
         startAnim();
         widget.onTap();
       },
       child: Transform.scale(
-        scale: anim.value / 5 + 1,
+        scale: anim.value / 50 + 1,
         child: Opacity(
           opacity: -anim.value * 0.3 + 1,
           child: widget.child,

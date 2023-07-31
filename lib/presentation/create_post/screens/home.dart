@@ -1,3 +1,4 @@
+import 'package:confesi/application/create_post/cubit/post_categories_cubit.dart';
 import 'package:confesi/presentation/shared/behaviours/nav_blocker.dart';
 
 import '../../../core/router/go_router.dart';
@@ -93,8 +94,7 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
       setNoFocus();
       if (bodyFocusNode.hasFocus) setFocus(FocusedField.body);
     });
-    titleController.addListener(() => setState(() {}));
-    bodyController.addListener(() => setState(() {}));
+
     super.initState();
   }
 
@@ -136,12 +136,7 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                       child: focusedField != FocusedField.none
                           ? SizedBox(
                               width: widthFraction(context, 1),
-                              child: Center(
-                                child: TextLimitTracker(
-                                  value: getLimitPercent(),
-                                ),
-                              ),
-                            )
+                              child: Center(child: TextLimitTracker(value: getLimitPercent())))
                           : Text(
                               'Confess Anonymously',
                               style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
@@ -220,7 +215,13 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                                                   inputFormatters: [
                                                     LengthLimitingTextInputFormatter(kPostTitleMaxLength),
                                                   ],
-                                                  onChanged: (value) => setState(() {}),
+                                                  onChanged: (value) {
+                                                    context.read<PostCategoriesCubit>().updateTitle(value);
+                                                    titleController.text = value;
+                                                    titleController.selection = TextSelection.fromPosition(
+                                                      TextPosition(offset: titleController.text.length),
+                                                    );
+                                                  },
                                                   controller: titleController,
                                                   focusNode: titleFocusNode,
                                                   textCapitalization: TextCapitalization.sentences,
@@ -252,7 +253,13 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                                                   // Transparent hitbox trick.
                                                   color: Colors.transparent,
                                                   child: TextField(
-                                                    onChanged: (value) => setState(() {}),
+                                                    onChanged: (value) {
+                                                      context.read<PostCategoriesCubit>().updateBody(value);
+                                                      bodyController.text = value;
+                                                      bodyController.selection = TextSelection.fromPosition(
+                                                        TextPosition(offset: bodyController.text.length),
+                                                      );
+                                                    },
                                                     inputFormatters: [
                                                       LengthLimitingTextInputFormatter(kPostTextMaxLength),
                                                     ],

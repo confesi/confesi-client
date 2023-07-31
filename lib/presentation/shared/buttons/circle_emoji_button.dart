@@ -1,3 +1,4 @@
+import 'package:confesi/presentation/shared/button_touch_effects/touchable_burst.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter/material.dart';
@@ -17,7 +18,7 @@ class CircleEmojiButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TouchableOpacity(
+    return TouchableBurst(
       onTap: () => onTap(),
       child: AnimatedSize(
         duration: const Duration(milliseconds: 75),

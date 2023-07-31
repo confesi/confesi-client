@@ -1,3 +1,5 @@
+import 'package:confesi/presentation/shared/button_touch_effects/touchable_burst.dart';
+import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/styles/typography.dart';
@@ -97,7 +99,8 @@ class _BoolSelectionTileState extends State<BoolSelectionTile> {
               ),
               height: 20,
               width: 20,
-              child: Container(
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
                 margin: const EdgeInsets.all(3),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,

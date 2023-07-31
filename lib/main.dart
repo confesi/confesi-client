@@ -5,6 +5,7 @@ import 'package:confesi/constants/shared/dev.dart';
 import 'package:confesi/presentation/create_post/overlays/confetti_blaster.dart';
 
 import 'application/authentication_and_settings/cubit/auth_flow_cubit.dart';
+import 'application/create_post/cubit/post_categories_cubit.dart';
 import 'core/services/hive/hive_client.dart';
 import 'core/services/user_auth/user_auth_service.dart';
 import 'presentation/shared/overlays/notification_chip.dart';
@@ -66,6 +67,7 @@ void main() async => await init().then(
                     BlocProvider(lazy: false, create: (context) => sl<ContactSettingCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<LanguageSettingCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<AuthFlowCubit>()),
+                    BlocProvider(lazy: false, create: (context) => sl<PostCategoriesCubit>()),
                   ],
                   child: debugMode && devicePreview
                       ? DevicePreview(builder: (context) => const ShrinkView())
