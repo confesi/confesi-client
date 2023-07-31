@@ -114,7 +114,7 @@ class SettingsHome extends StatelessWidget {
                               SettingTile(
                                 rightIcon: CupertinoIcons.link,
                                 leftIcon: CupertinoIcons.sidebar_left,
-                                text: "Our website",
+                                text: "Confesi.com",
                                 onTap: () => context.read<WebsiteLauncherCubit>().launchWebsiteHome(),
                               ),
                             ],
@@ -190,6 +190,13 @@ class SettingsHome extends StatelessWidget {
                                   await context.read<AuthFlowCubit>().logout();
                                 },
                               ),
+                              if (!isAnon)
+                                SettingTile(
+                                  iconColor: Theme.of(context).colorScheme.primary,
+                                  leftIcon: CupertinoIcons.lock_open,
+                                  text: "Reset password",
+                                  onTap: () => router.push("/reset-password"),
+                                ),
                               if (isAnon)
                                 SettingTile(
                                   iconColor: Theme.of(context).colorScheme.secondary,

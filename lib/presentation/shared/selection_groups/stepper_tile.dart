@@ -1,4 +1,5 @@
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
+import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,12 +26,8 @@ class _StepperTileState extends State<StepperTile> {
 
   @override
   Widget build(BuildContext context) {
-    return TouchableOpacity(
-      onTap: () {
-        setState(() {
-          isOpen = !isOpen;
-        });
-      },
+    return TouchableScale(
+      onTap: () => setState(() => isOpen = !isOpen),
       child: Container(
         width: double.infinity,
         margin: const EdgeInsets.only(top: 10),
@@ -38,7 +35,9 @@ class _StepperTileState extends State<StepperTile> {
           border: Border.all(
               color: Theme.of(context).colorScheme.onBackground, width: 0.8, strokeAlign: BorderSide.strokeAlignInside),
           color: Theme.of(context).colorScheme.background,
-          borderRadius: const BorderRadius.all(Radius.circular(15)),
+          borderRadius: const BorderRadius.all(
+            Radius.circular(15),
+          ),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

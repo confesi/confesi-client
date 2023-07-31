@@ -33,23 +33,17 @@ class _SimplePostTileState extends State<SimplePostTile> {
       child: Padding(
         padding: const EdgeInsets.only(top: 15),
         child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 5),
           width: double.infinity,
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.background,
-            // only horizontal borders
-            border: Border(
-              top: BorderSide(
+              color: Theme.of(context).colorScheme.background,
+              borderRadius: const BorderRadius.all(Radius.circular(20)),
+              // all borders
+              border: Border.all(
                 color: Theme.of(context).colorScheme.onBackground,
                 width: 0.8,
                 style: BorderStyle.solid,
-              ),
-              bottom: BorderSide(
-                color: Theme.of(context).colorScheme.onBackground,
-                width: 0.8,
-                style: BorderStyle.solid,
-              ),
-            ),
-          ),
+              )),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

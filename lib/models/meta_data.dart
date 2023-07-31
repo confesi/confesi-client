@@ -4,9 +4,11 @@
 
 import 'dart:convert';
 
+import 'package:equatable/equatable.dart';
+
 MetaData metaDataFromJson(String str) => MetaData.fromJson(json.decode(str));
 
-class MetaData {
+class MetaData extends Equatable {
   int userVote;
   bool owner;
   bool saved;
@@ -25,4 +27,7 @@ class MetaData {
         saved: json["saved"],
         emojis: List<String>.from(json["emojis"].map((x) => x)),
       );
+
+  @override
+  List<Object?> get props => [userVote, owner, saved, emojis];
 }

@@ -6,12 +6,13 @@ import 'dart:convert';
 
 import 'package:confesi/models/school.dart';
 import 'package:confesi/models/year_of_study.dart';
+import 'package:equatable/equatable.dart';
 
 import 'faculty.dart';
 
 Post postFromJson(String str) => Post.fromJson(json.decode(str));
 
-class Post {
+class Post extends Equatable {
   int id;
   int createdAt;
   int updatedAt;
@@ -72,4 +73,25 @@ class Post {
         // saved: json["saved"],
         emojis: List<String>.from(json["emojis"].map((x) => x)),
       );
+
+  @override
+  List<Object?> get props => [
+        id,
+        createdAt,
+        updatedAt,
+        school,
+        faculty,
+        yearOfStudy,
+        title,
+        content,
+        downvote,
+        upvote,
+        trendingScore,
+        hottestOn,
+        hidden,
+        edited,
+        userVote,
+        owner,
+        emojis
+      ];
 }

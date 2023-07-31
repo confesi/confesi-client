@@ -5,7 +5,7 @@ import 'package:equatable/equatable.dart';
 
 import '../../../core/clients/api.dart';
 import '../../../domain/shared/entities/post.dart';
-import '../../../models/SentimentAnalysis.dart';
+import '../../../models/sentiment_analysis.dart';
 
 part 'sentiment_analysis_state.dart';
 

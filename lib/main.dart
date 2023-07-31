@@ -6,6 +6,7 @@ import 'package:confesi/presentation/create_post/overlays/confetti_blaster.dart'
 
 import 'application/authentication_and_settings/cubit/auth_flow_cubit.dart';
 import 'application/create_post/cubit/post_categories_cubit.dart';
+import 'application/shared/cubit/account_details_cubit.dart';
 import 'core/services/hive/hive_client.dart';
 import 'core/services/user_auth/user_auth_service.dart';
 import 'presentation/shared/overlays/notification_chip.dart';
@@ -68,6 +69,7 @@ void main() async => await init().then(
                     BlocProvider(lazy: false, create: (context) => sl<ContactSettingCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<LanguageSettingCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<AuthFlowCubit>()),
+                    BlocProvider(lazy: false, create: (context) => sl<AccountDetailsCubit>()),
                   ],
                   child: debugMode && devicePreview
                       ? DevicePreview(builder: (context) => const ShrinkView())
@@ -217,31 +219,38 @@ class _MyAppState extends State<MyApp> {
                 showNotificationChip(context, "Posted successfully", notificationType: NotificationType.success);
               }
             },
-            child: Container(
-              constraints: const BoxConstraints(maxWidth: 250),
-              child: MaterialApp.router(
-                routeInformationProvider: router.routeInformationProvider,
-                routeInformationParser: router.routeInformationParser,
-                routerDelegate: router.routerDelegate,
-                debugShowCheckedModeBanner: false,
-                title: "Confesi",
-                theme: AppTheme.light,
-                darkTheme: AppTheme.dark,
-                themeMode: data.themePref == ThemePref.system
-                    ? ThemeMode.system
-                    : data.themePref == ThemePref.light
-                        ? ThemeMode.light
-                        : ThemeMode.dark,
-                builder: (BuildContext context, Widget? child) {
-                  final MediaQueryData data = MediaQuery.of(context);
-                  return MediaQuery(
-                    // update max width
-                    // Force the textScaleFactor that's loaded from the device
-                    // to lock to 1 (you can change it in-app independent of the inherited scale).
-                    data: data.copyWith(textScaleFactor: 1),
-                    child: child!,
-                  );
-                },
+            child: BlocListener<AccountDetailsCubit, AccountDetailsState>(
+              listener: (context, state) {
+                if (state is AccountDetailsData && state.errorMsg != null) {
+                  showNotificationChip(context, state.errorMsg!);
+                }
+              },
+              child: Container(
+                constraints: const BoxConstraints(maxWidth: 250),
+                child: MaterialApp.router(
+                  routeInformationProvider: router.routeInformationProvider,
+                  routeInformationParser: router.routeInformationParser,
+                  routerDelegate: router.routerDelegate,
+                  debugShowCheckedModeBanner: false,
+                  title: "Confesi",
+                  theme: AppTheme.light,
+                  darkTheme: AppTheme.dark,
+                  themeMode: data.themePref == ThemePref.system
+                      ? ThemeMode.system
+                      : data.themePref == ThemePref.light
+                          ? ThemeMode.light
+                          : ThemeMode.dark,
+                  builder: (BuildContext context, Widget? child) {
+                    final MediaQueryData data = MediaQuery.of(context);
+                    return MediaQuery(
+                      // update max width
+                      // Force the textScaleFactor that's loaded from the device
+                      // to lock to 1 (you can change it in-app independent of the inherited scale).
+                      data: data.copyWith(textScaleFactor: 1),
+                      child: child!,
+                    );
+                  },
+                ),
               ),
             ),
           ),

@@ -54,12 +54,14 @@ class _TouchableOpacityState extends State<TouchableOpacity> with SingleTickerPr
               animController.forward();
               animController.addListener(() => setState(() {}));
             },
-            onLongPress: () {
-              if (widget.onLongPress != null) {
-                widget.onLongPress!();
-                HapticFeedback.lightImpact();
-              }
-            },
+            onLongPress: widget.onLongPress != null
+                ? () {
+                    if (widget.onLongPress != null) {
+                      widget.onLongPress!();
+                      HapticFeedback.lightImpact();
+                    }
+                  }
+                : null,
             onTapCancel: () {
               animController.reverse();
               animController.addListener(() => setState(() {}));

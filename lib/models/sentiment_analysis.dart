@@ -4,9 +4,11 @@
 
 import 'dart:convert';
 
+import 'package:equatable/equatable.dart';
+
 SentimentAnalysis sentimentAnalysisFromJson(String str) => SentimentAnalysis.fromJson(json.decode(str));
 
-class SentimentAnalysis {
+class SentimentAnalysis extends Equatable {
   num positive;
   num negative;
   num neutral;
@@ -25,4 +27,7 @@ class SentimentAnalysis {
         neutral: json["neutral"]?.toDouble(),
         compound: json["compound"]?.toDouble(),
       );
+
+  @override
+  List<Object?> get props => [positive, negative, neutral, compound];
 }

@@ -4,9 +4,11 @@
 
 import 'dart:convert';
 
+import 'package:equatable/equatable.dart';
+
 School schoolFromJson(String str) => School.fromJson(json.decode(str));
 
-class School {
+class School extends Equatable {
   String name;
   String abbr;
   num lat;
@@ -34,4 +36,7 @@ class School {
         domain: json["domain"],
         imgUrl: json["img_url"],
       );
+
+  @override
+  List<Object?> get props => [name, abbr, lat, lon, dailyHottests, domain, imgUrl];
 }

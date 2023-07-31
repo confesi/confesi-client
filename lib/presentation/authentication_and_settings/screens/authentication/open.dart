@@ -39,23 +39,20 @@ class _OpenScreenState extends State<OpenScreen> {
                   const SizedBox(height: 15),
                   Container(
                     constraints: BoxConstraints(maxHeight: widthFraction(context, 0.5)),
-                    child: FractionallySizedBox(
-                      heightFactor: 0.5,
-                      child: TweenAnimationBuilder<double>(
-                        duration: const Duration(milliseconds: 800), // Adjust duration as needed
-                        tween: Tween<double>(begin: 0, end: 1),
-                        curve: Curves.bounceOut, // Use different curves for different effects
-                        builder: (BuildContext context, double value, Widget? child) {
-                          return Transform.scale(
-                            scale: value,
-                            child: child,
-                          );
-                        },
-                        child: AspectRatio(
-                          aspectRatio: 1,
-                          child: Image.asset(
-                            "assets/images/logos/logo_transparent.png",
-                          ),
+                    child: TweenAnimationBuilder<double>(
+                      duration: const Duration(milliseconds: 800), // Adjust duration as needed
+                      tween: Tween<double>(begin: 0, end: 1),
+                      curve: Curves.bounceOut, // Use different curves for different effects
+                      builder: (BuildContext context, double value, Widget? child) {
+                        return Transform.scale(
+                          scale: value,
+                          child: child,
+                        );
+                      },
+                      child: AspectRatio(
+                        aspectRatio: 1,
+                        child: Image.asset(
+                          "assets/images/logos/logo_transparent.png",
                         ),
                       ),
                     ),
