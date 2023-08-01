@@ -73,12 +73,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
               ),
             ),
             const SizedBox(height: 5),
-            LeaderboardItemTile(
-              imgUrl: state.userSchool.imgUrl,
-              hottests: state.userSchool.dailyHottests,
-              universityAbbr: state.userSchool.abbr,
-              universityFullName: state.userSchool.name,
-            ),
+            LeaderboardItemTile(school: state.userSchool),
             const SizedBox(height: 15),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),

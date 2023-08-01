@@ -1,3 +1,4 @@
+import 'package:confesi/models/school.dart';
 import 'package:confesi/presentation/notifications/screens/home.dart';
 
 import '../../data/create_post/datasources/create_post_datasource.dart';
@@ -11,6 +12,7 @@ import '../../presentation/create_post/screens/details.dart';
 import '../../presentation/create_post/screens/home.dart';
 import '../../presentation/feed/screens/post_sentiment_analysis.dart';
 import '../../presentation/feedback/screens/home.dart';
+import '../../presentation/leaderboard/screens/school_detail.dart';
 import '../../presentation/primary/screens/critical_error.dart';
 import '../../presentation/primary/screens/home.dart';
 import '../../presentation/primary/screens/showcase.dart';
@@ -100,6 +102,7 @@ final GoRouter router = GoRouter(
       },
     ),
     GoRoute(path: '/create/details', builder: (BuildContext context, GoRouterState state) => const CreatePostDetails()),
+
     GoRoute(path: '/onboarding', builder: (BuildContext context, GoRouterState state) => const ShowcaseScreen()),
     GoRoute(
         path: '/home/posts/detail',
@@ -118,6 +121,33 @@ final GoRouter router = GoRouter(
       builder: (BuildContext context, GoRouterState state) {
         RegistrationPops props = state.extra as RegistrationPops;
         return RegistrationScreen(props: props);
+      },
+    ),
+
+    GoRoute(
+      path: '/home/leaderboard/school',
+      pageBuilder: (context, state) {
+        HomeLeaderboardSchoolProps props = state.extra as HomeLeaderboardSchoolProps;
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: SchoolDetail(props: props),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            // Change the opacity of the screen using a Curve based on the animation's value
+            var tween = CurveTween(curve: Curves.easeInOut);
+            var curvedAnimation = tween.animate(animation);
+            return ScaleTransition(
+              scale: curvedAnimation,
+              child: child,
+            );
+          },
+        );
+      },
+    ),
+    GoRoute(
+      path: '/home/leaderboard/school',
+      builder: (BuildContext context, GoRouterState state) {
+        HomeLeaderboardSchoolProps props = state.extra as HomeLeaderboardSchoolProps;
+        return SchoolDetail(props: props);
       },
     ),
 
@@ -171,4 +201,9 @@ class HomePostsSentimentProps {
 class RegistrationPops {
   final bool upgradingToFullAccount;
   const RegistrationPops(this.upgradingToFullAccount);
+}
+
+class HomeLeaderboardSchoolProps {
+  final School school;
+  const HomeLeaderboardSchoolProps(this.school);
 }

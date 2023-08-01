@@ -81,11 +81,8 @@ class LeaderboardCubit extends Cubit<LeaderboardState> {
                     InfiniteScrollIndexable(
                       index.toString(),
                       LeaderboardItemTile(
-                        imgUrl: e.imgUrl,
-                        universityFullName: e.name,
+                        school: e,
                         placing: index + placingOffset + 1,
-                        hottests: e.dailyHottests,
-                        universityAbbr: e.abbr,
                       ),
                     ),
                   ),

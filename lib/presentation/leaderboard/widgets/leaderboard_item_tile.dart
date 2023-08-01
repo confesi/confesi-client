@@ -1,3 +1,5 @@
+import 'package:confesi/core/router/go_router.dart';
+import 'package:confesi/models/school.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -14,26 +16,20 @@ import '../../../core/styles/typography.dart';
 class LeaderboardItemTile extends StatelessWidget {
   const LeaderboardItemTile({
     super.key,
-    required this.hottests,
     this.placing,
-    required this.universityAbbr,
-    required this.universityFullName,
-    required this.imgUrl,
+    required this.school,
   });
 
-  final String imgUrl;
-  final String universityAbbr;
-  final String universityFullName;
+  final School school;
   final int? placing;
-  final int hottests;
 
   @override
   Widget build(BuildContext context) {
     return TouchableScale(
-      onTap: () => context
-          .read<MapsCubit>()
-          .launchMapAtLocation(48.4634, -123.3117, "University of Victoria"), // todo: remove hard coding
-
+      onTap: () => router.push(
+        "/home/leaderboard/school",
+        extra: HomeLeaderboardSchoolProps(school),
+      ),
       child: Container(
         margin: const EdgeInsets.only(left: 15, right: 15, top: 10),
         decoration: BoxDecoration(
@@ -72,7 +68,7 @@ class LeaderboardItemTile extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "$universityFullName • $universityAbbr",
+                      "${school.name} • ${school.abbr}",
                       style: kDetail.copyWith(
                         color: Theme.of(context).colorScheme.primary,
                       ),
@@ -80,9 +76,9 @@ class LeaderboardItemTile extends StatelessWidget {
                     ),
                     const SizedBox(height: 5),
                     Text(
-                      isPlural(hottests)
-                          ? "${addCommasToNumber(hottests)} hottests"
-                          : "${addCommasToNumber(hottests)} hottest",
+                      isPlural(school.dailyHottests)
+                          ? "${addCommasToNumber(school.dailyHottests)} hottests"
+                          : "${addCommasToNumber(school.dailyHottests)} hottest",
                       style: kDetail.copyWith(
                         color: Theme.of(context).colorScheme.onSurface,
                       ),

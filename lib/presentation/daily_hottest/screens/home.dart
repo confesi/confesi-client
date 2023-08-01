@@ -1,3 +1,4 @@
+import 'package:confesi/presentation/shared/button_touch_effects/touchable_burst.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 
 import '../../../core/router/go_router.dart';
@@ -66,7 +67,7 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
           ),
         );
       }
-      return TouchableOpacity(
+      return GestureDetector(
         onTap: () {
           print(state.posts[currentIndex].id);
           router.push("/home/posts/detail");
