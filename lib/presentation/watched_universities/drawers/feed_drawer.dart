@@ -55,7 +55,6 @@ class _FeedDrawerState extends State<FeedDrawer> {
           ),
           Expanded(
             child: ScrollableView(
-              
               physics: const BouncingScrollPhysics(),
               hapticsEnabled: false,
               inlineBottomOrRightPadding: bottomSafeArea(context),
@@ -68,15 +67,7 @@ class _FeedDrawerState extends State<FeedDrawer> {
                     child: SimpleTextButton(
                       infiniteWidth: true,
                       onTap: () => router.push("/schools/search"),
-                      text: "Edit home university",
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-                    child: SimpleTextButton(
-                      infiniteWidth: true,
-                      onTap: () => router.push("/schools/search"),
-                      text: "Edit watched universities",
+                      text: "Edit watched schools",
                     ),
                   ),
                   SectionAccordian(

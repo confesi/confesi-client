@@ -1,3 +1,6 @@
+import 'package:confesi/core/router/go_router.dart';
+import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
+
 import '../../../core/utils/sizing/bottom_safe_area.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/button_touch_effects/touchable_opacity.dart';
@@ -56,105 +59,117 @@ class _SearchSchoolsScreenState extends State<SearchSchoolsScreen> {
                       ),
                     ),
                   ),
-                  child: Row(
-                    children: [
-                      TouchableOpacity(
-                        onTap: () => Navigator.pop(context),
-                        child: Container(
-                          height: 44,
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          // Transparent hitbox trick
-                          color: Colors.transparent,
-                          child: Icon(
-                            CupertinoIcons.arrow_left,
-                            color: Theme.of(context).colorScheme.primary,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: ExpandableTextfield(
+                            color: Theme.of(context).colorScheme.surface,
+                            maxLines: 1,
+                            controller: _textEditingController,
+                            hintText: "Search universities",
                           ),
                         ),
-                      ),
-                      Expanded(
-                        child: ExpandableTextfield(
-                          maxLines: 1,
-                          controller: _textEditingController,
-                          hintText: "Search universities",
+                        const SizedBox(width: 15),
+                        TouchableScale(
+                          onTap: () => router.pop(context),
+                          child: Container(
+                            padding: const EdgeInsets.all(8),
+                            // Transparent hitbox trick
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.surface,
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: Theme.of(context).colorScheme.onBackground,
+                                width: 0.8,
+                              ),
+                            ),
+                            child: Icon(
+                              CupertinoIcons.xmark,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
                         ),
-                      ),
-                      const SizedBox(width: 10)
-                    ],
+                      ],
+                    ),
                   ),
                 ),
                 Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: ScrollableView(
-                      scrollBarVisible: false,
-                      inlineBottomOrRightPadding: bottomSafeArea(context),
-                      inlineTopOrLeftPadding: 10,
-                      hapticsEnabled: false,
-                      controller: ScrollController(),
-                      physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
-                      child: Column(
-                        children: [
-                          SearchedUniversityTile(
-                            onPress: () => print("tap"),
-                            topText: "University of Victoria",
-                            bottomText: "Victoria, BC",
-                          ),
-                          SearchedUniversityTile(
-                            onPress: () => print("tap"),
-                            topText: "University of Victoria",
-                            bottomText: "Victoria, BC",
-                          ),
-                          SearchedUniversityTile(
-                            onPress: () => print("tap"),
-                            topText: "University of Victoria",
-                            bottomText: "Victoria, BC",
-                          ),
-                          SearchedUniversityTile(
-                            onPress: () => print("tap"),
-                            topText: "University of Victoria",
-                            bottomText: "Victoria, BC",
-                          ),
-                          SearchedUniversityTile(
-                            onPress: () => print("tap"),
-                            topText: "University of Victoria",
-                            bottomText: "Victoria, BC",
-                          ),
-                          SearchedUniversityTile(
-                            onPress: () => print("tap"),
-                            topText: "University of Victoria",
-                            bottomText: "Victoria, BC",
-                          ),
-                          SearchedUniversityTile(
-                            onPress: () => print("tap"),
-                            topText: "University of Victoria",
-                            bottomText: "Victoria, BC",
-                          ),
-                          SearchedUniversityTile(
-                            onPress: () => print("tap"),
-                            topText: "University of Victoria",
-                            bottomText: "Victoria, BC",
-                          ),
-                          SearchedUniversityTile(
-                            onPress: () => print("tap"),
-                            topText: "University of Victoria",
-                            bottomText: "Victoria, BC",
-                          ),
-                          SearchedUniversityTile(
-                            onPress: () => print("tap"),
-                            topText: "University of Victoria",
-                            bottomText: "Victoria, BC",
-                          ),
-                          SearchedUniversityTile(
-                            onPress: () => print("tap"),
-                            topText: "University of Victoria",
-                            bottomText: "Victoria, BC",
-                          ),
-                          SearchedUniversityTile(
-                            onPress: () => print("tap"),
-                            topText: "University of Victoria",
-                            bottomText: "Victoria, BC",
-                          ),
-                        ],
+                  child: Container(
+                    color: Theme.of(context).colorScheme.shadow,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: ScrollableView(
+                        scrollBarVisible: false,
+                        inlineBottomOrRightPadding: bottomSafeArea(context),
+                        hapticsEnabled: false,
+                        controller: ScrollController(),
+                        physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
+                        child: Column(
+                          children: [
+                            SearchedUniversityTile(
+                              onPress: () => print("tap"),
+                              topText: "University of Victoria",
+                              bottomText: "Victoria, BC",
+                            ),
+                            SearchedUniversityTile(
+                              onPress: () => print("tap"),
+                              topText: "University of Victoria",
+                              bottomText: "Victoria, BC",
+                            ),
+                            SearchedUniversityTile(
+                              onPress: () => print("tap"),
+                              topText: "University of Victoria",
+                              bottomText: "Victoria, BC",
+                            ),
+                            SearchedUniversityTile(
+                              onPress: () => print("tap"),
+                              topText: "University of Victoria",
+                              bottomText: "Victoria, BC",
+                            ),
+                            SearchedUniversityTile(
+                              onPress: () => print("tap"),
+                              topText: "University of Victoria",
+                              bottomText: "Victoria, BC",
+                            ),
+                            SearchedUniversityTile(
+                              onPress: () => print("tap"),
+                              topText: "University of Victoria",
+                              bottomText: "Victoria, BC",
+                            ),
+                            SearchedUniversityTile(
+                              onPress: () => print("tap"),
+                              topText: "University of Victoria",
+                              bottomText: "Victoria, BC",
+                            ),
+                            SearchedUniversityTile(
+                              onPress: () => print("tap"),
+                              topText: "University of Victoria",
+                              bottomText: "Victoria, BC",
+                            ),
+                            SearchedUniversityTile(
+                              onPress: () => print("tap"),
+                              topText: "University of Victoria",
+                              bottomText: "Victoria, BC",
+                            ),
+                            SearchedUniversityTile(
+                              onPress: () => print("tap"),
+                              topText: "University of Victoria",
+                              bottomText: "Victoria, BC",
+                            ),
+                            SearchedUniversityTile(
+                              onPress: () => print("tap"),
+                              topText: "University of Victoria",
+                              bottomText: "Victoria, BC",
+                            ),
+                            SearchedUniversityTile(
+                              onPress: () => print("tap"),
+                              topText: "University of Victoria",
+                              bottomText: "Victoria, BC",
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),

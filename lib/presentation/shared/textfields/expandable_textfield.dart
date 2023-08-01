@@ -72,8 +72,12 @@ class _ExpandableTextfieldState extends State<ExpandableTextfield> {
             child: Container(
               decoration: BoxDecoration(
                 color: widget.color ?? Theme.of(context).colorScheme.background,
-                borderRadius: const BorderRadius.all(Radius.circular(5)),
-                border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
+                borderRadius: const BorderRadius.all(Radius.circular(15)),
+                border: Border.all(
+                  color: Theme.of(context).colorScheme.onBackground,
+                  width: 0.8,
+                  strokeAlign: BorderSide.strokeAlignInside,
+                ),
               ),
               child: CupertinoScrollbar(
                 thumbVisibility: widget.maxLines == 1 ? false : true,

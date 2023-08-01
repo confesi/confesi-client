@@ -22,15 +22,15 @@ class SearchedUniversityTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       // transparent color trick to increase hitbox size
-      margin: const EdgeInsets.only(bottom: 5),
+      margin: const EdgeInsets.only(top: 10),
       decoration: BoxDecoration(
         border: Border.all(
             color: Theme.of(context).colorScheme.onBackground, width: 0.8, strokeAlign: BorderSide.strokeAlignInside),
         color: Theme.of(context).colorScheme.surface,
-        borderRadius: const BorderRadius.all(Radius.circular(10)),
+        borderRadius: const BorderRadius.all(Radius.circular(15)),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
         child: Row(
           children: [
             Expanded(

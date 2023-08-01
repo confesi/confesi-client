@@ -83,6 +83,26 @@ final GoRouter router = GoRouter(
         );
       },
     ),
+
+    GoRoute(
+      path: '/schools/search',
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: const SearchSchoolsScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            // Change the opacity of the screen using a Curve based on the animation's value
+            var tween = CurveTween(curve: Curves.easeInOut);
+            var curvedAnimation = tween.animate(animation);
+            return SlideTransition(
+              position: Tween<Offset>(begin: const Offset(0, 1), end: Offset.zero).animate(curvedAnimation),
+              child: child,
+            );
+          },
+        );
+      },
+    ),
+
     GoRoute(
       path: '/feedback',
       pageBuilder: (context, state) {
@@ -188,8 +208,6 @@ final GoRouter router = GoRouter(
     GoRoute(
         path: '/settings/text-size', builder: (BuildContext context, GoRouterState state) => const TextSizeScreen()),
     GoRoute(path: '/settings/curvy', builder: (BuildContext context, GoRouterState state) => const CurvyScreen()),
-    GoRoute(
-        path: '/schools/search', builder: (BuildContext context, GoRouterState state) => const SearchSchoolsScreen()),
   ],
 );
 

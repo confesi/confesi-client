@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:confesi/application/feed/cubit/sentiment_analysis_cubit.dart';
 import 'package:confesi/constants/shared/dev.dart';
 import 'package:confesi/core/results/failures.dart';
+import 'package:confesi/presentation/shared/overlays/feedback_sheet.dart';
+import 'package:shake/shake.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:confesi/presentation/create_post/overlays/confetti_blaster.dart';
@@ -120,6 +122,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     startFcmListener();
+    startShakeForFeedbackListener();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       startAuthListener();
     });
@@ -133,6 +136,22 @@ class _MyAppState extends State<MyApp> {
     sl.get<HiveService>().dispose();
     sl.get<NotificationService>().dispose();
     super.dispose();
+  }
+
+  bool shakeViewOpen = false;
+
+  void startShakeForFeedbackListener() {
+    ShakeDetector.autoStart(
+      onPhoneShake: () {
+        if (!shakeViewOpen) {
+          shakeViewOpen = true;
+          router.push("/settings/feedback").then((value) => shakeViewOpen = false);
+        }
+      },
+      shakeThresholdGravity: 3,
+      shakeCountResetTime: 1500,
+      minimumShakeCount: 2,
+    );
   }
 
   Future<void> startAuthListener() async {

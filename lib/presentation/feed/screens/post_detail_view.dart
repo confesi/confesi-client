@@ -37,7 +37,7 @@ class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
       () {
         showNotificationChip(
           context,
-          "Want to share this instead?",
+          "Tap here to share this instead",
           notificationType: NotificationType.success,
           onTap: () => Sharing().sharePost(context, "link", "title", "body", "university", "timeAgo"),
         );
