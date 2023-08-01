@@ -18,8 +18,10 @@ class LeaderboardItemTile extends StatelessWidget {
     this.placing,
     required this.universityAbbr,
     required this.universityFullName,
+    required this.imgUrl,
   });
 
+  final String imgUrl;
   final String universityAbbr;
   final String universityFullName;
   final int? placing;

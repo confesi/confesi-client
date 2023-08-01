@@ -6,8 +6,10 @@ import 'package:confesi/core/services/user_auth/user_auth_service.dart';
 import 'package:confesi/models/school.dart';
 import 'package:drift/drift.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
 
+import '../../../constants/shared/dev.dart';
 import '../../../core/clients/api.dart';
 import '../../../core/usecases/no_params.dart';
 import '../../../domain/leaderboard/entities/leaderboard_item.dart';
@@ -28,15 +30,16 @@ class LeaderboardCubit extends Cubit<LeaderboardState> {
     if (state is LeaderboardData) {
       refreshFeed = false;
     } else if (state is LeaderboardError || state is LeaderboardLoading) {
+      emit(LeaderboardLoading());
       refreshFeed = true;
     } else {
+      emit(LeaderboardLoading());
       emit(LeaderboardError(message: "Unknown error"));
       return;
     }
     if (forceRefresh) {
       refreshFeed = true;
     }
-    emit(LeaderboardLoading());
     (await Api().req(
       Verb.get,
       true,
@@ -52,7 +55,17 @@ class LeaderboardCubit extends Cubit<LeaderboardState> {
       (failureWithMsg) => emit(LeaderboardError(message: "Unknown error")),
       (response) async {
         try {
-          if (response.statusCode.toString()[0] == "2") {
+          if (response.statusCode == 410) {
+            if (state is LeaderboardData) {
+              emit(LeaderboardData(
+                (state as LeaderboardData).schools,
+                userSchool: (state as LeaderboardData).userSchool,
+                LeaderboardFeedState.staleDate,
+              ));
+            } else {
+              emit(LeaderboardError(message: "Stale date, please refresh"));
+            }
+          } else if (response.statusCode.toString()[0] == "2") {
             final body = json.decode(response.body)["value"];
             final newSchools = (body["schools"] as List).map((i) => School.fromJson(i)).toList();
             List<InfiniteScrollIndexable> newSchoolsParsed = newSchools
@@ -63,6 +76,7 @@ class LeaderboardCubit extends Cubit<LeaderboardState> {
                     InfiniteScrollIndexable(
                       index.toString(),
                       LeaderboardItemTile(
+                        imgUrl: e.imgUrl,
                         universityFullName: e.name,
                         placing: index + 1,
                         hottests: e.dailyHottests,
@@ -73,9 +87,18 @@ class LeaderboardCubit extends Cubit<LeaderboardState> {
                 )
                 .values
                 .toList();
+
+            LeaderboardFeedState feedState = LeaderboardFeedState.feedLoading;
+            if (newSchoolsParsed.length < rankedSchoolsPageSize) {
+              feedState = LeaderboardFeedState.noMore;
+            }
+
             late School userSchool;
             late List<InfiniteScrollIndexable> allSchools;
-            if (state is LeaderboardData) {
+            if (refreshFeed) {
+              allSchools = newSchoolsParsed;
+              userSchool = School.fromJson(body["user_school"]);
+            } else if (state is LeaderboardData) {
               // add new schools to end, not start
               allSchools = (state as LeaderboardData).schools + newSchoolsParsed;
               userSchool = (state as LeaderboardData).userSchool;
@@ -83,18 +106,28 @@ class LeaderboardCubit extends Cubit<LeaderboardState> {
               allSchools = newSchoolsParsed;
               userSchool = School.fromJson(body["user_school"]);
             }
-            emit(
-              LeaderboardData(
-                allSchools,
-                LeaderboardFeedState.feed,
-                userSchool: userSchool,
-              ),
-            );
+            emit(LeaderboardData(allSchools, feedState, userSchool: userSchool));
+          } else {
+            if (state is LeaderboardData) {
+              emit(LeaderboardData(
+                (state as LeaderboardData).schools,
+                LeaderboardFeedState.errorLoadingMore,
+                userSchool: (state as LeaderboardData).userSchool,
+              ));
+            } else {
+              emit(LeaderboardError(message: "Unknown error"));
+            }
+          }
+        } catch (_) {
+          if (state is LeaderboardData) {
+            emit(LeaderboardData(
+              (state as LeaderboardData).schools,
+              LeaderboardFeedState.errorLoadingMore,
+              userSchool: (state as LeaderboardData).userSchool,
+            ));
           } else {
             emit(LeaderboardError(message: "Unknown error"));
           }
-        } catch (_) {
-          emit(LeaderboardError(message: "Unknown error"));
         }
       },
     );

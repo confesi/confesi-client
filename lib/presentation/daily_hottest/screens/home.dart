@@ -61,7 +61,7 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
           key: const ValueKey('alert'),
           child: AlertIndicator(
             btnMsg: "Jump to yesterday",
-            message: "There are no confessions for this date",
+            message: "There are no hottest confessions for this date",
             onPress: () => context.read<HottestCubit>().loadYesterday(),
           ),
         );

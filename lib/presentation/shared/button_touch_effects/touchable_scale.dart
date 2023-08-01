@@ -13,6 +13,7 @@ class TouchableScale extends StatefulWidget {
     this.tapType,
     this.tooltipLocation,
     this.opacityEnabled = true,
+    this.onLongPress,
     Key? key,
   }) : super(key: key);
 
@@ -23,6 +24,7 @@ class TouchableScale extends StatefulWidget {
   final TapType? tapType;
   final TooltipLocation? tooltipLocation;
   final bool opacityEnabled;
+  final VoidCallback? onLongPress;
 
   @override
   State<TouchableScale> createState() => _TouchableScaleState();
@@ -46,16 +48,6 @@ class _TouchableScaleState extends State<TouchableScale> with SingleTickerProvid
     super.dispose();
   }
 
-  void executeTapType() {
-    if (widget.tapType != null) {
-      if (widget.tapType == TapType.lightImpact) {
-        HapticFeedback.selectionClick();
-      } else if (widget.tapType == TapType.strongImpact) {
-        HapticFeedback.lightImpact();
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return ToolTip(
@@ -71,11 +63,17 @@ class _TouchableScaleState extends State<TouchableScale> with SingleTickerProvid
                 animController.reverse();
                 animController.addListener(() => setState(() {}));
               },
+              onLongPress: widget.onLongPress != null
+                  ? () {
+                      if (widget.onLongPress != null) {
+                        widget.onLongPress!();
+                        HapticFeedback.lightImpact();
+                      }
+                    }
+                  : null,
               onTap: () {
                 widget.onTap();
-                executeTapType();
                 animController.forward().then((_) => animController.reverse());
-                animController.addListener(() => setState(() {}));
               },
               child: Opacity(
                 opacity: widget.opacityEnabled ? -anim.value * 0.4 + 1 : 1,

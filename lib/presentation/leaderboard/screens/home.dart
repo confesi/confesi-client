@@ -75,6 +75,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
             ),
             const SizedBox(height: 5),
             LeaderboardItemTile(
+              imgUrl: state.userSchool.imgUrl,
               hottests: state.userSchool.dailyHottests,
               universityAbbr: state.userSchool.abbr,
               universityFullName: state.userSchool.name,
@@ -96,10 +97,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
         ),
         controller: controller,
         loadMore: (id) => controller.setItems(state.schools),
-        onPullToRefresh: () async {
-          context.read<LeaderboardCubit>().loadRankings(forceRefresh: true);
-          await Future.delayed(const Duration(milliseconds: 500));
-        },
+        onPullToRefresh: () async => await context.read<LeaderboardCubit>().loadRankings(forceRefresh: true),
         hasError: false,
         hasReachedEnd: false,
         onEndOfFeedReachedButtonPressed: () => print("end of feed reached pressed"),

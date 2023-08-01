@@ -1,6 +1,6 @@
 part of 'leaderboard_cubit.dart';
 
-enum LeaderboardFeedState { feed, errorLoadingMore, noMore, staleDate }
+enum LeaderboardFeedState { feedLoading, errorLoadingMore, noMore, staleDate }
 
 @immutable
 abstract class LeaderboardState extends Equatable {

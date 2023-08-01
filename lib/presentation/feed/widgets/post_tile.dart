@@ -1,3 +1,4 @@
+import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:flutter/services.dart';
 
 import '../../../core/router/go_router.dart';
@@ -27,7 +28,7 @@ class SimplePostTile extends StatefulWidget {
 class _SimplePostTileState extends State<SimplePostTile> {
   @override
   Widget build(BuildContext context) {
-    return TouchableOpacity(
+    return TouchableScale(
       onTap: () => router.push("/home/posts/detail"),
       onLongPress: () => Sharing().sharePost(context, "link", "title", "body", "university", "timeAgo"),
       child: Padding(
