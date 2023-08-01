@@ -21,9 +21,11 @@ class ExpandableTextfield extends StatefulWidget {
     this.autoCorrectAndCaps = true,
     this.keyboardType = TextInputType.text,
     this.enableSuggestions = false,
+    this.onChange,
     Key? key,
   }) : super(key: key);
 
+  final Function(String value)? onChange;
   final bool enableSuggestions;
   final TextInputType keyboardType;
   final bool autoCorrectAndCaps;
@@ -89,6 +91,7 @@ class _ExpandableTextfieldState extends State<ExpandableTextfield> {
                     children: [
                       Expanded(
                         child: TextField(
+                          onChanged: (value) => widget.onChange?.call(value),
                           autofocus: false,
                           enableSuggestions: widget.enableSuggestions,
                           obscureText: widget.obscured,

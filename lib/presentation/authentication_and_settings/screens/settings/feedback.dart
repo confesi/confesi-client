@@ -1,7 +1,10 @@
 import 'package:confesi/presentation/shared/selection_groups/switch_selection_tile.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../core/router/go_router.dart';
 
+import '../../../../core/services/user_auth/user_auth_data.dart';
+import '../../../../core/services/user_auth/user_auth_service.dart';
 import '../../../shared/behaviours/themed_status_bar.dart';
 import '../../../shared/layout/scrollable_area.dart';
 import '../../../shared/selection_groups/tile_group.dart';
@@ -57,11 +60,22 @@ class FeedbackSettingScreen extends StatelessWidget {
                           text: "Shake to give feedback",
                           tiles: [
                             SwitchSelectionTile(
-                              isActive: true,
-                              secondaryText: "On",
+                              bottomRounded: true,
+                              isActive: Provider.of<UserAuthService>(context).data().shakeToGiveFeedback,
                               icon: CupertinoIcons.waveform_path,
                               text: "Shake for feedback",
-                              onTap: () => {},
+                              secondaryText:
+                                  Provider.of<UserAuthService>(context).data().shakeToGiveFeedback ? "On" : "Off",
+                              onTap: () =>
+                                  !Provider.of<UserAuthService>(context, listen: false).data().shakeToGiveFeedback
+                                      ? Provider.of<UserAuthService>(context, listen: false).saveData(
+                                          Provider.of<UserAuthService>(context, listen: false)
+                                              .data()
+                                              .copyWith(shakeToGiveFeedback: true))
+                                      : Provider.of<UserAuthService>(context, listen: false).saveData(
+                                          Provider.of<UserAuthService>(context, listen: false)
+                                              .data()
+                                              .copyWith(shakeToGiveFeedback: false)),
                             ),
                           ],
                         ),

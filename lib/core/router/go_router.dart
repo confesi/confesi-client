@@ -188,7 +188,6 @@ final GoRouter router = GoRouter(
     GoRoute(
         path: '/home/profile/saved/posts',
         builder: (BuildContext context, GoRouterState state) => const YourSavedPosts()),
-    GoRoute(path: '/feedback', builder: (BuildContext context, GoRouterState state) => const FeedbackSettingScreen()),
     GoRoute(path: '/settings', builder: (BuildContext context, GoRouterState state) => const SettingsHome()),
 
     GoRoute(path: '/settings/faq', builder: (BuildContext context, GoRouterState state) => const FAQScreen()),

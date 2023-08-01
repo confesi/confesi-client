@@ -101,6 +101,7 @@ class _SearchSchoolsScreenState extends State<SearchSchoolsScreen> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: ScrollableView(
+                        inlineTopOrLeftPadding: 5,
                         scrollBarVisible: false,
                         inlineBottomOrRightPadding: bottomSafeArea(context),
                         hapticsEnabled: false,

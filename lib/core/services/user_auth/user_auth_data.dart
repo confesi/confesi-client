@@ -21,9 +21,15 @@ class UserAuthData extends HiveObject with UserAuthState {
   @HiveField(7)
   final bool isShrunkView;
 
+  @HiveField(8)
+  final bool shakeToGiveFeedback;
+
   // default
   UserAuthData(
-      {this.themePref = ThemePref.dark, this.profanityFilter = ProfanityFilter.off, this.isShrunkView = false});
+      {this.themePref = ThemePref.dark,
+      this.profanityFilter = ProfanityFilter.off,
+      this.isShrunkView = false,
+      this.shakeToGiveFeedback = true});
 }
 
 // copyWith
@@ -32,11 +38,13 @@ extension UserAuthDataCopyWith on UserAuthData {
     ThemePref? themePref,
     ProfanityFilter? profanityFilter,
     bool? isShrunkView,
+    bool? shakeToGiveFeedback,
   }) {
     return UserAuthData(
       themePref: themePref ?? this.themePref,
       profanityFilter: profanityFilter ?? this.profanityFilter,
       isShrunkView: isShrunkView ?? this.isShrunkView,
+      shakeToGiveFeedback: shakeToGiveFeedback ?? this.shakeToGiveFeedback,
     );
   }
 }

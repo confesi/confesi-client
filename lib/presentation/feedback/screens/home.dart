@@ -79,14 +79,17 @@ class _FeedbackHomeState extends State<FeedbackHome> {
                   child: ScrollableView(
                     physics: const BouncingScrollPhysics(),
                     scrollBarVisible: false,
+                    hapticsEnabled: false,
                     inlineBottomOrRightPadding: bottomSafeArea(context),
                     controller: ScrollController(),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: Column(
                         children: [
                           InitScale(
                             child: ExpandableTextfield(
+                              onChange: (newValue) => setState(() => {}),
+                              color: Theme.of(context).colorScheme.surface,
                               focusNode: textFocusNode,
                               maxLines: 8,
                               maxCharacters: maxFeedbackTextCharacterLimit,
@@ -94,7 +97,7 @@ class _FeedbackHomeState extends State<FeedbackHome> {
                               controller: textEditingController,
                             ),
                           ),
-                          const SizedBox(height: 10),
+                          const SizedBox(height: 30),
                           InitScale(
                             child: PopButton(
                               topPadding: 5,

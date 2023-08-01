@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:confesi/application/feed/cubit/sentiment_analysis_cubit.dart';
 import 'package:confesi/constants/shared/dev.dart';
 import 'package:confesi/core/results/failures.dart';
-import 'package:confesi/presentation/shared/overlays/feedback_sheet.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shake/shake.dart';
 import 'package:uuid/uuid.dart';
 
@@ -143,7 +143,9 @@ class _MyAppState extends State<MyApp> {
   void startShakeForFeedbackListener() {
     ShakeDetector.autoStart(
       onPhoneShake: () {
-        if (!shakeViewOpen) {
+        if (!shakeViewOpen &&
+            Provider.of<UserAuthService>(context, listen: false).data().shakeToGiveFeedback &&
+            ModalRoute.of(context)?.settings.name != "/feedback") {
           shakeViewOpen = true;
           router.push("/settings/feedback").then((value) => shakeViewOpen = false);
         }
