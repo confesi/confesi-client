@@ -46,7 +46,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         key: ValueKey('loading'),
         child: LoadingCupertinoIndicator(),
       );
-    } else if (state is LeaderboardData && state.schools.isNotEmpty) {
+    } else if (state is LeaderboardData) {
       return FeedList(
         controller: controller,
         loadMore: (id) {
@@ -64,9 +64,10 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
           controller.clearList();
         },
         hasError: false,
-        hasReachedEnd: false,
-        onEndOfFeedReachedButtonPressed: () => print("end of feed reached pressed"),
+        wontLoadMore: false,
+        onWontLoadMoreButtonPressed: () => print("end of feed reached pressed"),
         onErrorButtonPressed: () => print("error button pressed"),
+        wontLoadMoreMessage: "todo: wont load more",
       );
     } else {
       final error = state as LeaderboardError;

@@ -7,12 +7,9 @@ import 'package:confesi/models/school.dart';
 import 'package:drift/drift.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:meta/meta.dart';
 
 import '../../../constants/shared/dev.dart';
 import '../../../core/clients/api.dart';
-import '../../../core/usecases/no_params.dart';
-import '../../../domain/leaderboard/entities/leaderboard_item.dart';
 import '../../../domain/leaderboard/usecases/ranking.dart';
 import '../../../domain/shared/entities/infinite_scroll_indexable.dart';
 import '../../../init.dart';
@@ -27,8 +24,14 @@ class LeaderboardCubit extends Cubit<LeaderboardState> {
 
   Future<void> loadRankings({bool forceRefresh = false}) async {
     late bool refreshFeed;
+    LeaderboardFeedState feedState = LeaderboardFeedState.feedLoading;
     if (state is LeaderboardData) {
       refreshFeed = false;
+      emit(LeaderboardData(
+        (state as LeaderboardData).schools,
+        userSchool: (state as LeaderboardData).userSchool,
+        feedState,
+      ));
     } else if (state is LeaderboardError || state is LeaderboardLoading) {
       emit(LeaderboardLoading());
       refreshFeed = true;
@@ -37,9 +40,7 @@ class LeaderboardCubit extends Cubit<LeaderboardState> {
       emit(LeaderboardError(message: "Unknown error"));
       return;
     }
-    if (forceRefresh) {
-      refreshFeed = true;
-    }
+    if (forceRefresh) refreshFeed = true;
     (await Api().req(
       Verb.get,
       true,
@@ -68,6 +69,10 @@ class LeaderboardCubit extends Cubit<LeaderboardState> {
           } else if (response.statusCode.toString()[0] == "2") {
             final body = json.decode(response.body)["value"];
             final newSchools = (body["schools"] as List).map((i) => School.fromJson(i)).toList();
+            int placingOffset = 0;
+            if (state is LeaderboardData && !refreshFeed) {
+              placingOffset = (state as LeaderboardData).schools.length;
+            }
             List<InfiniteScrollIndexable> newSchoolsParsed = newSchools
                 .asMap()
                 .map(
@@ -78,7 +83,7 @@ class LeaderboardCubit extends Cubit<LeaderboardState> {
                       LeaderboardItemTile(
                         imgUrl: e.imgUrl,
                         universityFullName: e.name,
-                        placing: index + 1,
+                        placing: index + placingOffset + 1,
                         hottests: e.dailyHottests,
                         universityAbbr: e.abbr,
                       ),
@@ -88,7 +93,6 @@ class LeaderboardCubit extends Cubit<LeaderboardState> {
                 .values
                 .toList();
 
-            LeaderboardFeedState feedState = LeaderboardFeedState.feedLoading;
             if (newSchoolsParsed.length < rankedSchoolsPageSize) {
               feedState = LeaderboardFeedState.noMore;
             }

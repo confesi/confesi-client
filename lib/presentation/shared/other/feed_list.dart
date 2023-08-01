@@ -1,3 +1,5 @@
+import 'package:confesi/presentation/shared/indicators/loading_cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../../core/results/failures.dart';
@@ -40,9 +42,10 @@ class FeedListController extends ChangeNotifier {
     notifyListeners();
   }
 
+  void notify() => notifyListeners();
+
   /// Sets the items list to a whole new set of values.
   void setItems(List<InfiniteScrollIndexable> newItemList) {
-    if (_isDisposed) return;
     items = newItemList;
     notifyListeners();
   }
@@ -92,18 +95,20 @@ class FeedList extends StatefulWidget {
     required this.loadMore,
     required this.onPullToRefresh,
     required this.hasError,
-    required this.hasReachedEnd,
-    required this.onEndOfFeedReachedButtonPressed,
+    required this.wontLoadMore,
+    required this.onWontLoadMoreButtonPressed,
     required this.onErrorButtonPressed,
+    required this.wontLoadMoreMessage,
   });
 
   final bool hasError;
-  final bool hasReachedEnd;
+  final bool wontLoadMore;
+  final String wontLoadMoreMessage;
   final Widget? header;
   final FeedListController controller;
-  final Function(dartz.Either<Failure, String>) loadMore;
+  final Function(dartz.Either<Failure, String> possibleLastSeenId) loadMore;
   final Function onErrorButtonPressed;
-  final Function onEndOfFeedReachedButtonPressed;
+  final Function onWontLoadMoreButtonPressed;
   final Function onPullToRefresh;
 
   @override
@@ -111,7 +116,7 @@ class FeedList extends StatefulWidget {
 }
 
 class _FeedListState extends State<FeedList> {
-  bool isCurrentlyLoadingMorePosts = false;
+  bool isCurrentlyLoadingMore = false;
   bool errorLoadingMoreIsLoading = false;
   bool endOfFeedReachedIsLoading = false;
 
@@ -127,16 +132,19 @@ class _FeedListState extends State<FeedList> {
       // Loading more items
       List<int> visibleIndexes =
           widget.controller.itemPositionsListener.itemPositions.value.map((item) => item.index).toList();
+      // print(visibleIndexes);
       if (visibleIndexes.isNotEmpty &&
           widget.controller.items.length - visibleIndexes.last < widget.controller.preloadBy &&
-          !isCurrentlyLoadingMorePosts &&
+          !isCurrentlyLoadingMore &&
           !widget.hasError &&
-          !widget.hasReachedEnd) {
-        isCurrentlyLoadingMorePosts = true;
-        await widget.loadMore(widget.controller.items.isNotEmpty
-            ? dartz.Right(widget.controller.items.last.id)
-            : dartz.Left(NoneFailure()));
-        isCurrentlyLoadingMorePosts = false;
+          !widget.wontLoadMore) {
+        isCurrentlyLoadingMore = true;
+        await widget.loadMore(
+          widget.controller.items.isNotEmpty ? dartz.Right(widget.controller.items.last.id) : dartz.Left(NoneFailure()),
+        );
+        isCurrentlyLoadingMore = false;
+      } else {
+        widget.controller.notify();
       }
     });
     widget.controller.addListener(() {
@@ -150,26 +158,33 @@ class _FeedListState extends State<FeedList> {
     if (widget.hasError) {
       return _FeedListIndicator(
         isLoading: errorLoadingMoreIsLoading,
-        message: "Error loading more.",
+        message: "Error loading more",
         onClick: () async {
           setState(() {
+            if (!mounted) return;
             errorLoadingMoreIsLoading = true;
           });
           await widget.onErrorButtonPressed();
+          if (!mounted) return;
+
           setState(() {
             errorLoadingMoreIsLoading = false;
           });
         },
       );
-    } else if (widget.hasReachedEnd) {
+    } else if (widget.wontLoadMore) {
       return _FeedListIndicator(
         isLoading: endOfFeedReachedIsLoading,
-        message: "You've reached the end!",
+        message: widget.wontLoadMoreMessage,
         onClick: () async {
+          if (!mounted) return;
+
           setState(() {
             endOfFeedReachedIsLoading = true;
           });
-          await widget.onEndOfFeedReachedButtonPressed();
+          await widget.onWontLoadMoreButtonPressed();
+          if (!mounted) return;
+
           setState(() {
             endOfFeedReachedIsLoading = false;
           });
@@ -188,10 +203,7 @@ class _FeedListState extends State<FeedList> {
         physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
         itemBuilder: (context, index) {
           if (index == 0) {
-            return Padding(
-              padding: const EdgeInsets.only(top: 0),
-              child: widget.header ?? Container(),
-            );
+            return widget.header ?? Container();
           } else if (index == widget.controller.items.length + 1) {
             return AnimatedSwitcher(
               duration: const Duration(milliseconds: 250),
@@ -220,21 +232,33 @@ class _FeedListIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      constraints: const BoxConstraints(minHeight: 150),
-      child: Padding(
-        padding: const EdgeInsets.all(30),
-        child: Center(
-          child: AnimatedSwitcher(
+    return Padding(
+      padding: const EdgeInsets.all(30),
+      child: Center(
+        child: AnimatedSwitcher(
             duration: const Duration(milliseconds: 250),
-            child: message != null && onClick != null && !isLoading
-                ? AlertIndicator(
-                    message: message!,
+            child: Stack(
+              children: [
+                AnimatedOpacity(
+                  duration: const Duration(milliseconds: 250),
+                  opacity: message != null && onClick != null && !isLoading ? 1 : 0,
+                  child: AlertIndicator(
+                    message: message ?? "Retry",
                     onPress: () => onClick!(),
-                  )
-                : const CupertinoActivityIndicator(),
-          ),
-        ),
+                  ),
+                ),
+                Positioned.fill(
+                  child: AnimatedOpacity(
+                    duration: const Duration(milliseconds: 250),
+                    opacity: message != null && onClick != null && !isLoading ? 0 : 1,
+                    child: const Align(
+                      alignment: Alignment.center,
+                      child: LoadingCupertinoIndicator(),
+                    ),
+                  ),
+                ),
+              ],
+            )),
       ),
     );
   }

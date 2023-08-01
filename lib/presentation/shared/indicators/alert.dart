@@ -22,7 +22,7 @@ class AlertIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
+      padding: const EdgeInsets.all(15),
       child: Container(
           constraints: BoxConstraints(maxWidth: widthFraction(context, .8)),
           // Transparent hitbox trick.

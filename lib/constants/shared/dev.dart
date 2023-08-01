@@ -10,7 +10,7 @@ const bool devicePreview = false;
 const int passwordMinLength = 8;
 
 const double shrunkViewWidth = 400;
-const int rankedSchoolsPageSize = 10;
+const int rankedSchoolsPageSize = 2;
 
 const List<String> faculties = [
   "ENG",

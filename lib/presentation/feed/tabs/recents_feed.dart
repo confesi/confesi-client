@@ -64,13 +64,14 @@ class _ExploreRecentsState extends State<ExploreRecents> {
           Expanded(
             child: FeedList(
               hasError: false,
-              hasReachedEnd: false,
-              onEndOfFeedReachedButtonPressed: () async => await loadMorePost(),
+              wontLoadMore: false,
+              onWontLoadMoreButtonPressed: () async => await loadMorePost(),
               onErrorButtonPressed: () async => await loadMorePost(),
               onPullToRefresh: () async {
                 await Future.delayed(const Duration(milliseconds: 1000));
                 feedListController.clearList();
               },
+              wontLoadMoreMessage: "todo: wont load more",
               loadMore: (id) async {
                 print("LAST SEEN ID: $id");
                 await loadMorePost();

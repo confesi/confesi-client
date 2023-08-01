@@ -41,6 +41,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
       }
     });
     context.read<LeaderboardCubit>().loadRankings();
+
     super.initState();
   }
 
@@ -56,7 +57,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
         key: ValueKey('loading'),
         child: LoadingCupertinoIndicator(),
       );
-    } else if (state is LeaderboardData && state.schools.isNotEmpty) {
+    } else if (state is LeaderboardData) {
       return FeedList(
         header: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,9 +67,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Text(
                 "Your school",
-                style: kDisplay1.copyWith(
-                  color: Theme.of(context).colorScheme.primary,
-                ),
+                style: kDisplay1.copyWith(color: Theme.of(context).colorScheme.primary),
                 textAlign: TextAlign.left,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -85,9 +84,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Text(
                 "The others",
-                style: kDisplay1.copyWith(
-                  color: Theme.of(context).colorScheme.primary,
-                ),
+                style: kDisplay1.copyWith(color: Theme.of(context).colorScheme.primary),
                 textAlign: TextAlign.left,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -96,12 +93,20 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
           ],
         ),
         controller: controller,
-        loadMore: (id) => controller.setItems(state.schools),
+        loadMore: (_) async {
+          await context.read<LeaderboardCubit>().loadRankings();
+        },
         onPullToRefresh: () async => await context.read<LeaderboardCubit>().loadRankings(forceRefresh: true),
-        hasError: false,
-        hasReachedEnd: false,
-        onEndOfFeedReachedButtonPressed: () => print("end of feed reached pressed"),
-        onErrorButtonPressed: () => print("error button pressed"),
+        hasError: state.feedState == LeaderboardFeedState.errorLoadingMore,
+        wontLoadMore:
+            state.feedState == LeaderboardFeedState.noMore || state.feedState == LeaderboardFeedState.staleDate,
+        wontLoadMoreMessage: state.feedState == LeaderboardFeedState.staleDate
+            ? "Leaderboard updated, please refresh"
+            : "No more schools",
+        onWontLoadMoreButtonPressed: () async => state.feedState == LeaderboardFeedState.staleDate
+            ? await context.read<LeaderboardCubit>().loadRankings(forceRefresh: true)
+            : await context.read<LeaderboardCubit>().loadRankings(),
+        onErrorButtonPressed: () async => await context.read<LeaderboardCubit>().loadRankings(),
       );
     } else {
       final error = state as LeaderboardError;
@@ -109,6 +114,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
         key: const ValueKey('alert'),
         child: AlertIndicator(
           message: error.message,
+          btnMsg: "Reload",
           onPress: () => context.read<LeaderboardCubit>().loadRankings(),
         ),
       );
@@ -142,7 +148,12 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                   leftIconVisible: false,
                 ),
                 Expanded(
-                  child: BlocBuilder<LeaderboardCubit, LeaderboardState>(
+                  child: BlocConsumer<LeaderboardCubit, LeaderboardState>(
+                    listener: (context, state) {
+                      if (state is LeaderboardData) {
+                        controller.setItems(state.schools);
+                      }
+                    },
                     builder: (context, state) {
                       return AnimatedSwitcher(
                         duration: const Duration(milliseconds: 200),

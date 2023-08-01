@@ -13,7 +13,7 @@ class AppTheme {
       primary: Color(0xff333333),
       onPrimary: Color.fromARGB(255, 244, 244, 244),
       // secondary: Color.fromARGB(255, 254, 224, 115),
-      secondary: Color(0xffFFB26B),
+      secondary: Color.fromARGB(255, 59, 123, 197),
       onSecondary: Color(0xff333333),
       error: Color.fromARGB(255, 231, 104, 104), // "ERROR" color
       onError: Colors.white,
