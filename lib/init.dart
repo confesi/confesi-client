@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:confesi/application/create_post/cubit/post_categories_cubit.dart';
 import 'package:confesi/application/user/cubit/account_details_cubit.dart';
+import 'package:confesi/application/user/cubit/feedback_categories_cubit.dart';
+import 'package:confesi/application/user/cubit/feedback_cubit.dart';
 import 'package:confesi/core/services/fcm_notifications/token_data.dart';
 import 'package:confesi/presentation/create_post/overlays/confetti_blaster.dart';
 import 'package:uuid/uuid.dart';
@@ -144,6 +146,8 @@ Future<void> init() async {
   sl.registerFactory(() => ShareCubit(shareContentUsecase: sl()));
   sl.registerFactory(() => PostCategoriesCubit());
   sl.registerFactory(() => AccountDetailsCubit());
+  sl.registerFactory(() => FeedbackCubit());
+  sl.registerFactory(() => FeedbackCategoriesCubit());
 
   //! Usecases
   sl.registerLazySingleton(() => Recents(repository: sl()));

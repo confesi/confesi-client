@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:confesi/application/feed/cubit/sentiment_analysis_cubit.dart';
+import 'package:confesi/application/user/cubit/feedback_categories_cubit.dart';
 import 'package:confesi/constants/shared/dev.dart';
 import 'package:confesi/core/results/failures.dart';
 import 'package:go_router/go_router.dart';
@@ -12,6 +13,7 @@ import 'package:confesi/presentation/create_post/overlays/confetti_blaster.dart'
 import 'application/authentication_and_settings/cubit/auth_flow_cubit.dart';
 import 'application/create_post/cubit/post_categories_cubit.dart';
 import 'application/user/cubit/account_details_cubit.dart';
+import 'application/user/cubit/feedback_cubit.dart';
 import 'core/services/hive/hive_client.dart';
 import 'core/services/user_auth/user_auth_service.dart';
 import 'presentation/shared/overlays/notification_chip.dart';
@@ -75,6 +77,8 @@ void main() async => await init().then(
                     BlocProvider(lazy: false, create: (context) => sl<LanguageSettingCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<AuthFlowCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<AccountDetailsCubit>()),
+                    BlocProvider(lazy: false, create: (context) => sl<FeedbackCubit>()),
+                    BlocProvider(lazy: false, create: (context) => sl<FeedbackCategoriesCubit>()),
                   ],
                   child: debugMode && devicePreview
                       ? DevicePreview(builder: (context) => const ShrinkView())
@@ -251,31 +255,42 @@ class _MyAppState extends State<MyApp> {
                   showNotificationChip(context, (state.err as Err).message);
                 }
               },
-              child: Container(
-                constraints: const BoxConstraints(maxWidth: 250),
-                child: MaterialApp.router(
-                  routeInformationProvider: router.routeInformationProvider,
-                  routeInformationParser: router.routeInformationParser,
-                  routerDelegate: router.routerDelegate,
-                  debugShowCheckedModeBanner: false,
-                  title: "Confesi",
-                  theme: AppTheme.light,
-                  darkTheme: AppTheme.dark,
-                  themeMode: data.themePref == ThemePref.system
-                      ? ThemeMode.system
-                      : data.themePref == ThemePref.light
-                          ? ThemeMode.light
-                          : ThemeMode.dark,
-                  builder: (BuildContext context, Widget? child) {
-                    final MediaQueryData data = MediaQuery.of(context);
-                    return MediaQuery(
-                      // update max width
-                      // Force the textScaleFactor that's loaded from the device
-                      // to lock to 1 (you can change it in-app independent of the inherited scale).
-                      data: data.copyWith(textScaleFactor: 1),
-                      child: child!,
-                    );
-                  },
+              child: BlocListener<FeedbackCubit, FeedbackState>(
+                listener: (context, state) {
+                  if (state is FeedbackError) {
+                    showNotificationChip(context, state.msg());
+                  } else if (state is FeedbackSuccess) {
+                    sl.get<ConfettiBlaster>().show(context);
+                    router.pop(context);
+                    showNotificationChip(context, state.msg(), notificationType: NotificationType.success);
+                  }
+                },
+                child: Container(
+                  constraints: const BoxConstraints(maxWidth: 250),
+                  child: MaterialApp.router(
+                    routeInformationProvider: router.routeInformationProvider,
+                    routeInformationParser: router.routeInformationParser,
+                    routerDelegate: router.routerDelegate,
+                    debugShowCheckedModeBanner: false,
+                    title: "Confesi",
+                    theme: AppTheme.light,
+                    darkTheme: AppTheme.dark,
+                    themeMode: data.themePref == ThemePref.system
+                        ? ThemeMode.system
+                        : data.themePref == ThemePref.light
+                            ? ThemeMode.light
+                            : ThemeMode.dark,
+                    builder: (BuildContext context, Widget? child) {
+                      final MediaQueryData data = MediaQuery.of(context);
+                      return MediaQuery(
+                        // update max width
+                        // Force the textScaleFactor that's loaded from the device
+                        // to lock to 1 (you can change it in-app independent of the inherited scale).
+                        data: data.copyWith(textScaleFactor: 1),
+                        child: child!,
+                      );
+                    },
+                  ),
                 ),
               ),
             ),

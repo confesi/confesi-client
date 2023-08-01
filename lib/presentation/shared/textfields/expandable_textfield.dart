@@ -49,11 +49,11 @@ class _ExpandableTextfieldState extends State<ExpandableTextfield> {
   bool isDisposed = false;
   @override
   void initState() {
-    widget.controller.clear();
     widget.controller.addListener(() {
       if (isDisposed) return;
       setState(() {});
     });
+
     super.initState();
   }
 

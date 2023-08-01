@@ -42,8 +42,7 @@ final GoRouter router = GoRouter(
     GoRoute(path: '/error', builder: (BuildContext context, GoRouterState state) => const CriticalErrorScreen()),
     GoRoute(path: '/login', builder: (BuildContext context, GoRouterState state) => const LoginScreen()),
     GoRoute(path: '/verify-email', builder: (BuildContext context, GoRouterState state) => const VerifyEmailScreen()),
-    GoRoute(
-        path: '/reset-password', builder: (BuildContext context, GoRouterState state) => const ResetPasswordScreen()),
+
     GoRoute(path: '/open', builder: (BuildContext context, GoRouterState state) => const OpenScreen()),
 
     GoRoute(
@@ -142,6 +141,11 @@ final GoRouter router = GoRouter(
         RegistrationPops props = state.extra as RegistrationPops;
         return RegistrationScreen(props: props);
       },
+    ),
+
+    GoRoute(
+      path: '/reset-password',
+      builder: (BuildContext context, GoRouterState state) => const ResetPasswordScreen(),
     ),
 
     GoRoute(

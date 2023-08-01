@@ -21,7 +21,9 @@ import '../../../shared/buttons/pop.dart';
 import '../../../shared/textfields/expandable_textfield.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
-  const ResetPasswordScreen({Key? key}) : super(key: key);
+  const ResetPasswordScreen({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
@@ -30,16 +32,20 @@ class ResetPasswordScreen extends StatefulWidget {
 class _ResetPasswordScreenState extends State<ResetPasswordScreen> with TickerProviderStateMixin {
   late ScrollController scrollController;
   late TextEditingController emailController;
+  final FocusNode emailFocusNode = FocusNode();
 
   @override
   void initState() {
     scrollController = ScrollController();
-    emailController = TextEditingController();
+    emailController =
+        TextEditingController(text: sl.get<UserAuthService>().email != "" ? sl.get<UserAuthService>().email : null);
+    emailFocusNode.requestFocus();
     super.initState();
   }
 
   @override
   void dispose() {
+    emailFocusNode.dispose();
     scrollController.dispose();
     emailController.dispose();
     super.dispose();
@@ -90,6 +96,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> with TickerPr
                             keyboardType: TextInputType.emailAddress,
                             autoCorrectAndCaps: false,
                             maxLines: 1,
+                            focusNode: emailFocusNode,
                             controller: emailController,
                             hintText: "Your account's email",
                           ),

@@ -33,6 +33,12 @@ class _CreatePostDetailsState extends State<CreatePostDetails> with AutomaticKee
   bool get wantKeepAlive => true;
 
   @override
+  void initState() {
+    FocusManager.instance.primaryFocus?.unfocus();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return NavBlocker(
       blocking: context.watch<CreatePostCubit>().state is PostLoading,

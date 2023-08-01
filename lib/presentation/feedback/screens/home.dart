@@ -1,10 +1,20 @@
+import 'package:confesi/application/user/cubit/feedback_categories_cubit.dart';
+import 'package:confesi/application/user/cubit/feedback_cubit.dart';
+import 'package:confesi/presentation/shared/behaviours/simulated_bottom_safe_area.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../application/create_post/cubit/post_categories_cubit.dart';
 import '../../../core/utils/sizing/bottom_safe_area.dart';
 import 'package:scrollable/exports.dart';
 
 import '../../../constants/feedback/text.dart';
+import '../../../init.dart';
 import '../../shared/behaviours/init_scale.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/buttons/pop.dart';
+import '../../shared/indicators/loading_cupertino.dart';
+import '../../shared/selection_groups/bool_selection_tile.dart';
+import '../../shared/selection_groups/tile_group.dart';
 import '../../shared/textfields/expandable_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -74,6 +84,8 @@ class _FeedbackHomeState extends State<FeedbackHome> {
                           ),
                   ),
                   leftIcon: CupertinoIcons.xmark,
+                  leftIconDisabled: context.watch<FeedbackCubit>().state is FeedbackLoading,
+                  leftIconIgnored: context.watch<FeedbackCubit>().state is FeedbackLoading,
                 ),
                 Expanded(
                   child: ScrollableView(
@@ -97,17 +109,46 @@ class _FeedbackHomeState extends State<FeedbackHome> {
                               controller: textEditingController,
                             ),
                           ),
+                          BlocBuilder<FeedbackCategoriesCubit, FeedbackCategoriesState>(
+                            builder: (context, state) {
+                              if (state is FeedbackCategoriesData) {
+                                return TileGroup(
+                                  text: "Select type",
+                                  tiles: state.categories.map((category) {
+                                    return BoolSelectionTile(
+                                      isActive: state.selectedIndex == state.categories.indexOf(category),
+                                      icon: category.icon,
+                                      text: category.name,
+                                      backgroundColor: Theme.of(context).colorScheme.surface,
+                                      onTap: () => context
+                                          .read<FeedbackCategoriesCubit>()
+                                          .updateCategoryIdx(state.categories.indexOf(category)),
+                                    );
+                                  }).toList(),
+                                );
+                              } else {
+                                // Handle other states (e.g., loading, error) if necessary
+                                return const Padding(
+                                  padding: EdgeInsets.all(15),
+                                  child: LoadingCupertinoIndicator(),
+                                );
+                              }
+                            },
+                          ),
                           const SizedBox(height: 30),
                           InitScale(
                             child: PopButton(
+                              loading: context.watch<FeedbackCubit>().state is FeedbackLoading,
                               topPadding: 5,
                               backgroundColor: Theme.of(context).colorScheme.secondary,
                               textColor: Theme.of(context).colorScheme.onSecondary,
                               text: "Submit",
-                              onPress: () => print("tap"),
+                              onPress: () => context.read<FeedbackCubit>().sendFeedback(
+                                  textEditingController.text, context.read<FeedbackCategoriesCubit>().category()),
                               icon: CupertinoIcons.up_arrow,
                             ),
                           ),
+                          const SimulatedBottomSafeArea()
                         ],
                       ),
                     ),

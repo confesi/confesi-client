@@ -1,6 +1,7 @@
 import 'package:confesi/presentation/shared/selection_groups/switch_selection_tile.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../application/user/cubit/feedback_categories_cubit.dart';
 import '../../../../core/router/go_router.dart';
 
 import '../../../../core/services/user_auth/user_auth_data.dart';
@@ -19,8 +20,19 @@ import '../../../../core/styles/typography.dart';
 import '../../../shared/behaviours/simulated_bottom_safe_area.dart';
 import '../../../shared/layout/appbar.dart';
 
-class FeedbackSettingScreen extends StatelessWidget {
+class FeedbackSettingScreen extends StatefulWidget {
   const FeedbackSettingScreen({super.key});
+
+  @override
+  State<FeedbackSettingScreen> createState() => _FeedbackSettingScreenState();
+}
+
+class _FeedbackSettingScreenState extends State<FeedbackSettingScreen> {
+  @override
+  void initState() {
+    context.read<FeedbackCategoriesCubit>().resetCategoryAndText();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
