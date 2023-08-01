@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../hive/hive_client.dart';
+import 'package:uuid/uuid.dart';
+
 import 'user_auth_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:riverpod/riverpod.dart';
@@ -18,6 +20,14 @@ class UserAuthService extends ChangeNotifier {
   bool isAnon = true;
   String email = "";
   String uid = "";
+  String sessionKey = "";
+
+  void setNewSessionKey() {
+    // todo: remove
+    print("SESSION KEY");
+    sessionKey = sl.get<Uuid>().v4();
+    print(sessionKey);
+  }
 
   // default data
   UserAuthData get def => UserAuthData();
@@ -49,6 +59,7 @@ class UserAuthService extends ChangeNotifier {
     isAnon = true;
     email = "";
     uid = "";
+    sessionKey = "";
     notifyListeners();
   }
 

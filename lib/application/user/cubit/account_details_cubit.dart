@@ -17,7 +17,7 @@ class AccountDetailsCubit extends Cubit<AccountDetailsState> {
 
   Future<void> loadUserData() async {
     emit(AccountDetailsLoading());
-    (await Api().req(Method.get, true, "/api/v1/user/user", {})).fold(
+    (await Api().req(Verb.get, true, "/api/v1/user/user", {})).fold(
       (failureWithMsg) => emit(AccountDetailsError(failureWithMsg.message())),
       (response) async {
         try {
@@ -96,7 +96,7 @@ class AccountDetailsCubit extends Cubit<AccountDetailsState> {
     AccData oldData,
     Function(AccData oldData) onSuccess,
   ) async {
-    (await Api().req(Method.delete, true, endpoint, {})).fold(
+    (await Api().req(Verb.delete, true, endpoint, {})).fold(
       (failureWithMsg) => emit(AccountDetailsTrueData(err: Err(failureWithMsg.message()), data: oldData)),
       (response) async {
         try {
@@ -207,7 +207,7 @@ class AccountDetailsCubit extends Cubit<AccountDetailsState> {
     AccData oldData,
     Function(AccData oldData) onSuccess,
   ) async {
-    (await Api().req(Method.patch, true, endpoint, {
+    (await Api().req(Verb.patch, true, endpoint, {
       jsonBodyKey: jsonBodyValue,
     }))
         .fold(

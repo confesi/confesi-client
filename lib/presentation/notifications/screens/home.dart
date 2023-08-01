@@ -41,24 +41,23 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   }
 
   Widget buildChild(BuildContext context, LeaderboardState state) {
-    if (state is Loading) {
+    if (state is LeaderboardLoading) {
       return const Center(
         key: ValueKey('loading'),
         child: LoadingCupertinoIndicator(),
       );
-    } else if (state is Data && state.rankings.isNotEmpty) {
+    } else if (state is LeaderboardData && state.schools.isNotEmpty) {
       return FeedList(
         controller: controller,
         loadMore: (id) {
-          for (LeaderboardItem item in state.rankings) {
-            controller.addItem(InfiniteScrollIndexable(
-              "test_leaderboard_id",
-              const NotificationTile(
-                title: "Here is a cool title from a notification",
-                body: "This is the body of the notification. It can possibly be a little bit longer.",
-              ),
-            ));
-          }
+          // todo: make loop?
+          controller.addItem(InfiniteScrollIndexable(
+            "test_leaderboard_id",
+            const NotificationTile(
+              title: "Here is a cool title from a notification",
+              body: "This is the body of the notification. It can possibly be a little bit longer.",
+            ),
+          ));
         },
         onPullToRefresh: () async {
           await Future.delayed(const Duration(milliseconds: 500));
@@ -70,11 +69,10 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         onErrorButtonPressed: () => print("error button pressed"),
       );
     } else {
-      final error = state as Error;
+      final error = state as LeaderboardError;
       return Center(
         key: const ValueKey('alert'),
         child: AlertIndicator(
-          isLoading: error.retryingAfterError,
           message: error.message,
           onPress: () => context.read<LeaderboardCubit>().loadRankings(),
         ),

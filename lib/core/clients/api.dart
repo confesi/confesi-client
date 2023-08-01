@@ -17,7 +17,7 @@ import 'package:http/http.dart' as http;
 import '../utils/numbers/add_commas_to_number.dart';
 
 /// The different RESTful API verbs.
-enum Method {
+enum Verb {
   post,
   get,
   patch,
@@ -60,17 +60,17 @@ class ApiTimeoutFailure extends FailureWithMsg {
   String message() => "Connection timeout error";
 }
 
-String apiVerbToString(Method method) {
+String apiVerbToString(Verb method) {
   switch (method) {
-    case Method.post:
+    case Verb.post:
       return "POST";
-    case Method.get:
+    case Verb.get:
       return "GET";
-    case Method.patch:
+    case Verb.patch:
       return "PATCH";
-    case Method.put:
+    case Verb.put:
       return "PUT";
-    case Method.delete:
+    case Verb.delete:
       return "DELETE";
   }
 }
@@ -107,7 +107,7 @@ class Api {
 
   // todo: make return in format of {error} or {value}
   Future<Either<FailureWithMsg, http.Response>> req(
-    Method method,
+    Verb method,
     bool needsBearerToken,
     String endpoint,
     Map<String, dynamic> body,

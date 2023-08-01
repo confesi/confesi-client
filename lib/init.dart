@@ -4,7 +4,7 @@ import 'package:confesi/application/create_post/cubit/post_categories_cubit.dart
 import 'package:confesi/application/user/cubit/account_details_cubit.dart';
 import 'package:confesi/core/services/fcm_notifications/token_data.dart';
 import 'package:confesi/presentation/create_post/overlays/confetti_blaster.dart';
-
+import 'package:uuid/uuid.dart';
 import 'application/authentication_and_settings/cubit/auth_flow_cubit.dart';
 import 'application/feed/cubit/sentiment_analysis_cubit.dart';
 import 'core/services/create_post_hint_text/create_post_hint_text.dart';
@@ -100,6 +100,7 @@ Future<void> init() async {
   //! Alt
   sl.registerLazySingleton(() => StreamController<User?>.broadcast());
   sl.registerLazySingleton(() => ConfettiBlaster());
+  sl.registerLazySingleton(() => const Uuid());
 
   //! External
   sl.registerLazySingleton(() => InternetConnectionChecker());

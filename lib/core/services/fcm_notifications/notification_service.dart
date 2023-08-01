@@ -87,7 +87,7 @@ class NotificationService {
 
   Future<Either<Failure, ApiSuccess>> _saveTokenToServerAndLocalDb(String? uid, String token) async {
     return (await Api().req(
-      Method.post,
+      Verb.post,
       uid != null,
       uid != null ? "/api/v1/notifications/token-uid" : "/api/v1/notifications/token-anon",
       {

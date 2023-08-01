@@ -1,5 +1,7 @@
 part of 'leaderboard_cubit.dart';
 
+enum LeaderboardFeedState { feed, errorLoadingMore, noMore, staleDate }
+
 @immutable
 abstract class LeaderboardState extends Equatable {
   @override
@@ -7,25 +9,26 @@ abstract class LeaderboardState extends Equatable {
 }
 
 /// Page is loading.
-class Loading extends LeaderboardState {}
+class LeaderboardLoading extends LeaderboardState {}
 
 /// Error loading page.
-class Error extends LeaderboardState {
+class LeaderboardError extends LeaderboardState {
   final String message;
-  final bool retryingAfterError;
 
-  Error({required this.message, this.retryingAfterError = false});
+  LeaderboardError({required this.message});
 
   @override
-  List<Object?> get props => [message, retryingAfterError];
+  List<Object?> get props => [message];
 }
 
 /// Success loading page, it now has data to display.
-class Data extends LeaderboardState {
-  final List<LeaderboardItem> rankings;
+class LeaderboardData extends LeaderboardState {
+  final List<InfiniteScrollIndexable> schools;
+  final School userSchool;
+  final LeaderboardFeedState feedState;
 
-  Data({required this.rankings});
+  LeaderboardData(this.schools, this.feedState, {required this.userSchool});
 
   @override
-  List<Object?> get props => [rankings];
+  List<Object?> get props => [schools, feedState, userSchool];
 }

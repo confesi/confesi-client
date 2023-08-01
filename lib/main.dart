@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:confesi/application/feed/cubit/sentiment_analysis_cubit.dart';
 import 'package:confesi/constants/shared/dev.dart';
 import 'package:confesi/core/results/failures.dart';
+import 'package:uuid/uuid.dart';
+
 import 'package:confesi/presentation/create_post/overlays/confetti_blaster.dart';
 
 import 'application/authentication_and_settings/cubit/auth_flow_cubit.dart';
@@ -161,11 +163,13 @@ class _MyAppState extends State<MyApp> {
               if (user.isAnonymous) {
                 sl.get<UserAuthService>().isAnon = true;
                 sl.get<UserAuthService>().uid = user.uid;
+                sl.get<UserAuthService>().setNewSessionKey();
                 router.go("/home");
               } else {
                 sl.get<UserAuthService>().isAnon = false;
                 sl.get<UserAuthService>().email = user.email!;
                 sl.get<UserAuthService>().uid = user.uid;
+                sl.get<UserAuthService>().setNewSessionKey();
                 if (user.emailVerified) {
                   router.go("/home");
                 } else {

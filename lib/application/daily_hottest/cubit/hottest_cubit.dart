@@ -27,7 +27,7 @@ class HottestCubit extends Cubit<HottestState> {
 
   Future<void> _loadFromDate(DateTime date) async {
     emit(DailyHottestLoading());
-    (await Api().req(Method.get, true, "/api/v1/posts/hottest?day=${date.yearMonthDay()}", {})).fold(
+    (await Api().req(Verb.get, true, "/api/v1/posts/hottest?day=${date.yearMonthDay()}", {})).fold(
       (failure) => emit(DailyHottestError(message: failure.message(), date: date)),
       (response) {
         try {

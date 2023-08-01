@@ -1,34 +1,101 @@
+import 'dart:convert';
+
 import 'package:bloc/bloc.dart';
+import 'package:confesi/core/extensions/dates/year_month_day.dart';
+import 'package:confesi/core/services/user_auth/user_auth_service.dart';
+import 'package:confesi/models/school.dart';
+import 'package:drift/drift.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
+import '../../../core/clients/api.dart';
 import '../../../core/usecases/no_params.dart';
 import '../../../domain/leaderboard/entities/leaderboard_item.dart';
 import '../../../domain/leaderboard/usecases/ranking.dart';
+import '../../../domain/shared/entities/infinite_scroll_indexable.dart';
+import '../../../init.dart';
+import '../../../presentation/leaderboard/widgets/leaderboard_item_tile.dart';
 
 part 'leaderboard_state.dart';
 
 class LeaderboardCubit extends Cubit<LeaderboardState> {
   final Ranking ranking;
 
-  LeaderboardCubit({required this.ranking}) : super(Loading());
+  LeaderboardCubit({required this.ranking}) : super(LeaderboardLoading());
 
-  Future<void> loadRankings() async {
-    if (state is Error) {
-      final error = state as Error;
-      emit(Error(message: error.message, retryingAfterError: true));
+  Future<void> loadRankings({bool forceRefresh = false}) async {
+    late bool refreshFeed;
+    if (state is LeaderboardData) {
+      refreshFeed = false;
+    } else if (state is LeaderboardError || state is LeaderboardLoading) {
+      refreshFeed = true;
     } else {
-      emit(Loading());
+      emit(LeaderboardError(message: "Unknown error"));
+      return;
     }
-    final failureOrRankings = await ranking(NoParams());
-    failureOrRankings.fold(
-      (failure) {
-        if (isClosed) return;
-        emit(Error(message: "todo: failure"));
+    if (forceRefresh) {
+      refreshFeed = true;
+    }
+    emit(LeaderboardLoading());
+    (await Api().req(
+      Verb.get,
+      true,
+      "/api/v1/schools/rank",
+      {
+        "purge_cache": refreshFeed,
+        "session_key": sl.get<UserAuthService>().sessionKey,
+        "include_users_school": refreshFeed,
+        "start_view_date": DateTime.now().toUtc().yearMonthDay()
       },
-      (rankings) {
-        if (isClosed) return;
-        emit(Data(rankings: rankings));
+    ))
+        .fold(
+      (failureWithMsg) => emit(LeaderboardError(message: "Unknown error")),
+      (response) async {
+        try {
+          if (response.statusCode.toString()[0] == "2") {
+            final body = json.decode(response.body)["value"];
+            final newSchools = (body["schools"] as List).map((i) => School.fromJson(i)).toList();
+            List<InfiniteScrollIndexable> newSchoolsParsed = newSchools
+                .asMap()
+                .map(
+                  (index, e) => MapEntry(
+                    index,
+                    InfiniteScrollIndexable(
+                      index.toString(),
+                      LeaderboardItemTile(
+                        universityFullName: e.name,
+                        placing: index + 1,
+                        hottests: e.dailyHottests,
+                        universityAbbr: e.abbr,
+                      ),
+                    ),
+                  ),
+                )
+                .values
+                .toList();
+            late School userSchool;
+            late List<InfiniteScrollIndexable> allSchools;
+            if (state is LeaderboardData) {
+              // add new schools to end, not start
+              allSchools = (state as LeaderboardData).schools + newSchoolsParsed;
+              userSchool = (state as LeaderboardData).userSchool;
+            } else {
+              allSchools = newSchoolsParsed;
+              userSchool = School.fromJson(body["user_school"]);
+            }
+            emit(
+              LeaderboardData(
+                allSchools,
+                LeaderboardFeedState.feed,
+                userSchool: userSchool,
+              ),
+            );
+          } else {
+            emit(LeaderboardError(message: "Unknown error"));
+          }
+        } catch (_) {
+          emit(LeaderboardError(message: "Unknown error"));
+        }
       },
     );
   }

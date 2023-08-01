@@ -1,6 +1,7 @@
 import '../../../domain/shared/entities/infinite_scroll_indexable.dart';
 
 import '../../../init.dart';
+import '../../../models/school.dart';
 import '../widgets/leaderboard_item_tile.dart';
 import '../../shared/indicators/loading_cupertino.dart';
 import '../../shared/other/feed_list.dart';
@@ -50,12 +51,12 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
   }
 
   Widget buildChild(BuildContext context, LeaderboardState state) {
-    if (state is Loading) {
+    if (state is LeaderboardLoading) {
       return const Center(
         key: ValueKey('loading'),
         child: LoadingCupertinoIndicator(),
       );
-    } else if (state is Data && state.rankings.isNotEmpty) {
+    } else if (state is LeaderboardData && state.schools.isNotEmpty) {
       return FeedList(
         header: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,11 +74,10 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
               ),
             ),
             const SizedBox(height: 5),
-            const LeaderboardItemTile(
-              hottests: 13,
-              placing: 435,
-              universityAbbr: "UVIC",
-              universityFullName: "University of Victoria",
+            LeaderboardItemTile(
+              hottests: state.userSchool.dailyHottests,
+              universityAbbr: state.userSchool.abbr,
+              universityFullName: state.userSchool.name,
             ),
             const SizedBox(height: 15),
             Padding(
@@ -95,22 +95,10 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
           ],
         ),
         controller: controller,
-        loadMore: (id) {
-          for (LeaderboardItem item in state.rankings) {
-            controller.addItem(InfiniteScrollIndexable(
-              "test_leaderboard_id",
-              LeaderboardItemTile(
-                hottests: item.points,
-                placing: item.placing,
-                universityAbbr: item.universityName,
-                universityFullName: item.universityFullName,
-              ),
-            ));
-          }
-        },
+        loadMore: (id) => controller.setItems(state.schools),
         onPullToRefresh: () async {
+          context.read<LeaderboardCubit>().loadRankings(forceRefresh: true);
           await Future.delayed(const Duration(milliseconds: 500));
-          controller.clearList();
         },
         hasError: false,
         hasReachedEnd: false,
@@ -118,11 +106,10 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
         onErrorButtonPressed: () => print("error button pressed"),
       );
     } else {
-      final error = state as Error;
+      final error = state as LeaderboardError;
       return Center(
         key: const ValueKey('alert'),
         child: AlertIndicator(
-          isLoading: error.retryingAfterError,
           message: error.message,
           onPress: () => context.read<LeaderboardCubit>().loadRankings(),
         ),
