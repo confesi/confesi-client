@@ -166,7 +166,6 @@ class _FeedListState extends State<FeedList> {
           });
           await widget.onErrorButtonPressed();
           if (!mounted) return;
-
           setState(() {
             errorLoadingMoreIsLoading = false;
           });
@@ -178,13 +177,11 @@ class _FeedListState extends State<FeedList> {
         message: widget.wontLoadMoreMessage,
         onClick: () async {
           if (!mounted) return;
-
           setState(() {
             endOfFeedReachedIsLoading = true;
           });
           await widget.onWontLoadMoreButtonPressed();
           if (!mounted) return;
-
           setState(() {
             endOfFeedReachedIsLoading = false;
           });
@@ -239,18 +236,18 @@ class _FeedListIndicator extends StatelessWidget {
             duration: const Duration(milliseconds: 250),
             child: Stack(
               children: [
-                AnimatedOpacity(
+                AnimatedScale(
                   duration: const Duration(milliseconds: 250),
-                  opacity: message != null && onClick != null && !isLoading ? 1 : 0,
+                  scale: message != null && onClick != null && !isLoading ? 1 : 0,
                   child: AlertIndicator(
                     message: message ?? "Retry",
                     onPress: () => onClick!(),
                   ),
                 ),
                 Positioned.fill(
-                  child: AnimatedOpacity(
+                  child: AnimatedScale(
                     duration: const Duration(milliseconds: 250),
-                    opacity: message != null && onClick != null && !isLoading ? 0 : 1,
+                    scale: message != null && onClick != null && !isLoading ? 0 : 1,
                     child: const Align(
                       alignment: Alignment.center,
                       child: LoadingCupertinoIndicator(),

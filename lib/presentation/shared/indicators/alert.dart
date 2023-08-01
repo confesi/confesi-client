@@ -42,7 +42,7 @@ class AlertIndicator extends StatelessWidget {
                           ),
                           textAlign: TextAlign.center,
                         ),
-                        const SizedBox(height: 15),
+                        const SizedBox(height: 10),
                         SimpleTextButton(onTap: () => onPress(), text: btnMsg),
                       ],
                     ),

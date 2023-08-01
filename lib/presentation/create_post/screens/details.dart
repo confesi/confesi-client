@@ -118,11 +118,20 @@ class _CreatePostDetailsState extends State<CreatePostDetails> with AutomaticKee
                       ),
                       child: SafeArea(
                         top: false,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15),
-                          child: BlocBuilder<CreatePostCubit, CreatePostState>(
-                            builder: (context, state) {
-                              return PopButton(
+                        child: BlocBuilder<CreatePostCubit, CreatePostState>(
+                          builder: (context, state) {
+                            return Container(
+                              padding: const EdgeInsets.only(right: 15, left: 15),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).colorScheme.background,
+                                border: Border(
+                                  top: BorderSide(
+                                    color: Theme.of(context).colorScheme.onBackground,
+                                    width: 0.8,
+                                  ),
+                                ),
+                              ),
+                              child: PopButton(
                                 topPadding: 15,
                                 loading: state is PostLoading,
                                 justText: true,
@@ -141,9 +150,9 @@ class _CreatePostDetailsState extends State<CreatePostDetails> with AutomaticKee
                                 backgroundColor: Theme.of(context).colorScheme.secondary,
                                 textColor: Theme.of(context).colorScheme.onSecondary,
                                 text: 'Submit confession',
-                              );
-                            },
-                          ),
+                              ),
+                            );
+                          },
                         ),
                       ),
                     ),

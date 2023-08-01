@@ -22,6 +22,48 @@ class SchoolDetail extends StatelessWidget {
 
   final HomeLeaderboardSchoolProps props;
 
+  Widget buildBottomBtn(BuildContext context, bool shown) => AbsorbPointer(
+        absorbing: !shown,
+        child: Opacity(
+          opacity: shown ? 1 : 0,
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.background,
+              ),
+              child: SafeArea(
+                top: false,
+                child: Container(
+                  padding: const EdgeInsets.only(right: 15, left: 15),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.background,
+                    border: Border(
+                      top: BorderSide(
+                        color: Theme.of(context).colorScheme.onBackground,
+                        width: 0.8,
+                      ),
+                    ),
+                  ),
+                  child: PopButton(
+                    topPadding: 15,
+                    loading: false,
+                    justText: true,
+                    onPress: () {
+                      print("tap");
+                    },
+                    icon: CupertinoIcons.chevron_right,
+                    backgroundColor: Theme.of(context).colorScheme.secondary,
+                    textColor: Theme.of(context).colorScheme.onSecondary,
+                    text: 'Add school to watched',
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +84,8 @@ class SchoolDetail extends StatelessWidget {
                           color: Theme.of(context).colorScheme.shadow,
                           child: Zoomable(
                             child: ClipRRect(
-                              borderRadius: const BorderRadius.all(Radius.circular(30)),
+                              borderRadius: const BorderRadius.only(
+                                  bottomLeft: Radius.circular(30), bottomRight: Radius.circular(30)),
                               child: CachedOnlineImage(
                                 url: props.school.imgUrl,
                               ),
@@ -122,6 +165,7 @@ class SchoolDetail extends StatelessWidget {
                           ),
                         ],
                       ),
+                      buildBottomBtn(context, false), // for sizing reasons
                       const SimulatedBottomSafeArea(),
                     ],
                   ),
@@ -129,19 +173,7 @@ class SchoolDetail extends StatelessWidget {
               ],
             ),
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 15, right: 15, bottom: 30),
-              child: PopButton(
-                icon: CupertinoIcons.add,
-                textColor: Theme.of(context).colorScheme.onSecondary,
-                backgroundColor: Theme.of(context).colorScheme.secondary,
-                onPress: () => print("tap"),
-                text: "Add school to watched",
-              ),
-            ),
-          ),
+          buildBottomBtn(context, true)
         ],
       ),
     );
