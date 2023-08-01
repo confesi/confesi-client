@@ -45,46 +45,48 @@ class AccountDetailsCubit extends Cubit<AccountDetailsState> {
     );
   }
 
-  Future<void> deleteFaculty() async {
-    if (state is AccountDetailsTrueData) {
-      final originalState = state as AccountDetailsTrueData;
+  Future<void> hideFaculty() async {
+    try {
+      final AccData originalState = _getCurrAccData();
       final ephemeralState = AccountDetailsEphemeral(
-        data: AccData(school: originalState.data.school, yearOfStudy: originalState.data.yearOfStudy, faculty: null),
+        data: AccData(school: originalState.school, yearOfStudy: originalState.yearOfStudy, faculty: null),
       );
       final oldData = AccData(
-          school: ephemeralState.data.school,
-          yearOfStudy: ephemeralState.data.yearOfStudy,
-          faculty: originalState.data.faculty);
+        school: ephemeralState.data.school,
+        yearOfStudy: ephemeralState.data.yearOfStudy,
+        faculty: originalState.faculty,
+      );
       emit(ephemeralState);
-      await _deleteValueInternal("/api/v1/user/faculty", oldData, (oldData) {
+      await _deleteValueInternal("/api/v1/user/faculty", oldData, (_) {
         emit(AccountDetailsTrueData(
           err: NoErr(),
-          data: AccData(school: originalState.data.school, yearOfStudy: originalState.data.yearOfStudy, faculty: null),
+          data: AccData(school: originalState.school, yearOfStudy: originalState.yearOfStudy, faculty: null),
         ));
       });
-    } else {
+    } catch (_) {
       emit(const AccountDetailsError("Unknown error"));
     }
   }
 
-  Future<void> deleteYearOfStudy() async {
-    if (state is AccountDetailsTrueData) {
-      final originalState = state as AccountDetailsTrueData;
+  Future<void> hideYearOfStudy() async {
+    try {
+      final AccData originalState = _getCurrAccData();
       final ephemeralState = AccountDetailsEphemeral(
-        data: AccData(school: originalState.data.school, yearOfStudy: null, faculty: originalState.data.faculty),
+        data: AccData(school: originalState.school, yearOfStudy: null, faculty: originalState.faculty),
       );
       final oldData = AccData(
-          school: ephemeralState.data.school,
-          yearOfStudy: originalState.data.yearOfStudy,
-          faculty: ephemeralState.data.faculty);
+        school: ephemeralState.data.school,
+        yearOfStudy: originalState.yearOfStudy,
+        faculty: ephemeralState.data.faculty,
+      );
       emit(ephemeralState);
-      await _deleteValueInternal("/api/v1/user/year-of-study", oldData, (oldData) {
+      await _deleteValueInternal("/api/v1/user/year-of-studyd", oldData, (_) {
         emit(AccountDetailsTrueData(
           err: NoErr(),
-          data: AccData(school: originalState.data.school, yearOfStudy: null, faculty: originalState.data.faculty),
+          data: AccData(school: originalState.school, yearOfStudy: null, faculty: originalState.faculty),
         ));
       });
-    } else {
+    } catch (_) {
       emit(const AccountDetailsError("Unknown error"));
     }
   }
@@ -113,67 +115,87 @@ class AccountDetailsCubit extends Cubit<AccountDetailsState> {
   }
 
   Future<void> updateFaculty(String newFaculty) async {
-    if (state is AccountDetailsTrueData) {
-      final originalState = state as AccountDetailsTrueData;
+    try {
+      final AccData originalState = _getCurrAccData();
       final ephemeralState = AccountDetailsEphemeral(
         data: AccData(
-          school: originalState.data.school,
-          yearOfStudy: originalState.data.yearOfStudy,
+          school: originalState.school,
+          yearOfStudy: originalState.yearOfStudy,
           faculty: newFaculty,
         ),
       );
       final oldData = AccData(
-        school: originalState.data.school,
+        school: ephemeralState.data.school,
         yearOfStudy: ephemeralState.data.yearOfStudy,
-        faculty: originalState.data.faculty,
+        faculty: originalState.faculty,
       );
       emit(ephemeralState);
-      await _updateValueInternal("faculty", newFaculty, "/api/v1/user/faculty", oldData, (oldData) {
-        emit(
-          AccountDetailsTrueData(
-            err: NoErr(),
-            data: AccData(
-              school: originalState.data.school,
-              yearOfStudy: originalState.data.yearOfStudy,
-              faculty: newFaculty,
+      await _updateValueInternal("faculty", newFaculty, "/api/v1/user/faculty", oldData, (_) {
+        try {
+          final AccData currState = _getCurrAccData();
+          emit(
+            AccountDetailsTrueData(
+              err: NoErr(),
+              data: AccData(
+                school: currState.school,
+                yearOfStudy: currState.yearOfStudy,
+                faculty: newFaculty,
+              ),
             ),
-          ),
-        );
+          );
+        } catch (_) {
+          emit(const AccountDetailsError("Unknown error"));
+        }
       });
-    } else {
+    } catch (_) {
       emit(const AccountDetailsError("Unknown error"));
     }
   }
 
-  Future<void> updateYearOfStudy(String newYearOfStudy) async {
+  AccData _getCurrAccData() {
     if (state is AccountDetailsTrueData) {
-      final originalState = state as AccountDetailsTrueData;
+      return (state as AccountDetailsTrueData).data;
+    } else if (state is AccountDetailsEphemeral) {
+      return (state as AccountDetailsEphemeral).data;
+    } else {
+      throw Exception("Unknown state");
+    }
+  }
+
+  Future<void> updateYearOfStudy(String newYearOfStudy) async {
+    try {
+      final AccData originalState = _getCurrAccData();
       final ephemeralState = AccountDetailsEphemeral(
         data: AccData(
-          school: originalState.data.school,
+          school: originalState.school,
           yearOfStudy: newYearOfStudy,
-          faculty: originalState.data.faculty,
+          faculty: originalState.faculty,
         ),
       );
       final oldData = AccData(
         school: ephemeralState.data.school,
-        yearOfStudy: originalState.data.yearOfStudy,
+        yearOfStudy: originalState.yearOfStudy,
         faculty: ephemeralState.data.faculty,
       );
       emit(ephemeralState);
-      await _updateValueInternal("year_of_study", newYearOfStudy, "/api/v1/user/year-of-study", oldData, (oldData) {
-        emit(
-          AccountDetailsTrueData(
-            err: NoErr(),
-            data: AccData(
-              school: originalState.data.school,
-              yearOfStudy: newYearOfStudy,
-              faculty: originalState.data.faculty,
+      await _updateValueInternal("year_of_study", newYearOfStudy, "/api/v1/user/year-of-study", oldData, (_) {
+        try {
+          final AccData currState = _getCurrAccData();
+          emit(
+            AccountDetailsTrueData(
+              err: NoErr(),
+              data: AccData(
+                school: currState.school,
+                yearOfStudy: newYearOfStudy,
+                faculty: currState.faculty,
+              ),
             ),
-          ),
-        );
+          );
+        } catch (_) {
+          emit(const AccountDetailsError("Unknown error"));
+        }
       });
-    } else {
+    } catch (_) {
       emit(const AccountDetailsError("Unknown error"));
     }
   }

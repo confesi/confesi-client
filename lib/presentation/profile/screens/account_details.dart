@@ -1,4 +1,4 @@
-import 'package:confesi/application/shared/cubit/account_details_cubit.dart';
+import 'package:confesi/application/user/cubit/account_details_cubit.dart';
 import 'package:confesi/constants/shared/dev.dart';
 import 'package:confesi/core/router/go_router.dart';
 import 'package:confesi/presentation/shared/indicators/loading_cupertino.dart';
@@ -83,7 +83,7 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
                         context,
                         yearsOfStudy,
                         (idx) => context.read<AccountDetailsCubit>().updateYearOfStudy(yearsOfStudy[idx]),
-                        () => context.read<AccountDetailsCubit>().deleteYearOfStudy(),
+                        () => context.read<AccountDetailsCubit>().hideYearOfStudy(),
                         true,
                       ),
                     ),
@@ -101,7 +101,7 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
                         context,
                         faculties,
                         (idx) => context.read<AccountDetailsCubit>().updateFaculty(faculties[idx]),
-                        () => context.read<AccountDetailsCubit>().deleteFaculty(),
+                        () => context.read<AccountDetailsCubit>().hideFaculty(),
                         true,
                       ),
                     ),
