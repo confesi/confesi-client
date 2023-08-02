@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:confesi/core/styles/typography.dart';
 import 'package:confesi/core/utils/sizing/width_fraction.dart';
 import 'package:confesi/presentation/shared/behaviours/animated_bobbing.dart';
+import 'package:confesi/presentation/shared/behaviours/simulated_bottom_safe_area.dart';
 import 'package:confesi/presentation/shared/buttons/pop.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -66,7 +67,7 @@ Future<dynamic> showRegisteredUserOnlySheet(BuildContext context, {VoidCallback?
                         autoPlay: true,
                         child: Bobbing(
                           child: Container(
-                            constraints: BoxConstraints(maxHeight: widthFraction(context, 0.5)),
+                            constraints: BoxConstraints(maxHeight: widthFraction(context, 0.8)),
                             child: FractionallySizedBox(
                               heightFactor: 0.5,
                               child: AspectRatio(
@@ -102,6 +103,7 @@ Future<dynamic> showRegisteredUserOnlySheet(BuildContext context, {VoidCallback?
                         icon: CupertinoIcons.add,
                         justText: true,
                       ),
+                      const SimulatedBottomSafeArea()
                     ],
                   ),
                 ),

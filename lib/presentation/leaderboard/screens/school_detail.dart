@@ -47,6 +47,7 @@ class SchoolDetail extends StatelessWidget {
                   ),
                   child: PopButton(
                     topPadding: 15,
+                    bottomPadding: 15,
                     loading: false,
                     justText: true,
                     onPress: () {
