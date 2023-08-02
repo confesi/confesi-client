@@ -75,22 +75,6 @@ class SettingsHome extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           TileGroup(
-                            text: "In-app details",
-                            tiles: [
-                              SettingTile(
-                                leftIcon: CupertinoIcons.pencil,
-                                text: "School, faculty, and year",
-                                onTap: () {
-                                  if (sl.get<UserAuthService>().isAnon) {
-                                    showRegisteredUserOnlySheet(context);
-                                  } else {
-                                    router.push("/home/profile/account");
-                                  }
-                                },
-                              ),
-                            ],
-                          ),
-                          TileGroup(
                             text: "General",
                             tiles: [
                               SettingTile(
@@ -150,6 +134,26 @@ class SettingsHome extends StatelessWidget {
                                             Provider.of<UserAuthService>(context, listen: false)
                                                 .data()
                                                 .copyWith(profanityFilter: ProfanityFilter.off)),
+                              ),
+                              SwitchSelectionTile(
+                                bottomRounded: true,
+                                isActive: Provider.of<UserAuthService>(context).data().unitSystem == UnitSystem.metric,
+                                icon: CupertinoIcons.circle_lefthalf_fill,
+                                text: "Unit system",
+                                secondaryText:
+                                    Provider.of<UserAuthService>(context).data().unitSystem == UnitSystem.metric
+                                        ? "Metric"
+                                        : "Imperial",
+                                onTap: () => Provider.of<UserAuthService>(context, listen: false).data().unitSystem ==
+                                        UnitSystem.metric
+                                    ? Provider.of<UserAuthService>(context, listen: false).saveData(
+                                        Provider.of<UserAuthService>(context, listen: false)
+                                            .data()
+                                            .copyWith(unitSystem: UnitSystem.imperial))
+                                    : Provider.of<UserAuthService>(context, listen: false).saveData(
+                                        Provider.of<UserAuthService>(context, listen: false)
+                                            .data()
+                                            .copyWith(unitSystem: UnitSystem.metric)),
                               ),
                               SwitchSelectionTile(
                                 bottomRounded: true,

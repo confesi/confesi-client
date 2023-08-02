@@ -124,6 +124,7 @@ Future<void> init() async {
   UserAuthService userAuthService = UserAuthService(sl());
   userAuthService.hive.registerAdapter<UserAuthData>(UserAuthDataAdapter());
   userAuthService.hive.registerAdapter(ThemePrefAdapter());
+  userAuthService.hive.registerAdapter(UnitSystemAdapter());
   userAuthService.hive.registerAdapter(ProfanityFilterAdapter());
   userAuthService.hive.registerAdapter(FcmTokenAdapter());
   sl.registerLazySingleton(() => userAuthService);

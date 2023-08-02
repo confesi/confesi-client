@@ -62,6 +62,7 @@ class FeedListController extends ChangeNotifier {
   /// Scrolls to the top of the list (over a set duration).
   void scrollToTop() {
     if (_isDisposed) return;
+    if (!itemScrollController.isAttached) return;
 
     itemScrollController
         .scrollTo(index: 0, duration: const Duration(milliseconds: 350))
@@ -189,7 +190,7 @@ class _FeedListState extends State<FeedList> {
         },
       );
     } else {
-      return const LoadingOrAlert(isLoading: true);
+      return LoadingOrAlert(isLoading: true, message: widget.wontLoadMoreMessage);
     }
   }
 

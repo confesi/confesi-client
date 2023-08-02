@@ -72,7 +72,7 @@ class _RectangleTileState extends State<RectangleTile> {
             const SizedBox(width: 5),
             Expanded(
               child: TouchableScale(
-                onTap: () => widget.onRightTap,
+                onTap: () => widget.onRightTap(),
                 child: Container(
                   // transparent hitbox trick
                   color: Colors.transparent,

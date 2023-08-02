@@ -26,8 +26,9 @@ class LeaderboardData extends LeaderboardState {
   final List<InfiniteScrollIndexable> schools;
   final School userSchool;
   final LeaderboardFeedState feedState;
+  final DateTime startViewDate;
 
-  LeaderboardData(this.schools, this.feedState, {required this.userSchool});
+  LeaderboardData(this.schools, this.feedState, this.startViewDate, {required this.userSchool});
 
   @override
   List<Object?> get props => [schools, feedState, userSchool];

@@ -4,7 +4,7 @@ import '../indicators/alert.dart';
 import '../indicators/loading_cupertino.dart';
 
 class LoadingOrAlert extends StatelessWidget {
-  const LoadingOrAlert({this.message, this.onTap, required this.isLoading, super.key});
+  const LoadingOrAlert({required this.message, this.onTap, required this.isLoading, super.key});
 
   final String? message;
   final VoidCallback? onTap;
@@ -21,9 +21,9 @@ class LoadingOrAlert extends StatelessWidget {
               children: [
                 AnimatedScale(
                   duration: const Duration(milliseconds: 250),
-                  scale: message != null && onTap != null && !isLoading ? 1 : 0,
+                  scale: onTap != null && !isLoading ? 1 : 0,
                   child: AlertIndicator(
-                    message: message ?? "Retry",
+                    message: message ?? "",
                     onPress: () => onTap!(),
                   ),
                 ),

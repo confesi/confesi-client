@@ -35,9 +35,11 @@ class HottestCubit extends Cubit<HottestState> {
             final posts = (json.decode(response.body)["value"] as List).map((e) => Post.fromJson(e)).toList();
             emit(DailyHottestData(posts: posts, date: date));
           } else {
+            print("UNKNOWN ERROR 1");
             emit(DailyHottestError(message: "Unknown error", date: date));
           }
-        } catch (_) {
+        } catch (e) {
+          print("UNKNOWN ERROR 2 $e");
           emit(DailyHottestError(message: "Unknown error", date: date));
         }
       },

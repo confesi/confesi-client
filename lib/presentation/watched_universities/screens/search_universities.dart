@@ -1,5 +1,6 @@
 import 'package:confesi/core/router/go_router.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
+import 'package:confesi/presentation/shared/buttons/circle_icon_btn.dart';
 
 import '../../../core/utils/sizing/bottom_safe_area.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
@@ -71,25 +72,7 @@ class _SearchSchoolsScreenState extends State<SearchSchoolsScreen> {
                           ),
                         ),
                         const SizedBox(width: 15),
-                        TouchableScale(
-                          onTap: () => router.pop(context),
-                          child: Container(
-                            padding: const EdgeInsets.all(8),
-                            // Transparent hitbox trick
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.surface,
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: Theme.of(context).colorScheme.onBackground,
-                                width: 0.8,
-                              ),
-                            ),
-                            child: Icon(
-                              CupertinoIcons.xmark,
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                          ),
-                        ),
+                        CircleIconBtn(onTap: () => router.pop(context)),
                       ],
                     ),
                   ),
@@ -141,7 +124,7 @@ class _SearchSchoolsScreenState extends State<SearchSchoolsScreen> {
                             SearchedUniversityTile(
                               onPress: () => print("tap"),
                               topText: "University of Victoria",
-                              middleText: "hey",
+                              middleText: "16 km away",
                               bottomText: "Victoria, BC",
                             ),
                             SearchedUniversityTile(

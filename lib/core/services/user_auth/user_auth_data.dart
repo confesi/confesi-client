@@ -10,6 +10,8 @@ enum ThemePref { light, dark, system }
 
 enum ProfanityFilter { on, off }
 
+enum UnitSystem { metric, imperial }
+
 @HiveType(typeId: 1)
 class UserAuthData extends HiveObject with UserAuthState {
   @HiveField(0)
@@ -24,12 +26,17 @@ class UserAuthData extends HiveObject with UserAuthState {
   @HiveField(8)
   final bool shakeToGiveFeedback;
 
+  @HiveField(11)
+  final UnitSystem unitSystem;
+
   // default
-  UserAuthData(
-      {this.themePref = ThemePref.dark,
-      this.profanityFilter = ProfanityFilter.off,
-      this.isShrunkView = false,
-      this.shakeToGiveFeedback = true});
+  UserAuthData({
+    this.themePref = ThemePref.dark,
+    this.profanityFilter = ProfanityFilter.off,
+    this.isShrunkView = false,
+    this.shakeToGiveFeedback = true,
+    this.unitSystem = UnitSystem.metric,
+  });
 }
 
 // copyWith
@@ -39,12 +46,14 @@ extension UserAuthDataCopyWith on UserAuthData {
     ProfanityFilter? profanityFilter,
     bool? isShrunkView,
     bool? shakeToGiveFeedback,
+    UnitSystem? unitSystem,
   }) {
     return UserAuthData(
       themePref: themePref ?? this.themePref,
       profanityFilter: profanityFilter ?? this.profanityFilter,
       isShrunkView: isShrunkView ?? this.isShrunkView,
       shakeToGiveFeedback: shakeToGiveFeedback ?? this.shakeToGiveFeedback,
+      unitSystem: unitSystem ?? this.unitSystem,
     );
   }
 }
@@ -75,6 +84,21 @@ class ProfanityFilterAdapter extends TypeAdapter<ProfanityFilter> {
 
   @override
   void write(BinaryWriter writer, ProfanityFilter obj) {
+    writer.writeInt(obj.index);
+  }
+}
+
+class UnitSystemAdapter extends TypeAdapter<UnitSystem> {
+  @override
+  final int typeId = 9; // Choose a unique typeId for the enum
+
+  @override
+  UnitSystem read(BinaryReader reader) {
+    return UnitSystem.values[reader.readInt()];
+  }
+
+  @override
+  void write(BinaryWriter writer, UnitSystem obj) {
     writer.writeInt(obj.index);
   }
 }

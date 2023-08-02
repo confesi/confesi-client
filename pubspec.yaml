@@ -102,6 +102,7 @@ dependencies:
   riverpod: ^2.3.6
   cupertino_will_pop_scope: ^1.2.1
   uuid: ^3.0.7
+  geolocator: ^9.0.2
   # shimmer: ^2.0.0
   # open_settings: ^2.0.2
   # animated_text_kit: ^4.2.2

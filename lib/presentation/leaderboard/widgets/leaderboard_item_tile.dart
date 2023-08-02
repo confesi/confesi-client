@@ -1,10 +1,12 @@
 import 'package:confesi/core/router/go_router.dart';
 import 'package:confesi/models/school.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
+import 'package:confesi/presentation/shared/other/widget_or_nothing.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../../core/utils/numbers/add_commas_to_number.dart';
 
+import '../../../core/utils/numbers/distance_formatter.dart';
 import '../../../core/utils/numbers/is_plural.dart';
 import '../../../core/utils/numbers/number_postfix.dart';
 import 'package:flutter/material.dart';
@@ -66,8 +68,8 @@ class LeaderboardItemTile extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "${school.name} • ${school.abbr}",
-                      style: kDetail.copyWith(
+                      school.name,
+                      style: kTitle.copyWith(
                         color: Theme.of(context).colorScheme.primary,
                       ),
                       textAlign: TextAlign.left,
@@ -82,6 +84,22 @@ class LeaderboardItemTile extends StatelessWidget {
                       ),
                       textAlign: TextAlign.left,
                       overflow: TextOverflow.ellipsis,
+                    ),
+                    WidgetOrNothing(
+                      showWidget: school.distance != null,
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 5),
+                          Text(
+                            distanceFormatter(context, school.distance!),
+                            style: kDetail.copyWith(
+                              color: Theme.of(context).colorScheme.onSurface,
+                            ),
+                            textAlign: TextAlign.left,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),

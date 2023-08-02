@@ -43,7 +43,7 @@ class _HottestTileState extends State<HottestTile> {
                     width: double.infinity,
                     duration: const Duration(milliseconds: 450),
                     curve: Curves.decelerate,
-                    height: isSelected ? constraints.maxHeight : constraints.maxHeight * .8,
+                    height: isSelected ? constraints.maxHeight : constraints.maxHeight * .9,
                     decoration: BoxDecoration(
                       borderRadius: const BorderRadius.all(Radius.circular(15)),
                       color: Theme.of(context).colorScheme.background,
@@ -62,6 +62,13 @@ class _HottestTileState extends State<HottestTile> {
                             borderRadius:
                                 const BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
                             color: Theme.of(context).colorScheme.secondary,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Theme.of(context).colorScheme.secondary,
+                                blurRadius: 15,
+                                offset: const Offset(0, 0),
+                              ),
+                            ],
                           ),
                           padding: const EdgeInsets.all(10),
                           child: Text(
@@ -75,12 +82,19 @@ class _HottestTileState extends State<HottestTile> {
                           child: AnimatedContainer(
                             duration: const Duration(milliseconds: 250),
                             width: double.infinity,
-                            child: CachedOnlineImage(
-                              url: widget.post.school.imgUrl,
+                            child: ClipRRect(
+                              borderRadius: const BorderRadius.only(
+                                bottomLeft: Radius.circular(15),
+                                bottomRight: Radius.circular(15),
+                              ),
+                              child: CachedOnlineImage(
+                                url: widget.post.school.imgUrl,
+                              ),
                             ),
                           ),
                         ),
                         Expanded(
+                          flex: 2,
                           child: Stack(
                             fit: StackFit.expand,
                             children: [
@@ -91,13 +105,13 @@ class _HottestTileState extends State<HottestTile> {
                                   child: Text(
                                     '0${widget.thisIndex + 1}',
                                     style: kFaded.copyWith(
-                                      color: Theme.of(context).colorScheme.onBackground.withOpacity(0.8),
+                                      color: Theme.of(context).colorScheme.tertiary,
                                     ),
                                   ),
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.all(20),
+                                padding: const EdgeInsets.all(15),
                                 child: HeaderGroupText(
                                   small: true,
                                   expandsTopText: true,

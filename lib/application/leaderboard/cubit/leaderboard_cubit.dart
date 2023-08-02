@@ -30,6 +30,7 @@ class LeaderboardCubit extends Cubit<LeaderboardState> {
         (state as LeaderboardData).schools,
         userSchool: (state as LeaderboardData).userSchool,
         feedState,
+        (state as LeaderboardData).startViewDate,
       ));
     } else if (state is LeaderboardError || state is LeaderboardLoading) {
       emit(LeaderboardLoading());
@@ -40,6 +41,12 @@ class LeaderboardCubit extends Cubit<LeaderboardState> {
       return;
     }
     if (forceRefresh) refreshFeed = true;
+    late DateTime oldStartViewDate;
+    if (state is LeaderboardData) {
+      oldStartViewDate = (state as LeaderboardData).startViewDate;
+    } else {
+      oldStartViewDate = DateTime.now().toUtc();
+    }
     (await Api().req(
       Verb.get,
       true,
@@ -48,11 +55,31 @@ class LeaderboardCubit extends Cubit<LeaderboardState> {
         "purge_cache": refreshFeed,
         "session_key": sl.get<UserAuthService>().sessionKey,
         "include_users_school": refreshFeed,
-        "start_view_date": DateTime.now().toUtc().yearMonthDay()
+        "start_view_date": oldStartViewDate.yearMonthDay(),
       },
+      needsLatLong: true,
     ))
         .fold(
-      (failureWithMsg) => emit(LeaderboardError(message: "Unknown error")),
+      (failureWithMsg) {
+        print("GOT HEREEEEEEE + ${failureWithMsg.runtimeType}");
+        if (failureWithMsg is ApiTooManyGlobalRequests) {
+          print("GLOBAL IP ABUSE");
+
+          if (state is LeaderboardData) {
+            print("HEREEE");
+            emit(LeaderboardData(
+              (state as LeaderboardData).schools,
+              userSchool: (state as LeaderboardData).userSchool,
+              LeaderboardFeedState.errorLoadingMore,
+              (state as LeaderboardData).startViewDate,
+            ));
+          } else {
+            emit(LeaderboardError(message: failureWithMsg.message()));
+          }
+        } else {
+          emit(LeaderboardError(message: failureWithMsg.message()));
+        }
+      },
       (response) async {
         try {
           if (response.statusCode == 410) {
@@ -61,9 +88,10 @@ class LeaderboardCubit extends Cubit<LeaderboardState> {
                 (state as LeaderboardData).schools,
                 userSchool: (state as LeaderboardData).userSchool,
                 LeaderboardFeedState.staleDate,
+                (state as LeaderboardData).startViewDate,
               ));
             } else {
-              emit(LeaderboardError(message: "Stale date, please refresh"));
+              emit(LeaderboardError(message: "New data has arrived, please refresh"));
             }
           } else if (response.statusCode.toString()[0] == "2") {
             final body = json.decode(response.body)["value"];
@@ -95,23 +123,28 @@ class LeaderboardCubit extends Cubit<LeaderboardState> {
 
             late School userSchool;
             late List<InfiniteScrollIndexable> allSchools;
+            late DateTime newStartViewData;
             if (refreshFeed) {
+              newStartViewData = DateTime.now().toUtc();
               allSchools = newSchoolsParsed;
               userSchool = School.fromJson(body["user_school"]);
             } else if (state is LeaderboardData) {
+              newStartViewData = (state as LeaderboardData).startViewDate;
               // add new schools to end, not start
               allSchools = (state as LeaderboardData).schools + newSchoolsParsed;
               userSchool = (state as LeaderboardData).userSchool;
             } else {
+              newStartViewData = DateTime.now().toUtc();
               allSchools = newSchoolsParsed;
               userSchool = School.fromJson(body["user_school"]);
             }
-            emit(LeaderboardData(allSchools, feedState, userSchool: userSchool));
+            emit(LeaderboardData(allSchools, feedState, userSchool: userSchool, newStartViewData));
           } else {
             if (state is LeaderboardData) {
               emit(LeaderboardData(
                 (state as LeaderboardData).schools,
                 LeaderboardFeedState.errorLoadingMore,
+                (state as LeaderboardData).startViewDate,
                 userSchool: (state as LeaderboardData).userSchool,
               ));
             } else {
@@ -123,6 +156,7 @@ class LeaderboardCubit extends Cubit<LeaderboardState> {
             emit(LeaderboardData(
               (state as LeaderboardData).schools,
               LeaderboardFeedState.errorLoadingMore,
+              (state as LeaderboardData).startViewDate,
               userSchool: (state as LeaderboardData).userSchool,
             ));
           } else {

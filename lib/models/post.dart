@@ -8,6 +8,7 @@ import 'package:confesi/models/school.dart';
 import 'package:confesi/models/year_of_study.dart';
 import 'package:equatable/equatable.dart';
 
+import 'category.dart';
 import 'faculty.dart';
 
 Post postFromJson(String str) => Post.fromJson(json.decode(str));
@@ -29,6 +30,7 @@ class Post extends Equatable {
   bool edited;
   int userVote;
   bool owner;
+  Category category;
   // bool saved;
   List<String> emojis;
 
@@ -49,6 +51,7 @@ class Post extends Equatable {
     required this.edited,
     required this.userVote,
     required this.owner,
+    required this.category,
     // required this.saved,
     required this.emojis,
   });
@@ -59,6 +62,7 @@ class Post extends Equatable {
         updatedAt: json["post"]["updated_at"],
         school: School.fromJson(json["post"]["school"]),
         faculty: Faculty.fromJson(json["post"]["faculty"]),
+        category: Category.fromJson(json["post"]["category"]),
         yearOfStudy: YearOfStudy.fromJson(json["post"]["year_of_study"]),
         title: json["post"]["title"],
         content: json["post"]["content"],

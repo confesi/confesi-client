@@ -35,9 +35,12 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
 
   Widget buildChild(BuildContext context, AccountDetailsState state) {
     if (state is AccountDetailsLoading) {
-      return const Center(
-        key: ValueKey("loading"),
-        child: LoadingCupertinoIndicator(),
+      return Center(
+        key: const ValueKey("loading"),
+        child: Padding(
+          padding: EdgeInsets.only(bottom: bottomSafeArea(context)),
+          child: const LoadingCupertinoIndicator(),
+        ),
       );
     } else if (state is AccountDetailsTrueData || state is AccountDetailsEphemeral) {
       late final AccData data;
@@ -47,7 +50,6 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
         data = (state as AccountDetailsEphemeral).data;
       }
       return Align(
-        key: const ValueKey("data"),
         alignment: Alignment.topCenter,
         child: ScrollableView(
           physics: const BouncingScrollPhysics(),

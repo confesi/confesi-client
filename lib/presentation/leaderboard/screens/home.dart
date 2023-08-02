@@ -1,3 +1,4 @@
+import '../../shared/behaviours/loading_or_alert.dart';
 import '../widgets/leaderboard_item_tile.dart';
 import '../../shared/indicators/loading_cupertino.dart';
 import '../../shared/other/feed_list.dart';
@@ -47,12 +48,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
   }
 
   Widget buildChild(BuildContext context, LeaderboardState state) {
-    if (state is LeaderboardLoading) {
-      return const Center(
-        key: ValueKey('loading'),
-        child: LoadingCupertinoIndicator(),
-      );
-    } else if (state is LeaderboardData) {
+    if (state is LeaderboardData) {
       return FeedList(
         header: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -97,15 +93,10 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
         onErrorButtonPressed: () async => await context.read<LeaderboardCubit>().loadRankings(),
       );
     } else {
-      final error = state as LeaderboardError;
-      return Center(
-        key: const ValueKey('alert'),
-        child: AlertIndicator(
-          message: error.message,
-          btnMsg: "Reload",
-          onPress: () => context.read<LeaderboardCubit>().loadRankings(),
-        ),
-      );
+      return LoadingOrAlert(
+          isLoading: state is LeaderboardLoading,
+          message: state is LeaderboardError ? state.message : null,
+          onTap: () => context.read<LeaderboardCubit>().loadRankings());
     }
   }
 
@@ -122,6 +113,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
               children: [
                 AppbarLayout(
                   bottomBorder: true,
+                  leftIconVisible: false,
                   centerWidget: Text(
                     "School Leaderboard",
                     style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
@@ -133,7 +125,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                   rightIconOnPress: () => scrolledDownFromTop
                       ? controller.scrollToTop()
                       : showInfoSheet(context, kLeaderboardInfoHeader, kLeaderboardInfoBody),
-                  leftIconVisible: false,
+                  // todo: icon here to open a random school?
                 ),
                 Expanded(
                   child: BlocConsumer<LeaderboardCubit, LeaderboardState>(

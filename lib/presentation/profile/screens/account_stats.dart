@@ -1,11 +1,16 @@
 import 'package:confesi/application/user/cubit/stats_cubit.dart';
 import 'package:confesi/core/utils/sizing/bottom_safe_area.dart';
 import 'package:confesi/presentation/shared/behaviours/loading_or_alert.dart';
+import 'package:confesi/presentation/shared/behaviours/simulated_bottom_safe_area.dart';
 import 'package:confesi/presentation/shared/indicators/alert.dart';
 import 'package:confesi/presentation/shared/indicators/loading_cupertino.dart';
 import 'package:confesi/presentation/shared/selection_groups/tile_group.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../core/services/user_auth/user_auth_service.dart';
+import '../../../init.dart';
+import '../../shared/overlays/registered_users_only_sheet.dart';
+import '../../shared/selection_groups/setting_tile.dart';
 import '../widgets/stat_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -74,27 +79,38 @@ class _AccountProfileStatsState extends State<AccountProfileStats> {
                   child: ScrollableView(
                     hapticsEnabled: false,
                     physics: const BouncingScrollPhysics(),
-                    inlineBottomOrRightPadding: bottomSafeArea(context),
                     controller: ScrollController(),
                     scrollBarVisible: false,
+                    inlineBottomOrRightPadding: 15,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           TileGroup(
-                            text: "Content",
+                            text: "Account",
                             tiles: [
+                              SettingTile(
+                                leftIcon: CupertinoIcons.pencil,
+                                text: "School, faculty, and year",
+                                onTap: () {
+                                  if (sl.get<UserAuthService>().isAnon) {
+                                    showRegisteredUserOnlySheet(context);
+                                  } else {
+                                    router.push("/home/profile/account");
+                                  }
+                                },
+                              ),
                               RectangleTile(
-                                onLeftTap: () => print("tap"),
-                                onRightTap: () => print("tap"),
+                                onLeftTap: () => router.push('/home/profile/comments'),
+                                onRightTap: () => router.push('/home/profile/posts'),
                                 icon: CupertinoIcons.bookmark,
                                 leftText: "Saved comments",
                                 rightText: "Saved confessions",
                               ),
                               RectangleTile(
-                                onLeftTap: () => print("tap"),
-                                onRightTap: () => print("tap"),
+                                onLeftTap: () => router.push('/home/profile/saved/comments'),
+                                onRightTap: () => router.push('/home/profile/saved/posts'),
                                 icon: CupertinoIcons.cube_box,
                                 leftText: "Your comments",
                                 rightText: "Your confessions",
@@ -116,15 +132,15 @@ class _AccountProfileStatsState extends State<AccountProfileStats> {
                                       rightDescription: "Dislikes",
                                     ),
                                     TextStatTile(
-                                      leftText: "Likes",
+                                      leftText: "Likes 🎉",
                                       rightText: percentToRelativeMsg(state.stats.likesPerc),
                                     ),
                                     TextStatTile(
-                                      leftText: "Hottests",
+                                      leftText: "Hottests 🔥",
                                       rightText: percentToRelativeMsg(state.stats.hottestPerc),
                                     ),
                                     TextStatTile(
-                                      leftText: "Dislikes",
+                                      leftText: "Dislikes 🤮",
                                       rightText: percentToRelativeMsg(state.stats.dislikesPerc),
                                     ),
                                   ],
@@ -132,7 +148,7 @@ class _AccountProfileStatsState extends State<AccountProfileStats> {
                               } else {
                                 return LoadingOrAlert(
                                   isLoading: state is StatsLoading,
-                                  message: "Error loading stats",
+                                  message: state is StatsError ? state.message : null,
                                   onTap: () => context.read<StatsCubit>().loadStats(),
                                 );
                               }

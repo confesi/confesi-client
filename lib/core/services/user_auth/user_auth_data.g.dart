@@ -20,19 +20,25 @@ class UserAuthDataAdapter extends TypeAdapter<UserAuthData> {
       themePref: fields[0] as ThemePref,
       profanityFilter: fields[6] as ProfanityFilter,
       isShrunkView: fields[7] as bool,
+      shakeToGiveFeedback: fields[8] as bool,
+      unitSystem: fields[11] as UnitSystem,
     );
   }
 
   @override
   void write(BinaryWriter writer, UserAuthData obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.themePref)
       ..writeByte(6)
       ..write(obj.profanityFilter)
       ..writeByte(7)
-      ..write(obj.isShrunkView);
+      ..write(obj.isShrunkView)
+      ..writeByte(8)
+      ..write(obj.shakeToGiveFeedback)
+      ..writeByte(11)
+      ..write(obj.unitSystem);
   }
 
   @override

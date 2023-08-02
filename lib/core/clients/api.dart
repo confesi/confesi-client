@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:geolocator/geolocator.dart';
 
 import 'package:confesi/core/services/user_auth/user_auth_data.dart';
+import 'package:provider/provider.dart';
 
 import '../../constants/shared/dev.dart';
 import '../results/failures.dart';
@@ -104,26 +106,34 @@ class Api {
     return false;
   }
 
+  String _addQuestionOrAmperage(String url) {
+    if (url.contains("?")) {
+      url += "&";
+    } else {
+      url += "?";
+    }
+    return url;
+  }
+
   // todo: make return in format of {error} or {value}
   Future<Either<FailureWithMsg, http.Response>> req(
-    Verb method,
-    bool needsBearerToken,
-    String endpoint,
-    Map<String, dynamic> body,
-  ) async {
+      Verb method, bool needsBearerToken, String endpoint, Map<String, dynamic> body,
+      {bool needsLatLong = false}) async {
     try {
+      String url = domain + endpoint;
+
       if (needsBearerToken) {
         if (!await _getSetBearerToken()) {
           return Left(ApiServerFailure());
         }
       }
-      String url = domain + endpoint;
-      if (url.contains("?")) {
-        url += "&";
-      } else {
-        url += "?";
+
+      if (needsLatLong) {
+        url = _addQuestionOrAmperage(url);
+        url += "lat=48.466134&long=-123.329129"; // todo: use real data?
       }
       if (sl.get<UserAuthService>().data().profanityFilter == ProfanityFilter.on) {
+        url = _addQuestionOrAmperage(url);
         url += "profanity=false";
       }
       var request = http.Request(
@@ -139,8 +149,8 @@ class Api {
       if (debugMode) {
         print("------------- debug api req logger ------------");
         print("${streamResponse.statusCode} ${streamResponse.reasonPhrase}");
-        print("Req endpoint: $endpoint");
-        print("Req headers: ${request.headers}");
+        print("Req endpoint: $url");
+        // print("Req headers: ${request.headers}");
         print("Req body: ${request.body}");
         print("<<<>>>");
         print("Res headers: ${streamResponse.headers}");
@@ -161,6 +171,7 @@ class Api {
             return Left(ApiTooManyGlobalRequests(int.parse(response.headers["x-ratelimit-reset"]!)));
           }
         } catch (e) {
+          print("ERROR IS $e");
           return Left(ApiServerFailure());
         }
       }

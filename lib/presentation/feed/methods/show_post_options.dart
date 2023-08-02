@@ -18,14 +18,15 @@ void buildOptionsSheet(BuildContext context) => showButtonOptionsSheet(context, 
         icon: CupertinoIcons.doc_text,
         onTap: () => router.push(
           "/home/posts/sentiment",
-          extra: const HomePostsSentimentProps(1),
+          extra: const HomePostsSentimentProps(11),
         ), // todo: remove hard coding and dynamically go to the correct post's sentiment analysis
       ),
       OptionButton(
         text: "School location",
         icon: CupertinoIcons.map,
-        onTap: () =>
-            context.read<MapsCubit>().launchMapAtLocation(48.4634, -123.3117, "University of Victoria"), // todo: remove hard coding
+        onTap: () => context
+            .read<MapsCubit>()
+            .launchMapAtLocation(48.4634, -123.3117, "University of Victoria"), // todo: remove hard coding
       ),
       OptionButton(
         text: "Report",

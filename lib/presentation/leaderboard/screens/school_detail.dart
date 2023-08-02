@@ -12,6 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/router/go_router.dart';
 import '../../../core/utils/numbers/add_commas_to_number.dart';
 import '../../../core/utils/numbers/is_plural.dart';
+import '../../shared/buttons/circle_icon_btn.dart';
 import '../../shared/buttons/pop.dart';
 import '../../shared/other/cached_online_image.dart';
 
@@ -83,8 +84,7 @@ class SchoolDetail extends StatelessWidget {
                           color: Theme.of(context).colorScheme.shadow,
                           child: Zoomable(
                             child: ClipRRect(
-                              borderRadius: const BorderRadius.only(
-                                  bottomLeft: Radius.circular(30), bottomRight: Radius.circular(30)),
+                              borderRadius: const BorderRadius.all(Radius.circular(30)),
                               child: CachedOnlineImage(
                                 url: props.school.imgUrl,
                               ),
@@ -96,23 +96,8 @@ class SchoolDetail extends StatelessWidget {
                         right: 15,
                         top: 10,
                         child: SafeArea(
-                          child: TouchableScale(
-                            onTap: () => router.pop(),
-                            child: Container(
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.background,
-                                shape: BoxShape.circle,
-                              ),
-                              child: GestureDetector(
-                                onTap: () => router.pop(),
-                                child: Icon(
-                                  CupertinoIcons.xmark,
-                                  color: Theme.of(context).colorScheme.primary,
-                                  size: 30,
-                                ),
-                              ),
-                            ),
+                          child: CircleIconBtn(
+                            onTap: () => router.pop(context),
                           ),
                         ),
                       ),
@@ -161,6 +146,18 @@ class SchoolDetail extends StatelessWidget {
                             onTap: () => context.read<MapsCubit>().launchMapAtLocation(
                                 props.school.lat.toDouble(), props.school.lon.toDouble(), props.school.name),
                             text: "Locate on map",
+                          ),
+                          SimpleTextButton(
+                            bgColor: Theme.of(context).colorScheme.surface,
+                            textColor: Theme.of(context).colorScheme.primary,
+                            onTap: () => print("tap"),
+                            text: "Set as home",
+                          ),
+                          SimpleTextButton(
+                            bgColor: Theme.of(context).colorScheme.surface,
+                            textColor: Theme.of(context).colorScheme.primary,
+                            onTap: () => print("tap"),
+                            text: "Website",
                           ),
                         ],
                       ),

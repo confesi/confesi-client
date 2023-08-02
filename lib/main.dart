@@ -4,6 +4,7 @@ import 'package:confesi/application/feed/cubit/sentiment_analysis_cubit.dart';
 import 'package:confesi/application/user/cubit/feedback_categories_cubit.dart';
 import 'package:confesi/constants/shared/dev.dart';
 import 'package:confesi/core/results/failures.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:shake/shake.dart';
 
 import 'package:confesi/presentation/create_post/overlays/confetti_blaster.dart';

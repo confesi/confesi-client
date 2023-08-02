@@ -66,7 +66,7 @@ class _TextStatTileState extends State<TextStatTile> {
                     child: Text(
                       widget.rightText!,
                       textAlign: TextAlign.right,
-                      style: kTitle.copyWith(
+                      style: kBody.copyWith(
                         color: widget.secondaryColor ?? Theme.of(context).colorScheme.secondary,
                       ),
                       overflow: TextOverflow.ellipsis,
