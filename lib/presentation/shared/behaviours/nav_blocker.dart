@@ -1,8 +1,5 @@
 import 'package:back_button_interceptor/back_button_interceptor.dart';
-import '../../../core/router/go_router.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:cupertino_will_pop_scope/cupertino_will_pop_scope.dart';
 
 class NavBlocker extends StatefulWidget {
   const NavBlocker({

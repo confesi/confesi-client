@@ -3,12 +3,10 @@ import 'package:confesi/application/user/cubit/feedback_cubit.dart';
 import 'package:confesi/presentation/shared/behaviours/simulated_bottom_safe_area.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../application/create_post/cubit/post_categories_cubit.dart';
 import '../../../core/utils/sizing/bottom_safe_area.dart';
 import 'package:scrollable/exports.dart';
 
 import '../../../constants/feedback/text.dart';
-import '../../../init.dart';
 import '../../shared/behaviours/init_scale.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/buttons/pop.dart';

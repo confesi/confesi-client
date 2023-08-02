@@ -4,19 +4,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:scrollable/exports.dart';
 
-import '../../../../constants/shared/dev.dart';
-import '../../../../core/router/go_router.dart';
 import '../../../../core/services/user_auth/user_auth_service.dart';
 import '../../../../core/utils/sizing/bottom_safe_area.dart';
 import '../../../shared/behaviours/nav_blocker.dart';
 import '../../../shared/behaviours/themed_status_bar.dart';
 import '../../../shared/layout/appbar.dart';
-import '../../../shared/text_animations/typewriter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/styles/typography.dart';
-import '../../../shared/button_touch_effects/touchable_opacity.dart';
 import '../../../shared/buttons/pop.dart';
 import '../../../shared/textfields/expandable_textfield.dart';
 

@@ -6,6 +6,7 @@ import '../../../core/results/failures.dart';
 import 'package:dartz/dartz.dart' as dartz;
 
 import '../../../domain/shared/entities/infinite_scroll_indexable.dart';
+import '../behaviours/loading_or_alert.dart';
 import '../edited_source_widgets/swipe_refresh.dart';
 import '../indicators/alert.dart';
 import 'package:flutter/cupertino.dart';
@@ -156,10 +157,10 @@ class _FeedListState extends State<FeedList> {
 
   Widget buildIndicator() {
     if (widget.hasError) {
-      return _FeedListIndicator(
+      return LoadingOrAlert(
         isLoading: errorLoadingMoreIsLoading,
         message: "Error loading more",
-        onClick: () async {
+        onTap: () async {
           setState(() {
             if (!mounted) return;
             errorLoadingMoreIsLoading = true;
@@ -172,10 +173,10 @@ class _FeedListState extends State<FeedList> {
         },
       );
     } else if (widget.wontLoadMore) {
-      return _FeedListIndicator(
+      return LoadingOrAlert(
         isLoading: endOfFeedReachedIsLoading,
         message: widget.wontLoadMoreMessage,
-        onClick: () async {
+        onTap: () async {
           if (!mounted) return;
           setState(() {
             endOfFeedReachedIsLoading = true;
@@ -188,7 +189,7 @@ class _FeedListState extends State<FeedList> {
         },
       );
     } else {
-      return const _FeedListIndicator(isLoading: true);
+      return const LoadingOrAlert(isLoading: true);
     }
   }
 
@@ -213,49 +214,6 @@ class _FeedListState extends State<FeedList> {
         itemCount: widget.controller.items.length + 2,
         itemPositionsListener: widget.controller.itemPositionsListener,
         itemScrollController: widget.controller.itemScrollController,
-      ),
-    );
-  }
-}
-
-//! Feed alert widget
-
-class _FeedListIndicator extends StatelessWidget {
-  const _FeedListIndicator({this.message, this.onClick, required this.isLoading});
-
-  final String? message;
-  final VoidCallback? onClick;
-  final bool isLoading;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(30),
-      child: Center(
-        child: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 250),
-            child: Stack(
-              children: [
-                AnimatedScale(
-                  duration: const Duration(milliseconds: 250),
-                  scale: message != null && onClick != null && !isLoading ? 1 : 0,
-                  child: AlertIndicator(
-                    message: message ?? "Retry",
-                    onPress: () => onClick!(),
-                  ),
-                ),
-                Positioned.fill(
-                  child: AnimatedScale(
-                    duration: const Duration(milliseconds: 250),
-                    scale: message != null && onClick != null && !isLoading ? 0 : 1,
-                    child: const Align(
-                      alignment: Alignment.center,
-                      child: LoadingCupertinoIndicator(),
-                    ),
-                  ),
-                ),
-              ],
-            )),
       ),
     );
   }

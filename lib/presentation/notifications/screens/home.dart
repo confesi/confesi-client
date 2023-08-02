@@ -6,7 +6,6 @@ import '../../shared/indicators/loading_cupertino.dart';
 import '../../shared/other/feed_list.dart';
 import '../../shared/overlays/info_sheet_with_action.dart';
 
-import '../../../domain/leaderboard/entities/leaderboard_item.dart';
 import '../../shared/indicators/alert.dart';
 import '../../shared/layout/appbar.dart';
 import '../../../application/leaderboard/cubit/leaderboard_cubit.dart';

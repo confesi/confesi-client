@@ -4,9 +4,7 @@ import 'package:confesi/application/feed/cubit/sentiment_analysis_cubit.dart';
 import 'package:confesi/application/user/cubit/feedback_categories_cubit.dart';
 import 'package:confesi/constants/shared/dev.dart';
 import 'package:confesi/core/results/failures.dart';
-import 'package:go_router/go_router.dart';
 import 'package:shake/shake.dart';
-import 'package:uuid/uuid.dart';
 
 import 'package:confesi/presentation/create_post/overlays/confetti_blaster.dart';
 
@@ -14,6 +12,7 @@ import 'application/authentication_and_settings/cubit/auth_flow_cubit.dart';
 import 'application/create_post/cubit/post_categories_cubit.dart';
 import 'application/user/cubit/account_details_cubit.dart';
 import 'application/user/cubit/feedback_cubit.dart';
+import 'application/user/cubit/stats_cubit.dart';
 import 'core/services/hive/hive_client.dart';
 import 'core/services/user_auth/user_auth_service.dart';
 import 'presentation/shared/overlays/notification_chip.dart';
@@ -79,6 +78,7 @@ void main() async => await init().then(
                     BlocProvider(lazy: false, create: (context) => sl<AccountDetailsCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<FeedbackCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<FeedbackCategoriesCubit>()),
+                    BlocProvider(lazy: false, create: (context) => sl<StatsCubit>()),
                   ],
                   child: debugMode && devicePreview
                       ? DevicePreview(builder: (context) => const ShrinkView())

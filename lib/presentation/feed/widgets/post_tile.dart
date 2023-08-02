@@ -1,22 +1,16 @@
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
-import 'package:flutter/services.dart';
 
 import '../../../core/router/go_router.dart';
 import '../../../core/services/sharing.dart';
-import '../../../core/services/user_auth/user_auth_data.dart';
 import 'reaction_tile.dart';
 import '../../shared/button_touch_effects/touchable_opacity.dart';
 
-import '../../../core/services/user_auth/user_auth_service.dart';
-import '../../../init.dart';
 import '../../shared/other/blue_tick.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/styles/typography.dart';
 import '../methods/show_post_options.dart';
-import 'child_post.dart';
 
 class SimplePostTile extends StatefulWidget {
   const SimplePostTile({super.key});

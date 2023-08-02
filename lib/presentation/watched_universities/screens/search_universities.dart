@@ -3,7 +3,6 @@ import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale
 
 import '../../../core/utils/sizing/bottom_safe_area.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
-import '../../shared/button_touch_effects/touchable_opacity.dart';
 import '../../shared/textfields/expandable_textfield.dart';
 import '../widgets/searched_university_tile.dart';
 import 'package:flutter/cupertino.dart';

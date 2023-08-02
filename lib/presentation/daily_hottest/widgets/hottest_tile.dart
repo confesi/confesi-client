@@ -1,10 +1,7 @@
 import 'package:confesi/models/post.dart';
 import 'package:confesi/presentation/shared/other/cached_online_image.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/styles/typography.dart';
-import '../../../core/utils/numbers/is_plural.dart';
-import '../../../core/utils/numbers/large_number_formatter.dart';
 
 import 'package:flutter/material.dart';
 

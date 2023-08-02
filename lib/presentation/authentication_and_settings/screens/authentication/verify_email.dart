@@ -1,18 +1,12 @@
 import '../../../../application/authentication_and_settings/cubit/auth_flow_cubit.dart';
 import '../../../../init.dart';
-import '../../../shared/behaviours/animated_bobbing.dart';
-import '../../../shared/overlays/notification_chip.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_shake_animated/flutter_shake_animated.dart';
 
-import '../../../../core/router/go_router.dart';
 import 'package:scrollable/exports.dart';
 
 import '../../../../core/services/user_auth/user_auth_service.dart';
 import '../../../../core/utils/sizing/bottom_safe_area.dart';
 import '../../../shared/behaviours/themed_status_bar.dart';
-import '../../../shared/text_animations/typewriter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

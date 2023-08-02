@@ -1,7 +1,6 @@
 import 'package:confesi/models/school.dart';
 import 'package:confesi/presentation/notifications/screens/home.dart';
 
-import '../../data/create_post/datasources/create_post_datasource.dart';
 import 'package:confesi/presentation/authentication_and_settings/screens/authentication/open.dart';
 import '../../presentation/authentication_and_settings/screens/authentication/reset_password.dart';
 import '../../presentation/authentication_and_settings/screens/settings/contact.dart';

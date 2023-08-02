@@ -1,9 +1,7 @@
 import '../button_touch_effects/touchable_scale.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/styles/typography.dart';
-import '../button_touch_effects/touchable_opacity.dart';
 
 class OptionButton extends StatelessWidget {
   const OptionButton({

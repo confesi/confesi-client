@@ -1,10 +1,8 @@
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_burst.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
-import '../button_touch_effects/touchable_opacity.dart';
 
 class CircleEmojiButton extends StatelessWidget {
   const CircleEmojiButton({

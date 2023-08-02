@@ -1,14 +1,11 @@
 import 'package:confesi/application/create_post/cubit/post_categories_cubit.dart';
 import 'package:confesi/presentation/shared/indicators/loading_cupertino.dart';
 
-import '../../../constants/shared/dev.dart';
-import '../overlays/confetti_blaster.dart';
 import 'package:scrollable/exports.dart';
 import '../../../application/create_post/cubit/post_cubit.dart';
 import '../../shared/behaviours/nav_blocker.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/overlays/info_sheet.dart';
-import '../../shared/overlays/notification_chip.dart';
 import '../../shared/selection_groups/tile_group.dart';
 import '../../shared/selection_groups/bool_selection_tile.dart';
 import 'package:flutter/cupertino.dart';

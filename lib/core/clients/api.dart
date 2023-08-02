@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:confesi/core/services/user_auth/user_auth_data.dart';
-import 'package:provider/provider.dart';
 
 import '../../constants/shared/dev.dart';
 import '../results/failures.dart';

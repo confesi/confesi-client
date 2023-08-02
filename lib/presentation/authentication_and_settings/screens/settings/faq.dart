@@ -9,7 +9,6 @@ import '../../../../core/styles/typography.dart';
 import '../../../../core/utils/sizing/bottom_safe_area.dart';
 import '../../../shared/layout/appbar.dart';
 import '../../../shared/selection_groups/stepper_tile.dart';
-import '../../widgets/settings/header_text.dart';
 
 class FAQScreen extends StatefulWidget {
   const FAQScreen({super.key});

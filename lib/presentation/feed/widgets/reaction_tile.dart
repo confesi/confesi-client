@@ -1,6 +1,3 @@
-import 'package:confesi/presentation/shared/button_touch_effects/touchable_burst.dart';
-import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/utils/numbers/large_number_formatter.dart';
 import '../../shared/button_touch_effects/touchable_opacity.dart';

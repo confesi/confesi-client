@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:cupertino_will_pop_scope/cupertino_will_pop_scope.dart';
 
 /// The theme class for the app.
 class AppTheme {

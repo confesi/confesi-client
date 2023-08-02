@@ -4,7 +4,6 @@ import 'package:bloc/bloc.dart';
 import 'package:confesi/core/extensions/dates/year_month_day.dart';
 import 'package:confesi/core/services/user_auth/user_auth_service.dart';
 import 'package:confesi/models/school.dart';
-import 'package:drift/drift.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 

@@ -1,13 +1,8 @@
-import 'package:confesi/init.dart';
-import 'package:confesi/presentation/shared/other/widget_or_nothing.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../constants/shared/dev.dart';
 
 import '../../../../application/authentication_and_settings/cubit/auth_flow_cubit.dart';
 import '../../../../core/router/go_router.dart';
-import '../../../../core/services/user_auth/user_auth_service.dart';
 import '../../../shared/behaviours/nav_blocker.dart';
 import '../../../shared/behaviours/themed_status_bar.dart';
 import 'package:flutter/cupertino.dart';

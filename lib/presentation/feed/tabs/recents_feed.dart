@@ -1,14 +1,7 @@
-import 'package:flutter/cupertino.dart';
-import 'package:provider/provider.dart';
 
-import '../../../core/services/user_auth/user_auth_data.dart';
-import '../../../core/services/user_auth/user_auth_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../../domain/shared/entities/infinite_scroll_indexable.dart';
-import '../../../init.dart';
-import '../../notifications/widgets/icon_with_indicator.dart';
 import '../../shared/other/feed_list.dart';
 import '../widgets/post_tile.dart';
 

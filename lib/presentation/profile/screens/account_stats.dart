@@ -1,5 +1,10 @@
-import 'package:confesi/presentation/shared/behaviours/simulated_bottom_safe_area.dart';
+import 'package:confesi/application/user/cubit/stats_cubit.dart';
+import 'package:confesi/core/utils/sizing/bottom_safe_area.dart';
+import 'package:confesi/presentation/shared/behaviours/loading_or_alert.dart';
+import 'package:confesi/presentation/shared/indicators/alert.dart';
+import 'package:confesi/presentation/shared/indicators/loading_cupertino.dart';
 import 'package:confesi/presentation/shared/selection_groups/tile_group.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../widgets/stat_tile.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,12 +13,24 @@ import 'package:scrollable/exports.dart';
 
 import '../../../core/router/go_router.dart';
 import '../../../core/styles/typography.dart';
-import '../../../core/utils/sizing/bottom_safe_area.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/layout/appbar.dart';
 import '../../shared/selection_groups/rectangle_selection_tile.dart';
-import '../../shared/selection_groups/setting_tile.dart';
 import '../../shared/selection_groups/text_stat_tile.dart';
+
+String percentToRelativeMsg(num percentage) {
+  percentage = 1 - percentage;
+  // cap percent at 1% at best
+  if (percentage < 0.01) {
+    percentage = 0.01;
+  }
+  String percentageStr = "${(percentage * 100).toStringAsFixed(2)}%";
+  if (percentage <= 0.5) {
+    return "top $percentageStr";
+  } else {
+    return "bottom $percentageStr";
+  }
+}
 
 class AccountProfileStats extends StatefulWidget {
   const AccountProfileStats({super.key});
@@ -23,6 +40,12 @@ class AccountProfileStats extends StatefulWidget {
 }
 
 class _AccountProfileStatsState extends State<AccountProfileStats> {
+  @override
+  void initState() {
+    context.read<StatsCubit>().loadStats();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ThemeStatusBar(
@@ -51,8 +74,7 @@ class _AccountProfileStatsState extends State<AccountProfileStats> {
                   child: ScrollableView(
                     hapticsEnabled: false,
                     physics: const BouncingScrollPhysics(),
-                    inlineTopOrLeftPadding: 15,
-                    inlineBottomOrRightPadding: 15,
+                    inlineBottomOrRightPadding: bottomSafeArea(context),
                     controller: ScrollController(),
                     scrollBarVisible: false,
                     child: Padding(
@@ -60,31 +82,6 @@ class _AccountProfileStatsState extends State<AccountProfileStats> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "Your stats (estimates)",
-                            style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          const StatTile(
-                            leftNumber: 21231,
-                            leftDescription: "Likes",
-                            centerNumber: 1312,
-                            centerDescription: "Hottests",
-                            rightNumber: 32,
-                            rightDescription: "Dislikes",
-                          ),
-                          const TextStatTile(
-                            leftText: "Likes",
-                            rightText: "top 10%",
-                          ),
-                          const TextStatTile(
-                            leftText: "Hottests",
-                            rightText: "top 10%",
-                          ),
-                          const TextStatTile(
-                            leftText: "Dislikes",
-                            rightText: "top 3.5%",
-                          ),
                           TileGroup(
                             text: "Content",
                             tiles: [
@@ -103,6 +100,43 @@ class _AccountProfileStatsState extends State<AccountProfileStats> {
                                 rightText: "Your confessions",
                               ),
                             ],
+                          ),
+                          BlocBuilder<StatsCubit, StatsState>(
+                            builder: (context, state) {
+                              if (state is StatsData) {
+                                return TileGroup(
+                                  text: "Your stats (estimated)",
+                                  tiles: [
+                                    StatTile(
+                                      leftNumber: state.stats.likes,
+                                      leftDescription: "Likes",
+                                      centerNumber: state.stats.hottest,
+                                      centerDescription: "Hottests",
+                                      rightNumber: state.stats.dislikes,
+                                      rightDescription: "Dislikes",
+                                    ),
+                                    TextStatTile(
+                                      leftText: "Likes",
+                                      rightText: percentToRelativeMsg(state.stats.likesPerc),
+                                    ),
+                                    TextStatTile(
+                                      leftText: "Hottests",
+                                      rightText: percentToRelativeMsg(state.stats.hottestPerc),
+                                    ),
+                                    TextStatTile(
+                                      leftText: "Dislikes",
+                                      rightText: percentToRelativeMsg(state.stats.dislikesPerc),
+                                    ),
+                                  ],
+                                );
+                              } else {
+                                return LoadingOrAlert(
+                                  isLoading: state is StatsLoading,
+                                  message: "Error loading stats",
+                                  onTap: () => context.read<StatsCubit>().loadStats(),
+                                );
+                              }
+                            },
                           ),
                         ],
                       ),

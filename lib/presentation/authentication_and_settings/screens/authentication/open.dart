@@ -1,11 +1,8 @@
 import '../../../../application/authentication_and_settings/cubit/auth_flow_cubit.dart';
 import '../../../../core/router/go_router.dart';
 import '../../../../core/utils/sizing/width_fraction.dart';
-import '../../../../init.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/styles/typography.dart';
 import '../../../../core/utils/sizing/height_fraction.dart';
 import '../../../shared/behaviours/themed_status_bar.dart';
 import 'package:flutter/cupertino.dart';

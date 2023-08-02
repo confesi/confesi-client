@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
 import '../../../core/utils/numbers/large_number_formatter.dart';
-import '../../shared/button_touch_effects/touchable_opacity.dart';
 
 class StatTile extends StatelessWidget {
   const StatTile({

@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 
 import '../hive/hive_client.dart';
 import 'package:uuid/uuid.dart';

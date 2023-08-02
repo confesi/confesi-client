@@ -1,9 +1,5 @@
-import 'package:confesi/presentation/shared/button_touch_effects/touchable_burst.dart';
-import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 
 import '../../../core/router/go_router.dart';
-import '../../../init.dart';
-import '../../shared/button_touch_effects/touchable_scale.dart';
 import 'package:flutter/services.dart';
 
 import '../../shared/indicators/loading_cupertino.dart';

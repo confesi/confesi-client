@@ -8,18 +8,14 @@ import '../../../../core/services/user_auth/user_auth_service.dart';
 import '../../../../core/utils/sizing/bottom_safe_area.dart';
 import '../../../../init.dart';
 import '../../../shared/behaviours/simulated_bottom_safe_area.dart';
-import '../../../shared/other/widget_or_nothing.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../application/authentication_and_settings/cubit/auth_flow_cubit.dart';
 import '../../../../core/styles/typography.dart';
-import '../../../../core/utils/sizing/top_safe_area.dart';
 
 import '../../../../application/shared/cubit/website_launcher_cubit.dart';
 import '../../../shared/behaviours/themed_status_bar.dart';
 import '../../../shared/layout/appbar.dart';
-import '../../../shared/other/top_frosted_glass_area.dart';
 import '../../../shared/overlays/notification_chip.dart';
 import '../../../shared/selection_groups/setting_tile.dart';
 import 'package:flutter/cupertino.dart';
@@ -28,7 +24,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrollable/exports.dart';
 
 import '../../../shared/selection_groups/switch_selection_tile.dart';
-import '../../../shared/text/disclaimer_text.dart';
 
 class SettingsHome extends StatelessWidget {
   const SettingsHome({

@@ -3,7 +3,6 @@ import 'package:confesi/presentation/shared/behaviours/nav_blocker.dart';
 
 import '../../../core/router/go_router.dart';
 import '../../../init.dart';
-import '../../shared/button_touch_effects/touchable_opacity.dart';
 import '../../shared/button_touch_effects/touchable_scale.dart';
 
 import '../../../core/utils/sizing/width_fraction.dart';
@@ -12,7 +11,6 @@ import '../../shared/other/widget_or_nothing.dart';
 import '../../shared/overlays/notification_chip.dart';
 import 'package:scrollable/exports.dart';
 
-import '../../../application/create_post/cubit/post_cubit.dart';
 import '../../../constants/shared/enums.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/other/text_limit_tracker.dart';

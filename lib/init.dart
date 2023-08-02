@@ -4,6 +4,7 @@ import 'package:confesi/application/create_post/cubit/post_categories_cubit.dart
 import 'package:confesi/application/user/cubit/account_details_cubit.dart';
 import 'package:confesi/application/user/cubit/feedback_categories_cubit.dart';
 import 'package:confesi/application/user/cubit/feedback_cubit.dart';
+import 'package:confesi/application/user/cubit/stats_cubit.dart';
 import 'package:confesi/core/services/fcm_notifications/token_data.dart';
 import 'package:confesi/presentation/create_post/overlays/confetti_blaster.dart';
 import 'package:uuid/uuid.dart';
@@ -19,7 +20,6 @@ import 'application/shared/cubit/maps_cubit.dart';
 import 'core/services/hive/hive_client.dart';
 import 'domain/feed/usecases/launch_maps.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'core/services/fcm_notifications/notification_service.dart';
@@ -148,6 +148,7 @@ Future<void> init() async {
   sl.registerFactory(() => AccountDetailsCubit());
   sl.registerFactory(() => FeedbackCubit());
   sl.registerFactory(() => FeedbackCategoriesCubit());
+  sl.registerFactory(() => StatsCubit());
 
   //! Usecases
   sl.registerLazySingleton(() => Recents(repository: sl()));

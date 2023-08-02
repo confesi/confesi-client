@@ -2,7 +2,6 @@ import 'package:confesi/application/shared/cubit/maps_cubit.dart';
 import 'package:confesi/core/styles/typography.dart';
 import 'package:confesi/core/utils/sizing/height_fraction.dart';
 import 'package:confesi/presentation/shared/behaviours/simulated_bottom_safe_area.dart';
-import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:confesi/presentation/shared/buttons/simple_text.dart';
 import 'package:confesi/presentation/shared/other/zoomable.dart';
@@ -10,7 +9,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../application/authentication_and_settings/cubit/auth_flow_cubit.dart';
 import '../../../core/router/go_router.dart';
 import '../../../core/utils/numbers/add_commas_to_number.dart';
 import '../../../core/utils/numbers/is_plural.dart';

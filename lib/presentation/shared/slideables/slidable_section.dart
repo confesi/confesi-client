@@ -3,7 +3,6 @@ import '../button_touch_effects/touchable_opacity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-import '../../../constants/shared/enums.dart';
 
 class SlidableSection extends StatelessWidget {
   const SlidableSection({

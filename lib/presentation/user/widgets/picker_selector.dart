@@ -49,7 +49,6 @@ class _PickerSelector extends StatefulWidget {
   final bool canRemove;
 
   const _PickerSelector({
-    super.key,
     required this.items,
     required this.onSelect,
     required this.onRemove,

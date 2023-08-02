@@ -11,9 +11,6 @@ import 'package:flutter_shake_animated/flutter_shake_animated.dart';
 
 import '../../../core/router/go_router.dart';
 import '../../../core/utils/sizing/bottom_safe_area.dart';
-import '../../../core/utils/sizing/height_fraction.dart';
-import '../behaviours/init_scale.dart';
-import '../buttons/option.dart';
 import '../layout/swipebar.dart';
 
 // static function to return a random ShakeConstant from a list of classes that extend from it

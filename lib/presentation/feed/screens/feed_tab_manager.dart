@@ -1,17 +1,9 @@
-import 'dart:convert';
 
 import '../../../core/router/go_router.dart';
-import '../../../core/services/remote_config/remote_config.dart';
-import '../../../init.dart';
-import '../../shared/behaviours/init_scale.dart';
 
 import '../../shared/buttons/circle_emoji_button.dart';
-import '../../shared/buttons/option.dart';
-import '../../shared/other/zoomable.dart';
-import '../../shared/overlays/button_options_sheet.dart';
 
 import '../tabs/trending_feed.dart';
-import '../../shared/buttons/simple_text.dart';
 
 import '../../shared/behaviours/themed_status_bar.dart';
 import 'package:flutter/cupertino.dart';

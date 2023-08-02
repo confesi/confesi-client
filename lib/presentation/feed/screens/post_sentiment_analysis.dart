@@ -1,11 +1,9 @@
 import 'package:confesi/application/feed/cubit/sentiment_analysis_cubit.dart';
 import 'package:confesi/core/utils/sizing/height_fraction.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/router/go_router.dart';
 
-import '../../../core/utils/sizing/width_fraction.dart';
 import '../../shared/behaviours/init_scale.dart';
 import 'package:pie_chart/pie_chart.dart';
 

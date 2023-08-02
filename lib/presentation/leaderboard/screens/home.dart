@@ -1,13 +1,9 @@
-import '../../../domain/shared/entities/infinite_scroll_indexable.dart';
 
-import '../../../init.dart';
-import '../../../models/school.dart';
 import '../widgets/leaderboard_item_tile.dart';
 import '../../shared/indicators/loading_cupertino.dart';
 import '../../shared/other/feed_list.dart';
 
 import '../../../constants/leaderboard/general.dart';
-import '../../../domain/leaderboard/entities/leaderboard_item.dart';
 import '../../shared/indicators/alert.dart';
 import '../../shared/layout/appbar.dart';
 import '../../../application/leaderboard/cubit/leaderboard_cubit.dart';

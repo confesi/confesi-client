@@ -3,9 +3,7 @@ import 'package:confesi/models/school.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../../../application/shared/cubit/maps_cubit.dart';
 import '../../../core/utils/numbers/add_commas_to_number.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/utils/numbers/is_plural.dart';
 import '../../../core/utils/numbers/number_postfix.dart';

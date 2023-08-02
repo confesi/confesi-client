@@ -6,9 +6,6 @@ import 'package:confesi/models/user.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../core/clients/api.dart';
-import '../../../models/faculty.dart';
-import '../../../models/school.dart';
-import '../../../models/year_of_study.dart';
 
 part 'account_details_state.dart';
 

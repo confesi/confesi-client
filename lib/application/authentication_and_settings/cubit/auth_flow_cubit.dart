@@ -9,7 +9,6 @@ import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../../constants/shared/dev.dart';
-import '../../../core/services/user_auth/user_auth_service.dart';
 import '../../../init.dart';
 import '../../../presentation/shared/overlays/notification_chip.dart';
 

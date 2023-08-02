@@ -1,4 +1,3 @@
-import '../../../core/router/go_router.dart';
 import '../../../core/services/splash_screen_hint_text/splash_screen_hint_text.dart';
 import '../../../core/styles/typography.dart';
 import '../../../core/utils/sizing/width_fraction.dart';

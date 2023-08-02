@@ -1,10 +1,8 @@
 import 'package:confesi/application/create_post/cubit/post_categories_cubit.dart';
-import 'package:confesi/application/create_post/cubit/post_cubit.dart';
 import 'package:confesi/init.dart';
 
 import '../../../core/router/go_router.dart';
 import '../../../core/services/user_auth/user_auth_service.dart';
-import '../../profile/screens/account_details.dart';
 import '../../profile/screens/account_stats.dart';
 import '../../shared/other/widget_or_nothing.dart';
 
@@ -13,7 +11,6 @@ import '../../authentication_and_settings/screens/settings/home.dart';
 import '../../leaderboard/screens/home.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../daily_hottest/screens/home.dart';
-import '../../notifications/screens/home.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
