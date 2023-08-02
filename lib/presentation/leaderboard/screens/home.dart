@@ -1,4 +1,3 @@
-
 import '../widgets/leaderboard_item_tile.dart';
 import '../../shared/indicators/loading_cupertino.dart';
 import '../../shared/other/feed_list.dart';
@@ -84,9 +83,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
           ],
         ),
         controller: controller,
-        loadMore: (_) async {
-          await context.read<LeaderboardCubit>().loadRankings();
-        },
+        loadMore: (_) async => await context.read<LeaderboardCubit>().loadRankings(),
         onPullToRefresh: () async => await context.read<LeaderboardCubit>().loadRankings(forceRefresh: true),
         hasError: state.feedState == LeaderboardFeedState.errorLoadingMore,
         wontLoadMore:

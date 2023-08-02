@@ -24,11 +24,11 @@ String percentToRelativeMsg(num percentage) {
   if (percentage < 0.01) {
     percentage = 0.01;
   }
-  String percentageStr = "${(percentage * 100).toStringAsFixed(2)}%";
+  String percentageStr = "${(percentage * 100).toStringAsFixed(0)}%";
   if (percentage <= 0.5) {
-    return "top $percentageStr";
+    return "Top $percentageStr";
   } else {
-    return "bottom $percentageStr";
+    return "Bottom $percentageStr";
   }
 }
 

@@ -1,4 +1,3 @@
-
 import '../../../core/styles/typography.dart';
 import '../button_touch_effects/touchable_opacity.dart';
 import 'package:flutter/material.dart';
@@ -68,7 +67,7 @@ class _TextStatTileState extends State<TextStatTile> {
                       widget.rightText!,
                       textAlign: TextAlign.right,
                       style: kTitle.copyWith(
-                        color: widget.secondaryColor ?? Theme.of(context).colorScheme.onSurface,
+                        color: widget.secondaryColor ?? Theme.of(context).colorScheme.secondary,
                       ),
                       overflow: TextOverflow.ellipsis,
                     ),
