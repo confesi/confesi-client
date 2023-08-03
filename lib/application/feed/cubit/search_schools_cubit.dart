@@ -75,7 +75,7 @@ class SearchSchoolsCubit extends Cubit<SearchSchoolsState> {
     );
   }
 
-  Future<void> updateWatched(int id, bool watch) async {
+  Future<bool> updateWatched(int id, bool watch) async {
     if (state is SearchSchoolsData) {
       final currentState = state as SearchSchoolsData;
       final oldState = currentState.schools.firstWhere((element) => element.id == id);
@@ -107,7 +107,10 @@ class SearchSchoolsCubit extends Cubit<SearchSchoolsState> {
       );
 
       response.fold(
-        (failureWithMsg) => emit(SearchSchoolsError(failureWithMsg.message())),
+        (failureWithMsg) {
+          emit(SearchSchoolsError(failureWithMsg.message()));
+          return false;
+        },
         (response) async {
           if (response.statusCode.toString()[0] == "4") {
             if (state is SearchSchoolsData) {
@@ -123,8 +126,10 @@ class SearchSchoolsCubit extends Cubit<SearchSchoolsState> {
                 updatedSchools,
                 SearchSchoolsErr("Error updating school"),
               ));
+              return false;
             } else {
               emit(const SearchSchoolsError("Unknown error"));
+              return false;
             }
           } else {
             try {
@@ -142,11 +147,13 @@ class SearchSchoolsCubit extends Cubit<SearchSchoolsState> {
                     updatedSchools,
                     SearchSchoolsNoErr(),
                   ));
+                  return false;
                 } else {
                   emit(const SearchSchoolsError("Unknown error"));
+                  return false;
                 }
-                // else, do nothing
               }
+              return true;
             } catch (_) {
               if (state is SearchSchoolsData) {
                 final currentState = state as SearchSchoolsData;
@@ -164,28 +171,25 @@ class SearchSchoolsCubit extends Cubit<SearchSchoolsState> {
               } else {
                 emit(const SearchSchoolsError("Unknown error"));
               }
+              return false;
             }
           }
         },
       );
+      return false;
     } else {
       emit(const SearchSchoolsError("Unknown error"));
+      return false;
     }
   }
 
-  Future<void> setHome(int id) async {
+  Future<bool> setHome(int id) async {
     if (state is SearchSchoolsData) {
       final currentState = state as SearchSchoolsData;
 
       // Cancel the ongoing request before starting a new one
       _setSchoolAsHomeApi.cancelCurrentReq();
 
-      // Find the selected school and check if it is already set as home
-      final selectedSchool = currentState.schools.firstWhere((element) => element.id == id);
-      if (selectedSchool.home) {
-        // Do nothing, as the selected school is already set as home
-        return;
-      }
       // return first id of school where home is true
       final int oldHomeId = currentState.schools.firstWhere((element) => element.home).id;
 
@@ -286,6 +290,7 @@ class SearchSchoolsCubit extends Cubit<SearchSchoolsState> {
                 }
                 // else, do nothing
               }
+              return true;
             } catch (_) {
               if (state is SearchSchoolsData) {
                 final currentState = state as SearchSchoolsData;
@@ -314,5 +319,6 @@ class SearchSchoolsCubit extends Cubit<SearchSchoolsState> {
     } else {
       emit(const SearchSchoolsError("Unknown error"));
     }
+    return false;
   }
 }

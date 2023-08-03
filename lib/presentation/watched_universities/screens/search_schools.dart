@@ -1,3 +1,4 @@
+import 'package:confesi/application/feed/cubit/schools_drawer_cubit.dart';
 import 'package:confesi/application/feed/cubit/search_schools_cubit.dart';
 import 'package:confesi/core/router/go_router.dart';
 import 'package:confesi/core/styles/typography.dart';
@@ -90,9 +91,22 @@ class _SearchSchoolsScreenState extends State<SearchSchoolsScreen> {
                       : Column(
                           children: state.schools.map((school) {
                             return SearchedSchoolTile(
-                              onHomeChange: (newValue) => context.read<SearchSchoolsCubit>().setHome(school.id),
-                              onWatchChange: (newValue) =>
-                                  context.read<SearchSchoolsCubit>().updateWatched(school.id, newValue),
+                              onHomeChange: (newValue) async {
+                                await context.read<SearchSchoolsCubit>().setHome(school.id).then(
+                                      (succeeded) => succeeded
+                                          ? context.read<SchoolsDrawerCubit>().updateHomeSchool(school.id)
+                                          : null,
+                                    );
+                              },
+                              onWatchChange: (newValue) async {
+                                await context.read<SearchSchoolsCubit>().updateWatched(school.id, newValue).then(
+                                      (succeeded) => succeeded
+                                          ? newValue
+                                              ? context.read<SchoolsDrawerCubit>().addWatchedSchool(school)
+                                              : context.read<SchoolsDrawerCubit>().removeWatchedSchool(school.id)
+                                          : null,
+                                    );
+                              },
                               home: school.home,
                               watched: school.watched,
                               onPress: () => print("tap"),

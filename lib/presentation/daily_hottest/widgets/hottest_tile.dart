@@ -106,10 +106,11 @@ class _HottestTileState extends State<HottestTile> {
                                       shaderCallback: (Rect bounds) {
                                         return LinearGradient(
                                           colors: [
-                                            Theme.of(context).colorScheme.tertiary.withOpacity(0.7),
+                                            Theme.of(context).colorScheme.tertiary.withOpacity(0.6),
+                                            Theme.of(context).colorScheme.tertiary.withOpacity(0.8),
                                             Theme.of(context).colorScheme.tertiary,
                                           ], // Replace with your desired gradient colors
-                                          stops: const [0.0, 1.0],
+                                          stops: const [0.0, 0.5, 1.0],
                                         ).createShader(bounds);
                                       },
                                       child: Text(

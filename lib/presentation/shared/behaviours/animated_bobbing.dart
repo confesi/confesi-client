@@ -5,7 +5,7 @@ class Bobbing extends StatefulWidget {
   final Duration duration;
   final bool rotate; // New optional parameter
 
-  const Bobbing({Key? key, required this.child, this.duration = const Duration(milliseconds: 1200), this.rotate = true})
+  const Bobbing({Key? key, required this.child, this.duration = const Duration(milliseconds: 1000), this.rotate = true})
       : super(key: key);
 
   @override
@@ -19,7 +19,7 @@ class BobbingState extends State<Bobbing> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
     _controller = AnimationController(vsync: this, duration: widget.duration);
-    _controller.repeat(reverse: true);
+    _controller.repeat(); // Remove reverse: true to make it spin in one direction
   }
 
   @override

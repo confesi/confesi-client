@@ -103,6 +103,7 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
         listenWhen: (previous, current) => true,
         listener: (context, state) async {
           if (state is DailyHottestData) {
+            currentIndex = 0;
             headerText = state.date.isSameDate(DateTime.now().toUtc().subtract(const Duration(days: 1)))
                 ? headerText
                 : "Hottest of ${state.date.readableDateFormat()}";

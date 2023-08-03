@@ -20,37 +20,57 @@ class FeedDrawer extends StatefulWidget {
 }
 
 class _FeedDrawerState extends State<FeedDrawer> {
+  String getSelectedSchool(SchoolsDrawerData state) {
+    if (state.selected is SelectedId) {
+      return state.schools.firstWhere((school) => school.id == (state.selected as SelectedId).id).name;
+    } else if (state.selected is SelectedAll) {
+      return "All";
+    } else if (state.selected is SelectedRandom) {
+      return "Random";
+    } else {
+      throw Exception("Unknown 'selected' type");
+    }
+  }
+
   Widget buildBody(BuildContext context, SchoolsDrawerState state) {
     if (state is SchoolsDrawerData) {
+      final userSchool = state.homeUniversity;
+      final watchedSchools = state.schools.where((school) => school.watched).toList();
+      watchedSchools.sort((a, b) => a.name.compareTo(b.name));
+
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             width: double.infinity,
             color: Theme.of(context).colorScheme.secondary,
-            child: SafeArea(
-              bottom: false,
-              child: Padding(
-                padding: const EdgeInsets.all(15),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Currently viewing",
-                      style: kDetail.copyWith(
-                        color: Theme.of(context).colorScheme.onSecondary,
+            child: AnimatedSize(
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.easeInOut,
+              child: SafeArea(
+                bottom: false,
+                child: Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Currently viewing",
+                        style: kDetail.copyWith(
+                          color: Theme.of(context).colorScheme.onSecondary,
+                        ),
+                        textAlign: TextAlign.left,
                       ),
-                      textAlign: TextAlign.left,
-                    ),
-                    const SizedBox(height: 5),
-                    Text(
-                      "University of British Columbia",
-                      style: kDisplay1.copyWith(
-                        color: Theme.of(context).colorScheme.onSecondary,
+                      const SizedBox(height: 5),
+                      Text(
+                        getSelectedSchool(state),
+                        style: kDisplay1.copyWith(
+                          color: Theme.of(context).colorScheme.onSecondary,
+                        ),
+                        textAlign: TextAlign.left,
                       ),
-                      textAlign: TextAlign.left,
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -76,41 +96,26 @@ class _FeedDrawerState extends State<FeedDrawer> {
                     topBorder: true,
                     startsOpen: false,
                     bottomBorder: true,
-                    title: "Home university",
+                    title: "Home school",
                     items: [
                       DrawerUniversityTile(
-                        text: "University of Victoria",
-                        onTap: () => print("tap"),
+                        text: userSchool.name,
+                        onTap: () => context.read<SchoolsDrawerCubit>().setCurrentSchool(SelectedId(userSchool.id)),
                       ),
                     ],
                   ),
                   SectionAccordian(
-                    startsOpen: false,
+                    startsOpen: true,
                     bottomBorder: true,
                     title: "Special",
                     items: [
                       DrawerUniversityTile(
-                        text: "Random university",
-                        onTap: () => print("tap"),
+                        text: "Random school",
+                        onTap: () => context.read<SchoolsDrawerCubit>().setCurrentSchool(SelectedRandom()),
                       ),
                       DrawerUniversityTile(
-                        text: "All universities mixed",
-                        onTap: () => print("tap"),
-                      ),
-                    ],
-                  ),
-                  SectionAccordian(
-                    startsOpen: false,
-                    bottomBorder: true,
-                    title: "Confesi Beta",
-                    items: [
-                      DrawerUniversityTile(
-                        text: "Updates",
-                        onTap: () => print("tap"),
-                      ),
-                      DrawerUniversityTile(
-                        text: "Announcements",
-                        onTap: () => print("tap"),
+                        text: "All schools",
+                        onTap: () => context.read<SchoolsDrawerCubit>().setCurrentSchool(SelectedAll()),
                       ),
                     ],
                   ),
@@ -119,14 +124,12 @@ class _FeedDrawerState extends State<FeedDrawer> {
                     bottomBorder: true,
                     title: "Watched universities",
                     items: [
-                      DrawerUniversityTile(
-                        text: "University of the Fraser Valley",
-                        onTap: () => print("tap"),
-                      ),
-                      DrawerUniversityTile(
-                        text: "University of British Columbia Okanagan",
-                        onTap: () => print("tap"),
-                      ),
+                      for (final watchedSchool in watchedSchools)
+                        DrawerUniversityTile(
+                          text: watchedSchool.name,
+                          onTap: () =>
+                              context.read<SchoolsDrawerCubit>().setCurrentSchool(SelectedId(watchedSchool.id)),
+                        ),
                     ],
                   ),
                 ],

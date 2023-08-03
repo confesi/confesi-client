@@ -1,5 +1,6 @@
 import 'package:confesi/application/feed/cubit/sentiment_analysis_cubit.dart';
 import 'package:confesi/core/utils/sizing/height_fraction.dart';
+import 'package:confesi/presentation/shared/indicators/loading_or_alert.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/router/go_router.dart';
@@ -37,9 +38,7 @@ class _SentimentAnalysisScreenState extends State<SentimentAnalysisScreen> {
   }
 
   Widget buildChild(BuildContext context, SentimentAnalysisState state) {
-    if (state is SentimentAnalysisLoading) {
-      return const LoadingCupertinoIndicator(key: ValueKey("loading"));
-    } else if (state is SentimentAnalysisData) {
+    if (state is SentimentAnalysisData) {
       return ScrollableView(
         key: const ValueKey("loaded"),
         physics: const BouncingScrollPhysics(),
@@ -77,11 +76,10 @@ class _SentimentAnalysisScreenState extends State<SentimentAnalysisScreen> {
         ),
       );
     } else {
-      return AlertIndicator(
-        key: const ValueKey("error"),
-        message: "Error loading sentiment",
-        onPress: () => context.read<SentimentAnalysisCubit>().loadSentimentAnalysis(widget.props.postId),
-      );
+      return LoadingOrAlert(
+          message: StateMessage(
+              "Unknown error", () => context.read<SentimentAnalysisCubit>().loadSentimentAnalysis(widget.props.postId)),
+          isLoading: state is SentimentAnalysisLoading);
     }
   }
 

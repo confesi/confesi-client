@@ -1,3 +1,7 @@
+import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
+import 'package:flutter/services.dart';
+
+import '../../../core/router/go_router.dart';
 import '../../shared/button_touch_effects/touchable_opacity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +25,7 @@ class DrawerUniversityTile extends StatefulWidget {
 class _DrawerUniversityTileState extends State<DrawerUniversityTile> {
   @override
   Widget build(BuildContext context) {
-    return TouchableOpacity(
+    return TouchableScale(
       onTap: () => widget.onTap(),
       child: Container(
         // transparent color trick to increase hitbox size
@@ -37,7 +41,7 @@ class _DrawerUniversityTileState extends State<DrawerUniversityTile> {
               Expanded(
                 child: Text(
                   widget.text,
-                  style: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
+                  style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
                   textAlign: TextAlign.left,
                   // overflow: TextOverflow.ellipsis,
                 ),

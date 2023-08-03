@@ -26,7 +26,7 @@ class HeaderGroupText extends StatelessWidget {
 
   Widget buildTopText(BuildContext context) => Text(
         header,
-        style: kDisplay1.copyWith(color: Theme.of(context).colorScheme.primary),
+        style: kFunkyDisplay.copyWith(color: Theme.of(context).colorScheme.primary),
         textAlign: left ? TextAlign.left : TextAlign.center,
         overflow: TextOverflow.ellipsis,
         maxLines: multiLine ? 5 : null,

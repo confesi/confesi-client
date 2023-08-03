@@ -77,7 +77,7 @@ class _SectionAccordianState extends State<SectionAccordian> {
                     duration: const Duration(milliseconds: 100),
                     child: Icon(
                       isOpen ? CupertinoIcons.chevron_down : CupertinoIcons.chevron_right,
-                      key: UniqueKey(),
+                      key: isOpen ? const ValueKey("open") : const ValueKey("closed"),
                       size: 18,
                       color: Theme.of(context).colorScheme.onSurface,
                     ),
