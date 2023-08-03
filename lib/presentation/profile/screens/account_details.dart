@@ -1,6 +1,8 @@
 import 'package:confesi/application/user/cubit/account_details_cubit.dart';
 import 'package:confesi/constants/shared/dev.dart';
 import 'package:confesi/core/router/go_router.dart';
+import 'package:confesi/core/utils/sizing/height_fraction.dart';
+import 'package:confesi/presentation/shared/edited_source_widgets/swipe_refresh.dart';
 import 'package:confesi/presentation/shared/indicators/loading_or_alert.dart';
 import 'package:confesi/presentation/shared/indicators/loading_cupertino.dart';
 import 'package:confesi/presentation/shared/selection_groups/tile_group.dart';
@@ -44,69 +46,63 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
       }
       return Align(
         alignment: Alignment.topCenter,
-        child: ScrollableView(
-          physics: const BouncingScrollPhysics(),
-          inlineBottomOrRightPadding: bottomSafeArea(context),
-          controller: ScrollController(),
-          scrollBarVisible: false,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TileGroup(
-                  text: "Your home university",
-                  tiles: [
-                    SettingTile(
-                      secondaryText: "Required",
-                      leftIcon: CupertinoIcons.sparkles,
-                      rightIcon: CupertinoIcons.pen,
-                      text: data.school,
-                      onTap: () => router.push('/schools/search'),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TileGroup(
+                text: "Your home university",
+                tiles: [
+                  SettingTile(
+                    secondaryText: "Required",
+                    leftIcon: CupertinoIcons.sparkles,
+                    rightIcon: CupertinoIcons.pen,
+                    text: data.school,
+                    onTap: () => router.push('/schools/search'),
+                  ),
+                ],
+              ),
+              TileGroup(
+                text: "Your year of study",
+                tiles: [
+                  SettingTile(
+                    secondaryText: "Optional",
+                    leftIcon: CupertinoIcons.sparkles,
+                    rightIcon: CupertinoIcons.pen,
+                    text: data.yearOfStudy ?? "Hidden",
+                    onTap: () => showPickerSheet(
+                      context,
+                      yearsOfStudy,
+                      (idx) => context.read<AccountDetailsCubit>().updateYearOfStudy(yearsOfStudy[idx]),
+                      () => context.read<AccountDetailsCubit>().hideYearOfStudy(),
+                      true,
                     ),
-                  ],
-                ),
-                TileGroup(
-                  text: "Your year of study",
-                  tiles: [
-                    SettingTile(
-                      secondaryText: "Optional",
-                      leftIcon: CupertinoIcons.sparkles,
-                      rightIcon: CupertinoIcons.pen,
-                      text: data.yearOfStudy ?? "Hidden",
-                      onTap: () => showPickerSheet(
-                        context,
-                        yearsOfStudy,
-                        (idx) => context.read<AccountDetailsCubit>().updateYearOfStudy(yearsOfStudy[idx]),
-                        () => context.read<AccountDetailsCubit>().hideYearOfStudy(),
-                        true,
-                      ),
+                  ),
+                ],
+              ),
+              TileGroup(
+                text: "Your faculty",
+                tiles: [
+                  SettingTile(
+                    secondaryText: "Optional",
+                    leftIcon: CupertinoIcons.sparkles,
+                    rightIcon: CupertinoIcons.pen,
+                    text: data.faculty ?? "Hidden",
+                    onTap: () => showPickerSheet(
+                      context,
+                      faculties,
+                      (idx) => context.read<AccountDetailsCubit>().updateFaculty(faculties[idx]),
+                      () => context.read<AccountDetailsCubit>().hideFaculty(),
+                      true,
                     ),
-                  ],
-                ),
-                TileGroup(
-                  text: "Your faculty",
-                  tiles: [
-                    SettingTile(
-                      secondaryText: "Optional",
-                      leftIcon: CupertinoIcons.sparkles,
-                      rightIcon: CupertinoIcons.pen,
-                      text: data.faculty ?? "Hidden",
-                      onTap: () => showPickerSheet(
-                        context,
-                        faculties,
-                        (idx) => context.read<AccountDetailsCubit>().updateFaculty(faculties[idx]),
-                        () => context.read<AccountDetailsCubit>().hideFaculty(),
-                        true,
-                      ),
-                    ),
-                  ],
-                ),
-                const DisclaimerText(
-                  text: "These details are shared alongside your confessions.",
-                ),
-              ],
-            ),
+                  ),
+                ],
+              ),
+              const DisclaimerText(
+                text: "These details are shared alongside your confessions.",
+              ),
+            ],
           ),
         ),
       );

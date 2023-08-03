@@ -18,7 +18,7 @@ import '../../presentation/primary/screens/showcase.dart';
 import '../../presentation/profile/screens/account_details.dart';
 import '../../presentation/user_posts_and_comments/screens/posts.dart';
 import '../../presentation/user_posts_and_comments/screens/saved.dart';
-import '../../presentation/watched_universities/screens/search_universities.dart';
+import '../../presentation/watched_universities/screens/search_schools.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 

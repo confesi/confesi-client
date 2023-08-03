@@ -7,15 +7,36 @@ abstract class SearchSchoolsState extends Equatable {
   List<Object> get props => [];
 }
 
+abstract class PossibleError {}
+
+class SearchSchoolsErr extends PossibleError {
+  final String message;
+
+  SearchSchoolsErr(this.message);
+}
+
+class SearchSchoolsNoErr extends PossibleError {}
+
 class SearchSchoolsLoading extends SearchSchoolsState {}
 
 class SearchSchoolsData extends SearchSchoolsState {
   final List<SchoolWithMetadata> schools;
+  final PossibleError possibleErr;
 
-  const SearchSchoolsData(this.schools);
+  const SearchSchoolsData(this.schools, this.possibleErr);
+
+  SearchSchoolsData copyWith({
+    List<SchoolWithMetadata>? schools,
+    PossibleError? possibleErr,
+  }) {
+    return SearchSchoolsData(
+      schools ?? this.schools,
+      possibleErr ?? this.possibleErr,
+    );
+  }
 
   @override
-  List<Object> get props => [schools];
+  List<Object> get props => [schools, possibleErr];
 }
 
 class SearchSchoolsError extends SearchSchoolsState {

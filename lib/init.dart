@@ -5,6 +5,7 @@ import 'package:confesi/application/user/cubit/account_details_cubit.dart';
 import 'package:confesi/application/user/cubit/feedback_categories_cubit.dart';
 import 'package:confesi/application/user/cubit/feedback_cubit.dart';
 import 'package:confesi/application/user/cubit/stats_cubit.dart';
+import 'package:confesi/core/clients/api.dart';
 import 'package:confesi/core/services/fcm_notifications/token_data.dart';
 import 'package:confesi/core/utils/funcs/debouncer.dart';
 import 'package:confesi/presentation/create_post/overlays/confetti_blaster.dart';
@@ -153,7 +154,11 @@ Future<void> init() async {
   sl.registerFactory(() => FeedbackCubit());
   sl.registerFactory(() => FeedbackCategoriesCubit());
   sl.registerFactory(() => StatsCubit());
-  sl.registerFactory(() => SearchSchoolsCubit());
+  sl.registerFactory(() => SearchSchoolsCubit(
+        Api(),
+        Api(),
+        Api(),
+      )); // new instance of API
 
   //! Usecases
   sl.registerLazySingleton(() => Recents(repository: sl()));

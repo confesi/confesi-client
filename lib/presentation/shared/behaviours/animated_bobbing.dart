@@ -5,7 +5,7 @@ class Bobbing extends StatefulWidget {
   final Duration duration;
   final bool rotate; // New optional parameter
 
-  const Bobbing({Key? key, required this.child, this.duration = const Duration(milliseconds: 1500), this.rotate = true})
+  const Bobbing({Key? key, required this.child, this.duration = const Duration(milliseconds: 1250), this.rotate = true})
       : super(key: key);
 
   @override

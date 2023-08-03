@@ -5,6 +5,7 @@ import 'package:confesi/core/utils/funcs/debouncer.dart';
 import 'package:confesi/core/utils/sizing/height_fraction.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:confesi/presentation/shared/buttons/circle_icon_btn.dart';
+import 'package:confesi/presentation/shared/edited_source_widgets/swipe_refresh.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/utils/numbers/distance_formatter.dart';
@@ -52,45 +53,57 @@ class _SearchSchoolsScreenState extends State<SearchSchoolsScreen> {
       return Align(
         alignment: Alignment.topCenter,
         child: Container(
-          height: heightFraction(context, 1),
           key: const ValueKey("search_data"),
           color: Theme.of(context).colorScheme.shadow,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: ScrollableView(
-              inlineTopOrLeftPadding: 5,
-              scrollBarVisible: false,
-              inlineBottomOrRightPadding: bottomSafeArea(context),
-              hapticsEnabled: false,
-              controller: ScrollController(),
-              physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
-              child: state.schools.isEmpty
-                  ? Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(15),
-                        child: Text(
-                          "No schools found",
-                          style: kBody.copyWith(
-                            color: Theme.of(context).colorScheme.onSurface,
+            child: SwipeRefresh(
+              onRefresh: () async {
+                if (_textEditingController.text.isEmpty) {
+                  await context.read<SearchSchoolsCubit>().loadNearby();
+                } else {
+                  await context.read<SearchSchoolsCubit>().search(_textEditingController.text);
+                }
+              },
+              child: SizedBox(
+                height: heightFraction(context, 1),
+                child: ScrollableView(
+                  inlineTopOrLeftPadding: 5,
+                  scrollBarVisible: false,
+                  inlineBottomOrRightPadding: bottomSafeArea(context),
+                  hapticsEnabled: false,
+                  controller: ScrollController(),
+                  physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
+                  child: state.schools.isEmpty
+                      ? Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(15),
+                            child: Text(
+                              "No schools found",
+                              style: kBody.copyWith(
+                                color: Theme.of(context).colorScheme.onSurface,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
                           ),
-                          textAlign: TextAlign.center,
+                        )
+                      : Column(
+                          children: state.schools.map((school) {
+                            return SearchedUniversityTile(
+                              onHomeChange: (newValue) => print("new home: $newValue"),
+                              onWatchChange: (newValue) =>
+                                  context.read<SearchSchoolsCubit>().updateWatched(school.id, newValue),
+                              home: school.home,
+                              watched: school.watched,
+                              onPress: () => print("tap"),
+                              topText: school.name,
+                              middleText: distanceFormatter(context, school.distance),
+                              bottomText: school.abbr,
+                            );
+                          }).toList(),
                         ),
-                      ),
-                    )
-                  : Column(
-                      children: state.schools.map((school) {
-                        return SearchedUniversityTile(
-                          onHomeChange: (newValue) => print("new home: $newValue"),
-                          onWatchChange: (newValue) => print("new watch: $newValue"),
-                          home: school.home,
-                          watched: school.watched,
-                          onPress: () => print("tap"),
-                          topText: school.name,
-                          middleText: distanceFormatter(context, school.distance),
-                          bottomText: school.abbr,
-                        );
-                      }).toList(),
-                    ),
+                ),
+              ),
             ),
           ),
         ),
