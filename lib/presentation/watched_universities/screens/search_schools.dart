@@ -89,8 +89,8 @@ class _SearchSchoolsScreenState extends State<SearchSchoolsScreen> {
                         )
                       : Column(
                           children: state.schools.map((school) {
-                            return SearchedUniversityTile(
-                              onHomeChange: (newValue) => print("new home: $newValue"),
+                            return SearchedSchoolTile(
+                              onHomeChange: (newValue) => context.read<SearchSchoolsCubit>().setHome(school.id),
                               onWatchChange: (newValue) =>
                                   context.read<SearchSchoolsCubit>().updateWatched(school.id, newValue),
                               home: school.home,

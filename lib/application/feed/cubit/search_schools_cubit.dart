@@ -173,7 +173,146 @@ class SearchSchoolsCubit extends Cubit<SearchSchoolsState> {
     }
   }
 
-  Future<void> stopWatchingSchool(int id) async {}
+  Future<void> setHome(int id) async {
+    if (state is SearchSchoolsData) {
+      final currentState = state as SearchSchoolsData;
 
-  Future<void> setSchoolAsHome(int id) async {}
+      // Cancel the ongoing request before starting a new one
+      _setSchoolAsHomeApi.cancelCurrentReq();
+
+      // Find the selected school and check if it is already set as home
+      final selectedSchool = currentState.schools.firstWhere((element) => element.id == id);
+      if (selectedSchool.home) {
+        // Do nothing, as the selected school is already set as home
+        return;
+      }
+      // return first id of school where home is true
+      final int oldHomeId = currentState.schools.firstWhere((element) => element.home).id;
+
+      // Update the state with the updated schools list
+      final updatedSchools = currentState.schools.map((e) {
+        if (e.id == id) {
+          return e.copyWith(home: true);
+        } else {
+          // Unset any other school that might also be considered home
+          if (e.home) {
+            return e.copyWith(home: false);
+          }
+          return e;
+        }
+      }).toList();
+
+      // Emit the updated state with the new schools list
+      emit(SearchSchoolsData(
+        updatedSchools,
+        SearchSchoolsNoErr(),
+      ));
+
+      // Send the request to update the home school
+      final response = await _setSchoolAsHomeApi.req(
+        Verb.patch,
+        true,
+        "/api/v1/user/school",
+        {"school_id": id},
+      );
+
+      response.fold(
+        (failureWithMsg) {
+          if (state is SearchSchoolsData) {
+            final currentState = state as SearchSchoolsData;
+            final updatedSchools = currentState.schools.map((e) {
+              if (e.id == id) {
+                return e.copyWith(home: false); // Reset the selected school back to not being home
+              } else {
+                // Reset any other school that might also be considered home to true
+                if (e.id == oldHomeId) {
+                  return e.copyWith(home: true);
+                }
+                return e;
+              }
+            }).toList();
+            emit(SearchSchoolsData(
+              updatedSchools,
+              SearchSchoolsErr(failureWithMsg.message()),
+            ));
+          } else {
+            emit(const SearchSchoolsError("Unknown error"));
+          }
+        },
+        (response) async {
+          if (response.statusCode.toString()[0] == "4") {
+            if (state is SearchSchoolsData) {
+              final currentState = state as SearchSchoolsData;
+              final updatedSchools = currentState.schools.map((e) {
+                if (e.id == id) {
+                  return e.copyWith(home: false); // Reset the selected school back to not being home
+                } else {
+                  // Reset any other school that might also be considered home to true
+                  if (e.id == oldHomeId) {
+                    return e.copyWith(home: true);
+                  }
+                  return e;
+                }
+              }).toList();
+              emit(SearchSchoolsData(
+                updatedSchools,
+                SearchSchoolsErr("Error updating home school"),
+              ));
+            } else {
+              emit(const SearchSchoolsError("Unknown error"));
+            }
+          } else {
+            try {
+              if (response.statusCode.toString()[0] != "2") {
+                if (state is SearchSchoolsData) {
+                  final currentState = state as SearchSchoolsData;
+                  final updatedSchools = currentState.schools.map((e) {
+                    if (e.id == id) {
+                      return e.copyWith(home: false); // Reset the selected school back to not being home
+                    } else {
+                      // Reset any other school that might also be considered home to true
+                      if (e.id == oldHomeId) {
+                        return e.copyWith(home: true);
+                      }
+                      return e;
+                    }
+                  }).toList();
+                  emit(SearchSchoolsData(
+                    updatedSchools,
+                    SearchSchoolsNoErr(),
+                  ));
+                } else {
+                  emit(const SearchSchoolsError("Unknown error"));
+                }
+                // else, do nothing
+              }
+            } catch (_) {
+              if (state is SearchSchoolsData) {
+                final currentState = state as SearchSchoolsData;
+                final updatedSchools = currentState.schools.map((e) {
+                  if (e.id == id) {
+                    return e.copyWith(home: false); // Reset the selected school back to not being home
+                  } else {
+                    // Reset any other school that might also be considered home to true
+                    if (e.id == oldHomeId) {
+                      return e.copyWith(home: true);
+                    }
+                    return e;
+                  }
+                }).toList();
+                emit(SearchSchoolsData(
+                  updatedSchools,
+                  SearchSchoolsErr("Error updating home school"),
+                ));
+              } else {
+                emit(const SearchSchoolsError("Unknown error"));
+              }
+            }
+          }
+        },
+      );
+    } else {
+      emit(const SearchSchoolsError("Unknown error"));
+    }
+  }
 }

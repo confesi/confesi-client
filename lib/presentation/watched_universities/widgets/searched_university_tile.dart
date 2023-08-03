@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
 
-class SearchedUniversityTile extends StatelessWidget {
-  const SearchedUniversityTile({
+class SearchedSchoolTile extends StatelessWidget {
+  const SearchedSchoolTile({
     required this.onPress,
     required this.topText,
     required this.middleText,
@@ -67,15 +67,21 @@ class SearchedUniversityTile extends StatelessWidget {
             SimpleTextButton(
                 onTap: () => onWatchChange(!watched), text: watched ? "Unwatch" : "Watch", infiniteWidth: true),
             const SizedBox(height: 5),
-            home
-                ? Center(
-                    child: Text(
-                      "Current home school",
-                      style: kDetail.copyWith(color: Theme.of(context).colorScheme.onSurface),
-                      textAlign: TextAlign.center,
-                    ),
-                  )
-                : SimpleTextButton(onTap: () => onWatchChange(!home), text: "Set as home", infiniteWidth: true),
+            AnimatedSize(
+              duration: const Duration(milliseconds: 75),
+              child: home
+                  ? Center(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 5),
+                        child: Text(
+                          "Current home school",
+                          style: kDetail.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    )
+                  : SimpleTextButton(onTap: () => onHomeChange(true), text: "Set as home", infiniteWidth: true),
+            )
           ],
         ),
       ),
