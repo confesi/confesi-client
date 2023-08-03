@@ -1,8 +1,16 @@
+import 'package:confesi/application/feed/cubit/search_schools_cubit.dart';
 import 'package:confesi/core/router/go_router.dart';
+import 'package:confesi/core/styles/typography.dart';
+import 'package:confesi/core/utils/funcs/debouncer.dart';
+import 'package:confesi/core/utils/sizing/height_fraction.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:confesi/presentation/shared/buttons/circle_icon_btn.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../core/utils/numbers/distance_formatter.dart';
 import '../../../core/utils/sizing/bottom_safe_area.dart';
+import '../../../init.dart';
+import '../../shared/indicators/loading_or_alert.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/textfields/expandable_textfield.dart';
 import '../widgets/searched_university_tile.dart';
@@ -23,13 +31,13 @@ class _SearchSchoolsScreenState extends State<SearchSchoolsScreen> {
   @override
   void initState() {
     _textEditingController = TextEditingController();
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _textEditingController.addListener(() {
         if (!mounted) return;
         setState(() {});
       });
     });
+    context.read<SearchSchoolsCubit>().loadNearby();
     super.initState();
   }
 
@@ -39,12 +47,73 @@ class _SearchSchoolsScreenState extends State<SearchSchoolsScreen> {
     super.dispose();
   }
 
+  Widget buildBody(BuildContext context, SearchSchoolsState state) {
+    if (state is SearchSchoolsData) {
+      return Align(
+        alignment: Alignment.topCenter,
+        child: Container(
+          height: heightFraction(context, 1),
+          key: const ValueKey("search_data"),
+          color: Theme.of(context).colorScheme.shadow,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: ScrollableView(
+              inlineTopOrLeftPadding: 5,
+              scrollBarVisible: false,
+              inlineBottomOrRightPadding: bottomSafeArea(context),
+              hapticsEnabled: false,
+              controller: ScrollController(),
+              physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
+              child: state.schools.isEmpty
+                  ? Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(15),
+                        child: Text(
+                          "No schools found",
+                          style: kBody.copyWith(
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    )
+                  : Column(
+                      children: state.schools.map((school) {
+                        return SearchedUniversityTile(
+                          onHomeChange: (newValue) => print("new home: $newValue"),
+                          onWatchChange: (newValue) => print("new watch: $newValue"),
+                          home: school.home,
+                          watched: school.watched,
+                          onPress: () => print("tap"),
+                          topText: school.name,
+                          middleText: distanceFormatter(context, school.distance),
+                          bottomText: school.abbr,
+                        );
+                      }).toList(),
+                    ),
+            ),
+          ),
+        ),
+      );
+    } else {
+      return Padding(
+        key: state is SearchSchoolsLoading ? const ValueKey("search_loading") : const ValueKey("search_error"),
+        padding: EdgeInsets.only(bottom: bottomSafeArea(context)),
+        child: LoadingOrAlert(
+          message: StateMessage(state is SearchSchoolsError ? state.message : null,
+              () => context.read<SearchSchoolsCubit>().loadNearby()),
+          isLoading: state is SearchSchoolsLoading,
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return ThemeStatusBar(
       child: KeyboardDismiss(
         child: Scaffold(
-          backgroundColor: Theme.of(context).colorScheme.background,
+          backgroundColor: Theme.of(context).colorScheme.shadow,
           body: SafeArea(
             bottom: false,
             child: Column(
@@ -65,10 +134,13 @@ class _SearchSchoolsScreenState extends State<SearchSchoolsScreen> {
                       children: [
                         Expanded(
                           child: ExpandableTextfield(
+                            onChange: (value) => value.isEmpty
+                                ? sl.get<Debouncer>().run(() => context.read<SearchSchoolsCubit>().loadNearby())
+                                : sl.get<Debouncer>().run(() => context.read<SearchSchoolsCubit>().search(value)),
                             color: Theme.of(context).colorScheme.surface,
                             maxLines: 1,
                             controller: _textEditingController,
-                            hintText: "Search universities",
+                            hintText: "Search schools",
                           ),
                         ),
                         const SizedBox(width: 15),
@@ -78,70 +150,10 @@ class _SearchSchoolsScreenState extends State<SearchSchoolsScreen> {
                   ),
                 ),
                 Expanded(
-                  child: Container(
-                    color: Theme.of(context).colorScheme.shadow,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      child: ScrollableView(
-                        inlineTopOrLeftPadding: 5,
-                        scrollBarVisible: false,
-                        inlineBottomOrRightPadding: bottomSafeArea(context),
-                        hapticsEnabled: false,
-                        controller: ScrollController(),
-                        physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
-                        child: Column(
-                          children: [
-                            SearchedUniversityTile(
-                              onPress: () => print("tap"),
-                              topText: "University of Victoria",
-                              middleText: "1.5 km away",
-                              bottomText: "UVIC",
-                            ),
-                            SearchedUniversityTile(
-                              onPress: () => print("tap"),
-                              topText: "University of Victoria",
-                              middleText: "hey",
-                              bottomText: "Victoria, BC",
-                            ),
-                            SearchedUniversityTile(
-                              onPress: () => print("tap"),
-                              topText: "University of Victoria",
-                              middleText: "hey",
-                              bottomText: "Victoria, BC",
-                            ),
-                            SearchedUniversityTile(
-                              onPress: () => print("tap"),
-                              topText: "University of Victoria",
-                              middleText: "hey",
-                              bottomText: "Victoria, BC",
-                            ),
-                            SearchedUniversityTile(
-                              onPress: () => print("tap"),
-                              topText: "University of Victoria",
-                              middleText: "hey",
-                              bottomText: "Victoria, BC",
-                            ),
-                            SearchedUniversityTile(
-                              onPress: () => print("tap"),
-                              topText: "University of Victoria",
-                              middleText: "16 km away",
-                              bottomText: "Victoria, BC",
-                            ),
-                            SearchedUniversityTile(
-                              onPress: () => print("tap"),
-                              topText: "University of Victoria",
-                              middleText: "hey",
-                              bottomText: "Victoria, BC",
-                            ),
-                            SearchedUniversityTile(
-                              onPress: () => print("tap"),
-                              topText: "University of Victoria",
-                              middleText: "hey",
-                              bottomText: "Victoria, BC",
-                            ),
-                          ],
-                        ),
-                      ),
+                  child: BlocBuilder<SearchSchoolsCubit, SearchSchoolsState>(
+                    builder: (context, state) => AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 250),
+                      child: buildBody(context, state),
                     ),
                   ),
                 ),

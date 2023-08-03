@@ -4,9 +4,9 @@
 
 import 'dart:convert';
 
-School schoolFromJson(String str) => School.fromJson(json.decode(str));
+SchoolWithMetadata schoolFromJson(String str) => SchoolWithMetadata.fromJson(json.decode(str));
 
-class School {
+class SchoolWithMetadata {
   String name;
   String abbr;
   num lat;
@@ -14,8 +14,11 @@ class School {
   int dailyHottests;
   String domain;
   String imgUrl;
+  bool home;
+  bool watched;
+  num distance;
 
-  School({
+  SchoolWithMetadata({
     required this.name,
     required this.abbr,
     required this.lat,
@@ -23,9 +26,12 @@ class School {
     required this.dailyHottests,
     required this.domain,
     required this.imgUrl,
+    required this.home,
+    required this.watched,
+    required this.distance,
   });
 
-  factory School.fromJson(Map<String, dynamic> json) => School(
+  factory SchoolWithMetadata.fromJson(Map<String, dynamic> json) => SchoolWithMetadata(
         name: json["name"],
         abbr: json["abbr"],
         lat: json["lat"],
@@ -33,5 +39,8 @@ class School {
         dailyHottests: json["daily_hottests"],
         domain: json["domain"],
         imgUrl: json["img_url"],
+        home: json["home"],
+        watched: json["watched"],
+        distance: json["distance"],
       );
 }

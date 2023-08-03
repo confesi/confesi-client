@@ -29,7 +29,7 @@ class _FeedDrawerState extends State<FeedDrawer> {
             child: SafeArea(
               bottom: false,
               child: Padding(
-                padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.all(15),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

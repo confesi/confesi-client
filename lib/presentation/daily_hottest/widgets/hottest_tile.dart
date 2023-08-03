@@ -1,4 +1,5 @@
 import 'package:confesi/models/post.dart';
+import 'package:confesi/presentation/shared/behaviours/init_scale.dart';
 import 'package:confesi/presentation/shared/other/cached_online_image.dart';
 
 import '../../../core/styles/typography.dart';
@@ -29,7 +30,7 @@ class _HottestTileState extends State<HottestTile> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
+      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 5),
       child: LayoutBuilder(builder: (context, constraints) {
         return Center(
           child: SingleChildScrollView(
@@ -43,7 +44,7 @@ class _HottestTileState extends State<HottestTile> {
                     width: double.infinity,
                     duration: const Duration(milliseconds: 450),
                     curve: Curves.decelerate,
-                    height: isSelected ? constraints.maxHeight : constraints.maxHeight * .9,
+                    height: isSelected ? constraints.maxHeight : constraints.maxHeight * .92,
                     decoration: BoxDecoration(
                       borderRadius: const BorderRadius.all(Radius.circular(15)),
                       color: Theme.of(context).colorScheme.background,
@@ -87,9 +88,7 @@ class _HottestTileState extends State<HottestTile> {
                                 bottomLeft: Radius.circular(15),
                                 bottomRight: Radius.circular(15),
                               ),
-                              child: CachedOnlineImage(
-                                url: widget.post.school.imgUrl,
-                              ),
+                              child: CachedOnlineImage(url: widget.post.school.imgUrl),
                             ),
                           ),
                         ),
@@ -99,13 +98,15 @@ class _HottestTileState extends State<HottestTile> {
                             fit: StackFit.expand,
                             children: [
                               Positioned.fill(
-                                right: 5,
+                                right: 15,
                                 child: Align(
                                   alignment: Alignment.bottomRight,
-                                  child: Text(
-                                    '0${widget.thisIndex + 1}',
-                                    style: kFaded.copyWith(
-                                      color: Theme.of(context).colorScheme.tertiary,
+                                  child: InitScale(
+                                    child: Text(
+                                      '0${widget.thisIndex + 1}',
+                                      style: kFaded.copyWith(
+                                        color: Theme.of(context).colorScheme.tertiary,
+                                      ),
                                     ),
                                   ),
                                 ),

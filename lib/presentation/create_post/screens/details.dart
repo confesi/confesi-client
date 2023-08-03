@@ -1,4 +1,5 @@
 import 'package:confesi/application/create_post/cubit/post_categories_cubit.dart';
+import 'package:confesi/presentation/shared/indicators/loading_or_alert.dart';
 import 'package:confesi/presentation/shared/indicators/loading_cupertino.dart';
 
 import 'package:scrollable/exports.dart';
@@ -95,11 +96,7 @@ class _CreatePostDetailsState extends State<CreatePostDetails> with AutomaticKee
                                             }).toList(),
                                           );
                                         } else {
-                                          // Handle other states (e.g., loading, error) if necessary
-                                          return const Padding(
-                                            padding: EdgeInsets.all(15),
-                                            child: LoadingCupertinoIndicator(),
-                                          );
+                                          throw Exception("bad state");
                                         }
                                       },
                                     ),

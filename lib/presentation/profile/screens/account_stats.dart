@@ -1,6 +1,6 @@
 import 'package:confesi/application/user/cubit/stats_cubit.dart';
 import 'package:confesi/core/utils/sizing/bottom_safe_area.dart';
-import 'package:confesi/presentation/shared/behaviours/loading_or_alert.dart';
+import 'package:confesi/presentation/shared/indicators/loading_or_alert.dart';
 import 'package:confesi/presentation/shared/behaviours/simulated_bottom_safe_area.dart';
 import 'package:confesi/presentation/shared/indicators/alert.dart';
 import 'package:confesi/presentation/shared/indicators/loading_cupertino.dart';
@@ -147,9 +147,9 @@ class _AccountProfileStatsState extends State<AccountProfileStats> {
                                 );
                               } else {
                                 return LoadingOrAlert(
+                                  message: StateMessage(state is StatsError ? state.message : null,
+                                      () => context.read<StatsCubit>().loadStats()),
                                   isLoading: state is StatsLoading,
-                                  message: state is StatsError ? state.message : null,
-                                  onTap: () => context.read<StatsCubit>().loadStats(),
                                 );
                               }
                             },

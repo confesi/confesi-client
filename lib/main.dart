@@ -11,6 +11,7 @@ import 'package:confesi/presentation/create_post/overlays/confetti_blaster.dart'
 
 import 'application/authentication_and_settings/cubit/auth_flow_cubit.dart';
 import 'application/create_post/cubit/post_categories_cubit.dart';
+import 'application/feed/cubit/search_schools_cubit.dart';
 import 'application/user/cubit/account_details_cubit.dart';
 import 'application/user/cubit/feedback_cubit.dart';
 import 'application/user/cubit/stats_cubit.dart';
@@ -80,6 +81,7 @@ void main() async => await init().then(
                     BlocProvider(lazy: false, create: (context) => sl<FeedbackCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<FeedbackCategoriesCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<StatsCubit>()),
+                    BlocProvider(lazy: false, create: (context) => sl<SearchSchoolsCubit>()),
                   ],
                   child: debugMode && devicePreview
                       ? DevicePreview(builder: (context) => const ShrinkView())

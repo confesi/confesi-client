@@ -6,9 +6,11 @@ import 'package:confesi/application/user/cubit/feedback_categories_cubit.dart';
 import 'package:confesi/application/user/cubit/feedback_cubit.dart';
 import 'package:confesi/application/user/cubit/stats_cubit.dart';
 import 'package:confesi/core/services/fcm_notifications/token_data.dart';
+import 'package:confesi/core/utils/funcs/debouncer.dart';
 import 'package:confesi/presentation/create_post/overlays/confetti_blaster.dart';
 import 'package:uuid/uuid.dart';
 import 'application/authentication_and_settings/cubit/auth_flow_cubit.dart';
+import 'application/feed/cubit/search_schools_cubit.dart';
 import 'application/feed/cubit/sentiment_analysis_cubit.dart';
 import 'core/services/create_post_hint_text/create_post_hint_text.dart';
 import 'core/services/remote_config/remote_config.dart';
@@ -103,6 +105,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => StreamController<User?>.broadcast());
   sl.registerLazySingleton(() => ConfettiBlaster());
   sl.registerLazySingleton(() => const Uuid());
+  sl.registerLazySingleton(() => Debouncer());
 
   //! External
   sl.registerLazySingleton(() => InternetConnectionChecker());
@@ -150,6 +153,7 @@ Future<void> init() async {
   sl.registerFactory(() => FeedbackCubit());
   sl.registerFactory(() => FeedbackCategoriesCubit());
   sl.registerFactory(() => StatsCubit());
+  sl.registerFactory(() => SearchSchoolsCubit());
 
   //! Usecases
   sl.registerLazySingleton(() => Recents(repository: sl()));

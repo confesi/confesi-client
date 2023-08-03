@@ -12,15 +12,23 @@ class SearchedUniversityTile extends StatelessWidget {
     required this.topText,
     required this.middleText,
     required this.bottomText,
+    required this.watched,
+    required this.home,
     this.leftIcon = CupertinoIcons.info,
+    required this.onWatchChange,
+    required this.onHomeChange,
     Key? key,
   }) : super(key: key);
 
+  final bool watched;
+  final bool home;
   final String topText;
   final String middleText;
   final String bottomText;
   final IconData leftIcon;
   final VoidCallback onPress;
+  final Function(bool newValue) onWatchChange;
+  final Function(bool newValue) onHomeChange;
 
   @override
   Widget build(BuildContext context) {
@@ -56,9 +64,18 @@ class SearchedUniversityTile extends StatelessWidget {
               textAlign: TextAlign.left,
             ),
             const SizedBox(height: 12),
-            SimpleTextButton(onTap: () => print("tap"), text: "Watch", infiniteWidth: true),
+            SimpleTextButton(
+                onTap: () => onWatchChange(!watched), text: watched ? "Unwatch" : "Watch", infiniteWidth: true),
             const SizedBox(height: 5),
-            SimpleTextButton(onTap: () => print("tap"), text: "Remove from home", infiniteWidth: true),
+            home
+                ? Center(
+                    child: Text(
+                      "Current home school",
+                      style: kDetail.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                      textAlign: TextAlign.center,
+                    ),
+                  )
+                : SimpleTextButton(onTap: () => onWatchChange(!home), text: "Set as home", infiniteWidth: true),
           ],
         ),
       ),

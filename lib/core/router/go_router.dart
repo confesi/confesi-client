@@ -1,4 +1,4 @@
-import 'package:confesi/models/school.dart';
+import 'package:confesi/models/school_with_metadata.dart';
 import 'package:confesi/presentation/notifications/screens/home.dart';
 
 import 'package:confesi/presentation/authentication_and_settings/screens/authentication/open.dart';
@@ -224,6 +224,6 @@ class RegistrationPops {
 }
 
 class HomeLeaderboardSchoolProps {
-  final School school;
+  final SchoolWithMetadata school;
   const HomeLeaderboardSchoolProps(this.school);
 }

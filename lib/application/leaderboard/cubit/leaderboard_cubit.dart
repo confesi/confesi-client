@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:confesi/core/extensions/dates/year_month_day.dart';
 import 'package:confesi/core/services/user_auth/user_auth_service.dart';
-import 'package:confesi/models/school.dart';
+import 'package:confesi/models/school_with_metadata.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -95,7 +95,7 @@ class LeaderboardCubit extends Cubit<LeaderboardState> {
             }
           } else if (response.statusCode.toString()[0] == "2") {
             final body = json.decode(response.body)["value"];
-            final newSchools = (body["schools"] as List).map((i) => School.fromJson(i)).toList();
+            final newSchools = (body["schools"] as List).map((i) => SchoolWithMetadata.fromJson(i)).toList();
             int placingOffset = 0;
             if (state is LeaderboardData && !refreshFeed) {
               placingOffset = (state as LeaderboardData).schools.length;
@@ -121,13 +121,13 @@ class LeaderboardCubit extends Cubit<LeaderboardState> {
               feedState = LeaderboardFeedState.noMore;
             }
 
-            late School userSchool;
+            late SchoolWithMetadata userSchool;
             late List<InfiniteScrollIndexable> allSchools;
             late DateTime newStartViewData;
             if (refreshFeed) {
               newStartViewData = DateTime.now().toUtc();
               allSchools = newSchoolsParsed;
-              userSchool = School.fromJson(body["user_school"]);
+              userSchool = SchoolWithMetadata.fromJson(body["user_school"]);
             } else if (state is LeaderboardData) {
               newStartViewData = (state as LeaderboardData).startViewDate;
               // add new schools to end, not start
@@ -136,7 +136,7 @@ class LeaderboardCubit extends Cubit<LeaderboardState> {
             } else {
               newStartViewData = DateTime.now().toUtc();
               allSchools = newSchoolsParsed;
-              userSchool = School.fromJson(body["user_school"]);
+              userSchool = SchoolWithMetadata.fromJson(body["user_school"]);
             }
             emit(LeaderboardData(allSchools, feedState, userSchool: userSchool, newStartViewData));
           } else {

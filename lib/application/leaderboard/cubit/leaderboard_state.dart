@@ -24,7 +24,7 @@ class LeaderboardError extends LeaderboardState {
 /// Success loading page, it now has data to display.
 class LeaderboardData extends LeaderboardState {
   final List<InfiniteScrollIndexable> schools;
-  final School userSchool;
+  final SchoolWithMetadata userSchool;
   final LeaderboardFeedState feedState;
   final DateTime startViewDate;
 

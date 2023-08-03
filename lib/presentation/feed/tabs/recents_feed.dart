@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 import '../../../domain/shared/entities/infinite_scroll_indexable.dart';

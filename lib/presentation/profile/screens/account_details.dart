@@ -1,6 +1,7 @@
 import 'package:confesi/application/user/cubit/account_details_cubit.dart';
 import 'package:confesi/constants/shared/dev.dart';
 import 'package:confesi/core/router/go_router.dart';
+import 'package:confesi/presentation/shared/indicators/loading_or_alert.dart';
 import 'package:confesi/presentation/shared/indicators/loading_cupertino.dart';
 import 'package:confesi/presentation/shared/selection_groups/tile_group.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -34,15 +35,7 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
   }
 
   Widget buildChild(BuildContext context, AccountDetailsState state) {
-    if (state is AccountDetailsLoading) {
-      return Center(
-        key: const ValueKey("loading"),
-        child: Padding(
-          padding: EdgeInsets.only(bottom: bottomSafeArea(context)),
-          child: const LoadingCupertinoIndicator(),
-        ),
-      );
-    } else if (state is AccountDetailsTrueData || state is AccountDetailsEphemeral) {
+    if (state is AccountDetailsTrueData || state is AccountDetailsEphemeral) {
       late final AccData data;
       if (state is AccountDetailsTrueData) {
         data = state.data;
@@ -117,14 +110,15 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
           ),
         ),
       );
-    } else if (state is AccountDetailsError) {
-      return AlertIndicator(
-        key: const ValueKey("error"),
-        message: state.message,
-        onPress: () => context.read<AccountDetailsCubit>().loadUserData(),
-      );
     } else {
-      throw Exception("Unhandled state");
+      return Padding(
+        padding: EdgeInsets.only(bottom: bottomSafeArea(context)),
+        child: LoadingOrAlert(
+          message: StateMessage(state is AccountDetailsError ? state.message : null,
+              () => context.read<AccountDetailsCubit>().loadUserData()),
+          isLoading: state is AccountDetailsLoading,
+        ),
+      );
     }
   }
 

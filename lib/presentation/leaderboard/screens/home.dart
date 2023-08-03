@@ -1,4 +1,4 @@
-import '../../shared/behaviours/loading_or_alert.dart';
+import '../../shared/indicators/loading_or_alert.dart';
 import '../widgets/leaderboard_item_tile.dart';
 import '../../shared/indicators/loading_cupertino.dart';
 import '../../shared/other/feed_list.dart';
@@ -94,9 +94,10 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
       );
     } else {
       return LoadingOrAlert(
-          isLoading: state is LeaderboardLoading,
-          message: state is LeaderboardError ? state.message : null,
-          onTap: () => context.read<LeaderboardCubit>().loadRankings());
+        message: StateMessage(
+            state is LeaderboardError ? state.message : null, () => context.read<LeaderboardCubit>().loadRankings()),
+        isLoading: state is LeaderboardLoading,
+      );
     }
   }
 

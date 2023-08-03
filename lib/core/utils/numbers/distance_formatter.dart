@@ -11,5 +11,3 @@ String distanceFormatter(BuildContext context, num distanceInKm) {
   String unit = Provider.of<UserAuthService>(context).data().unitSystem == UnitSystem.metric ? "km" : "mi";
   return "${addCommasToNumber((distanceInKm * multiplierToGetToKmOrMiles).floor())} $unit away";
 }
-
-// todo: distance type

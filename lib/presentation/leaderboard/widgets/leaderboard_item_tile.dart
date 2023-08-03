@@ -1,5 +1,5 @@
 import 'package:confesi/core/router/go_router.dart';
-import 'package:confesi/models/school.dart';
+import 'package:confesi/models/school_with_metadata.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:confesi/presentation/shared/other/widget_or_nothing.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,7 +20,7 @@ class LeaderboardItemTile extends StatelessWidget {
     required this.school,
   });
 
-  final School school;
+  final SchoolWithMetadata school;
   final int? placing;
 
   @override

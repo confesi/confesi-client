@@ -6,7 +6,7 @@ import '../../../core/results/failures.dart';
 import 'package:dartz/dartz.dart' as dartz;
 
 import '../../../domain/shared/entities/infinite_scroll_indexable.dart';
-import '../behaviours/loading_or_alert.dart';
+import '../indicators/loading_or_alert.dart';
 import '../edited_source_widgets/swipe_refresh.dart';
 import '../indicators/alert.dart';
 import 'package:flutter/cupertino.dart';
@@ -160,10 +160,9 @@ class _FeedListState extends State<FeedList> {
     if (widget.hasError) {
       return LoadingOrAlert(
         isLoading: errorLoadingMoreIsLoading,
-        message: "Error loading more",
-        onTap: () async {
+        message: StateMessage("Error loading more", () async {
+          if (!mounted) return;
           setState(() {
-            if (!mounted) return;
             errorLoadingMoreIsLoading = true;
           });
           await widget.onErrorButtonPressed();
@@ -171,13 +170,12 @@ class _FeedListState extends State<FeedList> {
           setState(() {
             errorLoadingMoreIsLoading = false;
           });
-        },
+        }),
       );
-    } else if (widget.wontLoadMore) {
+    } else {
       return LoadingOrAlert(
         isLoading: endOfFeedReachedIsLoading,
-        message: widget.wontLoadMoreMessage,
-        onTap: () async {
+        message: StateMessage(widget.wontLoadMoreMessage, () async {
           if (!mounted) return;
           setState(() {
             endOfFeedReachedIsLoading = true;
@@ -187,10 +185,8 @@ class _FeedListState extends State<FeedList> {
           setState(() {
             endOfFeedReachedIsLoading = false;
           });
-        },
+        }),
       );
-    } else {
-      return LoadingOrAlert(isLoading: true, message: widget.wontLoadMoreMessage);
     }
   }
 

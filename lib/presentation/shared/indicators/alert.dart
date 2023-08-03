@@ -1,4 +1,5 @@
 import '../../../core/utils/sizing/width_fraction.dart';
+import '../behaviours/animated_bobbing.dart';
 import '../buttons/simple_text.dart';
 import 'package:flutter/material.dart';
 
@@ -12,8 +13,10 @@ class AlertIndicator extends StatelessWidget {
     required this.onPress,
     this.isLoading = false,
     this.btnMsg = "Retry",
+    this.isLogo = true,
   }) : super(key: key);
 
+  final bool isLogo;
   final String btnMsg;
   final String message;
   final VoidCallback onPress;
@@ -31,7 +34,20 @@ class AlertIndicator extends StatelessWidget {
             child: AnimatedSwitcher(
               duration: const Duration(milliseconds: 250),
               child: isLoading
-                  ? const LoadingCupertinoIndicator()
+                  ? isLogo
+                      ? SizedBox(
+                          width: 60,
+                          height: 60,
+                          child: Bobbing(
+                            child: AspectRatio(
+                              aspectRatio: 1,
+                              child: Image.asset(
+                                "assets/images/logos/logo_transparent.png",
+                              ),
+                            ),
+                          ),
+                        )
+                      : const LoadingCupertinoIndicator()
                   : Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

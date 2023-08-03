@@ -1,7 +1,8 @@
-
+import '../../../application/create_post/cubit/post_cubit.dart';
 import '../../../core/router/go_router.dart';
 import 'package:flutter/services.dart';
 
+import '../../shared/indicators/loading_or_alert.dart';
 import '../../shared/indicators/loading_cupertino.dart';
 
 import '../../../application/daily_hottest/cubit/hottest_cubit.dart';
@@ -47,12 +48,7 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
   }
 
   Widget buildChild(BuildContext context, HottestState state) {
-    if (state is DailyHottestLoading) {
-      return const Center(
-        key: ValueKey('loading'),
-        child: LoadingCupertinoIndicator(),
-      );
-    } else if (state is DailyHottestData) {
+    if (state is DailyHottestData) {
       if (state.posts.isEmpty) {
         return Center(
           key: const ValueKey('alert'),
@@ -64,10 +60,7 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
         );
       }
       return GestureDetector(
-        onTap: () {
-          print(state.posts[currentIndex].id);
-          router.push("/home/posts/detail");
-        },
+        onTap: () => router.push("/home/posts/detail"),
         child: PageView(
           controller: pageController,
           physics: const BouncingScrollPhysics(),
@@ -93,13 +86,10 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
         ),
       );
     } else {
-      final error = state as DailyHottestError;
-      return Center(
-        key: const ValueKey('alert'),
-        child: AlertIndicator(
-          message: error.message,
-          onPress: () => context.read<HottestCubit>().loadYesterday(),
-        ),
+      return LoadingOrAlert(
+        message: StateMessage(
+            state is DailyHottestError ? state.message : null, () => context.read<HottestCubit>().loadYesterday()),
+        isLoading: state is! DailyHottestError,
       );
     }
   }
@@ -159,7 +149,7 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
                               child: BlocBuilder<HottestCubit, HottestState>(
                                 builder: (context, state) {
                                   return AnimatedSwitcher(
-                                    duration: const Duration(milliseconds: 500),
+                                    duration: const Duration(milliseconds: 250),
                                     child: buildChild(context, state),
                                   );
                                 },

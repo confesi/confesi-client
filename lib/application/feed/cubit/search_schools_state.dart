@@ -9,6 +9,20 @@ abstract class SearchSchoolsState extends Equatable {
 
 class SearchSchoolsLoading extends SearchSchoolsState {}
 
-class SearchSchoolsData extends SearchSchoolsState {}
+class SearchSchoolsData extends SearchSchoolsState {
+  final List<SchoolWithMetadata> schools;
 
-class SearchSchoolsError extends SearchSchoolsState {}
+  const SearchSchoolsData(this.schools);
+
+  @override
+  List<Object> get props => [schools];
+}
+
+class SearchSchoolsError extends SearchSchoolsState {
+  final String message;
+
+  const SearchSchoolsError(this.message);
+
+  @override
+  List<Object> get props => [message];
+}
