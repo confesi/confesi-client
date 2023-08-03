@@ -9,6 +9,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../behaviours/animated_bobbing.dart';
+import '../behaviours/init_scale.dart';
+
 // The over-scroll distance that moves the indicator to its maximum
 // displacement, as a percentage of the scrollable's container extent.
 const double _kDragContainerExtentPercentage = 0.25;
@@ -128,7 +131,7 @@ class SwipeRefresh extends StatefulWidget {
     this.semanticsValue,
     this.strokeWidth = RefreshProgressIndicator.defaultStrokeWidth,
     this.triggerMode = RefreshIndicatorTriggerMode.onEdge,
-  })  : super(key: key);
+  }) : super(key: key);
 
   /// The widget below this widget in the tree.
   ///
@@ -553,15 +556,30 @@ class SwipeRefreshState extends State<SwipeRefresh> with TickerProviderStateMixi
                     animation: _positionController,
                     builder: (BuildContext context, Widget? child) {
                       // My custom modifications (for Project: Ember) have gone here.
-                      return Container(
-                        margin: const EdgeInsets.all(15), // prevents shadow from being cut off.
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: widget.backgroundColor ?? Theme.of(context).colorScheme.secondary,
+                      return SizedBox(
+                        width: 60,
+                        height: 60,
+                        child: InitScale(
+                          child: Bobbing(
+                            child: AspectRatio(
+                              aspectRatio: 1,
+                              child: Container(
+                                constraints: const BoxConstraints(maxHeight: 20),
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).colorScheme.surface,
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: Theme.of(context).colorScheme.onBackground,
+                                    width: 0.8,
+                                  ),
+                                ),
+                                child: Image.asset(
+                                  "assets/images/logos/logo_transparent.png",
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
-                        child: CupertinoActivityIndicator(
-                            color: widget.color ?? Theme.of(context).colorScheme.onSecondary),
                       );
                     },
                   ),

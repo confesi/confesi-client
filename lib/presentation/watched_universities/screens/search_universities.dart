@@ -137,7 +137,7 @@ class _SearchSchoolsScreenState extends State<SearchSchoolsScreen> {
                             onChange: (value) => value.isEmpty
                                 ? sl.get<Debouncer>().run(() => context.read<SearchSchoolsCubit>().loadNearby())
                                 : sl.get<Debouncer>().run(() => context.read<SearchSchoolsCubit>().search(value)),
-                            color: Theme.of(context).colorScheme.surface,
+                            color: Theme.of(context).colorScheme.background,
                             maxLines: 1,
                             controller: _textEditingController,
                             hintText: "Search schools",

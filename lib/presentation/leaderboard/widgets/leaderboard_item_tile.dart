@@ -13,6 +13,19 @@ import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
 
+String _placingToEmoji(int? placing) {
+  if (placing == null) return "";
+  if (placing == 1) {
+    return "🥇";
+  } else if (placing == 2) {
+    return "🥈";
+  } else if (placing == 3) {
+    return "🥉";
+  } else {
+    return "";
+  }
+}
+
 class LeaderboardItemTile extends StatelessWidget {
   const LeaderboardItemTile({
     super.key,
@@ -76,9 +89,7 @@ class LeaderboardItemTile extends StatelessWidget {
                     ),
                     const SizedBox(height: 5),
                     Text(
-                      isPlural(school.dailyHottests)
-                          ? "${addCommasToNumber(school.dailyHottests)} hottests"
-                          : "${addCommasToNumber(school.dailyHottests)} hottest",
+                      "${isPlural(school.dailyHottests) ? "${addCommasToNumber(school.dailyHottests)} hottests" : "${addCommasToNumber(school.dailyHottests)} hottest"} ${_placingToEmoji(placing)}",
                       style: kDetail.copyWith(
                         color: Theme.of(context).colorScheme.onSurface,
                       ),

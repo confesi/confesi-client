@@ -61,12 +61,8 @@ class LeaderboardCubit extends Cubit<LeaderboardState> {
     ))
         .fold(
       (failureWithMsg) {
-        print("GOT HEREEEEEEE + ${failureWithMsg.runtimeType}");
         if (failureWithMsg is ApiTooManyGlobalRequests) {
-          print("GLOBAL IP ABUSE");
-
           if (state is LeaderboardData) {
-            print("HEREEE");
             emit(LeaderboardData(
               (state as LeaderboardData).schools,
               userSchool: (state as LeaderboardData).userSchool,
