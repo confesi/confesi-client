@@ -75,7 +75,7 @@ class SearchedSchoolTile extends StatelessWidget {
                         padding: const EdgeInsets.only(top: 5),
                         child: Text(
                           "Current home school",
-                          style: kDetail.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                          style: kDetail.copyWith(color: Theme.of(context).colorScheme.secondary),
                           textAlign: TextAlign.center,
                         ),
                       ),

@@ -102,10 +102,21 @@ class _HottestTileState extends State<HottestTile> {
                                 child: Align(
                                   alignment: Alignment.bottomRight,
                                   child: InitScale(
-                                    child: Text(
-                                      '0${widget.thisIndex + 1}',
-                                      style: kFaded.copyWith(
-                                        color: Theme.of(context).colorScheme.tertiary,
+                                    child: ShaderMask(
+                                      shaderCallback: (Rect bounds) {
+                                        return LinearGradient(
+                                          colors: [
+                                            Theme.of(context).colorScheme.tertiary.withOpacity(0.7),
+                                            Theme.of(context).colorScheme.tertiary,
+                                          ], // Replace with your desired gradient colors
+                                          stops: const [0.0, 1.0],
+                                        ).createShader(bounds);
+                                      },
+                                      child: Text(
+                                        '0${widget.thisIndex + 1}',
+                                        style: kFaded.copyWith(
+                                          color: Colors.white,
+                                        ), // Use white color as the gradient will apply the colors
                                       ),
                                     ),
                                   ),

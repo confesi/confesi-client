@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:confesi/application/feed/cubit/schools_drawer_cubit.dart';
 import 'package:confesi/application/feed/cubit/sentiment_analysis_cubit.dart';
 import 'package:confesi/application/user/cubit/feedback_categories_cubit.dart';
 import 'package:confesi/constants/shared/dev.dart';
@@ -82,6 +83,7 @@ void main() async => await init().then(
                     BlocProvider(lazy: false, create: (context) => sl<FeedbackCategoriesCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<StatsCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<SearchSchoolsCubit>()),
+                    BlocProvider(lazy: false, create: (context) => sl<SchoolsDrawerCubit>()),
                   ],
                   child: debugMode && devicePreview
                       ? DevicePreview(builder: (context) => const ShrinkView())
@@ -125,6 +127,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   StreamSubscription<User?>? _userChangeStream;
+  bool firstOpen = true;
 
   @override
   void initState() {
@@ -170,7 +173,7 @@ class _MyAppState extends State<MyApp> {
     _userChangeStream = sl.get<StreamController<User?>>().stream.listen((User? user) async {
       sl.get<NotificationService>().updateToken(user?.uid);
       if (user == null) {
-        print("USER NULL");
+        firstOpen = true;
         await Future.delayed(const Duration(milliseconds: 500)).then((_) {
           sl.get<UserAuthService>().setNoDataState();
           HapticFeedback.lightImpact();
@@ -178,7 +181,6 @@ class _MyAppState extends State<MyApp> {
           context.read<AuthFlowCubit>().emitDefault();
         });
       } else {
-        print("USER smth");
         await Future.delayed(const Duration(milliseconds: 500)).then(
           (_) async {
             sl.get<UserAuthService>().setNoDataState();
@@ -205,6 +207,10 @@ class _MyAppState extends State<MyApp> {
                 }
               }
               context.read<AuthFlowCubit>().emitDefault();
+              if (firstOpen) {
+                context.read<SchoolsDrawerCubit>().loadWatchedSchools();
+                firstOpen = false;
+              }
             });
           },
         );

@@ -1,3 +1,7 @@
+import 'package:confesi/application/feed/cubit/schools_drawer_cubit.dart';
+import 'package:confesi/presentation/shared/indicators/loading_or_alert.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../core/router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:scrollable/exports.dart';
@@ -16,11 +20,9 @@ class FeedDrawer extends StatefulWidget {
 }
 
 class _FeedDrawerState extends State<FeedDrawer> {
-  @override
-  Widget build(BuildContext context) {
-    return Drawer(
-      backgroundColor: Theme.of(context).colorScheme.background,
-      child: Column(
+  Widget buildBody(BuildContext context, SchoolsDrawerState state) {
+    if (state is SchoolsDrawerData) {
+      return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
@@ -63,7 +65,7 @@ class _FeedDrawerState extends State<FeedDrawer> {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(15),
                     child: SimpleTextButton(
                       infiniteWidth: true,
                       onTap: () => router.push("/schools/search"),
@@ -132,6 +134,26 @@ class _FeedDrawerState extends State<FeedDrawer> {
             ),
           ),
         ],
+      );
+    } else {
+      return LoadingOrAlert(
+          message: StateMessage(
+            "Error loading",
+            () => context.read<SchoolsDrawerCubit>().loadWatchedSchools(),
+          ),
+          isLoading: state is SchoolsDrawerLoading);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      backgroundColor: Theme.of(context).colorScheme.background,
+      child: BlocBuilder<SchoolsDrawerCubit, SchoolsDrawerState>(
+        builder: (context, state) => AnimatedSwitcher(
+          duration: const Duration(milliseconds: 250),
+          child: buildBody(context, state),
+        ),
       ),
     );
   }
