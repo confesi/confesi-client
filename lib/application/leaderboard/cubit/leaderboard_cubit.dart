@@ -57,7 +57,6 @@ class LeaderboardCubit extends Cubit<LeaderboardState> {
         "include_users_school": refreshFeed,
         "start_view_date": oldStartViewDate.yearMonthDay(),
       },
-      needsLatLong: true,
     ))
         .fold(
       (failureWithMsg) {

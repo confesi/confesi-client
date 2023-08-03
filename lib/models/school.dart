@@ -7,6 +7,7 @@ import 'dart:convert';
 School schoolFromJson(String str) => School.fromJson(json.decode(str));
 
 class School {
+  int id;
   String name;
   String abbr;
   num lat;
@@ -16,6 +17,7 @@ class School {
   String imgUrl;
 
   School({
+    required this.id,
     required this.name,
     required this.abbr,
     required this.lat,
@@ -26,6 +28,7 @@ class School {
   });
 
   factory School.fromJson(Map<String, dynamic> json) => School(
+        id: json["id"],
         name: json["name"],
         abbr: json["abbr"],
         lat: json["lat"],

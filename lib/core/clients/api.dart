@@ -106,7 +106,7 @@ class Api {
     return false;
   }
 
-  String _addQuestionOrAmperage(String url) {
+  String _addQuestionOrAmper(String url) {
     if (url.contains("?")) {
       url += "&";
     } else {
@@ -117,8 +117,11 @@ class Api {
 
   // todo: make return in format of {error} or {value}
   Future<Either<FailureWithMsg, http.Response>> req(
-      Verb method, bool needsBearerToken, String endpoint, Map<String, dynamic> body,
-      {bool needsLatLong = false}) async {
+    Verb method,
+    bool needsBearerToken,
+    String endpoint,
+    Map<String, dynamic> body,
+  ) async {
     try {
       String url = domain + endpoint;
 
@@ -128,12 +131,8 @@ class Api {
         }
       }
 
-      if (needsLatLong) {
-        url = _addQuestionOrAmperage(url);
-        url += "lat=48.466134&long=-123.329129"; // todo: use real data?
-      }
       if (sl.get<UserAuthService>().data().profanityFilter == ProfanityFilter.on) {
-        url = _addQuestionOrAmperage(url);
+        url = _addQuestionOrAmper(url);
         url += "profanity=false";
       }
       var request = http.Request(

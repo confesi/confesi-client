@@ -17,7 +17,6 @@ class SearchSchoolsCubit extends Cubit<SearchSchoolsState> {
       true,
       "/api/v1/schools?offset=1&limit=10",
       {},
-      needsLatLong: true,
     ))
         .fold(
       (failureWithMsg) => emit(SearchSchoolsError(failureWithMsg.message())),
@@ -46,7 +45,6 @@ class SearchSchoolsCubit extends Cubit<SearchSchoolsState> {
       true,
       "/api/v1/schools/search?query=$query",
       {},
-      needsLatLong: true,
     ))
         .fold(
       (failureWithMsg) => emit(SearchSchoolsError(failureWithMsg.message())),
@@ -66,7 +64,9 @@ class SearchSchoolsCubit extends Cubit<SearchSchoolsState> {
     );
   }
 
-  Future<void> watchSchool(int id) async {}
+  Future<void> watchSchool(int id) async {
+    
+  }
 
   Future<void> stopWatchingSchool(int id) async {}
 

@@ -7,6 +7,7 @@ import 'dart:convert';
 SchoolWithMetadata schoolFromJson(String str) => SchoolWithMetadata.fromJson(json.decode(str));
 
 class SchoolWithMetadata {
+  int id;
   String name;
   String abbr;
   num lat;
@@ -19,6 +20,7 @@ class SchoolWithMetadata {
   num distance;
 
   SchoolWithMetadata({
+    required this.id,
     required this.name,
     required this.abbr,
     required this.lat,
@@ -32,6 +34,7 @@ class SchoolWithMetadata {
   });
 
   factory SchoolWithMetadata.fromJson(Map<String, dynamic> json) => SchoolWithMetadata(
+        id: json["id"],
         name: json["name"],
         abbr: json["abbr"],
         lat: json["lat"],

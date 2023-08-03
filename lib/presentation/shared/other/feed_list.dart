@@ -174,7 +174,7 @@ class _FeedListState extends State<FeedList> {
       );
     } else {
       return LoadingOrAlert(
-        isLoading: endOfFeedReachedIsLoading,
+        isLoading: endOfFeedReachedIsLoading || (!widget.hasError && !widget.wontLoadMore),
         message: StateMessage(widget.wontLoadMoreMessage, () async {
           if (!mounted) return;
           setState(() {

@@ -1,3 +1,5 @@
+import 'package:confesi/constants/feed/enums.dart';
+
 import '../../shared/indicators/loading_or_alert.dart';
 import '../widgets/leaderboard_item_tile.dart';
 import '../../shared/indicators/loading_cupertino.dart';
@@ -96,7 +98,10 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
       return LoadingOrAlert(
         message: StateMessage(
             state is LeaderboardError ? state.message : null, () => context.read<LeaderboardCubit>().loadRankings()),
-        isLoading: state is LeaderboardLoading,
+        isLoading: (state is! LeaderboardError &&
+                (state is LeaderboardData && state.feedState == LeaderboardFeedState.errorLoadingMore)) ||
+            (state is LeaderboardData && state.schools.isEmpty) ||
+            (state is LeaderboardLoading),
       );
     }
   }

@@ -556,23 +556,30 @@ class SwipeRefreshState extends State<SwipeRefresh> with TickerProviderStateMixi
                     animation: _positionController,
                     builder: (BuildContext context, Widget? child) {
                       // My custom modifications (for Project: Ember) have gone here.
-                      return SizedBox(
-                        width: 60,
-                        height: 60,
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 15),
                         child: InitScale(
                           child: Bobbing(
-                            child: AspectRatio(
-                              aspectRatio: 1,
-                              child: Container(
-                                constraints: const BoxConstraints(maxHeight: 20),
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).colorScheme.surface,
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: Theme.of(context).colorScheme.onBackground,
-                                    width: 0.8,
-                                  ),
+                            child: Container(
+                              width: 60,
+                              height: 60,
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).colorScheme.surface,
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: Theme.of(context).colorScheme.onBackground,
+                                  width: 0.8,
                                 ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Theme.of(context).colorScheme.shadow,
+                                    blurRadius: 30,
+                                    offset: const Offset(0, 0),
+                                  ),
+                                ],
+                              ),
+                              child: AspectRatio(
+                                aspectRatio: 1,
                                 child: Image.asset(
                                   "assets/images/logos/logo_transparent.png",
                                 ),
