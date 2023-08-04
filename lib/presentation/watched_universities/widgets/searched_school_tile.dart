@@ -1,4 +1,3 @@
-import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:confesi/presentation/shared/buttons/simple_text.dart';
 
 import 'package:flutter/cupertino.dart';

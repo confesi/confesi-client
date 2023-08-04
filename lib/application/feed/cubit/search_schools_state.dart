@@ -11,8 +11,17 @@ abstract class PossibleError {}
 
 class SearchSchoolsErr extends PossibleError {
   final String message;
+  // the values to "reset" back to upon failure:
+  final int schoolId;
+  final bool watched;
+  final bool home;
 
-  SearchSchoolsErr(this.message);
+  SearchSchoolsErr(this.message, this.schoolId, this.watched, this.home);
+
+  @override
+  String toString() {
+    return "SearchSchoolsErr{message: $message, schoolId: $schoolId, watched: $watched, home: $home}";
+  }
 }
 
 class SearchSchoolsNoErr extends PossibleError {}

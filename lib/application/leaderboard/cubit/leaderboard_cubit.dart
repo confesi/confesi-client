@@ -19,10 +19,13 @@ part 'leaderboard_state.dart';
 class LeaderboardCubit extends Cubit<LeaderboardState> {
   final Ranking ranking;
 
-  LeaderboardCubit({required this.ranking}) : super(LeaderboardLoading());
+  LeaderboardCubit(this._api, {required this.ranking}) : super(LeaderboardLoading());
+
+  final Api _api;
 
   Future<void> loadRankings({bool forceRefresh = false}) async {
     late bool refreshFeed;
+    _api.cancelCurrentReq();
     LeaderboardFeedState feedState = LeaderboardFeedState.feedLoading;
     if (state is LeaderboardData) {
       refreshFeed = false;
@@ -47,7 +50,7 @@ class LeaderboardCubit extends Cubit<LeaderboardState> {
     } else {
       oldStartViewDate = DateTime.now().toUtc();
     }
-    (await Api().req(
+    (await _api.req(
       Verb.get,
       true,
       "/api/v1/schools/rank",

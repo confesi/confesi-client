@@ -75,7 +75,7 @@ class SearchSchoolsCubit extends Cubit<SearchSchoolsState> {
     );
   }
 
-  Future<bool> updateWatched(int id, bool watch) async {
+  Future<void> updateWatched(int id, bool watch) async {
     if (state is SearchSchoolsData) {
       final currentState = state as SearchSchoolsData;
       final oldState = currentState.schools.firstWhere((element) => element.id == id);
@@ -108,89 +108,71 @@ class SearchSchoolsCubit extends Cubit<SearchSchoolsState> {
 
       response.fold(
         (failureWithMsg) {
-          emit(SearchSchoolsError(failureWithMsg.message()));
-          return false;
+          emit(SearchSchoolsData(
+            currentState.schools.map((e) {
+              if (e.id == id) {
+                return e.copyWith(watched: oldState.watched);
+              } else {
+                return e;
+              }
+            }).toList(),
+            SearchSchoolsErr(failureWithMsg.message(), id, oldState.watched, watch),
+          ));
         },
         (response) async {
           if (response.statusCode.toString()[0] == "4") {
-            if (state is SearchSchoolsData) {
-              final currentState = state as SearchSchoolsData;
-              final updatedSchools = currentState.schools.map((e) {
+            emit(SearchSchoolsData(
+              currentState.schools.map((e) {
                 if (e.id == id) {
                   return e.copyWith(watched: oldState.watched);
                 } else {
                   return e;
                 }
-              }).toList();
-              emit(SearchSchoolsData(
-                updatedSchools,
-                SearchSchoolsErr("Error updating school"),
-              ));
-              return false;
-            } else {
-              emit(const SearchSchoolsError("Unknown error"));
-              return false;
-            }
+              }).toList(),
+              SearchSchoolsErr("Error updating school", id, oldState.watched, watch),
+            ));
           } else {
             try {
               if (response.statusCode.toString()[0] != "2") {
-                if (state is SearchSchoolsData) {
-                  final currentState = state as SearchSchoolsData;
-                  final updatedSchools = currentState.schools.map((e) {
+                emit(SearchSchoolsData(
+                  currentState.schools.map((e) {
                     if (e.id == id) {
                       return e.copyWith(watched: oldState.watched);
                     } else {
                       return e;
                     }
-                  }).toList();
-                  emit(SearchSchoolsData(
-                    updatedSchools,
-                    SearchSchoolsNoErr(),
-                  ));
-                  return false;
-                } else {
-                  emit(const SearchSchoolsError("Unknown error"));
-                  return false;
-                }
+                  }).toList(),
+                  SearchSchoolsErr("Error updating school", id, oldState.watched, watch),
+                ));
               }
-              return true;
             } catch (_) {
-              if (state is SearchSchoolsData) {
-                final currentState = state as SearchSchoolsData;
-                final updatedSchools = currentState.schools.map((e) {
+              emit(SearchSchoolsData(
+                currentState.schools.map((e) {
                   if (e.id == id) {
                     return e.copyWith(watched: oldState.watched);
                   } else {
                     return e;
                   }
-                }).toList();
-                emit(SearchSchoolsData(
-                  updatedSchools,
-                  SearchSchoolsErr("Error updating school"),
-                ));
-              } else {
-                emit(const SearchSchoolsError("Unknown error"));
-              }
-              return false;
+                }).toList(),
+                SearchSchoolsErr("Error updating school", id, oldState.watched, watch),
+              ));
             }
           }
         },
       );
-      return false;
     } else {
       emit(const SearchSchoolsError("Unknown error"));
-      return false;
     }
   }
 
-  Future<bool> setHome(int id) async {
+  Future<void> setHome(int id) async {
     if (state is SearchSchoolsData) {
       final currentState = state as SearchSchoolsData;
 
       // Cancel the ongoing request before starting a new one
       _setSchoolAsHomeApi.cancelCurrentReq();
 
-      // return first id of school where home is true
+      // Return the first id of the school where home is true
       final int oldHomeId = currentState.schools.firstWhere((element) => element.home).id;
 
       // Update the state with the updated schools list
@@ -222,9 +204,8 @@ class SearchSchoolsCubit extends Cubit<SearchSchoolsState> {
 
       response.fold(
         (failureWithMsg) {
-          if (state is SearchSchoolsData) {
-            final currentState = state as SearchSchoolsData;
-            final updatedSchools = currentState.schools.map((e) {
+          emit(SearchSchoolsData(
+            currentState.schools.map((e) {
               if (e.id == id) {
                 return e.copyWith(home: false); // Reset the selected school back to not being home
               } else {
@@ -234,20 +215,14 @@ class SearchSchoolsCubit extends Cubit<SearchSchoolsState> {
                 }
                 return e;
               }
-            }).toList();
-            emit(SearchSchoolsData(
-              updatedSchools,
-              SearchSchoolsErr(failureWithMsg.message()),
-            ));
-          } else {
-            emit(const SearchSchoolsError("Unknown error"));
-          }
+            }).toList(),
+            SearchSchoolsErr(failureWithMsg.message(), id, false, false),
+          ));
         },
         (response) async {
           if (response.statusCode.toString()[0] == "4") {
-            if (state is SearchSchoolsData) {
-              final currentState = state as SearchSchoolsData;
-              final updatedSchools = currentState.schools.map((e) {
+            emit(SearchSchoolsData(
+              currentState.schools.map((e) {
                 if (e.id == id) {
                   return e.copyWith(home: false); // Reset the selected school back to not being home
                 } else {
@@ -257,20 +232,14 @@ class SearchSchoolsCubit extends Cubit<SearchSchoolsState> {
                   }
                   return e;
                 }
-              }).toList();
-              emit(SearchSchoolsData(
-                updatedSchools,
-                SearchSchoolsErr("Error updating home school"),
-              ));
-            } else {
-              emit(const SearchSchoolsError("Unknown error"));
-            }
+              }).toList(),
+              SearchSchoolsErr("Error updating home school", id, false, false),
+            ));
           } else {
             try {
               if (response.statusCode.toString()[0] != "2") {
-                if (state is SearchSchoolsData) {
-                  final currentState = state as SearchSchoolsData;
-                  final updatedSchools = currentState.schools.map((e) {
+                emit(SearchSchoolsData(
+                  currentState.schools.map((e) {
                     if (e.id == id) {
                       return e.copyWith(home: false); // Reset the selected school back to not being home
                     } else {
@@ -280,21 +249,13 @@ class SearchSchoolsCubit extends Cubit<SearchSchoolsState> {
                       }
                       return e;
                     }
-                  }).toList();
-                  emit(SearchSchoolsData(
-                    updatedSchools,
-                    SearchSchoolsNoErr(),
-                  ));
-                } else {
-                  emit(const SearchSchoolsError("Unknown error"));
-                }
-                // else, do nothing
+                  }).toList(),
+                  SearchSchoolsErr("Error updating home school", id, false, false),
+                ));
               }
-              return true;
             } catch (_) {
-              if (state is SearchSchoolsData) {
-                final currentState = state as SearchSchoolsData;
-                final updatedSchools = currentState.schools.map((e) {
+              emit(SearchSchoolsData(
+                currentState.schools.map((e) {
                   if (e.id == id) {
                     return e.copyWith(home: false); // Reset the selected school back to not being home
                   } else {
@@ -304,14 +265,9 @@ class SearchSchoolsCubit extends Cubit<SearchSchoolsState> {
                     }
                     return e;
                   }
-                }).toList();
-                emit(SearchSchoolsData(
-                  updatedSchools,
-                  SearchSchoolsErr("Error updating home school"),
-                ));
-              } else {
-                emit(const SearchSchoolsError("Unknown error"));
-              }
+                }).toList(),
+                SearchSchoolsErr("Error updating home school", id, false, false),
+              ));
             }
           }
         },
@@ -319,6 +275,5 @@ class SearchSchoolsCubit extends Cubit<SearchSchoolsState> {
     } else {
       emit(const SearchSchoolsError("Unknown error"));
     }
-    return false;
   }
 }

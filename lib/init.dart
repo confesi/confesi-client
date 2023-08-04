@@ -141,7 +141,7 @@ Future<void> init() async {
   sl.registerFactory(() => RecentsCubit(recents: sl()));
   sl.registerFactory(() => SentimentAnalysisCubit());
   sl.registerFactory(() => TrendingCubit(trending: sl()));
-  sl.registerFactory(() => LeaderboardCubit(ranking: sl()));
+  sl.registerFactory(() => LeaderboardCubit(Api(), ranking: sl()));
   sl.registerFactory(() => AuthFlowCubit());
   sl.registerFactory(() => HottestCubit(posts: sl()));
   sl.registerFactory(() => CreatePostCubit(uploadPost: sl()));

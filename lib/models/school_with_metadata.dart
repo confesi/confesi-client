@@ -61,6 +61,11 @@ class SchoolWithMetadata {
     );
   }
 
+  @override
+  String toString() {
+    return "SchoolWithMetadata{id: $id, watched: $watched, home: $home}";
+  }
+
   factory SchoolWithMetadata.fromJson(Map<String, dynamic> json) => SchoolWithMetadata(
         id: json["id"],
         name: json["name"],

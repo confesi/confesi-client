@@ -15,7 +15,7 @@ import '../../../init.dart';
 import '../../shared/indicators/loading_or_alert.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/textfields/expandable_textfield.dart';
-import '../widgets/searched_university_tile.dart';
+import '../widgets/searched_school_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scrollable/exports.dart';
@@ -91,21 +91,15 @@ class _SearchSchoolsScreenState extends State<SearchSchoolsScreen> {
                       : Column(
                           children: state.schools.map((school) {
                             return SearchedSchoolTile(
-                              onHomeChange: (newValue) async {
-                                await context.read<SearchSchoolsCubit>().setHome(school.id).then(
-                                      (succeeded) => succeeded
-                                          ? context.read<SchoolsDrawerCubit>().updateHomeSchool(school.id)
-                                          : null,
-                                    );
+                              onHomeChange: (_) {
+                                context.read<SearchSchoolsCubit>().setHome(school.id);
+                                context.read<SchoolsDrawerCubit>().setHomeSchool(school);
                               },
-                              onWatchChange: (newValue) async {
-                                await context.read<SearchSchoolsCubit>().updateWatched(school.id, newValue).then(
-                                      (succeeded) => succeeded
-                                          ? newValue
-                                              ? context.read<SchoolsDrawerCubit>().addWatchedSchool(school)
-                                              : context.read<SchoolsDrawerCubit>().removeWatchedSchool(school.id)
-                                          : null,
-                                    );
+                              onWatchChange: (isWatching) {
+                                context.read<SearchSchoolsCubit>().updateWatched(school.id, isWatching);
+                                isWatching
+                                    ? context.read<SchoolsDrawerCubit>().addWatchedSchool(school)
+                                    : context.read<SchoolsDrawerCubit>().removeWatchedSchool(school.id);
                               },
                               home: school.home,
                               watched: school.watched,
