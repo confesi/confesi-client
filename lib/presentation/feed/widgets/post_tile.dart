@@ -160,6 +160,12 @@ class PostTile extends StatelessWidget {
                               spacing: 10,
                               children: [
                                 ReactionTile(
+                                  amount: 1232, // todo: comment count
+                                  icon: CupertinoIcons.chat_bubble,
+                                  iconColor: Theme.of(context).colorScheme.tertiary,
+                                  isSelected: true,
+                                ),
+                                ReactionTile(
                                   amount: post.upvote,
                                   icon: CupertinoIcons.up_arrow,
                                   iconColor: Theme.of(context).colorScheme.onErrorContainer,
