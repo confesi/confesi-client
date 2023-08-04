@@ -233,6 +233,16 @@ class SettingsHome extends StatelessWidget {
                                 text: "Community rules",
                                 onTap: () => context.read<WebsiteLauncherCubit>().launchWebsiteCommunityRules(),
                               ),
+                              TileGroup(
+                                text: "Other",
+                                tiles: [
+                                  SettingTile(
+                                    leftIcon: CupertinoIcons.heart,
+                                    text: "Acknowledgements",
+                                    onTap: () => router.push("/settings/acknowledgements"),
+                                  ),
+                                ],
+                              ),
                               const SimulatedBottomSafeArea(),
                             ],
                           ),

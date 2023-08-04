@@ -7,7 +7,7 @@ class TextStatTile extends StatefulWidget {
     super.key,
     required this.leftText,
     this.onTap,
-    required this.rightText,
+    this.rightText,
     this.topRounded = true,
     this.bottomRounded = true,
     this.backgroundColor,
@@ -54,24 +54,28 @@ class _TextStatTileState extends State<TextStatTile> {
               padding: EdgeInsets.symmetric(vertical: 10, horizontal: widget.noHorizontalPadding ? 0 : 15),
               child: Row(
                 children: [
-                  Text(
-                    widget.leftText,
-                    style: kTitle.copyWith(
-                      color: widget.foregroundColor ?? Theme.of(context).colorScheme.primary,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(width: 5),
                   Expanded(
                     child: Text(
-                      widget.rightText!,
-                      textAlign: TextAlign.right,
-                      style: kBody.copyWith(
-                        color: widget.secondaryColor ?? Theme.of(context).colorScheme.secondary,
+                      widget.leftText,
+                      style: kTitle.copyWith(
+                        color: widget.foregroundColor ?? Theme.of(context).colorScheme.primary,
                       ),
-                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
+                  widget.rightText != null
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(
+                              widget.rightText!,
+                              textAlign: TextAlign.right,
+                              style: kBody.copyWith(
+                                color: widget.secondaryColor ?? Theme.of(context).colorScheme.secondary,
+                              ),
+                            )
+                          ],
+                        )
+                      : Container()
                 ],
               ),
             ),

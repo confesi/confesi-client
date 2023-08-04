@@ -1,4 +1,5 @@
 import 'package:confesi/models/school_with_metadata.dart';
+import 'package:confesi/presentation/authentication_and_settings/screens/settings/acknowledgements.dart';
 import 'package:confesi/presentation/notifications/screens/home.dart';
 
 import 'package:confesi/presentation/authentication_and_settings/screens/authentication/open.dart';
@@ -207,6 +208,9 @@ final GoRouter router = GoRouter(
         path: '/settings/feedback',
         builder: (BuildContext context, GoRouterState state) => const FeedbackSettingScreen()),
     GoRoute(path: '/settings/contact', builder: (BuildContext context, GoRouterState state) => const ContactScreen()),
+    GoRoute(
+        path: "/settings/acknowledgements",
+        builder: (BuildContext context, GoRouterState state) => const AcknowledgementsScreen()),
     GoRoute(
         path: '/settings/text-size', builder: (BuildContext context, GoRouterState state) => const TextSizeScreen()),
     GoRoute(path: '/settings/curvy', builder: (BuildContext context, GoRouterState state) => const CurvyScreen()),
