@@ -107,9 +107,9 @@ class SchoolsDrawerCubit extends Cubit<SchoolsDrawerState> {
     if (state is SchoolsDrawerData) {
       final currentState = state as SchoolsDrawerData;
 
-      // Check if the new school already exists in the list based on id, home, and watched
+      // Check if the new school already exists in the list based on id, watched
       final existingSchoolIndex = currentState.schools.indexWhere(
-        (s) => s.id == school.id && s.home == school.home,
+        (s) => s.id == school.id && s.watched == school.watched,
       );
       late List<SchoolWithMetadata> updatedSchools;
       if (existingSchoolIndex == -1) {

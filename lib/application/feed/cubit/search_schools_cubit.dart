@@ -116,11 +116,11 @@ class SearchSchoolsCubit extends Cubit<SearchSchoolsState> {
                 return e;
               }
             }).toList(),
-            SearchSchoolsErr(failureWithMsg.message(), id, oldState.watched, watch),
+            SearchSchoolsErr(failureWithMsg.message(), id, oldState.watched, oldState.home),
           ));
         },
-        (response) async {
-          if (response.statusCode.toString()[0] == "4") {
+        (response) {
+          if (response.statusCode.toString()[0] != "2") {
             emit(SearchSchoolsData(
               currentState.schools.map((e) {
                 if (e.id == id) {
@@ -129,34 +129,8 @@ class SearchSchoolsCubit extends Cubit<SearchSchoolsState> {
                   return e;
                 }
               }).toList(),
-              SearchSchoolsErr("Error updating school", id, oldState.watched, watch),
+              SearchSchoolsErr("Error updating school", id, oldState.watched, oldState.home),
             ));
-          } else {
-            try {
-              if (response.statusCode.toString()[0] != "2") {
-                emit(SearchSchoolsData(
-                  currentState.schools.map((e) {
-                    if (e.id == id) {
-                      return e.copyWith(watched: oldState.watched);
-                    } else {
-                      return e;
-                    }
-                  }).toList(),
-                  SearchSchoolsErr("Error updating school", id, oldState.watched, watch),
-                ));
-              }
-            } catch (_) {
-              emit(SearchSchoolsData(
-                currentState.schools.map((e) {
-                  if (e.id == id) {
-                    return e.copyWith(watched: oldState.watched);
-                  } else {
-                    return e;
-                  }
-                }).toList(),
-                SearchSchoolsErr("Error updating school", id, oldState.watched, watch),
-              ));
-            }
           }
         },
       );
@@ -173,7 +147,7 @@ class SearchSchoolsCubit extends Cubit<SearchSchoolsState> {
       _setSchoolAsHomeApi.cancelCurrentReq();
 
       // Return the first id of the school where home is true
-      final int oldHomeId = currentState.schools.firstWhere((element) => element.home).id;
+      final SchoolWithMetadata oldHome = currentState.schools.firstWhere((element) => element.home);
 
       // Update the state with the updated schools list
       final updatedSchools = currentState.schools.map((e) {
@@ -181,7 +155,7 @@ class SearchSchoolsCubit extends Cubit<SearchSchoolsState> {
           return e.copyWith(home: true);
         } else {
           // Unset any other school that might also be considered home
-          if (e.home) {
+          if (e.id == oldHome.id) {
             return e.copyWith(home: false);
           }
           return e;
@@ -210,65 +184,31 @@ class SearchSchoolsCubit extends Cubit<SearchSchoolsState> {
                 return e.copyWith(home: false); // Reset the selected school back to not being home
               } else {
                 // Reset any other school that might also be considered home to true
-                if (e.id == oldHomeId) {
+                if (e.id == oldHome.id) {
                   return e.copyWith(home: true);
                 }
                 return e;
               }
             }).toList(),
-            SearchSchoolsErr(failureWithMsg.message(), id, false, false),
+            SearchSchoolsErr(failureWithMsg.message(), id, oldHome.watched, oldHome.home),
           ));
         },
-        (response) async {
-          if (response.statusCode.toString()[0] == "4") {
+        (response) {
+          if (response.statusCode.toString()[0] != "2") {
             emit(SearchSchoolsData(
               currentState.schools.map((e) {
                 if (e.id == id) {
                   return e.copyWith(home: false); // Reset the selected school back to not being home
                 } else {
                   // Reset any other school that might also be considered home to true
-                  if (e.id == oldHomeId) {
+                  if (e.id == oldHome.id) {
                     return e.copyWith(home: true);
                   }
                   return e;
                 }
               }).toList(),
-              SearchSchoolsErr("Error updating home school", id, false, false),
+              SearchSchoolsErr("Error updating home school", id, oldHome.watched, oldHome.home),
             ));
-          } else {
-            try {
-              if (response.statusCode.toString()[0] != "2") {
-                emit(SearchSchoolsData(
-                  currentState.schools.map((e) {
-                    if (e.id == id) {
-                      return e.copyWith(home: false); // Reset the selected school back to not being home
-                    } else {
-                      // Reset any other school that might also be considered home to true
-                      if (e.id == oldHomeId) {
-                        return e.copyWith(home: true);
-                      }
-                      return e;
-                    }
-                  }).toList(),
-                  SearchSchoolsErr("Error updating home school", id, false, false),
-                ));
-              }
-            } catch (_) {
-              emit(SearchSchoolsData(
-                currentState.schools.map((e) {
-                  if (e.id == id) {
-                    return e.copyWith(home: false); // Reset the selected school back to not being home
-                  } else {
-                    // Reset any other school that might also be considered home to true
-                    if (e.id == oldHomeId) {
-                      return e.copyWith(home: true);
-                    }
-                    return e;
-                  }
-                }).toList(),
-                SearchSchoolsErr("Error updating home school", id, false, false),
-              ));
-            }
           }
         },
       );
