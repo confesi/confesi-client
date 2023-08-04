@@ -83,6 +83,7 @@ class SchoolsDrawerCubit extends Cubit<SchoolsDrawerState> {
   }
 
   Future<void> removeWatchedSchool(int id) async {
+    removeWatchedSchoolInUI(id);
     _api.cancelCurrentReq();
     (await _api.req(Verb.delete, true, "/api/v1/schools/unwatch", {"school_id": id})).fold(
       (failureWithMsg) {
