@@ -1,7 +1,6 @@
 import 'package:confesi/core/clients/api.dart';
 
 import '../../../core/utils/validators/either_not_empty_validator.dart';
-import '../../../domain/create_post/usecases/upload_post.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
@@ -9,9 +8,7 @@ import 'package:meta/meta.dart';
 part 'post_state.dart';
 
 class CreatePostCubit extends Cubit<CreatePostState> {
-  final UploadPost uploadPost;
-
-  CreatePostCubit({required this.uploadPost}) : super(EnteringData());
+  CreatePostCubit() : super(EnteringData());
 
   Future<void> uploadUserPost(String title, String body, String category) async {
     emit(PostLoading());

@@ -1,5 +1,4 @@
 import 'package:confesi/application/user/cubit/saved_posts_cubit.dart';
-import 'package:confesi/domain/shared/entities/infinite_scroll_indexable.dart';
 import 'package:confesi/models/post.dart';
 import 'package:confesi/presentation/feed/widgets/post_tile.dart';
 import 'package:confesi/presentation/shared/indicators/loading_or_alert.dart';
@@ -8,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/styles/typography.dart';
+import '../../../core/types/infinite_scrollable_indexable.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/layout/appbar.dart';
 

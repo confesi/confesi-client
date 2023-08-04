@@ -1,7 +1,6 @@
 import 'package:confesi/models/post.dart';
 import 'package:flutter/material.dart';
 
-import '../../../domain/shared/entities/infinite_scroll_indexable.dart';
 import '../../shared/other/feed_list.dart';
 import '../widgets/post_tile.dart';
 

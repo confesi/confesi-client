@@ -1,4 +1,3 @@
-import 'package:confesi/application/shared/cubit/maps_cubit.dart';
 import 'package:confesi/core/styles/typography.dart';
 import 'package:confesi/core/utils/sizing/height_fraction.dart';
 import 'package:confesi/presentation/shared/behaviours/simulated_bottom_safe_area.dart';
@@ -143,8 +142,7 @@ class SchoolDetail extends StatelessWidget {
                           SimpleTextButton(
                             bgColor: Theme.of(context).colorScheme.surface,
                             textColor: Theme.of(context).colorScheme.primary,
-                            onTap: () => context.read<MapsCubit>().launchMapAtLocation(
-                                props.school.lat.toDouble(), props.school.lon.toDouble(), props.school.name),
+                            onTap: () => print("todo: locate on map"),
                             text: "Locate on map",
                           ),
                           SimpleTextButton(

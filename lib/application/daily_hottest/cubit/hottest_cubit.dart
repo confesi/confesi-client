@@ -1,20 +1,17 @@
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
-import 'package:confesi/core/utils/dates/year_month_day.dart';
+import 'package:confesi/core/extensions/dates/year_month_day.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
 import '../../../core/clients/api.dart';
-import '../../../domain/daily_hottest/usecases/posts.dart';
 import '../../../models/post.dart';
 
 part 'hottest_state.dart';
 
 class HottestCubit extends Cubit<HottestState> {
-  final Posts posts;
-
-  HottestCubit({required this.posts}) : super(DailyHottestLoading());
+  HottestCubit() : super(DailyHottestLoading());
 
   Future<void> loadYesterday() async {
     final yesterday = DateTime.now().subtract(const Duration(days: 1));

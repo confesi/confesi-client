@@ -1,4 +1,3 @@
-import '../../../../application/authentication_and_settings/cubit/contact_setting_cubit.dart';
 import '../../../shared/behaviours/simulated_bottom_safe_area.dart';
 import '../../../shared/overlays/notification_chip.dart';
 import '../../../shared/selection_groups/setting_tile.dart';
@@ -24,76 +23,65 @@ class ContactScreen extends StatefulWidget {
 class _ContactScreenState extends State<ContactScreen> {
   @override
   Widget build(BuildContext context) {
-    return BlocListener<ContactSettingCubit, ContactSettingState>(
-      listener: (context, state) {
-        if (state is ContactSuccess) {
-          showNotificationChip(context, "Email copied to clipboard.", notificationType: NotificationType.success);
-        } else if (state is ContactError) {
-          showNotificationChip(context, state.message);
-        }
-        context.read<ContactSettingCubit>().setContactStateToBase();
-      },
-      child: ThemeStatusBar(
-          child: Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.shadow,
-        body: SafeArea(
-          bottom: false,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AppbarLayout(
-                                  bottomBorder: true,
-
-                backgroundColor: Theme.of(context).colorScheme.shadow,
-                centerWidget: Text(
-                  "Support",
-                  style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                ),
+    return ThemeStatusBar(
+        child: Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.shadow,
+      body: SafeArea(
+        bottom: false,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            AppbarLayout(
+              bottomBorder: true,
+              backgroundColor: Theme.of(context).colorScheme.shadow,
+              centerWidget: Text(
+                "Support",
+                style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
               ),
-              Expanded(
-                child: ScrollableView(
-                  physics: const BouncingScrollPhysics(),
-                  inlineBottomOrRightPadding: bottomSafeArea(context),
-                  distancebetweenHapticEffectsDuringScroll: 50,
-                  hapticEffectAtEdge: HapticType.medium,
-                  controller: ScrollController(),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        TileGroup(
-                          text: "Contact support agent",
-                          tiles: [
-                            SettingTile(
-                              rightIcon: CupertinoIcons.square_on_square,
-                              leftIcon: CupertinoIcons.mail,
-                              text: "Copy email address",
-                              onTap: () => context.read<ContactSettingCubit>().copyEmailText(),
-                            ),
-                            SettingTile(
-                              rightIcon: CupertinoIcons.link,
-                              leftIcon: CupertinoIcons.mail,
-                              text: "Open email",
-                              onTap: () => context.read<ContactSettingCubit>().openMailClient(),
-                            ),
-                          ],
-                        ),
-                        const DisclaimerText(
-                          text: "To permanently delete your account, send us an email.",
-                        ),
-                        const SimulatedBottomSafeArea(),
-                      ],
-                    ),
+            ),
+            Expanded(
+              child: ScrollableView(
+                physics: const BouncingScrollPhysics(),
+                inlineBottomOrRightPadding: bottomSafeArea(context),
+                distancebetweenHapticEffectsDuringScroll: 50,
+                hapticEffectAtEdge: HapticType.medium,
+                controller: ScrollController(),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TileGroup(
+                        text: "Contact support agent",
+                        tiles: [
+                          SettingTile(
+                            rightIcon: CupertinoIcons.square_on_square,
+                            leftIcon: CupertinoIcons.mail,
+                            text: "Copy email address",
+                            onTap: () => print("COPY"),
+                          ),
+                          SettingTile(
+                            rightIcon: CupertinoIcons.link,
+                            leftIcon: CupertinoIcons.mail,
+                            text: "Open email",
+                            onTap: () => print("OPEN MAIL"),
+                          ),
+                        ],
+                      ),
+                      const DisclaimerText(
+                        text: "To permanently delete your account, send us an email.",
+                      ),
+                      const SimulatedBottomSafeArea(),
+                    ],
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-      )),
-    );
+      ),
+    ));
   }
 }

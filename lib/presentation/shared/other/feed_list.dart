@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import '../../../core/results/failures.dart';
 import 'package:dartz/dartz.dart' as dartz;
 
-import '../../../domain/shared/entities/infinite_scroll_indexable.dart';
+import '../../../core/types/infinite_scrollable_indexable.dart';
 import '../indicators/loading_or_alert.dart';
 import '../edited_source_widgets/swipe_refresh.dart';
 import '../indicators/alert.dart';

@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../application/shared/cubit/maps_cubit.dart';
 import '../../../core/router/go_router.dart';
 import '../../shared/buttons/option.dart';
 import '../../shared/overlays/button_options_sheet.dart';
@@ -24,9 +23,7 @@ void buildOptionsSheet(BuildContext context) => showButtonOptionsSheet(context, 
       OptionButton(
         text: "School location",
         icon: CupertinoIcons.map,
-        onTap: () => context
-            .read<MapsCubit>()
-            .launchMapAtLocation(48.4634, -123.3117, "University of Victoria"), // todo: remove hard coding
+        onTap: () => print("todo: launch website"),
       ),
       OptionButton(
         text: "Report",

@@ -21,31 +21,12 @@ import 'core/services/splash_screen_hint_text/splash_screen_hint_text.dart';
 import 'core/services/user_auth/user_auth_data.dart';
 import 'core/services/user_auth/user_auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'application/shared/cubit/maps_cubit.dart';
 import 'core/services/hive/hive_client.dart';
-import 'domain/feed/usecases/launch_maps.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'core/services/fcm_notifications/notification_service.dart';
-import 'domain/shared/usecases/share_content.dart';
-import 'application/shared/cubit/share_cubit.dart';
-import 'core/clients/api_client.dart';
-import 'domain/authentication_and_settings/usecases/open_device_settings.dart';
-import 'application/authentication_and_settings/cubit/language_setting_cubit.dart';
-import 'data/create_post/datasources/create_post_datasource.dart';
-import 'data/create_post/repositories/create_post_repository_concrete.dart';
-import 'data/daily_hottest/datasources/daily_hottest_datasource.dart';
-import 'data/leaderboard/datasources/leaderboard_datasource.dart';
-import 'data/daily_hottest/repositories/daily_hottest_repository_concrete.dart';
-import 'data/leaderboard/repositories/leaderboard_repository_concrete.dart';
-import 'domain/authentication_and_settings/usecases/copy_email_text.dart';
-import 'domain/authentication_and_settings/usecases/launch_website.dart';
-import 'domain/authentication_and_settings/usecases/open_mail_client.dart';
-import 'domain/create_post/usecases/upload_post.dart';
-import 'domain/daily_hottest/usecases/posts.dart';
-import 'domain/leaderboard/usecases/ranking.dart';
-import 'domain/profile/usecases/biometric_authentication.dart';
+
 import 'application/create_post/cubit/post_cubit.dart';
 import 'application/daily_hottest/cubit/hottest_cubit.dart';
 import 'application/leaderboard/cubit/leaderboard_cubit.dart';
@@ -53,17 +34,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:local_auth/local_auth.dart';
-import 'application/authentication_and_settings/cubit/contact_setting_cubit.dart';
-import 'application/shared/cubit/website_launcher_cubit.dart';
 import 'core/network/connection_info.dart';
-import 'data/authentication_and_settings/datasources/authentication_datasource.dart';
-import 'data/authentication_and_settings/repositories/authentication_repository_concrete.dart';
-import 'data/feed/datasources/feed_datasource.dart';
-import 'data/feed/repositories/feed_repository_concrete.dart';
-import 'domain/feed/usecases/recents.dart';
-import 'domain/feed/usecases/trending.dart';
-import 'application/feed/cubit/recents_cubit.dart';
-import 'application/feed/cubit/trending_cubit.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -120,7 +91,6 @@ Future<void> init() async {
 
   //! Core
   sl.registerLazySingleton(() => NetworkInfo(sl()));
-  sl.registerLazySingleton(() => ApiClient());
   HiveService hiveService = HiveService(sl());
   await hiveService.init();
   sl.registerLazySingleton(() => hiveService);
@@ -138,18 +108,11 @@ Future<void> init() async {
   sl.registerLazySingleton(() => SplashScreenHintManager());
 
   //! State (BLoC or Cubit)
-  sl.registerFactory(() => RecentsCubit(recents: sl()));
   sl.registerFactory(() => SentimentAnalysisCubit());
-  sl.registerFactory(() => TrendingCubit(trending: sl()));
-  sl.registerFactory(() => LeaderboardCubit(Api(), ranking: sl()));
+  sl.registerFactory(() => LeaderboardCubit(Api()));
   sl.registerFactory(() => AuthFlowCubit());
-  sl.registerFactory(() => HottestCubit(posts: sl()));
-  sl.registerFactory(() => CreatePostCubit(uploadPost: sl()));
-  sl.registerFactory(() => ContactSettingCubit(copyEmailTextUsecase: sl(), openMailClientUsecase: sl()));
-  sl.registerFactory(() => WebsiteLauncherCubit(launchWebsiteUsecase: sl()));
-  sl.registerFactory(() => LanguageSettingCubit(openDeviceSettingsUsecase: sl()));
-  sl.registerFactory(() => MapsCubit(launchMapUsecase: sl()));
-  sl.registerFactory(() => ShareCubit(shareContentUsecase: sl()));
+  sl.registerFactory(() => HottestCubit());
+  sl.registerFactory(() => CreatePostCubit());
   sl.registerFactory(() => PostCategoriesCubit());
   sl.registerFactory(() => AccountDetailsCubit());
   sl.registerFactory(() => FeedbackCubit());
@@ -162,34 +125,6 @@ Future<void> init() async {
         Api(),
       )); // new instan
   sl.registerFactory(() => SavedPostsCubit(Api()));
-
-  //! Usecases
-  sl.registerLazySingleton(() => Recents(repository: sl()));
-  sl.registerLazySingleton(() => Trending(repository: sl()));
-  sl.registerLazySingleton(() => Ranking(repository: sl()));
-  sl.registerLazySingleton(() => Posts(repository: sl()));
-  sl.registerLazySingleton(() => UploadPost(repository: sl()));
-  sl.registerLazySingleton(() => BiometricAuthentication(localAuthentication: sl()));
-  sl.registerLazySingleton(() => OpenMailClient());
-  sl.registerLazySingleton(() => CopyEmailText());
-  sl.registerLazySingleton(() => LaunchWebsite());
-  sl.registerLazySingleton(() => OpenDeviceSettings());
-  sl.registerLazySingleton(() => ShareContent());
-  sl.registerLazySingleton(() => LaunchMap());
-
-  //! Repositories
-  sl.registerLazySingleton(() => AuthenticationRepository(networkInfo: sl(), datasource: sl()));
-  sl.registerLazySingleton(() => FeedRepository(networkInfo: sl(), datasource: sl()));
-  sl.registerLazySingleton(() => LeaderboardRepository(networkInfo: sl(), datasource: sl()));
-  sl.registerLazySingleton(() => DailyHottestRepository(networkInfo: sl(), datasource: sl()));
-  sl.registerLazySingleton(() => CreatePostRepository(networkInfo: sl(), datasource: sl()));
-
-  //! Data sources
-  sl.registerLazySingleton(() => AuthenticationDatasource(secureStorage: sl(), api: sl()));
-  sl.registerLazySingleton(() => FeedDatasource(api: sl()));
-  sl.registerLazySingleton(() => LeaderboardDatasource(api: sl()));
-  sl.registerLazySingleton(() => DailyHottestDatasource(api: sl()));
-  sl.registerLazySingleton(() => CreatePostDatasource(api: sl()));
 
   //! Firebase
   await initFirebase();

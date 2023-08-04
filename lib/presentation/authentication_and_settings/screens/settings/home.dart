@@ -1,5 +1,4 @@
 import 'package:confesi/presentation/shared/overlays/info_sheet.dart';
-import 'package:confesi/presentation/shared/overlays/registered_users_only_sheet.dart';
 import 'package:confesi/presentation/shared/selection_groups/tile_group.dart';
 
 import '../../../../core/router/go_router.dart';
@@ -13,7 +12,6 @@ import 'package:provider/provider.dart';
 import '../../../../application/authentication_and_settings/cubit/auth_flow_cubit.dart';
 import '../../../../core/styles/typography.dart';
 
-import '../../../../application/shared/cubit/website_launcher_cubit.dart';
 import '../../../shared/behaviours/themed_status_bar.dart';
 import '../../../shared/layout/appbar.dart';
 import '../../../shared/overlays/notification_chip.dart';
@@ -33,227 +31,218 @@ class SettingsHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isAnon = Provider.of<UserAuthService>(context, listen: true).isAnon;
-    return BlocListener<WebsiteLauncherCubit, WebsiteLauncherState>(
-      listener: (context, state) {
-        if (state is WebsiteLauncherError) {
-          showNotificationChip(context, state.message);
-          // set to base
-          context.read<WebsiteLauncherCubit>().setContactStateToBase();
-        }
-      },
-      child: ThemeStatusBar(
-        child: Scaffold(
-          backgroundColor: Theme.of(context).colorScheme.shadow,
-          body: SafeArea(
-            bottom: false,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                AppbarLayout(
-                  bottomBorder: true,
-                  backgroundColor: Theme.of(context).colorScheme.shadow,
-                  centerWidget: Text(
-                    "Settings",
-                    style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.center,
-                  ),
-                  rightIconVisible: true,
-                  rightIcon: CupertinoIcons.info,
-                  rightIconOnPress: () => showInfoSheet(context, "Preferences",
-                      "Most of these preferences are saved locally to your device, and are deleted upon logout."),
+    return ThemeStatusBar(
+      child: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.shadow,
+        body: SafeArea(
+          bottom: false,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AppbarLayout(
+                bottomBorder: true,
+                backgroundColor: Theme.of(context).colorScheme.shadow,
+                centerWidget: Text(
+                  "Settings",
+                  style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
                 ),
-                Expanded(
-                  child: ScrollableView(
-                    controller: ScrollController(),
-                    scrollBarVisible: false,
-                    physics: const BouncingScrollPhysics(),
-                    hapticsEnabled: false,
-                    inlineBottomOrRightPadding: bottomSafeArea(context),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          TileGroup(
-                            text: "General",
-                            tiles: [
+                rightIconVisible: true,
+                rightIcon: CupertinoIcons.info,
+                rightIconOnPress: () => showInfoSheet(context, "Preferences",
+                    "Most of these preferences are saved locally to your device, and are deleted upon logout."),
+              ),
+              Expanded(
+                child: ScrollableView(
+                  controller: ScrollController(),
+                  scrollBarVisible: false,
+                  physics: const BouncingScrollPhysics(),
+                  hapticsEnabled: false,
+                  inlineBottomOrRightPadding: bottomSafeArea(context),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        TileGroup(
+                          text: "General",
+                          tiles: [
+                            SettingTile(
+                              leftIcon: CupertinoIcons.question_circle,
+                              text: "FAQ",
+                              onTap: () => router.push("/settings/faq"),
+                            ),
+                            SettingTile(
+                              leftIcon: CupertinoIcons.bell,
+                              text: "Notifications",
+                              onTap: () => router.push("/settings/notifications"),
+                            ),
+                            SettingTile(
+                              leftIcon: CupertinoIcons.chat_bubble,
+                              text: "Feedback",
+                              onTap: () => router.push("/settings/feedback"),
+                            ),
+                            SettingTile(
+                              leftIcon: CupertinoIcons.mail,
+                              text: "Contact us",
+                              onTap: () => router.push("/settings/contact"),
+                            ),
+                            SettingTile(
+                              rightIcon: CupertinoIcons.link,
+                              leftIcon: CupertinoIcons.sidebar_left,
+                              text: "Confesi.com",
+                              onTap: () => print("todo: launch website"),
+                            ),
+                          ],
+                        ),
+                        TileGroup(
+                          text: "Personalization",
+                          tiles: [
+                            SettingTile(
+                              leftIcon: CupertinoIcons.color_filter,
+                              text: "Appearance",
+                              onTap: () => router.push("/settings/appearance"),
+                            ),
+                            SwitchSelectionTile(
+                              bottomRounded: true,
+                              isActive:
+                                  Provider.of<UserAuthService>(context).data().profanityFilter == ProfanityFilter.on,
+                              icon: CupertinoIcons.strikethrough,
+                              text: "Profanity filter",
+                              secondaryText:
+                                  Provider.of<UserAuthService>(context).data().profanityFilter == ProfanityFilter.on
+                                      ? "On"
+                                      : "Off",
+                              onTap: () =>
+                                  Provider.of<UserAuthService>(context, listen: false).data().profanityFilter ==
+                                          ProfanityFilter.off
+                                      ? Provider.of<UserAuthService>(context, listen: false).saveData(
+                                          Provider.of<UserAuthService>(context, listen: false)
+                                              .data()
+                                              .copyWith(profanityFilter: ProfanityFilter.on))
+                                      : Provider.of<UserAuthService>(context, listen: false).saveData(
+                                          Provider.of<UserAuthService>(context, listen: false)
+                                              .data()
+                                              .copyWith(profanityFilter: ProfanityFilter.off)),
+                            ),
+                            SwitchSelectionTile(
+                              bottomRounded: true,
+                              isActive: Provider.of<UserAuthService>(context).data().unitSystem == UnitSystem.metric,
+                              icon: CupertinoIcons.circle_lefthalf_fill,
+                              text: "Unit system",
+                              secondaryText:
+                                  Provider.of<UserAuthService>(context).data().unitSystem == UnitSystem.metric
+                                      ? "Metric"
+                                      : "Imperial",
+                              onTap: () => Provider.of<UserAuthService>(context, listen: false).data().unitSystem ==
+                                      UnitSystem.metric
+                                  ? Provider.of<UserAuthService>(context, listen: false).saveData(
+                                      Provider.of<UserAuthService>(context, listen: false)
+                                          .data()
+                                          .copyWith(unitSystem: UnitSystem.imperial))
+                                  : Provider.of<UserAuthService>(context, listen: false).saveData(
+                                      Provider.of<UserAuthService>(context, listen: false)
+                                          .data()
+                                          .copyWith(unitSystem: UnitSystem.metric)),
+                            ),
+                            SwitchSelectionTile(
+                              bottomRounded: true,
+                              isActive: Provider.of<UserAuthService>(context).data().isShrunkView,
+                              icon: CupertinoIcons.slider_horizontal_below_rectangle,
+                              text: "Shrink view",
+                              secondaryText: Provider.of<UserAuthService>(context).data().isShrunkView ? "On" : "Off",
+                              onTap: () => Provider.of<UserAuthService>(context, listen: false).data().isShrunkView
+                                  ? Provider.of<UserAuthService>(context, listen: false).saveData(
+                                      Provider.of<UserAuthService>(context, listen: false)
+                                          .data()
+                                          .copyWith(isShrunkView: false))
+                                  : Provider.of<UserAuthService>(context, listen: false).saveData(
+                                      Provider.of<UserAuthService>(context, listen: false)
+                                          .data()
+                                          .copyWith(isShrunkView: true)),
+                            ),
+                            SettingTile(
+                              leftIcon: CupertinoIcons.textformat_size,
+                              text: "Text size",
+                              onTap: () => router.push("/settings/text-size"),
+                            ),
+                            SettingTile(
+                              leftIcon: CupertinoIcons.square_fill_on_circle_fill,
+                              text: "Curviness of components",
+                              onTap: () => router.push("/settings/curvy"),
+                            ),
+                          ],
+                        ),
+                        TileGroup(
+                          text: "Account",
+                          tiles: [
+                            SettingTile(
+                              isRedText: true,
+                              leftIcon: CupertinoIcons.square_arrow_right,
+                              text: isAnon ? "Logout of guest account" : "Logout",
+                              secondaryText: isAnon ? "Guest" : sl.get<UserAuthService>().email,
+                              onTap: () async {
+                                FocusScope.of(context).unfocus();
+                                await context.read<AuthFlowCubit>().logout();
+                              },
+                            ),
+                            if (!isAnon)
                               SettingTile(
-                                leftIcon: CupertinoIcons.question_circle,
-                                text: "FAQ",
-                                onTap: () => router.push("/settings/faq"),
+                                iconColor: Theme.of(context).colorScheme.primary,
+                                leftIcon: CupertinoIcons.lock_open,
+                                text: "Reset password",
+                                onTap: () => router.push("/reset-password"),
                               ),
+                            if (isAnon)
                               SettingTile(
-                                leftIcon: CupertinoIcons.bell,
-                                text: "Notifications",
-                                onTap: () => router.push("/settings/notifications"),
+                                iconColor: Theme.of(context).colorScheme.secondary,
+                                leftIcon: CupertinoIcons.person_add_solid,
+                                text: "Upgrade to full account",
+                                onTap: () => router.push("/register", extra: const RegistrationPops(true)),
                               ),
-                              SettingTile(
-                                leftIcon: CupertinoIcons.chat_bubble,
-                                text: "Feedback",
-                                onTap: () => router.push("/settings/feedback"),
-                              ),
-                              SettingTile(
-                                leftIcon: CupertinoIcons.mail,
-                                text: "Contact us",
-                                onTap: () => router.push("/settings/contact"),
-                              ),
-                              SettingTile(
-                                rightIcon: CupertinoIcons.link,
-                                leftIcon: CupertinoIcons.sidebar_left,
-                                text: "Confesi.com",
-                                onTap: () => context.read<WebsiteLauncherCubit>().launchWebsiteHome(),
-                              ),
-                            ],
-                          ),
-                          TileGroup(
-                            text: "Personalization",
-                            tiles: [
-                              SettingTile(
-                                leftIcon: CupertinoIcons.color_filter,
-                                text: "Appearance",
-                                onTap: () => router.push("/settings/appearance"),
-                              ),
-                              SwitchSelectionTile(
-                                bottomRounded: true,
-                                isActive:
-                                    Provider.of<UserAuthService>(context).data().profanityFilter == ProfanityFilter.on,
-                                icon: CupertinoIcons.strikethrough,
-                                text: "Profanity filter",
-                                secondaryText:
-                                    Provider.of<UserAuthService>(context).data().profanityFilter == ProfanityFilter.on
-                                        ? "On"
-                                        : "Off",
-                                onTap: () =>
-                                    Provider.of<UserAuthService>(context, listen: false).data().profanityFilter ==
-                                            ProfanityFilter.off
-                                        ? Provider.of<UserAuthService>(context, listen: false).saveData(
-                                            Provider.of<UserAuthService>(context, listen: false)
-                                                .data()
-                                                .copyWith(profanityFilter: ProfanityFilter.on))
-                                        : Provider.of<UserAuthService>(context, listen: false).saveData(
-                                            Provider.of<UserAuthService>(context, listen: false)
-                                                .data()
-                                                .copyWith(profanityFilter: ProfanityFilter.off)),
-                              ),
-                              SwitchSelectionTile(
-                                bottomRounded: true,
-                                isActive: Provider.of<UserAuthService>(context).data().unitSystem == UnitSystem.metric,
-                                icon: CupertinoIcons.circle_lefthalf_fill,
-                                text: "Unit system",
-                                secondaryText:
-                                    Provider.of<UserAuthService>(context).data().unitSystem == UnitSystem.metric
-                                        ? "Metric"
-                                        : "Imperial",
-                                onTap: () => Provider.of<UserAuthService>(context, listen: false).data().unitSystem ==
-                                        UnitSystem.metric
-                                    ? Provider.of<UserAuthService>(context, listen: false).saveData(
-                                        Provider.of<UserAuthService>(context, listen: false)
-                                            .data()
-                                            .copyWith(unitSystem: UnitSystem.imperial))
-                                    : Provider.of<UserAuthService>(context, listen: false).saveData(
-                                        Provider.of<UserAuthService>(context, listen: false)
-                                            .data()
-                                            .copyWith(unitSystem: UnitSystem.metric)),
-                              ),
-                              SwitchSelectionTile(
-                                bottomRounded: true,
-                                isActive: Provider.of<UserAuthService>(context).data().isShrunkView,
-                                icon: CupertinoIcons.slider_horizontal_below_rectangle,
-                                text: "Shrink view",
-                                secondaryText: Provider.of<UserAuthService>(context).data().isShrunkView ? "On" : "Off",
-                                onTap: () => Provider.of<UserAuthService>(context, listen: false).data().isShrunkView
-                                    ? Provider.of<UserAuthService>(context, listen: false).saveData(
-                                        Provider.of<UserAuthService>(context, listen: false)
-                                            .data()
-                                            .copyWith(isShrunkView: false))
-                                    : Provider.of<UserAuthService>(context, listen: false).saveData(
-                                        Provider.of<UserAuthService>(context, listen: false)
-                                            .data()
-                                            .copyWith(isShrunkView: true)),
-                              ),
-                              SettingTile(
-                                leftIcon: CupertinoIcons.textformat_size,
-                                text: "Text size",
-                                onTap: () => router.push("/settings/text-size"),
-                              ),
-                              SettingTile(
-                                leftIcon: CupertinoIcons.square_fill_on_circle_fill,
-                                text: "Curviness of components",
-                                onTap: () => router.push("/settings/curvy"),
-                              ),
-                            ],
-                          ),
-                          TileGroup(
-                            text: "Account",
-                            tiles: [
-                              SettingTile(
-                                isRedText: true,
-                                leftIcon: CupertinoIcons.square_arrow_right,
-                                text: isAnon ? "Logout of guest account" : "Logout",
-                                secondaryText: isAnon ? "Guest" : sl.get<UserAuthService>().email,
-                                onTap: () async {
-                                  FocusScope.of(context).unfocus();
-                                  await context.read<AuthFlowCubit>().logout();
-                                },
-                              ),
-                              if (!isAnon)
+                          ],
+                        ),
+                        TileGroup(
+                          text: "Legal",
+                          tiles: [
+                            SettingTile(
+                              rightIcon: CupertinoIcons.link,
+                              leftIcon: CupertinoIcons.doc,
+                              text: "Term of service",
+                              onTap: () => print("todo: launch website"),
+                            ),
+                            SettingTile(
+                              rightIcon: CupertinoIcons.link,
+                              leftIcon: CupertinoIcons.doc,
+                              text: "Privacy policy",
+                              onTap: () => print("todo: launch website"),
+                            ),
+                            SettingTile(
+                              rightIcon: CupertinoIcons.link,
+                              leftIcon: CupertinoIcons.doc,
+                              text: "Community rules",
+                              onTap: () => print("todo: launch website"),
+                            ),
+                            TileGroup(
+                              text: "Other",
+                              tiles: [
                                 SettingTile(
-                                  iconColor: Theme.of(context).colorScheme.primary,
-                                  leftIcon: CupertinoIcons.lock_open,
-                                  text: "Reset password",
-                                  onTap: () => router.push("/reset-password"),
+                                  leftIcon: CupertinoIcons.heart,
+                                  text: "Acknowledgements",
+                                  onTap: () => router.push("/settings/acknowledgements"),
                                 ),
-                              if (isAnon)
-                                SettingTile(
-                                  iconColor: Theme.of(context).colorScheme.secondary,
-                                  leftIcon: CupertinoIcons.person_add_solid,
-                                  text: "Upgrade to full account",
-                                  onTap: () => router.push("/register", extra: const RegistrationPops(true)),
-                                ),
-                            ],
-                          ),
-                          TileGroup(
-                            text: "Legal",
-                            tiles: [
-                              SettingTile(
-                                rightIcon: CupertinoIcons.link,
-                                leftIcon: CupertinoIcons.doc,
-                                text: "Term of service",
-                                onTap: () => context.read<WebsiteLauncherCubit>().launchWebsiteTermsOfService(),
-                              ),
-                              SettingTile(
-                                rightIcon: CupertinoIcons.link,
-                                leftIcon: CupertinoIcons.doc,
-                                text: "Privacy policy",
-                                onTap: () => context.read<WebsiteLauncherCubit>().launchWebsitePrivacyStatement(),
-                              ),
-                              SettingTile(
-                                rightIcon: CupertinoIcons.link,
-                                leftIcon: CupertinoIcons.doc,
-                                text: "Community rules",
-                                onTap: () => context.read<WebsiteLauncherCubit>().launchWebsiteCommunityRules(),
-                              ),
-                              TileGroup(
-                                text: "Other",
-                                tiles: [
-                                  SettingTile(
-                                    leftIcon: CupertinoIcons.heart,
-                                    text: "Acknowledgements",
-                                    onTap: () => router.push("/settings/acknowledgements"),
-                                  ),
-                                ],
-                              ),
-                              const SimulatedBottomSafeArea(),
-                            ],
-                          ),
-                        ],
-                      ),
+                              ],
+                            ),
+                            const SimulatedBottomSafeArea(),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

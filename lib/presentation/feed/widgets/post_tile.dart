@@ -5,7 +5,6 @@ import 'package:confesi/models/post.dart';
 import 'package:confesi/presentation/feed/widgets/reaction_tile.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:confesi/presentation/shared/other/widget_or_nothing.dart';
-import 'package:confesi/presentation/shared/other/link_preview.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

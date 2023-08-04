@@ -1,7 +1,6 @@
 import '../../../core/router/go_router.dart';
 
-import '../../../domain/shared/entities/infinite_scroll_indexable.dart';
-
+import '../../../core/types/infinite_scrollable_indexable.dart';
 import '../../shared/indicators/loading_cupertino.dart';
 import '../../shared/other/feed_list.dart';
 import '../../shared/overlays/info_sheet_with_action.dart';

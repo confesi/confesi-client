@@ -29,20 +29,13 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-import 'application/authentication_and_settings/cubit/contact_setting_cubit.dart';
-import 'application/authentication_and_settings/cubit/language_setting_cubit.dart';
-import 'application/feed/cubit/recents_cubit.dart';
-import 'application/feed/cubit/trending_cubit.dart';
 import 'application/leaderboard/cubit/leaderboard_cubit.dart';
 
-import 'application/shared/cubit/maps_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'application/create_post/cubit/post_cubit.dart';
 import 'application/daily_hottest/cubit/hottest_cubit.dart';
-import 'application/shared/cubit/share_cubit.dart';
-import 'application/shared/cubit/website_launcher_cubit.dart';
 import 'core/router/go_router.dart';
 import 'core/services/fcm_notifications/notification_service.dart';
 import 'core/services/user_auth/user_auth_data.dart';
@@ -68,18 +61,11 @@ void main() async => await init().then(
                 ],
                 child: MultiBlocProvider(
                   providers: [
-                    BlocProvider(lazy: false, create: (context) => sl<MapsCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<SentimentAnalysisCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<CreatePostCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<PostCategoriesCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<HottestCubit>()),
-                    BlocProvider(lazy: false, create: (context) => sl<WebsiteLauncherCubit>()),
-                    BlocProvider(lazy: false, create: (context) => sl<ShareCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<LeaderboardCubit>()),
-                    BlocProvider(lazy: false, create: (context) => sl<TrendingCubit>()),
-                    BlocProvider(lazy: false, create: (context) => sl<RecentsCubit>()),
-                    BlocProvider(lazy: false, create: (context) => sl<ContactSettingCubit>()),
-                    BlocProvider(lazy: false, create: (context) => sl<LanguageSettingCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<AuthFlowCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<AccountDetailsCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<FeedbackCubit>()),

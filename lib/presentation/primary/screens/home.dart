@@ -6,7 +6,6 @@ import '../../../core/services/user_auth/user_auth_service.dart';
 import '../../profile/screens/account_stats.dart';
 import '../../shared/other/widget_or_nothing.dart';
 
-import '../../../application/shared/cubit/share_cubit.dart';
 import '../../authentication_and_settings/screens/settings/home.dart';
 import '../../leaderboard/screens/home.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -47,97 +46,84 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocListener(
-      listeners: [
-        BlocListener<ShareCubit, ShareState>(
-          listener: (context, state) {
-            if (state is ShareError) {
-              showNotificationChip(context, state.message);
-              // set to base
-              context.read<ShareCubit>().setToBase();
-            }
-          },
-        ),
-      ],
-      child: WillPopScope(
-        onWillPop: () async => false,
-        child: ThemeStatusBar(
-          child: Scaffold(
-            backgroundColor: Theme.of(context).colorScheme.background,
-            drawerScrimColor: Colors.black.withOpacity(0.7),
-            drawerEnableOpenDragGesture: currentIndex == 0,
-            drawer: const FeedDrawer(), // Reference to the "watched_universities" feature drawer (feed_drawer).
-            resizeToAvoidBottomInset: false,
-            key: scaffoldKey,
-            body: Center(
-              child: Scaffold(
-                body: IndexedStack(
-                  index: currentIndex,
-                  children: [
-                    ExploreHome(scaffoldKey: scaffoldKey),
-                    const HottestHome(),
-                    const SettingsHome(),
-                    const LeaderboardScreen(),
-                    const AccountProfileStats(),
-                    // const NotificationsScreen(),
-                  ],
-                ),
-                bottomNavigationBar: Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.background,
-                    border: Border(
-                      top: BorderSide(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
-                    ),
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: ThemeStatusBar(
+        child: Scaffold(
+          backgroundColor: Theme.of(context).colorScheme.background,
+          drawerScrimColor: Colors.black.withOpacity(0.7),
+          drawerEnableOpenDragGesture: currentIndex == 0,
+          drawer: const FeedDrawer(), // Reference to the "watched_universities" feature drawer (feed_drawer).
+          resizeToAvoidBottomInset: false,
+          key: scaffoldKey,
+          body: Center(
+            child: Scaffold(
+              body: IndexedStack(
+                index: currentIndex,
+                children: [
+                  ExploreHome(scaffoldKey: scaffoldKey),
+                  const HottestHome(),
+                  const SettingsHome(),
+                  const LeaderboardScreen(),
+                  const AccountProfileStats(),
+                  // const NotificationsScreen(),
+                ],
+              ),
+              bottomNavigationBar: Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.background,
+                  border: Border(
+                    top: BorderSide(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
                   ),
-                  child: SafeArea(
-                    top: false,
-                    child: TabBar(
-                      onTap: (int newIndex) {
-                        if (newIndex == 2) {
-                          // create post
-                          if (sl.get<UserAuthService>().isAnon) {
-                            showRegisteredUserOnlySheet(context);
-                          } else {
-                            router.push("/create");
-                            context.read<PostCategoriesCubit>().resetCategoryAndText();
-                          }
+                ),
+                child: SafeArea(
+                  top: false,
+                  child: TabBar(
+                    onTap: (int newIndex) {
+                      if (newIndex == 2) {
+                        // create post
+                        if (sl.get<UserAuthService>().isAnon) {
+                          showRegisteredUserOnlySheet(context);
                         } else {
-                          setState(() => currentIndex = newIndex);
+                          router.push("/create");
+                          context.read<PostCategoriesCubit>().resetCategoryAndText();
                         }
-                      },
-                      labelColor: Theme.of(context).colorScheme.secondary,
-                      indicatorSize: TabBarIndicatorSize.label,
-                      indicatorColor: Colors.transparent,
-                      controller: tabController,
-                      tabs: [
-                        _BottomTab(
-                          indexMatcher: 0,
-                          currentIndex: currentIndex,
-                          icon: CupertinoIcons.compass,
-                        ),
-                        _BottomTab(
-                          indexMatcher: 1,
-                          currentIndex: currentIndex,
-                          icon: CupertinoIcons.flame,
-                        ),
-                        _BottomTab(
-                          indexMatcher: 2,
-                          currentIndex: currentIndex,
-                          icon: CupertinoIcons.add,
-                        ),
-                        _BottomTab(
-                          indexMatcher: 3,
-                          currentIndex: currentIndex,
-                          icon: CupertinoIcons.chart_bar_alt_fill,
-                        ),
-                        _BottomTab(
-                          hasNotification: false,
-                          indexMatcher: 4,
-                          currentIndex: currentIndex,
-                          icon: CupertinoIcons.profile_circled,
-                        ),
-                      ],
-                    ),
+                      } else {
+                        setState(() => currentIndex = newIndex);
+                      }
+                    },
+                    labelColor: Theme.of(context).colorScheme.secondary,
+                    indicatorSize: TabBarIndicatorSize.label,
+                    indicatorColor: Colors.transparent,
+                    controller: tabController,
+                    tabs: [
+                      _BottomTab(
+                        indexMatcher: 0,
+                        currentIndex: currentIndex,
+                        icon: CupertinoIcons.compass,
+                      ),
+                      _BottomTab(
+                        indexMatcher: 1,
+                        currentIndex: currentIndex,
+                        icon: CupertinoIcons.flame,
+                      ),
+                      _BottomTab(
+                        indexMatcher: 2,
+                        currentIndex: currentIndex,
+                        icon: CupertinoIcons.add,
+                      ),
+                      _BottomTab(
+                        indexMatcher: 3,
+                        currentIndex: currentIndex,
+                        icon: CupertinoIcons.chart_bar_alt_fill,
+                      ),
+                      _BottomTab(
+                        hasNotification: false,
+                        indexMatcher: 4,
+                        currentIndex: currentIndex,
+                        icon: CupertinoIcons.profile_circled,
+                      ),
+                    ],
                   ),
                 ),
               ),

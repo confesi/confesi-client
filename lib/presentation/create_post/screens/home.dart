@@ -7,7 +7,6 @@ import '../../../init.dart';
 import '../../shared/button_touch_effects/touchable_scale.dart';
 
 import '../../../core/utils/sizing/width_fraction.dart';
-import '../../../domain/create_post/entities/draft_post_entity.dart';
 import '../../shared/other/widget_or_nothing.dart';
 import '../../shared/overlays/notification_chip.dart';
 import 'package:scrollable/exports.dart';
@@ -73,7 +72,6 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
   late String titleHint;
   late String bodyHint;
   // preload for the drafts sheet
-  List<DraftPostEntity> draftEntities = [];
 
   @override
   void initState() {
