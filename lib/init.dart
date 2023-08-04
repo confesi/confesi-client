@@ -14,6 +14,7 @@ import 'application/authentication_and_settings/cubit/auth_flow_cubit.dart';
 import 'application/feed/cubit/schools_drawer_cubit.dart';
 import 'application/feed/cubit/search_schools_cubit.dart';
 import 'application/feed/cubit/sentiment_analysis_cubit.dart';
+import 'application/user/cubit/saved_posts_cubit.dart';
 import 'core/services/create_post_hint_text/create_post_hint_text.dart';
 import 'core/services/remote_config/remote_config.dart';
 import 'core/services/splash_screen_hint_text/splash_screen_hint_text.dart';
@@ -89,11 +90,10 @@ Future<void> initFirebase() async {
   final remoteConfigService = RemoteConfigService(sl());
   await remoteConfigService.init();
   sl.registerLazySingleton(() => remoteConfigService);
-  // appcheck
   await FirebaseAppCheck.instance.activate(
     webRecaptchaSiteKey: 'recaptcha-v3-site-key',
-    androidProvider: AndroidProvider.playIntegrity,
-    appleProvider: AppleProvider.appAttestWithDeviceCheckFallback,
+    androidProvider: AndroidProvider.debug,
+    appleProvider: AppleProvider.appAttest,
   );
 }
 
@@ -160,7 +160,8 @@ Future<void> init() async {
         Api(),
         Api(),
         Api(),
-      )); // new instance of API
+      )); // new instan
+  sl.registerFactory(() => SavedPostsCubit(Api()));
 
   //! Usecases
   sl.registerLazySingleton(() => Recents(repository: sl()));

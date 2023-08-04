@@ -33,12 +33,6 @@ const int kPostsReturnedPerLoad = 3;
 /// The text length of the posts displayed inside the feed before truncating.
 const int kPreviewPostTextLength = 150;
 
-/// The title length of the posts displayed inside the feed before truncating.
-///
-/// A title shouldn't normally be truncated, so, in the post limit, make it 150 as well, so
-/// users know what will be displayed.
-const int kPreviewPostTitleLength = 75;
-
 /// The title for the 'post status' field on a post's advanced details page.
 const String kPostStatusTitle = 'Post status';
 

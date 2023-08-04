@@ -8,7 +8,7 @@ import '../../../core/router/go_router.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '../../../constants/shared/dev.dart';
+import '../../../constants/shared/constants.dart';
 import '../../../init.dart';
 import '../../../presentation/shared/overlays/notification_chip.dart';
 

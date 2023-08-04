@@ -5,7 +5,7 @@ import 'dart:io';
 import 'package:confesi/core/services/user_auth/user_auth_data.dart';
 import 'package:provider/provider.dart';
 
-import '../../constants/shared/dev.dart';
+import '../../constants/shared/constants.dart';
 import '../results/failures.dart';
 import '../services/user_auth/user_auth_service.dart';
 import '../utils/numbers/is_plural.dart';

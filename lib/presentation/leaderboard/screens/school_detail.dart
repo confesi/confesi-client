@@ -138,7 +138,7 @@ class SchoolDetail extends StatelessWidget {
                             bgColor: Theme.of(context).colorScheme.surface,
                             textColor: Theme.of(context).colorScheme.primary,
                             onTap: () => print("tap"),
-                            text: "This school's feed",
+                            text: "Jump to this school's feed",
                           ),
                           SimpleTextButton(
                             bgColor: Theme.of(context).colorScheme.surface,

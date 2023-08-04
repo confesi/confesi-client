@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:confesi/application/feed/cubit/schools_drawer_cubit.dart';
 import 'package:confesi/application/feed/cubit/sentiment_analysis_cubit.dart';
 import 'package:confesi/application/user/cubit/feedback_categories_cubit.dart';
-import 'package:confesi/constants/shared/dev.dart';
+import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/results/failures.dart';
 import 'package:confesi/models/school.dart';
 import 'package:geolocator/geolocator.dart';
@@ -16,6 +16,7 @@ import 'application/create_post/cubit/post_categories_cubit.dart';
 import 'application/feed/cubit/search_schools_cubit.dart';
 import 'application/user/cubit/account_details_cubit.dart';
 import 'application/user/cubit/feedback_cubit.dart';
+import 'application/user/cubit/saved_posts_cubit.dart';
 import 'application/user/cubit/stats_cubit.dart';
 import 'core/services/hive/hive_client.dart';
 import 'core/services/user_auth/user_auth_service.dart';
@@ -85,6 +86,7 @@ void main() async => await init().then(
                     BlocProvider(lazy: false, create: (context) => sl<FeedbackCategoriesCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<StatsCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<SearchSchoolsCubit>()),
+                    BlocProvider(lazy: false, create: (context) => sl<SavedPostsCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<SchoolsDrawerCubit>()),
                   ],
                   child: debugMode && devicePreview

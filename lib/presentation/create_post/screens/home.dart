@@ -1,6 +1,7 @@
 import 'package:confesi/application/create_post/cubit/post_categories_cubit.dart';
 import 'package:confesi/presentation/shared/behaviours/nav_blocker.dart';
 
+import '../../../constants/shared/constants.dart';
 import '../../../core/router/go_router.dart';
 import '../../../init.dart';
 import '../../shared/button_touch_effects/touchable_scale.dart';
@@ -21,7 +22,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../constants/create_post/general.dart';
 import '../../../core/services/create_post_hint_text/create_post_hint_text.dart';
 import '../../../core/styles/typography.dart';
 import '../../shared/layout/appbar.dart';
@@ -63,7 +63,7 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
     if (focusedField == FocusedField.title) {
       return titleController.text.runes.length / kPostTitleMaxLength;
     } else if (focusedField == FocusedField.body) {
-      return bodyController.text.runes.length / kPostTextMaxLength;
+      return bodyController.text.runes.length / kPostBodyMaxLength;
     } else {
       // Case for when [focusedField] is [FocusedField.none]
       return 0;
@@ -101,8 +101,6 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
     bodyController.dispose();
     super.dispose();
   }
-
-  bool isEmpty() => titleController.text.trim().isEmpty && bodyController.text.trim().isEmpty;
 
   void clearTextfields() {
     titleController.clear();
@@ -152,29 +150,8 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                     leftIconVisible: true,
                     leftIcon: CupertinoIcons.xmark,
                     leftIconOnPress: () {
-                      isEmpty()
-                          ? Navigator.pop(context)
-                          : showButtonOptionsSheet(
-                              context,
-                              [
-                                OptionButton(
-                                  popContext: false,
-                                  onTap: () {
-                                    clearTextfields();
-                                    Navigator.popUntil(context, ModalRoute.withName('/home'));
-                                  },
-                                  text: "Discard",
-                                  icon: CupertinoIcons.trash,
-                                ),
-                                OptionButton(
-                                  onTap: () {
-                                    print('save draft'); // todo
-                                  },
-                                  text: "Save draft",
-                                  icon: CupertinoIcons.tray_arrow_down,
-                                ),
-                              ],
-                            );
+                      clearTextfields();
+                      router.pop(context);
                     },
                   ),
                   Expanded(
@@ -258,7 +235,7 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                                                       setState(() {});
                                                     },
                                                     inputFormatters: [
-                                                      LengthLimitingTextInputFormatter(kPostTextMaxLength),
+                                                      LengthLimitingTextInputFormatter(kPostTitleMaxLength),
                                                     ],
                                                     controller: bodyController,
                                                     focusNode: bodyFocusNode,
@@ -287,52 +264,6 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                                   ),
                                 );
                               },
-                            ),
-                          ),
-                          WidgetOrNothing(
-                            animatedTransition: false,
-                            showWidget: titleController.text.isEmpty &&
-                                bodyController.text.isEmpty &&
-                                !titleFocusNode.hasFocus &&
-                                !bodyFocusNode.hasFocus,
-                            child: GestureDetector(
-                              onTap: () => bodyFocusNode.requestFocus(),
-                              child: Container(
-                                // Transparent hitbox trick
-                                color: Colors.transparent,
-                                child: SafeArea(
-                                  top: false,
-                                  child: Container(
-                                    // Transparent hitbox trick
-                                    color: Colors.transparent,
-                                    width: double.infinity,
-                                    child: Center(
-                                      child: TouchableScale(
-                                        tapType: TapType.lightImpact,
-                                        onTap: () => {}, // todo
-                                        child: Container(
-                                          constraints: BoxConstraints(maxWidth: widthFraction(context, 2 / 3)),
-                                          padding: const EdgeInsets.all(20),
-                                          margin: const EdgeInsets.symmetric(vertical: 45),
-                                          decoration: BoxDecoration(
-                                            color: Theme.of(context).colorScheme.secondary,
-                                            borderRadius: const BorderRadius.all(Radius.circular(50)),
-                                          ),
-                                          child: Text(
-                                            "Load a draft",
-                                            style: kTitle.copyWith(
-                                              color: Theme.of(context).colorScheme.onSecondary,
-                                            ),
-                                            textAlign: TextAlign.center,
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 2,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
                             ),
                           ),
                         ],

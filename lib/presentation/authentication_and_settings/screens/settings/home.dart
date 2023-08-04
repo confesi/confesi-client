@@ -50,6 +50,7 @@ class SettingsHome extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 AppbarLayout(
+                  bottomBorder: true,
                   backgroundColor: Theme.of(context).colorScheme.shadow,
                   centerWidget: Text(
                     "Settings",

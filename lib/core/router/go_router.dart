@@ -3,6 +3,8 @@ import 'package:confesi/presentation/authentication_and_settings/screens/setting
 import 'package:confesi/presentation/notifications/screens/home.dart';
 
 import 'package:confesi/presentation/authentication_and_settings/screens/authentication/open.dart';
+import 'package:confesi/presentation/user/screens/saved_comments.dart';
+import 'package:confesi/presentation/user/screens/your_comments.dart';
 import '../../presentation/authentication_and_settings/screens/authentication/reset_password.dart';
 import '../../presentation/authentication_and_settings/screens/settings/contact.dart';
 import '../../presentation/authentication_and_settings/screens/settings/faq.dart';
@@ -17,8 +19,8 @@ import '../../presentation/primary/screens/critical_error.dart';
 import '../../presentation/primary/screens/home.dart';
 import '../../presentation/primary/screens/showcase.dart';
 import '../../presentation/profile/screens/account_details.dart';
-import '../../presentation/user_posts_and_comments/screens/posts.dart';
-import '../../presentation/user_posts_and_comments/screens/saved.dart';
+import '../../presentation/user/screens/your_posts.dart';
+import '../../presentation/user/screens/saved_posts.dart';
 import '../../presentation/watched_universities/screens/search_schools.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
@@ -134,7 +136,9 @@ final GoRouter router = GoRouter(
         return SentimentAnalysisScreen(props: props);
       },
     ),
-
+    GoRoute(
+        path: '/home/profile/saved/posts',
+        builder: (BuildContext context, GoRouterState state) => const YourSavedPostsScreen()),
     GoRoute(
       path: '/register',
       builder: (BuildContext context, GoRouterState state) {
@@ -185,13 +189,12 @@ final GoRouter router = GoRouter(
         path: '/home/profile/posts', builder: (BuildContext context, GoRouterState state) => const YourPostsScreen()),
     GoRoute(
         path: '/home/profile/comments',
-        builder: (BuildContext context, GoRouterState state) => const YourPostsScreen()), // todo: your comments screen
+        builder: (BuildContext context, GoRouterState state) => const YourCommentsScreen()),
     GoRoute(
         path: '/home/profile/saved/comments',
-        builder: (BuildContext context, GoRouterState state) => const YourSavedPosts()), // todo: saved comments
-    GoRoute(
-        path: '/home/profile/saved/posts',
-        builder: (BuildContext context, GoRouterState state) => const YourSavedPosts()),
+        builder: (BuildContext context, GoRouterState state) =>
+            const YourSavedCommentsScreen()), // todo: saved comments
+
     GoRoute(path: '/settings', builder: (BuildContext context, GoRouterState state) => const SettingsHome()),
 
     GoRoute(path: '/settings/faq', builder: (BuildContext context, GoRouterState state) => const FAQScreen()),

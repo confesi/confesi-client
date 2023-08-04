@@ -1,4 +1,3 @@
-
 import '../../../core/utils/numbers/large_number_formatter.dart';
 import '../../shared/button_touch_effects/touchable_opacity.dart';
 import 'package:flutter/material.dart';
@@ -11,17 +10,20 @@ class ReactionTile extends StatelessWidget {
     required this.amount,
     required this.icon,
     required this.iconColor,
+    this.isSelected = false,
   });
 
   final int amount;
   final IconData icon;
   final Color iconColor;
+  final bool isSelected;
 
   @override
   Widget build(BuildContext context) {
     return TouchableOpacity(
       onTap: () => print("tap"),
-      child: Container(
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 250),
         padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
         decoration: BoxDecoration(
           border: Border.all(
@@ -34,13 +36,14 @@ class ReactionTile extends StatelessWidget {
           children: [
             Icon(
               icon,
-              color: iconColor,
+              color: isSelected ? iconColor : Theme.of(context).colorScheme.onSurface,
+              size: 17,
             ),
-            const SizedBox(width: 10),
+            const SizedBox(width: 5),
             Text(
               largeNumberFormatter(amount),
-              style: kDetail.copyWith(
-                color: Theme.of(context).colorScheme.primary,
+              style: kTitle.copyWith(
+                color: isSelected ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onSurface,
               ),
             ),
           ],

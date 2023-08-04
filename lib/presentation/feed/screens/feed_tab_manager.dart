@@ -1,4 +1,3 @@
-
 import '../../../core/router/go_router.dart';
 
 import '../../shared/buttons/circle_emoji_button.dart';
@@ -18,6 +17,7 @@ import '../tabs/recents_feed.dart';
 enum SelectedFeedType {
   recents,
   trending,
+  sentiment,
 }
 
 class ExploreHome extends StatefulWidget {
@@ -41,6 +41,10 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
         selectedFeedType = SelectedFeedType.trending;
       });
     } else if (selectedFeedType == SelectedFeedType.trending) {
+      setState(() {
+        selectedFeedType = SelectedFeedType.sentiment;
+      });
+    } else if (selectedFeedType == SelectedFeedType.sentiment) {
       setState(() {
         selectedFeedType = SelectedFeedType.recents;
       });
@@ -76,17 +80,12 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
                         // const SizedBox(width: 5),
                         CircleEmojiButton(
                           onTap: () => changeFeed(),
-                          text: selectedFeedType == SelectedFeedType.trending ? "Trending 🔥" : "New ⏳",
-                          // text: selectedFeedType == SelectedFeedType.trending
-                          //     ? sl.get<RemoteConfigService>().config.getString('trending_feed_btn_title')
-                          //     : sl.get<RemoteConfigService>().config.getString('recents_feed_btn_title'),
+                          text: selectedFeedType == SelectedFeedType.sentiment
+                              ? 'Positivity ✨'
+                              : selectedFeedType == SelectedFeedType.trending
+                                  ? 'Trending 🔥'
+                                  : 'Recents ⏳',
                         ),
-                        // const SizedBox(width: 5),
-                        // Icon(
-                        //   CupertinoIcons.chevron_forward,
-                        //   color: Theme.of(context).colorScheme.onSurface,
-                        //   size: 20,
-                        // ),
                       ],
                     ),
                     leftIconVisible: true,

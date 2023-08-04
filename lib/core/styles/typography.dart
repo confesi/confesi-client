@@ -7,8 +7,8 @@ var kFaded = gf.GoogleFonts.montserrat(
 );
 
 /// Faded text style - meant for decorative background numbers or display values. Not for primary reading.
-var kFunkyDisplay = gf.GoogleFonts.montserrat(
-  textStyle: const f.TextStyle(fontSize: 35, fontWeight: f.FontWeight.bold),
+var kFunkyDisplay = gf.GoogleFonts.inter(
+  textStyle: const f.TextStyle(fontSize: 35, fontWeight: f.FontWeight.w800),
 );
 
 /// Large text style - meant for display, but with sans serif style.

@@ -37,6 +37,8 @@ class _AcknowledgementsScreenState extends State<AcknowledgementsScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             AppbarLayout(
+                                bottomBorder: true,
+
               backgroundColor: Theme.of(context).colorScheme.shadow,
               centerWidget: Text(
                 "Acknowledgements",

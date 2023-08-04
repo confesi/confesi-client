@@ -99,7 +99,7 @@ class _ProfileHomeState extends State<ProfileHome> with AutomaticKeepAliveClient
                         textColor: Theme.of(context).colorScheme.onSurface,
                         text: "Saved confessions",
                         icon: CupertinoIcons.bookmark,
-                        onTap: () => router.push("/home/profile/saved/posts"),
+                        onTap: () => router.push('/home/profile/saved/posts'),
                       ),
                       StatTileItem(
                         iconColor: Theme.of(context).colorScheme.primary,

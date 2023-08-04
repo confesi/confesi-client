@@ -4,14 +4,14 @@ import '../../../core/styles/typography.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/layout/appbar.dart';
 
-class YourSavedPosts extends StatefulWidget {
-  const YourSavedPosts({super.key});
+class YourSavedCommentsScreen extends StatefulWidget {
+  const YourSavedCommentsScreen({super.key});
 
   @override
-  State<YourSavedPosts> createState() => _YourSavedPostsState();
+  State<YourSavedCommentsScreen> createState() => _YourSavedCommentsScreenState();
 }
 
-class _YourSavedPostsState extends State<YourSavedPosts> {
+class _YourSavedCommentsScreenState extends State<YourSavedCommentsScreen> {
   @override
   Widget build(BuildContext context) {
     return ThemeStatusBar(
@@ -26,7 +26,7 @@ class _YourSavedPostsState extends State<YourSavedPosts> {
                 backgroundColor: Theme.of(context).colorScheme.shadow,
                 bottomBorder: false,
                 centerWidget: Text(
-                  "Saved Confessions",
+                  "Saved Comments",
                   style: kTitle.copyWith(
                     color: Theme.of(context).colorScheme.primary,
                   ),

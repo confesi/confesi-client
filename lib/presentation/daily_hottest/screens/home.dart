@@ -1,3 +1,5 @@
+import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
+
 import '../../../application/create_post/cubit/post_cubit.dart';
 import '../../../core/router/go_router.dart';
 import 'package:flutter/services.dart';
@@ -7,8 +9,8 @@ import '../../shared/indicators/loading_cupertino.dart';
 
 import '../../../application/daily_hottest/cubit/hottest_cubit.dart';
 import '../../../constants/leaderboard/general.dart';
-import '../../../core/extensions/dates/two_dates_same.dart';
-import '../../../core/extensions/dates/readable_date_format.dart';
+import '../../../core/utils/dates/two_dates_same.dart';
+import '../../../core/utils/dates/readable_date_format.dart';
 import '../widgets/hottest_tile.dart';
 import '../widgets/date_picker_sheet.dart';
 import 'package:flutter/cupertino.dart';
@@ -59,7 +61,7 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
           ),
         );
       }
-      return GestureDetector(
+      return TouchableOpacity(
         onTap: () => router.push("/home/posts/detail"),
         child: PageView(
           controller: pageController,
@@ -106,12 +108,12 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
             currentIndex = 0;
             headerText = state.date.isSameDate(DateTime.now().toUtc().subtract(const Duration(days: 1)))
                 ? headerText
-                : "Hottest of ${state.date.readableDateFormat()}";
+                : "Hottest of ${state.date.readableLocalDateFormat()}";
           }
           if (state is DailyHottestError) {
             headerText = state.date.isSameDate(DateTime.now().toUtc().subtract(const Duration(days: 1)))
                 ? headerText
-                : "Hottest of ${state.date.readableDateFormat()}";
+                : "Hottest of ${state.date.readableLocalDateFormat()}";
           }
           if (pageController.hasClients) {
             pageController.animateToPage(0, duration: const Duration(milliseconds: 250), curve: Curves.easeInOut);

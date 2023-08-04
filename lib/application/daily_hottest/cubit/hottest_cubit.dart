@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
-import 'package:confesi/core/extensions/dates/year_month_day.dart';
+import 'package:confesi/core/utils/dates/year_month_day.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 

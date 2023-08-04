@@ -1,5 +1,5 @@
 import 'package:confesi/application/user/cubit/account_details_cubit.dart';
-import 'package:confesi/constants/shared/dev.dart';
+import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/router/go_router.dart';
 import 'package:confesi/core/utils/sizing/height_fraction.dart';
 import 'package:confesi/presentation/shared/edited_source_widgets/swipe_refresh.dart';

@@ -1,13 +1,13 @@
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
-import 'package:confesi/core/extensions/dates/year_month_day.dart';
+import 'package:confesi/core/utils/dates/year_month_day.dart';
 import 'package:confesi/core/services/user_auth/user_auth_service.dart';
 import 'package:confesi/models/school_with_metadata.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../../../constants/shared/dev.dart';
+import '../../../constants/shared/constants.dart';
 import '../../../core/clients/api.dart';
 import '../../../domain/leaderboard/usecases/ranking.dart';
 import '../../../domain/shared/entities/infinite_scroll_indexable.dart';

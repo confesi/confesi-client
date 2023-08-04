@@ -1,19 +1,12 @@
 import 'package:bloc/bloc.dart';
+import 'package:confesi/constants/shared/constants.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 
 part 'post_categories_state.dart';
 
-PostCategoriesData _defaultState() => const PostCategoriesData(
-      categories: [
-        PostCategory("General", CupertinoIcons.cube_box),
-        PostCategory("Hot takes", CupertinoIcons.flame),
-        PostCategory("Classes", CupertinoIcons.book),
-        PostCategory("Events", CupertinoIcons.calendar),
-        PostCategory("Politics", CupertinoIcons.chat_bubble_2),
-        PostCategory("Relationships", CupertinoIcons.suit_heart),
-        PostCategory("Wholesome", CupertinoIcons.bandage),
-      ],
+PostCategoriesData _defaultState() => PostCategoriesData(
+      categories: postCategories,
       selectedIndex: 0,
       title: "",
       body: "",

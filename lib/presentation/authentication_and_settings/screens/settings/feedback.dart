@@ -41,6 +41,8 @@ class _FeedbackSettingScreenState extends State<FeedbackSettingScreen> {
           child: Column(
             children: [
               AppbarLayout(
+                                  bottomBorder: true,
+
                 backgroundColor: Theme.of(context).colorScheme.shadow,
                 centerWidget: Text(
                   "Feedback",

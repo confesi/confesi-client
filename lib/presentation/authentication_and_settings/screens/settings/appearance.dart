@@ -27,6 +27,8 @@ class AppearanceScreen extends StatelessWidget {
           child: Column(
             children: [
               AppbarLayout(
+                                  bottomBorder: true,
+
                 backgroundColor: Theme.of(context).colorScheme.shadow,
                 centerWidget: Text(
                   "Appearance",

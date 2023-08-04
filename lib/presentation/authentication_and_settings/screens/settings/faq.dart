@@ -31,6 +31,8 @@ class _FAQScreenState extends State<FAQScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             AppbarLayout(
+                                bottomBorder: true,
+
               backgroundColor: Theme.of(context).colorScheme.shadow,
               centerWidget: Text(
                 "FAQ",

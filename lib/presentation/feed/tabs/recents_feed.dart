@@ -1,3 +1,4 @@
+import 'package:confesi/models/post.dart';
 import 'package:flutter/material.dart';
 
 import '../../../domain/shared/entities/infinite_scroll_indexable.dart';
@@ -29,12 +30,7 @@ class _ExploreRecentsState extends State<ExploreRecents> {
   Future<void> loadMorePost() async {
     await Future.delayed(const Duration(milliseconds: 500));
     feedListController.addItems([
-      InfiniteScrollIndexable("test_id_1", const SimplePostTile()),
-      InfiniteScrollIndexable("test_id_2", const SimplePostTile()),
-      InfiniteScrollIndexable("test_id_3", const SimplePostTile()),
-      InfiniteScrollIndexable("test_id_4", const SimplePostTile()),
-      InfiniteScrollIndexable("test_id_5", const SimplePostTile()),
-      InfiniteScrollIndexable("test_id_6", const SimplePostTile()),
+      // todo: feed
     ]);
   }
 
@@ -53,24 +49,24 @@ class _ExploreRecentsState extends State<ExploreRecents> {
           //   ],
           // ),
           // const IconWithIndicator(icon: CupertinoIcons.bell),
-          Expanded(
-            child: FeedList(
-              hasError: false,
-              wontLoadMore: false,
-              onWontLoadMoreButtonPressed: () async => await loadMorePost(),
-              onErrorButtonPressed: () async => await loadMorePost(),
-              onPullToRefresh: () async {
-                await Future.delayed(const Duration(milliseconds: 1000));
-                feedListController.clearList();
-              },
-              wontLoadMoreMessage: "todo: wont load more",
-              loadMore: (id) async {
-                print("LAST SEEN ID: $id");
-                await loadMorePost();
-              },
-              controller: feedListController,
-            ),
-          ),
+          // Expanded(
+          //   child: FeedList(
+          //     hasError: false,
+          //     wontLoadMore: false,
+          //     onWontLoadMoreButtonPressed: () async => await loadMorePost(),
+          //     onErrorButtonPressed: () async => await loadMorePost(),
+          //     onPullToRefresh: () async {
+          //       await Future.delayed(const Duration(milliseconds: 1000));
+          //       feedListController.clearList();
+          //     },
+          //     wontLoadMoreMessage: "todo: wont load more",
+          //     loadMore: (id) async {
+          //       print("LAST SEEN ID: $id");
+          //       await loadMorePost();
+          //     },
+          //     controller: feedListController,
+          //   ),
+          // ),
         ],
       ),
     );

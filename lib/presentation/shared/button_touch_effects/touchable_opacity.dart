@@ -30,7 +30,7 @@ class _TouchableOpacityState extends State<TouchableOpacity> with SingleTickerPr
   @override
   void initState() {
     animController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 100), reverseDuration: const Duration(milliseconds: 250));
+        vsync: this, duration: const Duration(milliseconds: 50), reverseDuration: const Duration(milliseconds: 500));
     anim = CurvedAnimation(parent: animController, curve: Curves.linear, reverseCurve: Curves.linear);
     super.initState();
   }
@@ -78,7 +78,7 @@ class _TouchableOpacityState extends State<TouchableOpacity> with SingleTickerPr
               startAnim();
             },
             child: Opacity(
-              opacity: -anim.value * 0.5 + 1,
+              opacity: -anim.value * 0.9 + 1,
               child: widget.child,
             ),
           )

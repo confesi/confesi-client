@@ -32,7 +32,6 @@ class Post extends Equatable {
   int userVote;
   bool owner;
   Category category;
-  // bool saved;
   List<String> emojis;
 
   Post({
@@ -53,7 +52,6 @@ class Post extends Equatable {
     required this.userVote,
     required this.owner,
     required this.category,
-    // required this.saved,
     required this.emojis,
   });
 
@@ -70,13 +68,12 @@ class Post extends Equatable {
         downvote: json["post"]["downvote"],
         upvote: json["post"]["upvote"],
         trendingScore: json["post"]["trending_score"],
-        hottestOn: DateTime.parse(json["post"]["hottest_on"]),
+        hottestOn: json["post"]["hottest_on"] != null ? DateTime.parse(json["post"]["hottest_on"]) : null,
         hidden: json["post"]["hidden"],
         edited: json["post"]["edited"],
         userVote: json["user_vote"],
         owner: json["owner"],
-        // saved: json["saved"],
-        emojis: List<String>.from(json["emojis"].map((x) => x)),
+        emojis: (json["emojis"] as List).map((e) => e.toString()).toList(),
       );
 
   @override
