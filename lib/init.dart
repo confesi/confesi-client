@@ -155,7 +155,7 @@ Future<void> init() async {
   sl.registerFactory(() => FeedbackCubit());
   sl.registerFactory(() => FeedbackCategoriesCubit());
   sl.registerFactory(() => StatsCubit());
-  sl.registerFactory(() => SchoolsDrawerCubit());
+  sl.registerFactory(() => SchoolsDrawerCubit(Api()));
   sl.registerFactory(() => SearchSchoolsCubit(
         Api(),
         Api(),

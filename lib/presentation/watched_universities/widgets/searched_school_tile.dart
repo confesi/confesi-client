@@ -7,7 +7,6 @@ import '../../../core/styles/typography.dart';
 
 class SearchedSchoolTile extends StatelessWidget {
   const SearchedSchoolTile({
-    required this.onPress,
     required this.topText,
     required this.middleText,
     required this.bottomText,
@@ -25,7 +24,6 @@ class SearchedSchoolTile extends StatelessWidget {
   final String middleText;
   final String bottomText;
   final IconData leftIcon;
-  final VoidCallback onPress;
   final Function(bool newValue) onWatchChange;
   final Function(bool newValue) onHomeChange;
 

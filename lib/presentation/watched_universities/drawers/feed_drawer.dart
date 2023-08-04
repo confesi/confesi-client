@@ -1,4 +1,5 @@
 import 'package:confesi/application/feed/cubit/schools_drawer_cubit.dart';
+import 'package:confesi/application/feed/cubit/search_schools_cubit.dart';
 import 'package:confesi/presentation/shared/edited_source_widgets/swipe_refresh.dart';
 import 'package:confesi/presentation/shared/indicators/loading_or_alert.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,7 +11,6 @@ import 'package:scrollable/exports.dart';
 import '../../../core/styles/typography.dart';
 import '../../../core/utils/sizing/bottom_safe_area.dart';
 import '../../shared/buttons/simple_text.dart';
-import '../widgets/drawer_university_tile.dart';
 import '../widgets/section_accordian.dart';
 
 class FeedDrawer extends StatefulWidget {
@@ -46,32 +46,36 @@ class _FeedDrawerState extends State<FeedDrawer> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
+            constraints: const BoxConstraints(minHeight: 175),
             width: double.infinity,
             color: Theme.of(context).colorScheme.secondary,
             child: AnimatedSize(
               duration: const Duration(milliseconds: 500),
               curve: Curves.easeInOut,
-              child: SafeArea(
-                bottom: false,
-                child: Padding(
-                  padding: const EdgeInsets.all(15),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Currently viewing",
-                        style: kDetail.copyWith(
-                          color: Theme.of(context).colorScheme.onSecondary,
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: SafeArea(
+                  bottom: false,
+                  child: Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Currently viewing",
+                          style: kDetail.copyWith(
+                            color: Theme.of(context).colorScheme.onSecondary,
+                          ),
+                          textAlign: TextAlign.left,
                         ),
-                        textAlign: TextAlign.left,
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                        getSelectedSchool(state),
-                        style: kDisplay1.copyWith(color: Theme.of(context).colorScheme.onSecondary),
-                        textAlign: TextAlign.left,
-                      ),
-                    ],
+                        const SizedBox(height: 5),
+                        Text(
+                          getSelectedSchool(state),
+                          style: kDisplay1.copyWith(color: Theme.of(context).colorScheme.onSecondary),
+                          textAlign: TextAlign.left,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -89,7 +93,7 @@ class _FeedDrawerState extends State<FeedDrawer> {
                     child: SimpleTextButton(
                       infiniteWidth: true,
                       onTap: () => router.push("/schools/search"),
-                      text: "Edit watched schools",
+                      text: "Edit schools",
                     ),
                   ),
                   SectionAccordian(
@@ -100,7 +104,7 @@ class _FeedDrawerState extends State<FeedDrawer> {
                     items: [
                       DrawerUniversityTile(
                         text: userSchool.name,
-                        onTap: () => context.read<SchoolsDrawerCubit>().setSelectedFeed(SelectedId(userSchool.id)),
+                        onTap: () => context.read<SchoolsDrawerCubit>().setSelectedFeedInUI(SelectedId(userSchool.id)),
                       ),
                     ],
                   ),
@@ -111,11 +115,11 @@ class _FeedDrawerState extends State<FeedDrawer> {
                     items: [
                       DrawerUniversityTile(
                         text: "Random school",
-                        onTap: () => context.read<SchoolsDrawerCubit>().setSelectedFeed(SelectedRandom()),
+                        onTap: () => context.read<SchoolsDrawerCubit>().setSelectedFeedInUI(SelectedRandom()),
                       ),
                       DrawerUniversityTile(
                         text: "All schools",
-                        onTap: () => context.read<SchoolsDrawerCubit>().setSelectedFeed(SelectedAll()),
+                        onTap: () => context.read<SchoolsDrawerCubit>().setSelectedFeedInUI(SelectedAll()),
                       ),
                     ],
                   ),
@@ -126,8 +130,10 @@ class _FeedDrawerState extends State<FeedDrawer> {
                     items: [
                       for (final watchedSchool in watchedSchools)
                         DrawerUniversityTile(
+                          onSwipe: () => context.read<SchoolsDrawerCubit>().removeWatchedSchool(watchedSchool.id),
                           text: watchedSchool.name,
-                          onTap: () => context.read<SchoolsDrawerCubit>().setSelectedFeed(SelectedId(watchedSchool.id)),
+                          onTap: () =>
+                              context.read<SchoolsDrawerCubit>().setSelectedFeedInUI(SelectedId(watchedSchool.id)),
                         ),
                     ],
                   ),

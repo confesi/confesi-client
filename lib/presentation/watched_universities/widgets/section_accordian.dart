@@ -1,20 +1,68 @@
+import 'package:confesi/presentation/shared/button_touch_effects/touchable_burst.dart';
+import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
+import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import '../../../core/styles/typography.dart';
 import '../../shared/behaviours/animated_cliprrect.dart';
-import '../../shared/button_touch_effects/touchable_scale.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'drawer_university_tile.dart';
+class DrawerUniversityTile extends StatelessWidget {
+  const DrawerUniversityTile({
+    Key? key,
+    required this.text,
+    required this.onTap,
+    this.onSwipe,
+  }) : super(key: key);
+
+  final VoidCallback onTap;
+  final String text;
+  final VoidCallback? onSwipe;
+
+  @override
+  Widget build(BuildContext context) {
+    return TouchableScale(
+      // on tap color
+      onTap: () => onTap(),
+      child: Container(
+        // transparent color trick to increase hitbox size
+        decoration: const BoxDecoration(
+          color: Colors.transparent,
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  text,
+                  style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                  textAlign: TextAlign.left,
+                ),
+              ),
+              const SizedBox(width: 10),
+              Icon(
+                CupertinoIcons.arrow_right,
+                size: 18,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
 
 class SectionAccordian extends StatefulWidget {
   const SectionAccordian({
-    super.key,
+    Key? key,
     this.startsOpen = true,
     required this.items,
     required this.title,
     this.topBorder = false,
     this.bottomBorder = false,
-  });
+  }) : super(key: key);
 
   final String title;
   final bool startsOpen;
@@ -61,7 +109,7 @@ class _SectionAccordianState extends State<SectionAccordian> {
                 // Transparent hitbox trick
                 color: Colors.transparent,
               ),
-              padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 15),
+              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -96,25 +144,36 @@ class _SectionAccordianState extends State<SectionAccordian> {
             alignment: Alignment.bottomCenter,
             horizontalAnimation: false,
             open: isOpen,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: widget.items.isEmpty // If there are no passed items, show a friendly error text.
-                  ? Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 15, top: 10),
-                        child: Text(
-                          "Uh oh, nothing here.",
-                          style: kBody.copyWith(
-                            color: Theme.of(context).colorScheme.onSurface,
+            child: Column(
+              children: widget.items.map((item) {
+                return item.onSwipe != null
+                    ? Dismissible(
+                        key: UniqueKey(), // Use a unique key for each item
+                        direction: DismissDirection.endToStart,
+                        onDismissed: (_) {
+                          // Call the onSwipe callback if it's provided
+                          item.onSwipe?.call();
+                          setState(() {
+                            widget.items.remove(item);
+                          });
+                        },
+                        background: Container(
+                          color: Theme.of(context).colorScheme.error,
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 15),
+                              child: Icon(
+                                CupertinoIcons.delete,
+                                color: Theme.of(context).colorScheme.onError,
+                              ),
+                            ),
                           ),
-                          textAlign: TextAlign.left,
                         ),
-                      ),
-                    )
-                  : Column(
-                      children: widget.items,
-                    ),
+                        child: item, // The DrawerUniversityTile
+                      )
+                    : item;
+              }).toList(),
             ),
           ),
         ),

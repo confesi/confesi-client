@@ -11,9 +11,11 @@ import '../../../models/school_with_metadata.dart';
 part 'schools_drawer_state.dart';
 
 class SchoolsDrawerCubit extends Cubit<SchoolsDrawerState> {
-  SchoolsDrawerCubit() : super(SchoolsDrawerLoading());
+  SchoolsDrawerCubit(this._api) : super(SchoolsDrawerLoading());
 
-  void setSelectedFeed(SelectedSchool selectedSchool) {
+  final Api _api;
+
+  void setSelectedFeedInUI(SelectedSchool selectedSchool) {
     if (state is SchoolsDrawerData) {
       if ((selectedSchool is SelectedId &&
               (state as SchoolsDrawerData).schools.any((school) => school.id == selectedSchool.id)) ||
@@ -23,6 +25,7 @@ class SchoolsDrawerCubit extends Cubit<SchoolsDrawerState> {
           (state as SchoolsDrawerData).schools,
           selectedSchool,
           (state as SchoolsDrawerData).homeUniversity,
+          SchoolsDrawerNoErr(),
         ));
       } else {
         emit(const SchoolDrawerError("Unknown error"));
@@ -30,7 +33,7 @@ class SchoolsDrawerCubit extends Cubit<SchoolsDrawerState> {
     }
   }
 
-  void setHomeSchool(SchoolWithMetadata school) {
+  void setHomeSchoolInUI(SchoolWithMetadata school) {
     if (state is SchoolsDrawerData) {
       // for every school
       final currentState = state as SchoolsDrawerData;
@@ -51,7 +54,7 @@ class SchoolsDrawerCubit extends Cubit<SchoolsDrawerState> {
     }
   }
 
-  void setSchool(int id, bool watched, bool home) {
+  void resetSchoolInUI(int id, bool watched, bool home) {
     print("setSchool($id, $watched, $home)");
     if (state is SchoolsDrawerData) {
       final currentState = state as SchoolsDrawerData;
@@ -79,7 +82,30 @@ class SchoolsDrawerCubit extends Cubit<SchoolsDrawerState> {
     }
   }
 
-  void removeWatchedSchool(int id) {
+  Future<void> removeWatchedSchool(int id) async {
+    _api.cancelCurrentReq();
+    (await _api.req(Verb.delete, true, "/api/v1/schools/unwatch", {"school_id": id})).fold(
+      (failureWithMsg) {
+        if (state is SchoolsDrawerData) {
+          emit((state as SchoolsDrawerData).copyWith(possibleErr: SchoolsDrawerErr(failureWithMsg.message())));
+        } else {
+          emit(const SchoolDrawerError("Unknown error"));
+        }
+      },
+      (response) async {
+        if (response.statusCode.toString()[0] != "2") {
+          if (state is SchoolsDrawerData) {
+            emit((state as SchoolsDrawerData).copyWith(possibleErr: SchoolsDrawerErr("TODO: Error")));
+          } else {
+            emit(const SchoolDrawerError("Unknown error"));
+          }
+        }
+      },
+    );
+  }
+
+  void removeWatchedSchoolInUI(int id) {
+    print("removing..... $id");
     if (state is SchoolsDrawerData) {
       final currentState = state as SchoolsDrawerData;
 
@@ -143,7 +169,12 @@ class SchoolsDrawerCubit extends Cubit<SchoolsDrawerState> {
           final schools =
               (body["value"]["schools"] as List<dynamic>).map((e) => SchoolWithMetadata.fromJson(e)).toList();
           final homeUniversity = SchoolWithMetadata.fromJson(body["value"]["user_school"]);
-          emit(SchoolsDrawerData(schools, SelectedId(homeUniversity.id), homeUniversity));
+          emit(SchoolsDrawerData(
+            schools,
+            SelectedId(homeUniversity.id),
+            homeUniversity,
+            SchoolsDrawerNoErr(),
+          ));
         } else {
           emit(const SchoolDrawerError("Unknown error"));
         }

@@ -93,17 +93,16 @@ class _SearchSchoolsScreenState extends State<SearchSchoolsScreen> {
                             return SearchedSchoolTile(
                               onHomeChange: (_) {
                                 context.read<SearchSchoolsCubit>().setHome(school.id);
-                                context.read<SchoolsDrawerCubit>().setHomeSchool(school);
+                                context.read<SchoolsDrawerCubit>().setHomeSchoolInUI(school);
                               },
                               onWatchChange: (isWatching) {
                                 context.read<SearchSchoolsCubit>().updateWatched(school.id, isWatching);
                                 isWatching
                                     ? context.read<SchoolsDrawerCubit>().addWatchedSchool(school)
-                                    : context.read<SchoolsDrawerCubit>().removeWatchedSchool(school.id);
+                                    : context.read<SchoolsDrawerCubit>().removeWatchedSchoolInUI(school.id);
                               },
                               home: school.home,
                               watched: school.watched,
-                              onPress: () => print("tap"),
                               topText: school.name,
                               middleText: distanceFormatter(context, school.distance),
                               bottomText: school.abbr,
