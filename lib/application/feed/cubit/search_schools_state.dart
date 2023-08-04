@@ -18,6 +18,10 @@ class SearchSchoolsErr extends PossibleError {
 
   SearchSchoolsErr(this.message, this.schoolId, this.watched, this.home);
 
+  // override == to always be false
+  @override
+  bool operator ==(Object other) => false;
+
   @override
   String toString() {
     return "SearchSchoolsErr{message: $message, schoolId: $schoolId, watched: $watched, home: $home}";

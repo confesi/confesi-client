@@ -21,20 +21,19 @@ class FeedDrawer extends StatefulWidget {
 }
 
 class _FeedDrawerState extends State<FeedDrawer> {
-  String getSelectedSchool(SchoolsDrawerData state) => "TEMP: UVIC";
-  // String getSelectedSchool(SchoolsDrawerData state) {
-  //   if (state.selected is SelectedId) {
-  //     final selectedId = (state.selected as SelectedId).id;
-  //     final selectedSchool = state.schools.firstWhere((school) => school.id == selectedId);
-  //     return selectedSchool.name; // Return the name if found, otherwise a fallback value.
-  //   } else if (state.selected is SelectedAll) {
-  //     return "All";
-  //   } else if (state.selected is SelectedRandom) {
-  //     return "Random";
-  //   } else {
-  //     throw Exception("Unknown 'selected' type");
-  //   }
-  // }
+  String getSelectedSchool(SchoolsDrawerData state) {
+    if (state.selected is SelectedId) {
+      final selectedId = (state.selected as SelectedId).id;
+      final selectedSchool = state.schools.firstWhere((school) => school.id == selectedId);
+      return selectedSchool.name; // Return the name if found, otherwise a fallback value.
+    } else if (state.selected is SelectedAll) {
+      return "All";
+    } else if (state.selected is SelectedRandom) {
+      return "Random";
+    } else {
+      throw Exception("Unknown 'selected' type");
+    }
+  }
 
   Widget buildBody(BuildContext context, SchoolsDrawerState state) {
     if (state is SchoolsDrawerData) {
@@ -60,7 +59,7 @@ class _FeedDrawerState extends State<FeedDrawer> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "University of Victoria",
+                        "Currently viewing",
                         style: kDetail.copyWith(
                           color: Theme.of(context).colorScheme.onSecondary,
                         ),

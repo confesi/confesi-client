@@ -52,19 +52,19 @@ class SchoolsDrawerCubit extends Cubit<SchoolsDrawerState> {
   }
 
   void setSchool(int id, bool watched, bool home) {
+    print("setSchool($id, $watched, $home)");
     if (state is SchoolsDrawerData) {
       final currentState = state as SchoolsDrawerData;
 
-      // todo: mutliple?
       // Find the school with the given id
       final updatedSchool = currentState.schools.firstWhere((school) => school.id == id);
 
       // Update the 'watched' and 'home' fields of the school based on the arguments
       final updatedSchoolWithWatchedAndHome = updatedSchool.copyWith(watched: watched, home: home);
 
-      // Replace the updated school in the list of schools
+      // Remove 'home' from all other schools and add the updated school to the list
       final updatedSchools = currentState.schools.map((school) {
-        return school.id == id ? updatedSchoolWithWatchedAndHome : school;
+        return school.id == id ? updatedSchoolWithWatchedAndHome : school.copyWith(home: false);
       }).toList();
 
       // Emit the updated state with the new schools list and the selected home university
