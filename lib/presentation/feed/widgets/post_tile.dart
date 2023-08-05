@@ -29,7 +29,7 @@ class PostTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TouchableOpacity(
-      onTap: () => router.push("/home/posts/detail", extra: HomePostsDetailProps(post)),
+      onTap: () => router.push("/home/posts/detail", extra: HomePostsDetailProps(post, false)),
       onLongPress: () => context.read<QuickActionsCubit>().sharePost(context, post),
       child: Padding(
         padding: const EdgeInsets.only(top: 15),
@@ -49,6 +49,15 @@ class PostTile extends StatelessWidget {
             borderRadius: const BorderRadius.all(Radius.circular(15)),
             child: Stack(
               children: [
+                Positioned(
+                  bottom: -30,
+                  right: -30,
+                  child: Icon(
+                    postCategoryToIcon(post.category.category),
+                    color: Theme.of(context).colorScheme.tertiary.withOpacity(0.1),
+                    size: 150,
+                  ),
+                ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -149,12 +158,14 @@ class PostTile extends StatelessWidget {
                                   icon: CupertinoIcons.chat_bubble,
                                   iconColor: Theme.of(context).colorScheme.tertiary,
                                   isSelected: true,
+                                  onTap: () =>
+                                      router.push("/home/posts/detail", extra: HomePostsDetailProps(post, true)),
                                 ),
                                 ReactionTile(
                                   onTap: () async => await Provider.of<GlobalContentService>(context, listen: false)
                                       .voteOnPost(post, post.userVote != 1 ? 1 : 0)
                                       .then((value) => value.fold(
-                                          (_) => null, (err) => context.read<NotificationsCubit>().show(err))),
+                                          (err) => context.read<NotificationsCubit>().show(err), (_) => null)),
                                   isSelected: post.userVote == 1,
                                   amount: post.upvote,
                                   icon: CupertinoIcons.up_arrow,
@@ -164,7 +175,7 @@ class PostTile extends StatelessWidget {
                                   onTap: () async => await Provider.of<GlobalContentService>(context, listen: false)
                                       .voteOnPost(post, post.userVote != -1 ? -1 : 0)
                                       .then((value) => value.fold(
-                                          (_) => null, (err) => context.read<NotificationsCubit>().show(err))),
+                                          (err) => context.read<NotificationsCubit>().show(err), (_) => null)),
                                   amount: post.downvote,
                                   icon: CupertinoIcons.down_arrow,
                                   iconColor: Theme.of(context).colorScheme.onSecondaryContainer,
@@ -177,15 +188,6 @@ class PostTile extends StatelessWidget {
                       ),
                     ),
                   ],
-                ),
-                Positioned(
-                  bottom: -20,
-                  right: -10,
-                  child: Icon(
-                    postCategoryToIcon(post.category.category),
-                    color: Theme.of(context).colorScheme.tertiary.withOpacity(0.3),
-                    size: 100,
-                  ),
                 ),
               ],
             ),

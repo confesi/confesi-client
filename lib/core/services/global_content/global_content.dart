@@ -36,20 +36,32 @@ class GlobalContentService extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<Either<ApiSuccess, String>> voteOnPost(Post post, int vote) async {
+  Future<Either<String, ApiSuccess>> voteOnPost(Post post, int vote) async {
     _api.cancelCurrentReq();
 
     if (vote != -1 && vote != 0 && vote != 1) {
       // todo: alert user there is an error
       notifyListeners();
-      return Future.value(const Right("Invalid vote value"));
+      return const Left("Invalid vote value");
     }
 
     final int oldVote = post.userVote;
     final int newVote = vote;
 
-    // Optimistically update the userVote to the new value
+    // Check if the user is changing their vote
+    bool changingVote = oldVote != newVote;
+
+    // Update the userVote optimistically
     post.userVote = newVote;
+    // Update associated votes
+    if (newVote == 1) {
+      post.upvote++;
+      if (oldVote == -1) post.downvote--;
+    } else if (newVote == -1) {
+      post.downvote++;
+      if (oldVote == 1) post.upvote--;
+    }
+
     notifyListeners();
 
     // Prepare the request body
@@ -64,22 +76,40 @@ class GlobalContentService extends ChangeNotifier {
       (responseEither) {
         return responseEither.fold(
           (failureWithMsg) {
+            // Revert to the oldVote and old votes if the request fails
             post.userVote = oldVote;
+            if (changingVote) {
+              if (oldVote == 1) {
+                post.upvote--;
+                post.downvote++;
+              } else if (oldVote == -1) {
+                post.downvote--;
+                post.upvote++;
+              }
+            }
             notifyListeners();
-            return Future.value(const Right("Error voting"));
+            return const Left("Error voting");
           },
           (response) {
-            // todo: remove
-            if (response.statusCode.toString()[0] != "2" || true) {
-              // Revert to the oldVote if the request fails
+            if (response.statusCode.toString()[0] != "2") {
+              // Revert to the oldVote and old votes if the request fails
               post.userVote = oldVote;
+              if (changingVote) {
+                if (oldVote == 1) {
+                  post.upvote--;
+                  post.downvote++;
+                } else if (oldVote == -1) {
+                  post.downvote--;
+                  post.upvote++;
+                }
+              }
               notifyListeners();
-              return Future.value(const Right("Error voting"));
+              return const Left("Error voting");
             }
+            return Right(ApiSuccess());
           },
         );
       },
     );
-    return Future.value(Left(ApiSuccess()));
   }
 }

@@ -13,6 +13,8 @@ class StatTileGroup extends StatelessWidget {
     required this.icon2OnPress,
     required this.icon4OnPress,
     required this.icon5OnPress,
+    required this.icon4Selected,
+    required this.icon5Selected,
   });
 
   final String icon1Text;
@@ -23,6 +25,8 @@ class StatTileGroup extends StatelessWidget {
   final VoidCallback icon2OnPress;
   final VoidCallback icon4OnPress;
   final VoidCallback icon5OnPress;
+  final bool icon4Selected;
+  final bool icon5Selected;
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +34,12 @@ class StatTileGroup extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.secondary,
+          border: Border(
+            bottom: BorderSide(
+              color: Theme.of(context).colorScheme.onBackground,
+              width: 0.8,
+            ),
+          ),
         ),
         width: double.infinity,
         child: SafeArea(
@@ -40,8 +50,20 @@ class StatTileGroup extends StatelessWidget {
               children: [
                 StatTileItem(text: icon1Text, icon: CupertinoIcons.arrow_turn_up_left, onTap: () => icon1OnPress()),
                 StatTileItem(text: icon2Text, icon: CupertinoIcons.chat_bubble, onTap: () => icon2OnPress()),
-                StatTileItem(text: icon4Text, icon: CupertinoIcons.arrow_up, onTap: () => icon4OnPress()),
-                StatTileItem(text: icon5Text, icon: CupertinoIcons.arrow_down, onTap: () => icon5OnPress()),
+                StatTileItem(
+                  text: icon4Text,
+                  icon: CupertinoIcons.arrow_up,
+                  onTap: () => icon4OnPress(),
+                  iconColor: icon4Selected ? Theme.of(context).colorScheme.onErrorContainer : null,
+                  textColor: icon4Selected ? Theme.of(context).colorScheme.onErrorContainer : null,
+                ),
+                StatTileItem(
+                  text: icon5Text,
+                  icon: CupertinoIcons.arrow_down,
+                  onTap: () => icon5OnPress(),
+                  iconColor: icon5Selected ? Theme.of(context).colorScheme.onSecondaryContainer : null,
+                  textColor: icon5Selected ? Theme.of(context).colorScheme.onSecondaryContainer : null,
+                ),
               ],
             ),
           ),

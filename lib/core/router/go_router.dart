@@ -241,5 +241,6 @@ class HomeLeaderboardSchoolProps {
 
 class HomePostsDetailProps {
   final Post post;
-  const HomePostsDetailProps(this.post);
+  final bool openKeyboard;
+  const HomePostsDetailProps(this.post, this.openKeyboard);
 }

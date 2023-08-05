@@ -42,9 +42,9 @@ class AppTheme {
       onPrimary: Color(0xff333333),
       // secondary: Color.fromARGB(255, 254, 224, 115),
       // secondary: Color.fromARGB(255, 255, 221, 141),
-      secondary: Color(0xff8BE8E5),
+      tertiary: Color(0xff8BE8E5),
       onSecondary: Color.fromARGB(255, 45, 45, 45),
-      tertiary: Color(0xffFFE17B),
+      secondary: Color(0xffFFE17B),
       surfaceTint: Color(0xff90A17D), // "SUCCESS" color
       error: Color.fromARGB(255, 231, 104, 104), // "ERROR" color
       onError: Colors.white, // Color for on error and on surfaceTint.

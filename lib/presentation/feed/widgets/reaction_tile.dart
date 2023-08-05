@@ -1,4 +1,5 @@
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
+import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/utils/numbers/large_number_formatter.dart';
@@ -45,6 +46,7 @@ class ReactionTile extends StatelessWidget {
 
     if (onTap != null) {
       content = GestureDetector(
+        behavior: HitTestBehavior.opaque,
         onTap: onTap!,
         child: content,
       );
@@ -52,7 +54,7 @@ class ReactionTile extends StatelessWidget {
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 250),
-      padding: EdgeInsets.only(top: 6, bottom: 5, left: simpleView ? 0 : 10, right: simpleView ? 0 : 10),
+      padding: EdgeInsets.only(top: 11, bottom: 10, left: simpleView ? 0 : 15, right: simpleView ? 0 : 15),
       decoration: BoxDecoration(
         border: simpleView
             ? null

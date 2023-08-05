@@ -62,7 +62,7 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
         );
       }
       return TouchableOpacity(
-        onTap: () => router.push("/home/posts/detail", extra: HomePostsDetailProps(state.posts[currentIndex])),
+        onTap: () => router.push("/home/posts/detail", extra: HomePostsDetailProps(state.posts[currentIndex], false)),
         child: PageView(
           controller: pageController,
           physics: const BouncingScrollPhysics(),

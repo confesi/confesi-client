@@ -1,3 +1,5 @@
+import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
+
 import '../button_touch_effects/touchable_opacity.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +24,7 @@ class StatTileItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: TouchableOpacity(
+      child: TouchableScale(
         onTap: () => onTap(),
         child: Container(
           color: Colors.transparent,

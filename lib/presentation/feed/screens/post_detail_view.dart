@@ -1,9 +1,13 @@
 import 'package:confesi/application/user/cubit/quick_actions_cubit.dart';
 import 'package:confesi/core/utils/numbers/add_commas_to_number.dart';
 import 'package:confesi/models/post.dart';
+import 'package:flutter_native_splash/cli_commands.dart';
+import 'package:provider/provider.dart';
 
+import '../../../application/user/cubit/notifications_cubit.dart';
 import '../../../constants/feed/enums.dart';
 import '../../../core/router/go_router.dart';
+import '../../../core/services/global_content/global_content.dart';
 import '../methods/show_post_options.dart';
 import '../utils/post_metadata_formatters.dart';
 import '../widgets/simple_comment_root_group.dart';
@@ -36,6 +40,7 @@ class SimpleDetailViewScreen extends StatefulWidget {
 class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
   late CommentSheetController commentSheetController;
   late ScreenshotCallback screenshotCallback;
+
   @override
   void initState() {
     commentSheetController = CommentSheetController();
@@ -50,6 +55,12 @@ class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
         );
       },
     );
+    // post frame callback
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        if (widget.props.openKeyboard) commentSheetController.focus();
+      },
+    );
     super.initState();
   }
 
@@ -61,6 +72,7 @@ class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Post post = Provider.of<GlobalContentService>(context).posts[widget.props.post.id]!;
     return OneThemeStatusBar(
         brightness: Brightness.light,
         child: KeyboardDismiss(
@@ -99,13 +111,20 @@ class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
                   StatTileGroup(
                     icon1Text: "Back",
                     icon2Text: addCommasToNumber(221), // todo: comment count
-                    icon4Text: addCommasToNumber(widget.props.post.upvote),
-                    icon5Text: addCommasToNumber(widget.props.post.downvote),
+                    icon4Text: addCommasToNumber(post.upvote),
+                    icon5Text: addCommasToNumber(post.downvote),
                     icon1OnPress: () => router.pop(context),
                     icon2OnPress: () => commentSheetController.focus(),
-
-                    icon4OnPress: () => commentSheetController.delete(),
-                    icon5OnPress: () => commentSheetController.setBlocking(!commentSheetController.isBlocking),
+                    icon4OnPress: () async => await Provider.of<GlobalContentService>(context, listen: false)
+                        .voteOnPost(post, post.userVote != 1 ? 1 : 0)
+                        .then(
+                            (value) => value.fold((err) => context.read<NotificationsCubit>().show(err), (_) => null)),
+                    icon5OnPress: () async => await Provider.of<GlobalContentService>(context, listen: false)
+                        .voteOnPost(post, post.userVote != -1 ? -1 : 0)
+                        .then(
+                            (value) => value.fold((err) => context.read<NotificationsCubit>().show(err), (_) => null)),
+                    icon4Selected: post.userVote == 1,
+                    icon5Selected: post.userVote == -1,
                   ),
                   Expanded(
                     child: SingleChildScrollView(
@@ -126,7 +145,7 @@ class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
                                       children: [
                                         const SizedBox(height: 15),
                                         Text(
-                                          widget.props.post.title,
+                                          post.title,
                                           style: kDisplay1.copyWith(
                                             color: Theme.of(context).colorScheme.primary,
                                           ),
@@ -148,14 +167,14 @@ class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              "${widget.props.post.school.name}${buildFaculty(widget.props.post)}${buildYear(widget.props.post)} • ${widget.props.post.category.category}",
+                                              "${post.school.name}${buildFaculty(post)}${buildYear(post)} • ${post.category.category.capitalize()}",
                                               style: kDetail.copyWith(
                                                 color: Theme.of(context).colorScheme.onSurface,
                                               ),
                                               textAlign: TextAlign.left,
                                             ),
                                             Text(
-                                              "${timeAgoFromMicroSecondUnixTime(widget.props.post)} • ${widget.props.post.emojis.map((e) => e).join(" ")}",
+                                              "${timeAgoFromMicroSecondUnixTime(post)} • ${post.emojis.map((e) => e).join(" ")}",
                                               style: kDetail.copyWith(
                                                 color: Theme.of(context).colorScheme.onSurface,
                                               ),
@@ -165,7 +184,7 @@ class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
                                         ),
                                         const SizedBox(height: 15),
                                         Text(
-                                          widget.props.post.content,
+                                          post.content,
                                           style: kBody.copyWith(
                                             color: Theme.of(context).colorScheme.primary,
                                           ),
