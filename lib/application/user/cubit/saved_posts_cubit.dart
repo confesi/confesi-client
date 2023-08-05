@@ -16,12 +16,8 @@ class SavedPostsCubit extends Cubit<SavedPostsState> {
 
   final Api _api;
 
-  Future<void> upvotePost() async {
-    if (state is SavedPostsData) {}
-  }
-
   Future<void> loadPosts({bool refresh = false, bool fullScreenRefresh = false}) async {
-    if (fullScreenRefresh) {
+    if (fullScreenRefresh || state is SavedPostsError) {
       refresh = true;
       emit(SavedPostsLoading());
     }
@@ -30,7 +26,13 @@ class SavedPostsCubit extends Cubit<SavedPostsState> {
       "next": state is SavedPostsData && !refresh ? (state as SavedPostsData).next : null,
     }))
         .fold(
-      (failureWithMsg) => emit(SavedPostsError(failureWithMsg.message())),
+      (failureWithMsg) {
+        if (state is SavedPostsData) {
+          emit((state as SavedPostsData).copyWith(paginationState: PaginationState.error));
+        } else {
+          emit(SavedPostsError(failureWithMsg.message()));
+        }
+      },
       (response) async {
         if (response.statusCode.toString()[0] == "4") {
           if (state is SavedPostsData) {

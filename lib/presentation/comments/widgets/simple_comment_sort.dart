@@ -13,6 +13,14 @@ enum CommentSortType {
   hated,
 }
 
+// method on enum to convert it to exactly its name in string form
+extension CommentSortTypeExtension on CommentSortType {
+  String name() {
+    if (this == CommentSortType.recent) return "new";
+    return toString().split('.').last.toLowerCase();
+  }
+}
+
 class SimpleCommentSort extends StatefulWidget {
   const SimpleCommentSort({
     super.key,

@@ -101,8 +101,12 @@ class FeedList extends StatefulWidget {
     required this.onWontLoadMoreButtonPressed,
     required this.onErrorButtonPressed,
     required this.wontLoadMoreMessage,
+    this.shrinkWrap = false,
+    this.isScrollable = true,
   });
 
+  final bool isScrollable;
+  final bool shrinkWrap;
   final bool hasError;
   final bool wontLoadMore;
   final String wontLoadMoreMessage;
@@ -195,7 +199,10 @@ class _FeedListState extends State<FeedList> {
     return SwipeRefresh(
       onRefresh: () async => await widget.onPullToRefresh(),
       child: ScrollablePositionedList.builder(
-        physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
+        shrinkWrap: widget.shrinkWrap,
+        physics: widget.isScrollable
+            ? const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics())
+            : const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
           if (index == 0) {
             return widget.header ?? Container();

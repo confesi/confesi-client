@@ -7,20 +7,24 @@ import 'package:flutter/material.dart';
 import 'package:riverpod/riverpod.dart';
 
 import '../../../init.dart';
+import '../../../models/comment.dart';
 import '../../../models/post.dart';
 import '../../clients/api.dart';
 import '../user_auth/user_auth_service.dart';
 
 class GlobalContentService extends ChangeNotifier {
-  final Api _api;
+  final Api _postVoteApi;
 
-  GlobalContentService(this._api);
+  GlobalContentService(this._postVoteApi);
 
   // LinkedHashMap of int id key to Post type value
   LinkedHashMap<int, Post> posts = LinkedHashMap<int, Post>();
+  LinkedHashMap<int, CommentWithMetadata> comments = LinkedHashMap<int, CommentWithMetadata>();
 
-  void addPost(Post post) {
-    posts[post.id] = post;
+  void setComments(List<CommentWithMetadata> comments) {
+    for (final comment in comments) {
+      this.comments[comment.comment.id] = comment;
+    }
     notifyListeners();
   }
 
@@ -31,13 +35,8 @@ class GlobalContentService extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setPost(Post post) {
-    posts[post.id] = post;
-    notifyListeners();
-  }
-
   Future<Either<String, ApiSuccess>> voteOnPost(Post post, int vote) async {
-    _api.cancelCurrentReq();
+    _postVoteApi.cancelCurrentReq();
 
     if (vote != -1 && vote != 0 && vote != 1) {
       // todo: alert user there is an error
@@ -60,6 +59,9 @@ class GlobalContentService extends ChangeNotifier {
     } else if (newVote == -1) {
       post.downvote++;
       if (oldVote == 1) post.upvote--;
+    } else if (newVote == 0) {
+      if (oldVote == 1) post.upvote--;
+      if (oldVote == -1) post.downvote--;
     }
 
     notifyListeners();
@@ -72,7 +74,7 @@ class GlobalContentService extends ChangeNotifier {
     };
 
     // Make the request to update the vote on the server
-    return await _api.req(Verb.put, true, "/api/v1/votes/vote", requestBody).then(
+    return await _postVoteApi.req(Verb.put, true, "/api/v1/votes/vote", requestBody).then(
       (responseEither) {
         return responseEither.fold(
           (failureWithMsg) {

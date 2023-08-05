@@ -15,15 +15,6 @@ enum ChildType {
   childNeedsLoading,
 }
 
-/// How deep a threaded comment is. Root essentially means level zero.
-enum CommentDepth {
-  root,
-  one,
-  two,
-  three,
-  four,
-}
-
 /// In which direction is the button supposed to look in order to jump to the nearest root comment.
 enum ScrollToRootDirection {
   up,

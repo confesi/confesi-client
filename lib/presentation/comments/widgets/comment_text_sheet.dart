@@ -103,43 +103,40 @@ class _CommentSheetState extends State<CommentSheet> {
               maxCharacters: widget.maxCharacters,
               controller: commentController,
             ),
-            AnimatedSize(
-              duration: const Duration(milliseconds: 100),
-              child: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 500),
-                child: commentController.text.isEmpty
-                    ? Container()
-                    : AnimatedScale(
-                        scale: commentController.text.isEmpty ? 0 : 1,
-                        duration: const Duration(milliseconds: 100),
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 10),
-                          child: Row(
-                            children: [
-                              SimpleTextButton(
-                                text: 'Cancel',
-                                isErrorText: true,
-                                onTap: () => widget.controller.delete(),
+            AnimatedSwitcher(
+              duration: const Duration(milliseconds: 500),
+              child: commentController.text.isEmpty
+                  ? Container()
+                  : AnimatedScale(
+                      scale: commentController.text.isEmpty ? 0 : 1,
+                      duration: const Duration(milliseconds: 100),
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: Row(
+                          children: [
+                            SimpleTextButton(
+                              text: 'Cancel',
+                              isErrorText: true,
+                              onTap: () => widget.controller.delete(),
+                            ),
+                            Expanded(
+                              child: TextLimitTracker(
+                                noText: false,
+                                value: commentController.text.runes.length / widget.maxCharacters,
                               ),
-                              Expanded(
-                                child: TextLimitTracker(
-                                  noText: false,
-                                  value: commentController.text.runes.length / widget.maxCharacters,
-                                ),
-                              ),
-                              SimpleTextButton(
-                                tapType: TapType.strongImpact,
-                                text: 'Post',
-                                onTap: () {
-                                  widget.onSubmit(commentController.text);
-                                  setState(() => {});
-                                },
-                              ),
-                            ],
-                          ),
+                            ),
+                            SimpleTextButton(
+                              tapType: TapType.strongImpact,
+                              text: 'Post',
+                              onTap: () {
+                                widget.onSubmit(commentController.text);
+                                setState(() => {});
+                              },
+                            ),
+                          ],
                         ),
                       ),
-              ),
+                    ),
             ),
           ],
         ),

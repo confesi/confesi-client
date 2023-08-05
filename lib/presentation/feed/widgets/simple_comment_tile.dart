@@ -2,70 +2,19 @@ import '../../../core/styles/typography.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../constants/feed/enums.dart';
 import 'comment_bottom_button.dart';
 
 class SimpleCommentTile extends StatelessWidget {
   const SimpleCommentTile({
     super.key,
-    required this.depth,
+    required this.content,
+    this.isRootComment = false,
     this.isGettingRepliedTo = false,
   });
 
-  final CommentDepth depth;
+  final String content;
+  final bool isRootComment;
   final bool isGettingRepliedTo;
-
-  double get commentDepthAdditivePadding {
-    switch (depth) {
-      case CommentDepth.root:
-        return 0;
-      case CommentDepth.one:
-        return 0;
-      case CommentDepth.two:
-        return 15;
-      case CommentDepth.three:
-        return 30;
-      case CommentDepth.four:
-        return 45;
-      default:
-        throw UnimplementedError('Comment depth specified doesn\'t exist');
-    }
-  }
-
-  int get barsToAdd {
-    switch (depth) {
-      case CommentDepth.root:
-        return 0;
-      case CommentDepth.one:
-        return 0;
-      case CommentDepth.two:
-        return 1;
-      case CommentDepth.three:
-        return 2;
-      case CommentDepth.four:
-        return 3;
-      default:
-        throw UnimplementedError('Comment depth specified doesn\'t exist');
-    }
-  }
-
-  Widget addBars(BuildContext context) {
-    List<Widget> bars = [];
-    for (var i = 0; i <= barsToAdd; i++) {
-      bars.add(
-        Padding(
-          padding: EdgeInsets.only(left: i != 0 ? 15 : 0),
-          child: depth == CommentDepth.root
-              ? Container()
-              : Container(
-                  width: 2,
-                  color: Theme.of(context).colorScheme.surface,
-                ),
-        ),
-      );
-    }
-    return Row(children: bars);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,8 +27,8 @@ class SimpleCommentTile extends StatelessWidget {
       child: IntrinsicHeight(
         child: Row(
           children: [
-            addBars(context),
-            SizedBox(width: depth != CommentDepth.root ? 15 : 0),
+            if (!isRootComment) Container(width: 2, color: Theme.of(context).colorScheme.surface),
+            SizedBox(width: isRootComment ? 0 : 15),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 15),
@@ -95,7 +44,7 @@ class SimpleCommentTile extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam porttitor accumsan turpis at ornare. Ut est massa, scelerisque quis felis id, posuere pellentesque ante.",
+                      content,
                       style: kDetail.copyWith(
                         color: Theme.of(context).colorScheme.primary,
                       ),

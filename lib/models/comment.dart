@@ -4,45 +4,54 @@
 
 import 'dart:convert';
 
-List<Comment> commentFromJson(String str) => List<Comment>.from(json.decode(str).map((x) => Comment.fromJson(x)));
+List<CommentGroup> commentFromJson(String str) =>
+    List<CommentGroup>.from(json.decode(str).map((x) => CommentGroup.fromJson(x)));
 
-class Comment {
-  Root root;
-  List<Root>? replies;
+class CommentGroup {
+  CommentWithMetadata root;
+  List<CommentWithMetadata>? replies;
   int? next;
 
-  Comment({
+  CommentGroup({
     required this.root,
     this.replies,
     this.next,
   });
+  factory CommentGroup.fromJson(Map<String, dynamic> json) {
+    List<CommentWithMetadata> replies = [];
+    if (json["replies"] != null) {
+      replies = List<CommentWithMetadata>.from(json["replies"]!.map((x) => CommentWithMetadata.fromJson(x)));
+    }
 
-  factory Comment.fromJson(Map<String, dynamic> json) => Comment(
-        root: Root.fromJson(json["root"]),
-        replies: json["replies"] == null ? [] : List<Root>.from(json["replies"]!.map((x) => Root.fromJson(x))),
-        next: json["next"],
-      );
+    int? next = json["next"] as int?;
+
+    return CommentGroup(
+      root: CommentWithMetadata.fromJson(json["root"]),
+      replies: replies,
+      next: next,
+    );
+  }
 }
 
-class Root {
-  CommentClass comment;
+class CommentWithMetadata {
+  Comment comment;
   int userVote;
   bool owner;
 
-  Root({
+  CommentWithMetadata({
     required this.comment,
     required this.userVote,
     required this.owner,
   });
 
-  factory Root.fromJson(Map<String, dynamic> json) => Root(
-        comment: CommentClass.fromJson(json["comment"]),
+  factory CommentWithMetadata.fromJson(Map<String, dynamic> json) => CommentWithMetadata(
+        comment: Comment.fromJson(json["comment"]),
         userVote: json["user_vote"],
         owner: json["owner"],
       );
 }
 
-class CommentClass {
+class Comment {
   int id;
   int createdAt;
   int updatedAt;
@@ -60,7 +69,7 @@ class CommentClass {
   bool hidden;
   bool edited;
 
-  CommentClass({
+  Comment({
     required this.id,
     required this.createdAt,
     required this.updatedAt,
@@ -79,7 +88,7 @@ class CommentClass {
     required this.edited,
   });
 
-  factory CommentClass.fromJson(Map<String, dynamic> json) => CommentClass(
+  factory Comment.fromJson(Map<String, dynamic> json) => Comment(
         id: json["id"],
         createdAt: json["created_at"],
         updatedAt: json["updated_at"],
