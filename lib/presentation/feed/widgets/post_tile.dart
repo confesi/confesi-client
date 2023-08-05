@@ -1,5 +1,7 @@
+import 'package:confesi/application/user/cubit/notifications_cubit.dart';
 import 'package:confesi/application/user/cubit/quick_actions_cubit.dart';
 import 'package:confesi/constants/feed/general.dart';
+import 'package:confesi/core/services/global_content/global_content.dart';
 import 'package:confesi/core/utils/dates/readable_date_format.dart';
 import 'package:confesi/core/utils/strings/truncate_text.dart';
 import 'package:confesi/models/post.dart';
@@ -10,6 +12,7 @@ import 'package:confesi/presentation/shared/button_touch_effects/touchable_opaci
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 
 import '../../../constants/shared/constants.dart';
 import '../../../core/router/go_router.dart';
@@ -141,19 +144,27 @@ class PostTile extends StatelessWidget {
                               spacing: 10,
                               children: [
                                 ReactionTile(
-                                  simpleView: true,
+                                  simpleView: false,
                                   amount: 1232, // todo: comment count
                                   icon: CupertinoIcons.chat_bubble,
                                   iconColor: Theme.of(context).colorScheme.tertiary,
                                   isSelected: true,
                                 ),
                                 ReactionTile(
+                                  onTap: () async => await Provider.of<GlobalContentService>(context, listen: false)
+                                      .voteOnPost(post, post.userVote != 1 ? 1 : 0)
+                                      .then((value) => value.fold(
+                                          (_) => null, (err) => context.read<NotificationsCubit>().show(err))),
                                   isSelected: post.userVote == 1,
                                   amount: post.upvote,
                                   icon: CupertinoIcons.up_arrow,
                                   iconColor: Theme.of(context).colorScheme.onErrorContainer,
                                 ),
                                 ReactionTile(
+                                  onTap: () async => await Provider.of<GlobalContentService>(context, listen: false)
+                                      .voteOnPost(post, post.userVote != -1 ? -1 : 0)
+                                      .then((value) => value.fold(
+                                          (_) => null, (err) => context.read<NotificationsCubit>().show(err))),
                                   amount: post.downvote,
                                   icon: CupertinoIcons.down_arrow,
                                   iconColor: Theme.of(context).colorScheme.onSecondaryContainer,

@@ -80,7 +80,7 @@ class _YourSavedPostsScreenState extends State<YourSavedPostsScreen> {
     return ThemeStatusBar(
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
-            onPressed: () => Provider.of<GlobalContentService>(context, listen: false).updatePost(
+            onPressed: () => Provider.of<GlobalContentService>(context, listen: false).setPost(
                 Provider.of<GlobalContentService>(context, listen: false).posts[29]!.copyWith(
                     title: Provider.of<GlobalContentService>(context, listen: false).posts[29]!.title + "more"))),
         backgroundColor: Theme.of(context).colorScheme.shadow,

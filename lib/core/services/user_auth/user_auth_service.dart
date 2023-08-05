@@ -7,12 +7,6 @@ import 'package:riverpod/riverpod.dart';
 
 import '../../../init.dart';
 
-// access the authService
-final authService = StateProvider((ref) {
-  final userAuthService = sl.get<UserAuthService>();
-  return userAuthService.data();
-});
-
 class UserAuthService extends ChangeNotifier {
   UserAuthState state = UserAuthLoading();
   bool isAnon = true;

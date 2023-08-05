@@ -4,6 +4,7 @@ import 'package:confesi/application/create_post/cubit/post_categories_cubit.dart
 import 'package:confesi/application/user/cubit/account_details_cubit.dart';
 import 'package:confesi/application/user/cubit/feedback_categories_cubit.dart';
 import 'package:confesi/application/user/cubit/feedback_cubit.dart';
+import 'package:confesi/application/user/cubit/notifications_cubit.dart';
 import 'package:confesi/application/user/cubit/stats_cubit.dart';
 import 'package:confesi/core/clients/api.dart';
 import 'package:confesi/core/services/fcm_notifications/token_data.dart';
@@ -100,7 +101,7 @@ Future<void> init() async {
 
   //! Services
   UserAuthService userAuthService = UserAuthService(sl());
-  GlobalContentService globalContentService = GlobalContentService();
+  GlobalContentService globalContentService = GlobalContentService(Api());
 
   userAuthService.hive.registerAdapter<UserAuthData>(UserAuthDataAdapter());
   userAuthService.hive.registerAdapter(ThemePrefAdapter());
@@ -133,6 +134,7 @@ Future<void> init() async {
       )); // new instan
   sl.registerFactory(() => SavedPostsCubit(Api()));
   sl.registerFactory(() => QuickActionsCubit(sl()));
+  sl.registerFactory(() => NotificationsCubit());
 
   //! Firebase
   await initFirebase();

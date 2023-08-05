@@ -1,7 +1,8 @@
-import '../../../core/utils/numbers/large_number_formatter.dart';
-import '../../shared/button_touch_effects/touchable_opacity.dart';
+import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:flutter/material.dart';
 
+import '../../../core/utils/numbers/large_number_formatter.dart';
+import '../../shared/button_touch_effects/touchable_opacity.dart';
 import '../../../core/styles/typography.dart';
 
 class ReactionTile extends StatelessWidget {
@@ -12,6 +13,7 @@ class ReactionTile extends StatelessWidget {
     required this.iconColor,
     this.simpleView = false,
     this.isSelected = false,
+    this.onTap,
   });
 
   final bool simpleView;
@@ -19,42 +21,49 @@ class ReactionTile extends StatelessWidget {
   final IconData icon;
   final Color iconColor;
   final bool isSelected;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
-    return TouchableOpacity(
-      onTap: () => print("tap"),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 250),
-        padding: EdgeInsets.only(top: 6, bottom: 5, left: simpleView ? 0 : 10, right: simpleView ? 0 : 10),
-        decoration: BoxDecoration(
-          border: simpleView
-              ? null
-              : Border.all(
-                  color: Theme.of(context).colorScheme.onBackground,
-                  width: 0.8,
-                  strokeAlign: BorderSide.strokeAlignInside),
-          color: simpleView ? Colors.transparent : Theme.of(context).colorScheme.surface,
-          borderRadius: const BorderRadius.all(Radius.circular(15)),
+    Widget content = Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(
+          icon,
+          color: isSelected ? iconColor : Theme.of(context).colorScheme.onSurface,
+          size: 17,
         ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              icon,
-              color: isSelected ? iconColor : Theme.of(context).colorScheme.onSurface,
-              size: 17,
-            ),
-            const SizedBox(width: 5),
-            Text(
-              largeNumberFormatter(amount),
-              style: kTitle.copyWith(
-                color: isSelected ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onSurface,
-              ),
-            ),
-          ],
+        const SizedBox(width: 5),
+        Text(
+          largeNumberFormatter(amount),
+          style: kTitle.copyWith(
+            color: isSelected ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onSurface,
+          ),
         ),
+      ],
+    );
+
+    if (onTap != null) {
+      content = GestureDetector(
+        onTap: onTap!,
+        child: content,
+      );
+    }
+
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 250),
+      padding: EdgeInsets.only(top: 6, bottom: 5, left: simpleView ? 0 : 10, right: simpleView ? 0 : 10),
+      decoration: BoxDecoration(
+        border: simpleView
+            ? null
+            : Border.all(
+                color: Theme.of(context).colorScheme.onBackground,
+                width: 0.8,
+                strokeAlign: BorderSide.strokeAlignInside),
+        color: simpleView ? Colors.transparent : Theme.of(context).colorScheme.surface,
+        borderRadius: const BorderRadius.all(Radius.circular(15)),
       ),
+      child: content,
     );
   }
 }

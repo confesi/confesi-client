@@ -7,6 +7,7 @@ import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/results/failures.dart';
 import 'package:confesi/core/services/global_content/global_content.dart';
 import 'package:confesi/models/school.dart';
+import 'package:confesi/presentation/shared/overlays/snackbar.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shake/shake.dart';
 
@@ -17,6 +18,7 @@ import 'application/create_post/cubit/post_categories_cubit.dart';
 import 'application/feed/cubit/search_schools_cubit.dart';
 import 'application/user/cubit/account_details_cubit.dart';
 import 'application/user/cubit/feedback_cubit.dart';
+import 'application/user/cubit/notifications_cubit.dart';
 import 'application/user/cubit/quick_actions_cubit.dart';
 import 'application/user/cubit/saved_posts_cubit.dart';
 import 'application/user/cubit/stats_cubit.dart';
@@ -78,6 +80,7 @@ void main() async => await init().then(
                     BlocProvider(lazy: false, create: (context) => sl<SavedPostsCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<SchoolsDrawerCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<QuickActionsCubit>()),
+                    BlocProvider(lazy: false, create: (context) => sl<NotificationsCubit>()),
                   ],
                   child: debugMode && devicePreview
                       ? DevicePreview(builder: (context) => const ShrinkView())
@@ -155,7 +158,7 @@ class _MyAppState extends State<MyApp> {
           router.push("/settings/feedback").then((value) => shakeViewOpen = false);
         }
       },
-      shakeThresholdGravity: 3,
+      shakeThresholdGravity: 2,
       shakeCountResetTime: 1500,
       minimumShakeCount: 2,
     );
@@ -243,80 +246,88 @@ class _MyAppState extends State<MyApp> {
               showNotificationChip(context, state.message, notificationType: state.type);
             }
           },
-          child: BlocListener<QuickActionsCubit, QuickActionsState>(
+          child: BlocListener<NotificationsCubit, NotificationsState>(
             listener: (context, state) {
-              if (state is QuickActionsDefault && state.possibleErr is QuickActionsErr) {
-                showNotificationChip(context, (state.possibleErr as QuickActionsErr).message);
+              if (state is NotificationsBase && state.err is NotificationsErr) {
+                showNotificationChip(context, (state.err as NotificationsErr).message);
               }
             },
-            child: BlocListener<SearchSchoolsCubit, SearchSchoolsState>(
-              listenWhen: (previous, current) => true,
+            child: BlocListener<QuickActionsCubit, QuickActionsState>(
               listener: (context, state) {
-                if (state is SearchSchoolsData && state.possibleErr is SearchSchoolsErr) {
-                  showNotificationChip(context, (state.possibleErr as SearchSchoolsErr).message);
-                  final errState = (state.possibleErr as SearchSchoolsErr);
-                  context
-                      .read<SchoolsDrawerCubit>()
-                      .resetSchoolInUI(errState.schoolId, errState.watched, errState.home);
+                if (state is QuickActionsDefault && state.possibleErr is QuickActionsErr) {
+                  showNotificationChip(context, (state.possibleErr as QuickActionsErr).message);
                 }
               },
-              child: BlocListener<SchoolsDrawerCubit, SchoolsDrawerState>(
+              child: BlocListener<SearchSchoolsCubit, SearchSchoolsState>(
+                listenWhen: (previous, current) => true,
                 listener: (context, state) {
-                  if (state is SchoolsDrawerData && state.possibleErr is SchoolsDrawerErr) {
-                    showNotificationChip(context, (state.possibleErr as SchoolsDrawerErr).message);
+                  if (state is SearchSchoolsData && state.possibleErr is SearchSchoolsErr) {
+                    showNotificationChip(context, (state.possibleErr as SearchSchoolsErr).message);
+                    final errState = (state.possibleErr as SearchSchoolsErr);
+                    context
+                        .read<SchoolsDrawerCubit>()
+                        .resetSchoolInUI(errState.schoolId, errState.watched, errState.home);
                   }
                 },
-                child: BlocListener<CreatePostCubit, CreatePostState>(
+                child: BlocListener<SchoolsDrawerCubit, SchoolsDrawerState>(
                   listener: (context, state) {
-                    if (state is PostError) {
-                      showNotificationChip(context, state.message);
-                    } else if (state is PostSuccessfullySubmitted) {
-                      sl.get<ConfettiBlaster>().show(context);
-                      router.go("/home");
-                      showNotificationChip(context, "Posted successfully", notificationType: NotificationType.success);
+                    if (state is SchoolsDrawerData && state.possibleErr is SchoolsDrawerErr) {
+                      showNotificationChip(context, (state.possibleErr as SchoolsDrawerErr).message);
                     }
                   },
-                  child: BlocListener<AccountDetailsCubit, AccountDetailsState>(
+                  child: BlocListener<CreatePostCubit, CreatePostState>(
                     listener: (context, state) {
-                      if (state is AccountDetailsTrueData && state.err is Err) {
-                        showNotificationChip(context, (state.err as Err).message);
+                      if (state is PostError) {
+                        showNotificationChip(context, state.message);
+                      } else if (state is PostSuccessfullySubmitted) {
+                        sl.get<ConfettiBlaster>().show(context);
+                        router.go("/home");
+                        showNotificationChip(context, "Posted successfully",
+                            notificationType: NotificationType.success);
                       }
                     },
-                    child: BlocListener<FeedbackCubit, FeedbackState>(
+                    child: BlocListener<AccountDetailsCubit, AccountDetailsState>(
                       listener: (context, state) {
-                        if (state is FeedbackError) {
-                          showNotificationChip(context, state.msg());
-                        } else if (state is FeedbackSuccess) {
-                          sl.get<ConfettiBlaster>().show(context);
-                          router.pop(context);
-                          showNotificationChip(context, state.msg(), notificationType: NotificationType.success);
+                        if (state is AccountDetailsTrueData && state.err is Err) {
+                          showNotificationChip(context, (state.err as Err).message);
                         }
                       },
-                      child: Container(
-                        constraints: const BoxConstraints(maxWidth: 250),
-                        child: MaterialApp.router(
-                          routeInformationProvider: router.routeInformationProvider,
-                          routeInformationParser: router.routeInformationParser,
-                          routerDelegate: router.routerDelegate,
-                          debugShowCheckedModeBanner: false,
-                          title: "Confesi",
-                          theme: AppTheme.light,
-                          darkTheme: AppTheme.dark,
-                          themeMode: data.themePref == ThemePref.system
-                              ? ThemeMode.system
-                              : data.themePref == ThemePref.light
-                                  ? ThemeMode.light
-                                  : ThemeMode.dark,
-                          builder: (BuildContext context, Widget? child) {
-                            final MediaQueryData data = MediaQuery.of(context);
-                            return MediaQuery(
-                              // update max width
-                              // Force the textScaleFactor that's loaded from the device
-                              // to lock to 1 (you can change it in-app independent of the inherited scale).
-                              data: data.copyWith(textScaleFactor: 1),
-                              child: child!,
-                            );
-                          },
+                      child: BlocListener<FeedbackCubit, FeedbackState>(
+                        listener: (context, state) {
+                          if (state is FeedbackError) {
+                            showNotificationChip(context, state.msg());
+                          } else if (state is FeedbackSuccess) {
+                            sl.get<ConfettiBlaster>().show(context);
+                            router.pop(context);
+                            showNotificationChip(context, state.msg(), notificationType: NotificationType.success);
+                          }
+                        },
+                        child: Container(
+                          constraints: const BoxConstraints(maxWidth: 250),
+                          child: MaterialApp.router(
+                            routeInformationProvider: router.routeInformationProvider,
+                            routeInformationParser: router.routeInformationParser,
+                            routerDelegate: router.routerDelegate,
+                            debugShowCheckedModeBanner: false,
+                            title: "Confesi",
+                            theme: AppTheme.light,
+                            darkTheme: AppTheme.dark,
+                            themeMode: data.themePref == ThemePref.system
+                                ? ThemeMode.system
+                                : data.themePref == ThemePref.light
+                                    ? ThemeMode.light
+                                    : ThemeMode.dark,
+                            builder: (BuildContext context, Widget? child) {
+                              final MediaQueryData data = MediaQuery.of(context);
+                              return MediaQuery(
+                                // update max width
+                                // Force the textScaleFactor that's loaded from the device
+                                // to lock to 1 (you can change it in-app independent of the inherited scale).
+                                data: data.copyWith(textScaleFactor: 1),
+                                child: child!,
+                              );
+                            },
+                          ),
                         ),
                       ),
                     ),
