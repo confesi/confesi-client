@@ -1,3 +1,4 @@
+import 'package:confesi/application/user/cubit/quick_actions_cubit.dart';
 import 'package:confesi/presentation/shared/overlays/info_sheet.dart';
 import 'package:confesi/presentation/shared/selection_groups/tile_group.dart';
 
@@ -92,7 +93,7 @@ class SettingsHome extends StatelessWidget {
                               rightIcon: CupertinoIcons.link,
                               leftIcon: CupertinoIcons.sidebar_left,
                               text: "Confesi.com",
-                              onTap: () => print("todo: launch website"),
+                              onTap: () => context.read<QuickActionsCubit>().launchWebsite("https://confesi.com"),
                             ),
                           ],
                         ),
@@ -210,19 +211,25 @@ class SettingsHome extends StatelessWidget {
                               rightIcon: CupertinoIcons.link,
                               leftIcon: CupertinoIcons.doc,
                               text: "Term of service",
-                              onTap: () => print("todo: launch website"),
+                              onTap: () => context
+                                  .read<QuickActionsCubit>()
+                                  .launchWebsite("https://confesi.com/terms-of-service.html"),
                             ),
                             SettingTile(
                               rightIcon: CupertinoIcons.link,
                               leftIcon: CupertinoIcons.doc,
                               text: "Privacy policy",
-                              onTap: () => print("todo: launch website"),
+                              onTap: () => context
+                                  .read<QuickActionsCubit>()
+                                  .launchWebsite("https://confesi.com/privacy-policy.html"),
                             ),
                             SettingTile(
                               rightIcon: CupertinoIcons.link,
                               leftIcon: CupertinoIcons.doc,
                               text: "Community rules",
-                              onTap: () => print("todo: launch website"),
+                              onTap: () => context
+                                  .read<QuickActionsCubit>()
+                                  .launchWebsite("https://confesi.com/community-guidelines.html"),
                             ),
                             TileGroup(
                               text: "Other",

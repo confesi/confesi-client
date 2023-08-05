@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 /// AKA: it returns an ID which can be referenced as the last shown item. This
 /// helps with fetching more items.
 class InfiniteScrollIndexable {
-  final String id;
+  final int id;
   final Widget child;
 
   InfiniteScrollIndexable(this.id, this.child);

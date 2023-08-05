@@ -1,4 +1,3 @@
-
 import '../hive/hive_client.dart';
 import 'package:uuid/uuid.dart';
 
@@ -21,12 +20,7 @@ class UserAuthService extends ChangeNotifier {
   String uid = "";
   String sessionKey = "";
 
-  void setNewSessionKey() {
-    // todo: remove
-    print("SESSION KEY");
-    sessionKey = sl.get<Uuid>().v4();
-    print(sessionKey);
-  }
+  void setNewSessionKey() => sessionKey = sl.get<Uuid>().v4();
 
   // default data
   UserAuthData get def => UserAuthData();

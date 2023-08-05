@@ -1,3 +1,5 @@
+import 'package:confesi/core/results/successes.dart';
+
 import '../../shared/other/text_limit_tracker.dart';
 import 'package:flutter/material.dart';
 
@@ -92,6 +94,8 @@ class _CommentSheetState extends State<CommentSheet> {
           mainAxisSize: MainAxisSize.min,
           children: [
             ExpandableTextfield(
+              onChange: (_) => setState(() => {}),
+              color: Theme.of(context).colorScheme.surface,
               focusNode: textFocusNode,
               hintText: "What's your take?",
               maxLines: 4,

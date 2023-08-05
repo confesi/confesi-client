@@ -5,16 +5,22 @@ import 'package:flutter/material.dart';
 class StatTileGroup extends StatelessWidget {
   const StatTileGroup({
     super.key,
+    required this.icon1Text,
+    required this.icon2Text,
+    required this.icon4Text,
+    required this.icon5Text,
     required this.icon1OnPress,
     required this.icon2OnPress,
-    required this.icon3OnPress,
     required this.icon4OnPress,
     required this.icon5OnPress,
   });
 
+  final String icon1Text;
+  final String icon2Text;
+  final String icon4Text;
+  final String icon5Text;
   final VoidCallback icon1OnPress;
   final VoidCallback icon2OnPress;
-  final VoidCallback icon3OnPress;
   final VoidCallback icon4OnPress;
   final VoidCallback icon5OnPress;
 
@@ -32,11 +38,10 @@ class StatTileGroup extends StatelessWidget {
             physics: const NeverScrollableScrollPhysics(),
             child: Row(
               children: [
-                StatTileItem(text: "Back", icon: CupertinoIcons.arrow_turn_up_left, onTap: () => icon1OnPress()),
-                StatTileItem(text: "124", icon: CupertinoIcons.chat_bubble, onTap: () => icon2OnPress()),
-                StatTileItem(text: "Share", icon: CupertinoIcons.share, onTap: () => icon3OnPress()),
-                StatTileItem(text: "12.2k", icon: CupertinoIcons.arrow_up, onTap: () => icon4OnPress()),
-                StatTileItem(text: "413", icon: CupertinoIcons.arrow_down, onTap: () => icon5OnPress()),
+                StatTileItem(text: icon1Text, icon: CupertinoIcons.arrow_turn_up_left, onTap: () => icon1OnPress()),
+                StatTileItem(text: icon2Text, icon: CupertinoIcons.chat_bubble, onTap: () => icon2OnPress()),
+                StatTileItem(text: icon4Text, icon: CupertinoIcons.arrow_up, onTap: () => icon4OnPress()),
+                StatTileItem(text: icon5Text, icon: CupertinoIcons.arrow_down, onTap: () => icon5OnPress()),
               ],
             ),
           ),

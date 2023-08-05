@@ -1,3 +1,4 @@
+import 'package:confesi/application/user/cubit/quick_actions_cubit.dart';
 import 'package:confesi/constants/feed/general.dart';
 import 'package:confesi/core/utils/dates/readable_date_format.dart';
 import 'package:confesi/core/utils/strings/truncate_text.dart';
@@ -8,44 +9,25 @@ import 'package:confesi/presentation/shared/other/widget_or_nothing.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../constants/shared/constants.dart';
 import '../../../core/router/go_router.dart';
-import '../../../core/services/sharing.dart';
+import '../../../core/services/sharing/sharing.dart';
 import '../../../core/styles/typography.dart';
 import '../methods/show_post_options.dart';
+import '../utils/post_metadata_formatters.dart';
 
 class PostTile extends StatelessWidget {
   const PostTile({super.key, required this.post});
 
   final Post post;
 
-  String buildFaculty() {
-    if (post.faculty.faculty != null) {
-      return " • ${post.faculty.faculty}";
-    } else {
-      return "";
-    }
-  }
-
-  String buildYear() {
-    if (post.yearOfStudy.type != null) {
-      return " • year ${post.yearOfStudy.type!.toLowerCase()}";
-    } else {
-      return "";
-    }
-  }
-
-  String timeAgoFromMicroSecondUnixTime() {
-    var timeAgo = DateTime.fromMicrosecondsSinceEpoch(post.createdAt);
-    return timeAgo.xTimeAgoLocalDateFormat();
-  }
-
   @override
   Widget build(BuildContext context) {
     return TouchableOpacity(
-      onTap: () => router.push("/home/posts/detail"),
-      onLongPress: () => Sharing().sharePost(context, "link", "title", "body", "university", "timeAgo"),
+      onTap: () => router.push("/home/posts/detail", extra: HomePostsDetailProps(post)),
+      onLongPress: () => context.read<QuickActionsCubit>().sharePost(context, post),
       child: Padding(
         padding: const EdgeInsets.only(top: 15),
         child: Container(
@@ -91,14 +73,14 @@ class PostTile extends StatelessWidget {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        "${post.school.name}${buildFaculty()}${buildYear()}",
+                                        "${post.school.name}${buildFaculty(post)}${buildYear(post)}",
                                         style: kDetail.copyWith(
                                           color: Theme.of(context).colorScheme.onSurface,
                                         ),
                                         textAlign: TextAlign.left,
                                       ),
                                       Text(
-                                        "${timeAgoFromMicroSecondUnixTime()} • ${post.emojis.map((e) => e).join(" ")}",
+                                        "${timeAgoFromMicroSecondUnixTime(post)} • ${post.emojis.map((e) => e).join(" ")}",
                                         style: kDetail.copyWith(
                                           color: Theme.of(context).colorScheme.onSurface,
                                         ),
@@ -109,7 +91,7 @@ class PostTile extends StatelessWidget {
                                 ),
                                 const SizedBox(width: 5),
                                 TouchableOpacity(
-                                  onTap: () => buildOptionsSheet(context),
+                                  onTap: () => buildOptionsSheet(context, post),
                                   child: Container(
                                     color: Colors.transparent,
                                     child: Icon(
@@ -159,12 +141,14 @@ class PostTile extends StatelessWidget {
                               spacing: 10,
                               children: [
                                 ReactionTile(
+                                  simpleView: true,
                                   amount: 1232, // todo: comment count
                                   icon: CupertinoIcons.chat_bubble,
                                   iconColor: Theme.of(context).colorScheme.tertiary,
                                   isSelected: true,
                                 ),
                                 ReactionTile(
+                                  isSelected: post.userVote == 1,
                                   amount: post.upvote,
                                   icon: CupertinoIcons.up_arrow,
                                   iconColor: Theme.of(context).colorScheme.onErrorContainer,
@@ -173,7 +157,7 @@ class PostTile extends StatelessWidget {
                                   amount: post.downvote,
                                   icon: CupertinoIcons.down_arrow,
                                   iconColor: Theme.of(context).colorScheme.onSecondaryContainer,
-                                  isSelected: true,
+                                  isSelected: post.userVote == -1,
                                 ),
                               ],
                             ),

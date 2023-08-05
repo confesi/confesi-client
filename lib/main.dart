@@ -5,6 +5,7 @@ import 'package:confesi/application/feed/cubit/sentiment_analysis_cubit.dart';
 import 'package:confesi/application/user/cubit/feedback_categories_cubit.dart';
 import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/results/failures.dart';
+import 'package:confesi/core/services/global_content/global_content.dart';
 import 'package:confesi/models/school.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shake/shake.dart';
@@ -16,6 +17,7 @@ import 'application/create_post/cubit/post_categories_cubit.dart';
 import 'application/feed/cubit/search_schools_cubit.dart';
 import 'application/user/cubit/account_details_cubit.dart';
 import 'application/user/cubit/feedback_cubit.dart';
+import 'application/user/cubit/quick_actions_cubit.dart';
 import 'application/user/cubit/saved_posts_cubit.dart';
 import 'application/user/cubit/stats_cubit.dart';
 import 'core/services/hive/hive_client.dart';
@@ -58,6 +60,7 @@ void main() async => await init().then(
               MultiProvider(
                 providers: [
                   ChangeNotifierProvider(create: (context) => sl<UserAuthService>(), lazy: true),
+                  ChangeNotifierProvider(create: (context) => sl<GlobalContentService>(), lazy: true),
                 ],
                 child: MultiBlocProvider(
                   providers: [
@@ -74,6 +77,7 @@ void main() async => await init().then(
                     BlocProvider(lazy: false, create: (context) => sl<SearchSchoolsCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<SavedPostsCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<SchoolsDrawerCubit>()),
+                    BlocProvider(lazy: false, create: (context) => sl<QuickActionsCubit>()),
                   ],
                   child: debugMode && devicePreview
                       ? DevicePreview(builder: (context) => const ShrinkView())
@@ -92,7 +96,8 @@ class ShrinkView extends StatelessWidget {
     // final data = Provider.of<UserAuthService>(context, listen: true).data();
     return Center(
       // Use a SizedBox to limit the width of the entire app
-      child: ConstrainedBox(
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 250),
         constraints: BoxConstraints(
             maxWidth: Provider.of<UserAuthService>(context).data().isShrunkView
                 ? shrunkViewWidth
@@ -238,72 +243,81 @@ class _MyAppState extends State<MyApp> {
               showNotificationChip(context, state.message, notificationType: state.type);
             }
           },
-          child: BlocListener<SearchSchoolsCubit, SearchSchoolsState>(
-            listenWhen: (previous, current) => true,
+          child: BlocListener<QuickActionsCubit, QuickActionsState>(
             listener: (context, state) {
-              if (state is SearchSchoolsData && state.possibleErr is SearchSchoolsErr) {
-                showNotificationChip(context, (state.possibleErr as SearchSchoolsErr).message);
-                final errState = (state.possibleErr as SearchSchoolsErr);
-                context.read<SchoolsDrawerCubit>().resetSchoolInUI(errState.schoolId, errState.watched, errState.home);
+              if (state is QuickActionsDefault && state.possibleErr is QuickActionsErr) {
+                showNotificationChip(context, (state.possibleErr as QuickActionsErr).message);
               }
             },
-            child: BlocListener<SchoolsDrawerCubit, SchoolsDrawerState>(
+            child: BlocListener<SearchSchoolsCubit, SearchSchoolsState>(
+              listenWhen: (previous, current) => true,
               listener: (context, state) {
-                if (state is SchoolsDrawerData && state.possibleErr is SchoolsDrawerErr) {
-                  showNotificationChip(context, (state.possibleErr as SchoolsDrawerErr).message);
+                if (state is SearchSchoolsData && state.possibleErr is SearchSchoolsErr) {
+                  showNotificationChip(context, (state.possibleErr as SearchSchoolsErr).message);
+                  final errState = (state.possibleErr as SearchSchoolsErr);
+                  context
+                      .read<SchoolsDrawerCubit>()
+                      .resetSchoolInUI(errState.schoolId, errState.watched, errState.home);
                 }
               },
-              child: BlocListener<CreatePostCubit, CreatePostState>(
+              child: BlocListener<SchoolsDrawerCubit, SchoolsDrawerState>(
                 listener: (context, state) {
-                  if (state is PostError) {
-                    showNotificationChip(context, state.message);
-                  } else if (state is PostSuccessfullySubmitted) {
-                    sl.get<ConfettiBlaster>().show(context);
-                    router.go("/home");
-                    showNotificationChip(context, "Posted successfully", notificationType: NotificationType.success);
+                  if (state is SchoolsDrawerData && state.possibleErr is SchoolsDrawerErr) {
+                    showNotificationChip(context, (state.possibleErr as SchoolsDrawerErr).message);
                   }
                 },
-                child: BlocListener<AccountDetailsCubit, AccountDetailsState>(
+                child: BlocListener<CreatePostCubit, CreatePostState>(
                   listener: (context, state) {
-                    if (state is AccountDetailsTrueData && state.err is Err) {
-                      showNotificationChip(context, (state.err as Err).message);
+                    if (state is PostError) {
+                      showNotificationChip(context, state.message);
+                    } else if (state is PostSuccessfullySubmitted) {
+                      sl.get<ConfettiBlaster>().show(context);
+                      router.go("/home");
+                      showNotificationChip(context, "Posted successfully", notificationType: NotificationType.success);
                     }
                   },
-                  child: BlocListener<FeedbackCubit, FeedbackState>(
+                  child: BlocListener<AccountDetailsCubit, AccountDetailsState>(
                     listener: (context, state) {
-                      if (state is FeedbackError) {
-                        showNotificationChip(context, state.msg());
-                      } else if (state is FeedbackSuccess) {
-                        sl.get<ConfettiBlaster>().show(context);
-                        router.pop(context);
-                        showNotificationChip(context, state.msg(), notificationType: NotificationType.success);
+                      if (state is AccountDetailsTrueData && state.err is Err) {
+                        showNotificationChip(context, (state.err as Err).message);
                       }
                     },
-                    child: Container(
-                      constraints: const BoxConstraints(maxWidth: 250),
-                      child: MaterialApp.router(
-                        routeInformationProvider: router.routeInformationProvider,
-                        routeInformationParser: router.routeInformationParser,
-                        routerDelegate: router.routerDelegate,
-                        debugShowCheckedModeBanner: false,
-                        title: "Confesi",
-                        theme: AppTheme.light,
-                        darkTheme: AppTheme.dark,
-                        themeMode: data.themePref == ThemePref.system
-                            ? ThemeMode.system
-                            : data.themePref == ThemePref.light
-                                ? ThemeMode.light
-                                : ThemeMode.dark,
-                        builder: (BuildContext context, Widget? child) {
-                          final MediaQueryData data = MediaQuery.of(context);
-                          return MediaQuery(
-                            // update max width
-                            // Force the textScaleFactor that's loaded from the device
-                            // to lock to 1 (you can change it in-app independent of the inherited scale).
-                            data: data.copyWith(textScaleFactor: 1),
-                            child: child!,
-                          );
-                        },
+                    child: BlocListener<FeedbackCubit, FeedbackState>(
+                      listener: (context, state) {
+                        if (state is FeedbackError) {
+                          showNotificationChip(context, state.msg());
+                        } else if (state is FeedbackSuccess) {
+                          sl.get<ConfettiBlaster>().show(context);
+                          router.pop(context);
+                          showNotificationChip(context, state.msg(), notificationType: NotificationType.success);
+                        }
+                      },
+                      child: Container(
+                        constraints: const BoxConstraints(maxWidth: 250),
+                        child: MaterialApp.router(
+                          routeInformationProvider: router.routeInformationProvider,
+                          routeInformationParser: router.routeInformationParser,
+                          routerDelegate: router.routerDelegate,
+                          debugShowCheckedModeBanner: false,
+                          title: "Confesi",
+                          theme: AppTheme.light,
+                          darkTheme: AppTheme.dark,
+                          themeMode: data.themePref == ThemePref.system
+                              ? ThemeMode.system
+                              : data.themePref == ThemePref.light
+                                  ? ThemeMode.light
+                                  : ThemeMode.dark,
+                          builder: (BuildContext context, Widget? child) {
+                            final MediaQueryData data = MediaQuery.of(context);
+                            return MediaQuery(
+                              // update max width
+                              // Force the textScaleFactor that's loaded from the device
+                              // to lock to 1 (you can change it in-app independent of the inherited scale).
+                              data: data.copyWith(textScaleFactor: 1),
+                              child: child!,
+                            );
+                          },
+                        ),
                       ),
                     ),
                   ),

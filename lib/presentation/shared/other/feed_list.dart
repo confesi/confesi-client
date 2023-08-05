@@ -108,7 +108,7 @@ class FeedList extends StatefulWidget {
   final String wontLoadMoreMessage;
   final Widget? header;
   final FeedListController controller;
-  final Function(dartz.Either<Failure, String> possibleLastSeenId) loadMore;
+  final Function(dartz.Either<Failure, int> possibleLastSeenId) loadMore;
   final Function onErrorButtonPressed;
   final Function onWontLoadMoreButtonPressed;
   final Function onPullToRefresh;

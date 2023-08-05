@@ -101,7 +101,7 @@ class LeaderboardCubit extends Cubit<LeaderboardState> {
                   (index, e) => MapEntry(
                     index,
                     InfiniteScrollIndexable(
-                      index.toString(),
+                      index,
                       LeaderboardItemTile(
                         school: e,
                         placing: index + placingOffset + 1,

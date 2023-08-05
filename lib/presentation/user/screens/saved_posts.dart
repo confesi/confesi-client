@@ -5,9 +5,13 @@ import 'package:confesi/presentation/shared/indicators/loading_or_alert.dart';
 import 'package:confesi/presentation/shared/other/feed_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 
+import '../../../core/services/global_content/global_content.dart';
+import '../../../core/services/sharing/sharing.dart';
 import '../../../core/styles/typography.dart';
 import '../../../core/types/infinite_scrollable_indexable.dart';
+import '../../../init.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/layout/appbar.dart';
 
@@ -35,9 +39,20 @@ class _YourSavedPostsScreenState extends State<YourSavedPostsScreen> {
 
   Widget buildBody(BuildContext context, SavedPostsState state) {
     if (state is SavedPostsData) {
-      print(state.paginationState);
       return FeedList(
-        controller: feedController,
+        controller: feedController
+          ..items = (state.postIds
+              .map((postId) {
+                final post = Provider.of<GlobalContentService>(context).posts[postId];
+                return post != null
+                    ? InfiniteScrollIndexable(
+                        postId,
+                        PostTile(post: post),
+                      )
+                    : null;
+              })
+              .whereType<InfiniteScrollIndexable>()
+              .toList()),
         loadMore: (_) => context.read<SavedPostsCubit>().loadPosts(),
         onPullToRefresh: () => context.read<SavedPostsCubit>().loadPosts(refresh: true),
         hasError: state.paginationState == PaginationState.error,
@@ -62,6 +77,10 @@ class _YourSavedPostsScreenState extends State<YourSavedPostsScreen> {
   Widget build(BuildContext context) {
     return ThemeStatusBar(
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+            onPressed: () => Provider.of<GlobalContentService>(context, listen: false).updatePost(
+                Provider.of<GlobalContentService>(context, listen: false).posts[29]!.copyWith(
+                    title: Provider.of<GlobalContentService>(context, listen: false).posts[29]!.title + "more"))),
         backgroundColor: Theme.of(context).colorScheme.shadow,
         body: SafeArea(
           bottom: false,
@@ -84,10 +103,18 @@ class _YourSavedPostsScreenState extends State<YourSavedPostsScreen> {
                 child: BlocConsumer<SavedPostsCubit, SavedPostsState>(
                   listener: (context, state) {
                     if (state is SavedPostsData) {
-                      List<InfiniteScrollIndexable> indexableItems = (state.posts)
-                          .map((e) => InfiniteScrollIndexable(e.id.toString(), PostTile(post: e)))
-                          .toList(); // todo: make post
-                      feedController.setItems(indexableItems);
+                      // feedController.items = (state.postIds
+                      //     .map((postId) {
+                      //       final post = Provider.of<GlobalContentService>(context, listen: false).posts[postId];
+                      //       return post != null
+                      //           ? InfiniteScrollIndexable(
+                      //               postId,
+                      //               PostTile(post: post),
+                      //             )
+                      //           : null;
+                      //     })
+                      //     .whereType<InfiniteScrollIndexable>()
+                      //     .toList());
                     }
                   },
                   builder: (context, state) =>

@@ -1,5 +1,11 @@
+import 'package:confesi/application/user/cubit/quick_actions_cubit.dart';
+import 'package:confesi/core/utils/numbers/add_commas_to_number.dart';
+import 'package:confesi/models/post.dart';
+
 import '../../../constants/feed/enums.dart';
+import '../../../core/router/go_router.dart';
 import '../methods/show_post_options.dart';
+import '../utils/post_metadata_formatters.dart';
 import '../widgets/simple_comment_root_group.dart';
 import '../../shared/behaviours/one_theme_status_bar.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +15,7 @@ import 'package:scrollable/exports.dart';
 import 'package:screenshot_callback/screenshot_callback.dart';
 
 import '../../../constants/feed/general.dart';
-import '../../../core/services/sharing.dart';
+import '../../../core/services/sharing/sharing.dart';
 import '../../../core/styles/typography.dart';
 import '../../shared/buttons/simple_text.dart';
 import '../../shared/overlays/notification_chip.dart';
@@ -19,7 +25,9 @@ import '../widgets/simple_comment_sort.dart';
 import '../widgets/simple_comment_tile.dart';
 
 class SimpleDetailViewScreen extends StatefulWidget {
-  const SimpleDetailViewScreen({super.key});
+  const SimpleDetailViewScreen({super.key, required this.props});
+
+  final HomePostsDetailProps props;
 
   @override
   State<SimpleDetailViewScreen> createState() => _SimpleDetailViewScreenState();
@@ -38,7 +46,7 @@ class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
           context,
           "Tap here to share this instead",
           notificationType: NotificationType.success,
-          onTap: () => Sharing().sharePost(context, "link", "title", "body", "university", "timeAgo"),
+          onTap: () => context.read<QuickActionsCubit>().sharePost(context, widget.props.post),
         );
       },
     );
@@ -89,10 +97,13 @@ class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
               child: Column(
                 children: [
                   StatTileGroup(
-                    icon1OnPress: () => Navigator.pop(context),
+                    icon1Text: "Back",
+                    icon2Text: addCommasToNumber(221), // todo: comment count
+                    icon4Text: addCommasToNumber(widget.props.post.upvote),
+                    icon5Text: addCommasToNumber(widget.props.post.downvote),
+                    icon1OnPress: () => router.pop(context),
                     icon2OnPress: () => commentSheetController.focus(),
-                    icon3OnPress: () => Sharing().sharePost(
-                        context, "link", "title", "body", "university", "timeAgo"), // commentSheetController.unfocus()
+
                     icon4OnPress: () => commentSheetController.delete(),
                     icon5OnPress: () => commentSheetController.setBlocking(!commentSheetController.isBlocking),
                   ),
@@ -115,7 +126,7 @@ class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
                                       children: [
                                         const SizedBox(height: 15),
                                         Text(
-                                          "I found out all the stats profs are in a conspiracy ring together!",
+                                          widget.props.post.title,
                                           style: kDisplay1.copyWith(
                                             color: Theme.of(context).colorScheme.primary,
                                           ),
@@ -127,22 +138,34 @@ class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
                                           spacing: 10,
                                           children: [
                                             SimpleTextButton(
-                                              onTap: () => buildOptionsSheet(context),
+                                              onTap: () => buildOptionsSheet(context, widget.props.post),
                                               text: "Advanced options",
                                             ),
                                           ],
                                         ),
                                         const SizedBox(height: 15),
-                                        Text(
-                                          "Year 1 Computer Science / Politics / 22min ago / University of Victoria",
-                                          style: kDetail.copyWith(
-                                            color: Theme.of(context).colorScheme.onSurface,
-                                          ),
-                                          textAlign: TextAlign.left,
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "${widget.props.post.school.name}${buildFaculty(widget.props.post)}${buildYear(widget.props.post)} • ${widget.props.post.category.category}",
+                                              style: kDetail.copyWith(
+                                                color: Theme.of(context).colorScheme.onSurface,
+                                              ),
+                                              textAlign: TextAlign.left,
+                                            ),
+                                            Text(
+                                              "${timeAgoFromMicroSecondUnixTime(widget.props.post)} • ${widget.props.post.emojis.map((e) => e).join(" ")}",
+                                              style: kDetail.copyWith(
+                                                color: Theme.of(context).colorScheme.onSurface,
+                                              ),
+                                              textAlign: TextAlign.left,
+                                            ),
+                                          ],
                                         ),
                                         const SizedBox(height: 15),
                                         Text(
-                                          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec blandit ex eu nunc mattis auctor. Nam accumsan malesuada quam in egestas. Ut interdum efficitur purus, quis facilisis massa lobortis a. Nullam pharetra vel lacus faucibus accumsan.",
+                                          widget.props.post.content,
                                           style: kBody.copyWith(
                                             color: Theme.of(context).colorScheme.primary,
                                           ),

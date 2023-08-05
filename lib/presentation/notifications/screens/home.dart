@@ -50,7 +50,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         loadMore: (id) {
           // todo: make loop?
           controller.addItem(InfiniteScrollIndexable(
-            "test_leaderboard_id",
+            1,
             const NotificationTile(
               title: "Here is a cool title from a notification",
               body: "This is the body of the notification. It can possibly be a little bit longer.",

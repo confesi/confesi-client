@@ -1,3 +1,4 @@
+import 'package:confesi/models/post.dart';
 import 'package:confesi/models/school_with_metadata.dart';
 import 'package:confesi/presentation/authentication_and_settings/screens/settings/acknowledgements.dart';
 import 'package:confesi/presentation/notifications/screens/home.dart';
@@ -127,7 +128,10 @@ final GoRouter router = GoRouter(
     GoRoute(path: '/onboarding', builder: (BuildContext context, GoRouterState state) => const ShowcaseScreen()),
     GoRoute(
         path: '/home/posts/detail',
-        builder: (BuildContext context, GoRouterState state) => const SimpleDetailViewScreen()),
+        builder: (BuildContext context, GoRouterState state) {
+          HomePostsDetailProps props = state.extra as HomePostsDetailProps;
+          return SimpleDetailViewScreen(props: props);
+        }),
 
     GoRoute(
       path: '/home/posts/sentiment',
@@ -233,4 +237,9 @@ class RegistrationPops {
 class HomeLeaderboardSchoolProps {
   final SchoolWithMetadata school;
   const HomeLeaderboardSchoolProps(this.school);
+}
+
+class HomePostsDetailProps {
+  final Post post;
+  const HomePostsDetailProps(this.post);
 }

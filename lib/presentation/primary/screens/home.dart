@@ -1,5 +1,7 @@
 import 'package:confesi/application/create_post/cubit/post_categories_cubit.dart';
+import 'package:confesi/core/services/global_content/global_content.dart';
 import 'package:confesi/init.dart';
+import 'package:provider/provider.dart';
 
 import '../../../core/router/go_router.dart';
 import '../../../core/services/user_auth/user_auth_service.dart';
@@ -50,6 +52,15 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       onWillPop: () async => false,
       child: ThemeStatusBar(
         child: Scaffold(
+          floatingActionButton: Row(
+            children: [
+              FloatingActionButton(onPressed: () => print(sl.get<GlobalContentService>().posts)),
+              // FloatingActionButton(
+              //     onPressed: () => Provider.of<GlobalContentService>(context, listen: false).updatePost(
+              //         Provider.of<GlobalContentService>(context, listen: false).posts[29]!.copyWith(
+              //             title: Provider.of<GlobalContentService>(context, listen: false).posts[29]!.title + "more"))),
+            ],
+          ),
           backgroundColor: Theme.of(context).colorScheme.background,
           drawerScrimColor: Colors.black.withOpacity(0.7),
           drawerEnableOpenDragGesture: currentIndex == 0,

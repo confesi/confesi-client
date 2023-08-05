@@ -10,9 +10,11 @@ class ReactionTile extends StatelessWidget {
     required this.amount,
     required this.icon,
     required this.iconColor,
+    this.simpleView = false,
     this.isSelected = false,
   });
 
+  final bool simpleView;
   final int amount;
   final IconData icon;
   final Color iconColor;
@@ -24,12 +26,16 @@ class ReactionTile extends StatelessWidget {
       onTap: () => print("tap"),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 250),
-        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+        padding: EdgeInsets.only(top: 6, bottom: 5, left: simpleView ? 0 : 10, right: simpleView ? 0 : 10),
         decoration: BoxDecoration(
-          border: Border.all(
-              color: Theme.of(context).colorScheme.onBackground, width: 0.8, strokeAlign: BorderSide.strokeAlignInside),
-          color: Theme.of(context).colorScheme.surface,
-          borderRadius: const BorderRadius.all(Radius.circular(20)),
+          border: simpleView
+              ? null
+              : Border.all(
+                  color: Theme.of(context).colorScheme.onBackground,
+                  width: 0.8,
+                  strokeAlign: BorderSide.strokeAlignInside),
+          color: simpleView ? Colors.transparent : Theme.of(context).colorScheme.surface,
+          borderRadius: const BorderRadius.all(Radius.circular(15)),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,

@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import '../../application/create_post/cubit/post_categories_cubit.dart';
 
 /// The root endpoint (domain) for all api calls.
-const String domain = "http://10.0.0.173:8080"; // -> iOS emulator
+const String domain = "http://10.0.0.173:8080";
 
 /// If debug mode is enabled. OFF for prod.
 const bool debugMode = true;
@@ -69,6 +69,11 @@ List<PostCategory> postCategories = const [
   PostCategory("Relationships", CupertinoIcons.suit_heart),
   PostCategory("Wholesome", CupertinoIcons.bandage),
 ];
+
+const String confesiSupportEmail = "support@confesi.com";
+
+const String confesiAndroidPackageName = "com.confesi.app";
+const String confesiAppleAppId = "com.confesi.app";
 
 // converter using the postCatgories list to convert string to icondata
 IconData postCategoryToIcon(String category) {

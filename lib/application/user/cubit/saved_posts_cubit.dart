@@ -5,6 +5,8 @@ import 'package:equatable/equatable.dart';
 
 import '../../../constants/shared/constants.dart';
 import '../../../core/clients/api.dart';
+import '../../../core/services/global_content/global_content.dart';
+import '../../../init.dart';
 import '../../../models/post.dart';
 
 part 'saved_posts_state.dart';
@@ -13,6 +15,10 @@ class SavedPostsCubit extends Cubit<SavedPostsState> {
   SavedPostsCubit(this._api) : super(SavedPostsLoading());
 
   final Api _api;
+
+  Future<void> upvotePost() async {
+    if (state is SavedPostsData) {}
+  }
 
   Future<void> loadPosts({bool refresh = false, bool fullScreenRefresh = false}) async {
     if (fullScreenRefresh) {
@@ -33,7 +39,6 @@ class SavedPostsCubit extends Cubit<SavedPostsState> {
             emit(const SavedPostsError("Unknown error"));
           }
         } else if (response.statusCode.toString()[0] == "2") {
-          final int? next;
           final dynamic body;
           try {
             body = json.decode(response.body)["value"];
@@ -44,19 +49,18 @@ class SavedPostsCubit extends Cubit<SavedPostsState> {
               next = (state as SavedPostsData).next;
             }
             final posts = (body["posts"] as List).map((i) => Post.fromJson(i)).toList();
-            final List<Post> combinedPosts;
+            final List<int> combinedPosts;
             if (state is SavedPostsData) {
               if (refresh) {
-                combinedPosts = posts;
+                combinedPosts = posts.map((e) => e.id).toList();
               } else {
-                combinedPosts = (state as SavedPostsData).posts + posts;
+                combinedPosts = (state as SavedPostsData).postIds + posts.map((e) => e.id).toList();
               }
             } else {
-              combinedPosts = posts;
+              combinedPosts = posts.map((e) => e.id).toList();
             }
-            print("GOT POSTS AT: $posts");
-            if (posts.length < savedContentPageSize || posts.isEmpty) {
-              print("Emitting END");
+            sl.get<GlobalContentService>().setPosts(posts);
+            if (posts.length < savedContentPageSize) {
               emit(SavedPostsData(
                 combinedPosts,
                 next,
@@ -65,8 +69,7 @@ class SavedPostsCubit extends Cubit<SavedPostsState> {
             } else {
               emit(SavedPostsData(combinedPosts, next, PaginationState.loading));
             }
-          } catch (e) {
-            print(e);
+          } catch (_) {
             if (state is SavedPostsData) {
               emit((state as SavedPostsData).copyWith(paginationState: PaginationState.error));
             } else {

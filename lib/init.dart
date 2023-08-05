@@ -7,6 +7,7 @@ import 'package:confesi/application/user/cubit/feedback_cubit.dart';
 import 'package:confesi/application/user/cubit/stats_cubit.dart';
 import 'package:confesi/core/clients/api.dart';
 import 'package:confesi/core/services/fcm_notifications/token_data.dart';
+import 'package:confesi/core/services/global_content/global_content.dart';
 import 'package:confesi/core/utils/funcs/debouncer.dart';
 import 'package:confesi/presentation/create_post/overlays/confetti_blaster.dart';
 import 'package:uuid/uuid.dart';
@@ -14,9 +15,11 @@ import 'application/authentication_and_settings/cubit/auth_flow_cubit.dart';
 import 'application/feed/cubit/schools_drawer_cubit.dart';
 import 'application/feed/cubit/search_schools_cubit.dart';
 import 'application/feed/cubit/sentiment_analysis_cubit.dart';
+import 'application/user/cubit/quick_actions_cubit.dart';
 import 'application/user/cubit/saved_posts_cubit.dart';
 import 'core/services/create_post_hint_text/create_post_hint_text.dart';
 import 'core/services/remote_config/remote_config.dart';
+import 'core/services/sharing/sharing.dart';
 import 'core/services/splash_screen_hint_text/splash_screen_hint_text.dart';
 import 'core/services/user_auth/user_auth_data.dart';
 import 'core/services/user_auth/user_auth_service.dart';
@@ -97,15 +100,19 @@ Future<void> init() async {
 
   //! Services
   UserAuthService userAuthService = UserAuthService(sl());
+  GlobalContentService globalContentService = GlobalContentService();
+
   userAuthService.hive.registerAdapter<UserAuthData>(UserAuthDataAdapter());
   userAuthService.hive.registerAdapter(ThemePrefAdapter());
   userAuthService.hive.registerAdapter(UnitSystemAdapter());
   userAuthService.hive.registerAdapter(ProfanityFilterAdapter());
   userAuthService.hive.registerAdapter(FcmTokenAdapter());
   sl.registerLazySingleton(() => userAuthService);
+  sl.registerLazySingleton(() => globalContentService);
   sl.registerLazySingleton(() => NotificationService()..init());
   sl.registerLazySingleton(() => CreatePostHintManager());
   sl.registerLazySingleton(() => SplashScreenHintManager());
+  sl.registerLazySingleton(() => Sharing());
 
   //! State (BLoC or Cubit)
   sl.registerFactory(() => SentimentAnalysisCubit());
@@ -125,6 +132,7 @@ Future<void> init() async {
         Api(),
       )); // new instan
   sl.registerFactory(() => SavedPostsCubit(Api()));
+  sl.registerFactory(() => QuickActionsCubit(sl()));
 
   //! Firebase
   await initFirebase();

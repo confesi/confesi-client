@@ -25,7 +25,7 @@ class Post extends Equatable {
   String content;
   int downvote;
   int upvote;
-  int trendingScore;
+  num trendingScore;
   DateTime? hottestOn;
   bool hidden;
   bool edited;
@@ -96,4 +96,47 @@ class Post extends Equatable {
         owner,
         emojis
       ];
+
+  // copyWith method
+  Post copyWith({
+    int? id,
+    int? createdAt,
+    int? updatedAt,
+    School? school,
+    Faculty? faculty,
+    YearOfStudy? yearOfStudy,
+    String? title,
+    String? content,
+    int? downvote,
+    int? upvote,
+    num? trendingScore,
+    DateTime? hottestOn,
+    bool? hidden,
+    bool? edited,
+    int? userVote,
+    bool? owner,
+    Category? category,
+    List<String>? emojis,
+  }) {
+    return Post(
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      school: school ?? this.school,
+      faculty: faculty ?? this.faculty,
+      yearOfStudy: yearOfStudy ?? this.yearOfStudy,
+      title: title ?? this.title,
+      content: content ?? this.content,
+      downvote: downvote ?? this.downvote,
+      upvote: upvote ?? this.upvote,
+      trendingScore: trendingScore ?? this.trendingScore,
+      hottestOn: hottestOn ?? this.hottestOn,
+      hidden: hidden ?? this.hidden,
+      edited: edited ?? this.edited,
+      userVote: userVote ?? this.userVote,
+      owner: owner ?? this.owner,
+      category: category ?? this.category,
+      emojis: emojis ?? this.emojis,
+    );
+  }
 }

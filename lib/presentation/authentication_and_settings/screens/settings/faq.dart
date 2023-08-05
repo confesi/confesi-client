@@ -31,8 +31,7 @@ class _FAQScreenState extends State<FAQScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             AppbarLayout(
-                                bottomBorder: true,
-
+              bottomBorder: true,
               backgroundColor: Theme.of(context).colorScheme.shadow,
               centerWidget: Text(
                 "FAQ",
@@ -53,6 +52,24 @@ class _FAQScreenState extends State<FAQScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      TileGroup(
+                        text: "Content",
+                        tiles: [
+                          StepperTile(
+                            question: "Am I free to share this content elsewhere online?",
+                            answer: "Yes, we encourage you to! Just ensure you include some mention of 'Confesi'.",
+                          ),
+                          StepperTile(
+                              question: "How can I get an image of a confession to share?",
+                              answer:
+                                  "Simply click on the 'share' icons or text in-app, and one will be created for you!"),
+                          StepperTile(
+                              question:
+                                  "Is there a way to export confessions and comments in a video-format for use elsewhere?",
+                              answer:
+                                  "Currently, no. But we're working on soon creating a tool that will auto-create a video for you that reads out a confession and its most funny comments. This should help you share your favourite confessions with your friends!"),
+                        ],
+                      ),
                       TileGroup(
                         text: "Privacy",
                         tiles: [

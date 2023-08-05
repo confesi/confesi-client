@@ -17,24 +17,24 @@ class SavedPostsError extends SavedPostsState {
 }
 
 class SavedPostsData extends SavedPostsState {
-  final List<Post> posts;
+  final List<int> postIds;
   final int? next;
   final PaginationState paginationState;
 
-  const SavedPostsData(this.posts, this.next, this.paginationState);
+  const SavedPostsData(this.postIds, this.next, this.paginationState);
 
   SavedPostsData copyWith({
-    List<Post>? posts,
+    List<int>? postIds,
     int? next,
     PaginationState? paginationState,
   }) {
     return SavedPostsData(
-      posts ?? this.posts,
+      postIds ?? this.postIds,
       next ?? this.next,
       paginationState ?? this.paginationState,
     );
   }
 
   @override
-  List<Object> get props => [posts, paginationState];
+  List<Object> get props => [postIds, paginationState];
 }
