@@ -27,7 +27,9 @@ class _YourSavedPostsScreenState extends State<YourSavedPostsScreen> {
 
   @override
   void initState() {
-    context.read<SavedPostsCubit>().loadPosts(fullScreenRefresh: true);
+    if (context.read<SavedPostsCubit>().state is SavedPostsLoading) {
+      context.read<SavedPostsCubit>().loadPosts(refresh: true);
+    }
     super.initState();
   }
 

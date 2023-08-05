@@ -131,7 +131,7 @@ class Api {
 
       if (needsBearerToken) {
         if (!await _getSetBearerToken()) {
-          return Left(ApiServerFailure());
+          return Left(ApiConnectionFailure());
         }
       }
 
@@ -159,7 +159,7 @@ class Api {
         // print("Req headers: ${request.headers}");
         print("Req body: ${request.body}");
         print("<<<>>>");
-        print("Res headers: ${streamResponse.headers}");
+        // print("Res headers: ${streamResponse.headers}");
         print("Res body: ${response.body}");
         print("-----------------------------------------------");
       }
@@ -177,7 +177,6 @@ class Api {
             return Left(ApiTooManyGlobalRequests(int.parse(response.headers["x-ratelimit-reset"]!)));
           }
         } catch (e) {
-          print("ERROR IS $e");
           return Left(ApiServerFailure());
         }
       }
@@ -194,7 +193,6 @@ class Api {
     } catch (e) {
       // Close the client in case of any other exception
       _client?.close();
-      print(e);
       return Left(ApiServerFailure());
     }
   }

@@ -52,15 +52,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       onWillPop: () async => false,
       child: ThemeStatusBar(
         child: Scaffold(
-          floatingActionButton: Row(
-            children: [
-              FloatingActionButton(onPressed: () => print(sl.get<GlobalContentService>().posts)),
-              // FloatingActionButton(
-              //     onPressed: () => Provider.of<GlobalContentService>(context, listen: false).updatePost(
-              //         Provider.of<GlobalContentService>(context, listen: false).posts[29]!.copyWith(
-              //             title: Provider.of<GlobalContentService>(context, listen: false).posts[29]!.title + "more"))),
-            ],
-          ),
           backgroundColor: Theme.of(context).colorScheme.background,
           drawerScrimColor: Colors.black.withOpacity(0.7),
           drawerEnableOpenDragGesture: currentIndex == 0,
