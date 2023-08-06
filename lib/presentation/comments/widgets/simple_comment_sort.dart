@@ -85,7 +85,7 @@ class _SimpleCommentSortState extends State<SimpleCommentSort> {
         ],
       ),
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 10),
+        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
         width: double.infinity,
         decoration: BoxDecoration(
           // Transparent hitbox trick.

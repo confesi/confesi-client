@@ -38,42 +38,37 @@ class SimpleTextButton extends StatelessWidget {
     return TouchableScale(
       tapType: tapType,
       onTap: () => onTap(),
-      child: AnimatedSize(
+      child: AnimatedContainer(
+        key: UniqueKey(),
+        margin: EdgeInsets.symmetric(horizontal: horizontalPadding),
         duration: const Duration(milliseconds: 175),
-        child: AnimatedContainer(
-          key: UniqueKey(),
-          margin: EdgeInsets.symmetric(horizontal: horizontalPadding),
-          duration: const Duration(milliseconds: 175),
-          width: infiniteWidth ? double.infinity : null,
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            border: Border.all(
-                color: Theme.of(context).colorScheme.onBackground,
-                width: 0.8,
-                strokeAlign: BorderSide.strokeAlignInside),
-            color: bgColor ??
-                (secondaryColors
-                    ? Theme.of(context).colorScheme.secondary
-                    : thirdColors
+        width: infiniteWidth ? double.infinity : null,
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          border: Border.all(
+              color: Theme.of(context).colorScheme.onBackground, width: 0.8, strokeAlign: BorderSide.strokeAlignInside),
+          color: bgColor ??
+              (secondaryColors
+                  ? Theme.of(context).colorScheme.secondary
+                  : thirdColors
+                      ? Theme.of(context).colorScheme.onSecondary
+                      : Theme.of(context).colorScheme.surface),
+          borderRadius: const BorderRadius.all(Radius.circular(15)),
+        ),
+        child: Text(
+          text,
+          textAlign: TextAlign.center,
+          overflow: TextOverflow.ellipsis,
+          maxLines: maxLines,
+          style: kTitle.copyWith(
+            color: textColor ??
+                (isErrorText
+                    ? Theme.of(context).colorScheme.error
+                    : secondaryColors
                         ? Theme.of(context).colorScheme.onSecondary
-                        : Theme.of(context).colorScheme.surface),
-            borderRadius: const BorderRadius.all(Radius.circular(15)),
-          ),
-          child: Text(
-            text,
-            textAlign: TextAlign.center,
-            overflow: TextOverflow.ellipsis,
-            maxLines: maxLines,
-            style: kTitle.copyWith(
-              color: textColor ??
-                  (isErrorText
-                      ? Theme.of(context).colorScheme.error
-                      : secondaryColors
-                          ? Theme.of(context).colorScheme.onSecondary
-                          : thirdColors
-                              ? Theme.of(context).colorScheme.onSurfaceVariant
-                              : Theme.of(context).colorScheme.primary),
-            ),
+                        : thirdColors
+                            ? Theme.of(context).colorScheme.onSurfaceVariant
+                            : Theme.of(context).colorScheme.primary),
           ),
         ),
       ),

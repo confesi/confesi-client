@@ -23,7 +23,8 @@ const double shrunkViewWidth = 400;
 const int rankedSchoolsPageSize = 2;
 const int savedContentPageSize = 2;
 
-const int commentSectionRootsPageSize = 10;
+const int commentSectionRootsLoadedInitially = 10;
+const int commentSectionRepliesLoadedInitially = 3;
 
 const List<String> faculties = [
   "ENG",

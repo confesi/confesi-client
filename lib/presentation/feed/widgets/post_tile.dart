@@ -29,7 +29,7 @@ class PostTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TouchableOpacity(
-      onTap: () => router.push("/home/posts/detail", extra: HomePostsDetailProps(post, false)),
+      onTap: () => router.push("/home/posts/comments", extra: HomePostsCommentsProps(post, false)),
       onLongPress: () => context.read<QuickActionsCubit>().sharePost(context, post),
       child: Padding(
         padding: const EdgeInsets.only(top: 15),
@@ -159,7 +159,7 @@ class PostTile extends StatelessWidget {
                                   iconColor: Theme.of(context).colorScheme.tertiary,
                                   isSelected: true,
                                   onTap: () =>
-                                      router.push("/home/posts/detail", extra: HomePostsDetailProps(post, true)),
+                                      router.push("/home/posts/comments", extra: HomePostsCommentsProps(post, true)),
                                 ),
                                 ReactionTile(
                                   onTap: () async => await Provider.of<GlobalContentService>(context, listen: false)

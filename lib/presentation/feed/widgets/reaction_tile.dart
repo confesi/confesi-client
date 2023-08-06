@@ -16,6 +16,7 @@ class ReactionTile extends StatefulWidget {
     this.simpleView = false,
     this.isSelected = false,
     this.onTap,
+    this.extraLeftPadding = false,
   });
 
   final bool simpleView;
@@ -24,6 +25,7 @@ class ReactionTile extends StatefulWidget {
   final Color iconColor;
   final bool isSelected;
   final VoidCallback? onTap;
+  final bool extraLeftPadding;
 
   @override
   _ReactionTileState createState() => _ReactionTileState();
@@ -105,6 +107,9 @@ class _ReactionTileState extends State<ReactionTile> with SingleTickerProviderSt
       );
     }
 
-    return content;
+    return Padding(
+      padding: EdgeInsets.only(left: widget.extraLeftPadding ? 10 : 0),
+      child: content,
+    );
   }
 }

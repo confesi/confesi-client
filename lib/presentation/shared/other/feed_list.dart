@@ -103,10 +103,8 @@ class FeedList extends StatefulWidget {
     required this.wontLoadMoreMessage,
     this.shrinkWrap = false,
     this.isScrollable = true,
-    this.dontReRequestWhen = false,
   });
 
-  final bool dontReRequestWhen;
   final bool isScrollable;
   final bool shrinkWrap;
   final bool hasError;
@@ -140,8 +138,6 @@ class _FeedListState extends State<FeedList> {
       // Loading more items
       List<int> visibleIndexes =
           widget.controller.itemPositionsListener.itemPositions.value.map((item) => item.index).toList();
-      // print(visibleIndexes);
-      if (widget.dontReRequestWhen) print(visibleIndexes.last);
       if (visibleIndexes.isNotEmpty &&
           widget.controller.items.length - visibleIndexes.last < widget.controller.preloadBy &&
           !isCurrentlyLoadingMore &&

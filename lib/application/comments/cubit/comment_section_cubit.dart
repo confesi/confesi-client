@@ -21,6 +21,71 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
 
   final Api _api;
 
+  Future<bool> loadReplies(int? rootCommentId, int next) async {
+    if (rootCommentId == null) return false;
+    _api.cancelCurrentReq();
+    final response = await _api.req(
+      Verb.get,
+      true,
+      "/api/v1/comments/replies",
+      {
+        "parent_root": rootCommentId,
+        "next": next,
+      },
+    );
+
+    return response.fold(
+      (failureWithMsg) {
+        return false;
+      },
+      (response) async {
+        if (response.statusCode.toString()[0] == "2") {
+          try {
+            List<CommentWithMetadata> replies = (json.decode(response.body)["value"]["comments"] as List)
+                .map((e) => CommentWithMetadata.fromJson(e))
+                .toList();
+
+            // Update the comment replies in the global content service
+            sl.get<GlobalContentService>().setComments(replies);
+
+            // Existing commentIds in the state (if any)
+            final List<LinkedHashMap<int, List<int>>> existingCommentIds =
+                state is CommentSectionData ? (state as CommentSectionData).commentIds : [];
+
+            // Find the root comment in existing commentIds
+            final existingReplies = existingCommentIds.firstWhereOrNull((map) => map.containsKey(rootCommentId));
+
+            if (existingReplies != null) {
+              // Update existing comment map with new replies
+              final newReplies = replies.map((e) => e.comment.id).toList();
+              if (existingReplies.containsKey(rootCommentId)) {
+                existingReplies[rootCommentId]!.addAll(newReplies);
+              } else {
+                existingReplies[rootCommentId] = newReplies;
+              }
+
+              // Emit the updated state
+              emit(CommentSectionData(existingCommentIds, CommentFeedState.feed));
+              return true;
+            } else {
+              // If no existing replies found, create a new map entry
+              final commentMap = {rootCommentId: replies.map((e) => e.comment.id).toList()};
+              final List<LinkedHashMap<int, List<int>>> updatedCommentIds = List.from(existingCommentIds)
+                ..add(LinkedHashMap<int, List<int>>.from(commentMap));
+              // Emit the updated state
+              emit(CommentSectionData(updatedCommentIds, CommentFeedState.feed));
+              return true;
+            }
+          } catch (e) {
+            return false;
+          }
+        } else {
+          return false;
+        }
+      },
+    );
+  }
+
   Future<void> loadInitial(
     int postId,
     CommentSortType sort, {
@@ -35,7 +100,6 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
     if (state is CommentSectionData) {
       emit((state as CommentSectionData).copyWith(paginationState: CommentFeedState.loading));
     }
-    print("REQUESTING FOR MORE STUFFFFFFFFFFFFFFFFFF");
     final response = await _api.req(
       Verb.get,
       true,
@@ -106,8 +170,9 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
                 },
               );
               sl.get<GlobalContentService>().setComments(c);
-              final paginationState =
-                  (commentGroups.length < commentSectionRootsPageSize) ? CommentFeedState.end : CommentFeedState.feed;
+              final paginationState = (commentGroups.length < commentSectionRootsLoadedInitially)
+                  ? CommentFeedState.end
+                  : CommentFeedState.feed;
               emit(CommentSectionData(updatedCommentIds, paginationState));
               print(updatedCommentIds);
             } else {

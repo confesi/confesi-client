@@ -1,3 +1,6 @@
+import 'package:confesi/presentation/shared/button_touch_effects/touchable_shrink.dart';
+import 'package:confesi/presentation/shared/other/widget_or_nothing.dart';
+
 import 'simple_comment_tile.dart';
 
 import '../../shared/behaviours/animated_cliprrect.dart';
@@ -22,27 +25,37 @@ class _SimpleCommentRootGroupState extends State<SimpleCommentRootGroup> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        GestureDetector(
-          onLongPress: () => setState(() => _isExpanded = !_isExpanded),
-          child: Container(
-            // Transparent hitbox trick.
-            color: Colors.transparent,
-            child: widget.root,
+    return AnimatedOpacity(
+      duration: const Duration(milliseconds: 250),
+      opacity: !_isExpanded && widget.subTree.isNotEmpty ? 0.25 : 1.0,
+      child: Column(
+        children: [
+          widget.subTree.isNotEmpty
+              ? TouchableShrink(
+                  onLongPress: () => setState(() => widget.subTree.isNotEmpty ? _isExpanded = !_isExpanded : null),
+                  child: Container(
+                    // Transparent hitbox trick.
+                    color: Theme.of(context).colorScheme.shadow,
+                    child: widget.root,
+                  ),
+                )
+              : Container(
+                  // Transparent hitbox trick.
+                  color: Theme.of(context).colorScheme.shadow,
+                  child: widget.root,
+                ),
+          AnimatedClipRect(
+            duration: const Duration(milliseconds: 175),
+            reverseDuration: const Duration(milliseconds: 175),
+            alignment: Alignment.bottomCenter,
+            horizontalAnimation: false,
+            open: _isExpanded,
+            child: Column(
+              children: widget.subTree,
+            ),
           ),
-        ),
-        AnimatedClipRect(
-          duration: const Duration(milliseconds: 175),
-          reverseDuration: const Duration(milliseconds: 175),
-          alignment: Alignment.bottomCenter,
-          horizontalAnimation: false,
-          open: _isExpanded,
-          child: Column(
-            children: widget.subTree,
-          ),
-        )
-      ],
+        ],
+      ),
     );
   }
 }
