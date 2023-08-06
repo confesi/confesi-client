@@ -23,6 +23,7 @@ class GlobalContentService extends ChangeNotifier {
 
   void setComments(List<CommentWithMetadata> comments) {
     for (final comment in comments) {
+      print(comment);
       this.comments[comment.comment.id] = comment;
     }
     notifyListeners();
@@ -40,11 +41,89 @@ class GlobalContentService extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<Either<String, ApiSuccess>> voteOnComment(CommentWithMetadata comment, int vote) async {
+    _postVoteApi.cancelCurrentReq();
+
+    if (vote != -1 && vote != 0 && vote != 1) {
+      notifyListeners();
+      return const Left("Invalid vote value");
+    }
+
+    final int oldVote = comment.userVote;
+    final int newVote = vote;
+
+    // Check if the user is changing their vote
+    bool changingVote = oldVote != newVote;
+
+    // Update the userVote optimistically
+    comment.userVote = newVote;
+    // Update associated votes
+    if (newVote == 1) {
+      comment.comment.upvote++;
+      if (oldVote == -1) comment.comment.downvote--;
+    } else if (newVote == -1) {
+      comment.comment.downvote++;
+      if (oldVote == 1) comment.comment.upvote--;
+    } else if (newVote == 0) {
+      if (oldVote == 1) comment.comment.upvote--;
+      if (oldVote == -1) comment.comment.downvote--;
+    }
+
+    notifyListeners();
+
+    // Prepare the request body
+    final Map<String, dynamic> requestBody = {
+      'content_id': comment.comment.id,
+      'value': newVote,
+      'content_type': 'comment',
+    };
+
+    // Make the request to update the vote on the server
+    return await _postVoteApi.req(Verb.put, true, "/api/v1/votes/vote", requestBody).then(
+      (responseEither) {
+        return responseEither.fold(
+          (failureWithMsg) {
+            // Revert to the oldVote and old votes if the request fails
+            comment.userVote = oldVote;
+            if (changingVote) {
+              if (oldVote == 1) {
+                comment.comment.upvote--;
+                comment.comment.downvote++;
+              } else if (oldVote == -1) {
+                comment.comment.downvote--;
+                comment.comment.upvote++;
+              }
+            }
+            notifyListeners();
+            return const Left("Error voting");
+          },
+          (response) {
+            if (response.statusCode.toString()[0] != "2") {
+              // Revert to the oldVote and old votes if the request fails
+              comment.userVote = oldVote;
+              if (changingVote) {
+                if (oldVote == 1) {
+                  comment.comment.upvote--;
+                  comment.comment.downvote++;
+                } else if (oldVote == -1) {
+                  comment.comment.downvote--;
+                  comment.comment.upvote++;
+                }
+              }
+              notifyListeners();
+              return const Left("Error voting");
+            }
+            return Right(ApiSuccess());
+          },
+        );
+      },
+    );
+  }
+
   Future<Either<String, ApiSuccess>> voteOnPost(Post post, int vote) async {
     _postVoteApi.cancelCurrentReq();
 
     if (vote != -1 && vote != 0 && vote != 1) {
-      // todo: alert user there is an error
       notifyListeners();
       return const Left("Invalid vote value");
     }

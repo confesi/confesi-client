@@ -20,10 +20,9 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
   CommentSectionCubit(this._api) : super(CommentSectionLoading());
 
   final Api _api;
-
   Future<bool> loadReplies(int? rootCommentId, int next) async {
     if (rootCommentId == null) return false;
-    _api.cancelCurrentReq();
+    // _api.cancelCurrentReq();
     final response = await _api.req(
       Verb.get,
       true,
@@ -44,9 +43,6 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
             List<CommentWithMetadata> replies = (json.decode(response.body)["value"]["comments"] as List)
                 .map((e) => CommentWithMetadata.fromJson(e))
                 .toList();
-
-            // Update the comment replies in the global content service
-            sl.get<GlobalContentService>().setComments(replies);
 
             // Existing commentIds in the state (if any)
             final List<LinkedHashMap<int, List<int>>> existingCommentIds =
@@ -92,7 +88,7 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
     bool refresh = false,
     bool fullScreenRefresh = false,
   }) async {
-    _api.cancelCurrentReq();
+    // _api.cancelCurrentReq();
     if (fullScreenRefresh || state is CommentSectionError) {
       refresh = true;
       emit(CommentSectionLoading());
