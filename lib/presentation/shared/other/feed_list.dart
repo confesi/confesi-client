@@ -143,7 +143,9 @@ class _FeedListState extends State<FeedList> {
           widget.controller.items.length - visibleIndexes.last < widget.controller.preloadBy &&
           !isCurrentlyLoadingMore &&
           !widget.hasError &&
-          !widget.wontLoadMore) {
+          !widget.wontLoadMore &&
+          !endOfFeedReachedIsLoading &&
+          !errorLoadingMoreIsLoading) {
         isCurrentlyLoadingMore = true;
         await widget.loadMore(
           widget.controller.items.isNotEmpty ? dartz.Right(widget.controller.items.last.id) : dartz.Left(NoneFailure()),
@@ -201,7 +203,7 @@ class _FeedListState extends State<FeedList> {
       child: ScrollablePositionedList.builder(
         shrinkWrap: widget.shrinkWrap,
         physics: widget.isScrollable
-            ? const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics())
+            ? const AlwaysScrollableScrollPhysics(parent: ClampingScrollPhysics())
             : const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
           if (index == 0) {

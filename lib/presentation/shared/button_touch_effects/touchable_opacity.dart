@@ -9,6 +9,7 @@ class TouchableOpacity extends StatefulWidget {
     required this.child,
     required this.onTap,
     this.onLongPress,
+    this.onDoubleTap,
     this.tapType,
     Key? key,
   }) : super(key: key);
@@ -18,6 +19,7 @@ class TouchableOpacity extends StatefulWidget {
   final bool tappable;
   final TapType? tapType;
   final VoidCallback? onLongPress;
+  final VoidCallback? onDoubleTap;
 
   @override
   State<TouchableOpacity> createState() => _TouchableOpacityState();
@@ -62,6 +64,7 @@ class _TouchableOpacityState extends State<TouchableOpacity> with SingleTickerPr
                     }
                   }
                 : null,
+            onDoubleTap: widget.onDoubleTap, // Pass onDoubleTap callback
             onTapCancel: () {
               animController.reverse();
               animController.addListener(() => setState(() {}));

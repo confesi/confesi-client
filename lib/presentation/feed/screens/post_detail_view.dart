@@ -132,69 +132,75 @@ class _SimpleDetailViewScreenState extends State<SimpleDetailViewScreen> {
                 Expanded(
                   child: SwipeRefresh(
                     onRefresh: () async {
-                      await context.read<SavedPostsCubit>().loadPosts(refresh: true, fullScreenRefresh: true).then(
-                            (_) async => await context
-                                .read<CommentSectionCubit>()
-                                .loadInitial(widget.props.post.id, CommentSortType.recent, refresh: true, fullScreenRefresh: true),
-                          );
+                      await Future.wait([
+                        context.read<SavedPostsCubit>().loadPosts(refresh: true, fullScreenRefresh: true),
+                        context.read<CommentSectionCubit>().loadInitial(widget.props.post.id, CommentSortType.recent,
+                            refresh: true, fullScreenRefresh: true),
+                      ]);
                     },
                     child: SingleChildScrollView(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(height: 15),
-                            Text(
-                              post.title,
-                              style: kDisplay1.copyWith(
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
-                              textAlign: TextAlign.left,
-                            ),
-                            const SizedBox(height: 15),
-                            Wrap(
-                              runSpacing: 10,
-                              spacing: 10,
-                              children: [
-                                SimpleTextButton(
-                                  onTap: () => buildOptionsSheet(context, widget.props.post),
-                                  text: "Advanced options",
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 15),
-                            Column(
+                      physics: const ClampingScrollPhysics(),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 15),
+                            child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                const SizedBox(height: 15),
                                 Text(
-                                  "${post.school.name}${buildFaculty(post)}${buildYear(post)} • ${post.category.category.capitalize()}",
-                                  style: kDetail.copyWith(
-                                    color: Theme.of(context).colorScheme.onSurface,
+                                  post.title,
+                                  style: kDisplay1.copyWith(
+                                    color: Theme.of(context).colorScheme.primary,
                                   ),
                                   textAlign: TextAlign.left,
                                 ),
+                                const SizedBox(height: 15),
+                                Wrap(
+                                  runSpacing: 10,
+                                  spacing: 10,
+                                  children: [
+                                    SimpleTextButton(
+                                      onTap: () => buildOptionsSheet(context, widget.props.post),
+                                      text: "Advanced options",
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 15),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "${post.school.name}${buildFaculty(post)}${buildYear(post)} • ${post.category.category.capitalize()}",
+                                      style: kDetail.copyWith(
+                                        color: Theme.of(context).colorScheme.onSurface,
+                                      ),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                    Text(
+                                      "${timeAgoFromMicroSecondUnixTime(post.createdAt)} • ${post.emojis.map((e) => e).join(" ")}",
+                                      style: kDetail.copyWith(
+                                        color: Theme.of(context).colorScheme.onSurface,
+                                      ),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 15),
                                 Text(
-                                  "${timeAgoFromMicroSecondUnixTime(post)} • ${post.emojis.map((e) => e).join(" ")}",
-                                  style: kDetail.copyWith(
-                                    color: Theme.of(context).colorScheme.onSurface,
+                                  post.content,
+                                  style: kBody.copyWith(
+                                    color: Theme.of(context).colorScheme.primary,
                                   ),
                                   textAlign: TextAlign.left,
                                 ),
+                                const SizedBox(height: 15),
                               ],
                             ),
-                            const SizedBox(height: 15),
-                            Text(
-                              post.content,
-                              style: kBody.copyWith(
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
-                              textAlign: TextAlign.left,
-                            ),
-                            const SizedBox(height: 15),
-                            CommentSheetView(post: post),
-                          ],
-                        ),
+                          ),
+                          CommentSheetView(post: post),
+                        ],
                       ),
                     ),
                   ),

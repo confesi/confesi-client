@@ -160,7 +160,7 @@ class _MyAppState extends State<MyApp> {
           router.push("/settings/feedback").then((value) => shakeViewOpen = false);
         }
       },
-      shakeThresholdGravity: 2,
+      shakeThresholdGravity: 3,
       shakeCountResetTime: 1500,
       minimumShakeCount: 2,
     );

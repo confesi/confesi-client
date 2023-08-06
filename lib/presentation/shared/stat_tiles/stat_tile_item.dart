@@ -1,4 +1,5 @@
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
+import 'package:flutter/services.dart';
 
 import '../button_touch_effects/touchable_opacity.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,10 @@ class StatTileItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: TouchableScale(
-        onTap: () => onTap(),
+        onTap: () {
+          HapticFeedback.lightImpact();
+          onTap();
+        },
         child: Container(
           color: Colors.transparent,
           child: Padding(

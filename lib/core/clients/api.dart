@@ -160,7 +160,7 @@ class Api {
         print("Req body: ${request.body}");
         print("<<<>>>");
         // print("Res headers: ${streamResponse.headers}");
-        print("Res body: ${response.body}");
+        // print("Res body: ${response.body}");
         print("-----------------------------------------------");
       }
 

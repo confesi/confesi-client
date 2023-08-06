@@ -1,5 +1,4 @@
 import 'package:confesi/application/user/cubit/saved_posts_cubit.dart';
-import 'package:confesi/models/post.dart';
 import 'package:confesi/presentation/feed/widgets/post_tile.dart';
 import 'package:confesi/presentation/shared/indicators/loading_or_alert.dart';
 import 'package:confesi/presentation/shared/other/feed_list.dart';
@@ -8,10 +7,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/services/global_content/global_content.dart';
-import '../../../core/services/sharing/sharing.dart';
 import '../../../core/styles/typography.dart';
 import '../../../core/types/infinite_scrollable_indexable.dart';
-import '../../../init.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/layout/appbar.dart';
 
@@ -61,8 +58,7 @@ class _YourSavedPostsScreenState extends State<YourSavedPostsScreen> {
         wontLoadMore: state.paginationState == PaginationState.end,
         onWontLoadMoreButtonPressed: () => context.read<SavedPostsCubit>().loadPosts(),
         onErrorButtonPressed: () => context.read<SavedPostsCubit>().loadPosts(),
-        wontLoadMoreMessage:
-            state.paginationState == PaginationState.end ? "You've reached the end of the list" : "Error loading",
+        wontLoadMoreMessage: state.paginationState == PaginationState.end ? "You've reached the end" : "Error loading",
       );
     } else {
       return LoadingOrAlert(

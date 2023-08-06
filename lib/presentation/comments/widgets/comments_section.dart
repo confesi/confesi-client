@@ -1,5 +1,3 @@
-// comment_sheet_view.dart
-
 import 'package:confesi/application/comments/cubit/comment_section_cubit.dart';
 import 'package:confesi/core/services/global_content/global_content.dart';
 import 'package:confesi/models/post.dart';
@@ -8,13 +6,13 @@ import 'package:confesi/presentation/comments/widgets/simple_comment_sort.dart';
 import 'package:confesi/presentation/shared/indicators/loading_or_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 import '../../../constants/feed/enums.dart';
 import '../../../core/types/infinite_scrollable_indexable.dart';
 import '../../../models/comment.dart';
 import '../../feed/widgets/simple_comment_root_group.dart';
 import '../../feed/widgets/simple_comment_tile.dart';
 import '../../shared/other/feed_list.dart';
-import 'comment_tile.dart';
 
 class CommentSheetView extends StatefulWidget {
   const CommentSheetView({super.key, required this.post});
@@ -30,7 +28,7 @@ class _CommentSheetViewState extends State<CommentSheetView> {
 
   @override
   void initState() {
-    context.read<CommentSectionCubit>().loadInitial(widget.post.id, CommentSortType.recent);
+    context.read<CommentSectionCubit>().loadInitial(widget.post.id, CommentSortType.recent, refresh: true);
     super.initState();
   }
 
@@ -40,7 +38,10 @@ class _CommentSheetViewState extends State<CommentSheetView> {
       builder: (context, state) {
         return Column(
           children: [
-            SimpleCommentSort(onSwitch: (newSort) => print(newSort)),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: SimpleCommentSort(onSwitch: (newSort) => print(newSort)),
+            ),
             buildBody(context, state),
           ],
         );
@@ -54,20 +55,20 @@ class _CommentSheetViewState extends State<CommentSheetView> {
         isScrollable: false,
         shrinkWrap: true,
         controller: feedController
-          ..items = state.commentIds.entries
-              .map((entry) {
-                final commentId = entry.key;
-                final commentIds = entry.value;
-                final comment = context.watch<GlobalContentService>().comments[commentId];
+          ..items = state.commentIds
+              .map((commentIds) {
+                final rootCommentId = commentIds.keys.first;
+                final rootCommentIdsList = commentIds[rootCommentId]!;
+                final comment = Provider.of<GlobalContentService>(context).comments[rootCommentId];
                 return comment != null
                     ? InfiniteScrollIndexable(
-                        commentId,
+                        rootCommentId,
                         SimpleCommentRootGroup(
                           root: SimpleCommentTile(
                             isRootComment: true,
-                            content: comment.comment.content, // Check for null before accessing content
+                            comment: comment,
                           ),
-                          subTree: buildReplies(commentIds),
+                          subTree: buildReplies(rootCommentIdsList),
                         ),
                       )
                     : null;
@@ -75,15 +76,15 @@ class _CommentSheetViewState extends State<CommentSheetView> {
               .whereType<InfiniteScrollIndexable>()
               .toList(),
         loadMore: (_) => context.read<CommentSectionCubit>().loadInitial(widget.post.id, CommentSortType.recent),
-        onPullToRefresh: () => context.read<CommentSectionCubit>().loadInitial(widget.post.id, CommentSortType.recent),
+        onPullToRefresh: () =>
+            context.read<CommentSectionCubit>().loadInitial(widget.post.id, CommentSortType.recent, refresh: true),
         hasError: state.paginationState == PaginationState.error,
         wontLoadMore: state.paginationState == PaginationState.end,
         onWontLoadMoreButtonPressed: () =>
             context.read<CommentSectionCubit>().loadInitial(widget.post.id, CommentSortType.recent),
         onErrorButtonPressed: () =>
             context.read<CommentSectionCubit>().loadInitial(widget.post.id, CommentSortType.recent),
-        wontLoadMoreMessage:
-            state.paginationState == PaginationState.end ? "You've reached the end of the list" : "Error loading",
+        wontLoadMoreMessage: state.paginationState == PaginationState.end ? "You've reached the end" : "Error loading",
       );
     } else {
       return LoadingOrAlert(
@@ -96,11 +97,7 @@ class _CommentSheetViewState extends State<CommentSheetView> {
     }
   }
 
-  List<SimpleCommentRootGroup> buildReplies(Set<int>? commentReplies) {
-    if (commentReplies == null) {
-      return [];
-    }
-
+  List<SimpleCommentRootGroup> buildReplies(List<int> commentReplies) {
     final commentWidgets = <SimpleCommentRootGroup>[];
 
     for (int commentId in commentReplies) {
@@ -110,8 +107,7 @@ class _CommentSheetViewState extends State<CommentSheetView> {
           SimpleCommentRootGroup(
             root: SimpleCommentTile(
               isRootComment: false,
-              // isGettingRepliedTo: true,
-              content: comment.comment.content,
+              comment: comment,
             ),
             subTree: const [],
           ),

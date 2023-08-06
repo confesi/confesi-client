@@ -92,7 +92,7 @@ class PostTile extends StatelessWidget {
                                         textAlign: TextAlign.left,
                                       ),
                                       Text(
-                                        "${timeAgoFromMicroSecondUnixTime(post)} • ${post.emojis.map((e) => e).join(" ")}",
+                                        "${timeAgoFromMicroSecondUnixTime(post.createdAt)} • ${post.emojis.map((e) => e).join(" ")}",
                                         style: kDetail.copyWith(
                                           color: Theme.of(context).colorScheme.onSurface,
                                         ),

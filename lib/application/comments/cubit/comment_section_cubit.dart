@@ -2,6 +2,8 @@ import 'dart:collection';
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
+import 'package:collection/collection.dart';
+
 import 'package:confesi/core/services/user_auth/user_auth_service.dart';
 import 'package:confesi/init.dart';
 import 'package:confesi/models/comment.dart';
@@ -25,11 +27,14 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
     bool refresh = false,
     bool fullScreenRefresh = false,
   }) async {
+    _api.cancelCurrentReq();
     if (fullScreenRefresh || state is CommentSectionError) {
       refresh = true;
       emit(CommentSectionLoading());
     }
-    _api.cancelCurrentReq();
+    if (state is CommentSectionData) {
+      emit((state as CommentSectionData).copyWith(paginationState: PaginationState.currentlyLoading));
+    }
     final response = await _api.req(
       Verb.get,
       true,
@@ -37,7 +42,7 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
       {
         "post_id": postId,
         "sort": sort.name(),
-        "purge_cache": refresh,
+        "purge_cache": true,
         "session_key": sl.get<UserAuthService>().sessionKey,
       },
     );
@@ -62,24 +67,36 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
           try {
             final List<CommentGroup> commentGroups =
                 (json.decode(response.body)["value"] as List).map((i) => CommentGroup.fromJson(i)).toList();
-            final LinkedHashMap<int, Set<int>> combinedComments = LinkedHashMap<int, Set<int>>();
-            if (state is CommentSectionData) {
-              if (refresh) {
-                for (final group in commentGroups) {
-                  combinedComments[group.root.comment.id] = {};
-                }
-              } else {
-                for (final group in commentGroups) {
-                  final replies = group.replies?.map((e) => e.comment.id).toSet() ?? {};
-                  combinedComments[group.root.comment.id] = replies;
-                }
-              }
-            } else {
+            final List<LinkedHashMap<int, List<int>>> combinedComments = <LinkedHashMap<int, List<int>>>[];
+
+            // Existing commentIds in the state (if any)
+            final List<LinkedHashMap<int, List<int>>> existingCommentIds =
+                state is CommentSectionData ? (state as CommentSectionData).commentIds : [];
+
+            if (commentGroups.isNotEmpty) {
               for (final group in commentGroups) {
-                final replies = group.replies?.map((e) => e.comment.id).toSet() ?? {};
-                combinedComments[group.root.comment.id] = replies;
+                final rootCommentId = group.root.comment.id;
+                final existingReplies = existingCommentIds.firstWhereOrNull((map) => map.containsKey(rootCommentId));
+
+                final newReplies = group.replies?.map((e) => e.comment.id).toList() ?? [];
+
+                if (existingReplies != null) {
+                  // Create a new LinkedHashMap with existing data and update with new replies
+                  final updatedReplies = LinkedHashMap<int, List<int>>.from(existingReplies);
+                  for (final id in newReplies) {
+                    if (!updatedReplies[rootCommentId]!.contains(id)) {
+                      updatedReplies[rootCommentId]!.add(id);
+                    }
+                  }
+                  combinedComments.add(updatedReplies);
+                } else {
+                  // If no existing replies found, create a new map entry
+                  final commentMap = {rootCommentId: newReplies};
+                  combinedComments.add(LinkedHashMap<int, List<int>>.from(commentMap));
+                }
               }
             }
+
             final List<CommentWithMetadata> c = commentGroups.fold(
               [],
               (List<CommentWithMetadata> acc, group) {
@@ -91,11 +108,15 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
               },
             );
             sl.get<GlobalContentService>().setComments(c);
-
-            final paginationState =
-                (commentGroups.length < commentSectionRootsPageSize) ? PaginationState.end : PaginationState.loading;
-            emit(CommentSectionData(combinedComments, null, paginationState));
+            final paginationState = (commentGroups.length < commentSectionRootsPageSize)
+                ? PaginationState.end
+                : PaginationState.currentlyLoading;
+            print(paginationState);
+            emit(CommentSectionData(combinedComments, paginationState));
+            print(combinedComments);
+            print(sl.get<GlobalContentService>().comments);
           } catch (e) {
+            print("ERROR PARSING:  $e");
             emit(const CommentSectionError("Unknown error loading comments"));
           }
         } else {

@@ -17,7 +17,7 @@ String buildYear(Post post) {
   }
 }
 
-String timeAgoFromMicroSecondUnixTime(Post post) {
-  var timeAgo = DateTime.fromMicrosecondsSinceEpoch(post.createdAt);
+String timeAgoFromMicroSecondUnixTime(int createdAt) {
+  var timeAgo = DateTime.fromMicrosecondsSinceEpoch(createdAt);
   return timeAgo.xTimeAgoLocalDateFormat();
 }
