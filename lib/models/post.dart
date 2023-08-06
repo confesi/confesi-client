@@ -5,7 +5,6 @@
 import 'dart:convert';
 
 import 'package:confesi/models/school.dart';
-import 'package:confesi/models/school_with_metadata.dart';
 import 'package:confesi/models/year_of_study.dart';
 import 'package:equatable/equatable.dart';
 
@@ -33,6 +32,7 @@ class Post extends Equatable {
   bool owner;
   Category category;
   List<String> emojis;
+  int commentCount;
 
   Post({
     required this.id,
@@ -53,6 +53,7 @@ class Post extends Equatable {
     required this.owner,
     required this.category,
     required this.emojis,
+    required this.commentCount,
   });
 
   factory Post.fromJson(Map<String, dynamic> json) => Post(
@@ -72,6 +73,7 @@ class Post extends Equatable {
         hidden: json["post"]["hidden"],
         edited: json["post"]["edited"],
         userVote: json["user_vote"],
+        commentCount: json["post"]["comment_count"],
         owner: json["owner"],
         emojis: (json["emojis"] as List).map((e) => e.toString()).toList(),
       );
@@ -94,7 +96,8 @@ class Post extends Equatable {
         edited,
         userVote,
         owner,
-        emojis
+        emojis,
+        commentCount
       ];
 
   // copyWith method
@@ -117,6 +120,7 @@ class Post extends Equatable {
     bool? owner,
     Category? category,
     List<String>? emojis,
+    int? commentCount,
   }) {
     return Post(
       id: id ?? this.id,
@@ -137,6 +141,7 @@ class Post extends Equatable {
       owner: owner ?? this.owner,
       category: category ?? this.category,
       emojis: emojis ?? this.emojis,
+      commentCount: commentCount ?? this.commentCount,
     );
   }
 }

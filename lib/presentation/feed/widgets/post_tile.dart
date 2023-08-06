@@ -154,7 +154,7 @@ class PostTile extends StatelessWidget {
                               children: [
                                 ReactionTile(
                                   simpleView: false,
-                                  amount: 1232, // todo: comment count
+                                  amount: post.commentCount,
                                   icon: CupertinoIcons.chat_bubble,
                                   iconColor: Theme.of(context).colorScheme.tertiary,
                                   isSelected: true,

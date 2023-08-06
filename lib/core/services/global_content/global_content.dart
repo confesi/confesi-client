@@ -28,6 +28,11 @@ class GlobalContentService extends ChangeNotifier {
     notifyListeners();
   }
 
+  void clearComments() {
+    comments.clear();
+    notifyListeners();
+  }
+
   void setPosts(List<Post> posts) {
     for (final post in posts) {
       this.posts[post.id] = post;

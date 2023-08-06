@@ -80,6 +80,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
             const SizedBox(height: 5),
           ],
         ),
+        // dontReRequestWhen: true,
         controller: controller,
         loadMore: (_) async => await context.read<LeaderboardCubit>().loadRankings(),
         onPullToRefresh: () async => await context.read<LeaderboardCubit>().loadRankings(forceRefresh: true),

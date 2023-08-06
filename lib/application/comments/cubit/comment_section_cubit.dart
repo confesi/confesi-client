@@ -33,8 +33,9 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
       emit(CommentSectionLoading());
     }
     if (state is CommentSectionData) {
-      emit((state as CommentSectionData).copyWith(paginationState: PaginationState.currentlyLoading));
+      emit((state as CommentSectionData).copyWith(paginationState: CommentFeedState.loading));
     }
+    print("REQUESTING FOR MORE STUFFFFFFFFFFFFFFFFFF");
     final response = await _api.req(
       Verb.get,
       true,
@@ -42,7 +43,7 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
       {
         "post_id": postId,
         "sort": sort.name(),
-        "purge_cache": true,
+        "purge_cache": refresh,
         "session_key": sl.get<UserAuthService>().sessionKey,
       },
     );
@@ -50,7 +51,7 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
     response.fold(
       (failureWithMsg) {
         if (state is CommentSectionData) {
-          emit((state as CommentSectionData).copyWith(paginationState: PaginationState.error));
+          emit((state as CommentSectionData).copyWith(paginationState: CommentFeedState.error));
         } else {
           emit(CommentSectionError(failureWithMsg.message()));
         }
@@ -58,7 +59,7 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
       (response) async {
         if (response.statusCode.toString()[0] == "4") {
           if (state is CommentSectionData) {
-            emit((state as CommentSectionData).copyWith(paginationState: PaginationState.error));
+            emit((state as CommentSectionData).copyWith(paginationState: CommentFeedState.error));
           } else {
             emit(const CommentSectionError("Unknown error loading comments"));
           }
@@ -67,56 +68,53 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
           try {
             final List<CommentGroup> commentGroups =
                 (json.decode(response.body)["value"] as List).map((i) => CommentGroup.fromJson(i)).toList();
-            final List<LinkedHashMap<int, List<int>>> combinedComments = <LinkedHashMap<int, List<int>>>[];
 
             // Existing commentIds in the state (if any)
             final List<LinkedHashMap<int, List<int>>> existingCommentIds =
                 state is CommentSectionData ? (state as CommentSectionData).commentIds : [];
 
             if (commentGroups.isNotEmpty) {
+              List<LinkedHashMap<int, List<int>>> updatedCommentIds = List.from(existingCommentIds);
+
               for (final group in commentGroups) {
                 final rootCommentId = group.root.comment.id;
-                final existingReplies = existingCommentIds.firstWhereOrNull((map) => map.containsKey(rootCommentId));
+                final existingReplies = updatedCommentIds.firstWhereOrNull((map) => map.containsKey(rootCommentId));
 
                 final newReplies = group.replies?.map((e) => e.comment.id).toList() ?? [];
-
                 if (existingReplies != null) {
-                  // Create a new LinkedHashMap with existing data and update with new replies
-                  final updatedReplies = LinkedHashMap<int, List<int>>.from(existingReplies);
+                  // Update existing comment map
                   for (final id in newReplies) {
-                    if (!updatedReplies[rootCommentId]!.contains(id)) {
-                      updatedReplies[rootCommentId]!.add(id);
+                    if (!existingReplies[rootCommentId]!.contains(id)) {
+                      existingReplies[rootCommentId]!.add(id);
                     }
                   }
-                  combinedComments.add(updatedReplies);
                 } else {
                   // If no existing replies found, create a new map entry
                   final commentMap = {rootCommentId: newReplies};
-                  combinedComments.add(LinkedHashMap<int, List<int>>.from(commentMap));
+                  updatedCommentIds.add(LinkedHashMap<int, List<int>>.from(commentMap));
                 }
               }
-            }
 
-            final List<CommentWithMetadata> c = commentGroups.fold(
-              [],
-              (List<CommentWithMetadata> acc, group) {
-                acc.add(group.root);
-                if (group.replies != null) {
-                  acc.addAll(group.replies!.map((reply) => reply));
-                }
-                return acc;
-              },
-            );
-            sl.get<GlobalContentService>().setComments(c);
-            final paginationState = (commentGroups.length < commentSectionRootsPageSize)
-                ? PaginationState.end
-                : PaginationState.currentlyLoading;
-            print(paginationState);
-            emit(CommentSectionData(combinedComments, paginationState));
-            print(combinedComments);
-            print(sl.get<GlobalContentService>().comments);
+              final List<CommentWithMetadata> c = commentGroups.fold(
+                [],
+                (List<CommentWithMetadata> acc, group) {
+                  acc.add(group.root);
+                  if (group.replies != null) {
+                    acc.addAll(group.replies!.map((reply) => reply));
+                  }
+                  return acc;
+                },
+              );
+              sl.get<GlobalContentService>().setComments(c);
+              final paginationState =
+                  (commentGroups.length < commentSectionRootsPageSize) ? CommentFeedState.end : CommentFeedState.feed;
+              emit(CommentSectionData(updatedCommentIds, paginationState));
+              print(updatedCommentIds);
+            } else {
+              // If there are no new comments, just emit the existing state
+              emit(CommentSectionData(existingCommentIds, CommentFeedState.end));
+            }
           } catch (e) {
-            print("ERROR PARSING:  $e");
             emit(const CommentSectionError("Unknown error loading comments"));
           }
         } else {

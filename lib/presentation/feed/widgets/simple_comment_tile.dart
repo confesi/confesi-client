@@ -26,20 +26,12 @@ class SimpleCommentTile extends StatelessWidget {
   final bool isRootComment;
   final bool isGettingRepliedTo;
 
-  void showOptions(BuildContext context) {
-    // Implement your logic to show the options for the comment
-    // Here you can use the same logic as in the old `CommentTile`
-    // For example, use `showButtonOptionsSheet` to display options in a bottom sheet
-    // or show `Slidable` action panes similar to the old `CommentTile`.
-    print("Show options");
-  }
-
   List<TextSpan> _buildReplyHeaderSpans(BuildContext context) {
     List<TextSpan> spans = [];
 
     String replying =
-        comment.comment.numericalReplyingUserIsOp ? "OP" : comment.comment.numericalReplyingUser.toString();
-    String user = comment.comment.numericalUserIsOp ? "OP" : comment.comment.numericalUser.toString();
+        comment.comment.numericalReplyingUserIsOp ? "OP" : "#${comment.comment.numericalReplyingUser.toString()}";
+    String user = comment.comment.numericalUserIsOp ? "OP" : "#${comment.comment.numericalUser.toString()}";
 
     if (comment.comment.numericalReplyingUser != null || comment.comment.numericalReplyingUserIsOp) {
       spans.add(TextSpan(
@@ -107,7 +99,7 @@ class SimpleCommentTile extends StatelessWidget {
         ],
       ),
       child: TouchableShrink(
-        onLongPress: () => showOptions(context),
+        onLongPress: () => print("todo: options"),
         child: Container(
           // Container hitbox trick.
           color: Colors.transparent,
@@ -119,7 +111,7 @@ class SimpleCommentTile extends StatelessWidget {
                   if (!isRootComment) ...[
                     Container(
                       width: 0.8,
-                      color: Theme.of(context).colorScheme.onBackground,
+                      color: Theme.of(context).colorScheme.secondary,
                     ),
                     const SizedBox(width: 15),
                   ],
@@ -153,7 +145,7 @@ class SimpleCommentTile extends StatelessWidget {
                               ),
                               if (!isRootComment)
                                 TouchableOpacity(
-                                  onTap: () => showOptions(context),
+                                  onTap: () => print("todo: options"),
                                   child: Container(
                                     // Transparent container hitbox trick.
                                     color: Colors.transparent,

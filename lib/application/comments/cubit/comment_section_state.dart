@@ -1,6 +1,6 @@
 part of 'comment_section_cubit.dart';
 
-enum PaginationState { error, currentlyLoading, end }
+enum CommentFeedState { error, loading, end, feed }
 
 abstract class CommentSectionState extends Equatable {
   const CommentSectionState();
@@ -22,14 +22,14 @@ class CommentSectionError extends CommentSectionState {
 
 class CommentSectionData extends CommentSectionState {
   final List<LinkedHashMap<int, List<int>>> commentIds;
-  final PaginationState paginationState;
+  final CommentFeedState paginationState;
 
   const CommentSectionData(this.commentIds, this.paginationState);
 
   // copyWith method
   CommentSectionData copyWith({
     List<LinkedHashMap<int, List<int>>>? commentIds,
-    PaginationState? paginationState,
+    CommentFeedState? paginationState,
   }) {
     return CommentSectionData(
       commentIds ?? this.commentIds,

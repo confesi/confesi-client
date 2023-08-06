@@ -153,15 +153,9 @@ class Api {
       http.Response response = await http.Response.fromStream(streamResponse);
 
       if (debugMode) {
-        print("------------- debug api req logger ------------");
+        print("================================ DEBUG API ================================");
         print("${streamResponse.statusCode} ${streamResponse.reasonPhrase}");
         print("Req endpoint: $url");
-        // print("Req headers: ${request.headers}");
-        print("Req body: ${request.body}");
-        print("<<<>>>");
-        // print("Res headers: ${streamResponse.headers}");
-        // print("Res body: ${response.body}");
-        print("-----------------------------------------------");
       }
 
       // Handle any 5xx status codes

@@ -21,7 +21,7 @@ class LoadingOrAlert extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 30, right: 30, top: 30, bottom: 40),
+      padding: const EdgeInsets.only(left: 30, right: 30, top: 30, bottom: 50),
       child: Center(
         child: AnimatedSwitcher(
             duration: const Duration(milliseconds: 250),

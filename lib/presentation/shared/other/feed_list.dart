@@ -103,8 +103,10 @@ class FeedList extends StatefulWidget {
     required this.wontLoadMoreMessage,
     this.shrinkWrap = false,
     this.isScrollable = true,
+    this.dontReRequestWhen = false,
   });
 
+  final bool dontReRequestWhen;
   final bool isScrollable;
   final bool shrinkWrap;
   final bool hasError;
@@ -139,12 +141,14 @@ class _FeedListState extends State<FeedList> {
       List<int> visibleIndexes =
           widget.controller.itemPositionsListener.itemPositions.value.map((item) => item.index).toList();
       // print(visibleIndexes);
+      if (widget.dontReRequestWhen) print(visibleIndexes.last);
       if (visibleIndexes.isNotEmpty &&
           widget.controller.items.length - visibleIndexes.last < widget.controller.preloadBy &&
           !isCurrentlyLoadingMore &&
           !widget.hasError &&
           !widget.wontLoadMore &&
           !endOfFeedReachedIsLoading &&
+          // !widget.dontReRequestWhen &&
           !errorLoadingMoreIsLoading) {
         isCurrentlyLoadingMore = true;
         await widget.loadMore(
@@ -165,6 +169,7 @@ class _FeedListState extends State<FeedList> {
   Widget buildIndicator() {
     if (widget.hasError) {
       return LoadingOrAlert(
+        key: const ValueKey("hasError"),
         isLoading: errorLoadingMoreIsLoading,
         message: StateMessage("Error loading more", () async {
           if (!mounted) return;
@@ -180,6 +185,7 @@ class _FeedListState extends State<FeedList> {
       );
     } else {
       return LoadingOrAlert(
+        key: const ValueKey("hasEnd"),
         isLoading: endOfFeedReachedIsLoading || (!widget.hasError && !widget.wontLoadMore),
         message: StateMessage(widget.wontLoadMoreMessage, () async {
           if (!mounted) return;
@@ -207,9 +213,10 @@ class _FeedListState extends State<FeedList> {
             : const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
           if (index == 0) {
-            return widget.header ?? Container();
+            return widget.header ?? const SizedBox();
           } else if (index == widget.controller.items.length + 1) {
             return AnimatedSwitcher(
+              key: const ValueKey("AnimSwitcher"),
               duration: const Duration(milliseconds: 250),
               child: buildIndicator(),
             );
