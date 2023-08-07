@@ -32,15 +32,7 @@ class StatTileGroup extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       child: Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.secondary,
-          border: Border(
-            bottom: BorderSide(
-              color: Theme.of(context).colorScheme.onBackground,
-              width: 0.8,
-            ),
-          ),
-        ),
+        color: Theme.of(context).colorScheme.secondary,
         width: double.infinity,
         child: SafeArea(
           bottom: false,

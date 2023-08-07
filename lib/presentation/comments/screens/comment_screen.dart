@@ -124,7 +124,6 @@ class _CommentsScreenState extends State<CommentsScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 15),
-                      Text(state.commentIds.toString()), // todo: remove
                       Text(
                         widget.props.post.title,
                         style: kDisplay1.copyWith(
@@ -247,7 +246,6 @@ class _CommentsScreenState extends State<CommentsScreen> {
     for (int id in commentReplies) {
       CommentWithMetadata? comment = commentSet[id];
       if (comment != null) {
-        print(comment.comment.id);
         commentWidgets.add(
           SimpleCommentRootGroup(
             root: SimpleCommentTile(
@@ -260,8 +258,6 @@ class _CommentsScreenState extends State<CommentsScreen> {
             subTree: const [], // No sub-replies since they are one level deep
           ),
         );
-      } else {
-        print("$id null");
       }
       iter++;
     }

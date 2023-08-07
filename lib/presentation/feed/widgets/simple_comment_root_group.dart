@@ -24,30 +24,27 @@ class _SimpleCommentRootGroupState extends State<SimpleCommentRootGroup> {
 
   @override
   Widget build(BuildContext context) {
-    bool hasSubTree = widget.subTree.isNotEmpty;
-
     return Opacity(
-      opacity: (!_isExpanded && hasSubTree) ? 0.25 : 1.0,
-      child: hasSubTree
-          ? GestureDetector(
-              onTap: () {
-                HapticFeedback.lightImpact();
-                setState(() => _isExpanded = !_isExpanded);
-              },
-              child: buildCommentColumn(),
-            )
-          : buildCommentColumn(),
+      opacity: (!_isExpanded && widget.subTree.isNotEmpty) ? 0.25 : 1.0,
+      child: buildCommentColumn(),
     );
   }
 
   Widget buildCommentColumn() {
     return Column(
       children: [
-        AnimatedContainer(
-          duration: const Duration(milliseconds: 175),
-          color: Theme.of(context).colorScheme.shadow,
-          child: widget.root,
-        ),
+        widget.subTree.isNotEmpty
+            ? GestureDetector(
+                onTap: () {
+                  HapticFeedback.lightImpact();
+                  setState(() => _isExpanded = !_isExpanded);
+                },
+                child: Container(
+                  color: Theme.of(context).colorScheme.shadow,
+                  child: widget.root,
+                ),
+              )
+            : widget.root,
         AnimatedClipRect(
           duration: const Duration(milliseconds: 175),
           reverseDuration: const Duration(milliseconds: 175),
