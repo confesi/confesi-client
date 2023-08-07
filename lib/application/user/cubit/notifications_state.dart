@@ -7,24 +7,29 @@ abstract class NotificationsState extends Equatable {
   List<Object> get props => [];
 }
 
-abstract class NotificationsPossibleErr {}
+abstract class NotificationsPossibleMsg {}
 
-class NotificationsErr extends NotificationsPossibleErr {
+class NotificationsErr extends NotificationsPossibleMsg {
   final String message;
   NotificationsErr(this.message);
 }
 
-class NotificationsNoErr extends NotificationsPossibleErr {}
+class NotificationsSuccess extends NotificationsPossibleMsg {
+  final String message;
+  NotificationsSuccess(this.message);
+}
+
+class NotificationsNoMsg extends NotificationsPossibleMsg {}
 
 class NotificationsBase extends NotificationsState {
-  final NotificationsPossibleErr err;
-  const NotificationsBase({required this.err});
+  final NotificationsPossibleMsg msg;
+  const NotificationsBase({required this.msg});
 
   NotificationsBase copyWith({
-    NotificationsPossibleErr? err,
+    NotificationsPossibleMsg? msg,
   }) {
     return NotificationsBase(
-      err: err ?? this.err,
+      msg: msg ?? this.msg,
     );
   }
 
@@ -33,5 +38,5 @@ class NotificationsBase extends NotificationsState {
   bool operator ==(Object other) => false;
 
   @override
-  List<Object> get props => [err];
+  List<Object> get props => [msg];
 }

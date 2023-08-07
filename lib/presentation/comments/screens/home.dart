@@ -2,11 +2,15 @@ import 'dart:collection';
 
 import 'package:confesi/application/comments/cubit/comment_section_cubit.dart';
 import 'package:confesi/application/comments/cubit/create_comment_cubit.dart';
+import 'package:confesi/core/services/create_comment_service/create_comment_service.dart';
 import 'package:confesi/core/services/global_content/global_content.dart';
 import 'package:confesi/presentation/comments/widgets/sheet.dart';
 import 'package:confesi/presentation/comments/widgets/simple_comment_sort.dart';
+import 'package:confesi/presentation/shared/behaviours/nav_blocker.dart';
 import 'package:confesi/presentation/shared/behaviours/one_theme_status_bar.dart';
+import 'package:confesi/presentation/shared/indicators/loading_cupertino.dart';
 import 'package:confesi/presentation/shared/indicators/loading_or_alert.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/cli_commands.dart';
@@ -82,99 +86,115 @@ class _CommentsHomeState extends State<CommentsHome> {
   Widget build(BuildContext context) {
     return OneThemeStatusBar(
       brightness: Brightness.light,
-      child: KeyboardDismiss(
-        child: Scaffold(
-          // floatingActionButton: FloatingActionButton(onPressed: () {
-          //   // print(feedController.currentIndex());
-          //   // print(feedController.currentIndexes());
-          //   late int jumpTo;
-          //   if (feedController.currentIndexes().isEmpty) {
-          //     jumpTo = 1;
-          //   } else {
-          //     jumpTo = feedController.currentIndexes().first;
-          //   }
-          //   print(jumpTo);
-          //   // print(context.read<CommentSectionCubit>().roots());
-          //   // print(context.read<CommentSectionCubit>().nextRootCommentIndex(jumpTo));
-          //   context
-          //       .read<CommentSectionCubit>()
-          //       .nextRootCommentIndex(jumpTo)
-          //       .fold((idx) => feedController.scrollToIndex(idx), (r) => print("ERROR"));
-          // }),
-          backgroundColor: Theme.of(context).colorScheme.shadow,
-          body: BlocBuilder<CommentSectionCubit, CommentSectionState>(
-            builder: (context, state) {
-              return FooterLayout(
-                  footer: context.watch<CommentSectionCubit>().state is CommentSectionData
-                      ? SafeArea(
-                          top: false,
-                          child: Container(
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              border: Border(
-                                top: BorderSide(
-                                  color: Theme.of(context).colorScheme.onBackground,
-                                  width: 0.8,
+      child: NavBlocker(
+        blocking: Provider.of<CreateCommentService>(context).isLoading,
+        child: KeyboardDismiss(
+          child: Scaffold(
+            backgroundColor: Theme.of(context).colorScheme.shadow,
+            body: Stack(
+              children: [
+                BlocBuilder<CommentSectionCubit, CommentSectionState>(
+                  builder: (context, state) {
+                    return FooterLayout(
+                        footer: context.watch<CommentSectionCubit>().state is CommentSectionData
+                            ? SafeArea(
+                                top: false,
+                                child: Container(
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    border: Border(
+                                      top: BorderSide(
+                                        color: Theme.of(context).colorScheme.onBackground,
+                                        width: 0.8,
+                                      ),
+                                    ),
+                                  ),
+                                  child: CommentSheet(
+                                    postCreatedAtTime: widget.props.post.createdAt,
+                                    feedController: feedController,
+                                    onSubmit: (value) async {
+                                      commentSheetController.unfocus();
+                                      Provider.of<CreateCommentService>(context, listen: false).setLoading(true);
+                                      await context
+                                          .read<CreateCommentCubit>()
+                                          .uploadComment(widget.props.post.id,
+                                              context.read<CreateCommentCubit>().parentCommentId(), value)
+                                          .then((success) => success
+                                              ? {
+                                                  commentSheetController.delete(),
+                                                  sl.get<ConfettiBlaster>().show(context),
+                                                  context.read<CreateCommentCubit>().clear(),
+                                                  context.read<NotificationsCubit>().showSuccess(
+                                                        "Commented successfully",
+                                                      )
+                                                }
+                                              : context.read<NotificationsCubit>().showErr(
+                                                    "Something went wrong",
+                                                  ))
+                                          .then(
+                                            (_) => Provider.of<CreateCommentService>(context, listen: false)
+                                                .setLoading(false),
+                                          );
+                                    },
+                                    maxCharacters: maxCommentLength,
+                                    controller: commentSheetController,
+                                  ),
                                 ),
+                              )
+                            : const SizedBox(),
+                        child: Column(
+                          children: [
+                            StatTileGroup(
+                              icon1Text: "Back",
+                              icon2Text: addCommasToNumber(widget.props.post.commentCount),
+                              icon4Text: addCommasToNumber(widget.props.post.upvote),
+                              icon5Text: addCommasToNumber(widget.props.post.downvote),
+                              icon1OnPress: () => router.pop(context),
+                              icon2OnPress: () => commentSheetController.isFocused()
+                                  ? commentSheetController.unfocus()
+                                  : commentSheetController.focus(),
+                              icon4OnPress: () async => await Provider.of<GlobalContentService>(context, listen: false)
+                                  .voteOnPost(widget.props.post, widget.props.post.userVote != 1 ? 1 : 0)
+                                  .then((value) => value.fold(
+                                      (err) => context.read<NotificationsCubit>().showErr(err), (_) => null)),
+                              icon5OnPress: () async => await Provider.of<GlobalContentService>(context, listen: false)
+                                  .voteOnPost(widget.props.post, widget.props.post.userVote != -1 ? -1 : 0)
+                                  .then((value) => value.fold(
+                                      (err) => context.read<NotificationsCubit>().showErr(err), (_) => null)),
+                              icon4Selected: widget.props.post.userVote == 1,
+                              icon5Selected: widget.props.post.userVote == -1,
+                            ),
+                            Expanded(
+                              child: AnimatedSwitcher(
+                                duration: const Duration(milliseconds: 250),
+                                child: buildBody(context, state),
                               ),
                             ),
-                            child: CommentSheet(
-                              postCreatedAtTime: widget.props.post.createdAt,
-                              feedController: feedController,
-                              onSubmit: (value) async => await context
-                                  .read<CreateCommentCubit>()
-                                  .uploadComment(
-                                      widget.props.post.id, context.read<CreateCommentCubit>().parentCommentId(), value)
-                                  .then((success) => success
-                                      ? {
-                                          commentSheetController.delete(),
-                                          sl.get<ConfettiBlaster>().show(context),
-                                          context.read<CreateCommentCubit>().clear(),
-                                        }
-                                      : context.read<NotificationsCubit>().show(
-                                            "Something went wrong",
-                                          )),
-                              maxCharacters: maxCommentLength,
-                              controller: commentSheetController,
-                            ),
-                          ),
-                        )
-                      : const SizedBox(),
-                  child: Column(
-                    children: [
-                      StatTileGroup(
-                        icon1Text: "Back",
-                        icon2Text: addCommasToNumber(widget.props.post.commentCount),
-                        icon4Text: addCommasToNumber(widget.props.post.upvote),
-                        icon5Text: addCommasToNumber(widget.props.post.downvote),
-                        icon1OnPress: () => router.pop(context),
-                        icon2OnPress: () => commentSheetController.isFocused()
-                            ? commentSheetController.unfocus()
-                            : commentSheetController.focus(),
-                        icon4OnPress: () async => await Provider.of<GlobalContentService>(context, listen: false)
-                            .voteOnPost(widget.props.post, widget.props.post.userVote != 1 ? 1 : 0)
-                            .then((value) =>
-                                value.fold((err) => context.read<NotificationsCubit>().show(err), (_) => null)),
-                        icon5OnPress: () async => await Provider.of<GlobalContentService>(context, listen: false)
-                            .voteOnPost(widget.props.post, widget.props.post.userVote != -1 ? -1 : 0)
-                            .then((value) =>
-                                value.fold((err) => context.read<NotificationsCubit>().show(err), (_) => null)),
-                        icon4Selected: widget.props.post.userVote == 1,
-                        icon5Selected: widget.props.post.userVote == -1,
-                      ),
-                      Expanded(
-                        child: AnimatedSwitcher(
-                          duration: const Duration(milliseconds: 250),
-                          child: buildBody(context, state),
-                        ),
-                      ),
-                    ],
-                  ));
-            },
+                          ],
+                        ));
+                  },
+                ),
+                Positioned.fill(
+                  child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 250),
+                    child: buildLoadingOverlay(context),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
+  }
+
+  Widget buildLoadingOverlay(BuildContext context) {
+    return Provider.of<CreateCommentService>(context).isLoading
+        ? Container(
+            color: Theme.of(context).colorScheme.background.withOpacity(0.5),
+            child: LoadingOrAlert(message: StateMessage("Error", () {}), isLoading: true),
+          )
+        : const SizedBox();
   }
 
   Widget buildBody(BuildContext context, CommentSectionState state) {

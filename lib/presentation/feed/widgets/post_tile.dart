@@ -160,7 +160,7 @@ class PostTile extends StatelessWidget {
                                   onTap: () async => await Provider.of<GlobalContentService>(context, listen: false)
                                       .voteOnPost(post, post.userVote != 1 ? 1 : 0)
                                       .then((value) => value.fold(
-                                          (err) => context.read<NotificationsCubit>().show(err), (_) => null)),
+                                          (err) => context.read<NotificationsCubit>().showErr(err), (_) => null)),
                                   isSelected: post.userVote == 1,
                                   amount: post.upvote,
                                   icon: CupertinoIcons.up_arrow,
@@ -170,7 +170,7 @@ class PostTile extends StatelessWidget {
                                   onTap: () async => await Provider.of<GlobalContentService>(context, listen: false)
                                       .voteOnPost(post, post.userVote != -1 ? -1 : 0)
                                       .then((value) => value.fold(
-                                          (err) => context.read<NotificationsCubit>().show(err), (_) => null)),
+                                          (err) => context.read<NotificationsCubit>().showErr(err), (_) => null)),
                                   amount: post.downvote,
                                   icon: CupertinoIcons.down_arrow,
                                   iconColor: Theme.of(context).colorScheme.onSecondaryContainer,

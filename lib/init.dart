@@ -7,6 +7,7 @@ import 'package:confesi/application/user/cubit/feedback_cubit.dart';
 import 'package:confesi/application/user/cubit/notifications_cubit.dart';
 import 'package:confesi/application/user/cubit/stats_cubit.dart';
 import 'package:confesi/core/clients/api.dart';
+import 'package:confesi/core/services/create_comment_service/create_comment_service.dart';
 import 'package:confesi/core/services/fcm_notifications/token_data.dart';
 import 'package:confesi/core/services/global_content/global_content.dart';
 import 'package:confesi/core/utils/funcs/debouncer.dart';
@@ -104,6 +105,7 @@ Future<void> init() async {
   //! Services
   UserAuthService userAuthService = UserAuthService(sl());
   GlobalContentService globalContentService = GlobalContentService(Api());
+  CreateCommentService createCommentService = CreateCommentService();
 
   userAuthService.hive.registerAdapter<UserAuthData>(UserAuthDataAdapter());
   userAuthService.hive.registerAdapter(ThemePrefAdapter());
@@ -112,6 +114,7 @@ Future<void> init() async {
   userAuthService.hive.registerAdapter(FcmTokenAdapter());
   sl.registerLazySingleton(() => userAuthService);
   sl.registerLazySingleton(() => globalContentService);
+  sl.registerLazySingleton(() => createCommentService);
   sl.registerLazySingleton(() => NotificationService()..init());
   sl.registerLazySingleton(() => CreatePostHintManager());
   sl.registerLazySingleton(() => SplashScreenHintManager());

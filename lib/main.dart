@@ -5,6 +5,7 @@ import 'package:confesi/application/feed/cubit/sentiment_analysis_cubit.dart';
 import 'package:confesi/application/user/cubit/feedback_categories_cubit.dart';
 import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/results/failures.dart';
+import 'package:confesi/core/services/create_comment_service/create_comment_service.dart';
 import 'package:confesi/core/services/global_content/global_content.dart';
 import 'package:shake/shake.dart';
 
@@ -61,6 +62,7 @@ void main() async => await init().then(
                 providers: [
                   ChangeNotifierProvider(create: (context) => sl<UserAuthService>(), lazy: true),
                   ChangeNotifierProvider(create: (context) => sl<GlobalContentService>(), lazy: true),
+                  ChangeNotifierProvider(create: (context) => sl<CreateCommentService>(), lazy: true),
                 ],
                 child: MultiBlocProvider(
                   providers: [
@@ -248,8 +250,13 @@ class _MyAppState extends State<MyApp> {
           },
           child: BlocListener<NotificationsCubit, NotificationsState>(
             listener: (context, state) {
-              if (state is NotificationsBase && state.err is NotificationsErr) {
-                showNotificationChip(context, (state.err as NotificationsErr).message);
+              if (state is NotificationsBase) {
+                if (state.msg is NotificationsErr) {
+                  showNotificationChip(context, (state.msg as NotificationsErr).message);
+                } else if (state.msg is NotificationsSuccess) {
+                  showNotificationChip(context, (state.msg as NotificationsSuccess).message,
+                      notificationType: NotificationType.success);
+                }
               }
             },
             child: BlocListener<QuickActionsCubit, QuickActionsState>(

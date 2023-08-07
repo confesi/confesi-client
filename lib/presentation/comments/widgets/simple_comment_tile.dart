@@ -200,8 +200,9 @@ class _SimpleCommentTileState extends State<SimpleCommentTile> {
                                             .fold(
                                                 (idx) =>
                                                     widget.feedController.scrollToIndex(idx + 1, hapticFeedback: false),
-                                                (r) =>
-                                                    context.read<NotificationsCubit>().show("Error jumping to comment"))
+                                                (r) => context
+                                                    .read<NotificationsCubit>()
+                                                    .showErr("Error jumping to comment"))
                                         : null;
                                   },
                                   child: Container(
@@ -239,7 +240,7 @@ class _SimpleCommentTileState extends State<SimpleCommentTile> {
                                   onTap: () async => await Provider.of<GlobalContentService>(context, listen: false)
                                       .voteOnComment(widget.comment, widget.comment.userVote != 1 ? 1 : 0)
                                       .then((value) => value.fold(
-                                          (err) => context.read<NotificationsCubit>().show(err), (_) => null)),
+                                          (err) => context.read<NotificationsCubit>().showErr(err), (_) => null)),
                                   extraLeftPadding: true,
                                   amount: widget.comment.comment.upvote,
                                   isSelected: widget.comment.userVote == 1,
@@ -251,7 +252,7 @@ class _SimpleCommentTileState extends State<SimpleCommentTile> {
                                   onTap: () async => await Provider.of<GlobalContentService>(context, listen: false)
                                       .voteOnComment(widget.comment, widget.comment.userVote != -1 ? -1 : 0)
                                       .then((value) => value.fold(
-                                          (err) => context.read<NotificationsCubit>().show(err), (_) => null)),
+                                          (err) => context.read<NotificationsCubit>().showErr(err), (_) => null)),
                                   extraLeftPadding: true,
                                   amount: widget.comment.comment.downvote,
                                   isSelected: widget.comment.userVote == -1,
@@ -281,7 +282,7 @@ class _SimpleCommentTileState extends State<SimpleCommentTile> {
                                           .then(
                                             (possibleSuccess) => possibleSuccess
                                                 ? null
-                                                : context.read<NotificationsCubit>().show("Error loading more"),
+                                                : context.read<NotificationsCubit>().showErr("Error loading more"),
                                           );
                                       if (mounted) setState(() => isLoading = false);
                                     },

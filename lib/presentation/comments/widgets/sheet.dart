@@ -118,7 +118,7 @@ class _CommentSheetState extends State<CommentSheet> {
                   .read<CommentSectionCubit>()
                   .indexFromCommentId((state.possibleReply as ReplyingToUser).commentId)
                   .fold((idx) => widget.feedController.scrollToIndex(idx + 1),
-                      (_) => context.read<NotificationsCubit>().show("Error jumping to comment")),
+                      (_) => context.read<NotificationsCubit>().showErr("Error jumping to comment")),
               child: Container(
                 padding: const EdgeInsets.all(5),
                 color: Colors.transparent, // transparent for hitbox
@@ -169,8 +169,8 @@ class _CommentSheetState extends State<CommentSheet> {
                       .read<CommentSectionCubit>()
                       .indexFromCommentId((state.possibleReply as ReplyingToUser).commentId)
                       .fold((idx) => widget.feedController.scrollToIndex(idx + 1, hapticFeedback: false),
-                          (_) => context.read<NotificationsCubit>().show("Error jumping to comment"))
-                  : context.read<NotificationsCubit>().show("Error jumping to comment");
+                          (_) => context.read<NotificationsCubit>().showErr("Error jumping to comment"))
+                  : null;
               setState(() => {});
             },
             color: Theme.of(context).colorScheme.background,
