@@ -1,6 +1,7 @@
 import 'package:confesi/application/comments/cubit/comment_section_cubit.dart';
 import 'package:confesi/application/comments/cubit/create_comment_cubit.dart';
 import 'package:confesi/application/user/cubit/notifications_cubit.dart';
+import 'package:confesi/presentation/comments/widgets/sheet.dart';
 import 'package:confesi/presentation/feed/widgets/reaction_tile.dart';
 import 'package:confesi/presentation/shared/behaviours/init_border_radius.dart';
 import 'package:confesi/presentation/shared/behaviours/init_scale.dart';
@@ -23,16 +24,17 @@ import '../../feed/utils/post_metadata_formatters.dart';
 enum CommentDepth { root, reply }
 
 class SimpleCommentTile extends StatefulWidget {
-  const SimpleCommentTile(
-      {Key? key,
-      required this.comment,
-      this.isRootComment = false,
-      this.isGettingRepliedTo = false,
-      required this.totalNumOfReplies,
-      required this.currentReplyNum,
-      required this.currentlyRetrievedReplies,
-      required this.feedController})
-      : super(key: key);
+  const SimpleCommentTile({
+    Key? key,
+    required this.comment,
+    this.isRootComment = false,
+    this.isGettingRepliedTo = false,
+    required this.totalNumOfReplies,
+    required this.currentReplyNum,
+    required this.currentlyRetrievedReplies,
+    required this.feedController,
+    required this.commentSheetController,
+  }) : super(key: key);
 
   final CommentWithMetadata comment;
   final FeedListController feedController;
@@ -41,6 +43,7 @@ class SimpleCommentTile extends StatefulWidget {
   final int totalNumOfReplies;
   final int currentReplyNum;
   final int currentlyRetrievedReplies;
+  final CommentSheetController commentSheetController;
 
   @override
   State<SimpleCommentTile> createState() => _SimpleCommentTileState();
@@ -109,200 +112,172 @@ class _SimpleCommentTileState extends State<SimpleCommentTile> {
               ),
             ),
             Expanded(
-              child: Slidable(
-                key: UniqueKey(),
-                endActionPane: ActionPane(
-                  motion: const ScrollMotion(),
-                  extentRatio: 0.5,
-                  children: [
-                    SlidableAction(
-                      onPressed: (context) => showButtonOptionsSheet(context, [
-                        OptionButton(
-                          text: "Save",
-                          icon: CupertinoIcons.bookmark,
-                          onTap: () => print("tap"),
-                        ),
-                        OptionButton(
-                          text: "Share",
-                          icon: CupertinoIcons.share,
-                          onTap: () => print("todo"),
-                        ),
-                        OptionButton(
-                          text: "Report",
-                          icon: CupertinoIcons.flag,
-                          onTap: () => print("tap"),
-                        ),
-                      ]),
-                      backgroundColor: !widget.isRootComment
-                          ? Theme.of(context).colorScheme.secondary
-                          : Theme.of(context).colorScheme.tertiary,
-                      foregroundColor: Theme.of(context).colorScheme.onSecondary,
-                      icon: CupertinoIcons.ellipsis,
-                    ),
-                  ],
-                ),
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 250),
-                  decoration: BoxDecoration(
-                    color: state is CreateCommentEnteringData &&
-                            state.possibleReply is ReplyingToUser &&
-                            (state.possibleReply as ReplyingToUser).commentId == widget.comment.comment.id
-                        ? Theme.of(context).colorScheme.surface // surface for highlight
-                        : Theme.of(context).colorScheme.shadow,
-                    border: Border.all(
-                      color: Theme.of(context).colorScheme.onBackground,
-                      width: 0.8,
-                      strokeAlign: BorderSide.strokeAlignCenter,
-                    ),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 250),
+                decoration: BoxDecoration(
+                  color: state is CreateCommentEnteringData &&
+                          state.possibleReply is ReplyingToUser &&
+                          (state.possibleReply as ReplyingToUser).commentId == widget.comment.comment.id
+                      ? Theme.of(context).colorScheme.surface // surface for highlight
+                      : Theme.of(context).colorScheme.shadow,
+                  border: Border.all(
+                    color: Theme.of(context).colorScheme.onBackground,
+                    width: 0.8,
+                    strokeAlign: BorderSide.strokeAlignCenter,
                   ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              RichText(
-                                text: TextSpan(
-                                  style: kDetail.copyWith(color: Theme.of(context).colorScheme.primary),
-                                  children: _buildReplyHeaderSpans(context),
-                                ),
-                                textAlign: TextAlign.left,
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            RichText(
+                              text: TextSpan(
+                                style: kDetail.copyWith(color: Theme.of(context).colorScheme.primary),
+                                children: _buildReplyHeaderSpans(context),
                               ),
-                              const SizedBox(height: 10),
-                              Text(
-                                widget.comment.comment.content,
-                                style: kBody.copyWith(
-                                  color: Theme.of(context).colorScheme.primary,
-                                  height: 1.2,
-                                ),
-                                textAlign: TextAlign.left,
+                              textAlign: TextAlign.left,
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              widget.comment.comment.content +
+                                  " -> " +
+                                  context
+                                      .watch<CommentSectionCubit>()
+                                      .indexFromCommentId(widget.comment.comment.id)
+                                      .toString(),
+                              style: kBody.copyWith(
+                                color: Theme.of(context).colorScheme.primary,
+                                height: 1.2,
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  TouchableScale(
-                                    onTap: () {
-                                      context.read<CreateCommentCubit>().updateReplyingTo(
-                                            ReplyingToUser(
-                                              commentId: widget.comment.comment.id,
-                                              identifier: buildUserIdentifier,
-                                            ),
-                                          );
-                                      context.read<CreateCommentCubit>().state is CreateCommentEnteringData &&
-                                              (context.read<CreateCommentCubit>().state as CreateCommentEnteringData)
-                                                  .possibleReply is ReplyingToUser
-                                          ? context
-                                              .read<CommentSectionCubit>()
-                                              .indexFromCommentId(((context.read<CreateCommentCubit>().state
-                                                          as CreateCommentEnteringData)
-                                                      .possibleReply as ReplyingToUser)
-                                                  .commentId)
-                                              .fold(
-                                                  (idx) => widget.feedController.currentIndex() != idx + 1
-                                                      ? widget.feedController
-                                                          .scrollToIndex(idx + 1, hapticFeedback: false)
-                                                      : null,
-                                                  (r) => context
-                                                      .read<NotificationsCubit>()
-                                                      .show("Error jumpingt to comment"))
-                                          : null;
-                                    },
-                                    child: Container(
-                                      // Transparent container hitbox trick.
-                                      color: Colors.transparent,
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            CupertinoIcons.reply,
-                                            size: 18,
-                                            color: state is CreateCommentEnteringData &&
-                                                    state.possibleReply is ReplyingToUser &&
-                                                    (state.possibleReply as ReplyingToUser).commentId ==
-                                                        widget.comment.comment.id
-                                                ? Theme.of(context).colorScheme.secondary
-                                                : Theme.of(context).colorScheme.primary,
+                              textAlign: TextAlign.left,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                TouchableScale(
+                                  onTap: () async {
+                                    if (!widget.commentSheetController.isFocused()) {
+                                      widget.commentSheetController.focus();
+                                    }
+                                    context.read<CreateCommentCubit>().updateReplyingTo(
+                                          ReplyingToUser(
+                                            commentId: widget.comment.comment.id,
+                                            identifier: buildUserIdentifier,
                                           ),
-                                          const SizedBox(width: 5),
-                                          Text(
-                                            "Reply",
-                                            style: kDetail.copyWith(
-                                                color: state is CreateCommentEnteringData &&
-                                                        state.possibleReply is ReplyingToUser &&
-                                                        (state.possibleReply as ReplyingToUser).commentId ==
-                                                            widget.comment.comment.id
-                                                    ? Theme.of(context).colorScheme.secondary
-                                                    : Theme.of(context).colorScheme.primary),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  ReactionTile(
-                                    simpleView: true,
-                                    onTap: () async => await Provider.of<GlobalContentService>(context, listen: false)
-                                        .voteOnComment(widget.comment, widget.comment.userVote != 1 ? 1 : 0)
-                                        .then((value) => value.fold(
-                                            (err) => context.read<NotificationsCubit>().show(err), (_) => null)),
-                                    extraLeftPadding: true,
-                                    amount: widget.comment.comment.upvote,
-                                    isSelected: widget.comment.userVote == 1,
-                                    icon: CupertinoIcons.up_arrow,
-                                    iconColor: Theme.of(context).colorScheme.onErrorContainer,
-                                  ),
-                                  ReactionTile(
-                                    simpleView: true,
-                                    onTap: () async => await Provider.of<GlobalContentService>(context, listen: false)
-                                        .voteOnComment(widget.comment, widget.comment.userVote != -1 ? -1 : 0)
-                                        .then((value) => value.fold(
-                                            (err) => context.read<NotificationsCubit>().show(err), (_) => null)),
-                                    extraLeftPadding: true,
-                                    amount: widget.comment.comment.downvote,
-                                    isSelected: widget.comment.userVote == -1,
-                                    icon: CupertinoIcons.down_arrow,
-                                    iconColor: Theme.of(context).colorScheme.onSecondaryContainer,
-                                  ),
-                                ],
-                              ),
-                              // Text(
-                              //     "${!widget.isRootComment} && (${widget.currentReplyNum} == ${widget.currentlyRetrievedReplies}) && (${widget.currentReplyNum} < ${widget.totalNumOfReplies})"),
-                              WidgetOrNothing(
-                                showWidget: !widget.isRootComment &&
-                                    widget.currentReplyNum == widget.currentlyRetrievedReplies &&
-                                    widget.currentReplyNum < widget.totalNumOfReplies,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 5),
-                                  child: Align(
-                                    alignment: Alignment.centerRight,
-                                    child: SimpleTextButton(
-                                      infiniteWidth: true,
-                                      onTap: () async {
-                                        setState(() => isLoading = true);
-                                        await context
+                                        );
+                                    context.read<CreateCommentCubit>().state is CreateCommentEnteringData &&
+                                            (context.read<CreateCommentCubit>().state as CreateCommentEnteringData)
+                                                .possibleReply is ReplyingToUser
+                                        ? context
                                             .read<CommentSectionCubit>()
-                                            .loadReplies(
-                                                widget.comment.comment.parentRoot, widget.comment.comment.createdAt)
-                                            .then(
-                                              (possibleSuccess) => possibleSuccess
-                                                  ? null
-                                                  : context.read<NotificationsCubit>().show("Error loading more"),
-                                            );
-                                        if (mounted) setState(() => isLoading = false);
-                                      },
-                                      text: isLoading
-                                          ? "Loading..."
-                                          : "Load more (${widget.totalNumOfReplies - widget.currentReplyNum} left)",
+                                            .indexFromCommentId(
+                                                ((context.read<CreateCommentCubit>().state as CreateCommentEnteringData)
+                                                        .possibleReply as ReplyingToUser)
+                                                    .commentId)
+                                            .fold(
+                                                (idx) =>
+                                                    widget.feedController.scrollToIndex(idx + 1, hapticFeedback: false),
+                                                (r) =>
+                                                    context.read<NotificationsCubit>().show("Error jumping to comment"))
+                                        : null;
+                                  },
+                                  child: Container(
+                                    // Transparent container hitbox trick.
+                                    color: Colors.transparent,
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          CupertinoIcons.reply,
+                                          size: 18,
+                                          color: state is CreateCommentEnteringData &&
+                                                  state.possibleReply is ReplyingToUser &&
+                                                  (state.possibleReply as ReplyingToUser).commentId ==
+                                                      widget.comment.comment.id
+                                              ? Theme.of(context).colorScheme.secondary
+                                              : Theme.of(context).colorScheme.primary,
+                                        ),
+                                        const SizedBox(width: 5),
+                                        Text(
+                                          "Reply",
+                                          style: kDetail.copyWith(
+                                              color: state is CreateCommentEnteringData &&
+                                                      state.possibleReply is ReplyingToUser &&
+                                                      (state.possibleReply as ReplyingToUser).commentId ==
+                                                          widget.comment.comment.id
+                                                  ? Theme.of(context).colorScheme.secondary
+                                                  : Theme.of(context).colorScheme.primary),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
+                                ReactionTile(
+                                  simpleView: true,
+                                  onTap: () async => await Provider.of<GlobalContentService>(context, listen: false)
+                                      .voteOnComment(widget.comment, widget.comment.userVote != 1 ? 1 : 0)
+                                      .then((value) => value.fold(
+                                          (err) => context.read<NotificationsCubit>().show(err), (_) => null)),
+                                  extraLeftPadding: true,
+                                  amount: widget.comment.comment.upvote,
+                                  isSelected: widget.comment.userVote == 1,
+                                  icon: CupertinoIcons.up_arrow,
+                                  iconColor: Theme.of(context).colorScheme.onErrorContainer,
+                                ),
+                                ReactionTile(
+                                  simpleView: true,
+                                  onTap: () async => await Provider.of<GlobalContentService>(context, listen: false)
+                                      .voteOnComment(widget.comment, widget.comment.userVote != -1 ? -1 : 0)
+                                      .then((value) => value.fold(
+                                          (err) => context.read<NotificationsCubit>().show(err), (_) => null)),
+                                  extraLeftPadding: true,
+                                  amount: widget.comment.comment.downvote,
+                                  isSelected: widget.comment.userVote == -1,
+                                  icon: CupertinoIcons.down_arrow,
+                                  iconColor: Theme.of(context).colorScheme.onSecondaryContainer,
+                                ),
+                              ],
+                            ),
+                            // Text(
+                            //     "${!widget.isRootComment} && (${widget.currentReplyNum} == ${widget.currentlyRetrievedReplies}) && (${widget.currentReplyNum} < ${widget.totalNumOfReplies})"),
+                            WidgetOrNothing(
+                              showWidget: !widget.isRootComment &&
+                                  widget.currentReplyNum == widget.currentlyRetrievedReplies &&
+                                  widget.currentReplyNum < widget.totalNumOfReplies,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 5),
+                                child: Align(
+                                  alignment: Alignment.centerRight,
+                                  child: SimpleTextButton(
+                                    infiniteWidth: true,
+                                    onTap: () async {
+                                      setState(() => isLoading = true);
+                                      await context
+                                          .read<CommentSectionCubit>()
+                                          .loadReplies(
+                                              widget.comment.comment.parentRoot, widget.comment.comment.createdAt)
+                                          .then(
+                                            (possibleSuccess) => possibleSuccess
+                                                ? null
+                                                : context.read<NotificationsCubit>().show("Error loading more"),
+                                          );
+                                      if (mounted) setState(() => isLoading = false);
+                                    },
+                                    text: isLoading
+                                        ? "Loading..."
+                                        : "Load more (${widget.totalNumOfReplies - widget.currentReplyNum} left)",
+                                  ),
+                                ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),

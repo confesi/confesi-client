@@ -135,6 +135,7 @@ class _CommentSheetState extends State<CommentSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final state = context.watch<CreateCommentCubit>().state;
     return IgnorePointer(
       ignoring: widget.controller.isBlocking,
       child: Column(
@@ -146,21 +147,14 @@ class _CommentSheetState extends State<CommentSheet> {
           ),
           ExpandableTextfield(
             onChange: (_) {
-              setState(() => {});
-              context.read<CreateCommentCubit>().state is CreateCommentEnteringData &&
-                      (context.read<CreateCommentCubit>().state as CreateCommentEnteringData).possibleReply
-                          is ReplyingToUser
+              state is CreateCommentEnteringData && state.possibleReply is ReplyingToUser
                   ? context
                       .read<CommentSectionCubit>()
-                      .indexFromCommentId(((context.read<CreateCommentCubit>().state as CreateCommentEnteringData)
-                              .possibleReply as ReplyingToUser)
-                          .commentId)
-                      .fold(
-                          (idx) => widget.feedController.currentIndex() != idx + 1
-                              ? widget.feedController.scrollToIndex(idx + 1, hapticFeedback: false)
-                              : null,
-                          (r) => context.read<NotificationsCubit>().show("Error jumpingt to comment"))
-                  : null;
+                      .indexFromCommentId((state.possibleReply as ReplyingToUser).commentId)
+                      .fold((idx) => widget.feedController.scrollToIndex(idx + 1, hapticFeedback: false),
+                          (_) => context.read<NotificationsCubit>().show("Error jumping to comment"))
+                  : context.read<NotificationsCubit>().show("Error jumping to comment");
+              setState(() => {});
             },
             color: Theme.of(context).colorScheme.background,
             focusNode: textFocusNode,
@@ -182,7 +176,7 @@ class _CommentSheetState extends State<CommentSheet> {
                       child: Row(
                         children: [
                           SimpleTextButton(
-                            text: 'Cancel',
+                            text: "Delete",
                             isErrorText: true,
                             onTap: () => widget.controller.delete(),
                           ),
@@ -194,7 +188,7 @@ class _CommentSheetState extends State<CommentSheet> {
                           ),
                           SimpleTextButton(
                             tapType: TapType.strongImpact,
-                            text: 'Post',
+                            text: "Submit",
                             onTap: () {
                               widget.onSubmit(commentController.text);
                               setState(() => {});

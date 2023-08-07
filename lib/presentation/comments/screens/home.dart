@@ -81,6 +81,7 @@ class _CommentsHomeState extends State<CommentsHome> {
       brightness: Brightness.light,
       child: KeyboardDismiss(
         child: Scaffold(
+          floatingActionButton: FloatingActionButton(onPressed: () => feedController.scrollToTop()),
           backgroundColor: Theme.of(context).colorScheme.shadow,
           body: BlocBuilder<CommentSectionCubit, CommentSectionState>(
             builder: (context, state) {
@@ -162,6 +163,7 @@ class _CommentsHomeState extends State<CommentsHome> {
               rootCommentId,
               SimpleCommentRootGroup(
                 root: SimpleCommentTile(
+                  commentSheetController: commentSheetController,
                   feedController: feedController,
                   currentReplyNum: 0, // doesn't matter for root
                   currentlyRetrievedReplies: 0, // doesn't matter for root
@@ -184,6 +186,7 @@ class _CommentsHomeState extends State<CommentsHome> {
                   replyId,
                   SimpleCommentRootGroup(
                     root: SimpleCommentTile(
+                      commentSheetController: commentSheetController,
                       feedController: feedController,
                       currentlyRetrievedReplies: rootCommentIdsList.length,
                       currentReplyNum: iter,
