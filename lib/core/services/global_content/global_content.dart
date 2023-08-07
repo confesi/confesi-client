@@ -19,7 +19,6 @@ class GlobalContentService extends ChangeNotifier {
 
   void setComments(List<CommentWithMetadata> comments) {
     for (final comment in comments) {
-      print(comment.comment);
       this.comments[comment.comment.id] = comment;
     }
     notifyListeners();
@@ -90,6 +89,12 @@ class GlobalContentService extends ChangeNotifier {
               } else if (oldVote == -1) {
                 comment.comment.downvote--;
                 comment.comment.upvote++;
+              } else if (oldVote == 0) {
+                if (newVote == 1) {
+                  comment.comment.upvote--;
+                } else if (newVote == -1) {
+                  comment.comment.downvote--;
+                }
               }
             }
             notifyListeners();

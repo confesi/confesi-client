@@ -242,14 +242,13 @@ class _CommentsScreenState extends State<CommentsScreen> {
     final commentWidgets = <SimpleCommentRootGroup>[];
 
     int iter = 1;
-    int currentlyRetrievedReplies = commentReplies.length;
     for (int id in commentReplies) {
       CommentWithMetadata? comment = commentSet[id];
       if (comment != null) {
         commentWidgets.add(
           SimpleCommentRootGroup(
             root: SimpleCommentTile(
-              currentlyRetrievedReplies: currentlyRetrievedReplies,
+              currentlyRetrievedReplies: commentReplies.length,
               currentReplyNum: iter,
               totalNumOfReplies: parentComment.comment.childrenCount,
               isRootComment: false,

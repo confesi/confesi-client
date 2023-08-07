@@ -232,6 +232,7 @@ class _SimpleCommentTileState extends State<SimpleCommentTile> {
                                   child: Align(
                                     alignment: Alignment.centerRight,
                                     child: SimpleTextButton(
+                                      infiniteWidth: true,
                                       onTap: () async {
                                         setState(() => isLoading = true);
                                         await context
@@ -247,7 +248,7 @@ class _SimpleCommentTileState extends State<SimpleCommentTile> {
                                       },
                                       text: isLoading
                                           ? "Loading..."
-                                          : "Load ${widget.totalNumOfReplies - widget.currentReplyNum} more",
+                                          : "Load more (${widget.totalNumOfReplies - widget.currentReplyNum} left)",
                                     ),
                                   ),
                                 ),
