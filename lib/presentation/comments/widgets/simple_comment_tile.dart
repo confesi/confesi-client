@@ -88,178 +88,175 @@ class _SimpleCommentTileState extends State<SimpleCommentTile> {
 
   @override
   Widget build(BuildContext context) {
-    return TouchableScale(
-      onTap: () => print(context.read<CommentSectionCubit>().indexFromCommentId(widget.comment.comment.id)),
-      child: Padding(
-        padding: EdgeInsets.only(left: !widget.isRootComment ? 15 : 0),
-        child: IntrinsicHeight(
-          child: Row(
-            children: [
-              Container(
-                width: 3,
-                decoration: BoxDecoration(
-                  color: !widget.isRootComment
-                      ? Theme.of(context).colorScheme.secondary
-                      : Theme.of(context).colorScheme.tertiary,
-                ),
+    return Padding(
+      padding: EdgeInsets.only(left: !widget.isRootComment ? 15 : 0),
+      child: IntrinsicHeight(
+        child: Row(
+          children: [
+            Container(
+              width: 3,
+              decoration: BoxDecoration(
+                color: !widget.isRootComment
+                    ? Theme.of(context).colorScheme.secondary
+                    : Theme.of(context).colorScheme.tertiary,
               ),
-              Expanded(
-                child: Slidable(
-                  key: UniqueKey(),
-                  endActionPane: ActionPane(
-                    motion: const ScrollMotion(),
-                    extentRatio: 0.5,
+            ),
+            Expanded(
+              child: Slidable(
+                key: UniqueKey(),
+                endActionPane: ActionPane(
+                  motion: const ScrollMotion(),
+                  extentRatio: 0.5,
+                  children: [
+                    SlidableAction(
+                      onPressed: (context) => showButtonOptionsSheet(context, [
+                        OptionButton(
+                          text: "Save",
+                          icon: CupertinoIcons.bookmark,
+                          onTap: () => print("tap"),
+                        ),
+                        OptionButton(
+                          text: "Share",
+                          icon: CupertinoIcons.share,
+                          onTap: () => print("todo"),
+                        ),
+                        OptionButton(
+                          text: "Report",
+                          icon: CupertinoIcons.flag,
+                          onTap: () => print("tap"),
+                        ),
+                      ]),
+                      backgroundColor: !widget.isRootComment
+                          ? Theme.of(context).colorScheme.secondary
+                          : Theme.of(context).colorScheme.tertiary,
+                      foregroundColor: Theme.of(context).colorScheme.onSecondary,
+                      icon: CupertinoIcons.ellipsis,
+                    ),
+                  ],
+                ),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.shadow,
+                    border: Border.all(
+                      color: Theme.of(context).colorScheme.onBackground,
+                      width: 0.8,
+                      strokeAlign: BorderSide.strokeAlignCenter,
+                    ),
+                  ),
+                  child: Row(
                     children: [
-                      SlidableAction(
-                        onPressed: (context) => showButtonOptionsSheet(context, [
-                          OptionButton(
-                            text: "Save",
-                            icon: CupertinoIcons.bookmark,
-                            onTap: () => print("tap"),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              RichText(
+                                text: TextSpan(
+                                  style: kDetail.copyWith(color: Theme.of(context).colorScheme.primary),
+                                  children: _buildReplyHeaderSpans(context),
+                                ),
+                                textAlign: TextAlign.left,
+                              ),
+                              const SizedBox(height: 10),
+                              Text(
+                                widget.comment.comment.content,
+                                style: kBody.copyWith(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  height: 1.2,
+                                ),
+                                textAlign: TextAlign.left,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  TouchableScale(
+                                    onTap: () => print("todo: reply"),
+                                    child: Container(
+                                      // Transparent container hitbox trick.
+                                      color: Colors.transparent,
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            CupertinoIcons.reply,
+                                            size: 18,
+                                            color: Theme.of(context).colorScheme.primary,
+                                          ),
+                                          const SizedBox(width: 5),
+                                          Text(
+                                            "Reply",
+                                            style: kDetail.copyWith(color: Theme.of(context).colorScheme.primary),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  ReactionTile(
+                                    simpleView: true,
+                                    onTap: () async => await Provider.of<GlobalContentService>(context, listen: false)
+                                        .voteOnComment(widget.comment, widget.comment.userVote != 1 ? 1 : 0)
+                                        .then((value) => value.fold(
+                                            (err) => context.read<NotificationsCubit>().show(err), (_) => null)),
+                                    extraLeftPadding: true,
+                                    amount: widget.comment.comment.upvote,
+                                    isSelected: widget.comment.userVote == 1,
+                                    icon: CupertinoIcons.up_arrow,
+                                    iconColor: Theme.of(context).colorScheme.onErrorContainer,
+                                  ),
+                                  ReactionTile(
+                                    simpleView: true,
+                                    onTap: () async => await Provider.of<GlobalContentService>(context, listen: false)
+                                        .voteOnComment(widget.comment, widget.comment.userVote != -1 ? -1 : 0)
+                                        .then((value) => value.fold(
+                                            (err) => context.read<NotificationsCubit>().show(err), (_) => null)),
+                                    extraLeftPadding: true,
+                                    amount: widget.comment.comment.downvote,
+                                    isSelected: widget.comment.userVote == -1,
+                                    icon: CupertinoIcons.down_arrow,
+                                    iconColor: Theme.of(context).colorScheme.onSecondaryContainer,
+                                  ),
+                                ],
+                              ),
+                              WidgetOrNothing(
+                                showWidget: !widget.isRootComment &&
+                                    widget.currentReplyNum == widget.currentlyRetrievedReplies &&
+                                    widget.currentReplyNum < widget.totalNumOfReplies,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 5),
+                                  child: Align(
+                                    alignment: Alignment.centerRight,
+                                    child: SimpleTextButton(
+                                      infiniteWidth: true,
+                                      onTap: () async {
+                                        setState(() => isLoading = true);
+                                        await context
+                                            .read<CommentSectionCubit>()
+                                            .loadReplies(
+                                                widget.comment.comment.parentRoot, widget.comment.comment.createdAt)
+                                            .then(
+                                              (possibleSuccess) => possibleSuccess
+                                                  ? null
+                                                  : context.read<NotificationsCubit>().show("Error loading more"),
+                                            );
+                                        if (mounted) setState(() => isLoading = false);
+                                      },
+                                      text: isLoading
+                                          ? "Loading..."
+                                          : "Load more (${widget.totalNumOfReplies - widget.currentReplyNum} left)",
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                          OptionButton(
-                            text: "Share",
-                            icon: CupertinoIcons.share,
-                            onTap: () => print("todo"),
-                          ),
-                          OptionButton(
-                            text: "Report",
-                            icon: CupertinoIcons.flag,
-                            onTap: () => print("tap"),
-                          ),
-                        ]),
-                        backgroundColor: !widget.isRootComment
-                            ? Theme.of(context).colorScheme.secondary
-                            : Theme.of(context).colorScheme.tertiary,
-                        foregroundColor: Theme.of(context).colorScheme.onSecondary,
-                        icon: CupertinoIcons.ellipsis,
+                        ),
                       ),
                     ],
                   ),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.shadow,
-                      border: Border.all(
-                        color: Theme.of(context).colorScheme.onBackground,
-                        width: 0.8,
-                        strokeAlign: BorderSide.strokeAlignCenter,
-                      ),
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                RichText(
-                                  text: TextSpan(
-                                    style: kDetail.copyWith(color: Theme.of(context).colorScheme.primary),
-                                    children: _buildReplyHeaderSpans(context),
-                                  ),
-                                  textAlign: TextAlign.left,
-                                ),
-                                const SizedBox(height: 10),
-                                Text(
-                                  widget.comment.comment.content,
-                                  style: kBody.copyWith(
-                                    color: Theme.of(context).colorScheme.primary,
-                                    height: 1.2,
-                                  ),
-                                  textAlign: TextAlign.left,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    TouchableScale(
-                                      onTap: () => print("todo: reply"),
-                                      child: Container(
-                                        // Transparent container hitbox trick.
-                                        color: Colors.transparent,
-                                        child: Row(
-                                          children: [
-                                            Icon(
-                                              CupertinoIcons.reply,
-                                              size: 18,
-                                              color: Theme.of(context).colorScheme.primary,
-                                            ),
-                                            const SizedBox(width: 5),
-                                            Text(
-                                              "Reply",
-                                              style: kDetail.copyWith(color: Theme.of(context).colorScheme.primary),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    ReactionTile(
-                                      simpleView: true,
-                                      onTap: () async => await Provider.of<GlobalContentService>(context, listen: false)
-                                          .voteOnComment(widget.comment, widget.comment.userVote != 1 ? 1 : 0)
-                                          .then((value) => value.fold(
-                                              (err) => context.read<NotificationsCubit>().show(err), (_) => null)),
-                                      extraLeftPadding: true,
-                                      amount: widget.comment.comment.upvote,
-                                      isSelected: widget.comment.userVote == 1,
-                                      icon: CupertinoIcons.up_arrow,
-                                      iconColor: Theme.of(context).colorScheme.onErrorContainer,
-                                    ),
-                                    ReactionTile(
-                                      simpleView: true,
-                                      onTap: () async => await Provider.of<GlobalContentService>(context, listen: false)
-                                          .voteOnComment(widget.comment, widget.comment.userVote != -1 ? -1 : 0)
-                                          .then((value) => value.fold(
-                                              (err) => context.read<NotificationsCubit>().show(err), (_) => null)),
-                                      extraLeftPadding: true,
-                                      amount: widget.comment.comment.downvote,
-                                      isSelected: widget.comment.userVote == -1,
-                                      icon: CupertinoIcons.down_arrow,
-                                      iconColor: Theme.of(context).colorScheme.onSecondaryContainer,
-                                    ),
-                                  ],
-                                ),
-                                WidgetOrNothing(
-                                  showWidget: !widget.isRootComment &&
-                                      widget.currentReplyNum == widget.currentlyRetrievedReplies &&
-                                      widget.currentReplyNum < widget.totalNumOfReplies,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(vertical: 5),
-                                    child: Align(
-                                      alignment: Alignment.centerRight,
-                                      child: SimpleTextButton(
-                                        infiniteWidth: true,
-                                        onTap: () async {
-                                          setState(() => isLoading = true);
-                                          await context
-                                              .read<CommentSectionCubit>()
-                                              .loadReplies(
-                                                  widget.comment.comment.parentRoot, widget.comment.comment.createdAt)
-                                              .then(
-                                                (possibleSuccess) => possibleSuccess
-                                                    ? null
-                                                    : context.read<NotificationsCubit>().show("Error loading more"),
-                                              );
-                                          if (mounted) setState(() => isLoading = false);
-                                        },
-                                        text: isLoading
-                                            ? "Loading..."
-                                            : "Load more (${widget.totalNumOfReplies - widget.currentReplyNum} left)",
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

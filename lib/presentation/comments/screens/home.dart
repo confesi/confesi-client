@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:confesi/application/comments/cubit/comment_section_cubit.dart';
 import 'package:confesi/core/services/global_content/global_content.dart';
+import 'package:confesi/presentation/comments/widgets/sheet.dart';
 import 'package:confesi/presentation/comments/widgets/simple_comment_sort.dart';
 import 'package:confesi/presentation/shared/behaviours/one_theme_status_bar.dart';
 import 'package:confesi/presentation/shared/indicators/loading_or_alert.dart';
@@ -29,7 +30,7 @@ import '../../shared/buttons/simple_text.dart';
 import '../../shared/other/feed_list.dart';
 import '../../shared/overlays/notification_chip.dart';
 import '../../shared/stat_tiles/stat_tile_group.dart';
-import '../widgets/comment_text_sheet.dart';
+import '../widgets/sheet.dart';
 
 class CommentsHome extends StatefulWidget {
   const CommentsHome({super.key, required this.props});
@@ -81,30 +82,32 @@ class _CommentsHomeState extends State<CommentsHome> {
       brightness: Brightness.light,
       child: KeyboardDismiss(
         child: Scaffold(
-          floatingActionButton: FloatingActionButton(onPressed: () => feedController.scrollToIndex(7)),
+          // floatingActionButton: FloatingActionButton(onPressed: () => feedController.scrollToIndex(7)),
           backgroundColor: Theme.of(context).colorScheme.shadow,
           body: BlocBuilder<CommentSectionCubit, CommentSectionState>(
             builder: (context, state) {
               return FooterLayout(
-                  footer: SafeArea(
-                    top: false,
-                    child: Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        border: Border(
-                          top: BorderSide(
-                            color: Theme.of(context).colorScheme.onBackground,
-                            width: 0.8,
+                  footer: context.watch<CommentSectionCubit>().state is CommentSectionData
+                      ? SafeArea(
+                          top: false,
+                          child: Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              border: Border(
+                                top: BorderSide(
+                                  color: Theme.of(context).colorScheme.onBackground,
+                                  width: 0.8,
+                                ),
+                              ),
+                            ),
+                            child: CommentSheet(
+                              onSubmit: (value) => print(value),
+                              maxCharacters: maxCommentLength,
+                              controller: commentSheetController,
+                            ),
                           ),
-                        ),
-                      ),
-                      child: CommentSheet(
-                        onSubmit: (value) => print(value),
-                        maxCharacters: maxCommentLength,
-                        controller: commentSheetController,
-                      ),
-                    ),
-                  ),
+                        )
+                      : const SizedBox(),
                   child: Column(
                     children: [
                       StatTileGroup(

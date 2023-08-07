@@ -1,3 +1,8 @@
+import 'package:confesi/core/styles/typography.dart';
+import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
+import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
+import 'package:flutter/cupertino.dart';
+
 import '../../shared/other/text_limit_tracker.dart';
 import 'package:flutter/material.dart';
 
@@ -71,74 +76,97 @@ class _CommentSheetState extends State<CommentSheet> {
   @override
   void initState() {
     widget.controller._init(commentController, textFocusNode);
-    widget.controller.addListener(() => isDisposed ? null : setState(() {}));
+    widget.controller.addListener(() => isDisposed ? null : setState(() => {}));
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    isDisposed = true;
-    widget.controller.dispose();
-    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return IgnorePointer(
       ignoring: widget.controller.isBlocking,
-      child: AnimatedSize(
-        duration: const Duration(milliseconds: 100),
-        child: Container(
-          height: commentController.text.isEmpty ? 0 : null, // Set the height to zero if the text is empty
-          color: Theme.of(context).colorScheme.background,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ExpandableTextfield(
-                focusNode: textFocusNode,
-                hintText: "What's your take?",
-                maxLines: 4,
-                minLines: 1,
-                maxCharacters: widget.maxCharacters,
-                controller: commentController,
-              ),
-              AnimatedSwitcher(
-                duration: const Duration(milliseconds: 500),
-                child: commentController.text.isEmpty
-                    ? Container()
-                    : AnimatedScale(
-                        scale: commentController.text.isEmpty ? 0 : 1,
-                        duration: const Duration(milliseconds: 100),
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 10),
-                          child: Row(
-                            children: [
-                              SimpleTextButton(
-                                text: 'Cancel',
-                                isErrorText: true,
-                                onTap: () => widget.controller.delete(),
-                              ),
-                              Expanded(
-                                child: TextLimitTracker(
-                                  noText: false,
-                                  value: commentController.text.runes.length / widget.maxCharacters,
-                                ),
-                              ),
-                              SimpleTextButton(
-                                text: 'Post',
-                                onTap: () {
-                                  widget.onSubmit(commentController.text);
-                                  setState(() => {});
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-              ),
-            ],
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TouchableScale(
+                  onTap: () => print("tap"),
+                  child: Container(
+                    padding: const EdgeInsets.all(5),
+                    color: Colors.transparent, // transparent for hitbox
+                    child: Text(
+                      "Replying to #4",
+                      style: kDetail.copyWith(color: Theme.of(context).colorScheme.secondary),
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                ),
+                const Spacer(),
+                const SizedBox(width: 5),
+                TouchableScale(
+                  onTap: () => print("tap"),
+                  child: Container(
+                    padding: const EdgeInsets.all(5),
+                    color: Colors.transparent, // transparent for hitbox
+                    child: Icon(
+                      CupertinoIcons.xmark,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
+          ExpandableTextfield(
+            onChange: (_) => setState(() => {}),
+            color: Theme.of(context).colorScheme.background,
+            focusNode: textFocusNode,
+            hintText: "Add a comment...",
+            maxLines: 4,
+            minLines: 1,
+            maxCharacters: widget.maxCharacters,
+            controller: commentController,
+          ),
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 500),
+            child: commentController.text.isEmpty
+                ? Container()
+                : AnimatedScale(
+                    scale: commentController.text.isEmpty ? 0 : 1,
+                    duration: const Duration(milliseconds: 100),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: Row(
+                        children: [
+                          SimpleTextButton(
+                            text: 'Cancel',
+                            isErrorText: true,
+                            onTap: () => widget.controller.delete(),
+                          ),
+                          Expanded(
+                            child: TextLimitTracker(
+                              noText: false,
+                              value: commentController.text.runes.length / widget.maxCharacters,
+                            ),
+                          ),
+                          SimpleTextButton(
+                            tapType: TapType.strongImpact,
+                            text: 'Post',
+                            onTap: () {
+                              widget.onSubmit(commentController.text);
+                              setState(() => {});
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+          ),
+        ],
       ),
     );
   }
