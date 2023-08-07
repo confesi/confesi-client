@@ -34,6 +34,8 @@ class FeedListController extends ChangeNotifier {
   // Controller 2 for [ScrollablePositionedList].
   final ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
 
+  bool isCurrentlyScrolling = false;
+
   /// Adds an item to the list.
   void addItem(InfiniteScrollIndexable newItem) {
     if (_isDisposed) return;
@@ -60,20 +62,33 @@ class FeedListController extends ChangeNotifier {
   /// Scrolls to the top of the list (over a set duration).
   void scrollToTop() {
     if (_isDisposed) return;
+    if (isCurrentlyScrolling) return;
+    isCurrentlyScrolling = true;
     if (!itemScrollController.isAttached) return;
 
     itemScrollController
-        .scrollTo(index: 0, duration: const Duration(milliseconds: 350))
-        .then((value) => HapticFeedback.lightImpact());
+        .scrollTo(index: 0, duration: const Duration(milliseconds: 250), curve: Curves.easeInOut)
+        .then((value) => HapticFeedback.lightImpact())
+        .then((value) => isCurrentlyScrolling = false);
   }
 
-  void scrollToIndex(int index) {
+  int currentIndex() {
+    if (_isDisposed) return 0;
+    if (!itemPositionsListener.itemPositions.value.isNotEmpty) return 0;
+
+    return itemPositionsListener.itemPositions.value.first.index;
+  }
+
+  void scrollToIndex(int index, {bool hapticFeedback = true}) {
     if (_isDisposed) return;
+    if (isCurrentlyScrolling) return;
+    isCurrentlyScrolling = true;
     if (!itemScrollController.isAttached) return;
 
     itemScrollController
-        .scrollTo(index: index, duration: const Duration(milliseconds: 350))
-        .then((value) => HapticFeedback.lightImpact());
+        .scrollTo(index: index, duration: const Duration(milliseconds: 250), curve: Curves.easeInOut)
+        .then((value) => hapticFeedback ? HapticFeedback.lightImpact() : null)
+        .then((value) => isCurrentlyScrolling = false);
   }
 
   /// Clears the list.

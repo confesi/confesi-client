@@ -67,7 +67,7 @@ class UserAuthService extends ChangeNotifier {
   }
 }
 
-class UserAuthState {}
+mixin class UserAuthState {}
 
 class UserAuthError extends UserAuthState {}
 

@@ -14,6 +14,7 @@ import 'package:confesi/presentation/create_post/overlays/confetti_blaster.dart'
 import 'package:uuid/uuid.dart';
 import 'application/authentication_and_settings/cubit/auth_flow_cubit.dart';
 import 'application/comments/cubit/comment_section_cubit.dart';
+import 'application/comments/cubit/create_comment_cubit.dart';
 import 'application/feed/cubit/schools_drawer_cubit.dart';
 import 'application/feed/cubit/search_schools_cubit.dart';
 import 'application/feed/cubit/sentiment_analysis_cubit.dart';
@@ -137,6 +138,7 @@ Future<void> init() async {
   sl.registerFactory(() => QuickActionsCubit(sl()));
   sl.registerFactory(() => NotificationsCubit());
   sl.registerFactory(() => CommentSectionCubit(Api(), Api()));
+  sl.registerFactory(() => CreateCommentCubit());
 
   //! Firebase
   await initFirebase();

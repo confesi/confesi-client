@@ -30,7 +30,6 @@ import '../../shared/buttons/simple_text.dart';
 import '../../shared/other/feed_list.dart';
 import '../../shared/overlays/notification_chip.dart';
 import '../../shared/stat_tiles/stat_tile_group.dart';
-import '../widgets/sheet.dart';
 
 class CommentsHome extends StatefulWidget {
   const CommentsHome({super.key, required this.props});
@@ -100,6 +99,7 @@ class _CommentsHomeState extends State<CommentsHome> {
                               ),
                             ),
                             child: CommentSheet(
+                              feedController: feedController,
                               onSubmit: (value) => print(value),
                               maxCharacters: maxCommentLength,
                               controller: commentSheetController,
@@ -115,7 +115,9 @@ class _CommentsHomeState extends State<CommentsHome> {
                         icon4Text: addCommasToNumber(widget.props.post.upvote),
                         icon5Text: addCommasToNumber(widget.props.post.downvote),
                         icon1OnPress: () => router.pop(context),
-                        icon2OnPress: () => commentSheetController.focus(), // todo: add
+                        icon2OnPress: () => commentSheetController.isFocused()
+                            ? commentSheetController.unfocus()
+                            : commentSheetController.focus(),
                         icon4OnPress: () async => await Provider.of<GlobalContentService>(context, listen: false)
                             .voteOnPost(widget.props.post, widget.props.post.userVote != 1 ? 1 : 0)
                             .then((value) =>
@@ -160,6 +162,7 @@ class _CommentsHomeState extends State<CommentsHome> {
               rootCommentId,
               SimpleCommentRootGroup(
                 root: SimpleCommentTile(
+                  feedController: feedController,
                   currentReplyNum: 0, // doesn't matter for root
                   currentlyRetrievedReplies: 0, // doesn't matter for root
                   totalNumOfReplies: comment.comment.childrenCount,
@@ -181,6 +184,7 @@ class _CommentsHomeState extends State<CommentsHome> {
                   replyId,
                   SimpleCommentRootGroup(
                     root: SimpleCommentTile(
+                      feedController: feedController,
                       currentlyRetrievedReplies: rootCommentIdsList.length,
                       currentReplyNum: iter,
                       totalNumOfReplies: comment.comment.childrenCount,
@@ -296,31 +300,5 @@ class _CommentsHomeState extends State<CommentsHome> {
         isLoading: state is CommentSectionData && state.paginationState == CommentFeedState.loading,
       );
     }
-  }
-
-  List<SimpleCommentRootGroup> buildReplies(
-      CommentWithMetadata parentComment, List<int> commentReplies, LinkedHashMap<int, CommentWithMetadata> commentSet) {
-    final commentWidgets = <SimpleCommentRootGroup>[];
-
-    int iter = 1;
-    for (int id in commentReplies) {
-      CommentWithMetadata? comment = commentSet[id];
-      if (comment != null) {
-        commentWidgets.add(
-          SimpleCommentRootGroup(
-            root: SimpleCommentTile(
-              currentlyRetrievedReplies: commentReplies.length,
-              currentReplyNum: iter,
-              totalNumOfReplies: parentComment.comment.childrenCount,
-              isRootComment: false,
-              comment: comment,
-            ),
-            subTree: const [], // No sub-replies since they are one level deep
-          ),
-        );
-      }
-      iter++;
-    }
-    return commentWidgets;
   }
 }

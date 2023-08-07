@@ -1,10 +1,12 @@
 import 'package:confesi/application/comments/cubit/comment_section_cubit.dart';
+import 'package:confesi/application/comments/cubit/create_comment_cubit.dart';
 import 'package:confesi/application/user/cubit/notifications_cubit.dart';
 import 'package:confesi/presentation/feed/widgets/reaction_tile.dart';
 import 'package:confesi/presentation/shared/behaviours/init_border_radius.dart';
 import 'package:confesi/presentation/shared/behaviours/init_scale.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:confesi/presentation/shared/buttons/simple_text.dart';
+import 'package:confesi/presentation/shared/other/feed_list.dart';
 import 'package:confesi/presentation/shared/other/widget_or_nothing.dart';
 import 'package:confesi/presentation/shared/overlays/button_options_sheet.dart';
 import 'package:flutter/cupertino.dart';
@@ -21,17 +23,19 @@ import '../../feed/utils/post_metadata_formatters.dart';
 enum CommentDepth { root, reply }
 
 class SimpleCommentTile extends StatefulWidget {
-  const SimpleCommentTile({
-    Key? key,
-    required this.comment,
-    this.isRootComment = false,
-    this.isGettingRepliedTo = false,
-    required this.totalNumOfReplies,
-    required this.currentReplyNum,
-    required this.currentlyRetrievedReplies,
-  }) : super(key: key);
+  const SimpleCommentTile(
+      {Key? key,
+      required this.comment,
+      this.isRootComment = false,
+      this.isGettingRepliedTo = false,
+      required this.totalNumOfReplies,
+      required this.currentReplyNum,
+      required this.currentlyRetrievedReplies,
+      required this.feedController})
+      : super(key: key);
 
   final CommentWithMetadata comment;
+  final FeedListController feedController;
   final bool isRootComment;
   final bool isGettingRepliedTo;
   final int totalNumOfReplies;
@@ -43,14 +47,16 @@ class SimpleCommentTile extends StatefulWidget {
 }
 
 class _SimpleCommentTileState extends State<SimpleCommentTile> {
+  String get buildUserIdentifier =>
+      widget.comment.comment.numericalUserIsOp ? "OP" : "#${widget.comment.comment.numericalUser.toString()}";
+
   List<TextSpan> _buildReplyHeaderSpans(BuildContext context) {
     List<TextSpan> spans = [];
 
     String replying = widget.comment.comment.numericalReplyingUserIsOp
         ? "OP"
         : "#${widget.comment.comment.numericalReplyingUser.toString()}";
-    String user =
-        widget.comment.comment.numericalUserIsOp ? "OP" : "#${widget.comment.comment.numericalUser.toString()}";
+    String user = buildUserIdentifier;
 
     if (widget.comment.comment.numericalReplyingUser != null || widget.comment.comment.numericalReplyingUserIsOp) {
       spans.add(TextSpan(
@@ -88,6 +94,7 @@ class _SimpleCommentTileState extends State<SimpleCommentTile> {
 
   @override
   Widget build(BuildContext context) {
+    final state = context.watch<CreateCommentCubit>().state;
     return Padding(
       padding: EdgeInsets.only(left: !widget.isRootComment ? 15 : 0),
       child: IntrinsicHeight(
@@ -134,9 +141,14 @@ class _SimpleCommentTileState extends State<SimpleCommentTile> {
                     ),
                   ],
                 ),
-                child: Container(
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 250),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.shadow, // surface for highlight
+                    color: state is CreateCommentEnteringData &&
+                            state.possibleReply is ReplyingToUser &&
+                            (state.possibleReply as ReplyingToUser).commentId == widget.comment.comment.id
+                        ? Theme.of(context).colorScheme.surface // surface for highlight
+                        : Theme.of(context).colorScheme.shadow,
                     border: Border.all(
                       color: Theme.of(context).colorScheme.onBackground,
                       width: 0.8,
@@ -171,7 +183,32 @@ class _SimpleCommentTileState extends State<SimpleCommentTile> {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   TouchableScale(
-                                    onTap: () => print("todo: reply"),
+                                    onTap: () {
+                                      context.read<CreateCommentCubit>().updateReplyingTo(
+                                            ReplyingToUser(
+                                              commentId: widget.comment.comment.id,
+                                              identifier: buildUserIdentifier,
+                                            ),
+                                          );
+                                      context.read<CreateCommentCubit>().state is CreateCommentEnteringData &&
+                                              (context.read<CreateCommentCubit>().state as CreateCommentEnteringData)
+                                                  .possibleReply is ReplyingToUser
+                                          ? context
+                                              .read<CommentSectionCubit>()
+                                              .indexFromCommentId(((context.read<CreateCommentCubit>().state
+                                                          as CreateCommentEnteringData)
+                                                      .possibleReply as ReplyingToUser)
+                                                  .commentId)
+                                              .fold(
+                                                  (idx) => widget.feedController.currentIndex() != idx + 1
+                                                      ? widget.feedController
+                                                          .scrollToIndex(idx + 1, hapticFeedback: false)
+                                                      : null,
+                                                  (r) => context
+                                                      .read<NotificationsCubit>()
+                                                      .show("Error jumpingt to comment"))
+                                          : null;
+                                    },
                                     child: Container(
                                       // Transparent container hitbox trick.
                                       color: Colors.transparent,
@@ -180,12 +217,23 @@ class _SimpleCommentTileState extends State<SimpleCommentTile> {
                                           Icon(
                                             CupertinoIcons.reply,
                                             size: 18,
-                                            color: Theme.of(context).colorScheme.primary,
+                                            color: state is CreateCommentEnteringData &&
+                                                    state.possibleReply is ReplyingToUser &&
+                                                    (state.possibleReply as ReplyingToUser).commentId ==
+                                                        widget.comment.comment.id
+                                                ? Theme.of(context).colorScheme.secondary
+                                                : Theme.of(context).colorScheme.primary,
                                           ),
                                           const SizedBox(width: 5),
                                           Text(
                                             "Reply",
-                                            style: kDetail.copyWith(color: Theme.of(context).colorScheme.primary),
+                                            style: kDetail.copyWith(
+                                                color: state is CreateCommentEnteringData &&
+                                                        state.possibleReply is ReplyingToUser &&
+                                                        (state.possibleReply as ReplyingToUser).commentId ==
+                                                            widget.comment.comment.id
+                                                    ? Theme.of(context).colorScheme.secondary
+                                                    : Theme.of(context).colorScheme.primary),
                                           ),
                                         ],
                                       ),
