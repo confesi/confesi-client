@@ -82,7 +82,6 @@ class _CommentsHomeState extends State<CommentsHome> {
       brightness: Brightness.light,
       child: KeyboardDismiss(
         child: Scaffold(
-          // floatingActionButton: FloatingActionButton(onPressed: () => feedController.scrollToIndex(7)),
           backgroundColor: Theme.of(context).colorScheme.shadow,
           body: BlocBuilder<CommentSectionCubit, CommentSectionState>(
             builder: (context, state) {
@@ -172,29 +171,30 @@ class _CommentsHomeState extends State<CommentsHome> {
             ),
           );
           commentIndex++; // Increment the counter for the next comment
-        }
-
-        for (final replyId in rootCommentIdsList) {
-          final replyComment = commentSet[replyId];
-          if (replyComment != null) {
-            context.read<CommentSectionCubit>().updateCommentIdToIndex(replyComment.comment.id, commentIndex);
-            commentWidgets.add(
-              InfiniteScrollIndexable(
-                replyId,
-                SimpleCommentRootGroup(
-                  root: SimpleCommentTile(
-                    currentlyRetrievedReplies: rootCommentIdsList.length,
-                    currentReplyNum: 0,
-                    totalNumOfReplies: 0,
-                    isRootComment: false,
-                    comment: replyComment,
+          int iter = 1;
+          for (final replyId in rootCommentIdsList) {
+            final replyComment = commentSet[replyId];
+            if (replyComment != null) {
+              context.read<CommentSectionCubit>().updateCommentIdToIndex(replyComment.comment.id, commentIndex);
+              commentWidgets.add(
+                InfiniteScrollIndexable(
+                  replyId,
+                  SimpleCommentRootGroup(
+                    root: SimpleCommentTile(
+                      currentlyRetrievedReplies: rootCommentIdsList.length,
+                      currentReplyNum: iter,
+                      totalNumOfReplies: comment.comment.childrenCount,
+                      isRootComment: false,
+                      comment: replyComment,
+                    ),
+                    subTree: const [], // No sub-replies since they are one level deep
                   ),
-                  subTree: const [], // No sub-replies since they are one level deep
                 ),
-              ),
-            );
+              );
+            }
+            iter++;
+            commentIndex++; // Increment the counter for the next comment
           }
-          commentIndex++; // Increment the counter for the next comment
         }
       }
 
@@ -293,7 +293,7 @@ class _CommentsHomeState extends State<CommentsHome> {
           state is CommentSectionError ? state.message : null,
           () => context.read<CommentSectionCubit>().loadInitial(widget.props.post.id, CommentSortType.recent),
         ),
-        isLoading: state is CommentSectionLoading,
+        isLoading: state is CommentSectionData && state.paginationState == CommentFeedState.loading,
       );
     }
   }

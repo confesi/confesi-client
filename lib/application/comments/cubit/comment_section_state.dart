@@ -9,8 +9,6 @@ abstract class CommentSectionState extends Equatable {
   List<Object> get props => [];
 }
 
-class CommentSectionLoading extends CommentSectionState {}
-
 class CommentSectionError extends CommentSectionState {
   final String message;
 
@@ -24,6 +22,12 @@ class CommentSectionData extends CommentSectionState {
   final List<LinkedHashMap<int, List<int>>> commentIds;
   final LinkedHashMap<int, int> commentIdToListIdx;
   final CommentFeedState paginationState;
+
+  CommentSectionData.empty()
+      : commentIds = [], // Empty list of commentIds
+        commentIdToListIdx = LinkedHashMap<int, int>(), // Empty map of commentIdToListIdx
+        paginationState =
+            CommentFeedState.loading; // Set the default pagination state (you can change it to another state if needed)
 
   CommentSectionData(
     this.commentIds,

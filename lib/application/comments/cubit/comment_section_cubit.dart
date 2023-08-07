@@ -19,7 +19,7 @@ import '../../../presentation/comments/widgets/simple_comment_sort.dart';
 part 'comment_section_state.dart';
 
 class CommentSectionCubit extends Cubit<CommentSectionState> {
-  CommentSectionCubit(this._repliesApi, this._rootsApi) : super(CommentSectionLoading());
+  CommentSectionCubit(this._repliesApi, this._rootsApi) : super(CommentSectionData.empty());
 
   final Api _repliesApi;
   final Api _rootsApi;
@@ -114,12 +114,11 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
     int postId,
     CommentSortType sort, {
     bool refresh = false,
-    bool fullScreenRefresh = false,
   }) async {
     _rootsApi.cancelCurrentReq();
-    if (fullScreenRefresh || state is CommentSectionError) {
+    if (state is CommentSectionError) {
       refresh = true;
-      emit(CommentSectionLoading());
+      emit(CommentSectionData.empty());
     }
     if (state is CommentSectionData) {
       emit((state as CommentSectionData).copyWith(paginationState: CommentFeedState.loading));

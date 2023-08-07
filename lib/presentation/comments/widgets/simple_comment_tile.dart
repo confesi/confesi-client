@@ -136,7 +136,7 @@ class _SimpleCommentTileState extends State<SimpleCommentTile> {
                 ),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.shadow,
+                    color: Theme.of(context).colorScheme.shadow, // surface for highlight
                     border: Border.all(
                       color: Theme.of(context).colorScheme.onBackground,
                       width: 0.8,
@@ -217,6 +217,8 @@ class _SimpleCommentTileState extends State<SimpleCommentTile> {
                                   ),
                                 ],
                               ),
+                              // Text(
+                              //     "${!widget.isRootComment} && (${widget.currentReplyNum} == ${widget.currentlyRetrievedReplies}) && (${widget.currentReplyNum} < ${widget.totalNumOfReplies})"),
                               WidgetOrNothing(
                                 showWidget: !widget.isRootComment &&
                                     widget.currentReplyNum == widget.currentlyRetrievedReplies &&
