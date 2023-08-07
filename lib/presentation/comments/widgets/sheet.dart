@@ -1,11 +1,14 @@
 import 'package:confesi/application/comments/cubit/comment_section_cubit.dart';
 import 'package:confesi/application/comments/cubit/create_comment_cubit.dart';
 import 'package:confesi/application/user/cubit/notifications_cubit.dart';
+import 'package:confesi/core/services/global_content/global_content.dart';
 import 'package:confesi/core/styles/typography.dart';
+import 'package:confesi/core/utils/colors/deterministic_random_color.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 
 import '../../shared/other/feed_list.dart';
 import '../../shared/other/text_limit_tracker.dart';
@@ -65,6 +68,7 @@ class CommentSheet extends StatefulWidget {
     required this.maxCharacters,
     required this.controller,
     required this.feedController,
+    required this.postCreatedAtTime,
     Key? key,
   }) : super(key: key);
 
@@ -72,6 +76,7 @@ class CommentSheet extends StatefulWidget {
   final int maxCharacters;
   final FeedListController feedController;
   final Function(String) onSubmit;
+  final int postCreatedAtTime;
 
   @override
   State<CommentSheet> createState() => _CommentSheetState();
@@ -87,6 +92,18 @@ class _CommentSheetState extends State<CommentSheet> {
     widget.controller._init(commentController, textFocusNode);
     widget.controller.addListener(() => isDisposed ? null : setState(() => {}));
     super.initState();
+  }
+
+  int getNumericalUser(CreateCommentEnteringData state) {
+    final possibleComment =
+        Provider.of<GlobalContentService>(context).comments[(state.possibleReply as ReplyingToUser).commentId];
+    if (possibleComment == null) {
+      return 9999;
+    } else if (possibleComment.comment.numericalUserIsOp) {
+      return 0;
+    } else {
+      return possibleComment.comment.numericalUser ?? 9999;
+    }
   }
 
   Widget buildBody(BuildContext context, CreateCommentState state) {
@@ -107,7 +124,7 @@ class _CommentSheetState extends State<CommentSheet> {
                 color: Colors.transparent, // transparent for hitbox
                 child: Text(
                   "Replying to ${(state.possibleReply as ReplyingToUser).identifier}",
-                  style: kDetail.copyWith(color: Theme.of(context).colorScheme.secondary),
+                  style: kDetail.copyWith(color: genColor(widget.postCreatedAtTime, getNumericalUser(state))),
                   textAlign: TextAlign.left,
                 ),
               ),

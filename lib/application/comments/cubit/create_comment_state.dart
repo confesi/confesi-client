@@ -21,13 +21,32 @@ sealed class CreateCommentState extends Equatable {
   List<Object> get props => [];
 }
 
-final class CreateCommentEnteringData extends CreateCommentState {
-  final PossibleReply possibleReply;
+abstract class CreateCommentPossibleErr {}
 
-  const CreateCommentEnteringData(this.possibleReply);
+class CreateCommentErr extends CreateCommentPossibleErr {
+  final String message;
 
-  @override
-  List<Object> get props => [possibleReply];
+  CreateCommentErr(this.message);
 }
 
-final class CreateCommentLoading extends CreateCommentState {}
+class CreateCommentNoErr extends CreateCommentPossibleErr {}
+
+final class CreateCommentEnteringData extends CreateCommentState {
+  final PossibleReply possibleReply;
+  final CreateCommentPossibleErr possibleErr;
+
+  const CreateCommentEnteringData(this.possibleReply, this.possibleErr);
+
+  @override
+  List<Object> get props => [possibleReply, possibleErr];
+
+  CreateCommentEnteringData copyWith({
+    PossibleReply? possibleReply,
+    CreateCommentPossibleErr? possibleErr,
+  }) {
+    return CreateCommentEnteringData(
+      possibleReply ?? this.possibleReply,
+      possibleErr ?? this.possibleErr,
+    );
+  }
+}

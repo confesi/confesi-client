@@ -69,7 +69,8 @@ class _SimpleCommentTileState extends State<SimpleCommentTile> {
     if (widget.comment.comment.numericalReplyingUser != null || widget.comment.comment.numericalReplyingUserIsOp) {
       spans.add(TextSpan(
         text: replying,
-        style: kDetail.copyWith(color: Theme.of(context).colorScheme.secondary), // Set the color for "OP"
+        style: kDetail.copyWith(
+            color: genColor(widget.postCreatedAtTime, getIdentifierFromReplyingUser())), // Set the color for "OP"
       ));
     }
 
@@ -85,7 +86,7 @@ class _SimpleCommentTileState extends State<SimpleCommentTile> {
     if (widget.comment.comment.numericalUser != null || widget.comment.comment.numericalUserIsOp) {
       spans.add(TextSpan(
         text: user,
-        style: kDetail.copyWith(color: Theme.of(context).colorScheme.secondary),
+        style: kDetail.copyWith(color: genColor(widget.postCreatedAtTime, getIdentifierFromUser())),
       ));
     }
 
@@ -99,6 +100,14 @@ class _SimpleCommentTileState extends State<SimpleCommentTile> {
   }
 
   bool isLoading = false;
+
+  int getIdentifierFromReplyingUser() {
+    if (widget.comment.comment.numericalReplyingUserIsOp) {
+      return 0;
+    } else {
+      return widget.comment.comment.numericalReplyingUser ?? 9999;
+    }
+  }
 
   int getIdentifierFromUser() {
     if (widget.comment.comment.numericalUserIsOp) {
@@ -153,6 +162,10 @@ class _SimpleCommentTileState extends State<SimpleCommentTile> {
                               textAlign: TextAlign.left,
                             ),
                             const SizedBox(height: 10),
+                            Text(context
+                                .watch<CommentSectionCubit>()
+                                .indexFromCommentId(widget.comment.comment.id)
+                                .toString()),
                             Text(
                               widget.comment.comment.content,
                               style: kBody.copyWith(

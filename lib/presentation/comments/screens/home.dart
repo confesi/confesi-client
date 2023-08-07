@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:confesi/application/comments/cubit/comment_section_cubit.dart';
+import 'package:confesi/application/comments/cubit/create_comment_cubit.dart';
 import 'package:confesi/core/services/global_content/global_content.dart';
 import 'package:confesi/presentation/comments/widgets/sheet.dart';
 import 'package:confesi/presentation/comments/widgets/simple_comment_sort.dart';
@@ -21,7 +22,9 @@ import '../../../core/router/go_router.dart';
 import '../../../core/styles/typography.dart';
 import '../../../core/types/infinite_scrollable_indexable.dart';
 import '../../../core/utils/numbers/add_commas_to_number.dart';
+import '../../../init.dart';
 import '../../../models/comment.dart';
+import '../../create_post/overlays/confetti_blaster.dart';
 import '../../feed/methods/show_post_options.dart';
 import '../../feed/utils/post_metadata_formatters.dart';
 import '../widgets/simple_comment_root_group.dart';
@@ -116,8 +119,21 @@ class _CommentsHomeState extends State<CommentsHome> {
                               ),
                             ),
                             child: CommentSheet(
+                              postCreatedAtTime: widget.props.post.createdAt,
                               feedController: feedController,
-                              onSubmit: (value) => print(value),
+                              onSubmit: (value) async => await context
+                                  .read<CreateCommentCubit>()
+                                  .uploadComment(
+                                      widget.props.post.id, context.read<CreateCommentCubit>().parentCommentId(), value)
+                                  .then((success) => success
+                                      ? {
+                                          commentSheetController.delete(),
+                                          sl.get<ConfettiBlaster>().show(context),
+                                          context.read<CreateCommentCubit>().clear(),
+                                        }
+                                      : context.read<NotificationsCubit>().show(
+                                            "Something went wrong",
+                                          )),
                               maxCharacters: maxCommentLength,
                               controller: commentSheetController,
                             ),
