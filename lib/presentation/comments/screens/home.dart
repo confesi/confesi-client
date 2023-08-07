@@ -41,7 +41,7 @@ class CommentsHome extends StatefulWidget {
 }
 
 class _CommentsHomeState extends State<CommentsHome> {
-  FeedListController feedController = FeedListController();
+  FeedListController feedController = FeedListController(preloadBy: 1);
   late CommentSheetController commentSheetController;
   late ScreenshotCallback screenshotCallback;
 
@@ -81,7 +81,23 @@ class _CommentsHomeState extends State<CommentsHome> {
       brightness: Brightness.light,
       child: KeyboardDismiss(
         child: Scaffold(
-          floatingActionButton: FloatingActionButton(onPressed: () => feedController.scrollToTop()),
+          // floatingActionButton: FloatingActionButton(onPressed: () {
+          //   // print(feedController.currentIndex());
+          //   // print(feedController.currentIndexes());
+          //   late int jumpTo;
+          //   if (feedController.currentIndexes().isEmpty) {
+          //     jumpTo = 1;
+          //   } else {
+          //     jumpTo = feedController.currentIndexes().first;
+          //   }
+          //   print(jumpTo);
+          //   // print(context.read<CommentSectionCubit>().roots());
+          //   // print(context.read<CommentSectionCubit>().nextRootCommentIndex(jumpTo));
+          //   context
+          //       .read<CommentSectionCubit>()
+          //       .nextRootCommentIndex(jumpTo)
+          //       .fold((idx) => feedController.scrollToIndex(idx), (r) => print("ERROR"));
+          // }),
           backgroundColor: Theme.of(context).colorScheme.shadow,
           body: BlocBuilder<CommentSectionCubit, CommentSectionState>(
             builder: (context, state) {
@@ -158,11 +174,13 @@ class _CommentsHomeState extends State<CommentsHome> {
 
         if (comment != null) {
           context.read<CommentSectionCubit>().updateCommentIdToIndex(comment.comment.id, commentIndex);
+          // context.read<CommentSectionCubit>().updateRootCommentIndex(commentIndex + 1);
           commentWidgets.add(
             InfiniteScrollIndexable(
               rootCommentId,
               SimpleCommentRootGroup(
                 root: SimpleCommentTile(
+                  postCreatedAtTime: widget.props.post.createdAt,
                   commentSheetController: commentSheetController,
                   feedController: feedController,
                   currentReplyNum: 0, // doesn't matter for root
@@ -186,6 +204,7 @@ class _CommentsHomeState extends State<CommentsHome> {
                   replyId,
                   SimpleCommentRootGroup(
                     root: SimpleCommentTile(
+                      postCreatedAtTime: widget.props.post.createdAt,
                       commentSheetController: commentSheetController,
                       feedController: feedController,
                       currentlyRetrievedReplies: rootCommentIdsList.length,

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:confesi/application/comments/cubit/comment_section_cubit.dart';
 import 'package:confesi/application/comments/cubit/create_comment_cubit.dart';
 import 'package:confesi/application/user/cubit/notifications_cubit.dart';
@@ -17,6 +19,7 @@ import 'package:provider/provider.dart';
 import '../../../application/user/cubit/quick_actions_cubit.dart';
 import '../../../core/services/global_content/global_content.dart';
 import '../../../core/styles/typography.dart';
+import '../../../core/utils/colors/deterministic_random_color.dart';
 import '../../../models/comment.dart';
 import '../../shared/buttons/option.dart';
 import '../../feed/utils/post_metadata_formatters.dart';
@@ -34,6 +37,7 @@ class SimpleCommentTile extends StatefulWidget {
     required this.currentlyRetrievedReplies,
     required this.feedController,
     required this.commentSheetController,
+    required this.postCreatedAtTime,
   }) : super(key: key);
 
   final CommentWithMetadata comment;
@@ -44,6 +48,7 @@ class SimpleCommentTile extends StatefulWidget {
   final int currentReplyNum;
   final int currentlyRetrievedReplies;
   final CommentSheetController commentSheetController;
+  final int postCreatedAtTime;
 
   @override
   State<SimpleCommentTile> createState() => _SimpleCommentTileState();
@@ -95,6 +100,14 @@ class _SimpleCommentTileState extends State<SimpleCommentTile> {
 
   bool isLoading = false;
 
+  int getIdentifierFromUser() {
+    if (widget.comment.comment.numericalUserIsOp) {
+      return 0;
+    } else {
+      return widget.comment.comment.numericalUser ?? 9999;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final state = context.watch<CreateCommentCubit>().state;
@@ -106,9 +119,7 @@ class _SimpleCommentTileState extends State<SimpleCommentTile> {
             Container(
               width: 3,
               decoration: BoxDecoration(
-                color: !widget.isRootComment
-                    ? Theme.of(context).colorScheme.secondary
-                    : Theme.of(context).colorScheme.tertiary,
+                color: genColor(widget.postCreatedAtTime, getIdentifierFromUser()),
               ),
             ),
             Expanded(
@@ -143,12 +154,7 @@ class _SimpleCommentTileState extends State<SimpleCommentTile> {
                             ),
                             const SizedBox(height: 10),
                             Text(
-                              widget.comment.comment.content +
-                                  " -> " +
-                                  context
-                                      .watch<CommentSectionCubit>()
-                                      .indexFromCommentId(widget.comment.comment.id)
-                                      .toString(),
+                              widget.comment.comment.content,
                               style: kBody.copyWith(
                                 color: Theme.of(context).colorScheme.primary,
                                 height: 1.2,

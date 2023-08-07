@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
+import 'package:ordered_set/ordered_set.dart';
 
 import 'package:confesi/core/services/user_auth/user_auth_service.dart';
 import 'package:confesi/init.dart';
@@ -32,6 +33,48 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
       emit(data.copyWith(commentIdToListIdx: newCommentIdToIndex));
     }
   }
+
+  void updateRootCommentIndex(int index) {
+    if (state is CommentSectionData) {
+      final data = (state as CommentSectionData);
+
+      // Create a new set with the updated indices of root comments.
+
+      final updatedIndicesOfRootComments = (data.indicesOfRootComments)..add(index);
+
+      // Create a copy of the data with the updated set of indices of root comments.
+      final updatedData = data.copyWith(indicesOfRootComments: updatedIndicesOfRootComments);
+
+      // Emit the updated state.
+      emit(updatedData);
+    }
+  }
+
+  List<int> roots() {
+    if (state is CommentSectionData) {
+      final data = (state as CommentSectionData);
+      return data.indicesOfRootComments.toList();
+    } else {
+      return [];
+    }
+  }
+
+  Either<int, Failure> nextRootCommentIndex(int currentIdx) {
+    if (state is CommentSectionData) {
+      final data = (state as CommentSectionData);
+      final List<int> rootCommentIndices = data.indicesOfRootComments.toList();
+
+      for (int i = 0; i < rootCommentIndices.length; i++) {
+        if (rootCommentIndices[i] > currentIdx) {
+          return Left(rootCommentIndices[i]);
+        }
+      }
+    }
+
+    return Right(GeneralFailure());
+  }
+
+  // void rootIndicies()
 
   Either<int, Failure> indexFromCommentId(int commentId) {
     if (state is CommentSectionData) {

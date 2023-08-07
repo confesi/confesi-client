@@ -1,5 +1,7 @@
+import 'package:confesi/application/user/cubit/notifications_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/results/failures.dart';
 import 'package:dartz/dartz.dart' as dartz;
@@ -74,9 +76,8 @@ class FeedListController extends ChangeNotifier {
 
   int currentIndex() {
     if (_isDisposed) return 0;
-    if (!itemPositionsListener.itemPositions.value.isNotEmpty) return 0;
-
-    return itemPositionsListener.itemPositions.value.first.index;
+    if (itemPositionsListener.itemPositions.value.isEmpty) return 0;
+    return itemPositionsListener.itemPositions.value.last.index;
   }
 
   void scrollToIndex(int index, {bool hapticFeedback = true}) {
@@ -97,6 +98,21 @@ class FeedListController extends ChangeNotifier {
 
     items.clear();
     notifyListeners();
+  }
+
+  List<int> currentIndexes() {
+    if (_isDisposed) return [];
+    if (itemPositionsListener.itemPositions.value.isEmpty) return [];
+
+    List<int> visibleIndexes = [];
+
+    for (var position in itemPositionsListener.itemPositions.value) {
+      if (position.itemTrailingEdge > 0 && position.itemLeadingEdge < 1) {
+        visibleIndexes.add(position.index);
+      }
+    }
+
+    return visibleIndexes;
   }
 
   void _updateScrolledDownFromTop(bool newValue) {
@@ -129,8 +145,10 @@ class FeedList extends StatefulWidget {
     required this.wontLoadMoreMessage,
     this.shrinkWrap = false,
     this.isScrollable = true,
+    this.debug = false,
   });
 
+  final bool debug;
   final bool isScrollable;
   final bool shrinkWrap;
   final bool hasError;
@@ -163,9 +181,12 @@ class _FeedListState extends State<FeedList> {
       } else {
         widget.controller._updateScrolledDownFromTop(false);
       }
+      // print(widget.controller.itemPositionsListener.itemPositions.value.first.index);
       // Loading more items
       List<int> visibleIndexes =
           widget.controller.itemPositionsListener.itemPositions.value.map((item) => item.index).toList();
+      // print("v:" + visibleIndexes.last.toString());
+      // print("last visible: ${visibleIndexes.last.toString()}, total: ${widget.controller.items.length}");
       if (visibleIndexes.isNotEmpty &&
           widget.controller.items.length - visibleIndexes.last < widget.controller.preloadBy &&
           !isCurrentlyLoadingMore &&
@@ -178,6 +199,8 @@ class _FeedListState extends State<FeedList> {
         await widget.loadMore(
           widget.controller.items.isNotEmpty ? dartz.Right(widget.controller.items.last.id) : dartz.Left(NoneFailure()),
         );
+        // if (widget.debug) context.read<NotificationsCubit>().show("LOAD MORE");
+
         isCurrentlyLoadingMore = false;
       } else {
         widget.controller.notify();
