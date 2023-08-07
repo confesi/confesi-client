@@ -27,7 +27,7 @@ class TextLimitTracker extends StatelessWidget {
   Widget build(BuildContext context) {
     return ShakeWidget(
       autoPlay: value >= 1,
-      shakeConstant: ShakeDefaultConstant2(),
+      shakeConstant: ShakeSlowConstant2(),
       child: Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.center,

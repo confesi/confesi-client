@@ -22,21 +22,27 @@ class CommentSectionError extends CommentSectionState {
 
 class CommentSectionData extends CommentSectionState {
   final List<LinkedHashMap<int, List<int>>> commentIds;
+  final LinkedHashMap<int, int> commentIdToListIdx;
   final CommentFeedState paginationState;
 
-  const CommentSectionData(this.commentIds, this.paginationState);
+  CommentSectionData(
+    this.commentIds,
+    this.paginationState, {
+    LinkedHashMap<int, int>? commentIdToListIdx,
+  }) : commentIdToListIdx = commentIdToListIdx ?? LinkedHashMap<int, int>();
 
-  // copyWith method
   CommentSectionData copyWith({
     List<LinkedHashMap<int, List<int>>>? commentIds,
+    LinkedHashMap<int, int>? commentIdToListIdx,
     CommentFeedState? paginationState,
   }) {
     return CommentSectionData(
       commentIds ?? this.commentIds,
       paginationState ?? this.paginationState,
+      commentIdToListIdx: commentIdToListIdx ?? this.commentIdToListIdx,
     );
   }
 
   @override
-  List<Object> get props => [commentIds, paginationState];
+  List<Object> get props => [commentIds, paginationState, commentIdToListIdx];
 }

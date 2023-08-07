@@ -22,6 +22,7 @@ const int kPostBodyMaxLength = 10000;
 const double shrunkViewWidth = 400;
 const int rankedSchoolsPageSize = 2;
 const int savedContentPageSize = 2;
+const int maxCommentLength = 200;
 
 const int commentSectionRootsLoadedInitially = 10;
 const int commentSectionRepliesLoadedInitially = 3;

@@ -67,6 +67,15 @@ class FeedListController extends ChangeNotifier {
         .then((value) => HapticFeedback.lightImpact());
   }
 
+  void scrollToIndex(int index) {
+    if (_isDisposed) return;
+    if (!itemScrollController.isAttached) return;
+
+    itemScrollController
+        .scrollTo(index: index, duration: const Duration(milliseconds: 350))
+        .then((value) => HapticFeedback.lightImpact());
+  }
+
   /// Clears the list.
   void clearList() {
     if (_isDisposed) return;
@@ -83,7 +92,11 @@ class FeedListController extends ChangeNotifier {
 
   /// Returns the last item loaded.
   InfiniteScrollIndexable lastItem() {
-    return items[itemPositionsListener.itemPositions.value.last.index];
+    // take care against range error
+    if (itemPositionsListener.itemPositions.value.isEmpty) {
+      return items[0];
+    }
+    return items[itemPositionsListener.itemPositions.value.last.index - 1]; // last item is not InfiniteScrollIndexable
   }
 }
 
@@ -128,6 +141,8 @@ class _FeedListState extends State<FeedList> {
   void initState() {
     widget.controller.itemPositionsListener.itemPositions.addListener(() async {
       // Checking if you're scrolled down past the 1st index (inclusive)
+      // prevent against bad state no element
+      if (widget.controller.itemPositionsListener.itemPositions.value.isEmpty) return;
       if (widget.controller.itemPositionsListener.itemPositions.value.first.index >= 1) {
         widget.controller._updateScrolledDownFromTop(true);
       } else {

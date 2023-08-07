@@ -7,10 +7,12 @@ import 'package:collection/collection.dart';
 import 'package:confesi/core/services/user_auth/user_auth_service.dart';
 import 'package:confesi/init.dart';
 import 'package:confesi/models/comment.dart';
+import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../constants/shared/constants.dart';
 import '../../../core/clients/api.dart';
+import '../../../core/results/failures.dart';
 import '../../../core/services/global_content/global_content.dart';
 import '../../../presentation/comments/widgets/simple_comment_sort.dart';
 
@@ -21,10 +23,32 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
 
   final Api _repliesApi;
   final Api _rootsApi;
+
+  void updateCommentIdToIndex(int commentId, int index) {
+    if (state is CommentSectionData) {
+      final data = (state as CommentSectionData);
+      final newCommentIdToIndex = LinkedHashMap<int, int>.from(data.commentIdToListIdx);
+      newCommentIdToIndex[commentId] = index;
+      emit(data.copyWith(commentIdToListIdx: newCommentIdToIndex));
+    }
+  }
+
+  Either<int, Failure> indexFromCommentId(int commentId) {
+    if (state is CommentSectionData) {
+      final data = (state as CommentSectionData);
+      int? id = data.commentIdToListIdx[commentId];
+      if (id != null) {
+        return Left(id);
+      } else {
+        return Right(GeneralFailure());
+      }
+    } else {
+      return Right(GeneralFailure());
+    }
+  }
+
   Future<bool> loadReplies(int? rootCommentId, int next) async {
-    print("HERE 1");
     if (rootCommentId == null) return false;
-    print("HERE 2");
     _repliesApi.cancelCurrentReq();
     final response = await _repliesApi.req(
       Verb.get,

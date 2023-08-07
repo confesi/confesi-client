@@ -8,12 +8,14 @@ import 'package:confesi/presentation/shared/indicators/loading_or_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/cli_commands.dart';
+import 'package:keyboard_attachable/keyboard_attachable.dart';
 import 'package:provider/provider.dart';
 import 'package:screenshot_callback/screenshot_callback.dart';
 import 'package:scrollable/exports.dart';
 import '../../../application/user/cubit/notifications_cubit.dart';
 import '../../../application/user/cubit/quick_actions_cubit.dart';
 import '../../../application/user/cubit/saved_posts_cubit.dart';
+import '../../../constants/shared/constants.dart';
 import '../../../core/router/go_router.dart';
 import '../../../core/styles/typography.dart';
 import '../../../core/types/infinite_scrollable_indexable.dart';
@@ -21,24 +23,24 @@ import '../../../core/utils/numbers/add_commas_to_number.dart';
 import '../../../models/comment.dart';
 import '../../feed/methods/show_post_options.dart';
 import '../../feed/utils/post_metadata_formatters.dart';
-import '../../feed/widgets/simple_comment_root_group.dart';
-import '../../feed/widgets/simple_comment_tile.dart';
+import '../widgets/simple_comment_root_group.dart';
+import '../widgets/simple_comment_tile.dart';
 import '../../shared/buttons/simple_text.dart';
 import '../../shared/other/feed_list.dart';
 import '../../shared/overlays/notification_chip.dart';
 import '../../shared/stat_tiles/stat_tile_group.dart';
 import '../widgets/comment_text_sheet.dart';
 
-class CommentsScreen extends StatefulWidget {
-  const CommentsScreen({super.key, required this.props});
+class CommentsHome extends StatefulWidget {
+  const CommentsHome({super.key, required this.props});
 
   final HomePostsCommentsProps props;
 
   @override
-  State<CommentsScreen> createState() => _CommentsScreenState();
+  State<CommentsHome> createState() => _CommentsHomeState();
 }
 
-class _CommentsScreenState extends State<CommentsScreen> {
+class _CommentsHomeState extends State<CommentsHome> {
   FeedListController feedController = FeedListController();
   late CommentSheetController commentSheetController;
   late ScreenshotCallback screenshotCallback;
@@ -67,42 +69,70 @@ class _CommentsScreenState extends State<CommentsScreen> {
   }
 
   @override
+  void dispose() {
+    screenshotCallback.dispose();
+    commentSheetController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return OneThemeStatusBar(
       brightness: Brightness.light,
       child: KeyboardDismiss(
         child: Scaffold(
+          floatingActionButton: FloatingActionButton(onPressed: () => feedController.scrollToIndex(7)),
           backgroundColor: Theme.of(context).colorScheme.shadow,
           body: BlocBuilder<CommentSectionCubit, CommentSectionState>(
             builder: (context, state) {
-              return Column(
-                children: [
-                  StatTileGroup(
-                    icon1Text: "Back",
-                    icon2Text: addCommasToNumber(widget.props.post.commentCount),
-                    icon4Text: addCommasToNumber(widget.props.post.upvote),
-                    icon5Text: addCommasToNumber(widget.props.post.downvote),
-                    icon1OnPress: () => router.pop(context),
-                    icon2OnPress: () {}, // todo: add
-                    icon4OnPress: () async => await Provider.of<GlobalContentService>(context, listen: false)
-                        .voteOnPost(widget.props.post, widget.props.post.userVote != 1 ? 1 : 0)
-                        .then(
-                            (value) => value.fold((err) => context.read<NotificationsCubit>().show(err), (_) => null)),
-                    icon5OnPress: () async => await Provider.of<GlobalContentService>(context, listen: false)
-                        .voteOnPost(widget.props.post, widget.props.post.userVote != -1 ? -1 : 0)
-                        .then(
-                            (value) => value.fold((err) => context.read<NotificationsCubit>().show(err), (_) => null)),
-                    icon4Selected: widget.props.post.userVote == 1,
-                    icon5Selected: widget.props.post.userVote == -1,
-                  ),
-                  Expanded(
-                    child: AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 250),
-                      child: buildBody(context, state),
+              return FooterLayout(
+                  footer: SafeArea(
+                    top: false,
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          top: BorderSide(
+                            color: Theme.of(context).colorScheme.onBackground,
+                            width: 0.8,
+                          ),
+                        ),
+                      ),
+                      child: CommentSheet(
+                        onSubmit: (value) => print(value),
+                        maxCharacters: maxCommentLength,
+                        controller: commentSheetController,
+                      ),
                     ),
                   ),
-                ],
-              );
+                  child: Column(
+                    children: [
+                      StatTileGroup(
+                        icon1Text: "Back",
+                        icon2Text: addCommasToNumber(widget.props.post.commentCount),
+                        icon4Text: addCommasToNumber(widget.props.post.upvote),
+                        icon5Text: addCommasToNumber(widget.props.post.downvote),
+                        icon1OnPress: () => router.pop(context),
+                        icon2OnPress: () => commentSheetController.focus(), // todo: add
+                        icon4OnPress: () async => await Provider.of<GlobalContentService>(context, listen: false)
+                            .voteOnPost(widget.props.post, widget.props.post.userVote != 1 ? 1 : 0)
+                            .then((value) =>
+                                value.fold((err) => context.read<NotificationsCubit>().show(err), (_) => null)),
+                        icon5OnPress: () async => await Provider.of<GlobalContentService>(context, listen: false)
+                            .voteOnPost(widget.props.post, widget.props.post.userVote != -1 ? -1 : 0)
+                            .then((value) =>
+                                value.fold((err) => context.read<NotificationsCubit>().show(err), (_) => null)),
+                        icon4Selected: widget.props.post.userVote == 1,
+                        icon5Selected: widget.props.post.userVote == -1,
+                      ),
+                      Expanded(
+                        child: AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 250),
+                          child: buildBody(context, state),
+                        ),
+                      ),
+                    ],
+                  ));
             },
           ),
         ),
@@ -112,6 +142,59 @@ class _CommentsScreenState extends State<CommentsScreen> {
 
   Widget buildBody(BuildContext context, CommentSectionState state) {
     if (state is CommentSectionData) {
+      final List<InfiniteScrollIndexable> commentWidgets = [];
+      int commentIndex = 0; // Counter variable to keep track of the index
+
+      for (final commentIds in state.commentIds) {
+        final rootCommentId = commentIds.keys.first;
+        final rootCommentIdsList = commentIds[rootCommentId]!;
+        LinkedHashMap<int, CommentWithMetadata> commentSet = Provider.of<GlobalContentService>(context).comments;
+        final comment = commentSet[rootCommentId];
+
+        if (comment != null) {
+          context.read<CommentSectionCubit>().updateCommentIdToIndex(comment.comment.id, commentIndex);
+          commentWidgets.add(
+            InfiniteScrollIndexable(
+              rootCommentId,
+              SimpleCommentRootGroup(
+                root: SimpleCommentTile(
+                  currentReplyNum: 0, // doesn't matter for root
+                  currentlyRetrievedReplies: 0, // doesn't matter for root
+                  totalNumOfReplies: comment.comment.childrenCount,
+                  isRootComment: true,
+                  comment: comment,
+                ),
+                subTree: const [], // No sub-replies since they are one level deep
+              ),
+            ),
+          );
+          commentIndex++; // Increment the counter for the next comment
+        }
+
+        for (final replyId in rootCommentIdsList) {
+          final replyComment = commentSet[replyId];
+          if (replyComment != null) {
+            context.read<CommentSectionCubit>().updateCommentIdToIndex(replyComment.comment.id, commentIndex);
+            commentWidgets.add(
+              InfiniteScrollIndexable(
+                replyId,
+                SimpleCommentRootGroup(
+                  root: SimpleCommentTile(
+                    currentlyRetrievedReplies: rootCommentIdsList.length,
+                    currentReplyNum: 0,
+                    totalNumOfReplies: 0,
+                    isRootComment: false,
+                    comment: replyComment,
+                  ),
+                  subTree: const [], // No sub-replies since they are one level deep
+                ),
+              ),
+            );
+          }
+          commentIndex++; // Increment the counter for the next comment
+        }
+      }
+
       return FeedList(
         header: Column(
           children: [
@@ -181,32 +264,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
         ),
         isScrollable: true,
         shrinkWrap: true,
-        controller: feedController
-          ..items = state.commentIds
-              .map((commentIds) {
-                final rootCommentId = commentIds.keys.first;
-                final rootCommentIdsList = commentIds[rootCommentId]!;
-                LinkedHashMap<int, CommentWithMetadata> commentSet =
-                    Provider.of<GlobalContentService>(context).comments;
-                final comment = commentSet[rootCommentId];
-                return comment != null
-                    ? InfiniteScrollIndexable(
-                        rootCommentId,
-                        SimpleCommentRootGroup(
-                          root: SimpleCommentTile(
-                            currentReplyNum: 0, // doesnt matter for root
-                            currentlyRetrievedReplies: 0, // doesnt matter for root
-                            totalNumOfReplies: comment.comment.childrenCount,
-                            isRootComment: true,
-                            comment: comment,
-                          ),
-                          subTree: buildReplies(comment, rootCommentIdsList, commentSet),
-                        ),
-                      )
-                    : null;
-              })
-              .whereType<InfiniteScrollIndexable>()
-              .toList(),
+        controller: feedController..items = commentWidgets,
         loadMore: (_) async =>
             await context.read<CommentSectionCubit>().loadInitial(widget.props.post.id, CommentSortType.recent),
         onPullToRefresh: () async {
@@ -260,7 +318,6 @@ class _CommentsScreenState extends State<CommentsScreen> {
       }
       iter++;
     }
-
     return commentWidgets;
   }
 }

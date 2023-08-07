@@ -79,15 +79,13 @@ class _ExpandableTextfieldState extends State<ExpandableTextfield> {
                   strokeAlign: BorderSide.strokeAlignInside,
                 ),
               ),
-              child: CupertinoScrollbar(
-                thumbVisibility: widget.maxLines == 1 ? false : true,
-                thickness: widget.maxLines == 1 ? 0.0 : 3.0, // 3.0 is default
-                controller: scrollController,
-                child: Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Row(
-                    children: [
-                      Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 2),
                         child: TextField(
                           onChanged: (value) => widget.onChange?.call(value),
                           autofocus: false,
@@ -113,8 +111,8 @@ class _ExpandableTextfieldState extends State<ExpandableTextfield> {
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),

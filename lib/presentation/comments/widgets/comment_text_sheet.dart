@@ -1,4 +1,3 @@
-
 import '../../shared/other/text_limit_tracker.dart';
 import 'package:flutter/material.dart';
 
@@ -77,68 +76,58 @@ class _CommentSheetState extends State<CommentSheet> {
   }
 
   @override
-  void dispose() {
-    isDisposed = true;
-    widget.controller.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return IgnorePointer(
       ignoring: widget.controller.isBlocking,
-      child: Container(
-        color: Theme.of(context).colorScheme.background,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ExpandableTextfield(
-              onChange: (_) => setState(() => {}),
-              color: Theme.of(context).colorScheme.surface,
-              focusNode: textFocusNode,
-              hintText: "What's your take?",
-              maxLines: 4,
-              minLines: 1,
-              maxCharacters: widget.maxCharacters,
-              controller: commentController,
-            ),
-            AnimatedSwitcher(
-              duration: const Duration(milliseconds: 500),
-              child: commentController.text.isEmpty
-                  ? Container()
-                  : AnimatedScale(
-                      scale: commentController.text.isEmpty ? 0 : 1,
-                      duration: const Duration(milliseconds: 100),
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 10),
-                        child: Row(
-                          children: [
-                            SimpleTextButton(
-                              text: 'Cancel',
-                              isErrorText: true,
-                              onTap: () => widget.controller.delete(),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ExpandableTextfield(
+            onChange: (_) => setState(() => {}),
+            color: Theme.of(context).colorScheme.background,
+            focusNode: textFocusNode,
+            hintText: "What's your take?",
+            maxLines: 4,
+            minLines: 1,
+            maxCharacters: widget.maxCharacters,
+            controller: commentController,
+          ),
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 500),
+            child: commentController.text.isEmpty
+                ? Container()
+                : AnimatedScale(
+                    scale: commentController.text.isEmpty ? 0 : 1,
+                    duration: const Duration(milliseconds: 100),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: Row(
+                        children: [
+                          SimpleTextButton(
+                            text: 'Cancel',
+                            isErrorText: true,
+                            onTap: () => widget.controller.delete(),
+                          ),
+                          Expanded(
+                            child: TextLimitTracker(
+                              noText: false,
+                              value: commentController.text.runes.length / widget.maxCharacters,
                             ),
-                            Expanded(
-                              child: TextLimitTracker(
-                                noText: false,
-                                value: commentController.text.runes.length / widget.maxCharacters,
-                              ),
-                            ),
-                            SimpleTextButton(
-                              tapType: TapType.strongImpact,
-                              text: 'Post',
-                              onTap: () {
-                                widget.onSubmit(commentController.text);
-                                setState(() => {});
-                              },
-                            ),
-                          ],
-                        ),
+                          ),
+                          SimpleTextButton(
+                            tapType: TapType.strongImpact,
+                            text: 'Post',
+                            onTap: () {
+                              widget.onSubmit(commentController.text);
+                              setState(() => {});
+                            },
+                          ),
+                        ],
                       ),
                     ),
-            ),
-          ],
-        ),
+                  ),
+          ),
+        ],
       ),
     );
   }

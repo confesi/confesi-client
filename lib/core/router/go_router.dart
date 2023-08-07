@@ -1,7 +1,7 @@
 import 'package:confesi/models/post.dart';
 import 'package:confesi/models/school_with_metadata.dart';
 import 'package:confesi/presentation/authentication_and_settings/screens/settings/acknowledgements.dart';
-import 'package:confesi/presentation/comments/screens/comment_screen.dart';
+import 'package:confesi/presentation/comments/screens/home.dart';
 import 'package:confesi/presentation/notifications/screens/home.dart';
 
 import 'package:confesi/presentation/authentication_and_settings/screens/authentication/open.dart';
@@ -130,7 +130,7 @@ final GoRouter router = GoRouter(
         path: '/home/posts/comments',
         builder: (BuildContext context, GoRouterState state) {
           HomePostsCommentsProps props = state.extra as HomePostsCommentsProps;
-          return CommentsScreen(props: props);
+          return CommentsHome(props: props);
         }),
 
     GoRoute(
