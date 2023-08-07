@@ -3,7 +3,6 @@ import 'package:uuid/uuid.dart';
 
 import 'user_auth_data.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:riverpod/riverpod.dart';
 
 import '../../../init.dart';
 

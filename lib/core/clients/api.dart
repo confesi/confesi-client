@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:confesi/core/services/user_auth/user_auth_data.dart';
-import 'package:provider/provider.dart';
 
 import '../../constants/shared/constants.dart';
 import '../results/failures.dart';
@@ -154,6 +153,7 @@ class Api {
 
       if (debugMode) {
         print("================================ DEBUG API ================================");
+        print("Req body: ${request.body}");
         print("${streamResponse.statusCode} ${streamResponse.reasonPhrase}");
         print("Req endpoint: $url");
       }

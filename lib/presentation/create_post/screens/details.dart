@@ -1,6 +1,4 @@
 import 'package:confesi/application/create_post/cubit/post_categories_cubit.dart';
-import 'package:confesi/presentation/shared/indicators/loading_or_alert.dart';
-import 'package:confesi/presentation/shared/indicators/loading_cupertino.dart';
 
 import 'package:scrollable/exports.dart';
 import '../../../application/create_post/cubit/post_cubit.dart';

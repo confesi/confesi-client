@@ -15,11 +15,9 @@ import '../../../../core/styles/typography.dart';
 
 import '../../../shared/behaviours/themed_status_bar.dart';
 import '../../../shared/layout/appbar.dart';
-import '../../../shared/overlays/notification_chip.dart';
 import '../../../shared/selection_groups/setting_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:scrollable/exports.dart';
 
 import '../../../shared/selection_groups/switch_selection_tile.dart';

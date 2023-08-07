@@ -17,13 +17,16 @@ import '../../../presentation/comments/widgets/simple_comment_sort.dart';
 part 'comment_section_state.dart';
 
 class CommentSectionCubit extends Cubit<CommentSectionState> {
-  CommentSectionCubit(this._api) : super(CommentSectionLoading());
+  CommentSectionCubit(this._repliesApi, this._rootsApi) : super(CommentSectionLoading());
 
-  final Api _api;
+  final Api _repliesApi;
+  final Api _rootsApi;
   Future<bool> loadReplies(int? rootCommentId, int next) async {
+    print("HERE 1");
     if (rootCommentId == null) return false;
-    // _api.cancelCurrentReq();
-    final response = await _api.req(
+    print("HERE 2");
+    _repliesApi.cancelCurrentReq();
+    final response = await _repliesApi.req(
       Verb.get,
       true,
       "/api/v1/comments/replies",
@@ -48,6 +51,8 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
             final List<LinkedHashMap<int, List<int>>> existingCommentIds =
                 state is CommentSectionData ? (state as CommentSectionData).commentIds : [];
 
+            sl.get<GlobalContentService>().setComments(replies);
+
             // Find the root comment in existing commentIds
             final existingReplies = existingCommentIds.firstWhereOrNull((map) => map.containsKey(rootCommentId));
 
@@ -60,7 +65,6 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
                 existingReplies[rootCommentId] = newReplies;
               }
 
-              // Emit the updated state
               emit(CommentSectionData(existingCommentIds, CommentFeedState.feed));
               return true;
             } else {
@@ -88,7 +92,7 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
     bool refresh = false,
     bool fullScreenRefresh = false,
   }) async {
-    // _api.cancelCurrentReq();
+    _rootsApi.cancelCurrentReq();
     if (fullScreenRefresh || state is CommentSectionError) {
       refresh = true;
       emit(CommentSectionLoading());
@@ -96,7 +100,7 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
     if (state is CommentSectionData) {
       emit((state as CommentSectionData).copyWith(paginationState: CommentFeedState.loading));
     }
-    final response = await _api.req(
+    final response = await _rootsApi.req(
       Verb.get,
       true,
       "/api/v1/comments/roots",
@@ -124,11 +128,9 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
             emit(const CommentSectionError("Unknown error loading comments"));
           }
         } else if (response.statusCode.toString()[0] == "2") {
-          print("GOT HERE UERE");
           try {
             final List<CommentGroup> commentGroups =
                 (json.decode(response.body)["value"] as List).map((i) => CommentGroup.fromJson(i)).toList();
-
             // Existing commentIds in the state (if any)
             final List<LinkedHashMap<int, List<int>>> existingCommentIds =
                 state is CommentSectionData ? (state as CommentSectionData).commentIds : [];

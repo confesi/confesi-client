@@ -1,8 +1,6 @@
-import 'package:confesi/models/post.dart';
 import 'package:flutter/material.dart';
 
 import '../../shared/other/feed_list.dart';
-import '../widgets/post_tile.dart';
 
 class ExploreRecents extends StatefulWidget {
   const ExploreRecents({Key? key}) : super(key: key);
@@ -37,7 +35,7 @@ class _ExploreRecentsState extends State<ExploreRecents> {
   Widget build(BuildContext context) {
     return Container(
       color: Theme.of(context).colorScheme.shadow,
-      child: Column(
+      child: const Column(
         children: [
           // Row(
           //   children: [

@@ -1,8 +1,5 @@
 import 'package:confesi/presentation/shared/selection_groups/text_stat_tile.dart';
 import 'package:confesi/presentation/shared/selection_groups/tile_group.dart';
-import 'package:confesi/presentation/shared/stat_tiles/stat_tile_item.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../shared/behaviours/simulated_bottom_safe_area.dart';
@@ -13,7 +10,6 @@ import 'package:scrollable/exports.dart';
 import '../../../../core/styles/typography.dart';
 import '../../../../core/utils/sizing/bottom_safe_area.dart';
 import '../../../shared/layout/appbar.dart';
-import '../../../shared/selection_groups/stepper_tile.dart';
 
 class AcknowledgementsScreen extends StatefulWidget {
   const AcknowledgementsScreen({super.key});

@@ -6,7 +6,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:map_launcher/map_launcher.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../../constants/shared/constants.dart';
 import '../../../core/services/sharing/sharing.dart';

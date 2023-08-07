@@ -1,10 +1,7 @@
-import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
-import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../../core/utils/numbers/large_number_formatter.dart';
-import '../../shared/button_touch_effects/touchable_opacity.dart';
 import '../../../core/styles/typography.dart';
 
 class ReactionTile extends StatefulWidget {

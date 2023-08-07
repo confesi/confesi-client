@@ -1,11 +1,9 @@
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 
-import '../../../application/create_post/cubit/post_cubit.dart';
 import '../../../core/router/go_router.dart';
 import 'package:flutter/services.dart';
 
 import '../../shared/indicators/loading_or_alert.dart';
-import '../../shared/indicators/loading_cupertino.dart';
 
 import '../../../application/daily_hottest/cubit/hottest_cubit.dart';
 import '../../../constants/leaderboard/general.dart';

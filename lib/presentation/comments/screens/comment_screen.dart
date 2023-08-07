@@ -1,6 +1,7 @@
+import 'dart:collection';
+
 import 'package:confesi/application/comments/cubit/comment_section_cubit.dart';
 import 'package:confesi/core/services/global_content/global_content.dart';
-import 'package:confesi/models/post.dart';
 import 'package:confesi/presentation/comments/widgets/simple_comment_sort.dart';
 import 'package:confesi/presentation/shared/behaviours/one_theme_status_bar.dart';
 import 'package:confesi/presentation/shared/indicators/loading_or_alert.dart';
@@ -8,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/cli_commands.dart';
 import 'package:provider/provider.dart';
-import 'package:provider/single_child_widget.dart';
 import 'package:screenshot_callback/screenshot_callback.dart';
 import 'package:scrollable/exports.dart';
 import '../../../application/user/cubit/notifications_cubit.dart';
@@ -18,12 +18,12 @@ import '../../../core/router/go_router.dart';
 import '../../../core/styles/typography.dart';
 import '../../../core/types/infinite_scrollable_indexable.dart';
 import '../../../core/utils/numbers/add_commas_to_number.dart';
+import '../../../models/comment.dart';
 import '../../feed/methods/show_post_options.dart';
 import '../../feed/utils/post_metadata_formatters.dart';
 import '../../feed/widgets/simple_comment_root_group.dart';
 import '../../feed/widgets/simple_comment_tile.dart';
 import '../../shared/buttons/simple_text.dart';
-import '../../shared/edited_source_widgets/swipe_refresh.dart';
 import '../../shared/other/feed_list.dart';
 import '../../shared/overlays/notification_chip.dart';
 import '../../shared/stat_tiles/stat_tile_group.dart';
@@ -83,7 +83,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
                     icon4Text: addCommasToNumber(widget.props.post.upvote),
                     icon5Text: addCommasToNumber(widget.props.post.downvote),
                     icon1OnPress: () => router.pop(context),
-                    icon2OnPress: () => null, // todo: add
+                    icon2OnPress: () {}, // todo: add
                     icon4OnPress: () async => await Provider.of<GlobalContentService>(context, listen: false)
                         .voteOnPost(widget.props.post, widget.props.post.userVote != 1 ? 1 : 0)
                         .then(
@@ -124,6 +124,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 15),
+                      Text(state.commentIds.toString()), // todo: remove
                       Text(
                         widget.props.post.title,
                         style: kDisplay1.copyWith(
@@ -186,7 +187,9 @@ class _CommentsScreenState extends State<CommentsScreen> {
               .map((commentIds) {
                 final rootCommentId = commentIds.keys.first;
                 final rootCommentIdsList = commentIds[rootCommentId]!;
-                final comment = Provider.of<GlobalContentService>(context).comments[rootCommentId];
+                LinkedHashMap<int, CommentWithMetadata> commentSet =
+                    Provider.of<GlobalContentService>(context).comments;
+                final comment = commentSet[rootCommentId];
                 return comment != null
                     ? InfiniteScrollIndexable(
                         rootCommentId,
@@ -198,7 +201,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
                             isRootComment: true,
                             comment: comment,
                           ),
-                          subTree: buildReplies(rootCommentIdsList, comment.comment.childrenCount),
+                          subTree: buildReplies(comment, rootCommentIdsList, commentSet),
                         ),
                       )
                     : null;
@@ -235,26 +238,30 @@ class _CommentsScreenState extends State<CommentsScreen> {
     }
   }
 
-  List<SimpleCommentRootGroup> buildReplies(List<int> commentReplies, int totalNumOfReplies) {
+  List<SimpleCommentRootGroup> buildReplies(
+      CommentWithMetadata parentComment, List<int> commentReplies, LinkedHashMap<int, CommentWithMetadata> commentSet) {
     final commentWidgets = <SimpleCommentRootGroup>[];
 
     int iter = 1;
     int currentlyRetrievedReplies = commentReplies.length;
-    for (int commentId in commentReplies) {
-      final comment = context.watch<GlobalContentService>().comments[commentId];
+    for (int id in commentReplies) {
+      CommentWithMetadata? comment = commentSet[id];
       if (comment != null) {
+        print(comment.comment.id);
         commentWidgets.add(
           SimpleCommentRootGroup(
             root: SimpleCommentTile(
               currentlyRetrievedReplies: currentlyRetrievedReplies,
               currentReplyNum: iter,
-              totalNumOfReplies: totalNumOfReplies,
+              totalNumOfReplies: parentComment.comment.childrenCount,
               isRootComment: false,
               comment: comment,
             ),
-            subTree: const [],
+            subTree: const [], // No sub-replies since they are one level deep
           ),
         );
+      } else {
+        print("$id null");
       }
       iter++;
     }

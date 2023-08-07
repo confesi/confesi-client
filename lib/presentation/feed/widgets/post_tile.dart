@@ -1,22 +1,17 @@
 import 'package:confesi/application/user/cubit/notifications_cubit.dart';
 import 'package:confesi/application/user/cubit/quick_actions_cubit.dart';
-import 'package:confesi/constants/feed/general.dart';
 import 'package:confesi/core/services/global_content/global_content.dart';
-import 'package:confesi/core/utils/dates/readable_date_format.dart';
 import 'package:confesi/core/utils/strings/truncate_text.dart';
 import 'package:confesi/models/post.dart';
 import 'package:confesi/presentation/feed/widgets/reaction_tile.dart';
-import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:confesi/presentation/shared/other/widget_or_nothing.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants/shared/constants.dart';
 import '../../../core/router/go_router.dart';
-import '../../../core/services/sharing/sharing.dart';
 import '../../../core/styles/typography.dart';
 import '../methods/show_post_options.dart';
 import '../utils/post_metadata_formatters.dart';

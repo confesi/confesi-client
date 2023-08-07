@@ -1,9 +1,5 @@
 import 'package:confesi/application/user/cubit/stats_cubit.dart';
-import 'package:confesi/core/utils/sizing/bottom_safe_area.dart';
 import 'package:confesi/presentation/shared/indicators/loading_or_alert.dart';
-import 'package:confesi/presentation/shared/behaviours/simulated_bottom_safe_area.dart';
-import 'package:confesi/presentation/shared/indicators/alert.dart';
-import 'package:confesi/presentation/shared/indicators/loading_cupertino.dart';
 import 'package:confesi/presentation/shared/selection_groups/tile_group.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

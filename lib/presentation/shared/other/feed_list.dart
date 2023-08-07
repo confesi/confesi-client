@@ -1,4 +1,3 @@
-import 'package:confesi/presentation/shared/indicators/loading_cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -8,7 +7,6 @@ import 'package:dartz/dartz.dart' as dartz;
 import '../../../core/types/infinite_scrollable_indexable.dart';
 import '../indicators/loading_or_alert.dart';
 import '../edited_source_widgets/swipe_refresh.dart';
-import '../indicators/alert.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 

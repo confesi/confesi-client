@@ -1,17 +1,12 @@
 import 'package:confesi/application/user/cubit/account_details_cubit.dart';
 import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/router/go_router.dart';
-import 'package:confesi/core/utils/sizing/height_fraction.dart';
-import 'package:confesi/presentation/shared/edited_source_widgets/swipe_refresh.dart';
 import 'package:confesi/presentation/shared/indicators/loading_or_alert.dart';
-import 'package:confesi/presentation/shared/indicators/loading_cupertino.dart';
 import 'package:confesi/presentation/shared/selection_groups/tile_group.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/utils/sizing/bottom_safe_area.dart';
-import '../../shared/indicators/alert.dart';
 import '../../shared/text/disclaimer_text.dart';
-import 'package:scrollable/exports.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

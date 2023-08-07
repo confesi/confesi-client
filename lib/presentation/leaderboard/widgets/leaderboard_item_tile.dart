@@ -102,7 +102,7 @@ class LeaderboardItemTile extends StatelessWidget {
                         children: [
                           const SizedBox(height: 5),
                           Text(
-                            distanceFormatter(context, school.distance!),
+                            distanceFormatter(context, school.distance),
                             style: kDetail.copyWith(
                               color: Theme.of(context).colorScheme.onSurface,
                             ),

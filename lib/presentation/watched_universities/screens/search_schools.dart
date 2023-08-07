@@ -4,7 +4,6 @@ import 'package:confesi/core/router/go_router.dart';
 import 'package:confesi/core/styles/typography.dart';
 import 'package:confesi/core/utils/funcs/debouncer.dart';
 import 'package:confesi/core/utils/sizing/height_fraction.dart';
-import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:confesi/presentation/shared/buttons/circle_icon_btn.dart';
 import 'package:confesi/presentation/shared/edited_source_widgets/swipe_refresh.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,7 +15,6 @@ import '../../shared/indicators/loading_or_alert.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/textfields/expandable_textfield.dart';
 import '../widgets/searched_school_tile.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scrollable/exports.dart';
 

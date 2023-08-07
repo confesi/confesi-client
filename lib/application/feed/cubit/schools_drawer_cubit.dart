@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:collection/collection.dart';
 
 import 'package:bloc/bloc.dart';
 import 'package:confesi/core/clients/api.dart';

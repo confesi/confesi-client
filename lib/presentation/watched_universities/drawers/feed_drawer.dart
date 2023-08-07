@@ -1,12 +1,10 @@
 import 'package:confesi/application/feed/cubit/schools_drawer_cubit.dart';
-import 'package:confesi/application/feed/cubit/search_schools_cubit.dart';
 import 'package:confesi/presentation/shared/edited_source_widgets/swipe_refresh.dart';
 import 'package:confesi/presentation/shared/indicators/loading_or_alert.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/router/go_router.dart';
 import 'package:flutter/material.dart';
-import 'package:scrollable/exports.dart';
 
 import '../../../core/styles/typography.dart';
 import '../../../core/utils/sizing/bottom_safe_area.dart';

@@ -1,12 +1,9 @@
-import 'package:confesi/constants/feed/enums.dart';
 
 import '../../shared/indicators/loading_or_alert.dart';
 import '../widgets/leaderboard_item_tile.dart';
-import '../../shared/indicators/loading_cupertino.dart';
 import '../../shared/other/feed_list.dart';
 
 import '../../../constants/leaderboard/general.dart';
-import '../../shared/indicators/alert.dart';
 import '../../shared/layout/appbar.dart';
 import '../../../application/leaderboard/cubit/leaderboard_cubit.dart';
 import 'package:flutter/cupertino.dart';

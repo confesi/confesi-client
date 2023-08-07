@@ -6,9 +6,6 @@ import 'package:confesi/application/user/cubit/feedback_categories_cubit.dart';
 import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/results/failures.dart';
 import 'package:confesi/core/services/global_content/global_content.dart';
-import 'package:confesi/models/school.dart';
-import 'package:confesi/presentation/shared/overlays/snackbar.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:shake/shake.dart';
 
 import 'package:confesi/presentation/create_post/overlays/confetti_blaster.dart';
@@ -25,7 +22,6 @@ import 'application/user/cubit/saved_posts_cubit.dart';
 import 'application/user/cubit/stats_cubit.dart';
 import 'core/services/hive/hive_client.dart';
 import 'core/services/user_auth/user_auth_service.dart';
-import 'models/school_with_metadata.dart';
 import 'presentation/shared/overlays/notification_chip.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_auth/firebase_auth.dart';

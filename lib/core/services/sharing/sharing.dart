@@ -1,14 +1,11 @@
 import 'dart:io';
 
 import 'package:confesi/constants/shared/constants.dart';
-import 'package:confesi/core/services/user_auth/user_auth_data.dart';
-import 'package:confesi/core/services/user_auth/user_auth_service.dart';
 import 'package:confesi/core/utils/dates/readable_date_format.dart';
 import 'package:confesi/core/utils/strings/truncate_text.dart';
 import 'package:confesi/models/post.dart';
 import 'package:confesi/presentation/feed/widgets/reaction_tile.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:provider/provider.dart';
 
 import '../../styles/themes.dart';
 import '../../styles/typography.dart';

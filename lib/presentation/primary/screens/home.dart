@@ -1,5 +1,4 @@
 import 'package:confesi/application/create_post/cubit/post_categories_cubit.dart';
-import 'package:confesi/core/services/global_content/global_content.dart';
 import 'package:confesi/init.dart';
 import 'package:provider/provider.dart';
 
@@ -16,7 +15,6 @@ import '../../shared/behaviours/themed_status_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../feed/screens/feed_tab_manager.dart';
-import '../../shared/overlays/notification_chip.dart';
 import '../../shared/overlays/registered_users_only_sheet.dart';
 import '../../watched_universities/drawers/feed_drawer.dart';
 

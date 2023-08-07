@@ -2,25 +2,15 @@ import 'package:confesi/application/comments/cubit/comment_section_cubit.dart';
 import 'package:confesi/application/user/cubit/notifications_cubit.dart';
 import 'package:confesi/presentation/feed/widgets/reaction_tile.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
-import 'package:confesi/presentation/shared/buttons/pop.dart';
 import 'package:confesi/presentation/shared/buttons/simple_text.dart';
 import 'package:confesi/presentation/shared/other/widget_or_nothing.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 import '../../../core/services/global_content/global_content.dart';
 import '../../../core/styles/typography.dart';
 import '../../../models/comment.dart';
-import '../../shared/button_touch_effects/touchable_opacity.dart';
-import '../../shared/button_touch_effects/touchable_shrink.dart';
-import '../../shared/slideables/slidable_section.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import '../utils/post_metadata_formatters.dart';
-import 'comment_bottom_button.dart';
 
 /// How deep a threaded comment is. Root essentially means level zero.
 enum CommentDepth { root, reply }
@@ -102,8 +92,8 @@ class _SimpleCommentTileState extends State<SimpleCommentTile> {
               width: 3,
               decoration: BoxDecoration(
                 color: !widget.isRootComment
-                    ? Theme.of(context).colorScheme.secondary
-                    : Theme.of(context).colorScheme.tertiary,
+                    ? Theme.of(context).colorScheme.tertiary
+                    : Theme.of(context).colorScheme.secondary,
               ),
             ),
             Expanded(
@@ -133,14 +123,7 @@ class _SimpleCommentTileState extends State<SimpleCommentTile> {
                             ),
                             const SizedBox(height: 10),
                             Text(
-                              widget.comment.comment.content +
-                                  " " +
-                                  widget.currentReplyNum.toString() +
-                                  "/${widget.totalNumOfReplies}" +
-                                  " " +
-                                  widget.currentlyRetrievedReplies.toString() +
-                                  " " +
-                                  widget.totalNumOfReplies.toString(),
+                              widget.comment.comment.content,
                               style: kBody.copyWith(
                                 color: Theme.of(context).colorScheme.primary,
                                 height: 1.2,

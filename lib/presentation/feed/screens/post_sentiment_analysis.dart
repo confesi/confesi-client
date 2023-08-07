@@ -14,8 +14,6 @@ import '../../shared/behaviours/themed_status_bar.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
-import '../../shared/indicators/alert.dart';
-import '../../shared/indicators/loading_cupertino.dart';
 import '../../shared/layout/appbar.dart';
 
 class SentimentAnalysisScreen extends StatefulWidget {

@@ -1,16 +1,12 @@
 import 'dart:collection';
 
-import 'package:confesi/core/results/failures.dart';
 import 'package:confesi/core/results/successes.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
-import 'package:riverpod/riverpod.dart';
 
-import '../../../init.dart';
 import '../../../models/comment.dart';
 import '../../../models/post.dart';
 import '../../clients/api.dart';
-import '../user_auth/user_auth_service.dart';
 
 class GlobalContentService extends ChangeNotifier {
   final Api _postVoteApi;
@@ -23,11 +19,13 @@ class GlobalContentService extends ChangeNotifier {
 
   void setComments(List<CommentWithMetadata> comments) {
     for (final comment in comments) {
-      print(comment);
+      print(comment.comment);
       this.comments[comment.comment.id] = comment;
     }
     notifyListeners();
   }
+
+  void notify() => notifyListeners();
 
   void clearComments() {
     comments.clear();

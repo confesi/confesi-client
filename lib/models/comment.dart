@@ -106,4 +106,10 @@ class Comment {
         hidden: json["hidden"],
         edited: json["edited"],
       );
+
+  // to string
+  @override
+  String toString() {
+    return 'Comment{id: $id, createdAt: $createdAt, updatedAt: $updatedAt, postId: $postId, numericalUser: $numericalUser, numericalReplyingUser: $numericalReplyingUser, numericalUserIsOp: $numericalUserIsOp, numericalReplyingUserIsOp: $numericalReplyingUserIsOp, parentRoot: $parentRoot, childrenCount: $childrenCount, content: $content, downvote: $downvote, upvote: $upvote, trendingScore: $trendingScore, hidden: $hidden, edited: $edited}';
+  }
 }

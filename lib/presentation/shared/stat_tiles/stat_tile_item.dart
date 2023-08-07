@@ -1,7 +1,6 @@
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:flutter/services.dart';
 
-import '../button_touch_effects/touchable_opacity.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
