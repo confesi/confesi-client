@@ -1,152 +1,137 @@
-import 'package:confesi/application/feed/cubit/schools_drawer_cubit.dart';
 import 'package:confesi/core/services/global_content/global_content.dart';
-import 'package:confesi/presentation/shared/edited_source_widgets/swipe_refresh.dart';
+import 'package:confesi/models/school_with_metadata.dart';
 import 'package:confesi/presentation/shared/indicators/loading_or_alert.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
+import '../../../application/feed/cubit/schools_drawer_cubit.dart';
+import '../../../application/user/cubit/notifications_cubit.dart';
 import '../../../core/router/go_router.dart';
 import '../../../core/styles/typography.dart';
 import '../../../core/utils/sizing/bottom_safe_area.dart';
-import '../../../init.dart';
-import '../../../models/school_with_metadata.dart';
-import '../../shared/buttons/simple_text.dart';
 import '../widgets/section_accordian.dart';
+import '../../shared/buttons/simple_text.dart';
+import 'package:confesi/presentation/shared/edited_source_widgets/swipe_refresh.dart';
 
-class FeedDrawer extends StatefulWidget {
+class FeedDrawer extends StatelessWidget {
   const FeedDrawer({Key? key}) : super(key: key);
 
   @override
-  State<FeedDrawer> createState() => _FeedDrawerState();
-}
+  Widget build(BuildContext context) {
+    final globalContentService = Provider.of<GlobalContentService>(context);
 
-class _FeedDrawerState extends State<FeedDrawer> {
-  Widget buildBody(BuildContext context, SchoolsDrawerState state) {
-    if (state is SchoolsDrawerData) {
-      final selectedSchoolData = Provider.of<GlobalContentService>(context).schools[state.selectedId];
-      if (selectedSchoolData == null || Provider.of<GlobalContentService>(context).schools[state.homeId] == null) {
+    final watchedSchools =
+        globalContentService.schools.values.whereType<SchoolWithMetadata>().where((school) => school.watched).toList();
+
+    Widget buildChild(BuildContext context, SchoolsDrawerState state) {
+      if (state is SchoolsDrawerData) {
+        return ListView(
+          physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+          padding: EdgeInsets.only(bottom: bottomSafeArea(context)),
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(15),
+              child: SimpleTextButton(
+                infiniteWidth: true,
+                onTap: () => router.push("/schools/search"),
+                text: "Edit schools",
+              ),
+            ),
+            SectionAccordian(
+              startsOpen: true,
+              topBorder: true,
+              title: "Home school",
+              items: [
+                ...watchedSchools.where((school) => school.home).map((watchedHomeSchool) => DrawerUniversityTile(
+                      text: watchedHomeSchool.name,
+                      onTap: () => context.read<SchoolsDrawerCubit>().setSelectedSchoolInUI(watchedHomeSchool.id),
+                    )),
+              ],
+            ),
+            SectionAccordian(
+              startsOpen: true,
+              bottomBorder: true,
+              topBorder: true,
+              title: "Watched schools",
+              items: [
+                ...watchedSchools.where((school) => school.watched).map((watchedSchool) => DrawerUniversityTile(
+                      onSwipe: () => Provider.of<GlobalContentService>(context, listen: false)
+                          .updateWatched(watchedSchool, false)
+                          .then((f) =>
+                              f.fold((_) => null, (errMsg) => context.read<NotificationsCubit>().showErr(errMsg))),
+                      text: watchedSchool.name,
+                      onTap: () => context.read<SchoolsDrawerCubit>().setSelectedSchoolInUI(watchedSchool.id),
+                    )),
+              ],
+            ),
+          ],
+        );
+      } else {
         return LoadingOrAlert(
-          isLoading: false,
-          message: StateMessage("Unknown error", () => context.read<SchoolsDrawerCubit>().loadSchools()),
+          onLoadNoSpinner: true,
+          message: StateMessage("Error loading", () => context.read<SchoolsDrawerCubit>().loadSchools()),
+          isLoading: state is SchoolsDrawerLoading,
         );
       }
-      final selectedSchoolName = selectedSchoolData.name;
+    }
 
-      final allSchools =
-          state.schoolIds.map((schoolId) => Provider.of<GlobalContentService>(context).schools[schoolId]).toList();
-
-      final watchedSchools = allSchools.whereType<SchoolWithMetadata>().where((school) => school.watched).toList();
-      print(Provider.of<GlobalContentService>(context).schools);
-      return Column(
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            constraints: const BoxConstraints(minHeight: 175),
-            width: double.infinity,
-            color: Theme.of(context).colorScheme.secondary,
-            child: AnimatedSize(
-              duration: const Duration(milliseconds: 500),
-              curve: Curves.easeInOut,
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: SafeArea(
-                  bottom: false,
-                  child: Padding(
-                    padding: const EdgeInsets.all(15),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Currently viewing",
-                          style: kDetail.copyWith(
-                            color: Theme.of(context).colorScheme.onSecondary,
+    return Drawer(
+      backgroundColor: Theme.of(context).colorScheme.background,
+      child: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 250),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              constraints: const BoxConstraints(minHeight: 175),
+              width: double.infinity,
+              color: Theme.of(context).colorScheme.secondary,
+              child: AnimatedSize(
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.easeInOut,
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: SafeArea(
+                    bottom: false,
+                    child: Padding(
+                      padding: const EdgeInsets.all(15),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Currently viewing",
+                            style: kDetail.copyWith(
+                              color: Theme.of(context).colorScheme.onSecondary,
+                            ),
+                            textAlign: TextAlign.left,
                           ),
-                          textAlign: TextAlign.left,
-                        ),
-                        const SizedBox(height: 5),
-                        Text(
-                          selectedSchoolName,
-                          style: kDisplay1.copyWith(color: Theme.of(context).colorScheme.onSecondary),
-                          textAlign: TextAlign.left,
-                        ),
-                      ],
+                          const SizedBox(height: 5),
+                          Text(
+                            "TODO: selectedSchoolName",
+                            style: kDisplay1.copyWith(color: Theme.of(context).colorScheme.onSecondary),
+                            textAlign: TextAlign.left,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
-          ),
-          Expanded(
-            child: SwipeRefresh(
-              onRefresh: () async => await context.read<SchoolsDrawerCubit>().loadSchools(),
-              child: ListView(
-                physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                padding: EdgeInsets.only(bottom: bottomSafeArea(context)),
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(15),
-                    child: SimpleTextButton(
-                      infiniteWidth: true,
-                      onTap: () => router.push("/schools/search"),
-                      text: "Edit schools",
-                    ),
+            Expanded(
+              child: SwipeRefresh(
+                onRefresh: () async => await context.read<SchoolsDrawerCubit>().loadSchools(),
+                child: BlocBuilder<SchoolsDrawerCubit, SchoolsDrawerState>(
+                  builder: (context, state) => AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 250),
+                    child: buildChild(context, state),
                   ),
-                  SectionAccordian(
-                    topBorder: true,
-                    startsOpen: false,
-                    bottomBorder: true,
-                    title: "Home school",
-                    items: [
-                      DrawerUniversityTile(
-                        text: Provider.of<GlobalContentService>(context).schools[state.homeId]!.name,
-                        onTap: () => context.read<SchoolsDrawerCubit>().setSelectedSchoolInUI(state.homeId),
-                      ),
-                    ],
-                  ),
-                  SectionAccordian(
-                    startsOpen: false,
-                    bottomBorder: true,
-                    title: "Watched universities",
-                    items: [
-                      ...watchedSchools
-                          .where((school) => school.watched && !school.home)
-                          .map((watchedSchool) => DrawerUniversityTile(
-                                onSwipe: () => context
-                                    .read<SchoolsDrawerCubit>()
-                                    .updateSchoolInUI(watchedSchool.id, watched: false),
-                                text: watchedSchool.name,
-                                onTap: () => context.read<SchoolsDrawerCubit>().setSelectedSchoolInUI(watchedSchool.id),
-                              )),
-                    ],
-                  ),
-                ],
+                ),
               ),
             ),
-          ),
-        ],
-      );
-    } else {
-      return LoadingOrAlert(
-        message: StateMessage(
-          "Error loading",
-          () => context.read<SchoolsDrawerCubit>().loadSchools(),
-        ),
-        isLoading: state is SchoolsDrawerLoading,
-      );
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Drawer(
-      backgroundColor: Theme.of(context).colorScheme.background,
-      child: BlocBuilder<SchoolsDrawerCubit, SchoolsDrawerState>(
-        builder: (context, state) => AnimatedSwitcher(
-          duration: const Duration(milliseconds: 250),
-          child: buildBody(context, state),
+          ],
         ),
       ),
     );

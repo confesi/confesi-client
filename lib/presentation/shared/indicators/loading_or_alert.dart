@@ -1,4 +1,5 @@
 import 'package:confesi/presentation/shared/behaviours/init_scale.dart';
+import 'package:confesi/presentation/shared/other/widget_or_nothing.dart';
 import 'package:flutter/material.dart';
 
 import 'alert.dart';
@@ -12,11 +13,13 @@ class StateMessage {
 }
 
 class LoadingOrAlert extends StatelessWidget {
-  const LoadingOrAlert({required this.message, required this.isLoading, super.key, this.isLogo = true});
+  const LoadingOrAlert(
+      {required this.message, required this.isLoading, super.key, this.isLogo = true, this.onLoadNoSpinner = false});
 
   final StateMessage message;
   final bool isLoading;
   final bool isLogo;
+  final bool onLoadNoSpinner;
 
   @override
   Widget build(BuildContext context) {
@@ -37,36 +40,39 @@ class LoadingOrAlert extends StatelessWidget {
                   ),
                 ),
                 Positioned.fill(
-                  child: Center(
-                    child: AnimatedScale(
-                      duration: const Duration(milliseconds: 250),
-                      scale: isLoading ? 1 : 0,
-                      child: SizedBox(
-                        height: 60,
-                        width: 60,
-                        child: isLogo
-                            ? InitScale(
-                                child: Bobbing(
-                                  child: AspectRatio(
-                                    aspectRatio: 1,
-                                    child: Container(
-                                      constraints: const BoxConstraints(maxHeight: 20),
-                                      decoration: BoxDecoration(
-                                        color: Theme.of(context).colorScheme.surface,
-                                        shape: BoxShape.circle,
-                                        border: Border.all(
-                                          color: Theme.of(context).colorScheme.onBackground,
-                                          width: 0.8,
+                  child: WidgetOrNothing(
+                    showWidget: !onLoadNoSpinner,
+                    child: Center(
+                      child: AnimatedScale(
+                        duration: const Duration(milliseconds: 250),
+                        scale: isLoading ? 1 : 0,
+                        child: SizedBox(
+                          height: 60,
+                          width: 60,
+                          child: isLogo
+                              ? InitScale(
+                                  child: Bobbing(
+                                    child: AspectRatio(
+                                      aspectRatio: 1,
+                                      child: Container(
+                                        constraints: const BoxConstraints(maxHeight: 20),
+                                        decoration: BoxDecoration(
+                                          color: Theme.of(context).colorScheme.surface,
+                                          shape: BoxShape.circle,
+                                          border: Border.all(
+                                            color: Theme.of(context).colorScheme.onBackground,
+                                            width: 0.8,
+                                          ),
                                         ),
-                                      ),
-                                      child: Image.asset(
-                                        "assets/images/logos/logo_transparent.png",
+                                        child: Image.asset(
+                                          "assets/images/logos/logo_transparent.png",
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              )
-                            : LoadingCupertinoIndicator(color: Theme.of(context).colorScheme.primary),
+                                )
+                              : LoadingCupertinoIndicator(color: Theme.of(context).colorScheme.primary),
+                        ),
                       ),
                     ),
                   ),

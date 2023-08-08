@@ -16,6 +16,8 @@ class SchoolsDrawerCubit extends Cubit<SchoolsDrawerState> {
   final Api _api;
 
   Future<void> loadSchools() async {
+    _api.cancelCurrReq();
+    emit(SchoolsDrawerLoading());
     (await _api.req(Verb.get, true, "/api/v1/schools/watched", {"include_home_school": true})).fold(
       (failureWithMsg) => null,
       (response) {
@@ -31,7 +33,9 @@ class SchoolsDrawerCubit extends Cubit<SchoolsDrawerState> {
             sl.get<GlobalContentService>().addSchool(homeUniversity);
 
             emit(SchoolsDrawerData(
-                schools.map((e) => e.id).toList(), homeUniversity.id, SchoolsDrawerNoErr(), homeUniversity.id));
+              homeUniversity.id,
+              SchoolsDrawerNoErr(),
+            ));
           } else {
             emit(const SchoolDrawerError("Unknown error"));
           }
@@ -48,38 +52,6 @@ class SchoolsDrawerCubit extends Cubit<SchoolsDrawerState> {
       emit(currentState.copyWith(selectedId: id));
     } else {
       emit(const SchoolDrawerError("Unknown error"));
-    }
-  }
-
-  void updateSchoolInUI(int id, {bool? home, bool? watched}) async {
-    print("UPDATE SCHOOL IN UI");
-    if (state is SchoolsDrawerData) {
-      final currentState = state as SchoolsDrawerData;
-
-      final updatedSchoolIds = currentState.schoolIds.map((schoolId) {
-        final school = sl.get<GlobalContentService>().schools[schoolId];
-        if (school != null && school.id == id) {
-          final updatedSchool = school.copyWith(
-            home: home ?? school.home,
-            watched: watched ?? school.watched,
-          );
-          print("setting school ${updatedSchool.id} to ${updatedSchool.watched}");
-          sl.get<GlobalContentService>().setSchool(updatedSchool);
-
-          // Update the homeId if the updated school is marked as home
-          final updatedHomeId = (home != null && home) ? id : currentState.homeId;
-
-          // Emit the updated state with the new schoolIds and homeId
-          final updatedState = currentState.copyWith(
-            schoolIds: currentState.schoolIds,
-            homeId: updatedHomeId,
-          );
-          emit(updatedState);
-
-          return updatedSchool.id;
-        }
-        return schoolId;
-      }).toList();
     }
   }
 }

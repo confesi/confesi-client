@@ -1,12 +1,15 @@
 import 'package:confesi/application/feed/cubit/schools_drawer_cubit.dart';
 import 'package:confesi/application/feed/cubit/search_schools_cubit.dart';
+import 'package:confesi/application/user/cubit/notifications_cubit.dart';
 import 'package:confesi/core/router/go_router.dart';
+import 'package:confesi/core/services/global_content/global_content.dart';
 import 'package:confesi/core/styles/typography.dart';
 import 'package:confesi/core/utils/funcs/debouncer.dart';
 import 'package:confesi/core/utils/sizing/height_fraction.dart';
 import 'package:confesi/presentation/shared/buttons/circle_icon_btn.dart';
 import 'package:confesi/presentation/shared/edited_source_widgets/swipe_refresh.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 
 import '../../../core/utils/numbers/distance_formatter.dart';
 import '../../../core/utils/sizing/bottom_safe_area.dart';
@@ -19,7 +22,7 @@ import 'package:flutter/material.dart';
 import 'package:scrollable/exports.dart';
 
 class SearchSchoolsScreen extends StatefulWidget {
-  const SearchSchoolsScreen({super.key});
+  const SearchSchoolsScreen({Key? key}) : super(key: key);
 
   @override
   State<SearchSchoolsScreen> createState() => _SearchSchoolsScreenState();
@@ -31,7 +34,7 @@ class _SearchSchoolsScreenState extends State<SearchSchoolsScreen> {
   @override
   void initState() {
     _textEditingController = TextEditingController();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       _textEditingController.addListener(() {
         if (!mounted) return;
         setState(() {});
@@ -89,16 +92,16 @@ class _SearchSchoolsScreenState extends State<SearchSchoolsScreen> {
                       : Column(
                           children: state.schools.map((school) {
                             return SearchedSchoolTile(
-                              onSetHome: () {
-                                context.read<SearchSchoolsCubit>().setHome(school);
-                                context.read<SchoolsDrawerCubit>().updateSchoolInUI(school.id, home: true);
-                              },
-                              onWatchChange: (isWatching) {
-                                context.read<SearchSchoolsCubit>().updateWatched(school, isWatching);
-                                context.read<SchoolsDrawerCubit>().updateSchoolInUI(school.id, watched: isWatching);
-                              },
-                              home: school.home,
-                              watched: school.watched,
+                              onSetHome: () async => await Provider.of<GlobalContentService>(context, listen: false)
+                                  .setHome(school)
+                                  .then((f) => f.fold(
+                                      (_) => null, (errMsg) => context.read<NotificationsCubit>().showErr(errMsg))),
+                              onWatchChange: (isWatching) => Provider.of<GlobalContentService>(context, listen: false)
+                                  .updateWatched(school, isWatching)
+                                  .then((f) => f.fold(
+                                      (_) => null, (errMsg) => context.read<NotificationsCubit>().showErr(errMsg))),
+                              home: Provider.of<GlobalContentService>(context).schools[school.id]!.home,
+                              watched: Provider.of<GlobalContentService>(context).schools[school.id]!.watched,
                               topText: school.name,
                               middleText: distanceFormatter(context, school.distance),
                               bottomText: school.abbr,

@@ -270,11 +270,6 @@ class _MyAppState extends State<MyApp> {
                 listener: (context, state) {
                   if (state is SearchSchoolsData && state.possibleErr is SearchSchoolsErr) {
                     showNotificationChip(context, (state.possibleErr as SearchSchoolsErr).message);
-                    final errState = (state.possibleErr as SearchSchoolsErr);
-                    context
-                        .read<SchoolsDrawerCubit>()
-                        .updateSchoolInUI(errState.schoolId, watched: errState.watched, home: errState.home);
-                    print("setting: ${errState.schoolId} to ${errState.watched} and ${errState.home}");
                   }
                 },
                 child: BlocListener<SchoolsDrawerCubit, SchoolsDrawerState>(

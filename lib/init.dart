@@ -104,7 +104,7 @@ Future<void> init() async {
 
   //! Services
   UserAuthService userAuthService = UserAuthService(sl());
-  GlobalContentService globalContentService = GlobalContentService(Api());
+  GlobalContentService globalContentService = GlobalContentService(Api(), Api(), Api());
   CreateCommentService createCommentService = CreateCommentService();
 
   userAuthService.hive.registerAdapter<UserAuthData>(UserAuthDataAdapter());
@@ -132,11 +132,7 @@ Future<void> init() async {
   sl.registerFactory(() => FeedbackCategoriesCubit());
   sl.registerFactory(() => StatsCubit());
   sl.registerFactory(() => SchoolsDrawerCubit(Api()));
-  sl.registerFactory(() => SearchSchoolsCubit(
-        Api(),
-        Api(),
-        Api(),
-      )); // new instan
+  sl.registerFactory(() => SearchSchoolsCubit(Api()));
   sl.registerFactory(() => SavedPostsCubit(Api()));
   sl.registerFactory(() => QuickActionsCubit(sl()));
   sl.registerFactory(() => NotificationsCubit());

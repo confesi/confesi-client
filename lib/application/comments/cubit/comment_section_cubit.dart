@@ -89,8 +89,8 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
 
   Future<Either<String, CommentWithMetadata>> uploadComment(
       int postId, String content, ReplyingToUser? replyingToUser) async {
-    _repliesApi.cancelCurrentReq(); // cancel this api req so we don't mess up the "jump to" order
-    _createCommentApi.cancelCurrentReq();
+    _repliesApi.cancelCurrReq(); // cancel this api req so we don't mess up the "jump to" order
+    _createCommentApi.cancelCurrReq();
 
     final response = await _createCommentApi.req(
       Verb.post,
@@ -155,7 +155,7 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
 
   Future<bool> loadReplies(int? rootCommentId, int next) async {
     if (rootCommentId == null) return false;
-    _repliesApi.cancelCurrentReq();
+    _repliesApi.cancelCurrReq();
     final response = await _repliesApi.req(
       Verb.get,
       true,
@@ -228,7 +228,7 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
     CommentSortType sort, {
     bool refresh = false,
   }) async {
-    _rootsApi.cancelCurrentReq();
+    _rootsApi.cancelCurrReq();
     if (state is CommentSectionError) {
       refresh = true;
       emit(CommentSectionData.empty());

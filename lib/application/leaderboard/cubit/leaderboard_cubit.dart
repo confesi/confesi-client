@@ -22,7 +22,7 @@ class LeaderboardCubit extends Cubit<LeaderboardState> {
 
   Future<void> loadRankings({bool forceRefresh = false}) async {
     late bool refreshFeed;
-    _api.cancelCurrentReq();
+    _api.cancelCurrReq();
     LeaderboardFeedState feedState = LeaderboardFeedState.feedLoading;
     if (state is LeaderboardData) {
       refreshFeed = false;

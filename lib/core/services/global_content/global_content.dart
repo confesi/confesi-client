@@ -5,19 +5,90 @@ import 'package:confesi/models/school_with_metadata.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 
+import '../../../init.dart';
 import '../../../models/comment.dart';
 import '../../../models/post.dart';
 import '../../clients/api.dart';
 
 class GlobalContentService extends ChangeNotifier {
   final Api _postVoteApi;
+  final Api _setHomeApi;
+  final Api _watchedSchoolApi;
 
-  GlobalContentService(this._postVoteApi);
+  GlobalContentService(this._postVoteApi, this._watchedSchoolApi, this._setHomeApi);
 
   // LinkedHashMap of int id key to Post type value
   LinkedHashMap<int, Post> posts = LinkedHashMap<int, Post>();
   LinkedHashMap<int, CommentWithMetadata> comments = LinkedHashMap<int, CommentWithMetadata>();
   LinkedHashMap<int, SchoolWithMetadata> schools = LinkedHashMap<int, SchoolWithMetadata>();
+
+  // todo: use custom api clients
+
+  Future<Either<ApiSuccess, String>> setHome(SchoolWithMetadata school) async {
+    _setHomeApi.cancelCurrReq();
+    // save old home
+    SchoolWithMetadata oldHome = schools.values.firstWhere((element) => element.home);
+    // eagerly unset old home
+    sl.get<GlobalContentService>().setSchool(oldHome..home = false);
+    // eagerly set new home
+    sl.get<GlobalContentService>().setSchool(school..home = true);
+    return (await _setHomeApi.req(
+      Verb.patch,
+      true,
+      "/api/v1/user/school",
+      {"school_id": school.id},
+    ))
+        .fold(
+      (failureWithMsg) {
+        // Revert to the old home on error
+        sl.get<GlobalContentService>().setSchool(oldHome..home = true);
+        // unset new home
+        sl.get<GlobalContentService>().setSchool(school..home = false);
+        return Right(failureWithMsg.message());
+      },
+      (response) async {
+        if (response.statusCode.toString()[0] != "2") {
+          // Revert to the old home on error
+          sl.get<GlobalContentService>().setSchool(oldHome..home = true);
+          // unset new home
+          sl.get<GlobalContentService>().setSchool(school..home = false);
+          return const Right("TODO: error");
+        } else {
+          return Left(ApiSuccess());
+        }
+      },
+    );
+  }
+
+  Future<Either<ApiSuccess, String>> updateWatched(SchoolWithMetadata school, bool watch) async {
+    _watchedSchoolApi.cancelCurrReq();
+    // eagerly set new watched status
+    sl.get<GlobalContentService>().setSchool(school..watched = watch);
+
+    // Send the request to watch the school
+    final response = await _watchedSchoolApi.req(
+      watch ? Verb.post : Verb.delete,
+      true,
+      "/api/v1/schools/${watch ? "watch" : "unwatch"}",
+      {"school_id": school.id},
+    );
+
+    return response.fold(
+      (failureWithMsg) {
+        // Revert to the old watched status on error
+        sl.get<GlobalContentService>().setSchool(school.copyWith(watched: !watch));
+        return Right(failureWithMsg.message());
+      },
+      (response) {
+        if (response.statusCode.toString()[0] != "2") {
+          sl.get<GlobalContentService>().setSchool(school.copyWith(watched: !watch));
+          return const Right("TODO: error");
+        } else {
+          return Left(ApiSuccess());
+        }
+      },
+    );
+  }
 
   void setSchools(List<SchoolWithMetadata> newSchools) {
     for (final school in newSchools) {
@@ -85,7 +156,7 @@ class GlobalContentService extends ChangeNotifier {
   }
 
   Future<Either<String, ApiSuccess>> voteOnComment(CommentWithMetadata comment, int vote) async {
-    _postVoteApi.cancelCurrentReq();
+    _postVoteApi.cancelCurrReq();
 
     if (vote != -1 && vote != 0 && vote != 1) {
       notifyListeners();
@@ -170,7 +241,7 @@ class GlobalContentService extends ChangeNotifier {
   }
 
   Future<Either<String, ApiSuccess>> voteOnPost(Post post, int vote) async {
-    _postVoteApi.cancelCurrentReq();
+    _postVoteApi.cancelCurrReq();
 
     if (vote != -1 && vote != 0 && vote != 1) {
       notifyListeners();

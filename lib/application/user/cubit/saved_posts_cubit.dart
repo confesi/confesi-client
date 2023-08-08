@@ -21,7 +21,7 @@ class SavedPostsCubit extends Cubit<SavedPostsState> {
       refresh = true;
       emit(SavedPostsLoading());
     }
-    _api.cancelCurrentReq();
+    _api.cancelCurrReq();
     (await _api.req(Verb.get, true, "/api/v1/saves/posts", {
       "next": state is SavedPostsData && !refresh ? (state as SavedPostsData).next : null,
     }))

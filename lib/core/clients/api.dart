@@ -84,7 +84,7 @@ class Api {
     _headers['Accept'] = 'application/json';
   }
 
-  void cancelCurrentReq() {
+  void cancelCurrReq() {
     _client?.close();
     _client = null;
   }
