@@ -1,13 +1,17 @@
 import 'package:confesi/application/feed/cubit/schools_drawer_cubit.dart';
+import 'package:confesi/core/services/global_content/global_content.dart';
 import 'package:confesi/presentation/shared/edited_source_widgets/swipe_refresh.dart';
 import 'package:confesi/presentation/shared/indicators/loading_or_alert.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../core/router/go_router.dart';
-import 'package:flutter/material.dart';
-
 import '../../../core/styles/typography.dart';
 import '../../../core/utils/sizing/bottom_safe_area.dart';
+import '../../../init.dart';
+import '../../../models/school_with_metadata.dart';
 import '../../shared/buttons/simple_text.dart';
 import '../widgets/section_accordian.dart';
 
@@ -19,26 +23,22 @@ class FeedDrawer extends StatefulWidget {
 }
 
 class _FeedDrawerState extends State<FeedDrawer> {
-  String getSelectedSchool(SchoolsDrawerData state) {
-    if (state.selected is SelectedId) {
-      final selectedId = (state.selected as SelectedId).id;
-      final selectedSchool = state.schools.firstWhere((school) => school.id == selectedId);
-      return selectedSchool.name; // Return the name if found, otherwise a fallback value.
-    } else if (state.selected is SelectedAll) {
-      return "All";
-    } else if (state.selected is SelectedRandom) {
-      return "Random";
-    } else {
-      throw Exception("Unknown 'selected' type");
-    }
-  }
-
   Widget buildBody(BuildContext context, SchoolsDrawerState state) {
     if (state is SchoolsDrawerData) {
-      final userSchool = state.homeUniversity;
-      final watchedSchools = state.schools.where((school) => school.watched).toList();
-      watchedSchools.sort((a, b) => a.name.compareTo(b.name));
+      final selectedSchoolData = Provider.of<GlobalContentService>(context).schools[state.selectedId];
+      if (selectedSchoolData == null || Provider.of<GlobalContentService>(context).schools[state.homeId] == null) {
+        return LoadingOrAlert(
+          isLoading: false,
+          message: StateMessage("Unknown error", () => context.read<SchoolsDrawerCubit>().loadSchools()),
+        );
+      }
+      final selectedSchoolName = selectedSchoolData.name;
 
+      final allSchools =
+          state.schoolIds.map((schoolId) => Provider.of<GlobalContentService>(context).schools[schoolId]).toList();
+
+      final watchedSchools = allSchools.whereType<SchoolWithMetadata>().where((school) => school.watched).toList();
+      print(Provider.of<GlobalContentService>(context).schools);
       return Column(
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,7 +68,7 @@ class _FeedDrawerState extends State<FeedDrawer> {
                         ),
                         const SizedBox(height: 5),
                         Text(
-                          getSelectedSchool(state),
+                          selectedSchoolName,
                           style: kDisplay1.copyWith(color: Theme.of(context).colorScheme.onSecondary),
                           textAlign: TextAlign.left,
                         ),
@@ -81,7 +81,7 @@ class _FeedDrawerState extends State<FeedDrawer> {
           ),
           Expanded(
             child: SwipeRefresh(
-              onRefresh: () => context.read<SchoolsDrawerCubit>().loadWatchedSchools(),
+              onRefresh: () async => await context.read<SchoolsDrawerCubit>().loadSchools(),
               child: ListView(
                 physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
                 padding: EdgeInsets.only(bottom: bottomSafeArea(context)),
@@ -101,23 +101,8 @@ class _FeedDrawerState extends State<FeedDrawer> {
                     title: "Home school",
                     items: [
                       DrawerUniversityTile(
-                        text: userSchool.name,
-                        onTap: () => context.read<SchoolsDrawerCubit>().setSelectedFeedInUI(SelectedId(userSchool.id)),
-                      ),
-                    ],
-                  ),
-                  SectionAccordian(
-                    startsOpen: false,
-                    bottomBorder: true,
-                    title: "Special",
-                    items: [
-                      DrawerUniversityTile(
-                        text: "Random school",
-                        onTap: () => context.read<SchoolsDrawerCubit>().setSelectedFeedInUI(SelectedRandom()),
-                      ),
-                      DrawerUniversityTile(
-                        text: "All schools",
-                        onTap: () => context.read<SchoolsDrawerCubit>().setSelectedFeedInUI(SelectedAll()),
+                        text: Provider.of<GlobalContentService>(context).schools[state.homeId]!.name,
+                        onTap: () => context.read<SchoolsDrawerCubit>().setSelectedSchoolInUI(state.homeId),
                       ),
                     ],
                   ),
@@ -126,13 +111,15 @@ class _FeedDrawerState extends State<FeedDrawer> {
                     bottomBorder: true,
                     title: "Watched universities",
                     items: [
-                      for (final watchedSchool in watchedSchools)
-                        DrawerUniversityTile(
-                          onSwipe: () => context.read<SchoolsDrawerCubit>().removeWatchedSchool(watchedSchool.id),
-                          text: watchedSchool.name,
-                          onTap: () =>
-                              context.read<SchoolsDrawerCubit>().setSelectedFeedInUI(SelectedId(watchedSchool.id)),
-                        ),
+                      ...watchedSchools
+                          .where((school) => school.watched && !school.home)
+                          .map((watchedSchool) => DrawerUniversityTile(
+                                onSwipe: () => context
+                                    .read<SchoolsDrawerCubit>()
+                                    .updateSchoolInUI(watchedSchool.id, watched: false),
+                                text: watchedSchool.name,
+                                onTap: () => context.read<SchoolsDrawerCubit>().setSelectedSchoolInUI(watchedSchool.id),
+                              )),
                     ],
                   ),
                 ],
@@ -145,7 +132,7 @@ class _FeedDrawerState extends State<FeedDrawer> {
       return LoadingOrAlert(
         message: StateMessage(
           "Error loading",
-          () => context.read<SchoolsDrawerCubit>().loadWatchedSchools(),
+          () => context.read<SchoolsDrawerCubit>().loadSchools(),
         ),
         isLoading: state is SchoolsDrawerLoading,
       );

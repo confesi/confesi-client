@@ -89,15 +89,13 @@ class _SearchSchoolsScreenState extends State<SearchSchoolsScreen> {
                       : Column(
                           children: state.schools.map((school) {
                             return SearchedSchoolTile(
-                              onHomeChange: (_) {
-                                context.read<SearchSchoolsCubit>().setHome(school.id);
-                                context.read<SchoolsDrawerCubit>().setHomeSchoolInUI(school);
+                              onSetHome: () {
+                                context.read<SearchSchoolsCubit>().setHome(school);
+                                context.read<SchoolsDrawerCubit>().updateSchoolInUI(school.id, home: true);
                               },
                               onWatchChange: (isWatching) {
-                                context.read<SearchSchoolsCubit>().updateWatched(school.id, isWatching);
-                                isWatching
-                                    ? context.read<SchoolsDrawerCubit>().addWatchedSchool(school)
-                                    : context.read<SchoolsDrawerCubit>().removeWatchedSchoolInUI(school.id);
+                                context.read<SearchSchoolsCubit>().updateWatched(school, isWatching);
+                                context.read<SchoolsDrawerCubit>().updateSchoolInUI(school.id, watched: isWatching);
                               },
                               home: school.home,
                               watched: school.watched,

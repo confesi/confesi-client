@@ -208,7 +208,7 @@ class _MyAppState extends State<MyApp> {
               }
               context.read<AuthFlowCubit>().emitDefault();
               if (firstOpen) {
-                context.read<SchoolsDrawerCubit>().loadWatchedSchools();
+                context.read<SchoolsDrawerCubit>().loadSchools();
                 firstOpen = false;
               }
             });
@@ -273,7 +273,8 @@ class _MyAppState extends State<MyApp> {
                     final errState = (state.possibleErr as SearchSchoolsErr);
                     context
                         .read<SchoolsDrawerCubit>()
-                        .resetSchoolInUI(errState.schoolId, errState.watched, errState.home);
+                        .updateSchoolInUI(errState.schoolId, watched: errState.watched, home: errState.home);
+                    print("setting: ${errState.schoolId} to ${errState.watched} and ${errState.home}");
                   }
                 },
                 child: BlocListener<SchoolsDrawerCubit, SchoolsDrawerState>(

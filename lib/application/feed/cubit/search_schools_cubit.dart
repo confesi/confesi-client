@@ -5,6 +5,9 @@ import 'package:confesi/core/clients/api.dart';
 import 'package:confesi/models/school_with_metadata.dart';
 import 'package:equatable/equatable.dart';
 
+import '../../../core/services/global_content/global_content.dart';
+import '../../../init.dart';
+
 part 'search_schools_state.dart';
 
 class SearchSchoolsCubit extends Cubit<SearchSchoolsState> {
@@ -75,24 +78,21 @@ class SearchSchoolsCubit extends Cubit<SearchSchoolsState> {
     );
   }
 
-  Future<void> updateWatched(int id, bool watch) async {
+  Future<void> updateWatched(SchoolWithMetadata schoolWithMetadata, bool watch) async {
+    sl.get<GlobalContentService>().setSchool(schoolWithMetadata);
+
     if (state is SearchSchoolsData) {
       final currentState = state as SearchSchoolsData;
-      final oldState = currentState.schools.firstWhere((element) => element.id == id);
 
-      // Cancel the ongoing request before starting a new one
-      _watchSchoolApi.cancelCurrentReq();
-
-      // Update the state with the updated schools list
       final updatedSchools = currentState.schools.map((e) {
-        if (e.id == id) {
+        if (e.id == schoolWithMetadata.id) {
           return e.copyWith(watched: watch);
         } else {
           return e;
         }
       }).toList();
+      sl.get<GlobalContentService>().setSchools(updatedSchools); // Update global content service
 
-      // Emit the updated state with the new schools list
       emit(SearchSchoolsData(
         updatedSchools,
         SearchSchoolsNoErr(),
@@ -103,33 +103,42 @@ class SearchSchoolsCubit extends Cubit<SearchSchoolsState> {
         watch ? Verb.post : Verb.delete,
         true,
         "/api/v1/schools/${watch ? "watch" : "unwatch"}",
-        {"school_id": id},
+        {"school_id": schoolWithMetadata.id},
       );
 
       response.fold(
         (failureWithMsg) {
+          // Revert to the old watched status on error
+          final newSchools = currentState.schools.map((e) {
+            if (e.id == schoolWithMetadata.id) {
+              return e.copyWith(watched: !watch);
+            } else {
+              return e;
+            }
+          }).toList();
+          sl.get<GlobalContentService>().setSchools(newSchools); // Update global content service
+
           emit(SearchSchoolsData(
-            currentState.schools.map((e) {
-              if (e.id == id) {
-                return e.copyWith(watched: oldState.watched);
-              } else {
-                return e;
-              }
-            }).toList(),
-            SearchSchoolsErr(failureWithMsg.message(), id, oldState.watched, oldState.home),
+            newSchools,
+            SearchSchoolsErr(failureWithMsg.message(), schoolWithMetadata.id, !watch,
+                currentState.schools.firstWhere((element) => element.id == schoolWithMetadata.id).home),
           ));
         },
         (response) {
           if (response.statusCode.toString()[0] != "2") {
+            final newSchools = currentState.schools.map((e) {
+              if (e.id == schoolWithMetadata.id) {
+                return e.copyWith(watched: !watch);
+              } else {
+                return e;
+              }
+            }).toList();
+            sl.get<GlobalContentService>().setSchools(newSchools); // Update global content service
+
             emit(SearchSchoolsData(
-              currentState.schools.map((e) {
-                if (e.id == id) {
-                  return e.copyWith(watched: oldState.watched);
-                } else {
-                  return e;
-                }
-              }).toList(),
-              SearchSchoolsErr("Error updating school", id, oldState.watched, oldState.home),
+              newSchools,
+              SearchSchoolsErr("Error updating school", schoolWithMetadata.id, !watch,
+                  currentState.schools.firstWhere((element) => element.id == schoolWithMetadata.id).home),
             ));
           }
         },
@@ -139,7 +148,9 @@ class SearchSchoolsCubit extends Cubit<SearchSchoolsState> {
     }
   }
 
-  Future<void> setHome(int id) async {
+  Future<void> setHome(SchoolWithMetadata schoolWithMetadata) async {
+    sl.get<GlobalContentService>().setSchool(schoolWithMetadata);
+
     if (state is SearchSchoolsData) {
       final currentState = state as SearchSchoolsData;
 
@@ -148,13 +159,14 @@ class SearchSchoolsCubit extends Cubit<SearchSchoolsState> {
 
       // Return the first id of the school where home is true
       final SchoolWithMetadata oldHome = currentState.schools.firstWhere((element) => element.home);
+      print("first find of hold home school: ${oldHome.id}");
 
       // Store the old home school's data
       SchoolWithMetadata? oldHomeData;
 
       // Update the state with the updated schools list
       final updatedSchools = currentState.schools.map((e) {
-        if (e.id == id) {
+        if (e.id == schoolWithMetadata.id) {
           return e.copyWith(home: true);
         } else {
           // Unset any other school that might also be considered home
@@ -172,64 +184,71 @@ class SearchSchoolsCubit extends Cubit<SearchSchoolsState> {
         updatedSchools,
         SearchSchoolsNoErr(),
       ));
+      sl.get<GlobalContentService>().setSchools(updatedSchools);
 
       // Send the request to update the home school
       final response = await _setSchoolAsHomeApi.req(
         Verb.patch,
         true,
         "/api/v1/user/school",
-        {"school_id": id},
+        {"school_id": schoolWithMetadata.id},
       );
 
       response.fold(
         (failureWithMsg) {
           // Revert to the old home school's data on error
           if (oldHomeData != null) {
-            emit(SearchSchoolsData(
-              currentState.schools.map((e) {
-                if (e.id == id) {
-                  return e.copyWith(home: false); // Reset the selected school back to not being home
-                } else {
-                  // Reset any other school that might also be considered home to true
-                  if (e.id == oldHome.id) {
-                    return oldHomeData!.copyWith(home: true);
-                  }
-                  return e;
+            final newSchools = currentState.schools.map((e) {
+              if (e.id == schoolWithMetadata.id) {
+                return e.copyWith(home: false); // Reset the selected school back to not being home
+              } else {
+                // Reset any other school that might also be considered home to true
+                if (e.id == oldHome.id) {
+                  return oldHomeData!.copyWith(home: true);
                 }
-              }).toList(),
-              SearchSchoolsErr(failureWithMsg.message(), oldHome.id, oldHome.watched, true),
-            ));
+                return e;
+              }
+            }).toList();
+            sl.get<GlobalContentService>().setSchools(updatedSchools);
+
+            emit(SearchSchoolsData(
+                newSchools, SearchSchoolsErr(failureWithMsg.message(), oldHome.id, oldHome.watched, true)));
           } else {
-            emit(SearchSchoolsData(
-              currentState.schools.map((e) {
-                if (e.id == id) {
-                  return e.copyWith(home: false); // Reset the selected school back to not being home
-                } else {
-                  // Reset any other school that might also be considered home to true
-                  if (e.id == oldHome.id) {
-                    return e.copyWith(home: true);
-                  }
-                  return e;
+            final newSchools = currentState.schools.map((e) {
+              if (e.id == schoolWithMetadata.id) {
+                return e.copyWith(home: false); // Reset the selected school back to not being home
+              } else {
+                // Reset any other school that might also be considered home to true
+                if (e.id == oldHome.id) {
+                  return e.copyWith(home: true);
                 }
-              }).toList(),
+                return e;
+              }
+            }).toList();
+            sl.get<GlobalContentService>().setSchools(updatedSchools);
+
+            emit(SearchSchoolsData(
+              newSchools,
               SearchSchoolsErr(failureWithMsg.message(), oldHome.id, oldHome.watched, true),
             ));
           }
         },
         (response) {
           if (response.statusCode.toString()[0] != "2") {
-            emit(SearchSchoolsData(
-              currentState.schools.map((e) {
-                if (e.id == id) {
-                  return e.copyWith(home: false); // Reset the selected school back to not being home
-                } else {
-                  // Reset any other school that might also be considered home to true
-                  if (e.id == oldHome.id) {
-                    return e.copyWith(home: true);
-                  }
-                  return e;
+            final newSchools = currentState.schools.map((e) {
+              if (e.id == schoolWithMetadata.id) {
+                return e.copyWith(home: false); // Reset the selected school back to not being home
+              } else {
+                // Reset any other school that might also be considered home to true
+                if (e.id == oldHome.id) {
+                  return e.copyWith(home: true);
                 }
-              }).toList(),
+                return e;
+              }
+            }).toList();
+            sl.get<GlobalContentService>().setSchools(updatedSchools);
+            emit(SearchSchoolsData(
+              newSchools,
               SearchSchoolsErr("Error updating home school", oldHome.id, oldHome.watched, true),
             ));
           }

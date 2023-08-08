@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:confesi/core/results/successes.dart';
+import 'package:confesi/models/school_with_metadata.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 
@@ -16,6 +17,34 @@ class GlobalContentService extends ChangeNotifier {
   // LinkedHashMap of int id key to Post type value
   LinkedHashMap<int, Post> posts = LinkedHashMap<int, Post>();
   LinkedHashMap<int, CommentWithMetadata> comments = LinkedHashMap<int, CommentWithMetadata>();
+  LinkedHashMap<int, SchoolWithMetadata> schools = LinkedHashMap<int, SchoolWithMetadata>();
+
+  void setSchools(List<SchoolWithMetadata> newSchools) {
+    for (final school in newSchools) {
+      schools[school.id] = school; // Update the instance variable 'schools'
+    }
+    notifyListeners();
+  }
+
+  void addSchool(SchoolWithMetadata school) {
+    schools[school.id] = school;
+    notifyListeners();
+  }
+
+  void setSchool(SchoolWithMetadata school) {
+    schools[school.id] = school;
+    notifyListeners();
+  }
+
+  void removeSchool(int id) {
+    schools.remove(id);
+    notifyListeners();
+  }
+
+  void clearSchools() {
+    schools.clear();
+    notifyListeners();
+  }
 
   void setComments(List<CommentWithMetadata> comments) {
     for (final comment in comments) {

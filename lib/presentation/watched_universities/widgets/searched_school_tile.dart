@@ -14,7 +14,7 @@ class SearchedSchoolTile extends StatelessWidget {
     required this.home,
     this.leftIcon = CupertinoIcons.info,
     required this.onWatchChange,
-    required this.onHomeChange,
+    required this.onSetHome,
     Key? key,
   }) : super(key: key);
 
@@ -25,7 +25,7 @@ class SearchedSchoolTile extends StatelessWidget {
   final String bottomText;
   final IconData leftIcon;
   final Function(bool newValue) onWatchChange;
-  final Function(bool newValue) onHomeChange;
+  final VoidCallback onSetHome;
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +77,7 @@ class SearchedSchoolTile extends StatelessWidget {
                         ),
                       ),
                     )
-                  : SimpleTextButton(onTap: () => onHomeChange(true), text: "Set as home", infiniteWidth: true),
+                  : SimpleTextButton(onTap: () => onSetHome(), text: "Set as home", infiniteWidth: true),
             )
           ],
         ),

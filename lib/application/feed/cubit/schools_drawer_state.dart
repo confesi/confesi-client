@@ -18,21 +18,6 @@ class SchoolDrawerError extends SchoolsDrawerState {
   List<Object> get props => [message];
 }
 
-abstract class SelectedSchool {}
-
-class SelectedId extends SelectedSchool {
-  final int id;
-
-  SelectedId(this.id);
-
-  @override
-  List<Object> get props => [id];
-}
-
-class SelectedAll extends SelectedSchool {}
-
-class SelectedRandom extends SelectedSchool {}
-
 abstract class SchoolsDrawerPossibleError {}
 
 class SchoolsDrawerErr extends SchoolsDrawerPossibleError {
@@ -44,28 +29,24 @@ class SchoolsDrawerErr extends SchoolsDrawerPossibleError {
 class SchoolsDrawerNoErr extends SchoolsDrawerPossibleError {}
 
 class SchoolsDrawerData extends SchoolsDrawerState {
-  final List<SchoolWithMetadata> schools;
-  final SchoolWithMetadata homeUniversity;
-  final SelectedSchool selected;
+  final List<int> schoolIds; // List of school IDs
+  final int selectedId;
+  final int homeId;
   final SchoolsDrawerPossibleError possibleErr;
 
-  const SchoolsDrawerData(this.schools, this.selected, this.homeUniversity, this.possibleErr);
+  const SchoolsDrawerData(this.schoolIds, this.selectedId, this.possibleErr, this.homeId);
 
   // copyWith method
-  SchoolsDrawerData copyWith({
-    List<SchoolWithMetadata>? schools,
-    SelectedSchool? selected,
-    SchoolWithMetadata? homeUniversity,
-    SchoolsDrawerPossibleError? possibleErr,
-  }) {
+  SchoolsDrawerData copyWith(
+      {List<int>? schoolIds, int? selectedId, SchoolsDrawerPossibleError? possibleErr, int? homeId}) {
     return SchoolsDrawerData(
-      schools ?? this.schools,
-      selected ?? this.selected,
-      homeUniversity ?? this.homeUniversity,
+      schoolIds ?? this.schoolIds,
+      selectedId ?? this.selectedId,
       possibleErr ?? this.possibleErr,
+      homeId ?? this.homeId,
     );
   }
 
   @override
-  List<Object> get props => [schools, selected, homeUniversity, possibleErr];
+  List<Object> get props => [schoolIds, selectedId, possibleErr, homeId];
 }
