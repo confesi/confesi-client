@@ -137,7 +137,7 @@ class _SimpleCommentTileState extends State<SimpleCommentTile> {
                 decoration: BoxDecoration(
                   color: state is CreateCommentEnteringData &&
                           state.possibleReply is ReplyingToUser &&
-                          (state.possibleReply as ReplyingToUser).commentId == widget.comment.comment.id
+                          (state.possibleReply as ReplyingToUser).replyingToCommentId == widget.comment.comment.id
                       ? Theme.of(context).colorScheme.surface // surface for highlight
                       : Theme.of(context).colorScheme.shadow,
                   border: Border.all(
@@ -184,8 +184,9 @@ class _SimpleCommentTileState extends State<SimpleCommentTile> {
                                     }
                                     context.read<CreateCommentCubit>().updateReplyingTo(
                                           ReplyingToUser(
-                                            commentId: widget.comment.comment.id,
+                                            replyingToCommentId: widget.comment.comment.id,
                                             identifier: buildUserIdentifier,
+                                            rootCommentIdReplyingUnder: widget.comment.comment.parentRoot,
                                           ),
                                         );
                                     context.read<CreateCommentCubit>().state is CreateCommentEnteringData &&
@@ -196,7 +197,7 @@ class _SimpleCommentTileState extends State<SimpleCommentTile> {
                                             .indexFromCommentId(
                                                 ((context.read<CreateCommentCubit>().state as CreateCommentEnteringData)
                                                         .possibleReply as ReplyingToUser)
-                                                    .commentId)
+                                                    .replyingToCommentId)
                                             .fold(
                                                 (idx) =>
                                                     widget.feedController.scrollToIndex(idx + 1, hapticFeedback: false),
@@ -215,7 +216,7 @@ class _SimpleCommentTileState extends State<SimpleCommentTile> {
                                           size: 18,
                                           color: state is CreateCommentEnteringData &&
                                                   state.possibleReply is ReplyingToUser &&
-                                                  (state.possibleReply as ReplyingToUser).commentId ==
+                                                  (state.possibleReply as ReplyingToUser).replyingToCommentId ==
                                                       widget.comment.comment.id
                                               ? Theme.of(context).colorScheme.secondary
                                               : Theme.of(context).colorScheme.primary,
@@ -226,7 +227,7 @@ class _SimpleCommentTileState extends State<SimpleCommentTile> {
                                           style: kDetail.copyWith(
                                               color: state is CreateCommentEnteringData &&
                                                       state.possibleReply is ReplyingToUser &&
-                                                      (state.possibleReply as ReplyingToUser).commentId ==
+                                                      (state.possibleReply as ReplyingToUser).replyingToCommentId ==
                                                           widget.comment.comment.id
                                                   ? Theme.of(context).colorScheme.secondary
                                                   : Theme.of(context).colorScheme.primary),

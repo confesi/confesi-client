@@ -71,6 +71,7 @@ class _CommentsHomeState extends State<CommentsHome> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.props.openKeyboard) commentSheetController.focus();
       Provider.of<GlobalContentService>(context, listen: false).clearComments();
+      context.read<CreateCommentCubit>().updateReplyingTo(ReplyingToNothing());
     });
     super.initState();
   }
@@ -115,26 +116,48 @@ class _CommentsHomeState extends State<CommentsHome> {
                                     onSubmit: (value) async {
                                       commentSheetController.unfocus();
                                       Provider.of<CreateCommentService>(context, listen: false).setLoading(true);
+                                      final replyingTo = context.read<CreateCommentCubit>().replyingToComment();
+                                      int? replyingToIdx;
+                                      if (replyingTo != null) {
+                                        context
+                                            .read<CommentSectionCubit>()
+                                            .indexFromCommentId(replyingTo.replyingToCommentId)
+                                            .fold(
+                                              (idx) => replyingToIdx = idx,
+                                              (_) => null, // do nothing
+                                            );
+                                      }
                                       await context
-                                          .read<CreateCommentCubit>()
-                                          .uploadComment(widget.props.post.id,
-                                              context.read<CreateCommentCubit>().parentCommentId(), value)
-                                          .then((success) => success
-                                              ? {
-                                                  commentSheetController.delete(),
-                                                  sl.get<ConfettiBlaster>().show(context),
-                                                  context.read<CreateCommentCubit>().clear(),
-                                                  context.read<NotificationsCubit>().showSuccess(
-                                                        "Commented successfully",
-                                                      )
-                                                }
-                                              : context.read<NotificationsCubit>().showErr(
-                                                    "Something went wrong",
-                                                  ))
-                                          .then(
-                                            (_) => Provider.of<CreateCommentService>(context, listen: false)
-                                                .setLoading(false),
-                                          );
+                                          .read<CommentSectionCubit>()
+                                          .uploadComment(
+                                            widget.props.post.id,
+                                            value,
+                                            replyingTo,
+                                          )
+                                          .then((eitherResponse) {
+                                        eitherResponse.fold(
+                                          (error) {
+                                            context.read<NotificationsCubit>().showErr(error);
+                                          },
+                                          (commentWithMetadata) async {
+                                            commentSheetController.delete();
+                                            sl.get<ConfettiBlaster>().show(context);
+                                            context.read<CreateCommentCubit>().clear();
+                                            context.read<CreateCommentCubit>().updateReplyingTo(ReplyingToNothing());
+                                            context.read<NotificationsCubit>().showSuccess("Commented successfully");
+                                            Provider.of<GlobalContentService>(context, listen: false)
+                                                .updatePostCommentCount(widget.props.post.id, 1);
+                                            if (replyingToIdx == null) {
+                                              feedController.scrollToIndex(1);
+                                            } else {
+                                              feedController.scrollToIndex(replyingToIdx! + 2);
+                                            }
+                                          },
+                                        );
+                                      }).then(
+                                        (_) =>
+                                            Provider.of<CreateCommentService>(context, listen: false).setLoading(false),
+                                      );
                                     },
                                     maxCharacters: maxCommentLength,
                                     controller: commentSheetController,

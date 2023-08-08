@@ -95,8 +95,8 @@ class _CommentSheetState extends State<CommentSheet> {
   }
 
   int getNumericalUser(CreateCommentEnteringData state) {
-    final possibleComment =
-        Provider.of<GlobalContentService>(context).comments[(state.possibleReply as ReplyingToUser).commentId];
+    final possibleComment = Provider.of<GlobalContentService>(context)
+        .comments[(state.possibleReply as ReplyingToUser).replyingToCommentId];
     if (possibleComment == null) {
       return 9999;
     } else if (possibleComment.comment.numericalUserIsOp) {
@@ -116,7 +116,7 @@ class _CommentSheetState extends State<CommentSheet> {
             TouchableScale(
               onTap: () => context
                   .read<CommentSectionCubit>()
-                  .indexFromCommentId((state.possibleReply as ReplyingToUser).commentId)
+                  .indexFromCommentId((state.possibleReply as ReplyingToUser).replyingToCommentId)
                   .fold((idx) => widget.feedController.scrollToIndex(idx + 1),
                       (_) => context.read<NotificationsCubit>().showErr("Error jumping to comment")),
               child: Container(
@@ -167,7 +167,7 @@ class _CommentSheetState extends State<CommentSheet> {
               state is CreateCommentEnteringData && state.possibleReply is ReplyingToUser
                   ? context
                       .read<CommentSectionCubit>()
-                      .indexFromCommentId((state.possibleReply as ReplyingToUser).commentId)
+                      .indexFromCommentId((state.possibleReply as ReplyingToUser).replyingToCommentId)
                       .fold((idx) => widget.feedController.scrollToIndex(idx + 1, hapticFeedback: false),
                           (_) => context.read<NotificationsCubit>().showErr("Error jumping to comment"))
                   : null;

@@ -3,13 +3,21 @@ part of 'create_comment_cubit.dart';
 abstract class PossibleReply {}
 
 class ReplyingToUser extends PossibleReply {
-  final int commentId;
+  final int replyingToCommentId;
+  final int? rootCommentIdReplyingUnder;
   final String identifier;
 
   ReplyingToUser({
-    required this.commentId,
+    required this.replyingToCommentId,
     required this.identifier,
+    required this.rootCommentIdReplyingUnder,
   });
+
+  // toString method
+  @override
+  String toString() {
+    return 'ReplyingToUser(replyingToCommentId: $replyingToCommentId, rootCommentIdReplyingUnder: $rootCommentIdReplyingUnder, identifier: $identifier)';
+  }
 }
 
 class ReplyingToNothing extends PossibleReply {}

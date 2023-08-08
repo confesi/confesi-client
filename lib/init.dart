@@ -140,8 +140,8 @@ Future<void> init() async {
   sl.registerFactory(() => SavedPostsCubit(Api()));
   sl.registerFactory(() => QuickActionsCubit(sl()));
   sl.registerFactory(() => NotificationsCubit());
-  sl.registerFactory(() => CommentSectionCubit(Api(), Api()));
-  sl.registerFactory(() => CreateCommentCubit(Api()));
+  sl.registerFactory(() => CommentSectionCubit(Api(), Api(), Api()));
+  sl.registerFactory(() => CreateCommentCubit());
 
   //! Firebase
   await initFirebase();

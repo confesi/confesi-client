@@ -3,6 +3,8 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
+import 'package:confesi/application/comments/cubit/create_comment_cubit.dart';
+import 'package:confesi/core/results/successes.dart';
 import 'package:ordered_set/ordered_set.dart';
 
 import 'package:confesi/core/services/user_auth/user_auth_service.dart';
@@ -20,10 +22,11 @@ import '../../../presentation/comments/widgets/simple_comment_sort.dart';
 part 'comment_section_state.dart';
 
 class CommentSectionCubit extends Cubit<CommentSectionState> {
-  CommentSectionCubit(this._repliesApi, this._rootsApi) : super(CommentSectionData.empty());
+  CommentSectionCubit(this._repliesApi, this._rootsApi, this._createCommentApi) : super(CommentSectionData.empty());
 
   final Api _repliesApi;
   final Api _rootsApi;
+  final Api _createCommentApi;
 
   void updateCommentIdToIndex(int commentId, int index) {
     if (state is CommentSectionData) {
@@ -37,15 +40,11 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
   void updateRootCommentIndex(int index) {
     if (state is CommentSectionData) {
       final data = (state as CommentSectionData);
-
-      // Create a new set with the updated indices of root comments.
-
+      // create a new set with the updated indices of root comments.
       final updatedIndicesOfRootComments = (data.indicesOfRootComments)..add(index);
-
-      // Create a copy of the data with the updated set of indices of root comments.
+      // create a copy of the data with the updated set of indices of root comments.
       final updatedData = data.copyWith(indicesOfRootComments: updatedIndicesOfRootComments);
-
-      // Emit the updated state.
+      // emit the updated state.
       emit(updatedData);
     }
   }
@@ -74,8 +73,6 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
     return Right(GeneralFailure());
   }
 
-  // void rootIndicies()
-
   Either<int, Failure> indexFromCommentId(int commentId) {
     if (state is CommentSectionData) {
       final data = (state as CommentSectionData);
@@ -88,6 +85,67 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
     } else {
       return Right(GeneralFailure());
     }
+  }
+
+  Future<Either<String, CommentWithMetadata>> uploadComment(
+      int postId, String content, ReplyingToUser? replyingToUser) async {
+    _createCommentApi.cancelCurrentReq();
+
+    final response = await _createCommentApi.req(
+      Verb.post,
+      true,
+      "/api/v1/comments/create",
+      {
+        "post_id": postId,
+        "parent_comment_id": replyingToUser?.replyingToCommentId,
+        "content": content,
+      },
+    );
+
+    return response.fold(
+      (failureWithMsg) {
+        return Left(failureWithMsg.message());
+      },
+      (response) async {
+        if (response.statusCode.toString()[0] != "2") {
+          return const Left("todo: ~200");
+        } else {
+          try {
+            final comment = CommentWithMetadata.fromJson(json.decode(response.body)["value"]);
+
+            final currentState = state;
+
+            if (currentState is CommentSectionData) {
+              sl.get<GlobalContentService>().addComment(comment);
+
+              final updatedCommentIds = List<LinkedHashMap<int, List<int>>>.from(currentState.commentIds);
+
+              if (replyingToUser?.rootCommentIdReplyingUnder != null) {
+                for (var i = 0; i < updatedCommentIds.length; i++) {
+                  if (updatedCommentIds[i].containsKey(replyingToUser!.rootCommentIdReplyingUnder)) {
+                    final repliesList = updatedCommentIds[i][replyingToUser.rootCommentIdReplyingUnder] ?? [];
+                    repliesList.add(comment.comment.id);
+                    updatedCommentIds[i][replyingToUser.rootCommentIdReplyingUnder!] = repliesList;
+                    emit(currentState.copyWith(commentIds: updatedCommentIds));
+                    return Right(comment);
+                  }
+                }
+                // If parent comment index was not found, return Left indicating an error
+                return const Left("Parent comment not found");
+              } else {
+                print("HERE DD");
+                updatedCommentIds.insert(0, LinkedHashMap<int, List<int>>()..[comment.comment.id] = []);
+                emit(currentState.copyWith(commentIds: updatedCommentIds));
+                return Right(comment);
+              }
+            }
+            return const Left("Comment created but unable to show it");
+          } catch (_) {
+            return const Left("Comment created but unable to show it");
+          }
+        }
+      },
+    );
   }
 
   Future<bool> loadReplies(int? rootCommentId, int next) async {

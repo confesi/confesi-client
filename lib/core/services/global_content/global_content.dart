@@ -31,11 +31,23 @@ class GlobalContentService extends ChangeNotifier {
     notifyListeners();
   }
 
+  void addComment(CommentWithMetadata comment) {
+    comments[comment.comment.id] = comment;
+    notifyListeners();
+  }
+
   void setPosts(List<Post> posts) {
     for (final post in posts) {
       this.posts[post.id] = post;
     }
     notifyListeners();
+  }
+
+  void updatePostCommentCount(int postId, int deltaVote) {
+    if (posts.containsKey(postId)) {
+      posts[postId]!.commentCount += deltaVote;
+      notifyListeners();
+    }
   }
 
   Future<Either<String, ApiSuccess>> voteOnComment(CommentWithMetadata comment, int vote) async {
