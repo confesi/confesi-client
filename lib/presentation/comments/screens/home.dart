@@ -66,12 +66,12 @@ class _CommentsHomeState extends State<CommentsHome> {
         );
       },
     );
-    context.read<CommentSectionCubit>().loadInitial(widget.props.post.id, CommentSortType.recent, refresh: true);
     // post frame callback
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.props.openKeyboard) commentSheetController.focus();
       Provider.of<GlobalContentService>(context, listen: false).clearComments();
-      context.read<CreateCommentCubit>().updateReplyingTo(ReplyingToNothing());
+      context.read<CreateCommentCubit>().clear();
+      context.read<CommentSectionCubit>().clear();
     });
     super.initState();
   }
@@ -354,9 +354,11 @@ class _CommentsHomeState extends State<CommentsHome> {
         shrinkWrap: true,
         controller: feedController..items = commentWidgets,
         loadMore: (_) async =>
-            await context.read<CommentSectionCubit>().loadInitial(widget.props.post.id, CommentSortType.recent),
+            await context.read<CommentSectionCubit>().loadInitial(widget.props.post.id, CommentSortType.recent, refresh: Provider.of<GlobalContentService>(context, listen: false).comments.isEmpty),
         onPullToRefresh: () async {
           Provider.of<GlobalContentService>(context, listen: false).clearComments();
+          context.read<CreateCommentCubit>().clear();
+          context.read<CommentSectionCubit>().clear();
           await Future.wait([
             context.read<SavedPostsCubit>().loadPosts(refresh: true),
             context

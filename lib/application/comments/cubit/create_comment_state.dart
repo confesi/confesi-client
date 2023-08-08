@@ -1,6 +1,6 @@
 part of 'create_comment_cubit.dart';
 
-abstract class PossibleReply {}
+abstract class PossibleReply extends Equatable {}
 
 class ReplyingToUser extends PossibleReply {
   final int replyingToCommentId;
@@ -18,9 +18,15 @@ class ReplyingToUser extends PossibleReply {
   String toString() {
     return 'ReplyingToUser(replyingToCommentId: $replyingToCommentId, rootCommentIdReplyingUnder: $rootCommentIdReplyingUnder, identifier: $identifier)';
   }
+
+  @override
+  List<Object?> get props => [replyingToCommentId, rootCommentIdReplyingUnder, identifier];
 }
 
-class ReplyingToNothing extends PossibleReply {}
+class ReplyingToNothing extends PossibleReply {
+  @override
+  List<Object?> get props => [];
+}
 
 sealed class CreateCommentState extends Equatable {
   const CreateCommentState();

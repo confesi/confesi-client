@@ -101,7 +101,7 @@ class _SimpleCommentSortState extends State<SimpleCommentSort> {
             children: [
               Expanded(
                 child: Text(
-                  "Sorting comments by: ${commentSortTypeToString(commentSortType)}",
+                  "Sort by: ${commentSortTypeToString(commentSortType)}",
                   style: kTitle.copyWith(
                     color: Theme.of(context).colorScheme.primary,
                   ),

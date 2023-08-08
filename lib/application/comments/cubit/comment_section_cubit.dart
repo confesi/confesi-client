@@ -89,6 +89,7 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
 
   Future<Either<String, CommentWithMetadata>> uploadComment(
       int postId, String content, ReplyingToUser? replyingToUser) async {
+    _repliesApi.cancelCurrentReq(); // cancel this api req so we don't mess up the "jump to" order
     _createCommentApi.cancelCurrentReq();
 
     final response = await _createCommentApi.req(
@@ -182,6 +183,8 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
             final existingReplies = existingCommentIds.firstWhereOrNull((map) => map.containsKey(rootCommentId));
 
             if (existingReplies != null) {
+              print("HERE 1");
+
               // Update existing comment map with new replies
               final newReplies = replies.map((e) => e.comment.id).toList();
               if (existingReplies.containsKey(rootCommentId)) {
@@ -189,10 +192,13 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
               } else {
                 existingReplies[rootCommentId] = newReplies;
               }
+              if (replies.isNotEmpty) {
+                emit(CommentSectionData(existingCommentIds, CommentFeedState.feed));
+              }
 
-              emit(CommentSectionData(existingCommentIds, CommentFeedState.feed));
               return true;
             } else {
+              print("HERE 2");
               // If no existing replies found, create a new map entry
               final commentMap = {rootCommentId: replies.map((e) => e.comment.id).toList()};
               final List<LinkedHashMap<int, List<int>>> updatedCommentIds = List.from(existingCommentIds)
@@ -210,6 +216,8 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
       },
     );
   }
+
+  void clear() => emit(CommentSectionData.empty());
 
   Future<void> loadInitial(
     int postId,
@@ -298,10 +306,9 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
               emit(CommentSectionData(updatedCommentIds, paginationState));
               print(updatedCommentIds);
             } else {
-              // If there are no new comments, just emit the existing state
               emit(CommentSectionData(existingCommentIds, CommentFeedState.end));
             }
-          } catch (e) {
+          } catch (_) {
             emit(const CommentSectionError("Unknown error loading comments"));
           }
         } else {

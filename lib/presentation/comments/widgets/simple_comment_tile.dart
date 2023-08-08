@@ -7,6 +7,7 @@ import 'package:confesi/presentation/comments/widgets/sheet.dart';
 import 'package:confesi/presentation/feed/widgets/reaction_tile.dart';
 import 'package:confesi/presentation/shared/behaviours/init_border_radius.dart';
 import 'package:confesi/presentation/shared/behaviours/init_scale.dart';
+import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:confesi/presentation/shared/buttons/simple_text.dart';
 import 'package:confesi/presentation/shared/other/feed_list.dart';
@@ -117,6 +118,18 @@ class _SimpleCommentTileState extends State<SimpleCommentTile> {
     }
   }
 
+  Future<void> loadMore() async {
+    setState(() => isLoading = true);
+    await context
+        .read<CommentSectionCubit>()
+        .loadReplies(widget.comment.comment.parentRoot, widget.comment.comment.createdAt)
+        .then(
+          (possibleSuccess) =>
+              possibleSuccess ? null : context.read<NotificationsCubit>().showErr("Error loading more"),
+        );
+    if (mounted) setState(() => isLoading = false);
+  }
+
   @override
   Widget build(BuildContext context) {
     final state = context.watch<CreateCommentCubit>().state;
@@ -162,10 +175,10 @@ class _SimpleCommentTileState extends State<SimpleCommentTile> {
                               textAlign: TextAlign.left,
                             ),
                             const SizedBox(height: 10),
-                            Text(context
-                                .watch<CommentSectionCubit>()
-                                .indexFromCommentId(widget.comment.comment.id)
-                                .toString()),
+                            // Text(context
+                            //     .watch<CommentSectionCubit>()
+                            //     .indexFromCommentId(widget.comment.comment.id)
+                            //     .toString()),
                             Text(
                               widget.comment.comment.content,
                               style: kBody.copyWith(
@@ -177,6 +190,44 @@ class _SimpleCommentTileState extends State<SimpleCommentTile> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
+                                TouchableOpacity(
+                                  onTap: () => showButtonOptionsSheet(context, [
+                                    OptionButton(
+                                      text: "Save",
+                                      icon: CupertinoIcons.bookmark,
+                                      onTap: () => print("tap"),
+                                    ),
+                                    OptionButton(
+                                      text: "Share",
+                                      icon: CupertinoIcons.share,
+                                      onTap: () => print("tap"),
+                                    ),
+                                    OptionButton(
+                                      text: "Report",
+                                      icon: CupertinoIcons.flag,
+                                      onTap: () => print("tap"),
+                                    ),
+                                    // if is not root
+                                    if (!widget.isRootComment &&
+                                        widget.currentReplyNum == widget.currentlyRetrievedReplies)
+                                      OptionButton(
+                                        text: "Try loading more replies",
+                                        icon: CupertinoIcons.chat_bubble,
+                                        onTap: () async => await loadMore(),
+                                      )
+                                  ]),
+                                  child: Container(
+                                    padding: const EdgeInsets.only(right: 5, top: 5, bottom: 5),
+                                    color: Colors.transparent, // transparent hitbox trick
+                                    child: Icon(
+                                      CupertinoIcons.ellipsis_circle,
+                                      size: 18,
+                                      color: Theme.of(context).colorScheme.primary,
+                                    ),
+                                  ),
+                                ),
+                                const Spacer(),
+                                const SizedBox(width: 5),
                                 TouchableScale(
                                   onTap: () async {
                                     if (!widget.commentSheetController.isFocused()) {
@@ -265,28 +316,17 @@ class _SimpleCommentTileState extends State<SimpleCommentTile> {
                             // Text(
                             //     "${!widget.isRootComment} && (${widget.currentReplyNum} == ${widget.currentlyRetrievedReplies}) && (${widget.currentReplyNum} < ${widget.totalNumOfReplies})"),
                             WidgetOrNothing(
-                              showWidget: !widget.isRootComment &&
-                                  widget.currentReplyNum == widget.currentlyRetrievedReplies &&
-                                  widget.currentReplyNum < widget.totalNumOfReplies,
+                              showWidget: (!widget.isRootComment &&
+                                      widget.currentReplyNum == widget.currentlyRetrievedReplies &&
+                                      widget.currentReplyNum < widget.totalNumOfReplies) ||
+                                  isLoading,
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(vertical: 5),
                                 child: Align(
                                   alignment: Alignment.centerRight,
                                   child: SimpleTextButton(
                                     infiniteWidth: true,
-                                    onTap: () async {
-                                      setState(() => isLoading = true);
-                                      await context
-                                          .read<CommentSectionCubit>()
-                                          .loadReplies(
-                                              widget.comment.comment.parentRoot, widget.comment.comment.createdAt)
-                                          .then(
-                                            (possibleSuccess) => possibleSuccess
-                                                ? null
-                                                : context.read<NotificationsCubit>().showErr("Error loading more"),
-                                          );
-                                      if (mounted) setState(() => isLoading = false);
-                                    },
+                                    onTap: () async => await loadMore(),
                                     text: isLoading
                                         ? "Loading..."
                                         : "Load more (${widget.totalNumOfReplies - widget.currentReplyNum} left)",

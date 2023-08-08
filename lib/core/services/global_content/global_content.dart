@@ -24,8 +24,6 @@ class GlobalContentService extends ChangeNotifier {
     notifyListeners();
   }
 
-  void notify() => notifyListeners();
-
   void clearComments() {
     comments.clear();
     notifyListeners();
