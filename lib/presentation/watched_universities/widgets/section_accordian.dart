@@ -1,8 +1,15 @@
-import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
+import 'package:confesi/presentation/shared/behaviours/init_scale.dart';
+import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import '../../../core/styles/typography.dart';
 import '../../shared/behaviours/animated_cliprrect.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import '../../shared/button_touch_effects/touchable_scale.dart';
 
 class DrawerUniversityTile extends StatelessWidget {
   const DrawerUniversityTile({
@@ -19,14 +26,9 @@ class DrawerUniversityTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TouchableScale(
-      // on tap color
       onTap: () => onTap(),
       child: Container(
-        // transparent color trick to increase hitbox size
-        decoration: const BoxDecoration(
-          color: Colors.transparent,
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-        ),
+        color: Colors.transparent,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
           child: Row(
@@ -150,6 +152,7 @@ class _SectionAccordianState extends State<SectionAccordian> {
                         direction: DismissDirection.endToStart,
                         onDismissed: (_) {
                           // Call the onSwipe callback if it's provided
+                          HapticFeedback.lightImpact();
                           item.onSwipe?.call();
                           setState(() {
                             widget.items.remove(item);
@@ -161,14 +164,19 @@ class _SectionAccordianState extends State<SectionAccordian> {
                             alignment: Alignment.centerRight,
                             child: Padding(
                               padding: const EdgeInsets.only(right: 15),
-                              child: Icon(
-                                CupertinoIcons.delete,
-                                color: Theme.of(context).colorScheme.onError,
+                              child: InitScale(
+                                child: Icon(
+                                  CupertinoIcons.delete,
+                                  color: Theme.of(context).colorScheme.onError,
+                                ),
                               ),
                             ),
                           ),
                         ),
-                        child: item, // The DrawerUniversityTile
+                        child: TouchableScale(
+                          onTap: item.onTap,
+                          child: item, // The DrawerUniversityTile
+                        ),
                       )
                     : item;
               }).toList(),

@@ -117,12 +117,13 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
   Widget build(BuildContext context) {
     return ThemeStatusBar(
       child: Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.shadow,
+        backgroundColor: Theme.of(context).colorScheme.background,
         body: SafeArea(
           child: Column(
             children: [
               AppbarLayout(
-                backgroundColor: Theme.of(context).colorScheme.shadow,
+                bottomBorder: true,
+                backgroundColor: Theme.of(context).colorScheme.background,
                 centerWidget: Text(
                   "In-App Details",
                   style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
@@ -134,10 +135,13 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
                 rightIconVisible: true,
               ),
               Expanded(
-                child: BlocBuilder<AccountDetailsCubit, AccountDetailsState>(
-                  builder: (context, state) => AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 250),
-                    child: buildChild(context, state),
+                child: Container(
+                  color: Theme.of(context).colorScheme.shadow,
+                  child: BlocBuilder<AccountDetailsCubit, AccountDetailsState>(
+                    builder: (context, state) => AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 250),
+                      child: buildChild(context, state),
+                    ),
                   ),
                 ),
               ),

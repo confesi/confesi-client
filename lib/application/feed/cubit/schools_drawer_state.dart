@@ -18,6 +18,26 @@ class SchoolDrawerError extends SchoolsDrawerState {
   List<Object> get props => [message];
 }
 
+class SchoolsDrawerData extends SchoolsDrawerState {
+  final SelectedType selected;
+  final SchoolsDrawerPossibleError possibleErr;
+
+  const SchoolsDrawerData(this.selected, this.possibleErr);
+
+  // copyWith method
+  SchoolsDrawerData copyWith({SelectedType? selected, SchoolsDrawerPossibleError? possibleErr}) {
+    return SchoolsDrawerData(
+      selected ?? this.selected,
+      possibleErr ?? this.possibleErr,
+    );
+  }
+
+  @override
+  List<Object> get props => [selected, possibleErr];
+}
+
+//! Error type
+
 abstract class SchoolsDrawerPossibleError {}
 
 class SchoolsDrawerErr extends SchoolsDrawerPossibleError {
@@ -28,21 +48,16 @@ class SchoolsDrawerErr extends SchoolsDrawerPossibleError {
 
 class SchoolsDrawerNoErr extends SchoolsDrawerPossibleError {}
 
-class SchoolsDrawerData extends SchoolsDrawerState {
-  final int selectedId;
-  final SchoolsDrawerPossibleError possibleErr;
+//! Selected type
 
-  const SchoolsDrawerData(this.selectedId, this.possibleErr);
+abstract class SelectedType {}
 
-  // copyWith method
-  SchoolsDrawerData copyWith(
-      {List<int>? schoolIds, int? selectedId, SchoolsDrawerPossibleError? possibleErr, int? homeId}) {
-    return SchoolsDrawerData(
-      selectedId ?? this.selectedId,
-      possibleErr ?? this.possibleErr,
-    );
-  }
+class SelectedSchool extends SelectedType {
+  final int id;
 
-  @override
-  List<Object> get props => [selectedId, possibleErr];
+  SelectedSchool(this.id);
 }
+
+class SelectedAll extends SelectedType {}
+
+class SelectedRandom extends SelectedType {}

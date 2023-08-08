@@ -21,8 +21,7 @@ class FeedDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final globalContentService = Provider.of<GlobalContentService>(context);
 
-    final watchedSchools =
-        globalContentService.schools.values.whereType<SchoolWithMetadata>().where((school) => school.watched).toList();
+    final schools = globalContentService.schools.values.whereType<SchoolWithMetadata>().toList();
 
     Widget buildChild(BuildContext context, SchoolsDrawerState state) {
       if (state is SchoolsDrawerData) {
@@ -39,29 +38,47 @@ class FeedDrawer extends StatelessWidget {
               ),
             ),
             SectionAccordian(
-              startsOpen: true,
+              startsOpen: false,
               topBorder: true,
               title: "Home school",
               items: [
-                ...watchedSchools.where((school) => school.home).map((watchedHomeSchool) => DrawerUniversityTile(
+                ...schools.where((school) => school.home).map((watchedHomeSchool) => DrawerUniversityTile(
                       text: watchedHomeSchool.name,
-                      onTap: () => context.read<SchoolsDrawerCubit>().setSelectedSchoolInUI(watchedHomeSchool.id),
+                      onTap: () => context
+                          .read<SchoolsDrawerCubit>()
+                          .setSelectedSchoolInUI(SelectedSchool(watchedHomeSchool.id)),
                     )),
               ],
             ),
             SectionAccordian(
-              startsOpen: true,
+              startsOpen: false,
+              topBorder: true,
+              title: "Special",
+              items: [
+                DrawerUniversityTile(
+                  text: "Random",
+                  onTap: () => context.read<SchoolsDrawerCubit>().setSelectedSchoolInUI(SelectedRandom()),
+                ),
+                DrawerUniversityTile(
+                  text: "All",
+                  onTap: () => context.read<SchoolsDrawerCubit>().setSelectedSchoolInUI(SelectedAll()),
+                )
+              ],
+            ),
+            SectionAccordian(
+              startsOpen: false,
               bottomBorder: true,
               topBorder: true,
-              title: "Watched schools",
+              title: "Watched schools (${schools.where((school) => school.watched).length})",
               items: [
-                ...watchedSchools.where((school) => school.watched).map((watchedSchool) => DrawerUniversityTile(
+                ...schools.where((school) => school.watched).map((watchedSchool) => DrawerUniversityTile(
                       onSwipe: () => Provider.of<GlobalContentService>(context, listen: false)
                           .updateWatched(watchedSchool, false)
                           .then((f) =>
                               f.fold((_) => null, (errMsg) => context.read<NotificationsCubit>().showErr(errMsg))),
                       text: watchedSchool.name,
-                      onTap: () => context.read<SchoolsDrawerCubit>().setSelectedSchoolInUI(watchedSchool.id),
+                      onTap: () =>
+                          context.read<SchoolsDrawerCubit>().setSelectedSchoolInUI(SelectedSchool(watchedSchool.id)),
                     )),
               ],
             ),
@@ -77,7 +94,7 @@ class FeedDrawer extends StatelessWidget {
     }
 
     return Drawer(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.shadow,
       child: AnimatedSwitcher(
         duration: const Duration(milliseconds: 250),
         child: Column(
@@ -109,7 +126,11 @@ class FeedDrawer extends StatelessWidget {
                           ),
                           const SizedBox(height: 5),
                           Text(
-                            "TODO: selectedSchoolName",
+                            context.watch<SchoolsDrawerCubit>().state is SchoolsDrawerData
+                                ? context
+                                    .watch<SchoolsDrawerCubit>()
+                                    .selected(context, (context.read<SchoolsDrawerCubit>().state as SchoolsDrawerData))
+                                : "Loading...",
                             style: kDisplay1.copyWith(color: Theme.of(context).colorScheme.onSecondary),
                             textAlign: TextAlign.left,
                           ),

@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:confesi/core/clients/api.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../core/services/global_content/global_content.dart';
 import '../../../init.dart';
@@ -14,6 +16,16 @@ class SchoolsDrawerCubit extends Cubit<SchoolsDrawerState> {
   SchoolsDrawerCubit(this._api) : super(SchoolsDrawerLoading());
 
   final Api _api;
+
+  String selected(BuildContext context, SchoolsDrawerData data) {
+    if (data.selected is SelectedSchool) {
+      return Provider.of<GlobalContentService>(context).schools[(data.selected as SelectedSchool).id]!.name;
+    } else if (data.selected is SelectedRandom) {
+      return "Random";
+    } else {
+      return "All";
+    }
+  }
 
   Future<void> loadSchools() async {
     _api.cancelCurrReq();
@@ -33,7 +45,7 @@ class SchoolsDrawerCubit extends Cubit<SchoolsDrawerState> {
             sl.get<GlobalContentService>().addSchool(homeUniversity);
 
             emit(SchoolsDrawerData(
-              homeUniversity.id,
+              SelectedSchool(homeUniversity.id),
               SchoolsDrawerNoErr(),
             ));
           } else {
@@ -46,10 +58,10 @@ class SchoolsDrawerCubit extends Cubit<SchoolsDrawerState> {
     );
   }
 
-  void setSelectedSchoolInUI(int id) {
+  void setSelectedSchoolInUI(SelectedType selectedType) {
     if (state is SchoolsDrawerData) {
       final currentState = state as SchoolsDrawerData;
-      emit(currentState.copyWith(selectedId: id));
+      emit(currentState.copyWith(selected: selectedType));
     } else {
       emit(const SchoolDrawerError("Unknown error"));
     }
