@@ -4,7 +4,7 @@ abstract class PossibleReply extends Equatable {}
 
 class ReplyingToUser extends PossibleReply {
   final int replyingToCommentId;
-  final int? rootCommentIdReplyingUnder;
+  final int rootCommentIdReplyingUnder;
   final String identifier;
 
   ReplyingToUser({

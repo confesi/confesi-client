@@ -121,11 +121,15 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
 
               final updatedCommentIds = List<LinkedHashMap<int, List<int>>>.from(currentState.commentIds);
 
-              if (replyingToUser?.rootCommentIdReplyingUnder != null) {
+              print(replyingToUser);
+              if (replyingToUser?.replyingToCommentId != null) {
+                // if it is a reply
+                sl.get<GlobalContentService>().plusOneChildToComment(replyingToUser!.replyingToCommentId);
+                print("adding new reply");
                 for (var i = 0; i < updatedCommentIds.length; i++) {
-                  if (updatedCommentIds[i].containsKey(replyingToUser!.rootCommentIdReplyingUnder)) {
+                  if (updatedCommentIds[i].containsKey(replyingToUser.rootCommentIdReplyingUnder)) {
                     final repliesList = updatedCommentIds[i][replyingToUser.rootCommentIdReplyingUnder] ?? [];
-                    repliesList.add(comment.comment.id);
+                    repliesList.insert(0, comment.comment.id);
                     updatedCommentIds[i][replyingToUser.rootCommentIdReplyingUnder!] = repliesList;
                     emit(currentState.copyWith(commentIds: updatedCommentIds));
                     return Right(comment);
@@ -134,7 +138,7 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
                 // If parent comment index was not found, return Left indicating an error
                 return const Left("Parent comment not found");
               } else {
-                print("HERE DD");
+                print("adding new root");
                 updatedCommentIds.insert(0, LinkedHashMap<int, List<int>>()..[comment.comment.id] = []);
                 emit(currentState.copyWith(commentIds: updatedCommentIds));
                 return Right(comment);

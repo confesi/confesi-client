@@ -11,7 +11,7 @@ class CreateCommentCubit extends Cubit<CreateCommentState> {
   CreateCommentCubit() : super(CreateCommentEnteringData(ReplyingToNothing(), CreateCommentNoErr()));
 
   void updateReplyingTo(PossibleReply possibleReply) {
-    print(possibleReply);
+    print("NEW REPLY: $possibleReply");
     emit(CreateCommentEnteringData(possibleReply, CreateCommentNoErr()));
   }
 

@@ -122,7 +122,7 @@ class _SimpleCommentTileState extends State<SimpleCommentTile> {
     setState(() => isLoading = true);
     await context
         .read<CommentSectionCubit>()
-        .loadReplies(widget.comment.comment.parentRoot, widget.comment.comment.createdAt)
+        .loadReplies(widget.comment.comment.parentRoot ?? widget.comment.comment.id, widget.comment.comment.createdAt)
         .then(
           (possibleSuccess) =>
               possibleSuccess ? null : context.read<NotificationsCubit>().showErr("Error loading more"),
@@ -208,8 +208,8 @@ class _SimpleCommentTileState extends State<SimpleCommentTile> {
                                       onTap: () => print("tap"),
                                     ),
                                     // if is not root
-                                    if (!widget.isRootComment &&
-                                        widget.currentReplyNum == widget.currentlyRetrievedReplies)
+                                    if (widget.currentReplyNum == widget.currentlyRetrievedReplies &&
+                                        (!widget.isRootComment || widget.totalNumOfReplies == 0))
                                       OptionButton(
                                         text: "Try loading more replies",
                                         icon: CupertinoIcons.chat_bubble,
@@ -237,7 +237,8 @@ class _SimpleCommentTileState extends State<SimpleCommentTile> {
                                           ReplyingToUser(
                                             replyingToCommentId: widget.comment.comment.id,
                                             identifier: buildUserIdentifier,
-                                            rootCommentIdReplyingUnder: widget.comment.comment.parentRoot,
+                                            rootCommentIdReplyingUnder:
+                                                widget.comment.comment.parentRoot ?? widget.comment.comment.id,
                                           ),
                                         );
                                     context.read<CreateCommentCubit>().state is CreateCommentEnteringData &&
@@ -313,8 +314,8 @@ class _SimpleCommentTileState extends State<SimpleCommentTile> {
                                 ),
                               ],
                             ),
-                            // Text(
-                            //     "${!widget.isRootComment} && (${widget.currentReplyNum} == ${widget.currentlyRetrievedReplies}) && (${widget.currentReplyNum} < ${widget.totalNumOfReplies})"),
+                            Text(
+                                "(ID: ${widget.comment.comment.id}) ${!widget.isRootComment} && (${widget.currentReplyNum} == ${widget.currentlyRetrievedReplies}) && (${widget.currentReplyNum} < ${widget.totalNumOfReplies})"),
                             WidgetOrNothing(
                               showWidget: (!widget.isRootComment &&
                                       widget.currentReplyNum == widget.currentlyRetrievedReplies &&

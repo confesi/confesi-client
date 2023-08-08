@@ -24,6 +24,13 @@ class GlobalContentService extends ChangeNotifier {
     notifyListeners();
   }
 
+  void plusOneChildToComment(int id) {
+    if (comments.containsKey(id)) {
+      comments[id]!.comment.childrenCount++;
+      notifyListeners();
+    }
+  }
+
   void clearComments() {
     comments.clear();
     notifyListeners();

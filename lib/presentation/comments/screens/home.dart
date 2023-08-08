@@ -121,12 +121,13 @@ class _CommentsHomeState extends State<CommentsHome> {
                                       if (replyingTo != null) {
                                         context
                                             .read<CommentSectionCubit>()
-                                            .indexFromCommentId(replyingTo.replyingToCommentId)
+                                            .indexFromCommentId(replyingTo.rootCommentIdReplyingUnder)
                                             .fold(
                                               (idx) => replyingToIdx = idx,
                                               (_) => null, // do nothing
                                             );
                                       }
+                                      print("GOT INDEX OF $replyingToIdx");
                                       await context
                                           .read<CommentSectionCubit>()
                                           .uploadComment(
@@ -253,10 +254,12 @@ class _CommentsHomeState extends State<CommentsHome> {
             ),
           );
           commentIndex++; // Increment the counter for the next comment
+          int totalReplies = comment.comment.childrenCount;
           int iter = 1;
           for (final replyId in rootCommentIdsList) {
             final replyComment = commentSet[replyId];
             if (replyComment != null) {
+              totalReplies += replyComment.comment.childrenCount;
               context.read<CommentSectionCubit>().updateCommentIdToIndex(replyComment.comment.id, commentIndex);
               commentWidgets.add(
                 InfiniteScrollIndexable(
@@ -268,7 +271,7 @@ class _CommentsHomeState extends State<CommentsHome> {
                       feedController: feedController,
                       currentlyRetrievedReplies: rootCommentIdsList.length,
                       currentReplyNum: iter,
-                      totalNumOfReplies: comment.comment.childrenCount,
+                      totalNumOfReplies: totalReplies,
                       isRootComment: false,
                       comment: replyComment,
                     ),
@@ -353,8 +356,9 @@ class _CommentsHomeState extends State<CommentsHome> {
         isScrollable: true,
         shrinkWrap: true,
         controller: feedController..items = commentWidgets,
-        loadMore: (_) async =>
-            await context.read<CommentSectionCubit>().loadInitial(widget.props.post.id, CommentSortType.recent, refresh: Provider.of<GlobalContentService>(context, listen: false).comments.isEmpty),
+        loadMore: (_) async => await context.read<CommentSectionCubit>().loadInitial(
+            widget.props.post.id, CommentSortType.recent,
+            refresh: Provider.of<GlobalContentService>(context, listen: false).comments.isEmpty),
         onPullToRefresh: () async {
           Provider.of<GlobalContentService>(context, listen: false).clearComments();
           context.read<CreateCommentCubit>().clear();
