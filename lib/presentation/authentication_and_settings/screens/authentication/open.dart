@@ -34,8 +34,7 @@ class _OpenScreenState extends State<OpenScreen> {
               child: Column(
                 children: [
                   const SizedBox(height: 15),
-                  Container(
-                    constraints: BoxConstraints(maxHeight: widthFraction(context, 0.5)),
+                  Expanded(
                     child: TweenAnimationBuilder<double>(
                       duration: const Duration(milliseconds: 800), // Adjust duration as needed
                       tween: Tween<double>(begin: 0, end: 1),

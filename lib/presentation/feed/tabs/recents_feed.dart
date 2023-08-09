@@ -24,6 +24,12 @@ class _ExploreRecentsState extends State<ExploreRecents> with AutomaticKeepAlive
   FeedListController feedController = FeedListController();
 
   @override
+  void initState() {
+    Provider.of<PostsService>(context, listen: false).clearRecentsPosts();
+    super.initState();
+  }
+
+  @override
   dispose() {
     feedController.dispose();
     super.dispose();
@@ -52,8 +58,9 @@ class _ExploreRecentsState extends State<ExploreRecents> with AutomaticKeepAlive
       hasError: pState == PaginationState.error,
       onErrorButtonPressed: () async => await sl.get<PostsService>().loadMore(FeedType.recents, 1),
       onPullToRefresh: () async => await sl.get<PostsService>().loadMore(FeedType.recents, 1, refresh: true),
-      onWontLoadMoreButtonPressed: () async =>
-          await sl.get<PostsService>().loadMore(FeedType.recents, 1), // todo: school id,
+      onWontLoadMoreButtonPressed: () async => service.recentsPostIds.isEmpty
+          ? await sl.get<PostsService>().loadMore(FeedType.recents, 1, refresh: true)
+          : await sl.get<PostsService>().loadMore(FeedType.recents, 1), // todo: school id,
       wontLoadMore: pState == PaginationState.end,
       wontLoadMoreMessage: "You've reached the end",
     );

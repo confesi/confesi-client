@@ -314,8 +314,8 @@ class _SimpleCommentTileState extends State<SimpleCommentTile> {
                                 ),
                               ],
                             ),
-                            Text(
-                                "(ID: ${widget.comment.comment.id}) ${!widget.isRootComment} && (${widget.currentReplyNum} == ${widget.currentlyRetrievedReplies}) && (${widget.currentReplyNum} < ${widget.totalNumOfReplies})"),
+                            // Text(
+                            //     "(ID: ${widget.comment.comment.id}) ${!widget.isRootComment} && (${widget.currentReplyNum} == ${widget.currentlyRetrievedReplies}) && (${widget.currentReplyNum} < ${widget.totalNumOfReplies})"),
                             WidgetOrNothing(
                               showWidget: (!widget.isRootComment &&
                                       widget.currentReplyNum == widget.currentlyRetrievedReplies &&

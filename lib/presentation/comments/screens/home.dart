@@ -145,7 +145,6 @@ class _CommentsHomeState extends State<CommentsHome> {
                                             sl.get<ConfettiBlaster>().show(context);
                                             context.read<CreateCommentCubit>().clear();
                                             context.read<CreateCommentCubit>().updateReplyingTo(ReplyingToNothing());
-                                            context.read<NotificationsCubit>().showSuccess("Commented successfully");
                                             Provider.of<GlobalContentService>(context, listen: false)
                                                 .updatePostCommentCount(widget.props.post.id, 1);
                                             if (replyingToIdx == null) {
@@ -286,6 +285,7 @@ class _CommentsHomeState extends State<CommentsHome> {
           }
         }
       }
+
       return Align(
         alignment: Alignment.topCenter,
         child: FeedList(
@@ -328,7 +328,7 @@ class _CommentsHomeState extends State<CommentsHome> {
                           textAlign: TextAlign.left,
                         ),
                         Text(
-                          "${timeAgoFromMicroSecondUnixTime(widget.props.post.createdAt)} • ${widget.props.post.emojis.map((e) => e).join(" ")}",
+                          "${timeAgoFromMicroSecondUnixTime(widget.props.post.createdAt)}${widget.props.post.emojis.isNotEmpty ? " • ${widget.props.post.emojis.map((e) => e).join("")}" : ""}",
                           style: kDetail.copyWith(
                             color: Theme.of(context).colorScheme.onSurface,
                           ),
@@ -362,7 +362,6 @@ class _CommentsHomeState extends State<CommentsHome> {
             context.read<CreateCommentCubit>().clear();
             context.read<CommentSectionCubit>().clear();
             await Future.wait([
-              context.read<SavedPostsCubit>().loadPosts(refresh: true),
               context
                   .read<CommentSectionCubit>()
                   .loadInitial(widget.props.post.id, CommentSortType.recent, refresh: true),

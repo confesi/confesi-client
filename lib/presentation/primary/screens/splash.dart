@@ -21,7 +21,7 @@ class SplashScreen extends StatelessWidget {
             children: [
               Center(
                 child: Container(
-                  constraints: BoxConstraints(maxHeight: widthFraction(context, 1)),
+                  constraints: BoxConstraints(maxHeight: widthFraction(context, 0.5)),
                   child: FractionallySizedBox(
                     heightFactor: 0.5,
                     child: InitScale(

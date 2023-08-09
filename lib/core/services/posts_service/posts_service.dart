@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/services/user_auth/user_auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:ordered_set/ordered_set.dart';
 
 import '../../../application/user/cubit/saved_posts_cubit.dart';
 import '../../../init.dart';
@@ -66,6 +67,9 @@ class PostsService extends ChangeNotifier {
   }
 
   void _addIdsToList(FeedType feedType, List<int> postIds) {
+    OrderedSet<int> ids = OrderedSet<int>(); // Convert List to OrderedSet
+    ids.addAll(postIds.reversed);
+
     switch (feedType) {
       case FeedType.trending:
         trendingPostIds.addAll(postIds);
@@ -101,10 +105,33 @@ class PostsService extends ChangeNotifier {
     }
   }
 
+  void _clearPosts(FeedType feedType) {
+    switch (feedType) {
+      case FeedType.trending:
+        trendingPostIds.clear();
+        break;
+      case FeedType.recents:
+        recentsPostIds.clear();
+        break;
+      case FeedType.sentiment:
+        sentimentPostIds.clear();
+        break;
+    }
+  }
+
+  void clearTrendingPosts() => trendingPostIds.clear();
+
+  void clearRecentsPosts() => recentsPostIds.clear();
+
+  void clearSentimentPosts() => sentimentPostIds.clear();
+
+  void notify() => notifyListeners();
+
   Future<void> loadMore(FeedType feedType, int schoolId, {bool refresh = false, bool allSchools = false}) async {
     _cancelCurrentReq(feedType);
-    _updateFeedState(feedType, PaginationState.loading);
-    notifyListeners();
+    if (refresh) {
+      _clearPosts(feedType);
+    }
     (await _apiClient(feedType).req(
       Verb.get,
       true,
@@ -126,8 +153,10 @@ class PostsService extends ChangeNotifier {
         if (response.statusCode.toString()[0] == "2") {
           // success
           final posts = (json.decode(response.body)["value"] as List).map((i) => Post.fromJson(i)).toList();
-          sl.get<GlobalContentService>().setPosts(posts);
+          print(posts);
+          // clear
           _addIdsToList(feedType, posts.map((e) => e.id).toList());
+          sl.get<GlobalContentService>().setPosts(posts);
           if (posts.length < postsPageSize) {
             // end
             _updateFeedState(feedType, PaginationState.end);
@@ -135,12 +164,11 @@ class PostsService extends ChangeNotifier {
             // still get ready to load more
             _updateFeedState(feedType, PaginationState.loading);
           }
-          notifyListeners();
         } else {
           // failure
           _updateFeedState(feedType, PaginationState.error);
-          notifyListeners();
         }
+        notifyListeners();
       },
     );
   }

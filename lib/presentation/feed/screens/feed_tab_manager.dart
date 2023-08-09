@@ -63,7 +63,7 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
                       color: Theme.of(context).colorScheme.onSurface,
                       size: 20,
                     ),
-                    const SizedBox(width: 5),
+                    const SizedBox(width: 7),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 5),
                       child: CircleEmojiButton(
@@ -80,7 +80,6 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
                       color: Theme.of(context).colorScheme.onSurface,
                       size: 20,
                     ),
-                    const SizedBox(width: 5),
                   ],
                 ),
                 leftIconVisible: true,

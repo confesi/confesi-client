@@ -24,6 +24,12 @@ class _ExploreSentimentState extends State<ExploreSentiment> with AutomaticKeepA
   FeedListController feedController = FeedListController();
 
   @override
+  void initState() {
+    Provider.of<PostsService>(context, listen: false).clearSentimentPosts();
+    super.initState();
+  }
+
+  @override
   dispose() {
     feedController.dispose();
     super.dispose();
@@ -52,8 +58,9 @@ class _ExploreSentimentState extends State<ExploreSentiment> with AutomaticKeepA
       hasError: pState == PaginationState.error,
       onErrorButtonPressed: () async => await sl.get<PostsService>().loadMore(FeedType.sentiment, 1),
       onPullToRefresh: () async => await sl.get<PostsService>().loadMore(FeedType.sentiment, 1, refresh: true),
-      onWontLoadMoreButtonPressed: () async =>
-          await sl.get<PostsService>().loadMore(FeedType.sentiment, 1), // todo: school id,
+      onWontLoadMoreButtonPressed: () async => service.recentsPostIds.isEmpty
+          ? await sl.get<PostsService>().loadMore(FeedType.sentiment, 1, refresh: true)
+          : await sl.get<PostsService>().loadMore(FeedType.sentiment, 1), // todo: school id,
       wontLoadMore: pState == PaginationState.end,
       wontLoadMoreMessage: "You've reached the end",
     );

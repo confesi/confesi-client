@@ -39,11 +39,11 @@ class NotificationService {
 
   void requestPermissions({
     bool alert = true,
-    bool announcement = false,
+    bool announcement = true,
     bool badge = true,
-    bool carPlay = false,
-    bool criticalAlert = false,
-    bool provisional = false,
+    bool carPlay = true,
+    bool criticalAlert = true,
+    bool provisional = true,
     bool sound = true,
   }) async {
     await _messaging.requestPermission(
