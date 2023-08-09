@@ -1,4 +1,7 @@
+import 'package:provider/provider.dart';
 
+import '../../../core/services/global_content/global_content.dart';
+import '../../../core/types/infinite_scrollable_indexable.dart';
 import '../../shared/indicators/loading_or_alert.dart';
 import '../widgets/leaderboard_item_tile.dart';
 import '../../shared/other/feed_list.dart';
@@ -35,8 +38,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
         });
       }
     });
-    context.read<LeaderboardCubit>().loadRankings();
-
+    context.read<LeaderboardCubit>().loadRankings(forceRefresh: true);
     super.initState();
   }
 
@@ -63,7 +65,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
               ),
             ),
             const SizedBox(height: 5),
-            LeaderboardItemTile(school: state.userSchool),
+            LeaderboardItemTile(school: Provider.of<GlobalContentService>(context).schools[state.userSchoolId]!),
             const SizedBox(height: 15),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -78,8 +80,28 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
           ],
         ),
         // dontReRequestWhen: true,
-        controller: controller,
-        loadMore: (_) async => await context.read<LeaderboardCubit>().loadRankings(),
+        // controller: controller,
+        controller: controller
+          ..items = (state.schoolIds
+              .asMap() // Use asMap() to get the index along with the value
+              .map((index, schoolId) {
+                final school = Provider.of<GlobalContentService>(context).schools[schoolId];
+                return MapEntry(
+                  schoolId,
+                  school != null
+                      ? InfiniteScrollIndexable(
+                          schoolId,
+                          LeaderboardItemTile(school: school, placing: index + 1), // Add 1 to start with placing 1
+                        )
+                      : null,
+                );
+              })
+              .values // Retrieve the values from the map
+              .whereType<InfiniteScrollIndexable>()
+              .toList()),
+
+        loadMore: (_) async =>
+            await context.read<LeaderboardCubit>().loadRankings(forceRefresh: state.schoolIds.isEmpty),
         onPullToRefresh: () async => await context.read<LeaderboardCubit>().loadRankings(forceRefresh: true),
         hasError: state.feedState == LeaderboardFeedState.errorLoadingMore,
         wontLoadMore:
@@ -90,15 +112,16 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
         onWontLoadMoreButtonPressed: () async => state.feedState == LeaderboardFeedState.staleDate
             ? await context.read<LeaderboardCubit>().loadRankings(forceRefresh: true)
             : await context.read<LeaderboardCubit>().loadRankings(),
-        onErrorButtonPressed: () async => await context.read<LeaderboardCubit>().loadRankings(),
+        onErrorButtonPressed: () async =>
+            await context.read<LeaderboardCubit>().loadRankings(forceRefresh: state.schoolIds.isEmpty),
       );
     } else {
       return LoadingOrAlert(
-        message: StateMessage(
-            state is LeaderboardError ? state.message : null, () => context.read<LeaderboardCubit>().loadRankings()),
+        message: StateMessage(state is LeaderboardError ? state.message : null,
+            () => context.read<LeaderboardCubit>().loadRankings(forceRefresh: true)),
         isLoading: (state is! LeaderboardError &&
                 (state is LeaderboardData && state.feedState == LeaderboardFeedState.errorLoadingMore)) ||
-            (state is LeaderboardData && state.schools.isEmpty) ||
+            (state is LeaderboardData && state.schoolIds.isEmpty) ||
             (state is LeaderboardLoading),
       );
     }
@@ -132,12 +155,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                   // todo: icon here to open a random school?
                 ),
                 Expanded(
-                  child: BlocConsumer<LeaderboardCubit, LeaderboardState>(
-                    listener: (context, state) {
-                      if (state is LeaderboardData) {
-                        controller.setItems(state.schools);
-                      }
-                    },
+                  child: BlocBuilder<LeaderboardCubit, LeaderboardState>(
                     builder: (context, state) {
                       return AnimatedSwitcher(
                         duration: const Duration(milliseconds: 200),

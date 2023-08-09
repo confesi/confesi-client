@@ -12,6 +12,7 @@ Future<dynamic> showInfoSheet(BuildContext context, String header, String body) 
     backgroundColor: Colors.transparent,
     isScrollControlled: true,
     builder: (context) => Container(
+      padding: EdgeInsets.only(bottom: bottomSafeArea(context)),
       constraints: BoxConstraints(maxHeight: heightFraction(context, .75)),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.background,

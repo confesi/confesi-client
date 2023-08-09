@@ -15,32 +15,26 @@ import '../../shared/layout/appbar.dart';
 import '../widgets/post_tile.dart';
 
 class ExploreTrending extends StatefulWidget {
-  const ExploreTrending({Key? key}) : super(key: key);
+  const ExploreTrending({Key? key, required this.feedController}) : super(key: key);
+
+  final FeedListController feedController;
 
   @override
   State<ExploreTrending> createState() => _ExploreTrendingState();
 }
 
 class _ExploreTrendingState extends State<ExploreTrending> with AutomaticKeepAliveClientMixin {
-  FeedListController feedController = FeedListController();
-
   @override
   void initState() {
     Provider.of<PostsService>(context, listen: false).clearTrendingPosts();
     super.initState();
   }
 
-  @override
-  dispose() {
-    feedController.dispose();
-    super.dispose();
-  }
-
   Widget buildBody(PostsService service) {
     final PaginationState pState = service.trendingPaginationState;
     return FeedList(
       swipeRefreshEnabled: service.trendingPostIds.isNotEmpty,
-      controller: feedController
+      controller: widget.feedController
         ..items = (service.trendingPostIds
             .map((postId) {
               final post = Provider.of<GlobalContentService>(context).posts[postId];

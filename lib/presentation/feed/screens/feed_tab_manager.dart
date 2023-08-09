@@ -1,5 +1,6 @@
 import 'package:confesi/presentation/feed/tabs/sentiment_feed.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
+import 'package:confesi/presentation/shared/other/feed_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -16,9 +17,18 @@ enum FeedType {
 }
 
 class ExploreHome extends StatefulWidget {
-  const ExploreHome({Key? key, required this.scaffoldKey}) : super(key: key);
+  const ExploreHome({
+    Key? key,
+    required this.scaffoldKey,
+    required this.recentsFeedListController,
+    required this.trendingFeedListController,
+    required this.sentimentFeedListController,
+  }) : super(key: key);
 
   final GlobalKey<ScaffoldState> scaffoldKey;
+  final FeedListController recentsFeedListController;
+  final FeedListController trendingFeedListController;
+  final FeedListController sentimentFeedListController;
 
   @override
   State<ExploreHome> createState() => _ExploreHomeState();
@@ -131,10 +141,10 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
                   itemBuilder: (context, index) {
                     FeedType feedType = FeedType.values[index];
                     return feedType == FeedType.trending
-                        ? const ExploreTrending()
+                        ? ExploreTrending(feedController: widget.trendingFeedListController)
                         : feedType == FeedType.sentiment
-                            ? const ExploreSentiment()
-                            : const ExploreRecents();
+                            ? ExploreSentiment(feedController: widget.sentimentFeedListController)
+                            : ExploreRecents(feedController: widget.recentsFeedListController);
                   },
                 ),
               ),

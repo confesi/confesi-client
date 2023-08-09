@@ -55,102 +55,104 @@ class Sharing {
           color: Theme.of(context).colorScheme.tertiary,
           child: Stack(
             children: [
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 80, horizontal: 15),
-                padding: const EdgeInsets.all(13),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.background,
-                  border: Border.all(
-                      color: Theme.of(context).colorScheme.onBackground,
-                      width: 0.8,
-                      strokeAlign: BorderSide.strokeAlignInside),
-                  borderRadius: const BorderRadius.all(Radius.circular(15)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Theme.of(context).colorScheme.shadow.withOpacity(0.7),
-                      blurRadius: 50,
-                    ),
-                  ],
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 6),
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.secondary,
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Text(
-                            post.school.name,
-                            style: kDetail.copyWith(color: Theme.of(context).colorScheme.onSecondary),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: Text(
-                            timeAgoFromMicroSecondUnixTime(post),
-                            style: kDetail.copyWith(
-                              color: Theme.of(context).colorScheme.onSurface,
+              Center(
+                child: Container(
+                  margin: const EdgeInsets.symmetric(vertical: 80, horizontal: 15),
+                  padding: const EdgeInsets.all(13),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.background,
+                    border: Border.all(
+                        color: Theme.of(context).colorScheme.onBackground,
+                        width: 0.8,
+                        strokeAlign: BorderSide.strokeAlignInside),
+                    borderRadius: const BorderRadius.all(Radius.circular(15)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Theme.of(context).colorScheme.shadow.withOpacity(0.7),
+                        blurRadius: 50,
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.only(left: 6, right: 6, top: 3, bottom: 4),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.secondary,
+                              borderRadius: BorderRadius.circular(5),
                             ),
-                            overflow: TextOverflow.ellipsis,
+                            child: Text(
+                              post.school.name,
+                              style: kDetail.copyWith(color: Theme.of(context).colorScheme.onSecondary),
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Text(
+                              timeAgoFromMicroSecondUnixTime(post),
+                              style: kDetail.copyWith(
+                                color: Theme.of(context).colorScheme.onSurface,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Flexible(
+                        child: Text(
+                          truncateText(post.title, kPostTitleMaxLength),
+                          style: kDisplay1.copyWith(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Flexible(
-                      child: Text(
-                        truncateText(post.title, kPostTitleMaxLength),
-                        style: kDisplay1.copyWith(
-                          color: Theme.of(context).colorScheme.primary,
+                      ),
+                      const SizedBox(height: 5),
+                      Text(
+                        truncateText(post.content, kPostBodyMaxLength),
+                        style: kBody.copyWith(
+                          color: Theme.of(context).colorScheme.onSurface,
                         ),
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                    const SizedBox(height: 5),
-                    Text(
-                      truncateText(post.content, kPostBodyMaxLength),
-                      style: kBody.copyWith(
-                        color: Theme.of(context).colorScheme.onSurface,
+                      const SizedBox(height: 10),
+                      Wrap(
+                        runSpacing: 10,
+                        spacing: 10,
+                        children: [
+                          ReactionTile(
+                            simpleView: true,
+                            amount: 1232, // todo: comment count
+                            icon: CupertinoIcons.chat_bubble,
+                            iconColor: Theme.of(context).colorScheme.tertiary,
+                            isSelected: true,
+                          ),
+                          ReactionTile(
+                            simpleView: true,
+                            amount: post.upvote,
+                            icon: CupertinoIcons.up_arrow,
+                            iconColor: Theme.of(context).colorScheme.onErrorContainer,
+                            isSelected: true,
+                          ),
+                          ReactionTile(
+                            simpleView: true,
+                            amount: post.downvote,
+                            icon: CupertinoIcons.down_arrow,
+                            iconColor: Theme.of(context).colorScheme.onSecondaryContainer,
+                            isSelected: true,
+                          ),
+                        ],
                       ),
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 10),
-                    Wrap(
-                      runSpacing: 10,
-                      spacing: 10,
-                      children: [
-                        ReactionTile(
-                          simpleView: true,
-                          amount: 1232, // todo: comment count
-                          icon: CupertinoIcons.chat_bubble,
-                          iconColor: Theme.of(context).colorScheme.tertiary,
-                          isSelected: true,
-                        ),
-                        ReactionTile(
-                          simpleView: true,
-                          amount: post.upvote,
-                          icon: CupertinoIcons.up_arrow,
-                          iconColor: Theme.of(context).colorScheme.onErrorContainer,
-                          isSelected: true,
-                        ),
-                        ReactionTile(
-                          simpleView: true,
-                          amount: post.downvote,
-                          icon: CupertinoIcons.down_arrow,
-                          iconColor: Theme.of(context).colorScheme.onSecondaryContainer,
-                          isSelected: true,
-                        ),
-                      ],
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
               Positioned.fill(

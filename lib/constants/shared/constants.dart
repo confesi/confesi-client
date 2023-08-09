@@ -55,11 +55,11 @@ const List<String> faculties = [
 ];
 
 const List<String> yearsOfStudy = [
-  "One",
-  "Two",
-  "Three",
-  "Four",
-  "Five",
+  "Year one",
+  "Year two",
+  "Year three",
+  "Year four",
+  "Year five",
   "Graduate",
   "PhD",
   "Alumni",

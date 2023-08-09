@@ -23,13 +23,28 @@ class LeaderboardError extends LeaderboardState {
 
 /// Success loading page, it now has data to display.
 class LeaderboardData extends LeaderboardState {
-  final List<InfiniteScrollIndexable> schools;
-  final SchoolWithMetadata userSchool;
+  final List<int> schoolIds;
+  final int userSchoolId;
   final LeaderboardFeedState feedState;
   final DateTime startViewDate;
 
-  LeaderboardData(this.schools, this.feedState, this.startViewDate, {required this.userSchool});
+  LeaderboardData(this.schoolIds, this.feedState, this.startViewDate, {required this.userSchoolId});
 
   @override
-  List<Object?> get props => [schools, feedState, userSchool];
+  List<Object?> get props => [schoolIds, feedState, userSchoolId, startViewDate];
+
+  // copyWith method
+  LeaderboardData copyWith({
+    List<int>? schoolIds,
+    LeaderboardFeedState? feedState,
+    DateTime? startViewDate,
+    int? userSchoolId,
+  }) {
+    return LeaderboardData(
+      schoolIds ?? this.schoolIds,
+      feedState ?? this.feedState,
+      startViewDate ?? this.startViewDate,
+      userSchoolId: userSchoolId ?? this.userSchoolId,
+    );
+  }
 }

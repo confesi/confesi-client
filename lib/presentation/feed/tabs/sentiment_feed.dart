@@ -15,32 +15,26 @@ import '../../shared/layout/appbar.dart';
 import '../widgets/post_tile.dart';
 
 class ExploreSentiment extends StatefulWidget {
-  const ExploreSentiment({Key? key}) : super(key: key);
+  const ExploreSentiment({Key? key, required this.feedController}) : super(key: key);
+
+  final FeedListController feedController;
 
   @override
   State<ExploreSentiment> createState() => _ExploreSentimentState();
 }
 
 class _ExploreSentimentState extends State<ExploreSentiment> with AutomaticKeepAliveClientMixin {
-  FeedListController feedController = FeedListController();
-
   @override
   void initState() {
     Provider.of<PostsService>(context, listen: false).clearSentimentPosts();
     super.initState();
   }
 
-  @override
-  dispose() {
-    feedController.dispose();
-    super.dispose();
-  }
-
   Widget buildBody(PostsService service) {
     final PaginationState pState = service.sentimentPaginationState;
     return FeedList(
       swipeRefreshEnabled: service.sentimentPostIds.isNotEmpty,
-      controller: feedController
+      controller: widget.feedController
         ..items = (service.sentimentPostIds
             .map((postId) {
               final post = Provider.of<GlobalContentService>(context).posts[postId];
@@ -54,16 +48,24 @@ class _ExploreSentimentState extends State<ExploreSentiment> with AutomaticKeepA
             .whereType<InfiniteScrollIndexable>()
             .toList()),
       // Load more logic if needed
-      loadMore: (_) async =>
-          await sl.get<PostsService>().loadMore(FeedType.sentiment, context.read<SchoolsDrawerCubit>().selectedSchoolFeed, refresh: service.sentimentPostIds.isEmpty),
+      loadMore: (_) async => await sl.get<PostsService>().loadMore(
+          FeedType.sentiment, context.read<SchoolsDrawerCubit>().selectedSchoolFeed,
+          refresh: service.sentimentPostIds.isEmpty),
       hasError: pState == PaginationState.error,
-      onErrorButtonPressed: () async =>
-          await sl.get<PostsService>().loadMore(FeedType.sentiment, context.read<SchoolsDrawerCubit>().selectedSchoolFeed, refresh: service.sentimentPostIds.isEmpty),
+      onErrorButtonPressed: () async => await sl.get<PostsService>().loadMore(
+          FeedType.sentiment, context.read<SchoolsDrawerCubit>().selectedSchoolFeed,
+          refresh: service.sentimentPostIds.isEmpty),
 
-      onPullToRefresh: () async => await sl.get<PostsService>().loadMore(FeedType.sentiment, context.read<SchoolsDrawerCubit>().selectedSchoolFeed, refresh: true),
+      onPullToRefresh: () async => await sl
+          .get<PostsService>()
+          .loadMore(FeedType.sentiment, context.read<SchoolsDrawerCubit>().selectedSchoolFeed, refresh: true),
       onWontLoadMoreButtonPressed: () async => service.recentsPostIds.isEmpty
-          ? await sl.get<PostsService>().loadMore(FeedType.sentiment, context.read<SchoolsDrawerCubit>().selectedSchoolFeed, refresh: true)
-          : await sl.get<PostsService>().loadMore(FeedType.sentiment, context.read<SchoolsDrawerCubit>().selectedSchoolFeed), // todo: school id,
+          ? await sl
+              .get<PostsService>()
+              .loadMore(FeedType.sentiment, context.read<SchoolsDrawerCubit>().selectedSchoolFeed, refresh: true)
+          : await sl
+              .get<PostsService>()
+              .loadMore(FeedType.sentiment, context.read<SchoolsDrawerCubit>().selectedSchoolFeed), // todo: school id,
       wontLoadMore: pState == PaginationState.end,
       wontLoadMoreMessage: "You've reached the end",
     );

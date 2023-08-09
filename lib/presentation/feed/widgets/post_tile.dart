@@ -50,7 +50,7 @@ class PostTile extends StatelessWidget {
                   right: -30,
                   child: Icon(
                     postCategoryToIcon(post.category.category),
-                    color: Theme.of(context).colorScheme.tertiary.withOpacity(0.25),
+                    color: Theme.of(context).colorScheme.secondary.withOpacity(0.175),
                     size: 150,
                   ),
                 ),
@@ -90,7 +90,7 @@ class PostTile extends StatelessWidget {
                                       Text(
                                         "${timeAgoFromMicroSecondUnixTime(post.createdAt)}${post.emojis.isNotEmpty ? " • ${post.emojis.map((e) => e).join("")}" : ""}",
                                         style: kDetail.copyWith(
-                                          color: Theme.of(context).colorScheme.tertiary,
+                                          color: Theme.of(context).colorScheme.onSurface,
                                         ),
                                         textAlign: TextAlign.left,
                                       ),

@@ -72,6 +72,8 @@ class FeedListController extends ChangeNotifier {
         .scrollTo(index: 0, duration: const Duration(milliseconds: 250), curve: Curves.easeInOut)
         .then((value) => HapticFeedback.lightImpact())
         .then((value) => isCurrentlyScrolling = false);
+
+    notifyListeners();
   }
 
   int currentIndex() {

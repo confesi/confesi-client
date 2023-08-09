@@ -6,6 +6,7 @@ import '../../../core/router/go_router.dart';
 import '../../../core/services/user_auth/user_auth_service.dart';
 import '../../../core/utils/verified_students/verified_user_only.dart';
 import '../../profile/screens/account_stats.dart';
+import '../../shared/other/feed_list.dart';
 import '../../shared/other/widget_or_nothing.dart';
 
 import '../../authentication_and_settings/screens/settings/home.dart';
@@ -33,6 +34,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   int currentIndex = 0; // The current index of the tab open.
 
+  final FeedListController recentsFeedListController = FeedListController();
+  final FeedListController trendingFeedListController = FeedListController();
+  final FeedListController sentimentFeedListController = FeedListController();
+
   @override
   void initState() {
     tabController = TabController(vsync: this, length: 5);
@@ -42,6 +47,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   @override
   void dispose() {
     tabController.dispose();
+    recentsFeedListController.dispose();
+    trendingFeedListController.dispose();
+    sentimentFeedListController.dispose();
     super.dispose();
   }
 
@@ -62,7 +70,12 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               body: IndexedStack(
                 index: currentIndex,
                 children: [
-                  ExploreHome(scaffoldKey: scaffoldKey),
+                  ExploreHome(
+                    scaffoldKey: scaffoldKey,
+                    recentsFeedListController: recentsFeedListController,
+                    trendingFeedListController: trendingFeedListController,
+                    sentimentFeedListController: sentimentFeedListController,
+                  ),
                   const HottestHome(),
                   const SettingsHome(),
                   const LeaderboardScreen(),
@@ -81,7 +94,22 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   top: false,
                   child: TabBar(
                     onTap: (int newIndex) {
-                      if (newIndex == 2) {
+                      if (newIndex == 0) {
+                        // explore
+                        if (currentIndex == 0) {
+                          // if already on explore, scroll to top
+                          // todo: scroll-to-top but it only works... sometimes??
+                          // trendingFeedListController.scrollToTop();
+                          // recentsFeedListController.scrollToTop();
+                          // sentimentFeedListController.scrollToTop();
+                        } else {
+                          // if not on explore, go to explore
+                          setState(() => currentIndex = newIndex);
+                        }
+                      } else if (newIndex == 1) {
+                        // hottest
+                        setState(() => currentIndex = newIndex);
+                      } else if (newIndex == 2) {
                         // create post
                         verifiedUserOnly(context, () {
                           router.push("/create");

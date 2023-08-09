@@ -15,32 +15,26 @@ import '../../shared/layout/appbar.dart';
 import '../widgets/post_tile.dart';
 
 class ExploreRecents extends StatefulWidget {
-  const ExploreRecents({Key? key}) : super(key: key);
+  const ExploreRecents({Key? key, required this.feedController}) : super(key: key);
+
+  final FeedListController feedController;
 
   @override
   State<ExploreRecents> createState() => _ExploreRecentsState();
 }
 
 class _ExploreRecentsState extends State<ExploreRecents> with AutomaticKeepAliveClientMixin {
-  FeedListController feedController = FeedListController();
-
   @override
   void initState() {
     Provider.of<PostsService>(context, listen: false).clearRecentsPosts();
     super.initState();
   }
 
-  @override
-  dispose() {
-    feedController.dispose();
-    super.dispose();
-  }
-
   Widget buildBody(PostsService service) {
     final PaginationState pState = service.recentsPaginationState;
     return FeedList(
       swipeRefreshEnabled: service.recentsPostIds.isNotEmpty,
-      controller: feedController
+      controller: widget.feedController
         ..items = (service.recentsPostIds
             .map((postId) {
               final post = Provider.of<GlobalContentService>(context).posts[postId];
@@ -58,14 +52,19 @@ class _ExploreRecentsState extends State<ExploreRecents> with AutomaticKeepAlive
           FeedType.recents, context.read<SchoolsDrawerCubit>().selectedSchoolFeed,
           refresh: service.recentsPostIds.isEmpty),
       hasError: pState == PaginationState.error,
-      onErrorButtonPressed: () async => await sl
+      onErrorButtonPressed: () async => await sl.get<PostsService>().loadMore(
+          FeedType.recents, context.read<SchoolsDrawerCubit>().selectedSchoolFeed,
+          refresh: service.recentsPostIds.isEmpty),
+      onPullToRefresh: () async => await sl
           .get<PostsService>()
-          .loadMore(FeedType.recents, context.read<SchoolsDrawerCubit>().selectedSchoolFeed, refresh: service.recentsPostIds.isEmpty),
-      onPullToRefresh: () async =>
-          await sl.get<PostsService>().loadMore(FeedType.recents, context.read<SchoolsDrawerCubit>().selectedSchoolFeed, refresh: true),
+          .loadMore(FeedType.recents, context.read<SchoolsDrawerCubit>().selectedSchoolFeed, refresh: true),
       onWontLoadMoreButtonPressed: () async => service.recentsPostIds.isEmpty
-          ? await sl.get<PostsService>().loadMore(FeedType.recents, context.read<SchoolsDrawerCubit>().selectedSchoolFeed, refresh: true)
-          : await sl.get<PostsService>().loadMore(FeedType.recents, context.read<SchoolsDrawerCubit>().selectedSchoolFeed), // todo: school id,
+          ? await sl
+              .get<PostsService>()
+              .loadMore(FeedType.recents, context.read<SchoolsDrawerCubit>().selectedSchoolFeed, refresh: true)
+          : await sl
+              .get<PostsService>()
+              .loadMore(FeedType.recents, context.read<SchoolsDrawerCubit>().selectedSchoolFeed), // todo: school id,
       wontLoadMore: pState == PaginationState.end,
       wontLoadMoreMessage: "You've reached the end",
     );

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:confesi/core/extensions/dates/year_month_day.dart';
+import 'package:confesi/core/services/global_content/global_content.dart';
 import 'package:confesi/core/services/user_auth/user_auth_service.dart';
 import 'package:confesi/models/school_with_metadata.dart';
 import 'package:equatable/equatable.dart';
@@ -21,142 +22,86 @@ class LeaderboardCubit extends Cubit<LeaderboardState> {
   final Api _api;
 
   Future<void> loadRankings({bool forceRefresh = false}) async {
-    late bool refreshFeed;
     _api.cancelCurrReq();
-    LeaderboardFeedState feedState = LeaderboardFeedState.feedLoading;
-    if (state is LeaderboardData) {
-      refreshFeed = false;
-      emit(LeaderboardData(
-        (state as LeaderboardData).schools,
-        userSchool: (state as LeaderboardData).userSchool,
-        feedState,
-        (state as LeaderboardData).startViewDate,
-      ));
-    } else if (state is LeaderboardError || state is LeaderboardLoading) {
+
+    if (forceRefresh) {
       emit(LeaderboardLoading());
-      refreshFeed = true;
-    } else {
-      emit(LeaderboardLoading());
-      emit(LeaderboardError(message: "Unknown error"));
-      return;
     }
-    if (forceRefresh) refreshFeed = true;
-    late DateTime oldStartViewDate;
+
+    LeaderboardFeedState feedState = LeaderboardFeedState.feedLoading;
+    DateTime oldStartViewDate;
+
     if (state is LeaderboardData) {
       oldStartViewDate = (state as LeaderboardData).startViewDate;
     } else {
       oldStartViewDate = DateTime.now().toUtc();
     }
-    (await _api.req(
+
+    final response = await _api.req(
       Verb.get,
       true,
       "/api/v1/schools/rank",
       {
-        "purge_cache": refreshFeed,
+        "purge_cache": forceRefresh,
         "session_key": sl.get<UserAuthService>().baseSessionKey,
-        "include_users_school": refreshFeed,
+        "include_users_school": forceRefresh,
         "start_view_date": oldStartViewDate.yearMonthDay(),
       },
-    ))
-        .fold(
+    );
+
+    response.fold(
       (failureWithMsg) {
         if (failureWithMsg is ApiTooManyGlobalRequests) {
-          if (state is LeaderboardData) {
-            emit(LeaderboardData(
-              (state as LeaderboardData).schools,
-              userSchool: (state as LeaderboardData).userSchool,
-              LeaderboardFeedState.errorLoadingMore,
-              (state as LeaderboardData).startViewDate,
-            ));
-          } else {
-            emit(LeaderboardError(message: failureWithMsg.msg()));
-          }
+          emit(LeaderboardError(message: failureWithMsg.msg()));
         } else {
           emit(LeaderboardError(message: failureWithMsg.msg()));
         }
+        return;
       },
       (response) async {
         try {
           if (response.statusCode == 410) {
-            if (state is LeaderboardData) {
-              emit(LeaderboardData(
-                (state as LeaderboardData).schools,
-                userSchool: (state as LeaderboardData).userSchool,
-                LeaderboardFeedState.staleDate,
-                (state as LeaderboardData).startViewDate,
-              ));
-            } else {
-              emit(LeaderboardError(message: "New data has arrived, please refresh"));
-            }
+            emit(LeaderboardError(message: "Leaderboard has new data, please refresh"));
+            return;
           } else if (response.statusCode.toString()[0] == "2") {
             final body = json.decode(response.body)["value"];
             final newSchools = (body["schools"] as List).map((i) => SchoolWithMetadata.fromJson(i)).toList();
-            int placingOffset = 0;
-            if (state is LeaderboardData && !refreshFeed) {
-              placingOffset = (state as LeaderboardData).schools.length;
-            }
-            List<InfiniteScrollIndexable> newSchoolsParsed = newSchools
-                .asMap()
-                .map(
-                  (index, e) => MapEntry(
-                    index,
-                    InfiniteScrollIndexable(
-                      index,
-                      LeaderboardItemTile(
-                        school: e,
-                        placing: index + placingOffset + 1,
-                      ),
-                    ),
-                  ),
-                )
-                .values
-                .toList();
+            sl.get<GlobalContentService>().setSchools(newSchools);
 
-            if (newSchoolsParsed.length < rankedSchoolsPageSize) {
+            if (newSchools.length < rankedSchoolsPageSize) {
               feedState = LeaderboardFeedState.noMore;
             }
 
-            late SchoolWithMetadata userSchool;
-            late List<InfiniteScrollIndexable> allSchools;
-            late DateTime newStartViewData;
-            if (refreshFeed) {
-              newStartViewData = DateTime.now().toUtc();
-              allSchools = newSchoolsParsed;
-              userSchool = SchoolWithMetadata.fromJson(body["user_school"]);
-            } else if (state is LeaderboardData) {
-              newStartViewData = (state as LeaderboardData).startViewDate;
-              // add new schools to end, not start
-              allSchools = (state as LeaderboardData).schools + newSchoolsParsed;
-              userSchool = (state as LeaderboardData).userSchool;
-            } else {
-              newStartViewData = DateTime.now().toUtc();
-              allSchools = newSchoolsParsed;
-              userSchool = SchoolWithMetadata.fromJson(body["user_school"]);
-            }
-            emit(LeaderboardData(allSchools, feedState, userSchool: userSchool, newStartViewData));
-          } else {
-            if (state is LeaderboardData) {
+            if (forceRefresh) {
+              final userSchool = SchoolWithMetadata.fromJson(body["user_school"]);
+              sl.get<GlobalContentService>().setSchool(userSchool);
               emit(LeaderboardData(
-                (state as LeaderboardData).schools,
-                LeaderboardFeedState.errorLoadingMore,
-                (state as LeaderboardData).startViewDate,
-                userSchool: (state as LeaderboardData).userSchool,
+                newSchools.map((e) => e.id).toList(),
+                feedState,
+                oldStartViewDate,
+                userSchoolId: userSchool.id,
               ));
+              return;
             } else {
-              emit(LeaderboardError(message: "Unknown error"));
+              if (state is LeaderboardData) {
+                emit(LeaderboardData(
+                  (state as LeaderboardData).schoolIds + newSchools.map((e) => e.id).toList(),
+                  feedState,
+                  oldStartViewDate,
+                  userSchoolId: (state as LeaderboardData).userSchoolId,
+                ));
+                return;
+              } else {
+                emit(LeaderboardError(message: "Unknown error 1"));
+                return;
+              }
             }
-          }
-        } catch (_) {
-          if (state is LeaderboardData) {
-            emit(LeaderboardData(
-              (state as LeaderboardData).schools,
-              LeaderboardFeedState.errorLoadingMore,
-              (state as LeaderboardData).startViewDate,
-              userSchool: (state as LeaderboardData).userSchool,
-            ));
           } else {
-            emit(LeaderboardError(message: "Unknown error"));
+            emit(LeaderboardError(message: "Unknown error 2"));
           }
+        } catch (e) {
+          print(e);
+          emit(LeaderboardError(message: "Unknown error 3"));
         }
       },
     );

@@ -11,7 +11,7 @@ String buildFaculty(Post post) {
 
 String buildYear(Post post) {
   if (post.yearOfStudy.type != null) {
-    return " • Year: ${post.yearOfStudy.type!.toLowerCase()}";
+    return " • ${post.yearOfStudy.type!}";
   } else {
     return "";
   }
