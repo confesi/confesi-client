@@ -264,7 +264,6 @@ class _FeedListState extends State<FeedList> {
             return widget.header ?? const SizedBox();
           } else if (index == widget.controller.items.length + 1) {
             return AnimatedSwitcher(
-              key: const ValueKey("AnimSwitcher"),
               duration: const Duration(milliseconds: 250),
               child: buildIndicator(),
             );

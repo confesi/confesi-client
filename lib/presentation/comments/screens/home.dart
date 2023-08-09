@@ -331,14 +331,14 @@ class _CommentsHomeState extends State<CommentsHome> {
                         Text(
                           "${widget.props.post.school.name}${buildFaculty(widget.props.post)}${buildYear(widget.props.post)} • ${widget.props.post.category.category.capitalize()}",
                           style: kDetail.copyWith(
-                            color: Theme.of(context).colorScheme.onSurface,
+                            color: Theme.of(context).colorScheme.secondary,
                           ),
                           textAlign: TextAlign.left,
                         ),
                         Text(
                           "${timeAgoFromMicroSecondUnixTime(widget.props.post.createdAt)}${widget.props.post.emojis.isNotEmpty ? " • ${widget.props.post.emojis.map((e) => e).join("")}" : ""}",
                           style: kDetail.copyWith(
-                            color: Theme.of(context).colorScheme.onSurface,
+                            color: Theme.of(context).colorScheme.tertiary,
                           ),
                           textAlign: TextAlign.left,
                         ),

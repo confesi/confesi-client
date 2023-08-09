@@ -1,3 +1,4 @@
+import 'package:confesi/application/feed/cubit/schools_drawer_cubit.dart';
 import 'package:confesi/application/user/cubit/saved_posts_cubit.dart';
 import 'package:confesi/core/services/posts_service/posts_service.dart';
 import 'package:confesi/presentation/shared/edited_source_widgets/swipe_refresh.dart';
@@ -53,15 +54,23 @@ class _ExploreTrendingState extends State<ExploreTrending> with AutomaticKeepAli
             .whereType<InfiniteScrollIndexable>()
             .toList()),
       // Load more logic if needed
-      loadMore: (_) async =>
-          await sl.get<PostsService>().loadMore(FeedType.trending, 1, refresh: service.trendingPostIds.isEmpty),
+      loadMore: (_) async => await sl.get<PostsService>().loadMore(
+          FeedType.trending, context.read<SchoolsDrawerCubit>().selectedSchoolFeed,
+          refresh: service.trendingPostIds.isEmpty),
       hasError: pState == PaginationState.error,
-      onErrorButtonPressed: () async =>
-          await sl.get<PostsService>().loadMore(FeedType.trending, 1, refresh: service.trendingPostIds.isEmpty),
-      onPullToRefresh: () async => await sl.get<PostsService>().loadMore(FeedType.trending, 1, refresh: true),
+      onErrorButtonPressed: () async => await sl.get<PostsService>().loadMore(
+          FeedType.trending, context.read<SchoolsDrawerCubit>().selectedSchoolFeed,
+          refresh: service.trendingPostIds.isEmpty),
+      onPullToRefresh: () async => await sl
+          .get<PostsService>()
+          .loadMore(FeedType.trending, context.read<SchoolsDrawerCubit>().selectedSchoolFeed, refresh: true),
       onWontLoadMoreButtonPressed: () async => service.recentsPostIds.isEmpty
-          ? await sl.get<PostsService>().loadMore(FeedType.trending, 1, refresh: true)
-          : await sl.get<PostsService>().loadMore(FeedType.trending, 1), // todo: school id,
+          ? await sl
+              .get<PostsService>()
+              .loadMore(FeedType.trending, context.read<SchoolsDrawerCubit>().selectedSchoolFeed, refresh: true)
+          : await sl
+              .get<PostsService>()
+              .loadMore(FeedType.trending, context.read<SchoolsDrawerCubit>().selectedSchoolFeed), // todo: school id,
       wontLoadMore: pState == PaginationState.end,
       wontLoadMoreMessage: "You've reached the end",
     );

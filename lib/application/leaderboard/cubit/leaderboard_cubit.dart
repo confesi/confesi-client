@@ -69,10 +69,10 @@ class LeaderboardCubit extends Cubit<LeaderboardState> {
               (state as LeaderboardData).startViewDate,
             ));
           } else {
-            emit(LeaderboardError(message: failureWithMsg.message()));
+            emit(LeaderboardError(message: failureWithMsg.msg()));
           }
         } else {
-          emit(LeaderboardError(message: failureWithMsg.message()));
+          emit(LeaderboardError(message: failureWithMsg.msg()));
         }
       },
       (response) async {

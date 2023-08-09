@@ -212,7 +212,6 @@ class _MyAppState extends State<MyApp> {
               if (firstOpen) {
                 context.read<SchoolsDrawerCubit>().loadSchools();
                 firstOpen = false;
-                HapticFeedback.lightImpact();
               }
             });
           },

@@ -15,7 +15,7 @@ class FeedbackCubit extends Cubit<FeedbackState> {
       "type": feedbackType,
     }))
         .fold(
-      (failureWithMsg) => emit(FeedbackError(failureWithMsg.message())),
+      (failureWithMsg) => emit(FeedbackError(failureWithMsg.msg())),
       (response) async {
         if (response.statusCode.toString()[0] == "4") {
           emit(FeedbackError("TODO: 4XX"));

@@ -42,7 +42,7 @@ class GlobalContentService extends ChangeNotifier {
         sl.get<GlobalContentService>().setSchool(oldHome..home = true);
         // unset new home
         sl.get<GlobalContentService>().setSchool(school..home = false);
-        return Right(failureWithMsg.message());
+        return Right(failureWithMsg.msg());
       },
       (response) async {
         if (response.statusCode.toString()[0] != "2") {
@@ -75,7 +75,7 @@ class GlobalContentService extends ChangeNotifier {
       (failureWithMsg) {
         // Revert to the old watched status on error
         sl.get<GlobalContentService>().setSchool(school.copyWith(watched: !watch));
-        return Right(failureWithMsg.message());
+        return Right(failureWithMsg.msg());
       },
       (response) {
         if (response.statusCode.toString()[0] != "2") {

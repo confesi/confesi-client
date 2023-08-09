@@ -19,21 +19,24 @@ class SchoolDrawerError extends SchoolsDrawerState {
 }
 
 class SchoolsDrawerData extends SchoolsDrawerState {
-  final SelectedType selected;
+  final SelectedSchoolFeed selected;
   final SchoolsDrawerPossibleError possibleErr;
+  final bool isLoadingRandomSchool;
 
-  const SchoolsDrawerData(this.selected, this.possibleErr);
+  const SchoolsDrawerData(this.selected, this.possibleErr, {this.isLoadingRandomSchool = false});
 
   // copyWith method
-  SchoolsDrawerData copyWith({SelectedType? selected, SchoolsDrawerPossibleError? possibleErr}) {
+  SchoolsDrawerData copyWith(
+      {SelectedSchoolFeed? selected, SchoolsDrawerPossibleError? possibleErr, bool? isLoadingRandomSchool}) {
     return SchoolsDrawerData(
       selected ?? this.selected,
       possibleErr ?? this.possibleErr,
+      isLoadingRandomSchool: isLoadingRandomSchool ?? this.isLoadingRandomSchool,
     );
   }
 
   @override
-  List<Object> get props => [selected, possibleErr];
+  List<Object> get props => [selected, possibleErr, isLoadingRandomSchool, selected];
 }
 
 //! Error type
@@ -50,12 +53,12 @@ class SchoolsDrawerNoErr extends SchoolsDrawerPossibleError {}
 
 //! Selected type
 
-abstract class SelectedType {}
+abstract class SelectedSchoolFeed {}
 
-class SelectedSchool extends SelectedType {
+class SelectedSchool extends SelectedSchoolFeed {
   final int id;
 
   SelectedSchool(this.id);
 }
 
-class SelectedAll extends SelectedType {}
+class SelectedAll extends SelectedSchoolFeed {}

@@ -26,7 +26,7 @@ class CreatePostCubit extends Cubit<CreatePostState> {
           },
         ))
             .fold(
-          (failure) => emit(PostError(message: failure.message())),
+          (failure) => emit(PostError(message: failure.msg())),
           (response) {
             if (response.statusCode.toString()[0] == "2") {
               emit(PostSuccessfullySubmitted());

@@ -26,12 +26,12 @@ enum Verb {
 
 class ApiServerFailure extends FailureWithMsg {
   @override
-  String message() => "Server error";
+  String msg() => "Server error";
 }
 
 class ApiConnectionFailure extends FailureWithMsg {
   @override
-  String message() => "Connection error";
+  String msg() => "Connection error";
 }
 
 class ApiTooManyGlobalRequests extends FailureWithMsg {
@@ -40,7 +40,7 @@ class ApiTooManyGlobalRequests extends FailureWithMsg {
   ApiTooManyGlobalRequests(this.resetInSeconds);
 
   @override
-  String message() =>
+  String msg() =>
       "Too many requests, wait ${addCommasToNumber(resetInSeconds)} ${isPlural(resetInSeconds) ? "seconds" : "second"}";
 }
 
@@ -50,13 +50,13 @@ class ApiTooManyEmailRequests extends FailureWithMsg {
   ApiTooManyEmailRequests(this.resetInSeconds);
 
   @override
-  String message() =>
+  String msg() =>
       "Too many email requests, wait ${addCommasToNumber(resetInSeconds)} ${isPlural(resetInSeconds) ? "seconds" : "second"}";
 }
 
 class ApiTimeoutFailure extends FailureWithMsg {
   @override
-  String message() => "Connection timeout error";
+  String msg() => "Connection timeout error";
 }
 
 String apiVerbToString(Verb method) {

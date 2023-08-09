@@ -105,7 +105,7 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
 
     return response.fold(
       (failureWithMsg) {
-        return Left(failureWithMsg.message());
+        return Left(failureWithMsg.msg());
       },
       (response) async {
         if (response.statusCode.toString()[0] != "2") {
@@ -253,7 +253,7 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
         if (state is CommentSectionData) {
           emit((state as CommentSectionData).copyWith(paginationState: CommentFeedState.error));
         } else {
-          emit(CommentSectionError(failureWithMsg.message()));
+          emit(CommentSectionError(failureWithMsg.msg()));
         }
       },
       (response) async {

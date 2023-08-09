@@ -25,7 +25,7 @@ class SearchSchoolsCubit extends Cubit<SearchSchoolsState> {
       {},
     ))
         .fold(
-      (failureWithMsg) => emit(SearchSchoolsError(failureWithMsg.message())),
+      (failureWithMsg) => emit(SearchSchoolsError(failureWithMsg.msg())),
       (response) async {
         if (response.statusCode.toString()[0] == "4") {
           emit(const SearchSchoolsError("TODO: 4XX"));
@@ -59,7 +59,7 @@ class SearchSchoolsCubit extends Cubit<SearchSchoolsState> {
       {},
     ))
         .fold(
-      (failureWithMsg) => emit(SearchSchoolsError(failureWithMsg.message())),
+      (failureWithMsg) => emit(SearchSchoolsError(failureWithMsg.msg())),
       (response) async {
         if (response.statusCode.toString()[0] == "4") {
           emit(const SearchSchoolsError("TODO: 4XX"));

@@ -5,6 +5,7 @@ import 'package:confesi/core/services/user_auth/user_auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:ordered_set/ordered_set.dart';
 
+import '../../../application/feed/cubit/schools_drawer_cubit.dart';
 import '../../../application/user/cubit/saved_posts_cubit.dart';
 import '../../../init.dart';
 import '../../../models/post.dart';
@@ -125,9 +126,20 @@ class PostsService extends ChangeNotifier {
 
   void clearSentimentPosts() => sentimentPostIds.clear();
 
+  void reloadAllFeeds() {
+    // set pagination states to loading
+    trendingPaginationState = PaginationState.loading;
+    recentsPaginationState = PaginationState.loading;
+    sentimentPaginationState = PaginationState.loading;
+    clearTrendingPosts();
+    clearRecentsPosts();
+    clearSentimentPosts();
+    notifyListeners();
+  }
+
   void notify() => notifyListeners();
 
-  Future<void> loadMore(FeedType feedType, int schoolId, {bool refresh = false, bool allSchools = false}) async {
+  Future<void> loadMore(FeedType feedType, SelectedSchoolFeed selectedType, {bool refresh = false}) async {
     _cancelCurrentReq(feedType);
     if (refresh) {
       _clearPosts(feedType);
@@ -139,9 +151,9 @@ class PostsService extends ChangeNotifier {
       {
         "purge_cache": refresh,
         "sort": _sort(feedType),
-        "school_id": schoolId,
+        "school_id": selectedType is SelectedSchool ? selectedType.id : null,
         "session_key": _sessionKey(feedType),
-        "all_schools": allSchools,
+        "all_schools": selectedType is SelectedAll,
       },
     ))
         .fold(

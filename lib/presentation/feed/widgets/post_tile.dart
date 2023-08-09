@@ -83,14 +83,14 @@ class PostTile extends StatelessWidget {
                                       Text(
                                         "${post.school.name}${buildFaculty(post)}${buildYear(post)}",
                                         style: kDetail.copyWith(
-                                          color: Theme.of(context).colorScheme.onSurface,
+                                          color: Theme.of(context).colorScheme.secondary,
                                         ),
                                         textAlign: TextAlign.left,
                                       ),
                                       Text(
                                         "${timeAgoFromMicroSecondUnixTime(post.createdAt)}${post.emojis.isNotEmpty ? " • ${post.emojis.map((e) => e).join("")}" : ""}",
                                         style: kDetail.copyWith(
-                                          color: Theme.of(context).colorScheme.onSurface,
+                                          color: Theme.of(context).colorScheme.tertiary,
                                         ),
                                         textAlign: TextAlign.left,
                                       ),

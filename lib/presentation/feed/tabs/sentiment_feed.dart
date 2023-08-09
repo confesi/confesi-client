@@ -4,6 +4,7 @@ import 'package:confesi/presentation/shared/edited_source_widgets/swipe_refresh.
 import 'package:flutter/material.dart';
 import 'package:confesi/core/services/global_content/global_content.dart';
 import 'package:provider/provider.dart';
+import '../../../application/feed/cubit/schools_drawer_cubit.dart';
 import '../../../core/styles/typography.dart';
 import '../../../core/types/infinite_scrollable_indexable.dart';
 import '../../../init.dart';
@@ -54,15 +55,15 @@ class _ExploreSentimentState extends State<ExploreSentiment> with AutomaticKeepA
             .toList()),
       // Load more logic if needed
       loadMore: (_) async =>
-          await sl.get<PostsService>().loadMore(FeedType.sentiment, 1, refresh: service.sentimentPostIds.isEmpty),
+          await sl.get<PostsService>().loadMore(FeedType.sentiment, context.read<SchoolsDrawerCubit>().selectedSchoolFeed, refresh: service.sentimentPostIds.isEmpty),
       hasError: pState == PaginationState.error,
       onErrorButtonPressed: () async =>
-          await sl.get<PostsService>().loadMore(FeedType.sentiment, 1, refresh: service.sentimentPostIds.isEmpty),
+          await sl.get<PostsService>().loadMore(FeedType.sentiment, context.read<SchoolsDrawerCubit>().selectedSchoolFeed, refresh: service.sentimentPostIds.isEmpty),
 
-      onPullToRefresh: () async => await sl.get<PostsService>().loadMore(FeedType.sentiment, 1, refresh: true),
+      onPullToRefresh: () async => await sl.get<PostsService>().loadMore(FeedType.sentiment, context.read<SchoolsDrawerCubit>().selectedSchoolFeed, refresh: true),
       onWontLoadMoreButtonPressed: () async => service.recentsPostIds.isEmpty
-          ? await sl.get<PostsService>().loadMore(FeedType.sentiment, 1, refresh: true)
-          : await sl.get<PostsService>().loadMore(FeedType.sentiment, 1), // todo: school id,
+          ? await sl.get<PostsService>().loadMore(FeedType.sentiment, context.read<SchoolsDrawerCubit>().selectedSchoolFeed, refresh: true)
+          : await sl.get<PostsService>().loadMore(FeedType.sentiment, context.read<SchoolsDrawerCubit>().selectedSchoolFeed), // todo: school id,
       wontLoadMore: pState == PaginationState.end,
       wontLoadMoreMessage: "You've reached the end",
     );

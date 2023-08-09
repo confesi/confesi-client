@@ -30,7 +30,7 @@ class SavedPostsCubit extends Cubit<SavedPostsState> {
         if (state is SavedPostsData) {
           emit((state as SavedPostsData).copyWith(paginationState: PaginationState.error));
         } else {
-          emit(SavedPostsError(failureWithMsg.message()));
+          emit(SavedPostsError(failureWithMsg.msg()));
         }
       },
       (response) async {

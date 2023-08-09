@@ -43,16 +43,13 @@ class DrawerUniversityTile extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 10),
-              AnimatedSwitcher(
-                duration: const Duration(milliseconds: 250),
-                child: isLoading
-                    ? CupertinoActivityIndicator(color: Theme.of(context).colorScheme.primary)
-                    : Icon(
-                        CupertinoIcons.arrow_right,
-                        size: 18,
-                        color: Theme.of(context).colorScheme.onSurface,
-                      ),
-              ),
+              isLoading
+                  ? CupertinoActivityIndicator(color: Theme.of(context).colorScheme.primary)
+                  : Icon(
+                      CupertinoIcons.arrow_right,
+                      size: 18,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
             ],
           ),
         ),

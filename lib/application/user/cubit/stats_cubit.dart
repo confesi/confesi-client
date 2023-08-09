@@ -14,7 +14,7 @@ class StatsCubit extends Cubit<StatsState> {
   Future<void> loadStats() async {
     emit(StatsLoading());
     (await Api().req(Verb.get, true, "/api/v1/user/user-stats", {})).fold(
-      (failureWithMessage) => emit(StatsError(failureWithMessage.message())),
+      (failureWithMessage) => emit(StatsError(failureWithMessage.msg())),
       (response) async {
         try {
           if (response.statusCode.toString()[0] == "4") {

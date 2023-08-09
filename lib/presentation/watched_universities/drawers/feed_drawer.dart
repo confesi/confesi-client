@@ -1,4 +1,5 @@
 import 'package:confesi/core/services/global_content/global_content.dart';
+import 'package:confesi/core/services/posts_service/posts_service.dart';
 import 'package:confesi/models/school_with_metadata.dart';
 import 'package:confesi/presentation/shared/indicators/loading_or_alert.dart';
 import 'package:flutter/material.dart';
@@ -15,15 +16,8 @@ import '../widgets/section_accordian.dart';
 import '../../shared/buttons/simple_text.dart';
 import 'package:confesi/presentation/shared/edited_source_widgets/swipe_refresh.dart';
 
-class FeedDrawer extends StatefulWidget {
+class FeedDrawer extends StatelessWidget {
   const FeedDrawer({Key? key}) : super(key: key);
-
-  @override
-  State<FeedDrawer> createState() => _FeedDrawerState();
-}
-
-class _FeedDrawerState extends State<FeedDrawer> {
-  bool randomSchoolLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -56,25 +50,32 @@ class _FeedDrawerState extends State<FeedDrawer> {
             ),
             ...schools.where((school) => school.home).map((watchedHomeSchool) => DrawerUniversityTile(
                   text: "Home: ${watchedHomeSchool.name}",
-                  onTap: () =>
-                      context.read<SchoolsDrawerCubit>().setSelectedSchoolInUI(SelectedSchool(watchedHomeSchool.id)),
+                  onTap: () {
+                    context.read<SchoolsDrawerCubit>().setSelectedSchoolInUI(SelectedSchool(watchedHomeSchool.id));
+                    Provider.of<PostsService>(context, listen: false).reloadAllFeeds();
+                  },
                 )),
-            DrawerUniversityTile(
-              isLoading: randomSchoolLoading,
-              text: "Random 🎲",
-              // context.read<SchoolsDrawerCubit>().setSelectedSchoolInUI(SelectedRandom())
-              onTap: () async {
-                setState(() => randomSchoolLoading = true);
-                await context.read<SchoolsDrawerCubit>().getAndSetRandomSchool().then((value) {
-                  if (mounted) {
-                    // setState(() => randomSchoolLoading = false);
-                  }
-                });
-              },
+            IgnorePointer(
+              ignoring: state.isLoadingRandomSchool,
+              child: DrawerUniversityTile(
+                isLoading: state.isLoadingRandomSchool,
+                text: "Random 🎲",
+                // context.read<SchoolsDrawerCubit>().setSelectedSchoolInUI(SelectedRandom())
+                onTap: () async {
+                  await context
+                      .read<SchoolsDrawerCubit>()
+                      .getAndSetRandomSchool(
+                          state.selected is SelectedSchool ? (state.selected as SelectedSchool).id : null)
+                      .then((value) => Provider.of<PostsService>(context, listen: false).reloadAllFeeds());
+                },
+              ),
             ),
             DrawerUniversityTile(
               text: "All ✨",
-              onTap: () => context.read<SchoolsDrawerCubit>().setSelectedSchoolInUI(SelectedAll()),
+              onTap: () {
+                context.read<SchoolsDrawerCubit>().setSelectedSchoolInUI(SelectedAll());
+                Provider.of<PostsService>(context, listen: false).reloadAllFeeds();
+              },
             ),
             SectionAccordian(
               startsOpen: false,
@@ -88,93 +89,92 @@ class _FeedDrawerState extends State<FeedDrawer> {
                           .then((f) =>
                               f.fold((_) => null, (errMsg) => context.read<NotificationsCubit>().showErr(errMsg))),
                       text: watchedSchool.name,
-                      onTap: () =>
-                          context.read<SchoolsDrawerCubit>().setSelectedSchoolInUI(SelectedSchool(watchedSchool.id)),
+                      onTap: () {
+                        context.read<SchoolsDrawerCubit>().setSelectedSchoolInUI(SelectedSchool(watchedSchool.id));
+                        Provider.of<PostsService>(context, listen: false).reloadAllFeeds();
+                      },
                     )),
               ],
             ),
           ],
         );
       } else {
-        return LoadingOrAlert(
-          message: StateMessage("Error loading", () => context.read<SchoolsDrawerCubit>().loadSchools()),
-          isLoading: state is SchoolsDrawerLoading,
+        return Padding(
+          padding: EdgeInsets.only(bottom: bottomSafeArea(context)),
+          child: LoadingOrAlert(
+            message: StateMessage("Error loading", () => context.read<SchoolsDrawerCubit>().loadSchools()),
+            isLoading: state is SchoolsDrawerLoading,
+          ),
         );
       }
     }
 
     return Drawer(
       backgroundColor: Theme.of(context).colorScheme.shadow,
-      child: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 250),
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              width: double.infinity,
-              // linear gradient
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.bottomLeft,
-                  end: Alignment.topRight,
-                  colors: [
-                    Theme.of(context).colorScheme.secondary,
-                    Theme.of(context).colorScheme.secondary,
-                    Theme.of(context).colorScheme.secondary,
-                    Theme.of(context).colorScheme.tertiary,
-                  ],
-                ),
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: double.infinity,
+            // linear gradient
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.bottomLeft,
+                end: Alignment.topRight,
+                colors: [
+                  Theme.of(context).colorScheme.secondary,
+                  Theme.of(context).colorScheme.secondary,
+                  Theme.of(context).colorScheme.secondary,
+                  Theme.of(context).colorScheme.tertiary,
+                ],
               ),
-              child: AnimatedSize(
-                duration: const Duration(milliseconds: 500),
-                curve: Curves.easeInOut,
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: SafeArea(
-                    bottom: false,
-                    child: Padding(
-                      padding: const EdgeInsets.all(15),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Currently viewing",
-                            style: kDetail.copyWith(
-                              color: Theme.of(context).colorScheme.onSecondary,
-                            ),
-                            textAlign: TextAlign.left,
+            ),
+            child: AnimatedSize(
+              duration: const Duration(milliseconds: 250),
+              curve: Curves.easeInOut,
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: SafeArea(
+                  bottom: false,
+                  child: Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Currently viewing",
+                          style: kDetail.copyWith(
+                            color: Theme.of(context).colorScheme.onSecondary,
                           ),
-                          const SizedBox(height: 5),
-                          Text(
-                            context.watch<SchoolsDrawerCubit>().state is SchoolsDrawerData
-                                ? context
-                                    .watch<SchoolsDrawerCubit>()
-                                    .selected(context, (context.read<SchoolsDrawerCubit>().state as SchoolsDrawerData))
-                                : "Loading...",
-                            style: kDisplay1.copyWith(color: Theme.of(context).colorScheme.onSecondary),
-                            textAlign: TextAlign.left,
-                          ),
-                        ],
-                      ),
+                          textAlign: TextAlign.left,
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          context.watch<SchoolsDrawerCubit>().state is SchoolsDrawerData
+                              ? context.watch<SchoolsDrawerCubit>().selectedStr(context)
+                              : context.watch<SchoolsDrawerCubit>().state is SchoolsDrawerLoading
+                                  ? "Loading..."
+                                  : "Error",
+                          style: kDisplay1.copyWith(color: Theme.of(context).colorScheme.onSecondary),
+                          textAlign: TextAlign.left,
+                        ),
+                      ],
                     ),
                   ),
                 ),
               ),
             ),
-            Expanded(
-              child: SwipeRefresh(
-                onRefresh: () async => await context.read<SchoolsDrawerCubit>().loadSchools(),
-                child: BlocBuilder<SchoolsDrawerCubit, SchoolsDrawerState>(
-                  builder: (context, state) => AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 250),
-                    child: buildChild(context, state),
-                  ),
-                ),
+          ),
+          Expanded(
+            child: SwipeRefresh(
+              onRefresh: () async => await context.read<SchoolsDrawerCubit>().loadSchools(),
+              child: BlocBuilder<SchoolsDrawerCubit, SchoolsDrawerState>(
+                builder: (context, state) => buildChild(context, state),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
