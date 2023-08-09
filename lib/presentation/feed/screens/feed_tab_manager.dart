@@ -1,9 +1,11 @@
+import 'package:confesi/presentation/feed/tabs/sentiment_feed.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/router/go_router.dart';
 import '../../shared/buttons/circle_emoji_button.dart';
 import '../../shared/layout/appbar.dart';
+import '../tabs/recents_feed.dart';
 import '../tabs/trending_feed.dart';
 
 enum FeedType {
@@ -108,28 +110,6 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
           ),
         ),
       ),
-    );
-  }
-}
-
-class ExploreRecents extends StatelessWidget {
-  const ExploreRecents({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text('Recents Feed'),
-    );
-  }
-}
-
-class ExploreSentiment extends StatelessWidget {
-  const ExploreSentiment({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text('Sentiment Feed'),
     );
   }
 }
