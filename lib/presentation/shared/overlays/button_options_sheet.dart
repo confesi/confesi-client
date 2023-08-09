@@ -1,3 +1,4 @@
+import 'package:confesi/core/utils/sizing/bottom_safe_area.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +15,7 @@ Future<dynamic> showButtonOptionsSheet(BuildContext context, List<OptionButton> 
     builder: (context) => ClipRRect(
       // borderRadius: const BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
+        padding: EdgeInsets.only(left: 15, right: 15, bottom: bottomSafeArea(context)),
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.only(topLeft: Radius.circular(0), topRight: Radius.circular(0)),

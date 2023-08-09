@@ -1,5 +1,6 @@
 import 'package:confesi/application/user/cubit/quick_actions_cubit.dart';
 import 'package:confesi/models/post.dart';
+import 'package:confesi/presentation/shared/behaviours/simulated_bottom_safe_area.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

@@ -195,8 +195,11 @@ class _CommentsHomeState extends State<CommentsHome> {
                                       .voteOnPost(widget.props.post, widget.props.post.userVote != -1 ? -1 : 0)
                                       .then((value) => value.fold(
                                           (err) => context.read<NotificationsCubit>().showErr(err), (_) => null))),
-                              icon4Selected: widget.props.post.userVote == 1,
-                              icon5Selected: widget.props.post.userVote == -1,
+                              icon4Selected:
+                                  Provider.of<GlobalContentService>(context).posts[widget.props.post.id]!.userVote == 1,
+                              icon5Selected:
+                                  Provider.of<GlobalContentService>(context).posts[widget.props.post.id]!.userVote ==
+                                      -1,
                             ),
                             Expanded(
                               child: AnimatedSwitcher(

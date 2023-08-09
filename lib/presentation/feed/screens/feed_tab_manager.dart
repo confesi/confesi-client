@@ -1,4 +1,5 @@
 import 'package:confesi/presentation/feed/tabs/sentiment_feed.dart';
+import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -39,6 +40,24 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
     _pageController.jumpToPage(nextPage);
   }
 
+  void previousPage() {
+    int currentPage = _pageController.page?.toInt() ?? 0;
+    int previousPage = (currentPage - 1) % FeedType.values.length;
+    setState(() {
+      selectedFeedType = FeedType.values[previousPage];
+    });
+    _pageController.jumpToPage(previousPage);
+  }
+
+  void nextPage() {
+    int currentPage = _pageController.page?.toInt() ?? 0;
+    int nextPage = (currentPage + 1) % FeedType.values.length;
+    setState(() {
+      selectedFeedType = FeedType.values[nextPage];
+    });
+    _pageController.jumpToPage(nextPage);
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -58,10 +77,17 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
                 centerWidget: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(
-                      CupertinoIcons.chevron_back,
-                      color: Theme.of(context).colorScheme.onSurface,
-                      size: 20,
+                    TouchableOpacity(
+                      onTap: () => previousPage(),
+                      child: Container(
+                        color: Colors.transparent,
+                        padding: const EdgeInsets.all(5),
+                        child: Icon(
+                          CupertinoIcons.chevron_back,
+                          color: Theme.of(context).colorScheme.onSurface,
+                          size: 20,
+                        ),
+                      ),
                     ),
                     const SizedBox(width: 7),
                     Padding(
@@ -75,10 +101,17 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
                                 : 'Recents ⏳',
                       ),
                     ),
-                    Icon(
-                      CupertinoIcons.chevron_forward,
-                      color: Theme.of(context).colorScheme.onSurface,
-                      size: 20,
+                    TouchableOpacity(
+                      onTap: () => nextPage(),
+                      child: Container(
+                        color: Colors.transparent,
+                        padding: const EdgeInsets.all(5),
+                        child: Icon(
+                          CupertinoIcons.chevron_forward,
+                          color: Theme.of(context).colorScheme.onSurface,
+                          size: 20,
+                        ),
+                      ),
                     ),
                   ],
                 ),

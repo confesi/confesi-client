@@ -169,11 +169,14 @@ class PostTile extends StatelessWidget {
                                 ),
                                 ReactionTile(
                                   onTap: () async => verifiedUserOnly(
-                                      context,
-                                      () async => await Provider.of<GlobalContentService>(context, listen: false)
-                                          .voteOnPost(post, post.userVote != 1 ? 1 : 0)
-                                          .then((value) => value.fold(
-                                              (err) => context.read<NotificationsCubit>().showErr(err), (_) => null))),
+                                    context,
+                                    () async => await Provider.of<GlobalContentService>(context, listen: false)
+                                        .voteOnPost(post, post.userVote != 1 ? 1 : 0)
+                                        .then(
+                                          (value) => value.fold(
+                                              (err) => context.read<NotificationsCubit>().showErr(err), (_) => null),
+                                        ),
+                                  ),
                                   isSelected: post.userVote == 1,
                                   amount: post.upvote,
                                   icon: CupertinoIcons.up_arrow,

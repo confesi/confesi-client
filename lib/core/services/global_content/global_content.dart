@@ -167,18 +167,23 @@ class GlobalContentService extends ChangeNotifier {
     // Check if the user is changing their vote
     bool changingVote = oldVote != newVote;
 
-    // Update the userVote optimistically
+    // Update the user's vote and associated counts
     comment.userVote = newVote;
-    // Update associated votes
+
+    // Revert the original vote counts
+    if (changingVote) {
+      if (oldVote == 1) {
+        comment.comment.upvote--;
+      } else if (oldVote == -1) {
+        comment.comment.downvote--;
+      }
+    }
+
+    // Increment the new vote counts
     if (newVote == 1) {
       comment.comment.upvote++;
-      if (oldVote == -1) comment.comment.downvote--;
     } else if (newVote == -1) {
       comment.comment.downvote++;
-      if (oldVote == 1) comment.comment.upvote--;
-    } else if (newVote == 0) {
-      if (oldVote == 1) comment.comment.upvote--;
-      if (oldVote == -1) comment.comment.downvote--;
     }
 
     notifyListeners();
@@ -195,46 +200,40 @@ class GlobalContentService extends ChangeNotifier {
       (responseEither) {
         return responseEither.fold(
           (failureWithMsg) {
-            // Revert to the oldVote and old votes if the request fails
-            comment.userVote = oldVote;
+            // Revert the user's vote and counts if the request fails
             if (changingVote) {
+              comment.userVote = oldVote;
               if (oldVote == 1) {
-                comment.comment.upvote--;
-                comment.comment.downvote++;
-              } else if (oldVote == -1) {
-                comment.comment.downvote--;
                 comment.comment.upvote++;
-              } else if (oldVote == 0) {
+              } else if (oldVote == -1) {
+                comment.comment.downvote++;
+              }
+              if (newVote == 1) {
+                comment.comment.upvote--;
+              } else if (newVote == -1) {
+                comment.comment.downvote--;
+              }
+              notifyListeners();
+            }
+            return const Left("Error voting");
+          },
+          (response) {
+            if (response.statusCode.toString()[0] != "2") {
+              // Revert the user's vote and counts if the request fails
+              if (changingVote) {
+                comment.userVote = oldVote;
+                if (oldVote == 1) {
+                  comment.comment.upvote++;
+                } else if (oldVote == -1) {
+                  comment.comment.downvote++;
+                }
                 if (newVote == 1) {
                   comment.comment.upvote--;
                 } else if (newVote == -1) {
                   comment.comment.downvote--;
                 }
+                notifyListeners();
               }
-            }
-            notifyListeners();
-            return const Left("Error voting");
-          },
-          (response) {
-            if (response.statusCode.toString()[0] != "2") {
-              // Revert to the oldVote and old votes if the request fails
-              comment.userVote = oldVote;
-              if (changingVote) {
-                if (oldVote == 1) {
-                  comment.comment.upvote--;
-                  comment.comment.downvote++;
-                } else if (oldVote == -1) {
-                  comment.comment.downvote--;
-                  comment.comment.upvote++;
-                } else if (oldVote == 0) {
-                  if (newVote == 1) {
-                    comment.comment.upvote--;
-                  } else if (newVote == -1) {
-                    comment.comment.downvote--;
-                  }
-                }
-              }
-              notifyListeners();
               return const Left("Error voting");
             }
             return Right(ApiSuccess());
@@ -258,18 +257,23 @@ class GlobalContentService extends ChangeNotifier {
     // Check if the user is changing their vote
     bool changingVote = oldVote != newVote;
 
-    // Update the userVote optimistically
+    // Update the user's vote and associated counts
     post.userVote = newVote;
-    // Update associated votes
+
+    // Revert the original vote counts
+    if (changingVote) {
+      if (oldVote == 1) {
+        post.upvote--;
+      } else if (oldVote == -1) {
+        post.downvote--;
+      }
+    }
+
+    // Increment the new vote counts
     if (newVote == 1) {
       post.upvote++;
-      if (oldVote == -1) post.downvote--;
     } else if (newVote == -1) {
       post.downvote++;
-      if (oldVote == 1) post.upvote--;
-    } else if (newVote == 0) {
-      if (oldVote == 1) post.upvote--;
-      if (oldVote == -1) post.downvote--;
     }
 
     notifyListeners();
@@ -286,40 +290,40 @@ class GlobalContentService extends ChangeNotifier {
       (responseEither) {
         return responseEither.fold(
           (failureWithMsg) {
-            // Revert to the oldVote and old votes if the request fails
-            post.userVote = oldVote;
+            // Revert the user's vote and counts if the request fails
             if (changingVote) {
+              post.userVote = oldVote;
               if (oldVote == 1) {
-                post.upvote--;
-                post.downvote++;
-              } else if (oldVote == -1) {
-                post.downvote--;
                 post.upvote++;
-              } else if (oldVote == 0) {
+              } else if (oldVote == -1) {
+                post.downvote++;
+              }
+              if (newVote == 1) {
+                post.upvote--;
+              } else if (newVote == -1) {
+                post.downvote--;
+              }
+              notifyListeners();
+            }
+            return const Left("Error voting");
+          },
+          (response) {
+            if (response.statusCode.toString()[0] != "2") {
+              // Revert the user's vote and counts if the request fails
+              if (changingVote) {
+                post.userVote = oldVote;
+                if (oldVote == 1) {
+                  post.upvote++;
+                } else if (oldVote == -1) {
+                  post.downvote++;
+                }
                 if (newVote == 1) {
                   post.upvote--;
                 } else if (newVote == -1) {
                   post.downvote--;
                 }
+                notifyListeners();
               }
-            }
-            notifyListeners();
-            return const Left("Error voting");
-          },
-          (response) {
-            if (response.statusCode.toString()[0] != "2") {
-              // Revert to the oldVote and old votes if the request fails
-              post.userVote = oldVote;
-              if (changingVote) {
-                if (oldVote == 1) {
-                  post.upvote--;
-                  post.downvote++;
-                } else if (oldVote == -1) {
-                  post.downvote--;
-                  post.upvote++;
-                }
-              }
-              notifyListeners();
               return const Left("Error voting");
             }
             return Right(ApiSuccess());
