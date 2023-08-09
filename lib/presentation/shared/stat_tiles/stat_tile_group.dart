@@ -7,6 +7,7 @@ class StatTileGroup extends StatelessWidget {
     super.key,
     required this.icon1Text,
     required this.icon2Text,
+    required this.icon3Text,
     required this.icon4Text,
     required this.icon5Text,
     required this.icon1OnPress,
@@ -15,14 +16,17 @@ class StatTileGroup extends StatelessWidget {
     required this.icon5OnPress,
     required this.icon4Selected,
     required this.icon5Selected,
+    required this.icon3OnPress,
   });
 
   final String icon1Text;
   final String icon2Text;
+  final String icon3Text;
   final String icon4Text;
   final String icon5Text;
   final VoidCallback icon1OnPress;
   final VoidCallback icon2OnPress;
+  final VoidCallback icon3OnPress;
   final VoidCallback icon4OnPress;
   final VoidCallback icon5OnPress;
   final bool icon4Selected;
@@ -42,6 +46,7 @@ class StatTileGroup extends StatelessWidget {
               children: [
                 StatTileItem(text: icon1Text, icon: CupertinoIcons.arrow_turn_up_left, onTap: () => icon1OnPress()),
                 StatTileItem(text: icon2Text, icon: CupertinoIcons.chat_bubble, onTap: () => icon2OnPress()),
+                StatTileItem(text: icon3Text, icon: CupertinoIcons.ellipsis, onTap: () => icon3OnPress()),
                 StatTileItem(
                   text: icon4Text,
                   icon: CupertinoIcons.arrow_up,

@@ -4,12 +4,14 @@ import 'package:confesi/application/comments/cubit/comment_section_cubit.dart';
 import 'package:confesi/application/comments/cubit/create_comment_cubit.dart';
 import 'package:confesi/core/services/create_comment_service/create_comment_service.dart';
 import 'package:confesi/core/services/global_content/global_content.dart';
+import 'package:confesi/core/utils/numbers/large_number_formatter.dart';
 import 'package:confesi/presentation/comments/widgets/sheet.dart';
 import 'package:confesi/presentation/comments/widgets/simple_comment_sort.dart';
 import 'package:confesi/presentation/shared/behaviours/nav_blocker.dart';
 import 'package:confesi/presentation/shared/behaviours/one_theme_status_bar.dart';
 import 'package:confesi/presentation/shared/indicators/loading_cupertino.dart';
 import 'package:confesi/presentation/shared/indicators/loading_or_alert.dart';
+import 'package:confesi/presentation/shared/other/widget_or_nothing.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -172,12 +174,14 @@ class _CommentsHomeState extends State<CommentsHome> {
                             StatTileGroup(
                               icon1Text: "Back",
                               icon2Text: addCommasToNumber(widget.props.post.commentCount),
-                              icon4Text: addCommasToNumber(widget.props.post.upvote),
-                              icon5Text: addCommasToNumber(widget.props.post.downvote),
+                              icon3Text: "More",
+                              icon4Text: largeNumberFormatter(widget.props.post.upvote),
+                              icon5Text: largeNumberFormatter(widget.props.post.downvote),
                               icon1OnPress: () => router.pop(context),
                               icon2OnPress: () => commentSheetController.isFocused()
                                   ? verifiedUserOnly(context, () => commentSheetController.unfocus())
                                   : verifiedUserOnly(context, () => commentSheetController.focus()),
+                              icon3OnPress: () => buildOptionsSheet(context, widget.props.post),
                               icon4OnPress: () async => verifiedUserOnly(
                                 context,
                                 () async => await Provider.of<GlobalContentService>(context, listen: false)
@@ -303,24 +307,19 @@ class _CommentsHomeState extends State<CommentsHome> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 15),
-                    Text(
-                      widget.props.post.title,
-                      style: kDisplay1.copyWith(
-                        color: Theme.of(context).colorScheme.primary,
+                    WidgetOrNothing(
+                      showWidget: widget.props.post.title.isNotEmpty,
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 15),
+                          Text(
+                            widget.props.post.title,
+                            style: kDisplay1.copyWith(
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
+                        ],
                       ),
-                      textAlign: TextAlign.left,
-                    ),
-                    const SizedBox(height: 15),
-                    Wrap(
-                      runSpacing: 10,
-                      spacing: 10,
-                      children: [
-                        SimpleTextButton(
-                          onTap: () => buildOptionsSheet(context, widget.props.post),
-                          text: "Advanced options",
-                        ),
-                      ],
                     ),
                     const SizedBox(height: 15),
                     Column(
@@ -342,13 +341,20 @@ class _CommentsHomeState extends State<CommentsHome> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 15),
-                    Text(
-                      widget.props.post.content,
-                      style: kBody.copyWith(
-                        color: Theme.of(context).colorScheme.primary,
+                    WidgetOrNothing(
+                      showWidget: widget.props.post.content.isNotEmpty,
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 15),
+                          Text(
+                            widget.props.post.content,
+                            style: kBody.copyWith(
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                            textAlign: TextAlign.left,
+                          ),
+                        ],
                       ),
-                      textAlign: TextAlign.left,
                     ),
                     const SizedBox(height: 15),
                   ],

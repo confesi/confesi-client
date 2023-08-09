@@ -32,7 +32,7 @@ class StatTileItem extends StatelessWidget {
         child: Container(
           color: Colors.transparent,
           child: Padding(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(5),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -41,7 +41,7 @@ class StatTileItem extends StatelessWidget {
                   color: iconColor ?? Theme.of(context).colorScheme.onSecondary,
                   // color: Colors.white,
                 ),
-                const SizedBox(height: 5),
+                const SizedBox(height: 3),
                 Text(
                   text,
                   style: kDetail.copyWith(

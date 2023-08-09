@@ -112,22 +112,30 @@ class PostTile extends StatelessWidget {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 10),
+                            padding: const EdgeInsets.only(left: 15, right: 15, top: 15),
                             child: Text(
-                              truncateText(post.title, postTitlePreviewLength),
+                              truncateText(post.title.isEmpty ? post.content : post.title, postTitlePreviewLength),
                               style: kDisplay1.copyWith(
                                 color: Theme.of(context).colorScheme.primary,
                               ),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 15),
-                            child: Text(
-                              truncateText(post.content, postBodyPreviewLength),
-                              style: kBody.copyWith(
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
-                              textAlign: TextAlign.left,
+                          WidgetOrNothing(
+                            showWidget: post.title.isNotEmpty && post.content.isNotEmpty,
+                            child: Column(
+                              children: [
+                                const SizedBox(height: 10),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                                  child: Text(
+                                    truncateText(post.content, postBodyPreviewLength),
+                                    style: kBody.copyWith(
+                                      color: Theme.of(context).colorScheme.primary,
+                                    ),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                           WidgetOrNothing(
