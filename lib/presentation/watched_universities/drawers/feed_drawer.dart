@@ -10,12 +10,20 @@ import '../../../application/user/cubit/notifications_cubit.dart';
 import '../../../core/router/go_router.dart';
 import '../../../core/styles/typography.dart';
 import '../../../core/utils/sizing/bottom_safe_area.dart';
+import '../../../core/utils/verified_students/verified_user_only.dart';
 import '../widgets/section_accordian.dart';
 import '../../shared/buttons/simple_text.dart';
 import 'package:confesi/presentation/shared/edited_source_widgets/swipe_refresh.dart';
 
-class FeedDrawer extends StatelessWidget {
+class FeedDrawer extends StatefulWidget {
   const FeedDrawer({Key? key}) : super(key: key);
+
+  @override
+  State<FeedDrawer> createState() => _FeedDrawerState();
+}
+
+class _FeedDrawerState extends State<FeedDrawer> {
+  bool randomSchoolLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -29,42 +37,44 @@ class FeedDrawer extends StatelessWidget {
           physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
           padding: EdgeInsets.only(bottom: bottomSafeArea(context)),
           children: [
-            Padding(
-              padding: const EdgeInsets.all(15),
-              child: SimpleTextButton(
-                infiniteWidth: true,
-                onTap: () => router.push("/schools/search"),
-                text: "Edit schools",
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
+                ),
+              ),
+              child: Column(
+                children: [
+                  SimpleTextButton(
+                    infiniteWidth: true,
+                    onTap: () => verifiedUserOnly(context, () => router.push("/schools/search")),
+                    text: "Edit schools",
+                  ),
+                ],
               ),
             ),
-            SectionAccordian(
-              startsOpen: false,
-              topBorder: true,
-              title: "Home school",
-              items: [
-                ...schools.where((school) => school.home).map((watchedHomeSchool) => DrawerUniversityTile(
-                      text: watchedHomeSchool.name,
-                      onTap: () => context
-                          .read<SchoolsDrawerCubit>()
-                          .setSelectedSchoolInUI(SelectedSchool(watchedHomeSchool.id)),
-                    )),
-              ],
+            ...schools.where((school) => school.home).map((watchedHomeSchool) => DrawerUniversityTile(
+                  text: "Home: ${watchedHomeSchool.name}",
+                  onTap: () =>
+                      context.read<SchoolsDrawerCubit>().setSelectedSchoolInUI(SelectedSchool(watchedHomeSchool.id)),
+                )),
+            DrawerUniversityTile(
+              isLoading: randomSchoolLoading,
+              text: "Random 🎲",
+              // context.read<SchoolsDrawerCubit>().setSelectedSchoolInUI(SelectedRandom())
+              onTap: () async {
+                setState(() => randomSchoolLoading = true);
+                await context.read<SchoolsDrawerCubit>().getAndSetRandomSchool().then((value) {
+                  if (mounted) {
+                    // setState(() => randomSchoolLoading = false);
+                  }
+                });
+              },
             ),
-            SectionAccordian(
-              startsOpen: false,
-              topBorder: true,
-              title: "Special",
-              items: [
-                DrawerUniversityTile(
-                  text: "Random",
-                  // context.read<SchoolsDrawerCubit>().setSelectedSchoolInUI(SelectedRandom())
-                  onTap: () => print("TODO: random"),
-                ),
-                DrawerUniversityTile(
-                  text: "All",
-                  onTap: () => context.read<SchoolsDrawerCubit>().setSelectedSchoolInUI(SelectedAll()),
-                )
-              ],
+            DrawerUniversityTile(
+              text: "All ✨",
+              onTap: () => context.read<SchoolsDrawerCubit>().setSelectedSchoolInUI(SelectedAll()),
             ),
             SectionAccordian(
               startsOpen: false,
@@ -87,7 +97,6 @@ class FeedDrawer extends StatelessWidget {
         );
       } else {
         return LoadingOrAlert(
-          onLoadNoSpinner: state is SchoolsDrawerLoading,
           message: StateMessage("Error loading", () => context.read<SchoolsDrawerCubit>().loadSchools()),
           isLoading: state is SchoolsDrawerLoading,
         );
@@ -103,9 +112,20 @@ class FeedDrawer extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              constraints: const BoxConstraints(minHeight: 175),
               width: double.infinity,
-              color: Theme.of(context).colorScheme.secondary,
+              // linear gradient
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.bottomLeft,
+                  end: Alignment.topRight,
+                  colors: [
+                    Theme.of(context).colorScheme.secondary,
+                    Theme.of(context).colorScheme.secondary,
+                    Theme.of(context).colorScheme.secondary,
+                    Theme.of(context).colorScheme.tertiary,
+                  ],
+                ),
+              ),
               child: AnimatedSize(
                 duration: const Duration(milliseconds: 500),
                 curve: Curves.easeInOut,

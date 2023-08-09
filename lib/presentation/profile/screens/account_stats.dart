@@ -112,7 +112,7 @@ class _AccountProfileStatsState extends State<AccountProfileStats> {
                             builder: (context, state) {
                               if (state is StatsData) {
                                 return TileGroup(
-                                  text: "Your stats (estimated)",
+                                  text: "How you compare to others",
                                   tiles: [
                                     StatTile(
                                       leftNumber: state.stats.likes,

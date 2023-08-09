@@ -50,7 +50,7 @@ class PostTile extends StatelessWidget {
                   right: -30,
                   child: Icon(
                     postCategoryToIcon(post.category.category),
-                    color: Theme.of(context).colorScheme.tertiary.withOpacity(0.1),
+                    color: Theme.of(context).colorScheme.tertiary.withOpacity(0.25),
                     size: 150,
                   ),
                 ),

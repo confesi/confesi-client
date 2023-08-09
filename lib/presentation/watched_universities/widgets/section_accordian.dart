@@ -16,12 +16,14 @@ class DrawerUniversityTile extends StatelessWidget {
     Key? key,
     required this.text,
     required this.onTap,
+    this.isLoading = false,
     this.onSwipe,
   }) : super(key: key);
 
   final VoidCallback onTap;
   final String text;
   final VoidCallback? onSwipe;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -41,10 +43,15 @@ class DrawerUniversityTile extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 10),
-              Icon(
-                CupertinoIcons.arrow_right,
-                size: 18,
-                color: Theme.of(context).colorScheme.onSurface,
+              AnimatedSwitcher(
+                duration: const Duration(milliseconds: 250),
+                child: isLoading
+                    ? CupertinoActivityIndicator(color: Theme.of(context).colorScheme.primary)
+                    : Icon(
+                        CupertinoIcons.arrow_right,
+                        size: 18,
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
               ),
             ],
           ),

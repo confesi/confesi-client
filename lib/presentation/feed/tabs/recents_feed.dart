@@ -56,7 +56,8 @@ class _ExploreRecentsState extends State<ExploreRecents> with AutomaticKeepAlive
       loadMore: (_) async =>
           await sl.get<PostsService>().loadMore(FeedType.recents, 1, refresh: service.recentsPostIds.isEmpty),
       hasError: pState == PaginationState.error,
-      onErrorButtonPressed: () async => await sl.get<PostsService>().loadMore(FeedType.recents, 1),
+      onErrorButtonPressed: () async =>
+          await sl.get<PostsService>().loadMore(FeedType.recents, 1, refresh: service.recentsPostIds.isEmpty),
       onPullToRefresh: () async => await sl.get<PostsService>().loadMore(FeedType.recents, 1, refresh: true),
       onWontLoadMoreButtonPressed: () async => service.recentsPostIds.isEmpty
           ? await sl.get<PostsService>().loadMore(FeedType.recents, 1, refresh: true)

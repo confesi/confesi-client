@@ -56,7 +56,8 @@ class _ExploreTrendingState extends State<ExploreTrending> with AutomaticKeepAli
       loadMore: (_) async =>
           await sl.get<PostsService>().loadMore(FeedType.trending, 1, refresh: service.trendingPostIds.isEmpty),
       hasError: pState == PaginationState.error,
-      onErrorButtonPressed: () async => await sl.get<PostsService>().loadMore(FeedType.trending, 1),
+      onErrorButtonPressed: () async =>
+          await sl.get<PostsService>().loadMore(FeedType.trending, 1, refresh: service.trendingPostIds.isEmpty),
       onPullToRefresh: () async => await sl.get<PostsService>().loadMore(FeedType.trending, 1, refresh: true),
       onWontLoadMoreButtonPressed: () async => service.recentsPostIds.isEmpty
           ? await sl.get<PostsService>().loadMore(FeedType.trending, 1, refresh: true)

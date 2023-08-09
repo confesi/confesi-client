@@ -1,3 +1,5 @@
+import 'package:confesi/presentation/shared/indicators/loading_or_alert.dart';
+
 import '../../../core/router/go_router.dart';
 
 import '../../../core/types/infinite_scrollable_indexable.dart';
@@ -39,12 +41,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   }
 
   Widget buildChild(BuildContext context, LeaderboardState state) {
-    if (state is LeaderboardLoading) {
-      return const Center(
-        key: ValueKey('loading'),
-        child: LoadingCupertinoIndicator(),
-      );
-    } else if (state is LeaderboardData) {
+    if (state is LeaderboardData) {
       return FeedList(
         controller: controller,
         loadMore: (id) {
@@ -68,13 +65,10 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         wontLoadMoreMessage: "todo: wont load more",
       );
     } else {
-      final error = state as LeaderboardError;
-      return Center(
-        key: const ValueKey('alert'),
-        child: AlertIndicator(
-          message: error.message,
-          onPress: () => context.read<LeaderboardCubit>().loadRankings(),
-        ),
+      return LoadingOrAlert(
+        message: StateMessage(state is LeaderboardError ? state.message : "Error loading",
+            () => context.read<LeaderboardCubit>().loadRankings()),
+        isLoading: state is LeaderboardLoading,
       );
     }
   }

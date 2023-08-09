@@ -1,6 +1,5 @@
 import 'package:confesi/presentation/shared/selection_groups/switch_selection_tile.dart';
 
-
 import '../../../shared/buttons/pop.dart';
 import '../../../shared/selection_groups/tile_group.dart';
 import '../../../shared/selection_groups/bool_selection_tile.dart';
@@ -25,8 +24,7 @@ class NotificationsSettingScreen extends StatelessWidget {
           child: Column(
             children: [
               AppbarLayout(
-                                  bottomBorder: true,
-
+                bottomBorder: true,
                 backgroundColor: Theme.of(context).colorScheme.shadow,
                 centerWidget: Text(
                   "Notifications",

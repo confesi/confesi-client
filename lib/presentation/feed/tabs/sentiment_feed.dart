@@ -56,7 +56,9 @@ class _ExploreSentimentState extends State<ExploreSentiment> with AutomaticKeepA
       loadMore: (_) async =>
           await sl.get<PostsService>().loadMore(FeedType.sentiment, 1, refresh: service.sentimentPostIds.isEmpty),
       hasError: pState == PaginationState.error,
-      onErrorButtonPressed: () async => await sl.get<PostsService>().loadMore(FeedType.sentiment, 1),
+      onErrorButtonPressed: () async =>
+          await sl.get<PostsService>().loadMore(FeedType.sentiment, 1, refresh: service.sentimentPostIds.isEmpty),
+
       onPullToRefresh: () async => await sl.get<PostsService>().loadMore(FeedType.sentiment, 1, refresh: true),
       onWontLoadMoreButtonPressed: () async => service.recentsPostIds.isEmpty
           ? await sl.get<PostsService>().loadMore(FeedType.sentiment, 1, refresh: true)

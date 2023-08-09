@@ -321,7 +321,7 @@ class _CommentsHomeState extends State<CommentsHome> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 15),
+                    const SizedBox(height: 10),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -345,7 +345,7 @@ class _CommentsHomeState extends State<CommentsHome> {
                       showWidget: widget.props.post.content.isNotEmpty,
                       child: Column(
                         children: [
-                          const SizedBox(height: 15),
+                          const SizedBox(height: 10),
                           Text(
                             widget.props.post.content,
                             style: kBody.copyWith(
