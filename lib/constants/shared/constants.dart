@@ -24,6 +24,8 @@ const int rankedSchoolsPageSize = 2;
 const int savedContentPageSize = 2;
 const int maxCommentLength = 200;
 
+const int postsPageSize = 10;
+
 const int commentSectionRootsLoadedInitially = 10;
 const int commentSectionRepliesLoadedInitially = 3;
 

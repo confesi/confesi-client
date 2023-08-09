@@ -22,6 +22,7 @@ import 'application/feed/cubit/sentiment_analysis_cubit.dart';
 import 'application/user/cubit/quick_actions_cubit.dart';
 import 'application/user/cubit/saved_posts_cubit.dart';
 import 'core/services/create_post_hint_text/create_post_hint_text.dart';
+import 'core/services/posts_service/posts_service.dart';
 import 'core/services/remote_config/remote_config.dart';
 import 'core/services/sharing/sharing.dart';
 import 'core/services/splash_screen_hint_text/splash_screen_hint_text.dart';
@@ -29,7 +30,6 @@ import 'core/services/user_auth/user_auth_data.dart';
 import 'core/services/user_auth/user_auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'core/services/hive/hive_client.dart';
-import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'core/services/fcm_notifications/notification_service.dart';
@@ -68,11 +68,12 @@ Future<void> initFirebase() async {
   final remoteConfigService = RemoteConfigService(sl());
   await remoteConfigService.init();
   sl.registerLazySingleton(() => remoteConfigService);
-  await FirebaseAppCheck.instance.activate(
-    webRecaptchaSiteKey: 'recaptcha-v3-site-key',
-    androidProvider: AndroidProvider.debug,
-    appleProvider: AppleProvider.appAttest,
-  );
+  // appcheck
+  // await FirebaseAppCheck.instance.activate(
+  //   webRecaptchaSiteKey: 'recaptcha-v3-site-key',
+  //   androidProvider: AndroidProvider.debug,
+  //   appleProvider: AppleProvider.appAttest,
+  // );
 }
 
 /// Injects the needed dependencies for the app to run.
@@ -105,6 +106,7 @@ Future<void> init() async {
   //! Services
   UserAuthService userAuthService = UserAuthService(sl());
   GlobalContentService globalContentService = GlobalContentService(Api(), Api(), Api());
+  PostsService postsService = PostsService(Api(), Api(), Api());
   CreateCommentService createCommentService = CreateCommentService();
 
   userAuthService.hive.registerAdapter<UserAuthData>(UserAuthDataAdapter());
@@ -114,6 +116,7 @@ Future<void> init() async {
   userAuthService.hive.registerAdapter(FcmTokenAdapter());
   sl.registerLazySingleton(() => userAuthService);
   sl.registerLazySingleton(() => globalContentService);
+  sl.registerLazySingleton(() => postsService);
   sl.registerLazySingleton(() => createCommentService);
   sl.registerLazySingleton(() => NotificationService()..init());
   sl.registerLazySingleton(() => CreatePostHintManager());

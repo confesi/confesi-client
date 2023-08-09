@@ -1,20 +1,12 @@
-import '../../../core/router/go_router.dart';
-
-import '../../shared/buttons/circle_emoji_button.dart';
-
-import '../tabs/trending_feed.dart';
-
-import '../../shared/behaviours/themed_status_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../core/router/go_router.dart';
+import '../../shared/buttons/circle_emoji_button.dart';
 import '../../shared/layout/appbar.dart';
-import '../tabs/recents_feed.dart';
+import '../tabs/trending_feed.dart';
 
-/// Which type of feed is selected.
-///
-/// Recents or Trending.
-enum SelectedFeedType {
+enum FeedType {
   recents,
   trending,
   sentiment,
@@ -30,78 +22,114 @@ class ExploreHome extends StatefulWidget {
 }
 
 class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClientMixin {
+  final PageController _pageController = PageController(initialPage: 0);
+  FeedType selectedFeedType = FeedType.recents;
+
   @override
   bool get wantKeepAlive => true;
 
-  SelectedFeedType selectedFeedType = SelectedFeedType.recents;
-
   void changeFeed() {
-    if (selectedFeedType == SelectedFeedType.recents) {
-      setState(() {
-        selectedFeedType = SelectedFeedType.trending;
-      });
-    } else if (selectedFeedType == SelectedFeedType.trending) {
-      setState(() {
-        selectedFeedType = SelectedFeedType.sentiment;
-      });
-    } else if (selectedFeedType == SelectedFeedType.sentiment) {
-      setState(() {
-        selectedFeedType = SelectedFeedType.recents;
-      });
-    }
+    int currentPage = _pageController.page?.toInt() ?? 0;
+    int nextPage = (currentPage + 1) % FeedType.values.length;
+    setState(() {
+      selectedFeedType = FeedType.values[nextPage];
+    });
+    _pageController.jumpToPage(nextPage);
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return ThemeStatusBar(
-      child: Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.background,
-        body: SafeArea(
-          child: Container(
-            color: Theme.of(context).colorScheme.background,
-            child: Column(
-              children: [
-                Builder(builder: (context) {
-                  return AppbarLayout(
-                    bottomBorder: true,
-                    backgroundColor: Theme.of(context).colorScheme.background,
-                    rightIconOnPress: () => router.push('/home/notifications'),
-                    rightIconVisible: true,
-                    rightIcon: CupertinoIcons.bell,
-                    centerWidget: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // Icon(
-                        //   CupertinoIcons.chevron_back,
-                        //   color: Theme.of(context).colorScheme.onSurface,
-                        //   size: 20,
-                        // ),
-                        // const SizedBox(width: 5),
-                        CircleEmojiButton(
-                          onTap: () => changeFeed(),
-                          text: selectedFeedType == SelectedFeedType.sentiment
-                              ? 'Positivity ✨'
-                              : selectedFeedType == SelectedFeedType.trending
-                                  ? 'Trending 🔥'
-                                  : 'Recents ⏳',
-                        ),
-                      ],
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
+      body: SafeArea(
+        child: Container(
+          color: Theme.of(context).colorScheme.shadow,
+          child: Column(
+            children: [
+              AppbarLayout(
+                bottomBorder: true,
+                backgroundColor: Theme.of(context).colorScheme.background,
+                rightIconOnPress: () => router.push('/home/notifications'),
+                rightIconVisible: true,
+                rightIcon: CupertinoIcons.bell,
+                centerWidget: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      CupertinoIcons.chevron_back,
+                      color: Theme.of(context).colorScheme.onSurface,
+                      size: 20,
                     ),
-                    leftIconVisible: true,
-                    leftIcon: CupertinoIcons.slider_horizontal_3,
-                    leftIconOnPress: () => widget.scaffoldKey.currentState!.openDrawer(),
-                  );
-                }),
-                Expanded(
-                  child:
-                      selectedFeedType == SelectedFeedType.trending ? const ExploreTrending() : const ExploreRecents(),
+                    const SizedBox(width: 5),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 5),
+                      child: CircleEmojiButton(
+                        onTap: () => changeFeed(),
+                        text: selectedFeedType == FeedType.sentiment
+                            ? 'Positivity ✨'
+                            : selectedFeedType == FeedType.trending
+                                ? 'Trending 🔥'
+                                : 'Recents ⏳',
+                      ),
+                    ),
+                    Icon(
+                      CupertinoIcons.chevron_forward,
+                      color: Theme.of(context).colorScheme.onSurface,
+                      size: 20,
+                    ),
+                    const SizedBox(width: 5),
+                  ],
                 ),
-              ],
-            ),
+                leftIconVisible: true,
+                leftIcon: CupertinoIcons.slider_horizontal_3,
+                leftIconOnPress: () => widget.scaffoldKey.currentState!.openDrawer(),
+              ),
+              Expanded(
+                child: PageView.builder(
+                  physics: const BouncingScrollPhysics(), // Add this line
+
+                  onPageChanged: (value) => setState(() {
+                    selectedFeedType = FeedType.values[value];
+                  }),
+                  controller: _pageController,
+                  itemCount: FeedType.values.length,
+                  itemBuilder: (context, index) {
+                    FeedType feedType = FeedType.values[index];
+                    return feedType == FeedType.trending
+                        ? const ExploreTrending()
+                        : feedType == FeedType.sentiment
+                            ? const ExploreSentiment()
+                            : const ExploreRecents();
+                  },
+                ),
+              ),
+            ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class ExploreRecents extends StatelessWidget {
+  const ExploreRecents({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text('Recents Feed'),
+    );
+  }
+}
+
+class ExploreSentiment extends StatelessWidget {
+  const ExploreSentiment({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text('Sentiment Feed'),
     );
   }
 }

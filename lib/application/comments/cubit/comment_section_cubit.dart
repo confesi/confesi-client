@@ -244,7 +244,7 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
         "post_id": postId,
         "sort": sort.name(),
         "purge_cache": refresh,
-        "session_key": sl.get<UserAuthService>().sessionKey,
+        "session_key": sl.get<UserAuthService>().baseSessionKey,
       },
     );
 

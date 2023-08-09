@@ -59,5 +59,3 @@ class SelectedSchool extends SelectedType {
 }
 
 class SelectedAll extends SelectedType {}
-
-class SelectedRandom extends SelectedType {}

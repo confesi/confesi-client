@@ -53,7 +53,7 @@ class LeaderboardCubit extends Cubit<LeaderboardState> {
       "/api/v1/schools/rank",
       {
         "purge_cache": refreshFeed,
-        "session_key": sl.get<UserAuthService>().sessionKey,
+        "session_key": sl.get<UserAuthService>().baseSessionKey,
         "include_users_school": refreshFeed,
         "start_view_date": oldStartViewDate.yearMonthDay(),
       },

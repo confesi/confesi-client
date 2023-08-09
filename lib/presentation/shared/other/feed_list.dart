@@ -145,9 +145,11 @@ class FeedList extends StatefulWidget {
     required this.wontLoadMoreMessage,
     this.shrinkWrap = false,
     this.isScrollable = true,
+    this.swipeRefreshEnabled = true,
     this.debug = false,
   });
 
+  final bool swipeRefreshEnabled;
   final bool debug;
   final bool isScrollable;
   final bool shrinkWrap;
@@ -199,8 +201,6 @@ class _FeedListState extends State<FeedList> {
         await widget.loadMore(
           widget.controller.items.isNotEmpty ? dartz.Right(widget.controller.items.last.id) : dartz.Left(NoneFailure()),
         );
-        // if (widget.debug) context.read<NotificationsCubit>().show("LOAD MORE");
-
         isCurrentlyLoadingMore = false;
       } else {
         widget.controller.notify();
@@ -216,7 +216,7 @@ class _FeedListState extends State<FeedList> {
   Widget buildIndicator() {
     if (widget.hasError) {
       return LoadingOrAlert(
-        key: const ValueKey("hasError"),
+        key: const ValueKey("has_error"),
         isLoading: errorLoadingMoreIsLoading,
         message: StateMessage("Error loading more", () async {
           if (!mounted) return;
@@ -232,7 +232,7 @@ class _FeedListState extends State<FeedList> {
       );
     } else {
       return LoadingOrAlert(
-        key: const ValueKey("hasEnd"),
+        key: const ValueKey("has_end"),
         isLoading: endOfFeedReachedIsLoading || (!widget.hasError && !widget.wontLoadMore),
         message: StateMessage(widget.wontLoadMoreMessage, () async {
           if (!mounted) return;
@@ -252,6 +252,7 @@ class _FeedListState extends State<FeedList> {
   @override
   Widget build(BuildContext context) {
     return SwipeRefresh(
+      enabled: widget.swipeRefreshEnabled,
       onRefresh: () async => await widget.onPullToRefresh(),
       child: ScrollablePositionedList.builder(
         shrinkWrap: widget.shrinkWrap,

@@ -11,9 +11,22 @@ class UserAuthService extends ChangeNotifier {
   bool isAnon = true;
   String email = "";
   String uid = "";
-  String sessionKey = "";
+  String baseSessionKey = "";
+  String sessionKeyTrending = "";
+  String sessionKeyRecents = "";
+  String sessionKeySentiment = "";
 
-  void setNewSessionKey() => sessionKey = sl.get<Uuid>().v4();
+  void setSessionKeys() {
+    _setBaseSessionKey();
+    _setSessionKeyTrending();
+    _setSessionKeyRecents();
+    _setSessionKeySentiment();
+  }
+
+  void _setBaseSessionKey() => baseSessionKey = sl.get<Uuid>().v4();
+  void _setSessionKeyTrending() => sessionKeyTrending = sl.get<Uuid>().v4();
+  void _setSessionKeyRecents() => sessionKeyRecents = sl.get<Uuid>().v4();
+  void _setSessionKeySentiment() => sessionKeySentiment = sl.get<Uuid>().v4();
 
   // default data
   UserAuthData get def => UserAuthData();
@@ -45,7 +58,10 @@ class UserAuthService extends ChangeNotifier {
     isAnon = true;
     email = "";
     uid = "";
-    sessionKey = "";
+    baseSessionKey = "";
+    sessionKeyTrending = "";
+    sessionKeyRecents = "";
+    sessionKeySentiment = "";
     notifyListeners();
   }
 

@@ -167,6 +167,7 @@ class _CommentsHomeState extends State<CommentsHome> {
                               )
                             : const SizedBox(),
                         child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             StatTileGroup(
                               icon1Text: "Back",
@@ -285,98 +286,97 @@ class _CommentsHomeState extends State<CommentsHome> {
           }
         }
       }
-
-      return FeedList(
-        header: Column(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 15),
-                      Text(
-                        widget.props.post.title,
-                        style: kDisplay1.copyWith(
-                          color: Theme.of(context).colorScheme.primary,
+      return Align(
+        alignment: Alignment.topCenter,
+        child: FeedList(
+          header: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 15),
+                    Text(
+                      widget.props.post.title,
+                      style: kDisplay1.copyWith(
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+                    const SizedBox(height: 15),
+                    Wrap(
+                      runSpacing: 10,
+                      spacing: 10,
+                      children: [
+                        SimpleTextButton(
+                          onTap: () => buildOptionsSheet(context, widget.props.post),
+                          text: "Advanced options",
                         ),
-                        textAlign: TextAlign.left,
-                      ),
-                      const SizedBox(height: 15),
-                      Wrap(
-                        runSpacing: 10,
-                        spacing: 10,
-                        children: [
-                          SimpleTextButton(
-                            onTap: () => buildOptionsSheet(context, widget.props.post),
-                            text: "Advanced options",
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "${widget.props.post.school.name}${buildFaculty(widget.props.post)}${buildYear(widget.props.post)} • ${widget.props.post.category.category.capitalize()}",
+                          style: kDetail.copyWith(
+                            color: Theme.of(context).colorScheme.onSurface,
                           ),
-                        ],
-                      ),
-                      const SizedBox(height: 15),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "${widget.props.post.school.name}${buildFaculty(widget.props.post)}${buildYear(widget.props.post)} • ${widget.props.post.category.category.capitalize()}",
-                            style: kDetail.copyWith(
-                              color: Theme.of(context).colorScheme.onSurface,
-                            ),
-                            textAlign: TextAlign.left,
-                          ),
-                          Text(
-                            "${timeAgoFromMicroSecondUnixTime(widget.props.post.createdAt)} • ${widget.props.post.emojis.map((e) => e).join(" ")}",
-                            style: kDetail.copyWith(
-                              color: Theme.of(context).colorScheme.onSurface,
-                            ),
-                            textAlign: TextAlign.left,
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 15),
-                      Text(
-                        widget.props.post.content,
-                        style: kBody.copyWith(
-                          color: Theme.of(context).colorScheme.primary,
+                          textAlign: TextAlign.left,
                         ),
-                        textAlign: TextAlign.left,
+                        Text(
+                          "${timeAgoFromMicroSecondUnixTime(widget.props.post.createdAt)} • ${widget.props.post.emojis.map((e) => e).join(" ")}",
+                          style: kDetail.copyWith(
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                    Text(
+                      widget.props.post.content,
+                      style: kBody.copyWith(
+                        color: Theme.of(context).colorScheme.primary,
                       ),
-                      const SizedBox(height: 15),
-                    ],
-                  ),
+                      textAlign: TextAlign.left,
+                    ),
+                    const SizedBox(height: 15),
+                  ],
                 ),
-                SimpleCommentSort(onSwitch: (newSort) => print(newSort)),
-              ],
-            ),
-          ],
+              ),
+              SimpleCommentSort(onSwitch: (newSort) => print(newSort)),
+            ],
+          ),
+          isScrollable: true,
+          shrinkWrap: true,
+          controller: feedController..items = commentWidgets,
+          loadMore: (_) async => await context.read<CommentSectionCubit>().loadInitial(
+              widget.props.post.id, CommentSortType.recent,
+              refresh: Provider.of<GlobalContentService>(context, listen: false).comments.isEmpty),
+          onPullToRefresh: () async {
+            Provider.of<GlobalContentService>(context, listen: false).clearComments();
+            context.read<CreateCommentCubit>().clear();
+            context.read<CommentSectionCubit>().clear();
+            await Future.wait([
+              context.read<SavedPostsCubit>().loadPosts(refresh: true),
+              context
+                  .read<CommentSectionCubit>()
+                  .loadInitial(widget.props.post.id, CommentSortType.recent, refresh: true),
+            ]);
+          },
+          hasError: state.paginationState == CommentFeedState.error,
+          wontLoadMore: state.paginationState == CommentFeedState.end,
+          onWontLoadMoreButtonPressed: () =>
+              context.read<CommentSectionCubit>().loadInitial(widget.props.post.id, CommentSortType.recent),
+          onErrorButtonPressed: () =>
+              context.read<CommentSectionCubit>().loadInitial(widget.props.post.id, CommentSortType.recent),
+          wontLoadMoreMessage:
+              state.paginationState == CommentFeedState.end ? "You've reached the end" : "Error loading",
         ),
-        isScrollable: true,
-        shrinkWrap: true,
-        controller: feedController..items = commentWidgets,
-        loadMore: (_) async => await context.read<CommentSectionCubit>().loadInitial(
-            widget.props.post.id, CommentSortType.recent,
-            refresh: Provider.of<GlobalContentService>(context, listen: false).comments.isEmpty),
-        onPullToRefresh: () async {
-          Provider.of<GlobalContentService>(context, listen: false).clearComments();
-          context.read<CreateCommentCubit>().clear();
-          context.read<CommentSectionCubit>().clear();
-          await Future.wait([
-            context.read<SavedPostsCubit>().loadPosts(refresh: true),
-            context
-                .read<CommentSectionCubit>()
-                .loadInitial(widget.props.post.id, CommentSortType.recent, refresh: true),
-          ]);
-        },
-        hasError: state.paginationState == CommentFeedState.error,
-        wontLoadMore: state.paginationState == CommentFeedState.end,
-        onWontLoadMoreButtonPressed: () =>
-            context.read<CommentSectionCubit>().loadInitial(widget.props.post.id, CommentSortType.recent),
-        onErrorButtonPressed: () =>
-            context.read<CommentSectionCubit>().loadInitial(widget.props.post.id, CommentSortType.recent),
-        wontLoadMoreMessage: state.paginationState == CommentFeedState.end ? "You've reached the end" : "Error loading",
       );
     } else {
       return LoadingOrAlert(

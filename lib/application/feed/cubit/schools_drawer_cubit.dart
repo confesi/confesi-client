@@ -20,8 +20,6 @@ class SchoolsDrawerCubit extends Cubit<SchoolsDrawerState> {
   String selected(BuildContext context, SchoolsDrawerData data) {
     if (data.selected is SelectedSchool) {
       return Provider.of<GlobalContentService>(context).schools[(data.selected as SelectedSchool).id]!.name;
-    } else if (data.selected is SelectedRandom) {
-      return "Random";
     } else {
       return "All";
     }

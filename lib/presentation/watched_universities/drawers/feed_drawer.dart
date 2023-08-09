@@ -57,7 +57,8 @@ class FeedDrawer extends StatelessWidget {
               items: [
                 DrawerUniversityTile(
                   text: "Random",
-                  onTap: () => context.read<SchoolsDrawerCubit>().setSelectedSchoolInUI(SelectedRandom()),
+                  // context.read<SchoolsDrawerCubit>().setSelectedSchoolInUI(SelectedRandom())
+                  onTap: () => print("TODO: random"),
                 ),
                 DrawerUniversityTile(
                   text: "All",

@@ -7,6 +7,7 @@ import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/results/failures.dart';
 import 'package:confesi/core/services/create_comment_service/create_comment_service.dart';
 import 'package:confesi/core/services/global_content/global_content.dart';
+import 'package:confesi/core/services/posts_service/posts_service.dart';
 import 'package:shake/shake.dart';
 
 import 'package:confesi/presentation/create_post/overlays/confetti_blaster.dart';
@@ -63,6 +64,7 @@ void main() async => await init().then(
                   ChangeNotifierProvider(create: (context) => sl<UserAuthService>(), lazy: true),
                   ChangeNotifierProvider(create: (context) => sl<GlobalContentService>(), lazy: true),
                   ChangeNotifierProvider(create: (context) => sl<CreateCommentService>(), lazy: true),
+                  ChangeNotifierProvider(create: (context) => sl<PostsService>(), lazy: true),
                 ],
                 child: MultiBlocProvider(
                   providers: [
@@ -193,13 +195,13 @@ class _MyAppState extends State<MyApp> {
               if (user.isAnonymous) {
                 sl.get<UserAuthService>().isAnon = true;
                 sl.get<UserAuthService>().uid = user.uid;
-                sl.get<UserAuthService>().setNewSessionKey();
+                sl.get<UserAuthService>().setSessionKeys();
                 router.go("/home");
               } else {
                 sl.get<UserAuthService>().isAnon = false;
                 sl.get<UserAuthService>().email = user.email!;
                 sl.get<UserAuthService>().uid = user.uid;
-                sl.get<UserAuthService>().setNewSessionKey();
+                sl.get<UserAuthService>().setSessionKeys();
                 if (user.emailVerified) {
                   router.go("/home");
                 } else {
@@ -210,6 +212,7 @@ class _MyAppState extends State<MyApp> {
               if (firstOpen) {
                 context.read<SchoolsDrawerCubit>().loadSchools();
                 firstOpen = false;
+                HapticFeedback.lightImpact();
               }
             });
           },

@@ -131,7 +131,10 @@ class SwipeRefresh extends StatefulWidget {
     this.semanticsValue,
     this.strokeWidth = RefreshProgressIndicator.defaultStrokeWidth,
     this.triggerMode = RefreshIndicatorTriggerMode.onEdge,
+    this.enabled = true,
   }) : super(key: key);
+
+  final bool enabled;
 
   /// The widget below this widget in the tree.
   ///
@@ -511,6 +514,9 @@ class SwipeRefreshState extends State<SwipeRefresh> with TickerProviderStateMixi
 
   @override
   Widget build(BuildContext context) {
+    if (!widget.enabled) {
+      return widget.child;
+    }
     assert(debugCheckHasMaterialLocalizations(context));
     final Widget child = NotificationListener<ScrollNotification>(
       onNotification: _handleScrollNotification,
@@ -532,6 +538,10 @@ class SwipeRefreshState extends State<SwipeRefresh> with TickerProviderStateMixi
 
     final bool showIndeterminateIndicator =
         _mode == _RefreshIndicatorMode.refresh || _mode == _RefreshIndicatorMode.done;
+
+    if (!widget.enabled) {
+      return child;
+    }
 
     return Stack(
       children: <Widget>[

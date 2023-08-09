@@ -22,8 +22,6 @@ class GlobalContentService extends ChangeNotifier {
   LinkedHashMap<int, CommentWithMetadata> comments = LinkedHashMap<int, CommentWithMetadata>();
   LinkedHashMap<int, SchoolWithMetadata> schools = LinkedHashMap<int, SchoolWithMetadata>();
 
-  // todo: use custom api clients
-
   Future<Either<ApiSuccess, String>> setHome(SchoolWithMetadata school) async {
     _setHomeApi.cancelCurrReq();
     // save old home

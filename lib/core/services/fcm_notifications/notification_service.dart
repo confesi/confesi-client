@@ -64,8 +64,8 @@ class NotificationService {
   ///
   /// This will sync the token with the server and update local storage for it if needed.
   Future<Either<Failure, ApiSuccess>> updateToken(String? uid) async {
-    print("****************************************** HIT UPDATE TOKEN ROUTE");
     final possibleCurrentFcmToken = await token;
+    print("FCM TOKEN => $possibleCurrentFcmToken");
     return possibleCurrentFcmToken.fold(
       (_) => Future.value(Left(GeneralFailure())),
       (currentFcmToken) async {

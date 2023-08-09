@@ -164,11 +164,9 @@ class _SectionAccordianState extends State<SectionAccordian> {
                             alignment: Alignment.centerRight,
                             child: Padding(
                               padding: const EdgeInsets.only(right: 15),
-                              child: InitScale(
-                                child: Icon(
-                                  CupertinoIcons.delete,
-                                  color: Theme.of(context).colorScheme.onError,
-                                ),
+                              child: Icon(
+                                CupertinoIcons.delete,
+                                color: Theme.of(context).colorScheme.onError,
                               ),
                             ),
                           ),
