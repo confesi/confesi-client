@@ -64,19 +64,17 @@ Future<dynamic> showRegisteredUserOnlySheet(BuildContext context, {VoidCallback?
                         autoPlay: true,
                         child: Bobbing(
                           child: Container(
-                            constraints: BoxConstraints(maxHeight: widthFraction(context, 0.8)),
-                            child: FractionallySizedBox(
-                              heightFactor: 0.5,
-                              child: AspectRatio(
-                                aspectRatio: 1,
-                                child: Image.asset(
-                                  "assets/images/logos/logo_transparent.png",
-                                ),
+                            constraints: const BoxConstraints(maxHeight: 100, maxWidth: 100),
+                            child: AspectRatio(
+                              aspectRatio: 1,
+                              child: Image.asset(
+                                "assets/images/logos/logo_transparent.png",
                               ),
                             ),
                           ),
                         ),
                       ),
+                      const SizedBox(height: 30),
                       Text(
                         "Verified students only!",
                         style: kDisplay1.copyWith(color: Theme.of(context).colorScheme.primary),
@@ -84,7 +82,7 @@ Future<dynamic> showRegisteredUserOnlySheet(BuildContext context, {VoidCallback?
                       ),
                       const SizedBox(height: 15),
                       Text(
-                        "To do this action, please create a non-guest account.",
+                        "Guests have read-only access. Registered users can do everything.",
                         style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
                         textAlign: TextAlign.center,
                       ),
@@ -92,7 +90,7 @@ Future<dynamic> showRegisteredUserOnlySheet(BuildContext context, {VoidCallback?
                       PopButton(
                         backgroundColor: Theme.of(context).colorScheme.secondary,
                         textColor: Theme.of(context).colorScheme.onSecondary,
-                        text: "Upgrade to full account",
+                        text: "Create account",
                         onPress: () {
                           router.pop();
                           router.push("/register", extra: const RegistrationPops(true));

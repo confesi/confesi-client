@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../../core/router/go_router.dart';
 import '../../../core/services/user_auth/user_auth_service.dart';
+import '../../../core/utils/verified_students/verified_user_only.dart';
 import '../../profile/screens/account_stats.dart';
 import '../../shared/other/widget_or_nothing.dart';
 
@@ -82,12 +83,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     onTap: (int newIndex) {
                       if (newIndex == 2) {
                         // create post
-                        if (sl.get<UserAuthService>().isAnon) {
-                          showRegisteredUserOnlySheet(context);
-                        } else {
+                        verifiedUserOnly(context, () {
                           router.push("/create");
                           context.read<PostCategoriesCubit>().resetCategoryAndText();
-                        }
+                        });
                       } else {
                         setState(() => currentIndex = newIndex);
                       }

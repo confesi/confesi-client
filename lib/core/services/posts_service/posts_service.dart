@@ -153,8 +153,6 @@ class PostsService extends ChangeNotifier {
         if (response.statusCode.toString()[0] == "2") {
           // success
           final posts = (json.decode(response.body)["value"] as List).map((i) => Post.fromJson(i)).toList();
-          print(posts);
-          // clear
           _addIdsToList(feedType, posts.map((e) => e.id).toList());
           sl.get<GlobalContentService>().setPosts(posts);
           if (posts.length < postsPageSize) {

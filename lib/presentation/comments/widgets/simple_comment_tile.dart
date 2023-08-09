@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:confesi/application/comments/cubit/comment_section_cubit.dart';
 import 'package:confesi/application/comments/cubit/create_comment_cubit.dart';
 import 'package:confesi/application/user/cubit/notifications_cubit.dart';
+import 'package:confesi/core/utils/verified_students/verified_user_only.dart';
 import 'package:confesi/presentation/comments/widgets/sheet.dart';
 import 'package:confesi/presentation/feed/widgets/reaction_tile.dart';
 import 'package:confesi/presentation/shared/behaviours/init_border_radius.dart';
@@ -230,33 +231,35 @@ class _SimpleCommentTileState extends State<SimpleCommentTile> {
                                 const SizedBox(width: 5),
                                 TouchableScale(
                                   onTap: () async {
-                                    if (!widget.commentSheetController.isFocused()) {
-                                      widget.commentSheetController.focus();
-                                    }
-                                    context.read<CreateCommentCubit>().updateReplyingTo(
-                                          ReplyingToUser(
-                                            replyingToCommentId: widget.comment.comment.id,
-                                            identifier: buildUserIdentifier,
-                                            rootCommentIdReplyingUnder:
-                                                widget.comment.comment.parentRoot ?? widget.comment.comment.id,
-                                          ),
-                                        );
-                                    context.read<CreateCommentCubit>().state is CreateCommentEnteringData &&
-                                            (context.read<CreateCommentCubit>().state as CreateCommentEnteringData)
-                                                .possibleReply is ReplyingToUser
-                                        ? context
-                                            .read<CommentSectionCubit>()
-                                            .indexFromCommentId(
-                                                ((context.read<CreateCommentCubit>().state as CreateCommentEnteringData)
-                                                        .possibleReply as ReplyingToUser)
-                                                    .replyingToCommentId)
-                                            .fold(
-                                                (idx) =>
-                                                    widget.feedController.scrollToIndex(idx + 1, hapticFeedback: false),
-                                                (r) => context
-                                                    .read<NotificationsCubit>()
-                                                    .showErr("Error jumping to comment"))
-                                        : null;
+                                    verifiedUserOnly(context, () {
+                                      if (!widget.commentSheetController.isFocused()) {
+                                        widget.commentSheetController.focus();
+                                      }
+                                      context.read<CreateCommentCubit>().updateReplyingTo(
+                                            ReplyingToUser(
+                                              replyingToCommentId: widget.comment.comment.id,
+                                              identifier: buildUserIdentifier,
+                                              rootCommentIdReplyingUnder:
+                                                  widget.comment.comment.parentRoot ?? widget.comment.comment.id,
+                                            ),
+                                          );
+                                      context.read<CreateCommentCubit>().state is CreateCommentEnteringData &&
+                                              (context.read<CreateCommentCubit>().state as CreateCommentEnteringData)
+                                                  .possibleReply is ReplyingToUser
+                                          ? context
+                                              .read<CommentSectionCubit>()
+                                              .indexFromCommentId(((context.read<CreateCommentCubit>().state
+                                                          as CreateCommentEnteringData)
+                                                      .possibleReply as ReplyingToUser)
+                                                  .replyingToCommentId)
+                                              .fold(
+                                                  (idx) => widget.feedController
+                                                      .scrollToIndex(idx + 1, hapticFeedback: false),
+                                                  (r) => context
+                                                      .read<NotificationsCubit>()
+                                                      .showErr("Error jumping to comment"))
+                                          : null;
+                                    });
                                   },
                                   child: Container(
                                     // Transparent container hitbox trick.
@@ -290,10 +293,17 @@ class _SimpleCommentTileState extends State<SimpleCommentTile> {
                                 ),
                                 ReactionTile(
                                   simpleView: true,
-                                  onTap: () async => await Provider.of<GlobalContentService>(context, listen: false)
-                                      .voteOnComment(widget.comment, widget.comment.userVote != 1 ? 1 : 0)
-                                      .then((value) => value.fold(
-                                          (err) => context.read<NotificationsCubit>().showErr(err), (_) => null)),
+                                  onTap: () async {
+                                    verifiedUserOnly(
+                                      context,
+                                      () async => await Provider.of<GlobalContentService>(context, listen: false)
+                                          .voteOnComment(widget.comment, widget.comment.userVote != 1 ? 1 : 0)
+                                          .then(
+                                            (value) => value.fold(
+                                                (err) => context.read<NotificationsCubit>().showErr(err), (_) => null),
+                                          ),
+                                    );
+                                  },
                                   extraLeftPadding: true,
                                   amount: widget.comment.comment.upvote,
                                   isSelected: widget.comment.userVote == 1,
@@ -302,10 +312,14 @@ class _SimpleCommentTileState extends State<SimpleCommentTile> {
                                 ),
                                 ReactionTile(
                                   simpleView: true,
-                                  onTap: () async => await Provider.of<GlobalContentService>(context, listen: false)
-                                      .voteOnComment(widget.comment, widget.comment.userVote != -1 ? -1 : 0)
-                                      .then((value) => value.fold(
-                                          (err) => context.read<NotificationsCubit>().showErr(err), (_) => null)),
+                                  onTap: () async {
+                                    verifiedUserOnly(context, () async {
+                                      await Provider.of<GlobalContentService>(context, listen: false)
+                                          .voteOnComment(widget.comment, widget.comment.userVote != -1 ? -1 : 0)
+                                          .then((value) => value.fold(
+                                              (err) => context.read<NotificationsCubit>().showErr(err), (_) => null));
+                                    });
+                                  },
                                   extraLeftPadding: true,
                                   amount: widget.comment.comment.downvote,
                                   isSelected: widget.comment.userVote == -1,

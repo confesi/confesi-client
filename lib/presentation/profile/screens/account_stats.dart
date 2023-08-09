@@ -4,6 +4,7 @@ import 'package:confesi/presentation/shared/selection_groups/tile_group.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/services/user_auth/user_auth_service.dart';
+import '../../../core/utils/verified_students/verified_user_only.dart';
 import '../../../init.dart';
 import '../../shared/overlays/registered_users_only_sheet.dart';
 import '../../shared/selection_groups/setting_tile.dart';
@@ -89,13 +90,7 @@ class _AccountProfileStatsState extends State<AccountProfileStats> {
                               SettingTile(
                                 leftIcon: CupertinoIcons.pencil,
                                 text: "School, faculty, and year",
-                                onTap: () {
-                                  if (sl.get<UserAuthService>().isAnon) {
-                                    showRegisteredUserOnlySheet(context);
-                                  } else {
-                                    router.push("/home/profile/account");
-                                  }
-                                },
+                                onTap: () => verifiedUserOnly(context, () => router.push("/home/profile/account")),
                               ),
                               RectangleTile(
                                 onLeftTap: () => router.push('/home/profile/saved/comments'),

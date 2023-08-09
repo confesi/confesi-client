@@ -26,6 +26,7 @@ import '../../../core/router/go_router.dart';
 import '../../../core/styles/typography.dart';
 import '../../../core/types/infinite_scrollable_indexable.dart';
 import '../../../core/utils/numbers/add_commas_to_number.dart';
+import '../../../core/utils/verified_students/verified_user_only.dart';
 import '../../../init.dart';
 import '../../../models/comment.dart';
 import '../../create_post/overlays/confetti_blaster.dart';
@@ -175,16 +176,21 @@ class _CommentsHomeState extends State<CommentsHome> {
                               icon5Text: addCommasToNumber(widget.props.post.downvote),
                               icon1OnPress: () => router.pop(context),
                               icon2OnPress: () => commentSheetController.isFocused()
-                                  ? commentSheetController.unfocus()
-                                  : commentSheetController.focus(),
-                              icon4OnPress: () async => await Provider.of<GlobalContentService>(context, listen: false)
-                                  .voteOnPost(widget.props.post, widget.props.post.userVote != 1 ? 1 : 0)
-                                  .then((value) => value.fold(
-                                      (err) => context.read<NotificationsCubit>().showErr(err), (_) => null)),
-                              icon5OnPress: () async => await Provider.of<GlobalContentService>(context, listen: false)
-                                  .voteOnPost(widget.props.post, widget.props.post.userVote != -1 ? -1 : 0)
-                                  .then((value) => value.fold(
-                                      (err) => context.read<NotificationsCubit>().showErr(err), (_) => null)),
+                                  ? verifiedUserOnly(context, () => commentSheetController.unfocus())
+                                  : verifiedUserOnly(context, () => commentSheetController.focus()),
+                              icon4OnPress: () async => verifiedUserOnly(
+                                context,
+                                () async => await Provider.of<GlobalContentService>(context, listen: false)
+                                    .voteOnPost(widget.props.post, widget.props.post.userVote != 1 ? 1 : 0)
+                                    .then((value) => value.fold(
+                                        (err) => context.read<NotificationsCubit>().showErr(err), (_) => null)),
+                              ),
+                              icon5OnPress: () async => verifiedUserOnly(
+                                  context,
+                                  () async => await Provider.of<GlobalContentService>(context, listen: false)
+                                      .voteOnPost(widget.props.post, widget.props.post.userVote != -1 ? -1 : 0)
+                                      .then((value) => value.fold(
+                                          (err) => context.read<NotificationsCubit>().showErr(err), (_) => null))),
                               icon4Selected: widget.props.post.userVote == 1,
                               icon5Selected: widget.props.post.userVote == -1,
                             ),

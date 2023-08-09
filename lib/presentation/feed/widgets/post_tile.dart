@@ -2,6 +2,7 @@ import 'package:confesi/application/user/cubit/notifications_cubit.dart';
 import 'package:confesi/application/user/cubit/quick_actions_cubit.dart';
 import 'package:confesi/core/services/global_content/global_content.dart';
 import 'package:confesi/core/utils/strings/truncate_text.dart';
+import 'package:confesi/core/utils/verified_students/verified_user_only.dart';
 import 'package:confesi/models/post.dart';
 import 'package:confesi/presentation/feed/widgets/reaction_tile.dart';
 import 'package:confesi/presentation/shared/other/widget_or_nothing.dart';
@@ -153,24 +154,30 @@ class PostTile extends StatelessWidget {
                                   icon: CupertinoIcons.chat_bubble,
                                   iconColor: Theme.of(context).colorScheme.tertiary,
                                   isSelected: true,
-                                  onTap: () =>
-                                      router.push("/home/posts/comments", extra: HomePostsCommentsProps(post, true)),
+                                  onTap: () => verifiedUserOnly(
+                                      context,
+                                      () => router.push("/home/posts/comments",
+                                          extra: HomePostsCommentsProps(post, true))),
                                 ),
                                 ReactionTile(
-                                  onTap: () async => await Provider.of<GlobalContentService>(context, listen: false)
-                                      .voteOnPost(post, post.userVote != 1 ? 1 : 0)
-                                      .then((value) => value.fold(
-                                          (err) => context.read<NotificationsCubit>().showErr(err), (_) => null)),
+                                  onTap: () async => verifiedUserOnly(
+                                      context,
+                                      () async => await Provider.of<GlobalContentService>(context, listen: false)
+                                          .voteOnPost(post, post.userVote != 1 ? 1 : 0)
+                                          .then((value) => value.fold(
+                                              (err) => context.read<NotificationsCubit>().showErr(err), (_) => null))),
                                   isSelected: post.userVote == 1,
                                   amount: post.upvote,
                                   icon: CupertinoIcons.up_arrow,
                                   iconColor: Theme.of(context).colorScheme.onErrorContainer,
                                 ),
                                 ReactionTile(
-                                  onTap: () async => await Provider.of<GlobalContentService>(context, listen: false)
-                                      .voteOnPost(post, post.userVote != -1 ? -1 : 0)
-                                      .then((value) => value.fold(
-                                          (err) => context.read<NotificationsCubit>().showErr(err), (_) => null)),
+                                  onTap: () async => verifiedUserOnly(
+                                      context,
+                                      () async => await Provider.of<GlobalContentService>(context, listen: false)
+                                          .voteOnPost(post, post.userVote != -1 ? -1 : 0)
+                                          .then((value) => value.fold(
+                                              (err) => context.read<NotificationsCubit>().showErr(err), (_) => null))),
                                   amount: post.downvote,
                                   icon: CupertinoIcons.down_arrow,
                                   iconColor: Theme.of(context).colorScheme.onSecondaryContainer,

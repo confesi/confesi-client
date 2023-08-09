@@ -4,6 +4,7 @@ import 'package:confesi/application/user/cubit/notifications_cubit.dart';
 import 'package:confesi/core/services/global_content/global_content.dart';
 import 'package:confesi/core/styles/typography.dart';
 import 'package:confesi/core/utils/colors/deterministic_random_color.dart';
+import 'package:confesi/core/utils/verified_students/verified_user_only.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:flutter/cupertino.dart';
@@ -163,6 +164,7 @@ class _CommentSheetState extends State<CommentSheet> {
             builder: (context, state) => buildBody(context, state),
           ),
           ExpandableTextfield(
+            verifiedUsersOnly: true,
             onChange: (_) {
               state is CreateCommentEnteringData && state.possibleReply is ReplyingToUser
                   ? context
@@ -207,8 +209,10 @@ class _CommentSheetState extends State<CommentSheet> {
                             tapType: TapType.strongImpact,
                             text: "Submit",
                             onTap: () {
-                              widget.onSubmit(commentController.text);
-                              setState(() => {});
+                              verifiedUserOnly(context, () {
+                                widget.onSubmit(commentController.text);
+                                setState(() => {});
+                              });
                             },
                           ),
                         ],

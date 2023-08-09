@@ -1,9 +1,12 @@
+import 'package:confesi/core/utils/verified_students/verified_user_only.dart';
 import 'package:flutter/services.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../core/services/user_auth/user_auth_service.dart';
 import '../../../core/styles/typography.dart';
+import '../../../init.dart';
 
 class ExpandableTextfield extends StatefulWidget {
   const ExpandableTextfield({
@@ -19,10 +22,12 @@ class ExpandableTextfield extends StatefulWidget {
     this.autoCorrectAndCaps = true,
     this.keyboardType = TextInputType.text,
     this.enableSuggestions = false,
+    this.verifiedUsersOnly = false,
     this.onChange,
     Key? key,
   }) : super(key: key);
 
+  final bool verifiedUsersOnly;
   final Function(String value)? onChange;
   final bool enableSuggestions;
   final TextInputType keyboardType;
@@ -87,8 +92,14 @@ class _ExpandableTextfieldState extends State<ExpandableTextfield> {
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 2),
                         child: TextField(
-                          onChanged: (value) => widget.onChange?.call(value),
+                          onChanged: (value) {
+                            widget.verifiedUsersOnly
+                                ? verifiedUserOnly(context, () => widget.onChange?.call(value),
+                                    onFail: () => widget.controller.clear())
+                                : widget.onChange?.call(value);
+                          },
                           autofocus: false,
+                          onTap: () => focusNode.unfocus(),
                           enableSuggestions: widget.enableSuggestions,
                           obscureText: widget.obscured,
                           inputFormatters: [

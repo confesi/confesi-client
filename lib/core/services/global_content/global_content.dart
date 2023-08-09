@@ -226,6 +226,12 @@ class GlobalContentService extends ChangeNotifier {
                 } else if (oldVote == -1) {
                   comment.comment.downvote--;
                   comment.comment.upvote++;
+                } else if (oldVote == 0) {
+                  if (newVote == 1) {
+                    comment.comment.upvote--;
+                  } else if (newVote == -1) {
+                    comment.comment.downvote--;
+                  }
                 }
               }
               notifyListeners();
@@ -289,6 +295,12 @@ class GlobalContentService extends ChangeNotifier {
               } else if (oldVote == -1) {
                 post.downvote--;
                 post.upvote++;
+              } else if (oldVote == 0) {
+                if (newVote == 1) {
+                  post.upvote--;
+                } else if (newVote == -1) {
+                  post.downvote--;
+                }
               }
             }
             notifyListeners();

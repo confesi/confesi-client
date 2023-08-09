@@ -87,7 +87,7 @@ class FeedDrawer extends StatelessWidget {
         );
       } else {
         return LoadingOrAlert(
-          onLoadNoSpinner: true,
+          onLoadNoSpinner: state is! SchoolsDrawerLoading,
           message: StateMessage("Error loading", () => context.read<SchoolsDrawerCubit>().loadSchools()),
           isLoading: state is SchoolsDrawerLoading,
         );
