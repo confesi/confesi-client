@@ -48,7 +48,7 @@ import 'core/styles/themes.dart';
 import 'firebase_options.dart';
 import 'init.dart';
 
-// FCM background messager handler. Required to be top-level. Needs `pragma` to prevent function being moved during release compilation.
+// FCM background messager handler. Required to be top-level. Needs `@pragma` to prevent function being moved during release compilation.
 @pragma('vm:entry-point')
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -233,7 +233,7 @@ class _MyAppState extends State<MyApp> {
       print("onMessage: $msg");
     });
     sl.get<NotificationService>().onMessageOpenedInApp((msg) {
-      print("onMessageOpenedApp: $msg");
+      print("onMessageOpenedApp: ${msg.data}");
     });
     sl
         .get<NotificationService>()
@@ -315,6 +315,7 @@ class _MyAppState extends State<MyApp> {
                             routeInformationProvider: router.routeInformationProvider,
                             routeInformationParser: router.routeInformationParser,
                             routerDelegate: router.routerDelegate,
+
                             debugShowCheckedModeBanner: false,
                             title: "Confesi",
                             theme: AppTheme.light,

@@ -36,6 +36,12 @@ flutter run --release
 The remote config representative JSON map is found in `~/lib/core/services/remote_config/remote_config.dart`. Edit this when updating the Firebase project's Remote Config in the dashboard.
 
 Always ensure every key **exists**. Do not just "remove" keys without ensuring they aren't being used by some version of the app.
+
+### Apple deep links
+
+**You can verify the `app-site-association` here:**
+
+`https://app-site-association.cdn-apple.com/a/v1/confesi.com`. Or, simply by plugging in YOUR DOMAIN to `confesi.com`.
  
 ### If something isn't working...
 

@@ -71,7 +71,7 @@ class _CommentsHomeState extends State<CommentsHome> {
       },
     );
     // post frame callback
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (widget.props.openKeyboard) commentSheetController.focus();
       Provider.of<GlobalContentService>(context, listen: false).clearComments();
       context.read<CreateCommentCubit>().clear();

@@ -41,8 +41,8 @@ class NotificationService {
     bool alert = true,
     bool announcement = true,
     bool badge = true,
-    bool carPlay = true,
-    bool criticalAlert = true,
+    bool carPlay = false,
+    bool criticalAlert = false,
     bool provisional = true,
     bool sound = true,
   }) async {
