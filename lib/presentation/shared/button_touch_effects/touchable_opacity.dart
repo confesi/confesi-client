@@ -10,10 +10,12 @@ class TouchableOpacity extends StatefulWidget {
     required this.onTap,
     this.onLongPress,
     this.onDoubleTap,
+    this.behavior = HitTestBehavior.opaque,
     this.tapType,
     Key? key,
   }) : super(key: key);
 
+  final HitTestBehavior behavior;
   final Widget child;
   final Function onTap;
   final bool tappable;
@@ -52,6 +54,7 @@ class _TouchableOpacityState extends State<TouchableOpacity> with SingleTickerPr
   Widget build(BuildContext context) {
     return widget.tappable
         ? GestureDetector(
+            behavior: widget.behavior,
             onTapDown: (_) {
               animController.forward();
               animController.addListener(() => setState(() {}));

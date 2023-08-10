@@ -34,12 +34,20 @@ class QuickActionsCubit extends Cubit<QuickActionsState> {
   void launchWebsite(String url) async {
     if (state is QuickActionsDefault) {
       try {
+        // Use a regular expression to check for a valid scheme (http/https)
+        RegExp schemeRegex = RegExp(r'^https?://', caseSensitive: false);
+
+        if (!schemeRegex.hasMatch(url)) {
+          // If the URL has no scheme, assume "https"
+          url = "https://$url";
+        }
+
         bool success = await launchUrl(Uri.parse(url));
         if (!success) {
-          emit((state as QuickActionsDefault).copyWith(possibleErr: QuickActionsErr("Error opening browser")));
+          emit((state as QuickActionsDefault).copyWith(possibleErr: QuickActionsErr("Error opening in browser")));
         }
       } catch (_) {
-        emit((state as QuickActionsDefault).copyWith(possibleErr: QuickActionsErr("Error opening browser")));
+        emit((state as QuickActionsDefault).copyWith(possibleErr: QuickActionsErr("Error opening in browser")));
       }
     }
   }

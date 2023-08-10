@@ -76,6 +76,9 @@ List<PostCategory> postCategories = const [
   PostCategory("Wholesome", CupertinoIcons.bandage),
 ];
 
+const int maxNumberOfLinkPreviewsPerPostTile = 3;
+const int maxNumberOfLinkPreviewsPerDetailCommentView = 15;
+
 const String confesiSupportEmail = "support@confesi.com";
 
 const String confesiAndroidPackageName = "com.confesi.app";

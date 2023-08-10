@@ -6,13 +6,22 @@ import '../indicators/loading_cupertino.dart';
 
 class CachedOnlineImage extends StatelessWidget {
   const CachedOnlineImage({
-    super.key,
+    Key? key,
     this.isCircle = false,
     required this.url,
-  });
+  }) : super(key: key);
 
   final String url;
   final bool isCircle;
+
+  String _ensureHttpsUrl(String inputUrl) {
+    if (!inputUrl.startsWith('https://') && !inputUrl.startsWith('http://')) {
+      print('https://$inputUrl');
+      return 'https://$inputUrl';
+    }
+    print(inputUrl);
+    return inputUrl;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +30,7 @@ class CachedOnlineImage extends StatelessWidget {
       child: CachedNetworkImage(
         fadeInDuration: const Duration(milliseconds: 250),
         fit: BoxFit.cover,
-        imageUrl: url,
+        imageUrl: _ensureHttpsUrl(url),
         placeholder: (context, url) => Container(
           color: Theme.of(context).colorScheme.surface,
           child: LoadingCupertinoIndicator(color: Theme.of(context).colorScheme.onSurface),

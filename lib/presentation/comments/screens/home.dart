@@ -28,6 +28,7 @@ import '../../../constants/shared/constants.dart';
 import '../../../core/router/go_router.dart';
 import '../../../core/styles/typography.dart';
 import '../../../core/types/infinite_scrollable_indexable.dart';
+import '../../../core/utils/funcs/links_from_text.dart';
 import '../../../core/utils/numbers/add_commas_to_number.dart';
 import '../../../core/utils/verified_students/verified_user_only.dart';
 import '../../../init.dart';
@@ -35,6 +36,7 @@ import '../../../models/comment.dart';
 import '../../create_post/overlays/confetti_blaster.dart';
 import '../../feed/methods/show_post_options.dart';
 import '../../feed/utils/post_metadata_formatters.dart';
+import '../../shared/behaviours/url_preview.dart';
 import '../widgets/simple_comment_root_group.dart';
 import '../widgets/simple_comment_tile.dart';
 import '../../shared/buttons/simple_text.dart';
@@ -370,6 +372,14 @@ class _CommentsHomeState extends State<CommentsHome> {
                             ],
                           ),
                         ),
+                        ...linksFromText(widget.props.post.content)
+                            .take(maxNumberOfLinkPreviewsPerDetailCommentView) // Limit to a maximum of 3 links
+                            .map((link) {
+                          return Padding(
+                            padding: const EdgeInsets.only(top: 15),
+                            child: UrlPreviewTile(url: link),
+                          );
+                        }).toList(),
                         const SizedBox(height: 15),
                       ],
                     ),

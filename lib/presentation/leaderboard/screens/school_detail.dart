@@ -89,7 +89,7 @@ class SchoolDetail extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: heightFraction(context, .4),
+                  height: heightFraction(context, .3),
                   child: Stack(
                     children: [
                       Positioned.fill(
@@ -149,7 +149,7 @@ class SchoolDetail extends StatelessWidget {
                         children: [
                           SimpleTextButton(
                             bgColor: Theme.of(context).colorScheme.surface,
-                            textColor: Theme.of(context).colorScheme.primary,
+                            textColor: Theme.of(context).colorScheme.secondary,
                             onTap: () {
                               context.read<SchoolsDrawerCubit>().setSelectedSchoolInUI(SelectedSchool(props.school.id));
                               router.go("/home");
@@ -160,7 +160,7 @@ class SchoolDetail extends StatelessWidget {
                           ),
                           SimpleTextButton(
                             bgColor: Theme.of(context).colorScheme.surface,
-                            textColor: Theme.of(context).colorScheme.primary,
+                            textColor: Theme.of(context).colorScheme.secondary,
                             onTap: () => context.read<QuickActionsCubit>().locateOnMaps(
                                 props.school.lat.toDouble(), props.school.lon.toDouble(), props.school.name),
                             text: "Locate on map",
@@ -169,7 +169,7 @@ class SchoolDetail extends StatelessWidget {
                             ignoring: Provider.of<GlobalContentService>(context).schools[props.school.id]!.home,
                             child: SimpleTextButton(
                               bgColor: Theme.of(context).colorScheme.surface,
-                              textColor: Theme.of(context).colorScheme.primary,
+                              textColor: Theme.of(context).colorScheme.secondary,
                               onTap: () async => await Provider.of<GlobalContentService>(context, listen: false)
                                   .setHome(props.school)
                                   .then((f) => f.fold(
@@ -181,7 +181,7 @@ class SchoolDetail extends StatelessWidget {
                           ),
                           SimpleTextButton(
                             bgColor: Theme.of(context).colorScheme.surface,
-                            textColor: Theme.of(context).colorScheme.primary,
+                            textColor: Theme.of(context).colorScheme.secondary,
                             onTap: () => context.read<QuickActionsCubit>().launchWebsite(props.school.website),
                             text: "Website",
                           ),
