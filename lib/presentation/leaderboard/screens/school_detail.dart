@@ -1,3 +1,5 @@
+import 'package:confesi/application/user/cubit/quick_actions_cubit.dart';
+import 'package:confesi/core/services/primary_tab_service/primary_tab_service.dart';
 import 'package:confesi/core/styles/typography.dart';
 import 'package:confesi/core/utils/sizing/height_fraction.dart';
 import 'package:confesi/presentation/shared/behaviours/simulated_bottom_safe_area.dart';
@@ -5,8 +7,13 @@ import 'package:confesi/presentation/shared/buttons/simple_text.dart';
 import 'package:confesi/presentation/shared/other/zoomable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../../application/feed/cubit/schools_drawer_cubit.dart';
+import '../../../application/user/cubit/notifications_cubit.dart';
 import '../../../core/router/go_router.dart';
+import '../../../core/services/global_content/global_content.dart';
+import '../../../core/services/posts_service/posts_service.dart';
 import '../../../core/utils/numbers/add_commas_to_number.dart';
 import '../../../core/utils/numbers/is_plural.dart';
 import '../../shared/buttons/circle_icon_btn.dart';
@@ -47,12 +54,21 @@ class SchoolDetail extends StatelessWidget {
                     loading: false,
                     justText: true,
                     onPress: () {
-                      print("tap");
+                      Provider.of<GlobalContentService>(context, listen: false)
+                          .updateWatched(
+                              props.school,
+                              !Provider.of<GlobalContentService>(context, listen: false)
+                                  .schools[props.school.id]!
+                                  .watched)
+                          .then((f) =>
+                              f.fold((_) => null, (errMsg) => context.read<NotificationsCubit>().showErr(errMsg)));
                     },
                     icon: CupertinoIcons.chevron_right,
                     backgroundColor: Theme.of(context).colorScheme.secondary,
                     textColor: Theme.of(context).colorScheme.onSecondary,
-                    text: 'Add school to watched',
+                    text: Provider.of<GlobalContentService>(context).schools[props.school.id]!.watched
+                        ? "Unwatch school"
+                        : "Watch school",
                   ),
                 ),
               ),
@@ -64,7 +80,7 @@ class SchoolDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.shadow,
       body: Stack(
         children: [
           SingleChildScrollView(
@@ -79,9 +95,9 @@ class SchoolDetail extends StatelessWidget {
                       Positioned.fill(
                         child: Container(
                           color: Theme.of(context).colorScheme.shadow,
-                          child: Zoomable(
-                            child: ClipRRect(
-                              borderRadius: const BorderRadius.all(Radius.circular(30)),
+                          child: ClipRRect(
+                            borderRadius: const BorderRadius.all(Radius.circular(30)),
+                            child: Zoomable(
                               child: CachedOnlineImage(
                                 url: props.school.imgUrl,
                               ),
@@ -134,25 +150,39 @@ class SchoolDetail extends StatelessWidget {
                           SimpleTextButton(
                             bgColor: Theme.of(context).colorScheme.surface,
                             textColor: Theme.of(context).colorScheme.primary,
-                            onTap: () => print("tap"),
+                            onTap: () {
+                              context.read<SchoolsDrawerCubit>().setSelectedSchoolInUI(SelectedSchool(props.school.id));
+                              router.go("/home");
+                              Provider.of<PrimaryTabControllerService>(context, listen: false).setTabIdx(0);
+                              Provider.of<PostsService>(context, listen: false).reloadAllFeeds();
+                            },
                             text: "Jump to this school's feed",
                           ),
                           SimpleTextButton(
                             bgColor: Theme.of(context).colorScheme.surface,
                             textColor: Theme.of(context).colorScheme.primary,
-                            onTap: () => print("todo: locate on map"),
+                            onTap: () => context.read<QuickActionsCubit>().locateOnMaps(
+                                props.school.lat.toDouble(), props.school.lon.toDouble(), props.school.name),
                             text: "Locate on map",
                           ),
-                          SimpleTextButton(
-                            bgColor: Theme.of(context).colorScheme.surface,
-                            textColor: Theme.of(context).colorScheme.primary,
-                            onTap: () => print("tap"),
-                            text: "Set as home",
+                          IgnorePointer(
+                            ignoring: Provider.of<GlobalContentService>(context).schools[props.school.id]!.home,
+                            child: SimpleTextButton(
+                              bgColor: Theme.of(context).colorScheme.surface,
+                              textColor: Theme.of(context).colorScheme.primary,
+                              onTap: () async => await Provider.of<GlobalContentService>(context, listen: false)
+                                  .setHome(props.school)
+                                  .then((f) => f.fold(
+                                      (_) => null, (errMsg) => context.read<NotificationsCubit>().showErr(errMsg))),
+                              text: Provider.of<GlobalContentService>(context).schools[props.school.id]!.home
+                                  ? "Current home school"
+                                  : "Set as home school",
+                            ),
                           ),
                           SimpleTextButton(
                             bgColor: Theme.of(context).colorScheme.surface,
                             textColor: Theme.of(context).colorScheme.primary,
-                            onTap: () => print("tap"),
+                            onTap: () => context.read<QuickActionsCubit>().launchWebsite(props.school.website),
                             text: "Website",
                           ),
                         ],

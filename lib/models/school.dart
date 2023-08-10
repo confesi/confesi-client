@@ -15,6 +15,7 @@ class School {
   int dailyHottests;
   String domain;
   String imgUrl;
+  String website;
 
   School({
     required this.id,
@@ -25,6 +26,7 @@ class School {
     required this.dailyHottests,
     required this.domain,
     required this.imgUrl,
+    required this.website,
   });
 
   factory School.fromJson(Map<String, dynamic> json) => School(
@@ -36,5 +38,6 @@ class School {
         dailyHottests: json["daily_hottests"],
         domain: json["domain"],
         imgUrl: json["img_url"],
+        website: json["website"],
       );
 }

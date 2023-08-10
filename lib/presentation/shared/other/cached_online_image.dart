@@ -26,10 +26,13 @@ class CachedOnlineImage extends StatelessWidget {
           color: Theme.of(context).colorScheme.surface,
           child: LoadingCupertinoIndicator(color: Theme.of(context).colorScheme.onSurface),
         ),
-        errorWidget: (context, url, error) => Center(
-          child: Text(
-            "Error loading image",
-            style: kDetail.copyWith(color: Theme.of(context).colorScheme.onSurface),
+        errorWidget: (context, url, error) => SafeArea(
+          bottom: false,
+          child: Center(
+            child: Text(
+              "Error loading image",
+              style: kDetail.copyWith(color: Theme.of(context).colorScheme.onSurface),
+            ),
           ),
         ),
       ),

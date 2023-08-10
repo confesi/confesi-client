@@ -18,6 +18,7 @@ class SchoolWithMetadata {
   bool home;
   bool watched;
   num distance;
+  String website;
 
   SchoolWithMetadata({
     required this.id,
@@ -31,6 +32,7 @@ class SchoolWithMetadata {
     required this.home,
     required this.watched,
     required this.distance,
+    required this.website,
   });
 
   SchoolWithMetadata copyWith({
@@ -45,6 +47,7 @@ class SchoolWithMetadata {
     bool? home,
     bool? watched,
     num? distance,
+    String? website,
   }) {
     return SchoolWithMetadata(
       id: id ?? this.id,
@@ -58,6 +61,7 @@ class SchoolWithMetadata {
       home: home ?? this.home,
       watched: watched ?? this.watched,
       distance: distance ?? this.distance,
+      website: website ?? this.website,
     );
   }
 
@@ -78,5 +82,6 @@ class SchoolWithMetadata {
         home: json["home"],
         watched: json["watched"],
         distance: json["distance"],
+        website: json["website"],
       );
 }

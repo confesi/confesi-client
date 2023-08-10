@@ -23,6 +23,7 @@ import 'application/user/cubit/quick_actions_cubit.dart';
 import 'application/user/cubit/saved_posts_cubit.dart';
 import 'core/services/create_post_hint_text/create_post_hint_text.dart';
 import 'core/services/posts_service/posts_service.dart';
+import 'core/services/primary_tab_service/primary_tab_service.dart';
 import 'core/services/remote_config/remote_config.dart';
 import 'core/services/sharing/sharing.dart';
 import 'core/services/splash_screen_hint_text/splash_screen_hint_text.dart';
@@ -108,6 +109,7 @@ Future<void> init() async {
   GlobalContentService globalContentService = GlobalContentService(Api(), Api(), Api());
   PostsService postsService = PostsService(Api(), Api(), Api());
   CreateCommentService createCommentService = CreateCommentService();
+  PrimaryTabControllerService primaryTabControllerService = PrimaryTabControllerService();
 
   userAuthService.hive.registerAdapter<UserAuthData>(UserAuthDataAdapter());
   userAuthService.hive.registerAdapter(ThemePrefAdapter());
@@ -117,6 +119,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => userAuthService);
   sl.registerLazySingleton(() => globalContentService);
   sl.registerLazySingleton(() => postsService);
+  sl.registerLazySingleton(() => primaryTabControllerService);
   sl.registerLazySingleton(() => createCommentService);
   sl.registerLazySingleton(() => NotificationService()..init());
   sl.registerLazySingleton(() => CreatePostHintManager());

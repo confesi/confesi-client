@@ -237,6 +237,11 @@ class SettingsHome extends StatelessWidget {
                                   text: "Acknowledgements",
                                   onTap: () => router.push("/settings/acknowledgements"),
                                 ),
+                                SettingTile(
+                                  leftIcon: CupertinoIcons.star,
+                                  text: "Review the app on the store",
+                                  onTap: () => context.read<QuickActionsCubit>().launchAppStoresReview(),
+                                ),
                               ],
                             ),
                             const SimulatedBottomSafeArea(),

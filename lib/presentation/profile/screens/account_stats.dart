@@ -1,4 +1,6 @@
 import 'package:confesi/application/user/cubit/stats_cubit.dart';
+import 'package:confesi/core/services/sharing/sharing.dart';
+import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:confesi/presentation/shared/indicators/loading_or_alert.dart';
 import 'package:confesi/presentation/shared/selection_groups/tile_group.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -111,30 +113,41 @@ class _AccountProfileStatsState extends State<AccountProfileStats> {
                           BlocBuilder<StatsCubit, StatsState>(
                             builder: (context, state) {
                               if (state is StatsData) {
-                                return TileGroup(
-                                  text: "How you compare to others",
-                                  tiles: [
-                                    StatTile(
-                                      leftNumber: state.stats.likes,
-                                      leftDescription: "Likes",
-                                      centerNumber: state.stats.hottest,
-                                      centerDescription: "Hottests",
-                                      rightNumber: state.stats.dislikes,
-                                      rightDescription: "Dislikes",
-                                    ),
-                                    TextStatTile(
-                                      leftText: "Likes 🎉",
-                                      rightText: percentToRelativeMsg(state.stats.likesPerc),
-                                    ),
-                                    TextStatTile(
-                                      leftText: "Hottests 🔥",
-                                      rightText: percentToRelativeMsg(state.stats.hottestPerc),
-                                    ),
-                                    TextStatTile(
-                                      leftText: "Dislikes 🤮",
-                                      rightText: percentToRelativeMsg(state.stats.dislikesPerc),
-                                    ),
-                                  ],
+                                return TouchableOpacity(
+                                  onTap: () => sl.get<Sharing>().shareStats(
+                                        context,
+                                        state.stats.likes,
+                                        state.stats.hottest,
+                                        state.stats.dislikes,
+                                        state.stats.likesPerc,
+                                        state.stats.hottestPerc,
+                                        state.stats.dislikesPerc,
+                                      ),
+                                  child: TileGroup(
+                                    text: "How you compare to others",
+                                    tiles: [
+                                      StatTile(
+                                        leftNumber: state.stats.likes,
+                                        leftDescription: "Likes",
+                                        centerNumber: state.stats.hottest,
+                                        centerDescription: "Hottests",
+                                        rightNumber: state.stats.dislikes,
+                                        rightDescription: "Dislikes",
+                                      ),
+                                      TextStatTile(
+                                        leftText: "Likes 🎉",
+                                        rightText: percentToRelativeMsg(state.stats.likesPerc),
+                                      ),
+                                      TextStatTile(
+                                        leftText: "Hottests 🔥",
+                                        rightText: percentToRelativeMsg(state.stats.hottestPerc),
+                                      ),
+                                      TextStatTile(
+                                        leftText: "Dislikes 🤮",
+                                        rightText: percentToRelativeMsg(state.stats.dislikesPerc),
+                                      ),
+                                    ],
+                                  ),
                                 );
                               } else {
                                 return LoadingOrAlert(

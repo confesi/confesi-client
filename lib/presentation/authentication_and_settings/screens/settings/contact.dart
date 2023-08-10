@@ -1,3 +1,6 @@
+import 'package:confesi/application/user/cubit/quick_actions_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../shared/behaviours/simulated_bottom_safe_area.dart';
 import '../../../shared/selection_groups/setting_tile.dart';
 import '../../../shared/behaviours/themed_status_bar.dart';
@@ -64,7 +67,7 @@ class _ContactScreenState extends State<ContactScreen> {
                             rightIcon: CupertinoIcons.link,
                             leftIcon: CupertinoIcons.mail,
                             text: "Open email",
-                            onTap: () => print("OPEN MAIL"),
+                            onTap: () => context.read<QuickActionsCubit>().launchMailClientWithToConfesiPopulated(),
                           ),
                         ],
                       ),

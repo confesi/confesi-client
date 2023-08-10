@@ -1,4 +1,5 @@
 import 'package:confesi/application/create_post/cubit/post_categories_cubit.dart';
+import 'package:confesi/core/services/primary_tab_service/primary_tab_service.dart';
 import 'package:confesi/init.dart';
 import 'package:provider/provider.dart';
 
@@ -32,8 +33,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   bool shakeSheetOpen = false;
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
 
-  int currentIndex = 0; // The current index of the tab open.
-
   final FeedListController recentsFeedListController = FeedListController();
   final FeedListController trendingFeedListController = FeedListController();
   final FeedListController sentimentFeedListController = FeedListController();
@@ -61,14 +60,14 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         child: Scaffold(
           backgroundColor: Theme.of(context).colorScheme.background,
           drawerScrimColor: Colors.black.withOpacity(0.7),
-          drawerEnableOpenDragGesture: currentIndex == 0,
+          drawerEnableOpenDragGesture: Provider.of<PrimaryTabControllerService>(context).tabIdx == 0,
           drawer: const FeedDrawer(), // Reference to the "watched_universities" feature drawer (feed_drawer).
           resizeToAvoidBottomInset: false,
           key: scaffoldKey,
           body: Center(
             child: Scaffold(
               body: IndexedStack(
-                index: currentIndex,
+                index: Provider.of<PrimaryTabControllerService>(context).tabIdx,
                 children: [
                   ExploreHome(
                     scaffoldKey: scaffoldKey,
@@ -96,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     onTap: (int newIndex) {
                       if (newIndex == 0) {
                         // explore
-                        if (currentIndex == 0) {
+                        if (Provider.of<PrimaryTabControllerService>(context, listen: false).tabIdx == 0) {
                           // if already on explore, scroll to top
                           // todo: scroll-to-top but it only works... sometimes??
                           // trendingFeedListController.scrollToTop();
@@ -104,11 +103,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           // sentimentFeedListController.scrollToTop();
                         } else {
                           // if not on explore, go to explore
-                          setState(() => currentIndex = newIndex);
+                          Provider.of<PrimaryTabControllerService>(context, listen: false).setTabIdx(newIndex);
                         }
                       } else if (newIndex == 1) {
                         // hottest
-                        setState(() => currentIndex = newIndex);
+                        Provider.of<PrimaryTabControllerService>(context, listen: false).setTabIdx(newIndex);
                       } else if (newIndex == 2) {
                         // create post
                         verifiedUserOnly(context, () {
@@ -116,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           context.read<PostCategoriesCubit>().resetCategoryAndText();
                         });
                       } else {
-                        setState(() => currentIndex = newIndex);
+                        Provider.of<PrimaryTabControllerService>(context, listen: false).setTabIdx(newIndex);
                       }
                     },
                     labelColor: Theme.of(context).colorScheme.secondary,
@@ -126,28 +125,28 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     tabs: [
                       _BottomTab(
                         indexMatcher: 0,
-                        currentIndex: currentIndex,
+                        currentIndex: Provider.of<PrimaryTabControllerService>(context).tabIdx,
                         icon: CupertinoIcons.compass,
                       ),
                       _BottomTab(
                         indexMatcher: 1,
-                        currentIndex: currentIndex,
+                        currentIndex: Provider.of<PrimaryTabControllerService>(context).tabIdx,
                         icon: CupertinoIcons.flame,
                       ),
                       _BottomTab(
                         indexMatcher: 2,
-                        currentIndex: currentIndex,
+                        currentIndex: Provider.of<PrimaryTabControllerService>(context).tabIdx,
                         icon: CupertinoIcons.add,
                       ),
                       _BottomTab(
                         indexMatcher: 3,
-                        currentIndex: currentIndex,
+                        currentIndex: Provider.of<PrimaryTabControllerService>(context).tabIdx,
                         icon: CupertinoIcons.chart_bar_alt_fill,
                       ),
                       _BottomTab(
                         hasNotification: false,
                         indexMatcher: 4,
-                        currentIndex: currentIndex,
+                        currentIndex: Provider.of<PrimaryTabControllerService>(context).tabIdx,
                         icon: CupertinoIcons.profile_circled,
                       ),
                     ],

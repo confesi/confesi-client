@@ -14,6 +14,7 @@ import 'package:confesi/presentation/shared/indicators/loading_or_alert.dart';
 import 'package:confesi/presentation/shared/other/widget_or_nothing.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/cli_commands.dart';
 import 'package:keyboard_attachable/keyboard_attachable.dart';
@@ -86,6 +87,15 @@ class _CommentsHomeState extends State<CommentsHome> {
     super.dispose();
   }
 
+  void upvote() {
+    verifiedUserOnly(
+      context,
+      () async => await Provider.of<GlobalContentService>(context, listen: false)
+          .voteOnPost(widget.props.post, widget.props.post.userVote != 1 ? 1 : 0)
+          .then((value) => value.fold((err) => context.read<NotificationsCubit>().showErr(err), (_) => null)),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return OneThemeStatusBar(
@@ -130,7 +140,6 @@ class _CommentsHomeState extends State<CommentsHome> {
                                               (_) => null, // do nothing
                                             );
                                       }
-                                      print("GOT INDEX OF $replyingToIdx");
                                       await context
                                           .read<CommentSectionCubit>()
                                           .uploadComment(
@@ -182,13 +191,7 @@ class _CommentsHomeState extends State<CommentsHome> {
                                   ? verifiedUserOnly(context, () => commentSheetController.unfocus())
                                   : verifiedUserOnly(context, () => commentSheetController.focus()),
                               icon3OnPress: () => buildOptionsSheet(context, widget.props.post),
-                              icon4OnPress: () async => verifiedUserOnly(
-                                context,
-                                () async => await Provider.of<GlobalContentService>(context, listen: false)
-                                    .voteOnPost(widget.props.post, widget.props.post.userVote != 1 ? 1 : 0)
-                                    .then((value) => value.fold(
-                                        (err) => context.read<NotificationsCubit>().showErr(err), (_) => null)),
-                              ),
+                              icon4OnPress: () async => upvote(),
                               icon5OnPress: () async => verifiedUserOnly(
                                   context,
                                   () async => await Provider.of<GlobalContentService>(context, listen: false)
@@ -305,62 +308,72 @@ class _CommentsHomeState extends State<CommentsHome> {
           header: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    WidgetOrNothing(
-                      showWidget: widget.props.post.title.isNotEmpty,
-                      child: Column(
-                        children: [
-                          const SizedBox(height: 15),
-                          Text(
-                            widget.props.post.title,
-                            style: kDisplay1.copyWith(
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Column(
+              GestureDetector(
+                onDoubleTap: () {
+                  HapticFeedback.lightImpact();
+                  upvote();
+                },
+                child: Container(
+                  // transparent container to make the whole header clickable
+                  color: Colors.transparent,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "${widget.props.post.school.name}${buildFaculty(widget.props.post)}${buildYear(widget.props.post)} • ${widget.props.post.category.category.capitalize()}",
-                          style: kDetail.copyWith(
-                            color: Theme.of(context).colorScheme.secondary,
+                        WidgetOrNothing(
+                          showWidget: widget.props.post.title.isNotEmpty,
+                          child: Column(
+                            children: [
+                              const SizedBox(height: 15),
+                              Text(
+                                widget.props.post.title,
+                                style: kDisplay1.copyWith(
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                              ),
+                            ],
                           ),
-                          textAlign: TextAlign.left,
                         ),
-                        Text(
-                          "${timeAgoFromMicroSecondUnixTime(widget.props.post.createdAt)}${widget.props.post.emojis.isNotEmpty ? " • ${widget.props.post.emojis.map((e) => e).join("")}" : ""}",
-                          style: kDetail.copyWith(
-                            color: Theme.of(context).colorScheme.tertiary,
+                        const SizedBox(height: 10),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "${widget.props.post.school.name}${buildFaculty(widget.props.post)}${buildYear(widget.props.post)} • ${widget.props.post.category.category.capitalize()}",
+                              style: kDetail.copyWith(
+                                color: Theme.of(context).colorScheme.secondary,
+                              ),
+                              textAlign: TextAlign.left,
+                            ),
+                            Text(
+                              "${timeAgoFromMicroSecondUnixTime(widget.props.post.createdAt)}${widget.props.post.emojis.isNotEmpty ? " • ${widget.props.post.emojis.map((e) => e).join("")}" : ""}",
+                              style: kDetail.copyWith(
+                                color: Theme.of(context).colorScheme.tertiary,
+                              ),
+                              textAlign: TextAlign.left,
+                            ),
+                          ],
+                        ),
+                        WidgetOrNothing(
+                          showWidget: widget.props.post.content.isNotEmpty,
+                          child: Column(
+                            children: [
+                              const SizedBox(height: 10),
+                              Text(
+                                widget.props.post.content,
+                                style: kBody.copyWith(
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                                textAlign: TextAlign.left,
+                              ),
+                            ],
                           ),
-                          textAlign: TextAlign.left,
                         ),
+                        const SizedBox(height: 15),
                       ],
                     ),
-                    WidgetOrNothing(
-                      showWidget: widget.props.post.content.isNotEmpty,
-                      child: Column(
-                        children: [
-                          const SizedBox(height: 10),
-                          Text(
-                            widget.props.post.content,
-                            style: kBody.copyWith(
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                            textAlign: TextAlign.left,
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 15),
-                  ],
+                  ),
                 ),
               ),
               SimpleCommentSort(onSwitch: (newSort) => print(newSort)),

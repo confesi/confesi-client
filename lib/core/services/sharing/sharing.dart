@@ -7,6 +7,10 @@ import 'package:confesi/models/post.dart';
 import 'package:confesi/presentation/feed/widgets/reaction_tile.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../../../presentation/profile/screens/account_stats.dart';
+import '../../../presentation/profile/widgets/stat_tile.dart';
+import '../../../presentation/shared/selection_groups/text_stat_tile.dart';
+import '../../../presentation/shared/selection_groups/tile_group.dart';
 import '../../styles/themes.dart';
 import '../../styles/typography.dart';
 import 'package:dartz/dartz.dart';
@@ -22,7 +26,7 @@ class Sharing {
   Future<Either<Failure, Success>> sharePost(BuildContext context, Post post) async {
     // todo: generate link using FCM based on post's id
     try {
-      File file = await _screenshot(context, post);
+      File file = await _screenshotPost(context, post);
       Share.shareXFiles([XFile(file.path)],
           text: "Check out this confession on Confesi: https://confesi.com/post/${post.id}",
           subject: "Confesi"); // todo: make dynamic
@@ -32,9 +36,30 @@ class Sharing {
     }
   }
 
-  Future<File> _screenshot(BuildContext context, Post post) async {
+  Future<Either<Failure, Success>> shareStats(BuildContext context, int likes, int hottests, int dislikes,
+      num likesPerc, num hottestPerc, num dislikesPerc) async {
+    try {
+      File file = await _screenshotStats(context, likes, hottests, dislikes, likesPerc, hottestPerc, dislikesPerc);
+      Share.shareXFiles([XFile(file.path)], text: "Check out my Confesi stats!", subject: "Confesi");
+      return Right(ApiSuccess());
+    } catch (_) {
+      return Left(ShareFailure());
+    }
+  }
+
+  Future<File> _screenshotStats(BuildContext context, int likes, int hottests, int dislikes, num likesPerc,
+      num hottestPerc, num dislikesPerc) async {
+    final capturedImage = await ScreenshotController().captureFromWidget(
+        _buildStatsTile(context, likes, hottests, dislikes, likesPerc, hottestPerc, dislikesPerc),
+        delay: const Duration(milliseconds: 10));
+    final directory = await getApplicationDocumentsDirectory();
+    final file = File('${directory.path}/confession.png');
+    return await file.writeAsBytes(capturedImage);
+  }
+
+  Future<File> _screenshotPost(BuildContext context, Post post) async {
     final capturedImage = await ScreenshotController()
-        .captureFromWidget(buildPost(context, post), delay: const Duration(milliseconds: 10));
+        .captureFromWidget(_buildPost(context, post), delay: const Duration(milliseconds: 10));
     final directory = await getApplicationDocumentsDirectory();
     final file = File('${directory.path}/confession.png');
     return await file.writeAsBytes(capturedImage);
@@ -45,7 +70,97 @@ class Sharing {
     return timeAgo.xTimeAgoLocalDateFormat();
   }
 
-  Widget buildPost(BuildContext context, Post post) {
+  Widget _buildStatsTile(
+      BuildContext context, int likes, int hottests, int dislikes, num likesPerc, num hottestPerc, num dislikesPerc) {
+    return Theme(
+      data: AppTheme.dark,
+      child: AspectRatio(
+        aspectRatio: 4 / 5,
+        child: Container(
+          width: 400,
+          color: Theme.of(context).colorScheme.shadow,
+          child: Stack(
+            children: [
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Account Statistics",
+                        style: kDisplay1.copyWith(color: Theme.of(context).colorScheme.primary),
+                      ),
+                      const SizedBox(height: 15),
+                      StatTile(
+                        leftNumber: likes,
+                        leftDescription: "Likes",
+                        centerNumber: hottests,
+                        centerDescription: "Hottests",
+                        rightNumber: dislikes,
+                        rightDescription: "Dislikes",
+                      ),
+                      TextStatTile(
+                        leftText: "Likes 🎉",
+                        rightText: percentToRelativeMsg(likesPerc),
+                      ),
+                      TextStatTile(
+                        leftText: "Hottests 🔥",
+                        rightText: percentToRelativeMsg(hottestPerc),
+                      ),
+                      TextStatTile(
+                        leftText: "Dislikes 🤮",
+                        rightText: percentToRelativeMsg(dislikesPerc),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Positioned.fill(
+                bottom: 5,
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        height: 30,
+                        width: 30,
+                        padding: const EdgeInsets.all(1),
+                        decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.background,
+                            border: Border.all(
+                              color: Theme.of(context).colorScheme.onBackground,
+                              width: 0.8,
+                              strokeAlign: BorderSide.strokeAlignInside,
+                            ),
+                            shape: BoxShape.circle),
+                        child: AspectRatio(
+                          aspectRatio: 1,
+                          child: Image.asset(
+                            "assets/images/logos/logo_transparent.png",
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 5),
+                      Text(
+                        "Confesi.com",
+                        style: kTitle.copyWith(
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPost(BuildContext context, Post post) {
     return Theme(
       data: AppTheme.dark, // always share in dark mode
       child: AspectRatio(

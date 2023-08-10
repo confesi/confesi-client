@@ -24,6 +24,7 @@ import 'application/user/cubit/quick_actions_cubit.dart';
 import 'application/user/cubit/saved_posts_cubit.dart';
 import 'application/user/cubit/stats_cubit.dart';
 import 'core/services/hive/hive_client.dart';
+import 'core/services/primary_tab_service/primary_tab_service.dart';
 import 'core/services/user_auth/user_auth_service.dart';
 import 'presentation/shared/overlays/notification_chip.dart';
 import 'package:device_preview/device_preview.dart';
@@ -65,6 +66,7 @@ void main() async => await init().then(
                   ChangeNotifierProvider(create: (context) => sl<GlobalContentService>(), lazy: true),
                   ChangeNotifierProvider(create: (context) => sl<CreateCommentService>(), lazy: true),
                   ChangeNotifierProvider(create: (context) => sl<PostsService>(), lazy: true),
+                  ChangeNotifierProvider(create: (context) => sl<PrimaryTabControllerService>(), lazy: true),
                 ],
                 child: MultiBlocProvider(
                   providers: [
