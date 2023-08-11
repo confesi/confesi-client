@@ -90,7 +90,6 @@ class _CommentSheetState extends State<CommentSheet> {
 
   @override
   void initState() {
-    widget.controller._init(commentController, textFocusNode);
     widget.controller.addListener(() => isDisposed ? null : setState(() => {}));
     super.initState();
   }

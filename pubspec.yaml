@@ -102,6 +102,7 @@ dependencies:
   uuid: ^3.0.7
   geolocator: ^9.0.2
   ordered_set: ^5.0.1
+  app_links: ^3.4.3
   # shimmer: ^2.0.0
   # open_settings: ^2.0.2
   # animated_text_kit: ^4.2.2

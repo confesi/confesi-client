@@ -4,17 +4,38 @@
 
 import 'dart:convert';
 
-import 'package:confesi/models/school.dart';
+import 'package:confesi/models/school_with_metadata.dart';
 import 'package:confesi/models/year_of_study.dart';
-import 'package:equatable/equatable.dart';
 
 import 'category.dart';
+import 'encrypted_id.dart';
 import 'faculty.dart';
 
-Post postFromJson(String str) => Post.fromJson(json.decode(str));
+PostWithMetadata postFromJson(String str) => PostWithMetadata.fromJson(json.decode(str));
 
-class Post extends Equatable {
-  int id;
+class PostWithMetadata {
+  Post post;
+  int userVote;
+  bool owner;
+  List<String> emojis;
+
+  PostWithMetadata({
+    required this.post,
+    required this.userVote,
+    required this.owner,
+    required this.emojis,
+  });
+
+  factory PostWithMetadata.fromJson(Map<String, dynamic> json) => PostWithMetadata(
+        post: Post.fromJson(json["post"]),
+        userVote: json["user_vote"],
+        owner: json["owner"],
+        emojis: List<String>.from(json["emojis"].map((x) => x)).toList(),
+      );
+}
+
+class Post {
+  EncryptedId id;
   int createdAt;
   int updatedAt;
   School school;
@@ -27,11 +48,9 @@ class Post extends Equatable {
   num trendingScore;
   DateTime? hottestOn;
   bool hidden;
+  num sentiment;
   bool edited;
-  int userVote;
-  bool owner;
   Category category;
-  List<String> emojis;
   int commentCount;
 
   Post({
@@ -46,102 +65,32 @@ class Post extends Equatable {
     required this.downvote,
     required this.upvote,
     required this.trendingScore,
-    required this.hottestOn,
+    this.hottestOn,
     required this.hidden,
+    required this.sentiment,
     required this.edited,
-    required this.userVote,
-    required this.owner,
     required this.category,
-    required this.emojis,
     required this.commentCount,
   });
 
   factory Post.fromJson(Map<String, dynamic> json) => Post(
-        id: json["post"]["id"],
-        createdAt: json["post"]["created_at"],
-        updatedAt: json["post"]["updated_at"],
-        school: School.fromJson(json["post"]["school"]),
-        faculty: Faculty.fromJson(json["post"]["faculty"]),
-        category: Category.fromJson(json["post"]["category"]),
-        yearOfStudy: YearOfStudy.fromJson(json["post"]["year_of_study"]),
-        title: json["post"]["title"],
-        content: json["post"]["content"],
-        downvote: json["post"]["downvote"],
-        upvote: json["post"]["upvote"],
-        trendingScore: json["post"]["trending_score"],
-        hottestOn: json["post"]["hottest_on"] != null ? DateTime.parse(json["post"]["hottest_on"]) : null,
-        hidden: json["post"]["hidden"],
-        edited: json["post"]["edited"],
-        userVote: json["user_vote"],
-        commentCount: json["post"]["comment_count"],
-        owner: json["owner"],
-        emojis: (json["emojis"] as List).map((e) => e.toString()).toList(),
+        id: EncryptedId.fromJson(json["id"]),
+        createdAt: json["created_at"],
+        updatedAt: json["updated_at"],
+        school: School.fromJson(json["school"]),
+        faculty: Faculty.fromJson(json["faculty"]),
+        yearOfStudy: YearOfStudy.fromJson(json["year_of_study"]),
+        title: json["title"],
+        content: json["content"],
+        downvote: json["downvote"],
+        upvote: json["upvote"],
+        trendingScore: json["trending_score"],
+        // hottestOn is dateTime, or null
+        hottestOn: json["hottest_on"] == null ? null : DateTime.parse(json["hottest_on"]),
+        hidden: json["hidden"],
+        sentiment: json["sentiment"],
+        edited: json["edited"],
+        category: Category.fromJson(json["category"]),
+        commentCount: json["comment_count"],
       );
-
-  @override
-  List<Object?> get props => [
-        id,
-        createdAt,
-        updatedAt,
-        school,
-        faculty,
-        yearOfStudy,
-        title,
-        content,
-        downvote,
-        upvote,
-        trendingScore,
-        hottestOn,
-        hidden,
-        edited,
-        userVote,
-        owner,
-        emojis,
-        commentCount
-      ];
-
-  // copyWith method
-  Post copyWith({
-    int? id,
-    int? createdAt,
-    int? updatedAt,
-    School? school,
-    Faculty? faculty,
-    YearOfStudy? yearOfStudy,
-    String? title,
-    String? content,
-    int? downvote,
-    int? upvote,
-    num? trendingScore,
-    DateTime? hottestOn,
-    bool? hidden,
-    bool? edited,
-    int? userVote,
-    bool? owner,
-    Category? category,
-    List<String>? emojis,
-    int? commentCount,
-  }) {
-    return Post(
-      id: id ?? this.id,
-      createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
-      school: school ?? this.school,
-      faculty: faculty ?? this.faculty,
-      yearOfStudy: yearOfStudy ?? this.yearOfStudy,
-      title: title ?? this.title,
-      content: content ?? this.content,
-      downvote: downvote ?? this.downvote,
-      upvote: upvote ?? this.upvote,
-      trendingScore: trendingScore ?? this.trendingScore,
-      hottestOn: hottestOn ?? this.hottestOn,
-      hidden: hidden ?? this.hidden,
-      edited: edited ?? this.edited,
-      userVote: userVote ?? this.userVote,
-      owner: owner ?? this.owner,
-      category: category ?? this.category,
-      emojis: emojis ?? this.emojis,
-      commentCount: commentCount ?? this.commentCount,
-    );
-  }
 }

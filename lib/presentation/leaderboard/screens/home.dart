@@ -1,3 +1,4 @@
+import 'package:confesi/models/encrypted_id.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/services/global_content/global_content.dart';
@@ -83,20 +84,20 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
         // controller: controller,
         controller: controller
           ..items = (state.schoolIds
-              .asMap() // Use asMap() to get the index along with the value
+              .asMap()
               .map((index, schoolId) {
                 final school = Provider.of<GlobalContentService>(context).schools[schoolId];
                 return MapEntry(
-                  schoolId,
+                  schoolId, // This is an EncryptedId, no need to wrap it
                   school != null
                       ? InfiniteScrollIndexable(
                           schoolId,
-                          LeaderboardItemTile(school: school, placing: index + 1), // Add 1 to start with placing 1
+                          LeaderboardItemTile(school: school, placing: index + 1),
                         )
                       : null,
                 );
               })
-              .values // Retrieve the values from the map
+              .values
               .whereType<InfiniteScrollIndexable>()
               .toList()),
 

@@ -33,7 +33,6 @@ class _ExploreSentimentState extends State<ExploreSentiment> with AutomaticKeepA
   Widget buildBody(PostsService service) {
     final PaginationState pState = service.sentimentPaginationState;
     return FeedList(
-      swipeRefreshEnabled: service.sentimentPostIds.isNotEmpty,
       controller: widget.feedController
         ..items = (service.sentimentPostIds
             .map((postId) {

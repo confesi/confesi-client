@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app_links/app_links.dart';
 import 'package:confesi/application/feed/cubit/schools_drawer_cubit.dart';
 import 'package:confesi/application/feed/cubit/sentiment_analysis_cubit.dart';
 import 'package:confesi/application/user/cubit/feedback_categories_cubit.dart';
@@ -17,6 +18,7 @@ import 'application/comments/cubit/comment_section_cubit.dart';
 import 'application/comments/cubit/create_comment_cubit.dart';
 import 'application/create_post/cubit/post_categories_cubit.dart';
 import 'application/feed/cubit/search_schools_cubit.dart';
+import 'application/posts/cubit/individual_post_cubit.dart';
 import 'application/user/cubit/account_details_cubit.dart';
 import 'application/user/cubit/feedback_cubit.dart';
 import 'application/user/cubit/notifications_cubit.dart';
@@ -87,6 +89,7 @@ void main() async => await init().then(
                     BlocProvider(lazy: false, create: (context) => sl<NotificationsCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<CommentSectionCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<CreateCommentCubit>()),
+                    BlocProvider(lazy: false, create: (context) => sl<IndividualPostCubit>()),
                   ],
                   child: debugMode && devicePreview
                       ? DevicePreview(builder: (context) => const ShrinkView())
@@ -137,6 +140,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     startFcmListener();
     startShakeForFeedbackListener();
+    startDeepLinkListener();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       startAuthListener();
     });
@@ -150,6 +154,41 @@ class _MyAppState extends State<MyApp> {
     sl.get<HiveService>().dispose();
     sl.get<NotificationService>().dispose();
     super.dispose();
+  }
+
+  void startDeepLinkListener() => sl.get<AppLinks>().allStringLinkStream.listen((link) => handleDeepLink(link));
+
+  void routeDeepLink(String deepLink) async {
+    final postRegex = RegExp(r"^https:\/\/confesi\.com\/p\/([a-zA-Z0-9_-]+)$");
+    print(deepLink);
+    final match = postRegex.firstMatch(deepLink);
+    if (match != null) {
+      final postId = match.group(1);
+      if (postId == null) {
+        context.read<NotificationsCubit>().showErr("Unable to open deep link");
+        return;
+      }
+      await router.push("/home").then((_) => router.push("/post/$postId"));
+      router.push("/home/posts/comments", extra: HomePostsCommentsProps(NeedToLoadPost(postId!)));
+    } else {
+      context.read<NotificationsCubit>().showErr("Unable to open deep link");
+    }
+  }
+
+  void handleDeepLink(String deepLink) {
+    final auth = sl.get<FirebaseAuth>();
+
+    if (auth.currentUser != null) {
+      sl.get<UserAuthService>().getData(auth.currentUser!.uid).then((_) {
+        if (sl.get<UserAuthService>().state is! UserAuthData) {
+          router.go("/error");
+          return;
+        }
+        routeDeepLink(deepLink);
+      });
+    } else {
+      context.read<NotificationsCubit>().showErr("Only guests and registered users can open deep links");
+    }
   }
 
   bool shakeViewOpen = false;
@@ -315,7 +354,6 @@ class _MyAppState extends State<MyApp> {
                             routeInformationProvider: router.routeInformationProvider,
                             routeInformationParser: router.routeInformationParser,
                             routerDelegate: router.routerDelegate,
-
                             debugShowCheckedModeBanner: false,
                             title: "Confesi",
                             theme: AppTheme.light,

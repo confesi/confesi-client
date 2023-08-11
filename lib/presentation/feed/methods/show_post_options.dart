@@ -9,7 +9,7 @@ import '../../shared/buttons/option.dart';
 import '../../shared/overlays/button_options_sheet.dart';
 
 // Show the options for this post.
-void buildOptionsSheet(BuildContext context, Post post) => showButtonOptionsSheet(context, [
+void buildOptionsSheet(BuildContext context, PostWithMetadata post) => showButtonOptionsSheet(context, [
       OptionButton(
         text: "Save",
         icon: CupertinoIcons.bookmark,
@@ -25,7 +25,7 @@ void buildOptionsSheet(BuildContext context, Post post) => showButtonOptionsShee
         icon: CupertinoIcons.doc_text,
         onTap: () => router.push(
           "/home/posts/sentiment",
-          extra: HomePostsSentimentProps(post.id),
+          extra: HomePostsSentimentProps(post.post.id),
         ), // todo: remove hard coding and dynamically go to the correct post's sentiment analysis
       ),
       OptionButton(
@@ -33,7 +33,7 @@ void buildOptionsSheet(BuildContext context, Post post) => showButtonOptionsShee
         icon: CupertinoIcons.map,
         onTap: () => context
             .read<QuickActionsCubit>()
-            .locateOnMaps(post.school.lat.toDouble(), post.school.lon.toDouble(), post.school.name),
+            .locateOnMaps(post.post.school.lat.toDouble(), post.post.school.lon.toDouble(), post.post.school.name),
       ),
       OptionButton(
         text: "Report",

@@ -33,7 +33,6 @@ class _ExploreTrendingState extends State<ExploreTrending> with AutomaticKeepAli
   Widget buildBody(PostsService service) {
     final PaginationState pState = service.trendingPaginationState;
     return FeedList(
-      swipeRefreshEnabled: service.trendingPostIds.isNotEmpty,
       controller: widget.feedController
         ..items = (service.trendingPostIds
             .map((postId) {

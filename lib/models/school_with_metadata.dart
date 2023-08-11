@@ -4,10 +4,59 @@
 
 import 'dart:convert';
 
+import 'package:confesi/models/encrypted_id.dart';
+
 SchoolWithMetadata schoolFromJson(String str) => SchoolWithMetadata.fromJson(json.decode(str));
 
+String schoolToJson(SchoolWithMetadata data) => json.encode(data.toJson());
+
 class SchoolWithMetadata {
-  int id;
+  School school;
+  bool home;
+  bool watched;
+  double distance;
+
+  SchoolWithMetadata({
+    required this.school,
+    required this.home,
+    required this.watched,
+    required this.distance,
+  });
+
+  factory SchoolWithMetadata.fromJson(Map<String, dynamic> json) => SchoolWithMetadata(
+        school: School.fromJson(json["school"]),
+        home: json["home"],
+        watched: json["watched"],
+        distance: json["distance"]?.toDouble(),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "school": school.toJson(),
+        "home": home,
+        "watched": watched,
+        "distance": distance,
+      };
+
+  // copyWith
+  SchoolWithMetadata copyWith({
+    School? school,
+    bool? home,
+    bool? watched,
+    double? distance,
+  }) {
+    return SchoolWithMetadata(
+      school: school ?? this.school,
+      home: home ?? this.home,
+      watched: watched ?? this.watched,
+      distance: distance ?? this.distance,
+    );
+  }
+}
+
+class School {
+  EncryptedId id;
+  int createdAt;
+  int updatedAt;
   String name;
   String abbr;
   num lat;
@@ -15,13 +64,12 @@ class SchoolWithMetadata {
   int dailyHottests;
   String domain;
   String imgUrl;
-  bool home;
-  bool watched;
-  num distance;
   String website;
 
-  SchoolWithMetadata({
+  School({
     required this.id,
+    required this.createdAt,
+    required this.updatedAt,
     required this.name,
     required this.abbr,
     required this.lat,
@@ -29,59 +77,34 @@ class SchoolWithMetadata {
     required this.dailyHottests,
     required this.domain,
     required this.imgUrl,
-    required this.home,
-    required this.watched,
-    required this.distance,
     required this.website,
   });
 
-  SchoolWithMetadata copyWith({
-    int? id,
-    String? name,
-    String? abbr,
-    num? lat,
-    num? lon,
-    int? dailyHottests,
-    String? domain,
-    String? imgUrl,
-    bool? home,
-    bool? watched,
-    num? distance,
-    String? website,
-  }) {
-    return SchoolWithMetadata(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      abbr: abbr ?? this.abbr,
-      lat: lat ?? this.lat,
-      lon: lon ?? this.lon,
-      dailyHottests: dailyHottests ?? this.dailyHottests,
-      domain: domain ?? this.domain,
-      imgUrl: imgUrl ?? this.imgUrl,
-      home: home ?? this.home,
-      watched: watched ?? this.watched,
-      distance: distance ?? this.distance,
-      website: website ?? this.website,
-    );
-  }
-
-  @override
-  String toString() {
-    return "SchoolWithMetadata{id: $id, watched: $watched, home: $home}";
-  }
-
-  factory SchoolWithMetadata.fromJson(Map<String, dynamic> json) => SchoolWithMetadata(
-        id: json["id"],
+  factory School.fromJson(Map<String, dynamic> json) => School(
+        id: EncryptedId.fromJson(json["id"]),
+        createdAt: json["created_at"],
+        updatedAt: json["updated_at"],
         name: json["name"],
         abbr: json["abbr"],
-        lat: json["lat"],
-        lon: json["lon"],
+        lat: json["lat"]?.toDouble(),
+        lon: json["lon"]?.toDouble(),
         dailyHottests: json["daily_hottests"],
         domain: json["domain"],
         imgUrl: json["img_url"],
-        home: json["home"],
-        watched: json["watched"],
-        distance: json["distance"],
         website: json["website"],
       );
+
+  Map<String, dynamic> toJson() => {
+        "id": id.toJson(),
+        "created_at": createdAt,
+        "updated_at": updatedAt,
+        "name": name,
+        "abbr": abbr,
+        "lat": lat,
+        "lon": lon,
+        "daily_hottests": dailyHottests,
+        "domain": domain,
+        "img_url": imgUrl,
+        "website": website,
+      };
 }

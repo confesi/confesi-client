@@ -28,11 +28,11 @@ String percentToRelativeMsg(num percentage) {
   if (percentage < 0.01) {
     percentage = 0.01;
   }
-  String percentageStr = "${(percentage * 100).toStringAsFixed(0)}%";
-  if (percentage <= 0.5) {
-    return "Top $percentageStr";
+
+  if (percentage > 0.5) {
+    return "Top ${((1 - percentage) * 100).toStringAsFixed(0)}%";
   } else {
-    return "Bottom $percentageStr";
+    return "Bottom ${(percentage * 100).toStringAsFixed(0)}%";
   }
 }
 
@@ -62,18 +62,33 @@ class _AccountProfileStatsState extends State<AccountProfileStats> {
             child: Column(
               children: [
                 AppbarLayout(
-                  bottomBorder: true,
-                  centerWidget: Text(
-                    "Your Private Account",
-                    style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.center,
-                  ),
-                  rightIconVisible: true,
-                  rightIcon: CupertinoIcons.gear,
-                  rightIconOnPress: () => router.push("/settings"),
-                  leftIconVisible: false,
-                ),
+                    bottomBorder: true,
+                    centerWidget: Text(
+                      "Your Private Account",
+                      style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
+                    ),
+                    rightIconVisible: true,
+                    rightIcon: CupertinoIcons.gear,
+                    rightIconOnPress: () => router.push("/settings"),
+                    leftIconVisible: context.watch<StatsCubit>().state is StatsData,
+                    leftIcon: CupertinoIcons.share,
+                    leftIconOnPress: () {
+                      final statsState = context.read<StatsCubit>().state;
+                      if (statsState is StatsData) {
+                        final data = statsState;
+                        sl.get<Sharing>().shareStats(
+                              context,
+                              data.stats.likes,
+                              data.stats.hottest,
+                              data.stats.dislikes,
+                              data.stats.likesPerc,
+                              data.stats.hottestPerc,
+                              data.stats.dislikesPerc,
+                            );
+                      }
+                    }),
                 Expanded(
                   child: ScrollableView(
                     hapticsEnabled: false,
@@ -113,41 +128,30 @@ class _AccountProfileStatsState extends State<AccountProfileStats> {
                           BlocBuilder<StatsCubit, StatsState>(
                             builder: (context, state) {
                               if (state is StatsData) {
-                                return TouchableOpacity(
-                                  onTap: () => sl.get<Sharing>().shareStats(
-                                        context,
-                                        state.stats.likes,
-                                        state.stats.hottest,
-                                        state.stats.dislikes,
-                                        state.stats.likesPerc,
-                                        state.stats.hottestPerc,
-                                        state.stats.dislikesPerc,
-                                      ),
-                                  child: TileGroup(
-                                    text: "How you compare to others",
-                                    tiles: [
-                                      StatTile(
-                                        leftNumber: state.stats.likes,
-                                        leftDescription: "Likes",
-                                        centerNumber: state.stats.hottest,
-                                        centerDescription: "Hottests",
-                                        rightNumber: state.stats.dislikes,
-                                        rightDescription: "Dislikes",
-                                      ),
-                                      TextStatTile(
-                                        leftText: "Likes 🎉",
-                                        rightText: percentToRelativeMsg(state.stats.likesPerc),
-                                      ),
-                                      TextStatTile(
-                                        leftText: "Hottests 🔥",
-                                        rightText: percentToRelativeMsg(state.stats.hottestPerc),
-                                      ),
-                                      TextStatTile(
-                                        leftText: "Dislikes 🤮",
-                                        rightText: percentToRelativeMsg(state.stats.dislikesPerc),
-                                      ),
-                                    ],
-                                  ),
+                                return TileGroup(
+                                  text: "How you compare to others",
+                                  tiles: [
+                                    StatTile(
+                                      leftNumber: state.stats.likes,
+                                      leftDescription: "Likes",
+                                      centerNumber: state.stats.hottest,
+                                      centerDescription: "Hottests",
+                                      rightNumber: state.stats.dislikes,
+                                      rightDescription: "Dislikes",
+                                    ),
+                                    TextStatTile(
+                                      leftText: "Likes 🎉",
+                                      rightText: percentToRelativeMsg(state.stats.likesPerc),
+                                    ),
+                                    TextStatTile(
+                                      leftText: "Hottests 🔥",
+                                      rightText: percentToRelativeMsg(state.stats.hottestPerc),
+                                    ),
+                                    TextStatTile(
+                                      leftText: "Dislikes 🤮",
+                                      rightText: percentToRelativeMsg(state.stats.dislikesPerc),
+                                    ),
+                                  ],
                                 );
                               } else {
                                 return LoadingOrAlert(

@@ -23,13 +23,13 @@ import '../utils/post_metadata_formatters.dart';
 class PostTile extends StatelessWidget {
   const PostTile({super.key, required this.post});
 
-  final Post post;
+  final PostWithMetadata post;
 
   @override
   Widget build(BuildContext context) {
     return TouchableOpacity(
       behavior: HitTestBehavior.opaque,
-      onTap: () => router.push("/home/posts/comments", extra: HomePostsCommentsProps(post, false)),
+      onTap: () => router.push("/home/posts/comments", extra: HomePostsCommentsProps(PreloadedPost(post, false))),
       onLongPress: () => context.read<QuickActionsCubit>().sharePost(context, post),
       child: Padding(
         padding: const EdgeInsets.only(top: 15),
@@ -53,7 +53,7 @@ class PostTile extends StatelessWidget {
                   bottom: -30,
                   right: -30,
                   child: Icon(
-                    postCategoryToIcon(post.category.category),
+                    postCategoryToIcon(post.post.category.category),
                     color: Theme.of(context).colorScheme.secondary.withOpacity(0.175),
                     size: 150,
                   ),
@@ -85,14 +85,14 @@ class PostTile extends StatelessWidget {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        "${post.school.name}${buildFaculty(post)}${buildYear(post)}",
+                                        "${post.post.school.name}${buildFaculty(post)}${buildYear(post)}",
                                         style: kDetail.copyWith(
                                           color: Theme.of(context).colorScheme.secondary,
                                         ),
                                         textAlign: TextAlign.left,
                                       ),
                                       Text(
-                                        "${timeAgoFromMicroSecondUnixTime(post.createdAt)}${post.emojis.isNotEmpty ? " • ${post.emojis.map((e) => e).join("")}" : ""}",
+                                        "${timeAgoFromMicroSecondUnixTime(post.post.createdAt)}${post.emojis.isNotEmpty ? " • ${post.emojis.map((e) => e).join("")}" : ""}",
                                         style: kDetail.copyWith(
                                           color: Theme.of(context).colorScheme.tertiary,
                                         ),
@@ -118,21 +118,22 @@ class PostTile extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.only(left: 15, right: 15, top: 15),
                             child: Text(
-                              truncateText(post.title.isEmpty ? post.content : post.title, postTitlePreviewLength),
+                              truncateText(post.post.title.isEmpty ? post.post.content : post.post.title,
+                                  postTitlePreviewLength),
                               style: kDisplay1.copyWith(
                                 color: Theme.of(context).colorScheme.primary,
                               ),
                             ),
                           ),
                           WidgetOrNothing(
-                            showWidget: post.title.isNotEmpty && post.content.isNotEmpty,
+                            showWidget: post.post.title.isNotEmpty && post.post.content.isNotEmpty,
                             child: Column(
                               children: [
                                 const SizedBox(height: 10),
                                 Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 15),
                                   child: Text(
-                                    truncateText(post.content, postBodyPreviewLength),
+                                    truncateText(post.post.content, postBodyPreviewLength),
                                     style: kBody.copyWith(
                                       color: Theme.of(context).colorScheme.primary,
                                     ),
@@ -143,7 +144,7 @@ class PostTile extends StatelessWidget {
                             ),
                           ),
                           WidgetOrNothing(
-                            showWidget: post.edited,
+                            showWidget: post.post.edited,
                             child: Padding(
                               padding: const EdgeInsets.only(left: 15, top: 15, bottom: 5),
                               child: Text(
@@ -154,7 +155,7 @@ class PostTile extends StatelessWidget {
                               ),
                             ),
                           ),
-                          ...linksFromText(post.content)
+                          ...linksFromText(post.post.content)
                               .take(maxNumberOfLinkPreviewsPerPostTile) // Limit to a maximum of 3 links
                               .map((link) {
                             return Padding(
@@ -170,14 +171,14 @@ class PostTile extends StatelessWidget {
                               children: [
                                 ReactionTile(
                                   simpleView: false,
-                                  amount: post.commentCount,
+                                  amount: post.post.commentCount,
                                   icon: CupertinoIcons.chat_bubble,
                                   iconColor: Theme.of(context).colorScheme.tertiary,
                                   isSelected: true,
                                   onTap: () => verifiedUserOnly(
                                       context,
                                       () => router.push("/home/posts/comments",
-                                          extra: HomePostsCommentsProps(post, true))),
+                                          extra: HomePostsCommentsProps(PreloadedPost(post, true)))),
                                 ),
                                 ReactionTile(
                                   onTap: () async => verifiedUserOnly(
@@ -190,7 +191,7 @@ class PostTile extends StatelessWidget {
                                         ),
                                   ),
                                   isSelected: post.userVote == 1,
-                                  amount: post.upvote,
+                                  amount: post.post.upvote,
                                   icon: CupertinoIcons.up_arrow,
                                   iconColor: Theme.of(context).colorScheme.onErrorContainer,
                                 ),
@@ -201,7 +202,7 @@ class PostTile extends StatelessWidget {
                                           .voteOnPost(post, post.userVote != -1 ? -1 : 0)
                                           .then((value) => value.fold(
                                               (err) => context.read<NotificationsCubit>().showErr(err), (_) => null))),
-                                  amount: post.downvote,
+                                  amount: post.post.downvote,
                                   icon: CupertinoIcons.down_arrow,
                                   iconColor: Theme.of(context).colorScheme.onSecondaryContainer,
                                   isSelected: post.userVote == -1,

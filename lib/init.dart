@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:ui';
+import 'package:app_links/app_links.dart';
 import 'package:confesi/application/create_post/cubit/post_categories_cubit.dart';
 import 'package:confesi/application/user/cubit/account_details_cubit.dart';
 import 'package:confesi/application/user/cubit/feedback_categories_cubit.dart';
@@ -19,6 +20,7 @@ import 'application/comments/cubit/create_comment_cubit.dart';
 import 'application/feed/cubit/schools_drawer_cubit.dart';
 import 'application/feed/cubit/search_schools_cubit.dart';
 import 'application/feed/cubit/sentiment_analysis_cubit.dart';
+import 'application/posts/cubit/individual_post_cubit.dart';
 import 'application/user/cubit/quick_actions_cubit.dart';
 import 'application/user/cubit/saved_posts_cubit.dart';
 import 'core/services/create_post_hint_text/create_post_hint_text.dart';
@@ -93,6 +95,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => InternetConnectionChecker());
   sl.registerLazySingleton(() => const FlutterSecureStorage());
   sl.registerLazySingleton(() => LocalAuthentication());
+  sl.registerLazySingleton(() => AppLinks());
 
   //! Already-singletons
   sl.registerLazySingleton(() => FirebaseRemoteConfig.instance);
@@ -111,11 +114,15 @@ Future<void> init() async {
   CreateCommentService createCommentService = CreateCommentService();
   PrimaryTabControllerService primaryTabControllerService = PrimaryTabControllerService();
 
+  //! Local storage type adapters
   userAuthService.hive.registerAdapter<UserAuthData>(UserAuthDataAdapter());
   userAuthService.hive.registerAdapter(ThemePrefAdapter());
   userAuthService.hive.registerAdapter(UnitSystemAdapter());
   userAuthService.hive.registerAdapter(ProfanityFilterAdapter());
   userAuthService.hive.registerAdapter(FcmTokenAdapter());
+  userAuthService.hive.registerAdapter(DefaultCommentSortAdapter());
+  userAuthService.hive.registerAdapter(DefaultPostFeedAdapter());
+
   sl.registerLazySingleton(() => userAuthService);
   sl.registerLazySingleton(() => globalContentService);
   sl.registerLazySingleton(() => postsService);
@@ -144,6 +151,7 @@ Future<void> init() async {
   sl.registerFactory(() => NotificationsCubit());
   sl.registerFactory(() => CommentSectionCubit(Api(), Api(), Api()));
   sl.registerFactory(() => CreateCommentCubit());
+  sl.registerFactory(() => IndividualPostCubit());
 
   //! Firebase
   await initFirebase();

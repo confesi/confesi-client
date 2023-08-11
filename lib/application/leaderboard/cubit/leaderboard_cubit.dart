@@ -12,6 +12,7 @@ import '../../../constants/shared/constants.dart';
 import '../../../core/clients/api.dart';
 import '../../../core/types/infinite_scrollable_indexable.dart';
 import '../../../init.dart';
+import '../../../models/encrypted_id.dart';
 import '../../../presentation/leaderboard/widgets/leaderboard_item_tile.dart';
 
 part 'leaderboard_state.dart';
@@ -67,25 +68,23 @@ class LeaderboardCubit extends Cubit<LeaderboardState> {
             final body = json.decode(response.body)["value"];
             final newSchools = (body["schools"] as List).map((i) => SchoolWithMetadata.fromJson(i)).toList();
             sl.get<GlobalContentService>().setSchools(newSchools);
-
             if (newSchools.length < rankedSchoolsPageSize) {
               feedState = LeaderboardFeedState.noMore;
             }
-
             if (forceRefresh) {
               final userSchool = SchoolWithMetadata.fromJson(body["user_school"]);
               sl.get<GlobalContentService>().setSchool(userSchool);
               emit(LeaderboardData(
-                newSchools.map((e) => e.id).toList(),
+                newSchools.map((e) => e.school.id).toList(),
                 feedState,
                 oldStartViewDate,
-                userSchoolId: userSchool.id,
+                userSchoolId: userSchool.school.id,
               ));
               return;
             } else {
               if (state is LeaderboardData) {
                 emit(LeaderboardData(
-                  (state as LeaderboardData).schoolIds + newSchools.map((e) => e.id).toList(),
+                  (state as LeaderboardData).schoolIds + newSchools.map((e) => e.school.id).toList(),
                   feedState,
                   oldStartViewDate,
                   userSchoolId: (state as LeaderboardData).userSchoolId,
@@ -99,8 +98,7 @@ class LeaderboardCubit extends Cubit<LeaderboardState> {
           } else {
             emit(LeaderboardError(message: "Unknown error 2"));
           }
-        } catch (e) {
-          print(e);
+        } catch (_) {
           emit(LeaderboardError(message: "Unknown error 3"));
         }
       },

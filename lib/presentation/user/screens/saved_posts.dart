@@ -1,4 +1,5 @@
 import 'package:confesi/application/user/cubit/saved_posts_cubit.dart';
+import 'package:confesi/core/utils/sizing/bottom_safe_area.dart';
 import 'package:confesi/presentation/feed/widgets/post_tile.dart';
 import 'package:confesi/presentation/shared/indicators/loading_or_alert.dart';
 import 'package:confesi/presentation/shared/other/feed_list.dart';
@@ -61,12 +62,15 @@ class _YourSavedPostsScreenState extends State<YourSavedPostsScreen> {
         wontLoadMoreMessage: state.paginationState == PaginationState.end ? "You've reached the end" : "Error loading",
       );
     } else {
-      return LoadingOrAlert(
-        message: StateMessage(
-          state is SavedPostsError ? state.message : null,
-          () => context.read<SavedPostsCubit>().loadPosts(),
+      return Padding(
+        padding: EdgeInsets.only(bottom: bottomSafeArea(context)),
+        child: LoadingOrAlert(
+          message: StateMessage(
+            state is SavedPostsError ? state.message : null,
+            () => context.read<SavedPostsCubit>().loadPosts(),
+          ),
+          isLoading: state is SavedPostsLoading,
         ),
-        isLoading: state is SavedPostsLoading,
       );
     }
   }
@@ -75,14 +79,14 @@ class _YourSavedPostsScreenState extends State<YourSavedPostsScreen> {
   Widget build(BuildContext context) {
     return ThemeStatusBar(
       child: Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.shadow,
+        backgroundColor: Theme.of(context).colorScheme.background,
         body: SafeArea(
           bottom: false,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AppbarLayout(
-                backgroundColor: Theme.of(context).colorScheme.shadow,
+                backgroundColor: Theme.of(context).colorScheme.background,
                 bottomBorder: true,
                 centerWidget: Text(
                   "Saved Confessions",
@@ -94,25 +98,28 @@ class _YourSavedPostsScreenState extends State<YourSavedPostsScreen> {
                 ),
               ),
               Expanded(
-                child: BlocConsumer<SavedPostsCubit, SavedPostsState>(
-                  listener: (context, state) {
-                    if (state is SavedPostsData) {
-                      // feedController.items = (state.postIds
-                      //     .map((postId) {
-                      //       final post = Provider.of<GlobalContentService>(context, listen: false).posts[postId];
-                      //       return post != null
-                      //           ? InfiniteScrollIndexable(
-                      //               postId,
-                      //               PostTile(post: post),
-                      //             )
-                      //           : null;
-                      //     })
-                      //     .whereType<InfiniteScrollIndexable>()
-                      //     .toList());
-                    }
-                  },
-                  builder: (context, state) =>
-                      AnimatedSwitcher(duration: const Duration(milliseconds: 250), child: buildBody(context, state)),
+                child: Container(
+                  color: Theme.of(context).colorScheme.shadow,
+                  child: BlocConsumer<SavedPostsCubit, SavedPostsState>(
+                    listener: (context, state) {
+                      if (state is SavedPostsData) {
+                        // feedController.items = (state.postIds
+                        //     .map((postId) {
+                        //       final post = Provider.of<GlobalContentService>(context, listen: false).posts[postId];
+                        //       return post != null
+                        //           ? InfiniteScrollIndexable(
+                        //               postId,
+                        //               PostTile(post: post),
+                        //             )
+                        //           : null;
+                        //     })
+                        //     .whereType<InfiniteScrollIndexable>()
+                        //     .toList());
+                      }
+                    },
+                    builder: (context, state) =>
+                        AnimatedSwitcher(duration: const Duration(milliseconds: 250), child: buildBody(context, state)),
+                  ),
                 ),
               ),
             ],

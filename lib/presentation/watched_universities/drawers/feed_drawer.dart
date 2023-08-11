@@ -16,9 +16,14 @@ import '../widgets/section_accordian.dart';
 import '../../shared/buttons/simple_text.dart';
 import 'package:confesi/presentation/shared/edited_source_widgets/swipe_refresh.dart';
 
-class FeedDrawer extends StatelessWidget {
+class FeedDrawer extends StatefulWidget {
   const FeedDrawer({Key? key}) : super(key: key);
 
+  @override
+  State<FeedDrawer> createState() => _FeedDrawerState();
+}
+
+class _FeedDrawerState extends State<FeedDrawer> {
   @override
   Widget build(BuildContext context) {
     final globalContentService = Provider.of<GlobalContentService>(context);
@@ -49,10 +54,14 @@ class FeedDrawer extends StatelessWidget {
               ),
             ),
             ...schools.where((school) => school.home).map((watchedHomeSchool) => DrawerUniversityTile(
-                  text: "Home: ${watchedHomeSchool.name}",
+                  text: "Home: ${watchedHomeSchool.school.name}",
                   onTap: () {
-                    context.read<SchoolsDrawerCubit>().setSelectedSchoolInUI(SelectedSchool(watchedHomeSchool.id));
+                    context
+                        .read<SchoolsDrawerCubit>()
+                        .setSelectedSchoolInUI(SelectedSchool(watchedHomeSchool.school.id));
                     Provider.of<PostsService>(context, listen: false).reloadAllFeeds();
+                    // check if the current route can be popped as well
+                    // if (mounted) router.pop();
                   },
                 )),
             IgnorePointer(
@@ -66,7 +75,11 @@ class FeedDrawer extends StatelessWidget {
                       .read<SchoolsDrawerCubit>()
                       .getAndSetRandomSchool(
                           state.selected is SelectedSchool ? (state.selected as SelectedSchool).id : null)
-                      .then((value) => Provider.of<PostsService>(context, listen: false).reloadAllFeeds());
+                      .then((value) => (state is SchoolsDrawerData && (state.possibleErr is! SchoolsDrawerErr)
+                          ? Provider.of<PostsService>(context, listen: false).reloadAllFeeds()
+                          : null));
+                  // only if drawer is still up, pop context
+                  // if (mounted) router.pop();
                 },
               ),
             ),
@@ -88,10 +101,13 @@ class FeedDrawer extends StatelessWidget {
                           .updateWatched(watchedSchool, false)
                           .then((f) =>
                               f.fold((_) => null, (errMsg) => context.read<NotificationsCubit>().showErr(errMsg))),
-                      text: watchedSchool.name,
+                      text: watchedSchool.school.name,
                       onTap: () {
-                        context.read<SchoolsDrawerCubit>().setSelectedSchoolInUI(SelectedSchool(watchedSchool.id));
+                        context
+                            .read<SchoolsDrawerCubit>()
+                            .setSelectedSchoolInUI(SelectedSchool(watchedSchool.school.id));
                         Provider.of<PostsService>(context, listen: false).reloadAllFeeds();
+                        // if (mounted) router.pop();
                       },
                     )),
               ],
@@ -131,7 +147,7 @@ class FeedDrawer extends StatelessWidget {
               ),
             ),
             child: AnimatedSize(
-              duration: const Duration(milliseconds: 250),
+              duration: const Duration(milliseconds: 350),
               curve: Curves.easeInOut,
               child: Align(
                 alignment: Alignment.centerLeft,

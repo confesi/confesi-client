@@ -7,10 +7,12 @@ import 'package:confesi/presentation/notifications/screens/home.dart';
 import 'package:confesi/presentation/authentication_and_settings/screens/authentication/open.dart';
 import 'package:confesi/presentation/user/screens/saved_comments.dart';
 import 'package:confesi/presentation/user/screens/your_comments.dart';
+import '../../models/encrypted_id.dart';
 import '../../presentation/authentication_and_settings/screens/authentication/reset_password.dart';
 import '../../presentation/authentication_and_settings/screens/settings/contact.dart';
 import '../../presentation/authentication_and_settings/screens/settings/faq.dart';
 import '../../presentation/authentication_and_settings/screens/settings/feedback.dart';
+import '../../presentation/authentication_and_settings/screens/settings/feeds_and_sorts.dart';
 import '../../presentation/authentication_and_settings/screens/settings/home.dart';
 import '../../presentation/create_post/screens/details.dart';
 import '../../presentation/create_post/screens/home.dart';
@@ -221,11 +223,14 @@ final GoRouter router = GoRouter(
     GoRoute(
         path: '/settings/text-size', builder: (BuildContext context, GoRouterState state) => const TextSizeScreen()),
     GoRoute(path: '/settings/curvy', builder: (BuildContext context, GoRouterState state) => const CurvyScreen()),
+    GoRoute(
+        path: '/settings/feeds-and-sorts',
+        builder: (BuildContext context, GoRouterState state) => const FeedsAndSortsScreen()),
   ],
 );
 
 class HomePostsSentimentProps {
-  final int postId;
+  final EncryptedId postId;
   const HomePostsSentimentProps(this.postId);
 }
 
@@ -239,8 +244,23 @@ class HomeLeaderboardSchoolProps {
   const HomeLeaderboardSchoolProps(this.school);
 }
 
-class HomePostsCommentsProps {
-  final Post post;
+//! Home posts comment props with abstract classes
+
+abstract class PostLoadType {}
+
+class PreloadedPost extends PostLoadType {
+  final PostWithMetadata post;
   final bool openKeyboard;
-  const HomePostsCommentsProps(this.post, this.openKeyboard);
+
+  PreloadedPost(this.post, this.openKeyboard);
+}
+
+class NeedToLoadPost extends PostLoadType {
+  final String maskedPostId;
+  NeedToLoadPost(this.maskedPostId);
+}
+
+class HomePostsCommentsProps {
+  final PostLoadType postLoadType;
+  const HomePostsCommentsProps(this.postLoadType);
 }

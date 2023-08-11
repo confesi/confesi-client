@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
+import 'package:confesi/models/encrypted_id.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../constants/shared/constants.dart';
@@ -50,16 +51,16 @@ class SavedPostsCubit extends Cubit<SavedPostsState> {
             } else if (state is SavedPostsData) {
               next = (state as SavedPostsData).next;
             }
-            final posts = (body["posts"] as List).map((i) => Post.fromJson(i)).toList();
-            final List<int> combinedPosts;
+            final posts = (body["posts"] as List).map((i) => PostWithMetadata.fromJson(i)).toList();
+            final List<EncryptedId> combinedPosts;
             if (state is SavedPostsData) {
               if (refresh) {
-                combinedPosts = posts.map((e) => e.id).toList();
+                combinedPosts = posts.map((e) => e.post.id).toList();
               } else {
-                combinedPosts = (state as SavedPostsData).postIds + posts.map((e) => e.id).toList();
+                combinedPosts = (state as SavedPostsData).postIds + posts.map((e) => e.post.id).toList();
               }
             } else {
-              combinedPosts = posts.map((e) => e.id).toList();
+              combinedPosts = posts.map((e) => e.post.id).toList();
             }
             sl.get<GlobalContentService>().setPosts(posts);
             if (posts.length < savedContentPageSize) {

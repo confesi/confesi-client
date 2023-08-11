@@ -1,9 +1,6 @@
-import 'dart:math';
-
 import 'package:bloc/bloc.dart';
+import 'package:confesi/models/encrypted_id.dart';
 import 'package:equatable/equatable.dart';
-
-import '../../../core/clients/api.dart';
 
 part 'create_comment_state.dart';
 
@@ -11,7 +8,6 @@ class CreateCommentCubit extends Cubit<CreateCommentState> {
   CreateCommentCubit() : super(CreateCommentEnteringData(ReplyingToNothing(), CreateCommentNoErr()));
 
   void updateReplyingTo(PossibleReply possibleReply) {
-    print("NEW REPLY: $possibleReply");
     emit(CreateCommentEnteringData(possibleReply, CreateCommentNoErr()));
   }
 

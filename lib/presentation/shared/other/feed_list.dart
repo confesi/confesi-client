@@ -160,7 +160,7 @@ class FeedList extends StatefulWidget {
   final String wontLoadMoreMessage;
   final Widget? header;
   final FeedListController controller;
-  final Function(dartz.Either<Failure, int> possibleLastSeenId) loadMore;
+  final Function(dartz.Either<Failure, dynamic> possibleLastSeenId) loadMore;
   final Function onErrorButtonPressed;
   final Function onWontLoadMoreButtonPressed;
   final Function onPullToRefresh;
@@ -201,7 +201,9 @@ class _FeedListState extends State<FeedList> {
           !errorLoadingMoreIsLoading) {
         isCurrentlyLoadingMore = true;
         await widget.loadMore(
-          widget.controller.items.isNotEmpty ? dartz.Right(widget.controller.items.last.id) : dartz.Left(NoneFailure()),
+          widget.controller.items.isNotEmpty
+              ? dartz.Right(widget.controller.items.last.key)
+              : dartz.Left(NoneFailure()),
         );
         isCurrentlyLoadingMore = false;
       } else {

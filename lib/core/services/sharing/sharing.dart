@@ -23,12 +23,12 @@ import '../../results/failures.dart';
 import '../../results/successes.dart';
 
 class Sharing {
-  Future<Either<Failure, Success>> sharePost(BuildContext context, Post post) async {
+  Future<Either<Failure, Success>> sharePost(BuildContext context, PostWithMetadata post) async {
     // todo: generate link using FCM based on post's id
     try {
       File file = await _screenshotPost(context, post);
       Share.shareXFiles([XFile(file.path)],
-          text: "Check out this confession on Confesi: https://confesi.com/post/${post.id}",
+          text: "🚀 Check out this confession! https://confesi.com/p/${post.post.id.mid}",
           subject: "Confesi"); // todo: make dynamic
       return Right(ApiSuccess());
     } catch (_) {
@@ -57,7 +57,7 @@ class Sharing {
     return await file.writeAsBytes(capturedImage);
   }
 
-  Future<File> _screenshotPost(BuildContext context, Post post) async {
+  Future<File> _screenshotPost(BuildContext context, PostWithMetadata post) async {
     final capturedImage = await ScreenshotController()
         .captureFromWidget(_buildPost(context, post), delay: const Duration(milliseconds: 10));
     final directory = await getApplicationDocumentsDirectory();
@@ -65,8 +65,8 @@ class Sharing {
     return await file.writeAsBytes(capturedImage);
   }
 
-  String timeAgoFromMicroSecondUnixTime(Post post) {
-    var timeAgo = DateTime.fromMicrosecondsSinceEpoch(post.createdAt);
+  String timeAgoFromMicroSecondUnixTime(PostWithMetadata post) {
+    var timeAgo = DateTime.fromMicrosecondsSinceEpoch(post.post.createdAt);
     return timeAgo.xTimeAgoLocalDateFormat();
   }
 
@@ -160,7 +160,7 @@ class Sharing {
     );
   }
 
-  Widget _buildPost(BuildContext context, Post post) {
+  Widget _buildPost(BuildContext context, PostWithMetadata post) {
     return Theme(
       data: AppTheme.dark, // always share in dark mode
       child: AspectRatio(
@@ -201,7 +201,7 @@ class Sharing {
                               borderRadius: BorderRadius.circular(5),
                             ),
                             child: Text(
-                              post.school.name,
+                              post.post.school.name,
                               style: kDetail.copyWith(color: Theme.of(context).colorScheme.onSecondary),
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -221,7 +221,7 @@ class Sharing {
                       const SizedBox(height: 10),
                       Flexible(
                         child: Text(
-                          truncateText(post.title, kPostTitleMaxLength),
+                          truncateText(post.post.title, kPostTitleMaxLength),
                           style: kDisplay1.copyWith(
                             color: Theme.of(context).colorScheme.primary,
                           ),
@@ -231,7 +231,7 @@ class Sharing {
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        truncateText(post.content, kPostBodyMaxLength),
+                        truncateText(post.post.content, kPostBodyMaxLength),
                         style: kBody.copyWith(
                           color: Theme.of(context).colorScheme.onSurface,
                         ),
@@ -252,14 +252,14 @@ class Sharing {
                           ),
                           ReactionTile(
                             simpleView: true,
-                            amount: post.upvote,
+                            amount: post.post.upvote,
                             icon: CupertinoIcons.up_arrow,
                             iconColor: Theme.of(context).colorScheme.onErrorContainer,
                             isSelected: true,
                           ),
                           ReactionTile(
                             simpleView: true,
-                            amount: post.downvote,
+                            amount: post.post.downvote,
                             icon: CupertinoIcons.down_arrow,
                             iconColor: Theme.of(context).colorScheme.onSecondaryContainer,
                             isSelected: true,
