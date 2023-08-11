@@ -32,8 +32,8 @@ class _ExploreRecentsState extends State<ExploreRecents> with AutomaticKeepAlive
 
   Widget buildBody(PostsService service) {
     final PaginationState pState = service.recentsPaginationState;
+    print(Provider.of<GlobalContentService>(context).posts);
     return FeedList(
-      swipeRefreshEnabled: service.recentsPostIds.isNotEmpty,
       controller: widget.feedController
         ..items = (service.recentsPostIds
             .map((postId) {

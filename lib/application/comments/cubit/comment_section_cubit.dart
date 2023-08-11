@@ -122,11 +122,9 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
 
               final updatedCommentIds = List<LinkedHashMap<String, List<EncryptedId>>>.from(currentState.commentIds);
 
-              print(replyingToUser);
               if (replyingToUser?.replyingToCommentId != null) {
                 // if it is a reply
                 sl.get<GlobalContentService>().plusOneChildToComment(replyingToUser!.replyingToCommentId);
-                print("adding new reply");
                 for (var i = 0; i < updatedCommentIds.length; i++) {
                   if (updatedCommentIds[i].containsKey(replyingToUser.rootCommentIdReplyingUnder)) {
                     final repliesList = updatedCommentIds[i][replyingToUser.rootCommentIdReplyingUnder] ?? [];
@@ -139,7 +137,6 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
                 // If parent comment index was not found, return Left indicating an error
                 return const Left("Parent comment not found");
               } else {
-                print("adding new root");
                 updatedCommentIds.insert(0, LinkedHashMap<String, List<EncryptedId>>()..[comment.comment.id.uid] = []);
                 emit(currentState.copyWith(commentIds: updatedCommentIds));
                 return Right(comment);
@@ -188,8 +185,6 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
             final existingReplies = existingCommentIds.firstWhereOrNull((map) => map.containsKey(rootCommentId));
 
             if (existingReplies != null) {
-              print("HERE 1");
-
               // Update existing comment map with new replies
               final newReplies = replies.map((e) => e.comment.id).toList();
               if (existingReplies.containsKey(rootCommentId)) {
@@ -203,7 +198,6 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
 
               return true;
             } else {
-              print("HERE 2");
               // If no existing replies found, create a new map entry
               final commentMap = {rootCommentId: replies.map((e) => e.comment.id).toList()};
               final List<LinkedHashMap<String, List<EncryptedId>>> updatedCommentIds = List.from(existingCommentIds)
@@ -262,12 +256,13 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
           if (state is CommentSectionData) {
             emit((state as CommentSectionData).copyWith(paginationState: CommentFeedState.error));
           } else {
-            emit(const CommentSectionError("Unknown error loading comments"));
+            emit(const CommentSectionError("Unknown error loading comments 1"));
           }
         } else if (response.statusCode.toString()[0] == "2") {
           try {
             final List<CommentGroup> commentGroups =
                 (json.decode(response.body)["value"] as List).map((i) => CommentGroup.fromJson(i)).toList();
+
             // Existing commentIds in the state (if any)
             final List<LinkedHashMap<String, List<EncryptedId>>> existingCommentIds =
                 state is CommentSectionData ? (state as CommentSectionData).commentIds : [];
@@ -280,6 +275,7 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
                 final existingReplies = updatedCommentIds.firstWhereOrNull((map) => map.containsKey(rootCommentId));
 
                 final newReplies = group.replies.map((e) => e.comment.id).toList();
+
                 if (existingReplies != null) {
                   // Update existing comment map
                   for (final id in newReplies) {
@@ -289,7 +285,7 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
                   }
                 } else {
                   // If no existing replies found, create a new map entry
-                  final commentMap = {rootCommentId: newReplies};
+                  final commentMap = {rootCommentId.uid: newReplies};
                   updatedCommentIds.add(LinkedHashMap<String, List<EncryptedId>>.from(commentMap));
                 }
               }
@@ -304,20 +300,22 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
                   return acc;
                 },
               );
+
               sl.get<GlobalContentService>().setComments(c);
+
               final paginationState = (commentGroups.length < commentSectionRootsLoadedInitially)
                   ? CommentFeedState.end
                   : CommentFeedState.feed;
+
               emit(CommentSectionData(updatedCommentIds, paginationState));
-              print(updatedCommentIds);
             } else {
               emit(CommentSectionData(existingCommentIds, CommentFeedState.end));
             }
           } catch (_) {
-            emit(const CommentSectionError("Unknown error loading comments"));
+            emit(const CommentSectionError("Unknown error loading comments 2"));
           }
         } else {
-          emit(const CommentSectionError("Unknown error loading comments"));
+          emit(const CommentSectionError("Unknown error loading comments 3"));
         }
       },
     );

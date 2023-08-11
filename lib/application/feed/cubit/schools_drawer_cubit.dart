@@ -39,14 +39,14 @@ class SchoolsDrawerCubit extends Cubit<SchoolsDrawerState> {
     }
   }
 
-  Future<void> getAndSetRandomSchool(String? withoutSchoolId) async {
+  Future<void> getAndSetRandomSchool(EncryptedId? withoutSchoolId) async {
     if (state is SchoolsDrawerData) {
       final s = state as SchoolsDrawerData;
       final newState = s.copyWith(isLoadingRandomSchool: true);
       emit(newState);
       _api.cancelCurrReq();
       (await _api.req(Verb.get, true,
-              "/api/v1/schools/random${withoutSchoolId != null ? "?without-school=$withoutSchoolId" : ''}", {}))
+              "/api/v1/schools/random${withoutSchoolId != null ? "?without-school=${withoutSchoolId.mid}" : ''}", {}))
           .fold(
         (failureWithMsg) =>
             emit(s.copyWith(possibleErr: SchoolsDrawerErr(failureWithMsg.msg()), isLoadingRandomSchool: false)),
@@ -88,7 +88,7 @@ class SchoolsDrawerCubit extends Cubit<SchoolsDrawerState> {
 
             // add all to global content service
             sl.get<GlobalContentService>().setSchools(schools);
-            sl.get<GlobalContentService>().addSchool(homeUniversity);
+            sl.get<GlobalContentService>().setSchool(homeUniversity);
 
             emit(SchoolsDrawerData(
               // SelectedSchool(homeUniversity.id),

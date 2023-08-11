@@ -8,7 +8,7 @@ EncryptedId encryptedIdFromJson(String str) => EncryptedId.fromJson(json.decode(
 
 String encryptedIdToJson(EncryptedId data) => json.encode(data.toJson());
 
-class EncryptedId {
+class EncryptedId implements Comparable<EncryptedId> {
   /// unique id (used for CLIENT unique checking)
   String uid;
 
@@ -30,12 +30,19 @@ class EncryptedId {
         "masked": mid,
       };
 
-  // this is since `mid` can be different
+  @override
+  int get hashCode => uid.hashCode;
+
   @override
   bool operator ==(Object other) {
     if (other is EncryptedId) {
       return this.uid == other.uid;
     }
     return false;
+  }
+
+  @override
+  int compareTo(EncryptedId other) {
+    return uid.compareTo(other.uid);
   }
 }

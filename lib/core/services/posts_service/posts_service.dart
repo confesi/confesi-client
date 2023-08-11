@@ -152,7 +152,7 @@ class PostsService extends ChangeNotifier {
       {
         "purge_cache": refresh,
         "sort": _sort(feedType),
-        "school_id": selectedType is SelectedSchool ? selectedType.id : null,
+        "school_id": selectedType is SelectedSchool ? selectedType.id.mid : null,
         "session_key": _sessionKey(feedType),
         "all_schools": selectedType is SelectedAll,
       },
@@ -169,7 +169,9 @@ class PostsService extends ChangeNotifier {
             final posts =
                 (json.decode(response.body)["value"] as List).map((i) => PostWithMetadata.fromJson(i)).toList();
             _addIdsToList(feedType, posts.map((e) => e.post.id).toList());
+
             sl.get<GlobalContentService>().setPosts(posts);
+
             if (posts.length < postsPageSize) {
               // end
               _updateFeedState(feedType, PaginationState.end);
@@ -181,7 +183,7 @@ class PostsService extends ChangeNotifier {
             // failure
             _updateFeedState(feedType, PaginationState.error);
           }
-        } catch (_) {
+        } catch (e) {
           _updateFeedState(feedType, PaginationState.error);
         }
         notifyListeners();

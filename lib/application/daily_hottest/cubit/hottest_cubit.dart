@@ -36,11 +36,9 @@ class HottestCubit extends Cubit<HottestState> {
             sl.get<GlobalContentService>().setPosts(posts);
             emit(DailyHottestData(posts: posts, date: date));
           } else {
-            print("UNKNOWN ERROR 1");
             emit(DailyHottestError(message: "Unknown error", date: date));
           }
-        } catch (e) {
-          print("UNKNOWN ERROR 2 $e");
+        } catch (_) {
           emit(DailyHottestError(message: "Unknown error", date: date));
         }
       },

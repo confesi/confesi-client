@@ -68,11 +68,9 @@ class LeaderboardCubit extends Cubit<LeaderboardState> {
             final body = json.decode(response.body)["value"];
             final newSchools = (body["schools"] as List).map((i) => SchoolWithMetadata.fromJson(i)).toList();
             sl.get<GlobalContentService>().setSchools(newSchools);
-
             if (newSchools.length < rankedSchoolsPageSize) {
               feedState = LeaderboardFeedState.noMore;
             }
-
             if (forceRefresh) {
               final userSchool = SchoolWithMetadata.fromJson(body["user_school"]);
               sl.get<GlobalContentService>().setSchool(userSchool);
@@ -100,8 +98,7 @@ class LeaderboardCubit extends Cubit<LeaderboardState> {
           } else {
             emit(LeaderboardError(message: "Unknown error 2"));
           }
-        } catch (e) {
-          print(e);
+        } catch (_) {
           emit(LeaderboardError(message: "Unknown error 3"));
         }
       },

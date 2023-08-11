@@ -35,7 +35,7 @@ class GlobalContentService extends ChangeNotifier {
       Verb.patch,
       true,
       "/api/v1/user/school",
-      {"school_id": school.school.id},
+      {"school_id": school.school.id.mid},
     ))
         .fold(
       (failureWithMsg) {
@@ -69,7 +69,7 @@ class GlobalContentService extends ChangeNotifier {
       watch ? Verb.post : Verb.delete,
       true,
       "/api/v1/schools/${watch ? "watch" : "unwatch"}",
-      {"school_id": school.school.id},
+      {"school_id": school.school.id.mid},
     );
 
     return response.fold(
@@ -96,18 +96,8 @@ class GlobalContentService extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addSchool(SchoolWithMetadata school) {
-    schools[school.school.id] = school;
-    notifyListeners();
-  }
-
   void setSchool(SchoolWithMetadata school) {
     schools[school.school.id] = school;
-    notifyListeners();
-  }
-
-  void removeSchool(int id) {
-    schools.remove(id);
     notifyListeners();
   }
 
@@ -191,7 +181,7 @@ class GlobalContentService extends ChangeNotifier {
 
     // Prepare the request body
     final Map<String, dynamic> requestBody = {
-      'content_id': comment.comment.id,
+      'content_id': comment.comment.id.mid,
       'value': newVote,
       'content_type': 'comment',
     };
@@ -281,7 +271,7 @@ class GlobalContentService extends ChangeNotifier {
 
     // Prepare the request body
     final Map<String, dynamic> requestBody = {
-      'content_id': post.post.id,
+      'content_id': post.post.id.mid,
       'value': newVote,
       'content_type': 'post',
     };

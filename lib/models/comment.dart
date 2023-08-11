@@ -57,6 +57,12 @@ class CommentWithMetadata {
         "user_vote": userVote,
         "owner": owner,
       };
+
+  // tostring
+  @override
+  String toString() {
+    return 'CommentWithMetadata{comment: $comment, userVote: $userVote, owner: $owner}';
+  }
 }
 
 class Comment {
@@ -133,4 +139,10 @@ class Comment {
         "hidden": hidden,
         "edited": edited,
       };
+
+  // tostring simple
+  @override
+  String toString() {
+    return 'Comment{id: $id, createdAt: $createdAt, updatedAt: $updatedAt, postId: $postId, numericalUser: $numericalUser, numericalReplyingUser: $numericalReplyingUser, numericalUserIsOp: $numericalUserIsOp, numericalReplyingUserIsOp: $numericalReplyingUserIsOp, parentRootId: $parentRootId, childrenCount: $childrenCount, content: $content, downvote: $downvote, upvote: $upvote, trendingScore: $trendingScore, hidden: $hidden, edited: $edited}';
+  }
 }
