@@ -45,4 +45,9 @@ class EncryptedId implements Comparable<EncryptedId> {
   int compareTo(EncryptedId other) {
     return uid.compareTo(other.uid);
   }
+
+  @override
+  String toString() {
+    return 'EncryptedId{uid: $uid, mid: $mid}';
+  }
 }

@@ -32,7 +32,6 @@ class _ExploreRecentsState extends State<ExploreRecents> with AutomaticKeepAlive
 
   Widget buildBody(PostsService service) {
     final PaginationState pState = service.recentsPaginationState;
-    print(Provider.of<GlobalContentService>(context).posts);
     return FeedList(
       controller: widget.feedController
         ..items = (service.recentsPostIds

@@ -99,7 +99,7 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
       "/api/v1/comments/create",
       {
         "post_id": postId.mid,
-        "parent_comment_id": replyingToUser?.replyingToCommentId,
+        "parent_comment_id": replyingToUser?.replyingToCommentId.mid,
         "content": content,
       },
     );

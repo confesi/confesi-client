@@ -247,17 +247,20 @@ class _CommentsHomeState extends State<CommentsHome> {
     if (state is CommentSectionData) {
       final List<InfiniteScrollIndexable> commentWidgets = [];
       int commentIndex = 0; // Counter variable to keep track of the index
+      LinkedHashMap<EncryptedId, CommentWithMetadata> commentSet = Provider.of<GlobalContentService>(context).comments;
 
-      for (final commentIds in state.commentIds) {
+      // Set to keep track of comments that have already been added
+      Set<EncryptedId> addedComments = <EncryptedId>{};
+
+      for (LinkedHashMap<String, List<EncryptedId>> commentIds in state.commentIds) {
         final rootCommentId = commentIds.keys.first;
         final rootCommentIdsList = commentIds[rootCommentId]!;
-        LinkedHashMap<EncryptedId, CommentWithMetadata> commentSet =
-            Provider.of<GlobalContentService>(context).comments;
-        final comment = commentSet[rootCommentId];
 
-        if (comment != null) {
+        final commentId = EncryptedId(uid: rootCommentId, mid: ''); // mid doesn't matter
+        final comment = commentSet[commentId];
+
+        if (comment != null && !addedComments.contains(commentId)) {
           context.read<CommentSectionCubit>().updateCommentIdToIndex(comment.comment.id, commentIndex);
-          // context.read<CommentSectionCubit>().updateRootCommentIndex(commentIndex + 1);
           commentWidgets.add(
             InfiniteScrollIndexable(
               rootCommentId,
@@ -276,39 +279,46 @@ class _CommentsHomeState extends State<CommentsHome> {
               ),
             ),
           );
+          addedComments.add(commentId); // Mark the comment as added
+
           commentIndex++; // Increment the counter for the next comment
           int totalReplies = comment.comment.childrenCount;
           int iter = 1;
           for (final replyId in rootCommentIdsList) {
             final replyComment = commentSet[replyId];
+
             if (replyComment != null) {
-              totalReplies += replyComment.comment.childrenCount;
-              context.read<CommentSectionCubit>().updateCommentIdToIndex(replyComment.comment.id, commentIndex);
-              commentWidgets.add(
-                InfiniteScrollIndexable(
-                  replyId.uid,
-                  SimpleCommentRootGroup(
-                    root: SimpleCommentTile(
-                      postCreatedAtTime: widget.props.post.post.createdAt,
-                      commentSheetController: commentSheetController,
-                      feedController: feedController,
-                      currentlyRetrievedReplies: rootCommentIdsList.length,
-                      currentReplyNum: iter,
-                      totalNumOfReplies: totalReplies,
-                      isRootComment: false,
-                      comment: replyComment,
+              // Check if the reply comment has already been added
+              final replyCommentId = EncryptedId(uid: replyId.uid, mid: ''); // mid doesn't matter
+              if (!addedComments.contains(replyCommentId)) {
+                totalReplies += replyComment.comment.childrenCount;
+                context.read<CommentSectionCubit>().updateCommentIdToIndex(replyComment.comment.id, commentIndex);
+                commentWidgets.add(
+                  InfiniteScrollIndexable(
+                    replyId.uid,
+                    SimpleCommentRootGroup(
+                      root: SimpleCommentTile(
+                        postCreatedAtTime: widget.props.post.post.createdAt,
+                        commentSheetController: commentSheetController,
+                        feedController: feedController,
+                        currentlyRetrievedReplies: rootCommentIdsList.length,
+                        currentReplyNum: iter,
+                        totalNumOfReplies: totalReplies,
+                        isRootComment: false,
+                        comment: replyComment,
+                      ),
+                      subTree: const [], // No sub-replies since they are one level deep
                     ),
-                    subTree: const [], // No sub-replies since they are one level deep
                   ),
-                ),
-              );
+                );
+                addedComments.add(replyCommentId); // Mark the reply comment as added
+                commentIndex++; // Increment the counter for the next comment
+              }
             }
             iter++;
-            commentIndex++; // Increment the counter for the next comment
           }
         }
       }
-
       return Align(
         alignment: Alignment.topCenter,
         child: FeedList(
@@ -321,6 +331,7 @@ class _CommentsHomeState extends State<CommentsHome> {
                   upvote();
                 },
                 child: Container(
+                  width: double.infinity,
                   // transparent container to make the whole header clickable
                   color: Colors.transparent,
                   child: Padding(

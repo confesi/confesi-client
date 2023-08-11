@@ -51,9 +51,6 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
 
   Widget buildChild(BuildContext context, LeaderboardState state) {
     if (state is LeaderboardData) {
-      // final school = Provider.of<GlobalContentService>(context).schools;
-
-      // print(school);
       return FeedList(
         header: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

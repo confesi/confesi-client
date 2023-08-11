@@ -16,10 +16,8 @@ class CachedOnlineImage extends StatelessWidget {
 
   String _ensureHttpsUrl(String inputUrl) {
     if (!inputUrl.startsWith('https://') && !inputUrl.startsWith('http://')) {
-      print('https://$inputUrl');
       return 'https://$inputUrl';
     }
-    print(inputUrl);
     return inputUrl;
   }
 
