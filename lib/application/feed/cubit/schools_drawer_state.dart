@@ -56,7 +56,7 @@ class SchoolsDrawerNoErr extends SchoolsDrawerPossibleError {}
 abstract class SelectedSchoolFeed {}
 
 class SelectedSchool extends SelectedSchoolFeed {
-  final int id;
+  final EncryptedId id;
 
   SelectedSchool(this.id);
 }

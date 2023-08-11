@@ -58,7 +58,7 @@ class SchoolDetail extends StatelessWidget {
                           .updateWatched(
                               props.school,
                               !Provider.of<GlobalContentService>(context, listen: false)
-                                  .schools[props.school.id]!
+                                  .schools[props.school.school.id]!
                                   .watched)
                           .then((f) =>
                               f.fold((_) => null, (errMsg) => context.read<NotificationsCubit>().showErr(errMsg)));
@@ -66,7 +66,7 @@ class SchoolDetail extends StatelessWidget {
                     icon: CupertinoIcons.chevron_right,
                     backgroundColor: Theme.of(context).colorScheme.secondary,
                     textColor: Theme.of(context).colorScheme.onSecondary,
-                    text: Provider.of<GlobalContentService>(context).schools[props.school.id]!.watched
+                    text: Provider.of<GlobalContentService>(context).schools[props.school.school.id]!.watched
                         ? "Unwatch school"
                         : "Watch school",
                   ),
@@ -99,7 +99,7 @@ class SchoolDetail extends StatelessWidget {
                             borderRadius: const BorderRadius.all(Radius.circular(30)),
                             child: Zoomable(
                               child: CachedOnlineImage(
-                                url: props.school.imgUrl,
+                                url: props.school.school.imgUrl,
                               ),
                             ),
                           ),
@@ -124,21 +124,21 @@ class SchoolDetail extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        props.school.name,
+                        props.school.school.name,
                         style: kDisplay2.copyWith(color: Theme.of(context).colorScheme.primary),
                         textAlign: TextAlign.left,
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        isPlural(props.school.dailyHottests)
-                            ? "${addCommasToNumber(props.school.dailyHottests)} hottests 🔥"
-                            : "${addCommasToNumber(props.school.dailyHottests)} hottest 🔥",
+                        isPlural(props.school.school.dailyHottests)
+                            ? "${addCommasToNumber(props.school.school.dailyHottests)} hottests 🔥"
+                            : "${addCommasToNumber(props.school.school.dailyHottests)} hottest 🔥",
                         style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
                         textAlign: TextAlign.left,
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        props.school.abbr,
+                        props.school.school.abbr,
                         style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
                         textAlign: TextAlign.left,
                       ),
@@ -151,7 +151,7 @@ class SchoolDetail extends StatelessWidget {
                             bgColor: Theme.of(context).colorScheme.surface,
                             textColor: Theme.of(context).colorScheme.secondary,
                             onTap: () {
-                              context.read<SchoolsDrawerCubit>().setSelectedSchoolInUI(SelectedSchool(props.school.id));
+                              context.read<SchoolsDrawerCubit>().setSelectedSchoolInUI(SelectedSchool(props.school.school.id));
                               router.go("/home");
                               Provider.of<PrimaryTabControllerService>(context, listen: false).setTabIdx(0);
                               Provider.of<PostsService>(context, listen: false).reloadAllFeeds();
@@ -162,11 +162,11 @@ class SchoolDetail extends StatelessWidget {
                             bgColor: Theme.of(context).colorScheme.surface,
                             textColor: Theme.of(context).colorScheme.secondary,
                             onTap: () => context.read<QuickActionsCubit>().locateOnMaps(
-                                props.school.lat.toDouble(), props.school.lon.toDouble(), props.school.name),
+                                props.school.school.lat.toDouble(), props.school.school.lon.toDouble(), props.school.school.name),
                             text: "Locate on map",
                           ),
                           IgnorePointer(
-                            ignoring: Provider.of<GlobalContentService>(context).schools[props.school.id]!.home,
+                            ignoring: Provider.of<GlobalContentService>(context).schools[props.school.school.id]!.home,
                             child: SimpleTextButton(
                               bgColor: Theme.of(context).colorScheme.surface,
                               textColor: Theme.of(context).colorScheme.secondary,
@@ -174,7 +174,7 @@ class SchoolDetail extends StatelessWidget {
                                   .setHome(props.school)
                                   .then((f) => f.fold(
                                       (_) => null, (errMsg) => context.read<NotificationsCubit>().showErr(errMsg))),
-                              text: Provider.of<GlobalContentService>(context).schools[props.school.id]!.home
+                              text: Provider.of<GlobalContentService>(context).schools[props.school.school.id]!.home
                                   ? "Current home school"
                                   : "Set as home school",
                             ),
@@ -182,7 +182,7 @@ class SchoolDetail extends StatelessWidget {
                           SimpleTextButton(
                             bgColor: Theme.of(context).colorScheme.surface,
                             textColor: Theme.of(context).colorScheme.secondary,
-                            onTap: () => context.read<QuickActionsCubit>().launchWebsite(props.school.website),
+                            onTap: () => context.read<QuickActionsCubit>().launchWebsite(props.school.school.website),
                             text: "Website",
                           ),
                         ],

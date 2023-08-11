@@ -81,7 +81,7 @@ class LeaderboardItemTile extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      school.name,
+                      school.school.name,
                       style: kTitle.copyWith(
                         color: Theme.of(context).colorScheme.primary,
                       ),
@@ -89,7 +89,7 @@ class LeaderboardItemTile extends StatelessWidget {
                     ),
                     const SizedBox(height: 5),
                     Text(
-                      "${isPlural(school.dailyHottests) ? "${addCommasToNumber(school.dailyHottests)} hottests" : "${addCommasToNumber(school.dailyHottests)} hottest"} ${_placingToEmoji(placing)}",
+                      "${isPlural(school.school.dailyHottests) ? "${addCommasToNumber(school.school.dailyHottests)} hottests" : "${addCommasToNumber(school.school.dailyHottests)} hottest"} ${_placingToEmoji(placing)}",
                       style: kDetail.copyWith(
                         color: Theme.of(context).colorScheme.onSurface,
                       ),

@@ -17,14 +17,14 @@ class SavedPostsError extends SavedPostsState {
 }
 
 class SavedPostsData extends SavedPostsState {
-  final List<int> postIds;
+  final List<EncryptedId> postIds;
   final int? next;
   final PaginationState paginationState;
 
   const SavedPostsData(this.postIds, this.next, this.paginationState);
 
   SavedPostsData copyWith({
-    List<int>? postIds,
+    List<EncryptedId>? postIds,
     int? next,
     PaginationState? paginationState,
   }) {

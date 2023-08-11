@@ -5,6 +5,7 @@ import 'package:confesi/application/comments/cubit/create_comment_cubit.dart';
 import 'package:confesi/core/services/create_comment_service/create_comment_service.dart';
 import 'package:confesi/core/services/global_content/global_content.dart';
 import 'package:confesi/core/utils/numbers/large_number_formatter.dart';
+import 'package:confesi/models/encrypted_id.dart';
 import 'package:confesi/presentation/comments/widgets/sheet.dart';
 import 'package:confesi/presentation/comments/widgets/simple_comment_sort.dart';
 import 'package:confesi/presentation/shared/behaviours/nav_blocker.dart';
@@ -126,7 +127,7 @@ class _CommentsHomeState extends State<CommentsHome> {
                                     ),
                                   ),
                                   child: CommentSheet(
-                                    postCreatedAtTime: widget.props.post.createdAt,
+                                    postCreatedAtTime: widget.props.post.post.createdAt,
                                     feedController: feedController,
                                     onSubmit: (value) async {
                                       commentSheetController.unfocus();
@@ -145,7 +146,7 @@ class _CommentsHomeState extends State<CommentsHome> {
                                       await context
                                           .read<CommentSectionCubit>()
                                           .uploadComment(
-                                            widget.props.post.id,
+                                            widget.props.post.post.id,
                                             value,
                                             replyingTo,
                                           )
@@ -160,7 +161,7 @@ class _CommentsHomeState extends State<CommentsHome> {
                                             context.read<CreateCommentCubit>().clear();
                                             context.read<CreateCommentCubit>().updateReplyingTo(ReplyingToNothing());
                                             Provider.of<GlobalContentService>(context, listen: false)
-                                                .updatePostCommentCount(widget.props.post.id, 1);
+                                                .updatePostCommentCount(widget.props.post.post.id, 1);
                                             if (replyingToIdx == null) {
                                               feedController.scrollToIndex(1);
                                             } else {
@@ -184,10 +185,10 @@ class _CommentsHomeState extends State<CommentsHome> {
                           children: [
                             StatTileGroup(
                               icon1Text: "Back",
-                              icon2Text: addCommasToNumber(widget.props.post.commentCount),
+                              icon2Text: addCommasToNumber(widget.props.post.post.commentCount),
                               icon3Text: "More",
-                              icon4Text: largeNumberFormatter(widget.props.post.upvote),
-                              icon5Text: largeNumberFormatter(widget.props.post.downvote),
+                              icon4Text: largeNumberFormatter(widget.props.post.post.upvote),
+                              icon5Text: largeNumberFormatter(widget.props.post.post.downvote),
                               icon1OnPress: () => router.pop(context),
                               icon2OnPress: () => commentSheetController.isFocused()
                                   ? verifiedUserOnly(context, () => commentSheetController.unfocus())
@@ -200,11 +201,14 @@ class _CommentsHomeState extends State<CommentsHome> {
                                       .voteOnPost(widget.props.post, widget.props.post.userVote != -1 ? -1 : 0)
                                       .then((value) => value.fold(
                                           (err) => context.read<NotificationsCubit>().showErr(err), (_) => null))),
-                              icon4Selected:
-                                  Provider.of<GlobalContentService>(context).posts[widget.props.post.id]!.userVote == 1,
-                              icon5Selected:
-                                  Provider.of<GlobalContentService>(context).posts[widget.props.post.id]!.userVote ==
-                                      -1,
+                              icon4Selected: Provider.of<GlobalContentService>(context)
+                                      .posts[widget.props.post.post.id]!
+                                      .userVote ==
+                                  1,
+                              icon5Selected: Provider.of<GlobalContentService>(context)
+                                      .posts[widget.props.post.post.id]!
+                                      .userVote ==
+                                  -1,
                             ),
                             Expanded(
                               child: AnimatedSwitcher(
@@ -247,7 +251,8 @@ class _CommentsHomeState extends State<CommentsHome> {
       for (final commentIds in state.commentIds) {
         final rootCommentId = commentIds.keys.first;
         final rootCommentIdsList = commentIds[rootCommentId]!;
-        LinkedHashMap<int, CommentWithMetadata> commentSet = Provider.of<GlobalContentService>(context).comments;
+        LinkedHashMap<EncryptedId, CommentWithMetadata> commentSet =
+            Provider.of<GlobalContentService>(context).comments;
         final comment = commentSet[rootCommentId];
 
         if (comment != null) {
@@ -258,7 +263,7 @@ class _CommentsHomeState extends State<CommentsHome> {
               rootCommentId,
               SimpleCommentRootGroup(
                 root: SimpleCommentTile(
-                  postCreatedAtTime: widget.props.post.createdAt,
+                  postCreatedAtTime: widget.props.post.post.createdAt,
                   commentSheetController: commentSheetController,
                   feedController: feedController,
                   currentReplyNum: 0, // doesn't matter for root
@@ -281,10 +286,10 @@ class _CommentsHomeState extends State<CommentsHome> {
               context.read<CommentSectionCubit>().updateCommentIdToIndex(replyComment.comment.id, commentIndex);
               commentWidgets.add(
                 InfiniteScrollIndexable(
-                  replyId,
+                  replyId.uid,
                   SimpleCommentRootGroup(
                     root: SimpleCommentTile(
-                      postCreatedAtTime: widget.props.post.createdAt,
+                      postCreatedAtTime: widget.props.post.post.createdAt,
                       commentSheetController: commentSheetController,
                       feedController: feedController,
                       currentlyRetrievedReplies: rootCommentIdsList.length,
@@ -324,12 +329,12 @@ class _CommentsHomeState extends State<CommentsHome> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         WidgetOrNothing(
-                          showWidget: widget.props.post.title.isNotEmpty,
+                          showWidget: widget.props.post.post.title.isNotEmpty,
                           child: Column(
                             children: [
                               const SizedBox(height: 15),
                               Text(
-                                widget.props.post.title,
+                                widget.props.post.post.title,
                                 style: kDisplay1.copyWith(
                                   color: Theme.of(context).colorScheme.primary,
                                 ),
@@ -342,14 +347,14 @@ class _CommentsHomeState extends State<CommentsHome> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "${widget.props.post.school.name}${buildFaculty(widget.props.post)}${buildYear(widget.props.post)} • ${widget.props.post.category.category.capitalize()}",
+                              "${widget.props.post.post.school.name}${buildFaculty(widget.props.post)}${buildYear(widget.props.post)} • ${widget.props.post.post.category.category.capitalize()}",
                               style: kDetail.copyWith(
                                 color: Theme.of(context).colorScheme.secondary,
                               ),
                               textAlign: TextAlign.left,
                             ),
                             Text(
-                              "${timeAgoFromMicroSecondUnixTime(widget.props.post.createdAt)}${widget.props.post.emojis.isNotEmpty ? " • ${widget.props.post.emojis.map((e) => e).join("")}" : ""}",
+                              "${timeAgoFromMicroSecondUnixTime(widget.props.post.post.createdAt)}${widget.props.post.emojis.isNotEmpty ? " • ${widget.props.post.emojis.map((e) => e).join("")}" : ""}",
                               style: kDetail.copyWith(
                                 color: Theme.of(context).colorScheme.tertiary,
                               ),
@@ -358,12 +363,12 @@ class _CommentsHomeState extends State<CommentsHome> {
                           ],
                         ),
                         WidgetOrNothing(
-                          showWidget: widget.props.post.content.isNotEmpty,
+                          showWidget: widget.props.post.post.content.isNotEmpty,
                           child: Column(
                             children: [
                               const SizedBox(height: 10),
                               Text(
-                                widget.props.post.content,
+                                widget.props.post.post.content,
                                 style: kBody.copyWith(
                                   color: Theme.of(context).colorScheme.primary,
                                 ),
@@ -372,7 +377,7 @@ class _CommentsHomeState extends State<CommentsHome> {
                             ],
                           ),
                         ),
-                        ...linksFromText(widget.props.post.content)
+                        ...linksFromText(widget.props.post.post.content)
                             .take(maxNumberOfLinkPreviewsPerDetailCommentView) // Limit to a maximum of 3 links
                             .map((link) {
                           return Padding(
@@ -393,7 +398,7 @@ class _CommentsHomeState extends State<CommentsHome> {
           shrinkWrap: true,
           controller: feedController..items = commentWidgets,
           loadMore: (_) async => await context.read<CommentSectionCubit>().loadInitial(
-              widget.props.post.id, CommentSortType.recent,
+              widget.props.post.post.id, CommentSortType.recent,
               refresh: Provider.of<GlobalContentService>(context, listen: false).comments.isEmpty),
           onPullToRefresh: () async {
             Provider.of<GlobalContentService>(context, listen: false).clearComments();
@@ -402,15 +407,15 @@ class _CommentsHomeState extends State<CommentsHome> {
             await Future.wait([
               context
                   .read<CommentSectionCubit>()
-                  .loadInitial(widget.props.post.id, CommentSortType.recent, refresh: true),
+                  .loadInitial(widget.props.post.post.id, CommentSortType.recent, refresh: true),
             ]);
           },
           hasError: state.paginationState == CommentFeedState.error,
           wontLoadMore: state.paginationState == CommentFeedState.end,
           onWontLoadMoreButtonPressed: () =>
-              context.read<CommentSectionCubit>().loadInitial(widget.props.post.id, CommentSortType.recent),
+              context.read<CommentSectionCubit>().loadInitial(widget.props.post.post.id, CommentSortType.recent),
           onErrorButtonPressed: () =>
-              context.read<CommentSectionCubit>().loadInitial(widget.props.post.id, CommentSortType.recent),
+              context.read<CommentSectionCubit>().loadInitial(widget.props.post.post.id, CommentSortType.recent),
           wontLoadMoreMessage:
               state.paginationState == CommentFeedState.end ? "You've reached the end" : "Error loading",
         ),
@@ -419,7 +424,7 @@ class _CommentsHomeState extends State<CommentsHome> {
       return LoadingOrAlert(
         message: StateMessage(
           state is CommentSectionError ? state.message : null,
-          () => context.read<CommentSectionCubit>().loadInitial(widget.props.post.id, CommentSortType.recent),
+          () => context.read<CommentSectionCubit>().loadInitial(widget.props.post.post.id, CommentSortType.recent),
         ),
         isLoading: state is CommentSectionData && state.paginationState == CommentFeedState.loading,
       );

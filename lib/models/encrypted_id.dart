@@ -9,21 +9,33 @@ EncryptedId encryptedIdFromJson(String str) => EncryptedId.fromJson(json.decode(
 String encryptedIdToJson(EncryptedId data) => json.encode(data.toJson());
 
 class EncryptedId {
-  String hash;
-  String masked;
+  /// unique id (used for CLIENT unique checking)
+  String uid;
+
+  /// masked id (this is for SERVER communication)
+  String mid;
 
   EncryptedId({
-    required this.hash,
-    required this.masked,
+    required this.uid,
+    required this.mid,
   });
 
   factory EncryptedId.fromJson(Map<String, dynamic> json) => EncryptedId(
-        hash: json["hash"],
-        masked: json["masked"],
+        uid: json["hash"],
+        mid: json["masked"],
       );
 
   Map<String, dynamic> toJson() => {
-        "hash": hash,
-        "masked": masked,
+        "hash": uid,
+        "masked": mid,
       };
+
+  // this is since `mid` can be different
+  @override
+  bool operator ==(Object other) {
+    if (other is EncryptedId) {
+      return this.uid == other.uid;
+    }
+    return false;
+  }
 }

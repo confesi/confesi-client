@@ -5,6 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:confesi/application/comments/cubit/create_comment_cubit.dart';
 import 'package:confesi/core/results/successes.dart';
+import 'package:confesi/models/encrypted_id.dart';
 import 'package:ordered_set/ordered_set.dart';
 
 import 'package:confesi/core/services/user_auth/user_auth_service.dart';
@@ -28,10 +29,10 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
   final Api _rootsApi;
   final Api _createCommentApi;
 
-  void updateCommentIdToIndex(int commentId, int index) {
+  void updateCommentIdToIndex(EncryptedId commentId, int index) {
     if (state is CommentSectionData) {
       final data = (state as CommentSectionData);
-      final newCommentIdToIndex = LinkedHashMap<int, int>.from(data.commentIdToListIdx);
+      final newCommentIdToIndex = LinkedHashMap<EncryptedId, int>.from(data.commentIdToListIdx);
       newCommentIdToIndex[commentId] = index;
       emit(data.copyWith(commentIdToListIdx: newCommentIdToIndex));
     }
@@ -73,7 +74,7 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
     return Right(GeneralFailure());
   }
 
-  Either<int, Failure> indexFromCommentId(int commentId) {
+  Either<int, Failure> indexFromCommentId(EncryptedId commentId) {
     if (state is CommentSectionData) {
       final data = (state as CommentSectionData);
       int? id = data.commentIdToListIdx[commentId];
@@ -88,7 +89,7 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
   }
 
   Future<Either<String, CommentWithMetadata>> uploadComment(
-      int postId, String content, ReplyingToUser? replyingToUser) async {
+      EncryptedId postId, String content, ReplyingToUser? replyingToUser) async {
     _repliesApi.cancelCurrReq(); // cancel this api req so we don't mess up the "jump to" order
     _createCommentApi.cancelCurrReq();
 
@@ -97,7 +98,7 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
       true,
       "/api/v1/comments/create",
       {
-        "post_id": postId,
+        "post_id": postId.mid,
         "parent_comment_id": replyingToUser?.replyingToCommentId,
         "content": content,
       },
@@ -119,7 +120,7 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
             if (currentState is CommentSectionData) {
               sl.get<GlobalContentService>().addComment(comment);
 
-              final updatedCommentIds = List<LinkedHashMap<int, List<int>>>.from(currentState.commentIds);
+              final updatedCommentIds = List<LinkedHashMap<String, List<EncryptedId>>>.from(currentState.commentIds);
 
               print(replyingToUser);
               if (replyingToUser?.replyingToCommentId != null) {
@@ -130,7 +131,7 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
                   if (updatedCommentIds[i].containsKey(replyingToUser.rootCommentIdReplyingUnder)) {
                     final repliesList = updatedCommentIds[i][replyingToUser.rootCommentIdReplyingUnder] ?? [];
                     repliesList.insert(0, comment.comment.id);
-                    updatedCommentIds[i][replyingToUser.rootCommentIdReplyingUnder!] = repliesList;
+                    updatedCommentIds[i][replyingToUser.rootCommentIdReplyingUnder.uid] = repliesList;
                     emit(currentState.copyWith(commentIds: updatedCommentIds));
                     return Right(comment);
                   }
@@ -139,7 +140,7 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
                 return const Left("Parent comment not found");
               } else {
                 print("adding new root");
-                updatedCommentIds.insert(0, LinkedHashMap<int, List<int>>()..[comment.comment.id] = []);
+                updatedCommentIds.insert(0, LinkedHashMap<String, List<EncryptedId>>()..[comment.comment.id.uid] = []);
                 emit(currentState.copyWith(commentIds: updatedCommentIds));
                 return Right(comment);
               }
@@ -153,7 +154,7 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
     );
   }
 
-  Future<bool> loadReplies(int? rootCommentId, int next) async {
+  Future<bool> loadReplies(EncryptedId? rootCommentId, int next) async {
     if (rootCommentId == null) return false;
     _repliesApi.cancelCurrReq();
     final response = await _repliesApi.req(
@@ -161,7 +162,7 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
       true,
       "/api/v1/comments/replies",
       {
-        "parent_root": rootCommentId,
+        "parent_root": rootCommentId.mid,
         "next": next,
       },
     );
@@ -178,7 +179,7 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
                 .toList();
 
             // Existing commentIds in the state (if any)
-            final List<LinkedHashMap<int, List<int>>> existingCommentIds =
+            final List<LinkedHashMap<String, List<EncryptedId>>> existingCommentIds =
                 state is CommentSectionData ? (state as CommentSectionData).commentIds : [];
 
             sl.get<GlobalContentService>().setComments(replies);
@@ -194,7 +195,7 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
               if (existingReplies.containsKey(rootCommentId)) {
                 existingReplies[rootCommentId]!.addAll(newReplies);
               } else {
-                existingReplies[rootCommentId] = newReplies;
+                existingReplies[rootCommentId.uid] = newReplies;
               }
               if (replies.isNotEmpty) {
                 emit(CommentSectionData(existingCommentIds, CommentFeedState.feed));
@@ -205,8 +206,8 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
               print("HERE 2");
               // If no existing replies found, create a new map entry
               final commentMap = {rootCommentId: replies.map((e) => e.comment.id).toList()};
-              final List<LinkedHashMap<int, List<int>>> updatedCommentIds = List.from(existingCommentIds)
-                ..add(LinkedHashMap<int, List<int>>.from(commentMap));
+              final List<LinkedHashMap<String, List<EncryptedId>>> updatedCommentIds = List.from(existingCommentIds)
+                ..add(LinkedHashMap<String, List<EncryptedId>>.from(commentMap));
               // Emit the updated state
               emit(CommentSectionData(updatedCommentIds, CommentFeedState.feed));
               return true;
@@ -224,7 +225,7 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
   void clear() => emit(CommentSectionData.empty());
 
   Future<void> loadInitial(
-    int postId,
+    EncryptedId postId,
     CommentSortType sort, {
     bool refresh = false,
   }) async {
@@ -241,7 +242,7 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
       true,
       "/api/v1/comments/roots",
       {
-        "post_id": postId,
+        "post_id": postId.mid,
         "sort": sort.name(),
         "purge_cache": refresh,
         "session_key": sl.get<UserAuthService>().baseSessionKey,
@@ -268,17 +269,17 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
             final List<CommentGroup> commentGroups =
                 (json.decode(response.body)["value"] as List).map((i) => CommentGroup.fromJson(i)).toList();
             // Existing commentIds in the state (if any)
-            final List<LinkedHashMap<int, List<int>>> existingCommentIds =
+            final List<LinkedHashMap<String, List<EncryptedId>>> existingCommentIds =
                 state is CommentSectionData ? (state as CommentSectionData).commentIds : [];
 
             if (commentGroups.isNotEmpty) {
-              List<LinkedHashMap<int, List<int>>> updatedCommentIds = List.from(existingCommentIds);
+              List<LinkedHashMap<String, List<EncryptedId>>> updatedCommentIds = List.from(existingCommentIds);
 
               for (final group in commentGroups) {
                 final rootCommentId = group.root.comment.id;
                 final existingReplies = updatedCommentIds.firstWhereOrNull((map) => map.containsKey(rootCommentId));
 
-                final newReplies = group.replies?.map((e) => e.comment.id).toList() ?? [];
+                final newReplies = group.replies.map((e) => e.comment.id).toList();
                 if (existingReplies != null) {
                   // Update existing comment map
                   for (final id in newReplies) {
@@ -289,7 +290,7 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
                 } else {
                   // If no existing replies found, create a new map entry
                   final commentMap = {rootCommentId: newReplies};
-                  updatedCommentIds.add(LinkedHashMap<int, List<int>>.from(commentMap));
+                  updatedCommentIds.add(LinkedHashMap<String, List<EncryptedId>>.from(commentMap));
                 }
               }
 
@@ -298,7 +299,7 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
                 (List<CommentWithMetadata> acc, group) {
                   acc.add(group.root);
                   if (group.replies != null) {
-                    acc.addAll(group.replies!.map((reply) => reply));
+                    acc.addAll(group.replies.map((reply) => reply));
                   }
                   return acc;
                 },

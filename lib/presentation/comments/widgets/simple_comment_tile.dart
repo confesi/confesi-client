@@ -123,7 +123,7 @@ class _SimpleCommentTileState extends State<SimpleCommentTile> {
     setState(() => isLoading = true);
     await context
         .read<CommentSectionCubit>()
-        .loadReplies(widget.comment.comment.parentRoot ?? widget.comment.comment.id, widget.comment.comment.createdAt)
+        .loadReplies(widget.comment.comment.parentRootId ?? widget.comment.comment.id, widget.comment.comment.createdAt)
         .then(
           (possibleSuccess) =>
               possibleSuccess ? null : context.read<NotificationsCubit>().showErr("Error loading more"),
@@ -240,7 +240,7 @@ class _SimpleCommentTileState extends State<SimpleCommentTile> {
                                               replyingToCommentId: widget.comment.comment.id,
                                               identifier: buildUserIdentifier,
                                               rootCommentIdReplyingUnder:
-                                                  widget.comment.comment.parentRoot ?? widget.comment.comment.id,
+                                                  widget.comment.comment.parentRootId ?? widget.comment.comment.id,
                                             ),
                                           );
                                       context.read<CreateCommentCubit>().state is CreateCommentEnteringData &&

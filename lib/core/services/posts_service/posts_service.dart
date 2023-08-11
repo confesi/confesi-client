@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/services/user_auth/user_auth_service.dart';
+import 'package:confesi/models/encrypted_id.dart';
 import 'package:flutter/material.dart';
 import 'package:ordered_set/ordered_set.dart';
 
@@ -21,9 +22,9 @@ class PostsService extends ChangeNotifier {
 
   PostsService(this._trendingApi, this._recentsApi, this._sentimentApi);
 
-  List<int> trendingPostIds = [];
-  List<int> recentsPostIds = [];
-  List<int> sentimentPostIds = [];
+  List<EncryptedId> trendingPostIds = [];
+  List<EncryptedId> recentsPostIds = [];
+  List<EncryptedId> sentimentPostIds = [];
   PaginationState trendingPaginationState = PaginationState.loading;
   PaginationState recentsPaginationState = PaginationState.loading;
   PaginationState sentimentPaginationState = PaginationState.loading;
@@ -67,8 +68,8 @@ class PostsService extends ChangeNotifier {
     }
   }
 
-  void _addIdsToList(FeedType feedType, List<int> postIds) {
-    OrderedSet<int> ids = OrderedSet<int>(); // Convert List to OrderedSet
+  void _addIdsToList(FeedType feedType, List<EncryptedId> postIds) {
+    OrderedSet<EncryptedId> ids = OrderedSet<EncryptedId>(); // Convert List to OrderedSet
     ids.addAll(postIds.reversed);
 
     switch (feedType) {
@@ -167,7 +168,7 @@ class PostsService extends ChangeNotifier {
             // success
             final posts =
                 (json.decode(response.body)["value"] as List).map((i) => PostWithMetadata.fromJson(i)).toList();
-            _addIdsToList(feedType, posts.map((e) => e.id).toList());
+            _addIdsToList(feedType, posts.map((e) => e.post.id).toList());
             sl.get<GlobalContentService>().setPosts(posts);
             if (posts.length < postsPageSize) {
               // end

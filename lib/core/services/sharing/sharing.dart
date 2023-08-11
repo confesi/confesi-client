@@ -28,7 +28,7 @@ class Sharing {
     try {
       File file = await _screenshotPost(context, post);
       Share.shareXFiles([XFile(file.path)],
-          text: "Check out this confession on Confesi: https://confesi.com/post/${post.id}",
+          text: "Check out this confession on Confesi: https://confesi.com/post/${post.post.id}",
           subject: "Confesi"); // todo: make dynamic
       return Right(ApiSuccess());
     } catch (_) {
@@ -66,7 +66,7 @@ class Sharing {
   }
 
   String timeAgoFromMicroSecondUnixTime(PostWithMetadata post) {
-    var timeAgo = DateTime.fromMicrosecondsSinceEpoch(post.createdAt);
+    var timeAgo = DateTime.fromMicrosecondsSinceEpoch(post.post.createdAt);
     return timeAgo.xTimeAgoLocalDateFormat();
   }
 
@@ -201,7 +201,7 @@ class Sharing {
                               borderRadius: BorderRadius.circular(5),
                             ),
                             child: Text(
-                              post.school.name,
+                              post.post.school.name,
                               style: kDetail.copyWith(color: Theme.of(context).colorScheme.onSecondary),
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -221,7 +221,7 @@ class Sharing {
                       const SizedBox(height: 10),
                       Flexible(
                         child: Text(
-                          truncateText(post.title, kPostTitleMaxLength),
+                          truncateText(post.post.title, kPostTitleMaxLength),
                           style: kDisplay1.copyWith(
                             color: Theme.of(context).colorScheme.primary,
                           ),
@@ -231,7 +231,7 @@ class Sharing {
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        truncateText(post.content, kPostBodyMaxLength),
+                        truncateText(post.post.content, kPostBodyMaxLength),
                         style: kBody.copyWith(
                           color: Theme.of(context).colorScheme.onSurface,
                         ),
@@ -252,14 +252,14 @@ class Sharing {
                           ),
                           ReactionTile(
                             simpleView: true,
-                            amount: post.upvote,
+                            amount: post.post.upvote,
                             icon: CupertinoIcons.up_arrow,
                             iconColor: Theme.of(context).colorScheme.onErrorContainer,
                             isSelected: true,
                           ),
                           ReactionTile(
                             simpleView: true,
-                            amount: post.downvote,
+                            amount: post.post.downvote,
                             icon: CupertinoIcons.down_arrow,
                             iconColor: Theme.of(context).colorScheme.onSecondaryContainer,
                             isSelected: true,

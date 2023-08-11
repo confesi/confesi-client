@@ -100,11 +100,11 @@ class _SearchSchoolsScreenState extends State<SearchSchoolsScreen> {
                                   .updateWatched(school, isWatching)
                                   .then((f) => f.fold(
                                       (_) => null, (errMsg) => context.read<NotificationsCubit>().showErr(errMsg))),
-                              home: Provider.of<GlobalContentService>(context).schools[school.id]!.home,
-                              watched: Provider.of<GlobalContentService>(context).schools[school.id]!.watched,
-                              topText: school.name,
+                              home: Provider.of<GlobalContentService>(context).schools[school.school.id]!.home,
+                              watched: Provider.of<GlobalContentService>(context).schools[school.school.id]!.watched,
+                              topText: school.school.name,
                               middleText: distanceFormatter(context, school.distance),
-                              bottomText: school.abbr,
+                              bottomText: school.school.abbr,
                             );
                           }).toList(),
                         ),

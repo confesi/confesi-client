@@ -36,6 +36,21 @@ class SchoolWithMetadata {
         "watched": watched,
         "distance": distance,
       };
+
+  // copyWith
+  SchoolWithMetadata copyWith({
+    School? school,
+    bool? home,
+    bool? watched,
+    double? distance,
+  }) {
+    return SchoolWithMetadata(
+      school: school ?? this.school,
+      home: home ?? this.home,
+      watched: watched ?? this.watched,
+      distance: distance ?? this.distance,
+    );
+  }
 }
 
 class School {

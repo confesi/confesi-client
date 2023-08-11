@@ -49,9 +49,11 @@ class FeedDrawer extends StatelessWidget {
               ),
             ),
             ...schools.where((school) => school.home).map((watchedHomeSchool) => DrawerUniversityTile(
-                  text: "Home: ${watchedHomeSchool.name}",
+                  text: "Home: ${watchedHomeSchool.school.name}",
                   onTap: () {
-                    context.read<SchoolsDrawerCubit>().setSelectedSchoolInUI(SelectedSchool(watchedHomeSchool.id));
+                    context
+                        .read<SchoolsDrawerCubit>()
+                        .setSelectedSchoolInUI(SelectedSchool(watchedHomeSchool.school.id));
                     Provider.of<PostsService>(context, listen: false).reloadAllFeeds();
                   },
                 )),
@@ -65,7 +67,7 @@ class FeedDrawer extends StatelessWidget {
                   await context
                       .read<SchoolsDrawerCubit>()
                       .getAndSetRandomSchool(
-                          state.selected is SelectedSchool ? (state.selected as SelectedSchool).id : null)
+                          state.selected is SelectedSchool ? (state.selected as SelectedSchool).id.mid : null)
                       .then((value) => Provider.of<PostsService>(context, listen: false).reloadAllFeeds());
                 },
               ),
@@ -88,9 +90,11 @@ class FeedDrawer extends StatelessWidget {
                           .updateWatched(watchedSchool, false)
                           .then((f) =>
                               f.fold((_) => null, (errMsg) => context.read<NotificationsCubit>().showErr(errMsg))),
-                      text: watchedSchool.name,
+                      text: watchedSchool.school.name,
                       onTap: () {
-                        context.read<SchoolsDrawerCubit>().setSelectedSchoolInUI(SelectedSchool(watchedSchool.id));
+                        context
+                            .read<SchoolsDrawerCubit>()
+                            .setSelectedSchoolInUI(SelectedSchool(watchedSchool.school.id));
                         Provider.of<PostsService>(context, listen: false).reloadAllFeeds();
                       },
                     )),

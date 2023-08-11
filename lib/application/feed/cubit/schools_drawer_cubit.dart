@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import '../../../core/results/successes.dart';
 import '../../../core/services/global_content/global_content.dart';
 import '../../../init.dart';
+import '../../../models/encrypted_id.dart';
 import '../../../models/school_with_metadata.dart';
 
 part 'schools_drawer_state.dart';
@@ -23,6 +24,7 @@ class SchoolsDrawerCubit extends Cubit<SchoolsDrawerState> {
     if (state is SchoolsDrawerData && (state as SchoolsDrawerData).selected is SelectedSchool) {
       return Provider.of<GlobalContentService>(context)
           .schools[((state as SchoolsDrawerData).selected as SelectedSchool).id]!
+          .school
           .name;
     } else {
       return "All";
@@ -37,7 +39,7 @@ class SchoolsDrawerCubit extends Cubit<SchoolsDrawerState> {
     }
   }
 
-  Future<void> getAndSetRandomSchool(int? withoutSchoolId) async {
+  Future<void> getAndSetRandomSchool(String? withoutSchoolId) async {
     if (state is SchoolsDrawerData) {
       final s = state as SchoolsDrawerData;
       final newState = s.copyWith(isLoadingRandomSchool: true);
@@ -54,9 +56,9 @@ class SchoolsDrawerCubit extends Cubit<SchoolsDrawerState> {
               final body = json.decode(response.body);
               final school = SchoolWithMetadata.fromJson(body["value"]);
               sl.get<GlobalContentService>().setSchool(school);
-              setSelectedSchoolInUI(SelectedSchool(school.id));
+              setSelectedSchoolInUI(SelectedSchool(school.school.id));
               emit(SchoolsDrawerData(
-                SelectedSchool(school.id),
+                SelectedSchool(school.school.id),
                 SchoolsDrawerNoErr(),
                 isLoadingRandomSchool: false,
               ));

@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:confesi/core/results/successes.dart';
+import 'package:confesi/models/encrypted_id.dart';
 import 'package:confesi/models/school_with_metadata.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
@@ -18,9 +19,9 @@ class GlobalContentService extends ChangeNotifier {
   GlobalContentService(this._postVoteApi, this._watchedSchoolApi, this._setHomeApi);
 
   // LinkedHashMap of int id key to Post type value
-  LinkedHashMap<int, PostWithMetadata> posts = LinkedHashMap<int, PostWithMetadata>();
-  LinkedHashMap<int, CommentWithMetadata> comments = LinkedHashMap<int, CommentWithMetadata>();
-  LinkedHashMap<int, SchoolWithMetadata> schools = LinkedHashMap<int, SchoolWithMetadata>();
+  LinkedHashMap<EncryptedId, PostWithMetadata> posts = LinkedHashMap<EncryptedId, PostWithMetadata>();
+  LinkedHashMap<EncryptedId, CommentWithMetadata> comments = LinkedHashMap<EncryptedId, CommentWithMetadata>();
+  LinkedHashMap<EncryptedId, SchoolWithMetadata> schools = LinkedHashMap<EncryptedId, SchoolWithMetadata>();
 
   Future<Either<ApiSuccess, String>> setHome(SchoolWithMetadata school) async {
     _setHomeApi.cancelCurrReq();
@@ -34,7 +35,7 @@ class GlobalContentService extends ChangeNotifier {
       Verb.patch,
       true,
       "/api/v1/user/school",
-      {"school_id": school.id},
+      {"school_id": school.school.id},
     ))
         .fold(
       (failureWithMsg) {
@@ -68,7 +69,7 @@ class GlobalContentService extends ChangeNotifier {
       watch ? Verb.post : Verb.delete,
       true,
       "/api/v1/schools/${watch ? "watch" : "unwatch"}",
-      {"school_id": school.id},
+      {"school_id": school.school.id},
     );
 
     return response.fold(
@@ -90,18 +91,18 @@ class GlobalContentService extends ChangeNotifier {
 
   void setSchools(List<SchoolWithMetadata> newSchools) {
     for (final school in newSchools) {
-      schools[school.id] = school; // Update the instance variable 'schools'
+      schools[school.school.id] = school; // Update the instance variable 'schools'
     }
     notifyListeners();
   }
 
   void addSchool(SchoolWithMetadata school) {
-    schools[school.id] = school;
+    schools[school.school.id] = school;
     notifyListeners();
   }
 
   void setSchool(SchoolWithMetadata school) {
-    schools[school.id] = school;
+    schools[school.school.id] = school;
     notifyListeners();
   }
 
@@ -122,7 +123,7 @@ class GlobalContentService extends ChangeNotifier {
     notifyListeners();
   }
 
-  void plusOneChildToComment(int id) {
+  void plusOneChildToComment(EncryptedId id) {
     if (comments.containsKey(id)) {
       comments[id]!.comment.childrenCount++;
       notifyListeners();
@@ -141,14 +142,14 @@ class GlobalContentService extends ChangeNotifier {
 
   void setPosts(List<PostWithMetadata> posts) {
     for (final post in posts) {
-      this.posts[post.id] = post;
+      this.posts[post.post.id] = post;
     }
     notifyListeners();
   }
 
-  void updatePostCommentCount(int postId, int deltaVote) {
+  void updatePostCommentCount(EncryptedId postId, int deltaVote) {
     if (posts.containsKey(postId)) {
-      posts[postId]!.commentCount += deltaVote;
+      posts[postId]!.post.commentCount += deltaVote;
       notifyListeners();
     }
   }
@@ -263,24 +264,24 @@ class GlobalContentService extends ChangeNotifier {
     // Revert the original vote counts
     if (changingVote) {
       if (oldVote == 1) {
-        post.upvote--;
+        post.post.upvote--;
       } else if (oldVote == -1) {
-        post.downvote--;
+        post.post.downvote--;
       }
     }
 
     // Increment the new vote counts
     if (newVote == 1) {
-      post.upvote++;
+      post.post.upvote++;
     } else if (newVote == -1) {
-      post.downvote++;
+      post.post.downvote++;
     }
 
     notifyListeners();
 
     // Prepare the request body
     final Map<String, dynamic> requestBody = {
-      'content_id': post.id,
+      'content_id': post.post.id,
       'value': newVote,
       'content_type': 'post',
     };
@@ -294,14 +295,14 @@ class GlobalContentService extends ChangeNotifier {
             if (changingVote) {
               post.userVote = oldVote;
               if (oldVote == 1) {
-                post.upvote++;
+                post.post.upvote++;
               } else if (oldVote == -1) {
-                post.downvote++;
+                post.post.downvote++;
               }
               if (newVote == 1) {
-                post.upvote--;
+                post.post.upvote--;
               } else if (newVote == -1) {
-                post.downvote--;
+                post.post.downvote--;
               }
               notifyListeners();
             }
@@ -313,14 +314,14 @@ class GlobalContentService extends ChangeNotifier {
               if (changingVote) {
                 post.userVote = oldVote;
                 if (oldVote == 1) {
-                  post.upvote++;
+                  post.post.upvote++;
                 } else if (oldVote == -1) {
-                  post.downvote++;
+                  post.post.downvote++;
                 }
                 if (newVote == 1) {
-                  post.upvote--;
+                  post.post.upvote--;
                 } else if (newVote == -1) {
-                  post.downvote--;
+                  post.post.downvote--;
                 }
                 notifyListeners();
               }

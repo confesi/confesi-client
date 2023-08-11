@@ -23,8 +23,8 @@ class LeaderboardError extends LeaderboardState {
 
 /// Success loading page, it now has data to display.
 class LeaderboardData extends LeaderboardState {
-  final List<int> schoolIds;
-  final int userSchoolId;
+  final List<EncryptedId> schoolIds;
+  final EncryptedId userSchoolId;
   final LeaderboardFeedState feedState;
   final DateTime startViewDate;
 
@@ -35,10 +35,10 @@ class LeaderboardData extends LeaderboardState {
 
   // copyWith method
   LeaderboardData copyWith({
-    List<int>? schoolIds,
+    List<EncryptedId>? schoolIds,
     LeaderboardFeedState? feedState,
     DateTime? startViewDate,
-    int? userSchoolId,
+    EncryptedId? userSchoolId,
   }) {
     return LeaderboardData(
       schoolIds ?? this.schoolIds,

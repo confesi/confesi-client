@@ -73,7 +73,7 @@ class _HottestTileState extends State<HottestTile> {
                           ),
                           padding: const EdgeInsets.all(10),
                           child: Text(
-                            widget.post.school.name,
+                            widget.post.post.school.name,
                             style: kTitle.copyWith(color: Theme.of(context).colorScheme.onSecondary),
                             textAlign: TextAlign.center,
                             overflow: TextOverflow.ellipsis,
@@ -88,7 +88,7 @@ class _HottestTileState extends State<HottestTile> {
                                 bottomLeft: Radius.circular(15),
                                 bottomRight: Radius.circular(15),
                               ),
-                              child: CachedOnlineImage(url: widget.post.school.imgUrl),
+                              child: CachedOnlineImage(url: widget.post.post.school.imgUrl),
                             ),
                           ),
                         ),
@@ -132,9 +132,11 @@ class _HottestTileState extends State<HottestTile> {
                                   multiLine: true,
                                   spaceBetween: 15,
                                   left: true,
-                                  header: widget.post.title.isEmpty ? widget.post.content : widget.post.title,
+                                  header: widget.post.post.title.isEmpty
+                                      ? widget.post.post.content
+                                      : widget.post.post.title,
                                   body:
-                                      '${widget.post.emojis.join('  ')}${widget.post.yearOfStudy.type != null ? "\nYear ${widget.post.yearOfStudy.type}" : ''}${widget.post.faculty.faculty != null ? "\n${widget.post.faculty.faculty}" : ''}',
+                                      '${widget.post.emojis.join('  ')}${widget.post.post.yearOfStudy.type != null ? "\nYear ${widget.post.post.yearOfStudy.type}" : ''}${widget.post.post.faculty.faculty != null ? "\n${widget.post.post.faculty.faculty}" : ''}',
                                 ),
                               ),
                             ],
