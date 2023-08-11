@@ -12,6 +12,7 @@ import '../../presentation/authentication_and_settings/screens/authentication/re
 import '../../presentation/authentication_and_settings/screens/settings/contact.dart';
 import '../../presentation/authentication_and_settings/screens/settings/faq.dart';
 import '../../presentation/authentication_and_settings/screens/settings/feedback.dart';
+import '../../presentation/authentication_and_settings/screens/settings/feeds_and_sorts.dart';
 import '../../presentation/authentication_and_settings/screens/settings/home.dart';
 import '../../presentation/create_post/screens/details.dart';
 import '../../presentation/create_post/screens/home.dart';
@@ -222,6 +223,9 @@ final GoRouter router = GoRouter(
     GoRoute(
         path: '/settings/text-size', builder: (BuildContext context, GoRouterState state) => const TextSizeScreen()),
     GoRoute(path: '/settings/curvy', builder: (BuildContext context, GoRouterState state) => const CurvyScreen()),
+    GoRoute(
+        path: '/settings/feeds-and-sorts',
+        builder: (BuildContext context, GoRouterState state) => const FeedsAndSortsScreen()),
   ],
 );
 

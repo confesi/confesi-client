@@ -29,6 +29,8 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
   final Api _rootsApi;
   final Api _createCommentApi;
 
+  bool isLoadingReplies = false;
+
   void updateCommentIdToIndex(EncryptedId commentId, int index) {
     if (state is CommentSectionData) {
       final data = (state as CommentSectionData);
@@ -223,6 +225,8 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
     CommentSortType sort, {
     bool refresh = false,
   }) async {
+    if (isLoadingReplies) return;
+    isLoadingReplies = true;
     _rootsApi.cancelCurrReq();
     if (state is CommentSectionError) {
       refresh = true;
@@ -319,5 +323,6 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
         }
       },
     );
+    isLoadingReplies = false;
   }
 }

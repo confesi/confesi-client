@@ -232,6 +232,8 @@ class GlobalContentService extends ChangeNotifier {
               }
               return const Left("Error voting");
             }
+            notifyListeners();
+
             return Right(ApiSuccess());
           },
         );
@@ -322,6 +324,7 @@ class GlobalContentService extends ChangeNotifier {
               }
               return const Left("Error voting");
             }
+            notifyListeners();
             return Right(ApiSuccess());
           },
         );

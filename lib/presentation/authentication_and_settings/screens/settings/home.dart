@@ -171,6 +171,11 @@ class SettingsHome extends StatelessWidget {
                               text: "Curviness of components",
                               onTap: () => router.push("/settings/curvy"),
                             ),
+                            SettingTile(
+                              leftIcon: CupertinoIcons.search,
+                              text: "Feeds and sorts",
+                              onTap: () => router.push("/settings/feeds-and-sorts"),
+                            ),
                           ],
                         ),
                         TileGroup(

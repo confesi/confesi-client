@@ -12,6 +12,10 @@ enum ProfanityFilter { on, off }
 
 enum UnitSystem { metric, imperial }
 
+enum DefaultPostFeed { trending, recents, sentiment }
+
+enum DefaultCommentSort { trending, recents }
+
 @HiveType(typeId: 1)
 class UserAuthData extends HiveObject with UserAuthState {
   @HiveField(0)
@@ -29,6 +33,12 @@ class UserAuthData extends HiveObject with UserAuthState {
   @HiveField(11)
   final UnitSystem unitSystem;
 
+  @HiveField(14)
+  final DefaultCommentSort defaultCommentSort;
+
+  @HiveField(15)
+  final DefaultPostFeed defaultPostFeed;
+
   // default
   UserAuthData({
     this.themePref = ThemePref.dark,
@@ -36,6 +46,8 @@ class UserAuthData extends HiveObject with UserAuthState {
     this.isShrunkView = false,
     this.shakeToGiveFeedback = true,
     this.unitSystem = UnitSystem.metric,
+    this.defaultCommentSort = DefaultCommentSort.trending,
+    this.defaultPostFeed = DefaultPostFeed.trending,
   });
 }
 
@@ -47,6 +59,8 @@ extension UserAuthDataCopyWith on UserAuthData {
     bool? isShrunkView,
     bool? shakeToGiveFeedback,
     UnitSystem? unitSystem,
+    DefaultCommentSort? defaultCommentSort,
+    DefaultPostFeed? defaultPostFeed,
   }) {
     return UserAuthData(
       themePref: themePref ?? this.themePref,
@@ -54,6 +68,8 @@ extension UserAuthDataCopyWith on UserAuthData {
       isShrunkView: isShrunkView ?? this.isShrunkView,
       shakeToGiveFeedback: shakeToGiveFeedback ?? this.shakeToGiveFeedback,
       unitSystem: unitSystem ?? this.unitSystem,
+      defaultCommentSort: defaultCommentSort ?? this.defaultCommentSort,
+      defaultPostFeed: defaultPostFeed ?? this.defaultPostFeed,
     );
   }
 }
@@ -69,6 +85,36 @@ class ThemePrefAdapter extends TypeAdapter<ThemePref> {
 
   @override
   void write(BinaryWriter writer, ThemePref obj) {
+    writer.writeInt(obj.index);
+  }
+}
+
+class DefaultCommentSortAdapter extends TypeAdapter<DefaultCommentSort> {
+  @override
+  final int typeId = 13; // Choose a unique typeId for the enum
+
+  @override
+  DefaultCommentSort read(BinaryReader reader) {
+    return DefaultCommentSort.values[reader.readInt()];
+  }
+
+  @override
+  void write(BinaryWriter writer, DefaultCommentSort obj) {
+    writer.writeInt(obj.index);
+  }
+}
+
+class DefaultPostFeedAdapter extends TypeAdapter<DefaultPostFeed> {
+  @override
+  final int typeId = 12; // Choose a unique typeId for the enum
+
+  @override
+  DefaultPostFeed read(BinaryReader reader) {
+    return DefaultPostFeed.values[reader.readInt()];
+  }
+
+  @override
+  void write(BinaryWriter writer, DefaultPostFeed obj) {
     writer.writeInt(obj.index);
   }
 }

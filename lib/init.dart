@@ -114,11 +114,15 @@ Future<void> init() async {
   CreateCommentService createCommentService = CreateCommentService();
   PrimaryTabControllerService primaryTabControllerService = PrimaryTabControllerService();
 
+  //! Local storage type adapters
   userAuthService.hive.registerAdapter<UserAuthData>(UserAuthDataAdapter());
   userAuthService.hive.registerAdapter(ThemePrefAdapter());
   userAuthService.hive.registerAdapter(UnitSystemAdapter());
   userAuthService.hive.registerAdapter(ProfanityFilterAdapter());
   userAuthService.hive.registerAdapter(FcmTokenAdapter());
+  userAuthService.hive.registerAdapter(DefaultCommentSortAdapter());
+  userAuthService.hive.registerAdapter(DefaultPostFeedAdapter());
+
   sl.registerLazySingleton(() => userAuthService);
   sl.registerLazySingleton(() => globalContentService);
   sl.registerLazySingleton(() => postsService);

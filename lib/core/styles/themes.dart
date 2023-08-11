@@ -7,25 +7,25 @@ class AppTheme {
     highlightColor: Colors.transparent,
     splashColor: Colors.transparent,
     colorScheme: const ColorScheme(
-      onSurfaceVariant: Colors.black, // Change to black for better contrast
+      onSurfaceVariant: Color.fromARGB(255, 0, 0, 0), // Change to black
       brightness: Brightness.light,
-      primary: Color.fromARGB(255, 238, 239, 240), // Lighten the primary color
-      onPrimary: Color(0xff333333),
-      secondary: Color(0xff8BE8E5), // Use tertiary color as secondary
-      onSecondary: Color.fromARGB(255, 45, 45, 45),
-      error: Color.fromARGB(255, 231, 104, 104), // "ERROR" color
-      onError: Colors.black, // Change to black for better contrast
-      tertiary: Color(0xffFFE17B),
-      surfaceTint: Color(0xff90A17D), // "SUCCESS" color
-      background: Color.fromARGB(255, 251, 251, 251),
-      onBackground: Color.fromARGB(255, 217, 217, 217),
-      surface: Color.fromARGB(255, 246, 246, 246),
-      onSurface: Color.fromARGB(255, 179, 179, 179),
-      shadow: Color.fromARGB(255, 233, 233, 233),
-      primaryContainer: Color(0xfffde5b6), // Badge's light color.
-      secondaryContainer: Color(0xfffde5b6), // Badge's dark color.
-      onErrorContainer: Color.fromARGB(255, 147, 246, 150), // Color for post reaction
-      onSecondaryContainer: Color.fromARGB(255, 230, 125, 121), // Color for post reaction
+      primary: Color.fromARGB(255, 0, 0, 0), // Change to black
+      onPrimary: Colors.white, // White text on black
+      secondary: Color.fromARGB(255, 111, 191, 197), // Strong secondary color
+      onSecondary: Color.fromARGB(255, 75, 75, 75),
+      error: Color.fromARGB(255, 232, 96, 96),
+      onError: Colors.black,
+      tertiary: Color(0xffFFE891),
+      surfaceTint: Color.fromARGB(255, 132, 135, 132),
+      background: Colors.white, // White background
+      onBackground: Color.fromARGB(255, 180, 180, 180), // Darker text on light background
+      surface: Color.fromARGB(255, 230, 230, 230), // Slightly darker surface color
+      onSurface: Color.fromARGB(255, 104, 104, 104),
+      shadow: Color.fromARGB(255, 200, 200, 200), // Slightly darker shadow color
+      primaryContainer: Color(0xffF7DDB4),
+      secondaryContainer: Color(0xffF7DDB4),
+      onErrorContainer: Color.fromARGB(255, 140, 235, 144),
+      onSecondaryContainer: Color.fromARGB(255, 215, 120, 115),
     ),
   );
 
