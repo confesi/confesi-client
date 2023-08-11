@@ -18,6 +18,7 @@ import 'application/comments/cubit/comment_section_cubit.dart';
 import 'application/comments/cubit/create_comment_cubit.dart';
 import 'application/create_post/cubit/post_categories_cubit.dart';
 import 'application/feed/cubit/search_schools_cubit.dart';
+import 'application/posts/cubit/individual_post_cubit.dart';
 import 'application/user/cubit/account_details_cubit.dart';
 import 'application/user/cubit/feedback_cubit.dart';
 import 'application/user/cubit/notifications_cubit.dart';
@@ -88,6 +89,7 @@ void main() async => await init().then(
                     BlocProvider(lazy: false, create: (context) => sl<NotificationsCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<CommentSectionCubit>()),
                     BlocProvider(lazy: false, create: (context) => sl<CreateCommentCubit>()),
+                    BlocProvider(lazy: false, create: (context) => sl<IndividualPostCubit>()),
                   ],
                   child: debugMode && devicePreview
                       ? DevicePreview(builder: (context) => const ShrinkView())
@@ -155,38 +157,45 @@ class _MyAppState extends State<MyApp> {
   }
 
   void startDeepLinkListener() => sl.get<AppLinks>().allStringLinkStream.listen((link) => handleDeepLink(link));
-  
+
+  void routeDeepLink(String deepLink) {
+    final postRegex = RegExp(r"^https:\/\/confesi\.com\/p\/([a-zA-Z0-9]+)$");
+
+    final commentRegex = RegExp(r"^https:\/\/confesi\.com\/c\/([a-zA-Z0-9]+)$");
+
+    final match = postRegex.firstMatch(deepLink);
+    final commentMatch = commentRegex.firstMatch(deepLink);
+
+    if (match != null) {
+      final postId = match.group(1);
+      print("POST ID: $postId");
+      router.go("/post/$postId");
+      if (postId == null) context.read<NotificationsCubit>().showErr("Unable to open deep link");
+      router.push("/home/posts/comments", extra: HomePostsCommentsProps(NeedToLoadPost(postId!)));
+    } else if (commentMatch != null) {
+      // TODO: implement comment deep link
+      context.read<NotificationsCubit>().showErr("Unable to open deep link");
+      // final commentId = commentMatch.group(1);
+      // print("COMMENT ID: $commentId");
+      // router.go("/comment/$commentId");
+    } else {
+      context.read<NotificationsCubit>().showErr("Unable to open deep link");
+    }
+  }
+
   void handleDeepLink(String deepLink) {
     final auth = sl.get<FirebaseAuth>();
 
-    if (auth.currentUser == null) {
-      print("NO AUTH");
-      // Handle the case where the user is not authenticated
+    if (auth.currentUser != null) {
+      sl.get<UserAuthService>().getData(auth.currentUser!.uid).then((_) {
+        if (sl.get<UserAuthService>().state is! UserAuthData) {
+          router.go("/error");
+          return;
+        }
+        routeDeepLink(deepLink);
+      });
     } else {
-      print("AUTH!");
-      // Handle the case where the user is authenticated
-
-      // Fetch user authentication data if needed
-      if (auth.currentUser != null) {
-        sl.get<UserAuthService>().getData(auth.currentUser!.uid).then((_) {
-          if (sl.get<UserAuthService>().state is! UserAuthData) {
-            router.go("/error");
-            return;
-          }
-
-          // Continue handling the deep link based on the user's data
-          // Example:
-          if (deepLink.contains("/profile")) {
-            // Handle deep link related to user profile
-            print("Deep link to user profile");
-          } else if (deepLink.contains("/post")) {
-            // Handle deep link related to a specific post
-            print("Deep link to a post");
-          }
-
-          // ... handle other deep link scenarios
-        });
-      }
+      context.read<NotificationsCubit>().showErr("Only guests and registered users can open deep links");
     }
   }
 

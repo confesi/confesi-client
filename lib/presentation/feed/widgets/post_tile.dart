@@ -29,7 +29,7 @@ class PostTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return TouchableOpacity(
       behavior: HitTestBehavior.opaque,
-      onTap: () => router.push("/home/posts/comments", extra: HomePostsCommentsProps(post, false)),
+      onTap: () => router.push("/home/posts/comments", extra: HomePostsCommentsProps(PreloadedPost(post, false))),
       onLongPress: () => context.read<QuickActionsCubit>().sharePost(context, post),
       child: Padding(
         padding: const EdgeInsets.only(top: 15),
@@ -178,7 +178,7 @@ class PostTile extends StatelessWidget {
                                   onTap: () => verifiedUserOnly(
                                       context,
                                       () => router.push("/home/posts/comments",
-                                          extra: HomePostsCommentsProps(post, true))),
+                                          extra: HomePostsCommentsProps(PreloadedPost(post, true)))),
                                 ),
                                 ReactionTile(
                                   onTap: () async => verifiedUserOnly(

@@ -137,9 +137,9 @@ class GlobalContentService extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updatePostCommentCount(EncryptedId postId, int deltaVote) {
+  void updatePostCommentCount(EncryptedId postId, int delta) {
     if (posts.containsKey(postId)) {
-      posts[postId]!.post.commentCount += deltaVote;
+      posts[postId]!.post.commentCount += delta;
       notifyListeners();
     }
   }

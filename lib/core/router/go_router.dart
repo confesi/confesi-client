@@ -240,8 +240,23 @@ class HomeLeaderboardSchoolProps {
   const HomeLeaderboardSchoolProps(this.school);
 }
 
-class HomePostsCommentsProps {
+//! Home posts comment props with abstract classes
+
+abstract class PostLoadType {}
+
+class PreloadedPost extends PostLoadType {
   final PostWithMetadata post;
   final bool openKeyboard;
-  const HomePostsCommentsProps(this.post, this.openKeyboard);
+
+  PreloadedPost(this.post, this.openKeyboard);
+}
+
+class NeedToLoadPost extends PostLoadType {
+  final String maskedPostId;
+  NeedToLoadPost(this.maskedPostId);
+}
+
+class HomePostsCommentsProps {
+  final PostLoadType postLoadType;
+  const HomePostsCommentsProps(this.postLoadType);
 }

@@ -219,7 +219,7 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
   void clear() => emit(CommentSectionData.empty());
 
   Future<void> loadInitial(
-    EncryptedId postId,
+    String postId,
     CommentSortType sort, {
     bool refresh = false,
   }) async {
@@ -236,7 +236,7 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
       true,
       "/api/v1/comments/roots",
       {
-        "post_id": postId.mid,
+        "post_id": postId,
         "sort": sort.name(),
         "purge_cache": refresh,
         "session_key": sl.get<UserAuthService>().baseSessionKey,
