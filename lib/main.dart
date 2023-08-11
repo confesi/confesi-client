@@ -158,26 +158,18 @@ class _MyAppState extends State<MyApp> {
 
   void startDeepLinkListener() => sl.get<AppLinks>().allStringLinkStream.listen((link) => handleDeepLink(link));
 
-  void routeDeepLink(String deepLink) {
-    final postRegex = RegExp(r"^https:\/\/confesi\.com\/p\/([a-zA-Z0-9]+)$");
-
-    final commentRegex = RegExp(r"^https:\/\/confesi\.com\/c\/([a-zA-Z0-9]+)$");
-
+  void routeDeepLink(String deepLink) async {
+    final postRegex = RegExp(r"^https:\/\/confesi\.com\/p\/([a-zA-Z0-9_-]+)$");
+    print(deepLink);
     final match = postRegex.firstMatch(deepLink);
-    final commentMatch = commentRegex.firstMatch(deepLink);
-
     if (match != null) {
       final postId = match.group(1);
-      print("POST ID: $postId");
-      router.go("/post/$postId");
-      if (postId == null) context.read<NotificationsCubit>().showErr("Unable to open deep link");
+      if (postId == null) {
+        context.read<NotificationsCubit>().showErr("Unable to open deep link");
+        return;
+      }
+      await router.push("/home").then((_) => router.push("/post/$postId"));
       router.push("/home/posts/comments", extra: HomePostsCommentsProps(NeedToLoadPost(postId!)));
-    } else if (commentMatch != null) {
-      // TODO: implement comment deep link
-      context.read<NotificationsCubit>().showErr("Unable to open deep link");
-      // final commentId = commentMatch.group(1);
-      // print("COMMENT ID: $commentId");
-      // router.go("/comment/$commentId");
     } else {
       context.read<NotificationsCubit>().showErr("Unable to open deep link");
     }

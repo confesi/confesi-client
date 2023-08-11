@@ -137,6 +137,11 @@ class GlobalContentService extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setPost(PostWithMetadata post) {
+    posts[post.post.id] = post;
+    notifyListeners();
+  }
+
   void updatePostCommentCount(EncryptedId postId, int delta) {
     if (posts.containsKey(postId)) {
       posts[postId]!.post.commentCount += delta;

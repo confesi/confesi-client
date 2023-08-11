@@ -17,6 +17,8 @@ import 'package:confesi/presentation/shared/other/widget_or_nothing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_native_splash/cli_commands.dart';
+import 'package:http/http.dart';
 import 'package:keyboard_attachable/keyboard_attachable.dart';
 import 'package:provider/provider.dart';
 import 'package:screenshot_callback/screenshot_callback.dart';
@@ -54,14 +56,16 @@ class CommentsHome extends StatefulWidget {
 class _CommentsHomeState extends State<CommentsHome> {
   final FeedListController feedListController = FeedListController();
   final CommentSheetController commentSheetController = CommentSheetController();
+  final ScreenshotCallback screenshotCallback = ScreenshotCallback();
 
-  void delegateInitialLoad() {
+  Future<void> delegateInitialLoad() async {
+    // await Future.delayed(const Duration(milliseconds: 500));
     if (widget.props.postLoadType is PreloadedPost) {
       // preloaded
       context.read<IndividualPostCubit>().setPost((widget.props.postLoadType as PreloadedPost).post);
     } else if (widget.props.postLoadType is NeedToLoadPost) {
       // not preloaded
-      context.read<IndividualPostCubit>().loadPost((widget.props.postLoadType as NeedToLoadPost).maskedPostId);
+      await context.read<IndividualPostCubit>().loadPost((widget.props.postLoadType as NeedToLoadPost).maskedPostId);
     } else {
       context.read<NotificationsCubit>().showErr("Error loading content");
     }
@@ -150,8 +154,128 @@ class _CommentsHomeState extends State<CommentsHome> {
     }
   }
 
+  Widget buildHeader(BuildContext context, CommentSectionData commentData, IndividualPostData postState) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        GestureDetector(
+          onDoubleTap: () {
+            HapticFeedback.lightImpact();
+            upvote(postState.post);
+          },
+          child: Container(
+            width: double.infinity,
+            // transparent container to make the whole header clickable
+            color: Colors.transparent,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  WidgetOrNothing(
+                    showWidget: postState.post.post.title.isNotEmpty,
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 15),
+                        Text(
+                          postState.post.post.title,
+                          style: kDisplay1.copyWith(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "${postState.post.post.school.name}${buildFaculty(postState.post)}${buildYear(postState.post)} • ${postState.post.post.category.category.capitalize()}",
+                        style: kDetail.copyWith(
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                      Text(
+                        "${timeAgoFromMicroSecondUnixTime(postState.post.post.createdAt)}${postState.post.emojis.isNotEmpty ? " • ${postState.post.emojis.map((e) => e).join("")}" : ""}",
+                        style: kDetail.copyWith(
+                          color: Theme.of(context).colorScheme.tertiary,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                    ],
+                  ),
+                  WidgetOrNothing(
+                    showWidget: postState.post.post.content.isNotEmpty,
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 10),
+                        Text(
+                          postState.post.post.content,
+                          style: kBody.copyWith(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                      ],
+                    ),
+                  ),
+                  ...linksFromText(postState.post.post.content)
+                      .take(maxNumberOfLinkPreviewsPerDetailCommentView) // Limit to a maximum of 3 links
+                      .map((link) {
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 15),
+                      child: UrlPreviewTile(url: link),
+                    );
+                  }).toList(),
+                  const SizedBox(height: 15),
+                ],
+              ),
+            ),
+          ),
+        ),
+        SimpleCommentSort(onSwitch: (newSort) => print(newSort)),
+      ],
+    );
+  }
+
+  void upvote(PostWithMetadata post) {
+    verifiedUserOnly(
+      context,
+      () async => await Provider.of<GlobalContentService>(context, listen: false)
+          .voteOnPost(post, post.userVote != 1 ? 1 : 0)
+          .then((value) => value.fold((err) => context.read<NotificationsCubit>().showErr(err), (_) => null)),
+    );
+  }
+
+  void clearOldState() {
+    context.read<CreateCommentCubit>().clear();
+    context.read<CommentSectionCubit>().clear();
+    context.read<IndividualPostCubit>().setLoading();
+  }
+
+  void startScreenshotListener() {
+    screenshotCallback.addListener(
+      () {
+        context.read<IndividualPostCubit>().state is IndividualPostData
+            ? showNotificationChip(
+                context,
+                "Tap here to share this instead",
+                notificationType: NotificationType.success,
+                onTap: () => context
+                    .read<QuickActionsCubit>()
+                    .sharePost(context, (context.read<IndividualPostCubit>().state as IndividualPostData).post),
+              )
+            : null;
+      },
+    );
+  }
+
   @override
   void initState() {
+    startScreenshotListener();
+    clearOldState();
     delegateInitialLoad();
     super.initState();
   }
@@ -160,71 +284,137 @@ class _CommentsHomeState extends State<CommentsHome> {
   void dispose() {
     feedListController.dispose();
     commentSheetController.dispose();
+    screenshotCallback.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return OneThemeStatusBar(
-      brightness: Brightness.light,
-      child: NavBlocker(
-        blocking: true,
-        child: KeyboardDismiss(
-          child: Scaffold(
-            backgroundColor: Theme.of(context).colorScheme.shadow,
-            body: BlocConsumer<IndividualPostCubit, IndividualPostState>(
-              listenWhen: (previous, current) => previous is IndividualPostLoading && current is IndividualPostData,
-              listener: (context, state) {
-                if (state is IndividualPostData) {
-                  context.read<CommentSectionCubit>().loadInitial(state.post.post.id.mid, CommentSortType.recent);
-                }
-              },
-              builder: (context, postState) {
-                if (postState is IndividualPostData) {
-                  return BlocBuilder<CommentSectionCubit, CommentSectionState>(
-                    builder: (context, commentState) {
-                      if (commentState is CommentSectionData) {
-                        return FeedList(
-                          isScrollable: true,
-                          shrinkWrap: true,
-                          controller: feedListController
-                            ..items = generateComments(context, commentState, feedListController, postState.post),
-                          header: Container(),
-                          loadMore: (_) async => await context
-                              .read<CommentSectionCubit>()
-                              .loadInitial(postState.post.post.id.mid, CommentSortType.recent),
-                          hasError: commentState.paginationState == CommentFeedState.error,
-                          onErrorButtonPressed: () async => await context
-                              .read<CommentSectionCubit>()
-                              .loadInitial(postState.post.post.id.mid, CommentSortType.recent),
-                          onPullToRefresh: (_) async => await context
-                              .read<CommentSectionCubit>()
-                              .loadInitial(postState.post.post.id.mid, CommentSortType.recent, refresh: true),
-                          onWontLoadMoreButtonPressed: (_) async => await context
-                              .read<CommentSectionCubit>()
-                              .loadInitial(postState.post.post.id.mid, CommentSortType.recent),
-                          wontLoadMore: commentState.paginationState == CommentFeedState.end,
-                          wontLoadMoreMessage: "You've reached the end",
-                        );
-                      } else {
-                        return LoadingOrAlert(
-                            message: StateMessage(
-                                commentState is CommentSectionError ? commentState.message : "Unknown error",
-                                () => context
-                                    .read<CommentSectionCubit>()
-                                    .loadInitial(postState.post.post.id.mid, CommentSortType.recent)),
-                            isLoading: false);
-                      }
-                    },
-                  );
-                } else {
-                  return LoadingOrAlert(
-                      message: StateMessage(postState is IndividualPostError ? postState.message : "Unknown error",
-                          () => delegateInitialLoad()),
-                      isLoading: postState is IndividualPostLoading);
-                }
-              },
-            ),
+      brightness:
+          context.watch<IndividualPostCubit>().state is IndividualPostLoading ? Brightness.dark : Brightness.light,
+      child: KeyboardDismiss(
+        child: Scaffold(
+          backgroundColor: Theme.of(context).colorScheme.shadow,
+          body: BlocConsumer<IndividualPostCubit, IndividualPostState>(
+            listenWhen: (previous, current) => previous is IndividualPostLoading && current is IndividualPostData,
+            listener: (context, state) {
+              if (state is IndividualPostData) {
+                context
+                    .read<CommentSectionCubit>()
+                    .loadInitial(state.post.post.id.mid, CommentSortType.recent, refresh: true);
+              }
+            },
+            builder: (context, postState) {
+              if (postState is IndividualPostData) {
+                return BlocBuilder<CommentSectionCubit, CommentSectionState>(
+                  builder: (context, commentState) {
+                    if (commentState is CommentSectionData) {
+                      return FooterLayout(
+                        footer: SafeArea(
+                          top: false,
+                          child: Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              border: Border(
+                                top: BorderSide(
+                                  color: Theme.of(context).colorScheme.onBackground,
+                                  width: 0.8,
+                                ),
+                              ),
+                            ),
+                            child: CommentSheet(
+                              controller: commentSheetController,
+                              onSubmit: (value) => print(value),
+                              maxCharacters: maxCommentLength,
+                              feedController: feedListController,
+                              postCreatedAtTime: postState.post.post.createdAt,
+                            ),
+                          ),
+                        ),
+                        child: Align(
+                          alignment: Alignment.topCenter,
+                          child: Column(
+                            children: [
+                              StatTileGroup(
+                                icon1Text: "Back",
+                                icon2Text: addCommasToNumber(postState.post.post.commentCount),
+                                icon3Text: "More",
+                                icon4Text: largeNumberFormatter(postState.post.post.upvote),
+                                icon5Text: largeNumberFormatter(postState.post.post.downvote),
+                                icon1OnPress: () => router.pop(context),
+                                icon2OnPress: () => commentSheetController.isFocused()
+                                    ? verifiedUserOnly(context, () => commentSheetController.unfocus())
+                                    : verifiedUserOnly(context, () => commentSheetController.focus()),
+                                icon3OnPress: () => buildOptionsSheet(context, postState.post),
+                                icon4OnPress: () async => upvote(postState.post),
+                                icon5OnPress: () async => verifiedUserOnly(
+                                    context,
+                                    () async => await Provider.of<GlobalContentService>(context, listen: false)
+                                        .voteOnPost(postState.post, postState.post.userVote != -1 ? -1 : 0)
+                                        .then((value) => value.fold(
+                                            (err) => context.read<NotificationsCubit>().showErr(err), (_) => null))),
+                                icon4Selected: Provider.of<GlobalContentService>(context)
+                                        .posts[postState.post.post.id]!
+                                        .userVote ==
+                                    1,
+                                icon5Selected: Provider.of<GlobalContentService>(context)
+                                        .posts[postState.post.post.id]!
+                                        .userVote ==
+                                    -1,
+                              ),
+                              Expanded(
+                                child: FeedList(
+                                  header: buildHeader(context, commentState, postState),
+                                  isScrollable: true,
+                                  shrinkWrap: true,
+                                  controller: feedListController
+                                    ..items =
+                                        generateComments(context, commentState, feedListController, postState.post),
+                                  loadMore: (_) async => await context.read<CommentSectionCubit>().loadInitial(
+                                      postState.post.post.id.mid, CommentSortType.recent,
+                                      refresh: commentState.commentIds.isEmpty),
+                                  hasError: commentState.paginationState == CommentFeedState.error,
+                                  onErrorButtonPressed: () async => await context
+                                      .read<CommentSectionCubit>()
+                                      .loadInitial(postState.post.post.id.mid, CommentSortType.recent),
+                                  onPullToRefresh: () async {
+                                    Provider.of<GlobalContentService>(context, listen: false).clearComments();
+                                    context.read<CreateCommentCubit>().clear();
+                                    context.read<CommentSectionCubit>().clear();
+                                    context.read<IndividualPostCubit>().setLoading();
+                                    await delegateInitialLoad();
+                                  },
+                                  onWontLoadMoreButtonPressed: () async => await context
+                                      .read<CommentSectionCubit>()
+                                      .loadInitial(postState.post.post.id.mid, CommentSortType.recent,
+                                          refresh: commentState.commentIds.isEmpty),
+                                  wontLoadMore: commentState.paginationState == CommentFeedState.end,
+                                  wontLoadMoreMessage: "You've reached the end",
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    } else {
+                      return LoadingOrAlert(
+                          message: StateMessage(
+                              commentState is CommentSectionError ? commentState.message : "Unknown error",
+                              () => context
+                                  .read<CommentSectionCubit>()
+                                  .loadInitial(postState.post.post.id.mid, CommentSortType.recent)),
+                          isLoading: false);
+                    }
+                  },
+                );
+              } else {
+                return LoadingOrAlert(
+                    message: StateMessage(postState is IndividualPostError ? postState.message : "Unknown error",
+                        () => delegateInitialLoad()),
+                    isLoading: postState is IndividualPostLoading);
+              }
+            },
           ),
         ),
       ),
