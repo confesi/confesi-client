@@ -240,7 +240,7 @@ class HomeLeaderboardSchoolProps {
 }
 
 class HomePostsCommentsProps {
-  final Post post;
+  final PostWithMetadata post;
   final bool openKeyboard;
   const HomePostsCommentsProps(this.post, this.openKeyboard);
 }

@@ -22,7 +22,7 @@ class DailyHottestError extends HottestState {
 
 /// Success loading page, it now has data to display.
 class DailyHottestData extends HottestState {
-  final List<Post> posts;
+  final List<PostWithMetadata> posts;
   final DateTime date;
 
   DailyHottestData({required this.posts, required this.date});

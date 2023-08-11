@@ -50,7 +50,7 @@ class SavedPostsCubit extends Cubit<SavedPostsState> {
             } else if (state is SavedPostsData) {
               next = (state as SavedPostsData).next;
             }
-            final posts = (body["posts"] as List).map((i) => Post.fromJson(i)).toList();
+            final posts = (body["posts"] as List).map((i) => PostWithMetadata.fromJson(i)).toList();
             final List<int> combinedPosts;
             if (state is SavedPostsData) {
               if (refresh) {

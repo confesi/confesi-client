@@ -9,7 +9,7 @@ import '../../shared/buttons/option.dart';
 import '../../shared/overlays/button_options_sheet.dart';
 
 // Show the options for this post.
-void buildOptionsSheet(BuildContext context, Post post) => showButtonOptionsSheet(context, [
+void buildOptionsSheet(BuildContext context, PostWithMetadata post) => showButtonOptionsSheet(context, [
       OptionButton(
         text: "Save",
         icon: CupertinoIcons.bookmark,

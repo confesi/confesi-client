@@ -18,7 +18,7 @@ class HottestTile extends StatefulWidget {
 
   final int currentIndex;
   final int thisIndex;
-  final Post post;
+  final PostWithMetadata post;
 
   @override
   State<HottestTile> createState() => _HottestTileState();

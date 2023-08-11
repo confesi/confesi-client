@@ -31,7 +31,8 @@ class HottestCubit extends Cubit<HottestState> {
       (response) {
         try {
           if (response.statusCode.toString()[0] == "2") {
-            final posts = (json.decode(response.body)["value"] as List).map((e) => Post.fromJson(e)).toList();
+            final posts =
+                (json.decode(response.body)["value"] as List).map((e) => PostWithMetadata.fromJson(e)).toList();
             sl.get<GlobalContentService>().setPosts(posts);
             emit(DailyHottestData(posts: posts, date: date));
           } else {

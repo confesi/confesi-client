@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-import 'package:confesi/models/school.dart';
+import 'package:confesi/models/school_with_metadata.dart';
 import 'package:confesi/models/year_of_study.dart';
 import 'package:equatable/equatable.dart';
 

@@ -1,7 +1,7 @@
 import 'package:confesi/core/utils/dates/readable_date_format.dart';
 import 'package:confesi/models/post.dart';
 
-String buildFaculty(Post post) {
+String buildFaculty(PostWithMetadata post) {
   if (post.faculty.faculty != null) {
     return " • ${post.faculty.faculty}";
   } else {
@@ -9,7 +9,7 @@ String buildFaculty(Post post) {
   }
 }
 
-String buildYear(Post post) {
+String buildYear(PostWithMetadata post) {
   if (post.yearOfStudy.type != null) {
     return " • ${post.yearOfStudy.type!}";
   } else {

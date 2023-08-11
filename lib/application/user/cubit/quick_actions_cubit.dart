@@ -83,7 +83,7 @@ class QuickActionsCubit extends Cubit<QuickActionsState> {
     }
   }
 
-  void sharePost(BuildContext context, Post post) {
+  void sharePost(BuildContext context, PostWithMetadata post) {
     if (state is QuickActionsDefault) {
       _sharing.sharePost(context, post);
     }

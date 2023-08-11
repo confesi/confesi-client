@@ -23,7 +23,7 @@ import '../utils/post_metadata_formatters.dart';
 class PostTile extends StatelessWidget {
   const PostTile({super.key, required this.post});
 
-  final Post post;
+  final PostWithMetadata post;
 
   @override
   Widget build(BuildContext context) {

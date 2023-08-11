@@ -18,7 +18,7 @@ class GlobalContentService extends ChangeNotifier {
   GlobalContentService(this._postVoteApi, this._watchedSchoolApi, this._setHomeApi);
 
   // LinkedHashMap of int id key to Post type value
-  LinkedHashMap<int, Post> posts = LinkedHashMap<int, Post>();
+  LinkedHashMap<int, PostWithMetadata> posts = LinkedHashMap<int, PostWithMetadata>();
   LinkedHashMap<int, CommentWithMetadata> comments = LinkedHashMap<int, CommentWithMetadata>();
   LinkedHashMap<int, SchoolWithMetadata> schools = LinkedHashMap<int, SchoolWithMetadata>();
 
@@ -139,7 +139,7 @@ class GlobalContentService extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setPosts(List<Post> posts) {
+  void setPosts(List<PostWithMetadata> posts) {
     for (final post in posts) {
       this.posts[post.id] = post;
     }
@@ -243,7 +243,7 @@ class GlobalContentService extends ChangeNotifier {
     );
   }
 
-  Future<Either<String, ApiSuccess>> voteOnPost(Post post, int vote) async {
+  Future<Either<String, ApiSuccess>> voteOnPost(PostWithMetadata post, int vote) async {
     _postVoteApi.cancelCurrReq();
 
     if (vote != -1 && vote != 0 && vote != 1) {

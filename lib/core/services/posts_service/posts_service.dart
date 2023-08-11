@@ -162,20 +162,25 @@ class PostsService extends ChangeNotifier {
         notifyListeners();
       },
       (response) {
-        if (response.statusCode.toString()[0] == "2") {
-          // success
-          final posts = (json.decode(response.body)["value"] as List).map((i) => Post.fromJson(i)).toList();
-          _addIdsToList(feedType, posts.map((e) => e.id).toList());
-          sl.get<GlobalContentService>().setPosts(posts);
-          if (posts.length < postsPageSize) {
-            // end
-            _updateFeedState(feedType, PaginationState.end);
+        try {
+          if (response.statusCode.toString()[0] == "2") {
+            // success
+            final posts =
+                (json.decode(response.body)["value"] as List).map((i) => PostWithMetadata.fromJson(i)).toList();
+            _addIdsToList(feedType, posts.map((e) => e.id).toList());
+            sl.get<GlobalContentService>().setPosts(posts);
+            if (posts.length < postsPageSize) {
+              // end
+              _updateFeedState(feedType, PaginationState.end);
+            } else {
+              // still get ready to load more
+              _updateFeedState(feedType, PaginationState.loading);
+            }
           } else {
-            // still get ready to load more
-            _updateFeedState(feedType, PaginationState.loading);
+            // failure
+            _updateFeedState(feedType, PaginationState.error);
           }
-        } else {
-          // failure
+        } catch (_) {
           _updateFeedState(feedType, PaginationState.error);
         }
         notifyListeners();

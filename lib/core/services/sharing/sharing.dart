@@ -23,7 +23,7 @@ import '../../results/failures.dart';
 import '../../results/successes.dart';
 
 class Sharing {
-  Future<Either<Failure, Success>> sharePost(BuildContext context, Post post) async {
+  Future<Either<Failure, Success>> sharePost(BuildContext context, PostWithMetadata post) async {
     // todo: generate link using FCM based on post's id
     try {
       File file = await _screenshotPost(context, post);
@@ -57,7 +57,7 @@ class Sharing {
     return await file.writeAsBytes(capturedImage);
   }
 
-  Future<File> _screenshotPost(BuildContext context, Post post) async {
+  Future<File> _screenshotPost(BuildContext context, PostWithMetadata post) async {
     final capturedImage = await ScreenshotController()
         .captureFromWidget(_buildPost(context, post), delay: const Duration(milliseconds: 10));
     final directory = await getApplicationDocumentsDirectory();
@@ -65,7 +65,7 @@ class Sharing {
     return await file.writeAsBytes(capturedImage);
   }
 
-  String timeAgoFromMicroSecondUnixTime(Post post) {
+  String timeAgoFromMicroSecondUnixTime(PostWithMetadata post) {
     var timeAgo = DateTime.fromMicrosecondsSinceEpoch(post.createdAt);
     return timeAgo.xTimeAgoLocalDateFormat();
   }
@@ -160,7 +160,7 @@ class Sharing {
     );
   }
 
-  Widget _buildPost(BuildContext context, Post post) {
+  Widget _buildPost(BuildContext context, PostWithMetadata post) {
     return Theme(
       data: AppTheme.dark, // always share in dark mode
       child: AspectRatio(
