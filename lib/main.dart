@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app_links/app_links.dart';
 import 'package:confesi/application/feed/cubit/schools_drawer_cubit.dart';
 import 'package:confesi/application/feed/cubit/sentiment_analysis_cubit.dart';
 import 'package:confesi/application/user/cubit/feedback_categories_cubit.dart';
@@ -137,6 +138,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     startFcmListener();
     startShakeForFeedbackListener();
+    startDeepLinkListener();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       startAuthListener();
     });
@@ -150,6 +152,42 @@ class _MyAppState extends State<MyApp> {
     sl.get<HiveService>().dispose();
     sl.get<NotificationService>().dispose();
     super.dispose();
+  }
+
+  void startDeepLinkListener() => sl.get<AppLinks>().allStringLinkStream.listen((link) => handleDeepLink(link));
+  
+  void handleDeepLink(String deepLink) {
+    final auth = sl.get<FirebaseAuth>();
+
+    if (auth.currentUser == null) {
+      print("NO AUTH");
+      // Handle the case where the user is not authenticated
+    } else {
+      print("AUTH!");
+      // Handle the case where the user is authenticated
+
+      // Fetch user authentication data if needed
+      if (auth.currentUser != null) {
+        sl.get<UserAuthService>().getData(auth.currentUser!.uid).then((_) {
+          if (sl.get<UserAuthService>().state is! UserAuthData) {
+            router.go("/error");
+            return;
+          }
+
+          // Continue handling the deep link based on the user's data
+          // Example:
+          if (deepLink.contains("/profile")) {
+            // Handle deep link related to user profile
+            print("Deep link to user profile");
+          } else if (deepLink.contains("/post")) {
+            // Handle deep link related to a specific post
+            print("Deep link to a post");
+          }
+
+          // ... handle other deep link scenarios
+        });
+      }
+    }
   }
 
   bool shakeViewOpen = false;
@@ -315,7 +353,6 @@ class _MyAppState extends State<MyApp> {
                             routeInformationProvider: router.routeInformationProvider,
                             routeInformationParser: router.routeInformationParser,
                             routerDelegate: router.routerDelegate,
-
                             debugShowCheckedModeBanner: false,
                             title: "Confesi",
                             theme: AppTheme.light,

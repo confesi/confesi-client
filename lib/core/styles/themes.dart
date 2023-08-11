@@ -7,15 +7,14 @@ class AppTheme {
     highlightColor: Colors.transparent,
     splashColor: Colors.transparent,
     colorScheme: const ColorScheme(
-      onSurfaceVariant: Colors.white,
+      onSurfaceVariant: Colors.black, // Change to black for better contrast
       brightness: Brightness.light,
-      primary: Color(0xff333333),
-      onPrimary: Color.fromARGB(255, 244, 244, 244),
-      // secondary: Color.fromARGB(255, 254, 224, 115),
-      secondary: Color.fromARGB(255, 59, 123, 197),
-      onSecondary: Color(0xff333333),
+      primary: Color.fromARGB(255, 238, 239, 240), // Lighten the primary color
+      onPrimary: Color(0xff333333),
+      secondary: Color(0xff8BE8E5), // Use tertiary color as secondary
+      onSecondary: Color.fromARGB(255, 45, 45, 45),
       error: Color.fromARGB(255, 231, 104, 104), // "ERROR" color
-      onError: Colors.white,
+      onError: Colors.black, // Change to black for better contrast
       tertiary: Color(0xffFFE17B),
       surfaceTint: Color(0xff90A17D), // "SUCCESS" color
       background: Color.fromARGB(255, 251, 251, 251),

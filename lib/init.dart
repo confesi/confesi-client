@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:ui';
+import 'package:app_links/app_links.dart';
 import 'package:confesi/application/create_post/cubit/post_categories_cubit.dart';
 import 'package:confesi/application/user/cubit/account_details_cubit.dart';
 import 'package:confesi/application/user/cubit/feedback_categories_cubit.dart';
@@ -93,6 +94,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => InternetConnectionChecker());
   sl.registerLazySingleton(() => const FlutterSecureStorage());
   sl.registerLazySingleton(() => LocalAuthentication());
+  sl.registerLazySingleton(() => AppLinks());
 
   //! Already-singletons
   sl.registerLazySingleton(() => FirebaseRemoteConfig.instance);
