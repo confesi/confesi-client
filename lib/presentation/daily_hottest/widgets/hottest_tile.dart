@@ -1,7 +1,9 @@
 import 'package:confesi/models/post.dart';
 import 'package:confesi/presentation/shared/behaviours/init_scale.dart';
 import 'package:confesi/presentation/shared/other/cached_online_image.dart';
+import 'package:provider/provider.dart';
 
+import '../../../core/services/user_auth/user_auth_service.dart';
 import '../../../core/styles/typography.dart';
 
 import 'package:flutter/material.dart';
@@ -46,7 +48,8 @@ class _HottestTileState extends State<HottestTile> {
                     curve: Curves.decelerate,
                     height: isSelected ? constraints.maxHeight : constraints.maxHeight * .92,
                     decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.all(Radius.circular(15)),
+                      borderRadius: BorderRadius.all(Radius.circular(
+                          Provider.of<UserAuthService>(context).data().componentCurviness.borderRadius)),
                       color: Theme.of(context).colorScheme.background,
                       border: Border.all(
                         color: Theme.of(context).colorScheme.onBackground,
@@ -60,8 +63,11 @@ class _HottestTileState extends State<HottestTile> {
                         Container(
                           width: double.infinity,
                           decoration: BoxDecoration(
-                            borderRadius:
-                                const BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(
+                                    Provider.of<UserAuthService>(context).data().componentCurviness.borderRadius),
+                                topRight: Radius.circular(
+                                    Provider.of<UserAuthService>(context).data().componentCurviness.borderRadius)),
                             color: Theme.of(context).colorScheme.secondary,
                             boxShadow: [
                               BoxShadow(
@@ -84,9 +90,11 @@ class _HottestTileState extends State<HottestTile> {
                             duration: const Duration(milliseconds: 250),
                             width: double.infinity,
                             child: ClipRRect(
-                              borderRadius: const BorderRadius.only(
-                                bottomLeft: Radius.circular(15),
-                                bottomRight: Radius.circular(15),
+                              borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(
+                                    Provider.of<UserAuthService>(context).data().componentCurviness.borderRadius),
+                                bottomRight: Radius.circular(
+                                    Provider.of<UserAuthService>(context).data().componentCurviness.borderRadius),
                               ),
                               child: CachedOnlineImage(url: widget.post.post.school.imgUrl),
                             ),

@@ -22,13 +22,17 @@ class UserAuthDataAdapter extends TypeAdapter<UserAuthData> {
       isShrunkView: fields[7] as bool,
       shakeToGiveFeedback: fields[8] as bool,
       unitSystem: fields[11] as UnitSystem,
+      defaultCommentSort: fields[14] as DefaultCommentSort,
+      defaultPostFeed: fields[15] as DefaultPostFeed,
+      textSize: fields[16] as TextSize,
+      componentCurviness: fields[18] as ComponentCurviness,
     );
   }
 
   @override
   void write(BinaryWriter writer, UserAuthData obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.themePref)
       ..writeByte(6)
@@ -38,7 +42,15 @@ class UserAuthDataAdapter extends TypeAdapter<UserAuthData> {
       ..writeByte(8)
       ..write(obj.shakeToGiveFeedback)
       ..writeByte(11)
-      ..write(obj.unitSystem);
+      ..write(obj.unitSystem)
+      ..writeByte(14)
+      ..write(obj.defaultCommentSort)
+      ..writeByte(15)
+      ..write(obj.defaultPostFeed)
+      ..writeByte(16)
+      ..write(obj.textSize)
+      ..writeByte(18)
+      ..write(obj.componentCurviness);
   }
 
   @override

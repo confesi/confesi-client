@@ -1,6 +1,7 @@
-
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../../core/services/user_auth/user_auth_service.dart';
 import '../../../core/styles/typography.dart';
 
 class TileGroup extends StatelessWidget {
@@ -26,8 +27,9 @@ class TileGroup extends StatelessWidget {
             textAlign: TextAlign.left,
           ),
           Container(
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(15)),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(
+                  Radius.circular(Provider.of<UserAuthService>(context).data().componentCurviness.borderRadius)),
             ),
             child: Column(
               children: tiles,

@@ -14,6 +14,7 @@ import '../../../application/user/cubit/notifications_cubit.dart';
 import '../../../core/router/go_router.dart';
 import '../../../core/services/global_content/global_content.dart';
 import '../../../core/services/posts_service/posts_service.dart';
+import '../../../core/services/user_auth/user_auth_service.dart';
 import '../../../core/utils/numbers/add_commas_to_number.dart';
 import '../../../core/utils/numbers/is_plural.dart';
 import '../../shared/buttons/circle_icon_btn.dart';
@@ -96,7 +97,12 @@ class SchoolDetail extends StatelessWidget {
                         child: Container(
                           color: Theme.of(context).colorScheme.shadow,
                           child: ClipRRect(
-                            borderRadius: const BorderRadius.all(Radius.circular(30)),
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(
+                                  Provider.of<UserAuthService>(context).data().componentCurviness.borderRadius),
+                              bottomRight: Radius.circular(
+                                  Provider.of<UserAuthService>(context).data().componentCurviness.borderRadius),
+                            ),
                             child: Zoomable(
                               child: CachedOnlineImage(
                                 url: props.school.school.imgUrl,
@@ -151,7 +157,9 @@ class SchoolDetail extends StatelessWidget {
                             bgColor: Theme.of(context).colorScheme.surface,
                             textColor: Theme.of(context).colorScheme.secondary,
                             onTap: () {
-                              context.read<SchoolsDrawerCubit>().setSelectedSchoolInUI(SelectedSchool(props.school.school.id));
+                              context
+                                  .read<SchoolsDrawerCubit>()
+                                  .setSelectedSchoolInUI(SelectedSchool(props.school.school.id));
                               router.go("/home");
                               Provider.of<PrimaryTabControllerService>(context, listen: false).setTabIdx(0);
                               Provider.of<PostsService>(context, listen: false).reloadAllFeeds();
@@ -162,12 +170,16 @@ class SchoolDetail extends StatelessWidget {
                             bgColor: Theme.of(context).colorScheme.surface,
                             textColor: Theme.of(context).colorScheme.secondary,
                             onTap: () => context.read<QuickActionsCubit>().locateOnMaps(
-                                props.school.school.lat.toDouble(), props.school.school.lon.toDouble(), props.school.school.name),
+                                props.school.school.lat.toDouble(),
+                                props.school.school.lon.toDouble(),
+                                props.school.school.name),
                             text: "Locate on map",
                           ),
                           IgnorePointer(
                             ignoring: Provider.of<GlobalContentService>(context).schools[props.school.school.id]!.home,
                             child: SimpleTextButton(
+                              disabled:
+                                  Provider.of<GlobalContentService>(context).schools[props.school.school.id]!.home,
                               bgColor: Theme.of(context).colorScheme.surface,
                               textColor: Theme.of(context).colorScheme.secondary,
                               onTap: () async => await Provider.of<GlobalContentService>(context, listen: false)

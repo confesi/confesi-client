@@ -22,6 +22,7 @@ import 'package:provider/provider.dart';
 import '../../../application/user/cubit/quick_actions_cubit.dart';
 import '../../../constants/shared/constants.dart';
 import '../../../core/services/global_content/global_content.dart';
+import '../../../core/services/user_auth/user_auth_service.dart';
 import '../../../core/styles/typography.dart';
 import '../../../core/utils/colors/deterministic_random_color.dart';
 import '../../../models/comment.dart';
@@ -247,6 +248,8 @@ class _CommentTileState extends State<CommentTile> {
                                 style: kBody.copyWith(
                                   color: Theme.of(context).colorScheme.primary,
                                   height: 1.2,
+                                  fontSize: kBody.fontSize! *
+                                      Provider.of<UserAuthService>(context).data().textSize.multiplier,
                                 ),
                                 textAlign: TextAlign.left,
                               ),

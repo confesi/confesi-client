@@ -1,3 +1,6 @@
+import 'package:provider/provider.dart';
+
+import '../../../core/services/user_auth/user_auth_service.dart';
 import '../button_touch_effects/touchable_scale.dart';
 
 import 'package:flutter/material.dart';
@@ -40,7 +43,7 @@ class SimpleTextButton extends StatelessWidget {
     return IgnorePointer(
       ignoring: disabled,
       child: Opacity(
-        opacity: disabled ? 0.5 : 1,
+        opacity: disabled ? 0.4 : 1,
         child: TouchableScale(
           tapType: tapType,
           onTap: () => onTap(),
@@ -51,18 +54,18 @@ class SimpleTextButton extends StatelessWidget {
             width: infiniteWidth ? double.infinity : null,
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              border: Border.all(
-                  color: Theme.of(context).colorScheme.onBackground,
-                  width: 0.8,
-                  strokeAlign: BorderSide.strokeAlignInside),
-              color: bgColor ??
-                  (secondaryColors
-                      ? Theme.of(context).colorScheme.secondary
-                      : thirdColors
-                          ? Theme.of(context).colorScheme.onSecondary
-                          : Theme.of(context).colorScheme.surface),
-              borderRadius: const BorderRadius.all(Radius.circular(15)),
-            ),
+                border: Border.all(
+                    color: Theme.of(context).colorScheme.onBackground,
+                    width: 0.8,
+                    strokeAlign: BorderSide.strokeAlignInside),
+                color: bgColor ??
+                    (secondaryColors
+                        ? Theme.of(context).colorScheme.secondary
+                        : thirdColors
+                            ? Theme.of(context).colorScheme.onSecondary
+                            : Theme.of(context).colorScheme.surface),
+                borderRadius: BorderRadius.all(
+                    Radius.circular(Provider.of<UserAuthService>(context).data().componentCurviness.borderRadius))),
             child: Text(
               text,
               textAlign: TextAlign.center,

@@ -1,5 +1,7 @@
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
+import 'package:provider/provider.dart';
 
+import '../../../core/services/user_auth/user_auth_service.dart';
 import '../../../core/styles/typography.dart';
 import 'package:flutter/material.dart';
 
@@ -38,7 +40,8 @@ class _RectangleTileState extends State<RectangleTile> {
         color: widget.backgroundColor ?? Theme.of(context).colorScheme.background,
         border: Border.all(
             color: Theme.of(context).colorScheme.onBackground, width: 0.8, strokeAlign: BorderSide.strokeAlignInside),
-        borderRadius: const BorderRadius.all(Radius.circular(15)),
+        borderRadius: BorderRadius.all(
+            Radius.circular(Provider.of<UserAuthService>(context).data().componentCurviness.borderRadius)),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 15),

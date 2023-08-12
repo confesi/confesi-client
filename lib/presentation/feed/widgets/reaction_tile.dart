@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
+import '../../../core/services/user_auth/user_auth_service.dart';
 import '../../../core/utils/numbers/large_number_formatter.dart';
 import '../../../core/styles/typography.dart';
 
@@ -97,7 +99,8 @@ class _ReactionTileState extends State<ReactionTile> with SingleTickerProviderSt
                     strokeAlign: BorderSide.strokeAlignInside,
                   ),
             color: widget.simpleView ? Colors.transparent : Theme.of(context).colorScheme.surface,
-            borderRadius: const BorderRadius.all(Radius.circular(15)),
+            borderRadius: BorderRadius.all(
+                Radius.circular(Provider.of<UserAuthService>(context).data().componentCurviness.borderRadius)),
           ),
           child: content,
         ),

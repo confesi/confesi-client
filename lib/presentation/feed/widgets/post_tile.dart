@@ -15,6 +15,7 @@ import 'package:provider/provider.dart';
 
 import '../../../constants/shared/constants.dart';
 import '../../../core/router/go_router.dart';
+import '../../../core/services/user_auth/user_auth_service.dart';
 import '../../../core/styles/typography.dart';
 import '../../../core/utils/funcs/links_from_text.dart';
 import '../methods/show_post_options.dart';
@@ -38,7 +39,8 @@ class PostTile extends StatelessWidget {
           width: double.infinity,
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.background,
-            borderRadius: const BorderRadius.all(Radius.circular(15)),
+            borderRadius: BorderRadius.all(
+                Radius.circular(Provider.of<UserAuthService>(context).data().componentCurviness.borderRadius)),
             border: Border.all(
               color: Theme.of(context).colorScheme.onBackground,
               width: 0.8,
@@ -122,6 +124,8 @@ class PostTile extends StatelessWidget {
                                   postTitlePreviewLength),
                               style: kDisplay1.copyWith(
                                 color: Theme.of(context).colorScheme.primary,
+                                fontSize:
+                                    kBody.fontSize! * Provider.of<UserAuthService>(context).data().textSize.multiplier,
                               ),
                             ),
                           ),
@@ -136,6 +140,8 @@ class PostTile extends StatelessWidget {
                                     truncateText(post.post.content, postBodyPreviewLength),
                                     style: kBody.copyWith(
                                       color: Theme.of(context).colorScheme.primary,
+                                      fontSize: kBody.fontSize! *
+                                          Provider.of<UserAuthService>(context).data().textSize.multiplier,
                                     ),
                                     textAlign: TextAlign.left,
                                   ),

@@ -1,3 +1,7 @@
+import 'package:provider/provider.dart';
+
+import '../../../../core/services/user_auth/user_auth_data.dart';
+import '../../../../core/services/user_auth/user_auth_service.dart';
 import '../../../shared/selection_groups/tile_group.dart';
 import '../../../shared/selection_groups/bool_selection_tile.dart';
 import '../../../shared/behaviours/themed_status_bar.dart';
@@ -42,29 +46,45 @@ class TextSizeScreen extends StatelessWidget {
                           text: "Confession, thread-view, and comment text size",
                           tiles: [
                             BoolSelectionTile(
-                              isActive: true,
+                              isActive: Provider.of<UserAuthService>(context).data().textSize == TextSize.small,
                               icon: CupertinoIcons.sparkles,
                               text: "Small",
-                              onTap: () => {},
+                              onTap: () => Provider.of<UserAuthService>(context, listen: false).saveData(
+                                Provider.of<UserAuthService>(context, listen: false)
+                                    .data()
+                                    .copyWith(textSize: TextSize.small),
+                              ),
                             ),
                             BoolSelectionTile(
-                              isActive: true,
+                              isActive: Provider.of<UserAuthService>(context).data().textSize == TextSize.regular,
                               icon: CupertinoIcons.sparkles,
                               text: "Regular",
-                              onTap: () => {},
+                              onTap: () => Provider.of<UserAuthService>(context, listen: false).saveData(
+                                Provider.of<UserAuthService>(context, listen: false)
+                                    .data()
+                                    .copyWith(textSize: TextSize.regular),
+                              ),
                             ),
                             BoolSelectionTile(
-                              isActive: true,
+                              isActive: Provider.of<UserAuthService>(context).data().textSize == TextSize.large,
                               icon: CupertinoIcons.sparkles,
                               text: "Large",
-                              onTap: () => {},
+                              onTap: () => Provider.of<UserAuthService>(context, listen: false).saveData(
+                                Provider.of<UserAuthService>(context, listen: false)
+                                    .data()
+                                    .copyWith(textSize: TextSize.large),
+                              ),
                             ),
                             BoolSelectionTile(
-                              isActive: true,
+                              isActive: Provider.of<UserAuthService>(context).data().textSize == TextSize.boomer,
                               bottomRounded: true,
                               icon: CupertinoIcons.sparkles,
                               text: "Boomer large",
-                              onTap: () => {},
+                              onTap: () => Provider.of<UserAuthService>(context, listen: false).saveData(
+                                Provider.of<UserAuthService>(context, listen: false)
+                                    .data()
+                                    .copyWith(textSize: TextSize.boomer),
+                              ),
                             ),
                           ],
                         ),

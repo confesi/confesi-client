@@ -1,4 +1,6 @@
+import 'package:provider/provider.dart';
 
+import '../../../core/services/user_auth/user_auth_service.dart';
 import '../../../core/styles/typography.dart';
 import '../button_touch_effects/touchable_opacity.dart';
 import 'package:flutter/material.dart';
@@ -47,10 +49,16 @@ class _BoolSelectionTileState extends State<BoolSelectionTile> {
           border: Border.all(
               color: Theme.of(context).colorScheme.onBackground, width: 0.8, strokeAlign: BorderSide.strokeAlignInside),
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(widget.topRounded ? 15 : 0),
-            topRight: Radius.circular(widget.topRounded ? 15 : 0),
-            bottomRight: Radius.circular(widget.bottomRounded ? 15 : 0),
-            bottomLeft: Radius.circular(widget.bottomRounded ? 15 : 0),
+            topLeft: Radius.circular(
+                widget.topRounded ? Provider.of<UserAuthService>(context).data().componentCurviness.borderRadius : 0),
+            topRight: Radius.circular(
+                widget.topRounded ? Provider.of<UserAuthService>(context).data().componentCurviness.borderRadius : 0),
+            bottomRight: Radius.circular(widget.bottomRounded
+                ? Provider.of<UserAuthService>(context).data().componentCurviness.borderRadius
+                : 0),
+            bottomLeft: Radius.circular(widget.bottomRounded
+                ? Provider.of<UserAuthService>(context).data().componentCurviness.borderRadius
+                : 0),
           ),
         ),
         child: Row(

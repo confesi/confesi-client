@@ -122,6 +122,8 @@ Future<void> init() async {
   userAuthService.hive.registerAdapter(FcmTokenAdapter());
   userAuthService.hive.registerAdapter(DefaultCommentSortAdapter());
   userAuthService.hive.registerAdapter(DefaultPostFeedAdapter());
+  userAuthService.hive.registerAdapter(TextSizeAdapter());
+  userAuthService.hive.registerAdapter(ComponentCurvinessAdapter());
 
   sl.registerLazySingleton(() => userAuthService);
   sl.registerLazySingleton(() => globalContentService);

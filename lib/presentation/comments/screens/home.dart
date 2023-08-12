@@ -27,6 +27,7 @@ import '../../../application/user/cubit/notifications_cubit.dart';
 import '../../../application/user/cubit/quick_actions_cubit.dart';
 import '../../../constants/shared/constants.dart';
 import '../../../core/router/go_router.dart';
+import '../../../core/services/user_auth/user_auth_service.dart';
 import '../../../core/styles/typography.dart';
 import '../../../core/types/infinite_scrollable_indexable.dart';
 import '../../../core/utils/funcs/links_from_text.dart';
@@ -196,6 +197,8 @@ class _CommentsHomeState extends State<CommentsHome> {
                           postState.post.post.title,
                           style: kDisplay1.copyWith(
                             color: Theme.of(context).colorScheme.primary,
+                            fontSize:
+                                kBody.fontSize! * Provider.of<UserAuthService>(context).data().textSize.multiplier,
                           ),
                         ),
                       ],
@@ -230,6 +233,8 @@ class _CommentsHomeState extends State<CommentsHome> {
                           postState.post.post.content,
                           style: kBody.copyWith(
                             color: Theme.of(context).colorScheme.primary,
+                            fontSize:
+                                kBody.fontSize! * Provider.of<UserAuthService>(context).data().textSize.multiplier,
                           ),
                           textAlign: TextAlign.left,
                         ),

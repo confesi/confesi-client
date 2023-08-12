@@ -3,7 +3,9 @@ import 'package:confesi/models/school_with_metadata.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:confesi/presentation/shared/other/widget_or_nothing.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
 
+import '../../../core/services/user_auth/user_auth_service.dart';
 import '../../../core/utils/numbers/add_commas_to_number.dart';
 
 import '../../../core/utils/numbers/distance_formatter.dart';
@@ -49,7 +51,8 @@ class LeaderboardItemTile extends StatelessWidget {
           border: Border.all(
               color: Theme.of(context).colorScheme.onBackground, width: 0.8, strokeAlign: BorderSide.strokeAlignInside),
           color: Theme.of(context).colorScheme.background,
-          borderRadius: const BorderRadius.all(Radius.circular(15)),
+          borderRadius: BorderRadius.all(
+              Radius.circular(Provider.of<UserAuthService>(context).data().componentCurviness.borderRadius)),
         ),
         padding: const EdgeInsets.symmetric(vertical: 10),
         width: double.infinity,

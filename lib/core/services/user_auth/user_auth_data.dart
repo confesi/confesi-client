@@ -6,6 +6,8 @@ part 'user_auth_data.g.dart';
 
 //? Whenever changed, run `flutter packages pub run build_runner build` to rebuild the generated file.
 
+//! Whenever you change anything here, ENSURE the Hive ID fields are UNIQUE.
+
 enum ThemePref { light, dark, system }
 
 enum ProfanityFilter { on, off }
@@ -15,6 +17,28 @@ enum UnitSystem { metric, imperial }
 enum DefaultPostFeed { trending, recents, sentiment }
 
 enum DefaultCommentSort { trending, recents }
+
+enum TextSize {
+  small(0.75),
+  regular(1),
+  large(1.2),
+  boomer(1.5);
+
+  final double multiplier;
+
+  const TextSize(this.multiplier);
+}
+
+enum ComponentCurviness {
+  none(0),
+  small(5),
+  regular(15),
+  alot(20);
+
+  final double borderRadius;
+
+  const ComponentCurviness(this.borderRadius);
+}
 
 @HiveType(typeId: 1)
 class UserAuthData extends HiveObject with UserAuthState {
@@ -39,6 +63,12 @@ class UserAuthData extends HiveObject with UserAuthState {
   @HiveField(15)
   final DefaultPostFeed defaultPostFeed;
 
+  @HiveField(16)
+  final TextSize textSize;
+
+  @HiveField(18)
+  final ComponentCurviness componentCurviness;
+
   // default
   UserAuthData({
     this.themePref = ThemePref.dark,
@@ -48,6 +78,8 @@ class UserAuthData extends HiveObject with UserAuthState {
     this.unitSystem = UnitSystem.metric,
     this.defaultCommentSort = DefaultCommentSort.trending,
     this.defaultPostFeed = DefaultPostFeed.trending,
+    this.textSize = TextSize.regular,
+    this.componentCurviness = ComponentCurviness.regular,
   });
 }
 
@@ -61,6 +93,8 @@ extension UserAuthDataCopyWith on UserAuthData {
     UnitSystem? unitSystem,
     DefaultCommentSort? defaultCommentSort,
     DefaultPostFeed? defaultPostFeed,
+    TextSize? textSize,
+    ComponentCurviness? componentCurviness,
   }) {
     return UserAuthData(
       themePref: themePref ?? this.themePref,
@@ -70,7 +104,24 @@ extension UserAuthDataCopyWith on UserAuthData {
       unitSystem: unitSystem ?? this.unitSystem,
       defaultCommentSort: defaultCommentSort ?? this.defaultCommentSort,
       defaultPostFeed: defaultPostFeed ?? this.defaultPostFeed,
+      textSize: textSize ?? this.textSize,
+      componentCurviness: componentCurviness ?? this.componentCurviness,
     );
+  }
+}
+
+class ComponentCurvinessAdapter extends TypeAdapter<ComponentCurviness> {
+  @override
+  final int typeId = 19; // Choose a unique typeId for the enum
+
+  @override
+  ComponentCurviness read(BinaryReader reader) {
+    return ComponentCurviness.values[reader.readInt()];
+  }
+
+  @override
+  void write(BinaryWriter writer, ComponentCurviness obj) {
+    writer.writeInt(obj.index);
   }
 }
 
@@ -100,6 +151,21 @@ class DefaultCommentSortAdapter extends TypeAdapter<DefaultCommentSort> {
 
   @override
   void write(BinaryWriter writer, DefaultCommentSort obj) {
+    writer.writeInt(obj.index);
+  }
+}
+
+class TextSizeAdapter extends TypeAdapter<TextSize> {
+  @override
+  final int typeId = 17; // Choose a unique typeId for the enum
+
+  @override
+  TextSize read(BinaryReader reader) {
+    return TextSize.values[reader.readInt()];
+  }
+
+  @override
+  void write(BinaryWriter writer, TextSize obj) {
     writer.writeInt(obj.index);
   }
 }

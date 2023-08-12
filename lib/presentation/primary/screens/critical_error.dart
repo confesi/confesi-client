@@ -49,7 +49,7 @@ class _CriticalErrorScreenState extends State<CriticalErrorScreen> {
                       ),
                       const SizedBox(height: 30),
                       Text(
-                        "Close and reopen the app. If the problem persists, please contact support.",
+                        "Close and re-open the app. If the problem persists, please contact support.",
                         style: kBody.copyWith(
                           color: appearanceBrightness(context) == Brightness.light
                               ? AppTheme.light.colorScheme.primary
