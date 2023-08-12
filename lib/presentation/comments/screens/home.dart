@@ -348,18 +348,22 @@ class _CommentsHomeState extends State<CommentsHome> {
                                   controller: commentSheetController,
                                   onSubmit: (value) async {
                                     Provider.of<CreateCommentService>(ogContext, listen: false).setLoading(true);
-                                    // todo: implement
                                     final possibleReplyingTo = ogContext.read<CreateCommentCubit>().replyingToComment();
                                     int? replyingToIdx;
                                     if (possibleReplyingTo != null) {
-                                      ogContext
-                                          .read<CommentSectionCubit>()
-                                          .indexFromCommentId(possibleReplyingTo.rootCommentIdReplyingUnder)
-                                          .fold(
-                                            (idx) => replyingToIdx = idx,
+                                      // use the possibleReplyingTo.rootCommentIdReplyingUnder to then get the list of comments under it and get the index of the current last one
+                                      final possibleLast = commentState.commentIds
+                                          .firstWhere((element) =>
+                                              element.keys.first == possibleReplyingTo.rootCommentIdReplyingUnder.uid)
+                                          .values
+                                          .first
+                                          .last;
+                                      ogContext.read<CommentSectionCubit>().indexFromCommentId(possibleLast).fold(
+                                            (idx) => replyingToIdx = idx + 1,
                                             (_) => null, // do nothing
                                           );
                                     }
+
                                     await ogContext
                                         .read<CommentSectionCubit>()
                                         .uploadComment(
@@ -378,10 +382,10 @@ class _CommentsHomeState extends State<CommentsHome> {
                                           ogContext.read<CreateCommentCubit>().updateReplyingTo(ReplyingToNothing());
                                           Provider.of<GlobalContentService>(ogContext, listen: false)
                                               .updatePostCommentCount(postState.post.post.id, 1);
-                                          if (replyingToIdx == null) {
-                                            feedListController.scrollToIndex(1);
-                                          } else {
+                                          if (replyingToIdx != null) {
                                             feedListController.scrollToIndex(replyingToIdx! + 2);
+                                          } else {
+                                            feedListController.scrollToIndex(1);
                                           }
                                         },
                                       );

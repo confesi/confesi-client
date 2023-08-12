@@ -283,6 +283,8 @@ class _CommentTileState extends State<CommentTile> {
                                                 rootCommentIdReplyingUnder:
                                                     widget.commentType.comment.comment.parentRootId ??
                                                         widget.commentType.comment.comment.id,
+                                                currentlyFocusingRoot:
+                                                    widget.commentType.comment.comment.parentRootId == null,
                                               ),
                                             );
                                         context.read<CreateCommentCubit>().state is CreateCommentEnteringData &&

@@ -6,6 +6,7 @@ import 'package:confesi/core/services/global_content/global_content.dart';
 import 'package:confesi/core/styles/typography.dart';
 import 'package:confesi/core/utils/colors/deterministic_random_color.dart';
 import 'package:confesi/core/utils/verified_students/verified_user_only.dart';
+import 'package:confesi/init.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:flutter/cupertino.dart';
@@ -164,14 +165,31 @@ class _CommentSheetState extends State<CommentSheet> {
           ExpandableTextfield(
             verifiedUsersOnly: true,
             onChange: (_) {
-              state is CreateCommentEnteringData && state.possibleReply is ReplyingToUser
-                  ? context
+              if (state is CreateCommentEnteringData && state.possibleReply is ReplyingToUser) {
+                final possibleReplyingTo = context.read<CreateCommentCubit>().replyingToComment();
+                final cState = context.read<CreateCommentCubit>().state;
+                final bool isReplying = cState is CreateCommentEnteringData &&
+                    (cState.possibleReply is ReplyingToUser) &&
+                    (cState.possibleReply as ReplyingToUser).currentlyFocusingRoot;
+                if (possibleReplyingTo != null) {
+                  context
                       .read<CommentSectionCubit>()
-                      .indexFromCommentId((state.possibleReply as ReplyingToUser).replyingToCommentId)
-                      .fold((idx) => widget.feedController.scrollToIndex(idx + 2, hapticFeedback: false),
-                          (_) => context.read<NotificationsCubit>().showErr("Error jumping to comment"))
-                  : null;
-              setState(() => {});
+                      .indexFromCommentId(possibleReplyingTo.rootCommentIdReplyingUnder)
+                      .fold(
+                    (idx) {
+                      int scrollToIndex;
+                      if (isReplying) {
+                        scrollToIndex = idx + 1;
+                      } else {
+                        scrollToIndex = idx + 2;
+                      }
+                      widget.feedController.scrollToIndex(scrollToIndex, hapticFeedback: false);
+                    },
+                    (_) => context.read<NotificationsCubit>().showErr("Error jumping to comment"), // do nothing
+                  );
+                }
+              }
+              setState(() {});
             },
             color: Theme.of(context).colorScheme.background,
             focusNode: widget.controller.textFocusNode,

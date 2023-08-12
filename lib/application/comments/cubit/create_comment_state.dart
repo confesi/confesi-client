@@ -6,9 +6,11 @@ class ReplyingToUser extends PossibleReply {
   final EncryptedId replyingToCommentId;
   final EncryptedId rootCommentIdReplyingUnder;
   final String identifier;
+  final bool currentlyFocusingRoot;
 
   ReplyingToUser({
     required this.replyingToCommentId,
+    required this.currentlyFocusingRoot,
     required this.identifier,
     required this.rootCommentIdReplyingUnder,
   });
@@ -16,11 +18,11 @@ class ReplyingToUser extends PossibleReply {
   // toString method
   @override
   String toString() {
-    return 'ReplyingToUser(replyingToCommentId: $replyingToCommentId, rootCommentIdReplyingUnder: $rootCommentIdReplyingUnder, identifier: $identifier)';
+    return 'ReplyingToUser(replyingToCommentId: $replyingToCommentId, rootCommentIdReplyingUnder: $rootCommentIdReplyingUnder, identifier: $identifier, currentlyFocusingRoot: $currentlyFocusingRoot)';
   }
 
   @override
-  List<Object?> get props => [replyingToCommentId, rootCommentIdReplyingUnder, identifier];
+  List<Object?> get props => [replyingToCommentId, rootCommentIdReplyingUnder, identifier, currentlyFocusingRoot];
 }
 
 class ReplyingToNothing extends PossibleReply {
