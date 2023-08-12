@@ -65,9 +65,7 @@ class _CommentsHomeState extends State<CommentsHome> {
       // not preloaded
       await context.read<IndividualPostCubit>().loadPost((widget.props.postLoadType as NeedToLoadPost).maskedPostId);
     } else if (widget.props.postLoadType is PreloadedPost && refresh) {
-      print("HEREEEEE");
       await context.read<IndividualPostCubit>().loadPost((widget.props.postLoadType as PreloadedPost).post.post.id.mid);
-      print("D(HEEEEEE)");
     } else {
       context.read<NotificationsCubit>().showErr("Error loading content");
     }
@@ -141,7 +139,7 @@ class _CommentsHomeState extends State<CommentsHome> {
                       postCreatedAtTime: post.post.createdAt,
                       commentSheetController: commentSheetController,
                       feedController: feedController,
-                      commentType: ReplyComment(replyComment, iter),
+                      commentType: ReplyComment(replyComment, iter, totalReplies - 1, rootCommentIdsList.length),
                     ),
                   ),
                 );
@@ -350,20 +348,48 @@ class _CommentsHomeState extends State<CommentsHome> {
                                     Provider.of<CreateCommentService>(ogContext, listen: false).setLoading(true);
                                     final possibleReplyingTo = ogContext.read<CreateCommentCubit>().replyingToComment();
                                     int? replyingToIdx;
-                                    if (possibleReplyingTo != null) {
-                                      // use the possibleReplyingTo.rootCommentIdReplyingUnder to then get the list of comments under it and get the index of the current last one
-                                      final possibleLast = commentState.commentIds
-                                          .firstWhere((element) =>
-                                              element.keys.first == possibleReplyingTo.rootCommentIdReplyingUnder.uid)
-                                          .values
-                                          .first
-                                          .last;
-                                      ogContext.read<CommentSectionCubit>().indexFromCommentId(possibleLast).fold(
-                                            (idx) => replyingToIdx = idx + 1,
-                                            (_) => null, // do nothing
-                                          );
-                                    }
 
+                                    if (possibleReplyingTo != null) {
+                                      final rootCommentId = possibleReplyingTo.rootCommentIdReplyingUnder;
+
+                                      try {
+                                        final matchingRootComment = commentState.commentIds.firstWhere(
+                                          (element) => element.containsKey(rootCommentId.uid),
+                                          orElse: () => throw Exception(),
+                                        );
+
+                                        final lastReplyList = matchingRootComment[rootCommentId.uid];
+
+                                        if (lastReplyList != null && lastReplyList.isNotEmpty) {
+                                          final possibleLast = lastReplyList.last;
+                                          final indexResult =
+                                              ogContext.read<CommentSectionCubit>().indexFromCommentId(possibleLast);
+                                          indexResult.fold(
+                                            (idx) {
+                                              replyingToIdx = idx + 1;
+                                            },
+                                            (_) {
+                                              // Handle indexFromCommentId error for last reply
+                                              replyingToIdx = null;
+                                            },
+                                          );
+                                        } else {
+                                          final indexResult =
+                                              ogContext.read<CommentSectionCubit>().indexFromCommentId(rootCommentId);
+                                          indexResult.fold(
+                                            (idx) {
+                                              replyingToIdx = idx + 1;
+                                            },
+                                            (_) {
+                                              // Handle indexFromCommentId error for root comment
+                                              replyingToIdx = null;
+                                            },
+                                          );
+                                        }
+                                      } catch (e) {
+                                        ogContext.read<NotificationsCubit>().showErr("Error replying to comment");
+                                      }
+                                    }
                                     await ogContext
                                         .read<CommentSectionCubit>()
                                         .uploadComment(
@@ -381,7 +407,13 @@ class _CommentsHomeState extends State<CommentsHome> {
                                           commentSheetController.delete();
                                           ogContext.read<CreateCommentCubit>().updateReplyingTo(ReplyingToNothing());
                                           Provider.of<GlobalContentService>(ogContext, listen: false)
+                                              .setComment(comment);
+                                          Provider.of<GlobalContentService>(ogContext, listen: false)
                                               .updatePostCommentCount(postState.post.post.id, 1);
+                                          // if (possibleReplyingTo != null) {
+                                          //   Provider.of<GlobalContentService>(ogContext, listen: false)
+                                          //       .addOneToRootCommentCount(possibleReplyingTo.replyingToCommentId);
+                                          // }
                                           if (replyingToIdx != null) {
                                             feedListController.scrollToIndex(replyingToIdx! + 2);
                                           } else {

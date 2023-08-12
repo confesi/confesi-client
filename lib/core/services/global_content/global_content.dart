@@ -153,6 +153,13 @@ class GlobalContentService extends ChangeNotifier {
     }
   }
 
+  void addOneToRootCommentCount(EncryptedId commentId) {
+    if (comments.containsKey(commentId)) {
+      comments[commentId]!.comment.childrenCount++;
+      notifyListeners();
+    }
+  }
+
   Future<Either<String, ApiSuccess>> voteOnComment(CommentWithMetadata comment, int vote) async {
     _voteApi.cancelCurrReq();
 

@@ -156,67 +156,63 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
 
   Future<bool> loadReplies(EncryptedId? rootCommentId, int next) async {
     if (rootCommentId == null) return false;
-    _repliesApi.cancelCurrReq();
-    final response = await _repliesApi.req(
-      Verb.get,
-      true,
-      "/api/v1/comments/replies",
-      {
-        "parent_root": rootCommentId.mid,
-        "next": next,
-      },
-    );
 
-    return response.fold(
-      (failureWithMsg) {
-        return false;
-      },
-      (response) async {
-        if (response.statusCode.toString()[0] == "2") {
-          try {
-            List<CommentWithMetadata> replies = (json.decode(response.body)["value"]["comments"] as List)
+    try {
+      _repliesApi.cancelCurrReq();
+      final response = await _repliesApi.req(
+        Verb.get,
+        true,
+        "/api/v1/comments/replies",
+        {
+          "parent_root": rootCommentId.mid,
+          "next": next,
+        },
+      );
+
+      return response.fold(
+        (failureWithMsg) {
+          return false;
+        },
+        (response) {
+          if (response.statusCode.toString()[0] == "2") {
+            final List<CommentWithMetadata> replies = (json.decode(response.body)["value"]["comments"] as List)
                 .map((e) => CommentWithMetadata.fromJson(e))
                 .toList();
 
-            // Existing commentIds in the state (if any)
-            final List<LinkedHashMap<String, List<EncryptedId>>> existingCommentIds =
-                state is CommentSectionData ? (state as CommentSectionData).commentIds : [];
+            final currentState = state;
 
-            sl.get<GlobalContentService>().setComments(replies);
+            if (currentState is CommentSectionData) {
+              final List<LinkedHashMap<String, List<EncryptedId>>> existingCommentIds = currentState.commentIds;
+              sl.get<GlobalContentService>().setComments(replies);
 
-            // Find the root comment in existing commentIds
-            final existingReplies = existingCommentIds.firstWhereOrNull((map) => map.containsKey(rootCommentId));
+              final rootCommentIdUid = rootCommentId.uid;
+              final existingReplies = existingCommentIds.firstWhereOrNull((map) => map.containsKey(rootCommentIdUid));
 
-            if (existingReplies != null) {
-              // Update existing comment map with new replies
-              final newReplies = replies.map((e) => e.comment.id).toList();
-              if (existingReplies.containsKey(rootCommentId)) {
-                existingReplies[rootCommentId]!.addAll(newReplies);
+              if (existingReplies != null) {
+                final newReplies = replies.map((e) => e.comment.id).toList();
+                existingReplies[rootCommentIdUid]!.addAll(newReplies);
               } else {
-                existingReplies[rootCommentId.uid] = newReplies;
-              }
-              if (replies.isNotEmpty) {
-                emit(CommentSectionData(existingCommentIds, CommentFeedState.feed));
+                final commentMap = {rootCommentIdUid: replies.map((e) => e.comment.id).toList()};
+                final updatedCommentIds = [
+                  ...existingCommentIds,
+                  LinkedHashMap<String, List<EncryptedId>>.from(commentMap),
+                ];
+                emit(currentState.copyWith(commentIds: updatedCommentIds));
               }
 
-              return true;
-            } else {
-              // If no existing replies found, create a new map entry
-              final commentMap = {rootCommentId: replies.map((e) => e.comment.id).toList()};
-              final List<LinkedHashMap<String, List<EncryptedId>>> updatedCommentIds = List.from(existingCommentIds)
-                ..add(LinkedHashMap<String, List<EncryptedId>>.from(commentMap));
-              // Emit the updated state
-              emit(CommentSectionData(updatedCommentIds, CommentFeedState.feed));
+              if (replies.isNotEmpty) {
+                emit(currentState.copyWith(paginationState: CommentFeedState.feed));
+              }
+
               return true;
             }
-          } catch (e) {
-            return false;
           }
-        } else {
           return false;
-        }
-      },
-    );
+        },
+      );
+    } catch (_) {
+      return false;
+    }
   }
 
   void clear() => emit(CommentSectionData.empty());

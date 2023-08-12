@@ -32,30 +32,51 @@ import '../../feed/utils/post_metadata_formatters.dart';
 
 abstract class CommentType {
   CommentWithMetadata get comment;
+  int get totalReplies;
+  int get totalRetrievedReplies;
 }
 
 class RootComment extends CommentType {
   final CommentWithMetadata commentWithMetaData;
-  final int totalReplies;
-  final int totalRetrievedReplies;
+  final int _totalReplies;
+  final int _totalRetrievedReplies;
 
-  RootComment(this.commentWithMetaData, this.totalReplies, this.totalRetrievedReplies);
+  RootComment(this.commentWithMetaData, this._totalReplies, this._totalRetrievedReplies);
 
   @override
   CommentWithMetadata get comment => commentWithMetaData;
 
+  @override
+  int get totalRetrievedReplies => _totalRetrievedReplies;
+
+  @override
+  int get totalReplies => _totalReplies;
+
   // tostring with all field listed simply
   @override
   String toString() {
-    return "totalReplies: $totalReplies, totalRetrievedReplies: $totalRetrievedReplies";
+    return "totalReplies: $_totalReplies, totalRetrievedReplies: $_totalRetrievedReplies";
   }
 }
 
 class ReplyComment extends CommentType {
   final CommentWithMetadata commentWithMetaData;
   final int currentReplyNum;
+  final int _totalReplies;
+  final int _totalRetrievedReplies;
 
-  ReplyComment(this.commentWithMetaData, this.currentReplyNum);
+  ReplyComment(
+    this.commentWithMetaData,
+    this.currentReplyNum,
+    this._totalReplies,
+    this._totalRetrievedReplies,
+  );
+
+  @override
+  int get totalRetrievedReplies => _totalRetrievedReplies;
+
+  @override
+  int get totalReplies => _totalReplies;
 
   @override
   CommentWithMetadata get comment => commentWithMetaData;
@@ -249,14 +270,18 @@ class _CommentTileState extends State<CommentTile> {
                                         icon: CupertinoIcons.flag,
                                         onTap: () => print("tap"),
                                       ),
-                                      // if is not root
-                                      // if (widget.currentReplyNum == widget.currentlyRetrievedReplies &&
-                                      //     (!widget.isRootComment || widget.totalNumOfReplies == 0))
-                                      //   OptionButton(
-                                      //     text: "Try loading more replies",
-                                      //     icon: CupertinoIcons.chat_bubble,
-                                      //     onTap: () async => await loadMore(),
-                                      //   )
+                                      if ((widget.commentType.totalReplies > widget.commentType.totalRetrievedReplies ||
+                                              ((widget.commentType is RootComment &&
+                                                  widget.commentType.totalRetrievedReplies == 0))) ||
+                                          isLoading ||
+                                          (widget.commentType is ReplyComment &&
+                                              (widget.commentType as ReplyComment)._totalRetrievedReplies ==
+                                                  (widget.commentType as ReplyComment).currentReplyNum))
+                                        OptionButton(
+                                          text: "Try loading more replies",
+                                          icon: CupertinoIcons.chat_bubble,
+                                          onTap: () async => await loadMore(),
+                                        )
                                     ]),
                                     child: Container(
                                       padding: const EdgeInsets.only(right: 5, top: 5, bottom: 5),
@@ -381,30 +406,30 @@ class _CommentTileState extends State<CommentTile> {
                                 ],
                               ),
                               Text(widget.commentType.toString()),
-                              // Text("ID: ${widget.commentType.comment.comment.id.uid}"),
-                              // Text("IS ROOT: ${widget.isRootComment}"),
-                              // Text("TOTAL REPLIES: ${widget.totalNumOfReplies}"),
-                              // Text("CURRENT REPLY NUM: ${widget.currentReplyNum}"),
-                              // Text("CURRENTLY RETRIEVED REPLIES: ${widget.currentlyRetrievedReplies}"),
-                              // WidgetOrNothing(
-                              //   showWidget: (!widget.isRootComment &&
-                              //           widget.currentReplyNum == widget.currentlyRetrievedReplies &&
-                              //           widget.currentReplyNum < widget.totalNumOfReplies) ||
-                              //       isLoading,
-                              //   child: Padding(
-                              //     padding: const EdgeInsets.symmetric(vertical: 5),
-                              //     child: Align(
-                              //       alignment: Alignment.centerRight,
-                              //       child: SimpleTextButton(
-                              //         infiniteWidth: true,
-                              //         onTap: () async => await loadMore(),
-                              //         text: isLoading
-                              //             ? "Loading..."
-                              //             : "Load more (${widget.totalNumOfReplies - widget.currentReplyNum} left)",
-                              //       ),
-                              //     ),
-                              //   ),
-                              // ),
+                              Text(widget.commentType.totalReplies.toString()),
+                              WidgetOrNothing(
+                                showWidget:
+                                    (widget.commentType.totalReplies > widget.commentType.totalRetrievedReplies &&
+                                            ((widget.commentType is RootComment &&
+                                                    widget.commentType.totalRetrievedReplies == 0) ||
+                                                (widget.commentType is ReplyComment &&
+                                                    widget.commentType.totalRetrievedReplies ==
+                                                        (widget.commentType as ReplyComment).currentReplyNum))) ||
+                                        isLoading,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 5),
+                                  child: Align(
+                                    alignment: Alignment.centerRight,
+                                    child: SimpleTextButton(
+                                      infiniteWidth: true,
+                                      onTap: () async => await loadMore(),
+                                      text: isLoading
+                                          ? "Loading..."
+                                          : "Load ${widget.commentType.totalReplies - widget.commentType.totalRetrievedReplies} more",
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),
