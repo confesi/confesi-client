@@ -295,15 +295,16 @@ class _CommentTileState extends State<CommentTile> {
                                                         .possibleReply as ReplyingToUser)
                                                     .replyingToCommentId)
                                                 .fold(
-                                                    (idx) => widget.feedController.scrollToIndex(
-                                                        idx +
-                                                            (widget.commentType.comment.comment.parentRootId == null
-                                                                ? 1
-                                                                : 2),
-                                                        hapticFeedback: false),
-                                                    (r) => context
-                                                        .read<NotificationsCubit>()
-                                                        .showErr("Error jumping to comment"))
+                                                  (idx) => widget.feedController.scrollToIndex(
+                                                      idx +
+                                                          (widget.commentType.comment.comment.parentRootId == null
+                                                              ? 1
+                                                              : 2),
+                                                      hapticFeedback: false),
+                                                  (r) => context
+                                                      .read<NotificationsCubit>()
+                                                      .showErr("Error jumping to comment"),
+                                                )
                                             : null;
                                       });
                                     },

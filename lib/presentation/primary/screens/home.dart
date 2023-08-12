@@ -30,7 +30,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
   late TabController tabController;
-  bool shakeSheetOpen = false;
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
 
   final FeedListController recentsFeedListController = FeedListController();

@@ -39,8 +39,6 @@ class CommentSheetController extends ChangeNotifier {
 
   void focus() {
     textFocusNode.requestFocus();
-    // check if disposed/unmounted
-
     notifyListeners();
   }
 
@@ -90,9 +88,9 @@ class _CommentSheetState extends State<CommentSheet> {
 
   @override
   void initState() {
-    widget.controller._init(commentController);
-    widget.controller.addListener(() => isDisposed ? null : setState(() => {}));
     super.initState();
+    widget.controller._init(commentController);
+    // widget.controller.addListener(() => isDisposed ? null : setState(() => {}));
   }
 
   int getNumericalUser(CreateCommentEnteringData state) {
@@ -197,7 +195,7 @@ class _CommentSheetState extends State<CommentSheet> {
                           SimpleTextButton(
                             text: "Delete",
                             isErrorText: true,
-                            onTap: () => widget.controller.delete(),
+                            onTap: () => setState(() => widget.controller.delete()),
                           ),
                           const SizedBox(width: 15),
                           TextLimitTracker(

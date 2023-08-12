@@ -15,6 +15,7 @@ import 'package:confesi/presentation/shared/behaviours/one_theme_status_bar.dart
 import 'package:confesi/presentation/shared/indicators/loading_or_alert.dart';
 import 'package:confesi/presentation/shared/other/widget_or_nothing.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/cli_commands.dart';
@@ -53,11 +54,10 @@ class CommentsHome extends StatefulWidget {
 
 class _CommentsHomeState extends State<CommentsHome> {
   final FeedListController feedListController = FeedListController();
-  final CommentSheetController commentSheetController = CommentSheetController();
+  late CommentSheetController commentSheetController;
   final ScreenshotCallback screenshotCallback = ScreenshotCallback();
 
-  Future<void> delegateInitialLoad({bool refresh = false}) async {
-    // await Future.delayed(const Duration(milliseconds: 500));
+  Future<void> delegateInitialLoad(BuildContext context, {bool refresh = false}) async {
     if (widget.props.postLoadType is PreloadedPost && !refresh) {
       // preloaded
       context.read<IndividualPostCubit>().setPost((widget.props.postLoadType as PreloadedPost).post);
@@ -65,7 +65,9 @@ class _CommentsHomeState extends State<CommentsHome> {
       // not preloaded
       await context.read<IndividualPostCubit>().loadPost((widget.props.postLoadType as NeedToLoadPost).maskedPostId);
     } else if (widget.props.postLoadType is PreloadedPost && refresh) {
+      print("HEREEEEE");
       await context.read<IndividualPostCubit>().loadPost((widget.props.postLoadType as PreloadedPost).post.post.id.mid);
+      print("D(HEEEEEE)");
     } else {
       context.read<NotificationsCubit>().showErr("Error loading content");
     }
@@ -79,7 +81,10 @@ class _CommentsHomeState extends State<CommentsHome> {
   ) {
     if (state is CommentSectionData) {
       final List<InfiniteScrollIndexable> commentWidgets = [];
-      LinkedHashMap<EncryptedId, CommentWithMetadata> commentSet = Provider.of<GlobalContentService>(context).comments;
+      // make empty
+      // LinkedHashMap<EncryptedId, CommentWithMetadata> commentSet = LinkedHashMap<EncryptedId, CommentWithMetadata>();
+      LinkedHashMap<EncryptedId, CommentWithMetadata> commentSet =
+          Provider.of<GlobalContentService>(context, listen: false).comments;
 
       // Set to keep track of comments that have already been added
       Set<EncryptedId> addedComments = <EncryptedId>{};
@@ -94,7 +99,6 @@ class _CommentsHomeState extends State<CommentsHome> {
 
         if (rootComment != null && !addedComments.contains(rootCommentIdEncrypted)) {
           int totalReplies = rootComment.comment.childrenCount; // Initialize with root comment's childrenCount
-          print("Root children count: ${rootComment.comment.childrenCount} $totalReplies");
 
           for (final replyId in rootCommentIdsList) {
             final replyComment = commentSet[replyId];
@@ -149,7 +153,6 @@ class _CommentsHomeState extends State<CommentsHome> {
           }
 
           // Reset totalReplies to the current value in state
-          final currentState = state;
           final currentRootComment = commentSet[rootCommentIdEncrypted];
           if (currentRootComment != null) {
             totalReplies = currentRootComment.comment.childrenCount;
@@ -287,26 +290,20 @@ class _CommentsHomeState extends State<CommentsHome> {
   }
 
   void tryOpenKeyboard() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.props.postLoadType is PreloadedPost && (widget.props.postLoadType as PreloadedPost).openKeyboard) {
         commentSheetController.focus();
       }
     });
   }
 
-  void startCommentSheetListener() {
-    commentSheetController.addListener(() {
-      setState(() {});
-    });
-  }
-
   @override
   void initState() {
-    startCommentSheetListener();
+    commentSheetController = CommentSheetController();
     tryOpenKeyboard();
     startScreenshotListener();
     clearOldState();
-    delegateInitialLoad();
+    delegateInitialLoad(context);
     super.initState();
   }
 
@@ -318,169 +315,174 @@ class _CommentsHomeState extends State<CommentsHome> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext ogContext) {
     return OneThemeStatusBar(
       brightness:
-          context.watch<IndividualPostCubit>().state is IndividualPostLoading ? Brightness.dark : Brightness.light,
+          ogContext.watch<IndividualPostCubit>().state is IndividualPostLoading ? Brightness.dark : Brightness.light,
       child: KeyboardDismiss(
         child: Scaffold(
           resizeToAvoidBottomInset: true,
-          backgroundColor: Theme.of(context).colorScheme.shadow,
-          body: BlocConsumer<IndividualPostCubit, IndividualPostState>(
-            listenWhen: (previous, current) => previous is IndividualPostLoading && current is IndividualPostData,
-            listener: (context, state) {
-              if (state is IndividualPostData) {
-                context
-                    .read<CommentSectionCubit>()
-                    .loadInitial(state.post.post.id.mid, CommentSortType.recent, refresh: true);
-              }
-            },
-            builder: (context, postState) {
-              if (postState is IndividualPostData) {
-                return BlocBuilder<CommentSectionCubit, CommentSectionState>(
-                  builder: (context, commentState) {
-                    if (commentState is CommentSectionData) {
-                      return FooterLayout(
-                        footer: SafeArea(
-                          top: false,
-                          child: Container(
-                            padding: const EdgeInsets.all(10),
-                            child: CommentSheet(
-                              controller: commentSheetController,
-                              onSubmit: (value) async {
-                                commentSheetController.unfocus();
-                                Provider.of<CreateCommentService>(context, listen: false).setLoading(true);
-                                // todo: implement
-                                final possibleReplyingTo = context.read<CreateCommentCubit>().replyingToComment();
-                                int? replyingToIdx;
-                                if (possibleReplyingTo != null) {
-                                  context
-                                      .read<CommentSectionCubit>()
-                                      .indexFromCommentId(possibleReplyingTo.rootCommentIdReplyingUnder)
-                                      .fold(
-                                        (idx) => replyingToIdx = idx,
-                                        (_) => null, // do nothing
+          backgroundColor: Theme.of(ogContext).colorScheme.shadow,
+          body: Builder(builder: (context) {
+            return BlocConsumer<IndividualPostCubit, IndividualPostState>(
+              listenWhen: (previous, current) => previous is IndividualPostLoading && current is IndividualPostData,
+              listener: (context, state) {
+                if (state is IndividualPostData) {
+                  ogContext
+                      .read<CommentSectionCubit>()
+                      .loadInitial(state.post.post.id.mid, CommentSortType.recent, refresh: true);
+                }
+              },
+              builder: (context, postState) {
+                if (postState is IndividualPostData) {
+                  return Builder(builder: (context) {
+                    return BlocBuilder<CommentSectionCubit, CommentSectionState>(
+                      builder: (newContext, commentState) {
+                        if (commentState is CommentSectionData) {
+                          return FooterLayout(
+                            footer: SafeArea(
+                              top: false,
+                              child: Container(
+                                padding: const EdgeInsets.all(10),
+                                child: CommentSheet(
+                                  controller: commentSheetController,
+                                  onSubmit: (value) async {
+                                    Provider.of<CreateCommentService>(ogContext, listen: false).setLoading(true);
+                                    // todo: implement
+                                    final possibleReplyingTo = ogContext.read<CreateCommentCubit>().replyingToComment();
+                                    int? replyingToIdx;
+                                    if (possibleReplyingTo != null) {
+                                      ogContext
+                                          .read<CommentSectionCubit>()
+                                          .indexFromCommentId(possibleReplyingTo.rootCommentIdReplyingUnder)
+                                          .fold(
+                                            (idx) => replyingToIdx = idx,
+                                            (_) => null, // do nothing
+                                          );
+                                    }
+                                    await ogContext
+                                        .read<CommentSectionCubit>()
+                                        .uploadComment(
+                                          postState.post.post.id,
+                                          value,
+                                          possibleReplyingTo,
+                                        )
+                                        .then((errOrComment) {
+                                      errOrComment.fold(
+                                        (errMsg) => ogContext.read<NotificationsCubit>().showErr(errMsg),
+                                        (comment) {
+                                          commentSheetController.unfocus();
+                                          sl.get<ConfettiBlaster>().show(ogContext);
+                                          ogContext.read<CreateCommentCubit>().clear();
+                                          commentSheetController.delete();
+                                          ogContext.read<CreateCommentCubit>().updateReplyingTo(ReplyingToNothing());
+                                          Provider.of<GlobalContentService>(ogContext, listen: false)
+                                              .updatePostCommentCount(postState.post.post.id, 1);
+                                          if (replyingToIdx == null) {
+                                            feedListController.scrollToIndex(1);
+                                          } else {
+                                            feedListController.scrollToIndex(replyingToIdx! + 2);
+                                          }
+                                        },
                                       );
-                                }
-                                await context
-                                    .read<CommentSectionCubit>()
-                                    .uploadComment(
-                                      postState.post.post.id,
-                                      value,
-                                      possibleReplyingTo,
-                                    )
-                                    .then((errOrComment) {
-                                  errOrComment.fold(
-                                    (errMsg) => context.read<NotificationsCubit>().showErr(errMsg),
-                                    (comment) {
-                                      sl.get<ConfettiBlaster>().show(context);
-                                      context.read<CreateCommentCubit>().clear();
-                                      commentSheetController.delete();
-                                      context.read<CreateCommentCubit>().updateReplyingTo(ReplyingToNothing());
-                                      Provider.of<GlobalContentService>(context, listen: false)
-                                          .updatePostCommentCount(postState.post.post.id, 1);
-                                      if (replyingToIdx == null) {
-                                        feedListController.scrollToIndex(1);
-                                      } else {
-                                        feedListController.scrollToIndex(replyingToIdx! + 2);
-                                      }
-                                    },
-                                  );
-                                }).then(
-                                  (value) =>
-                                      Provider.of<CreateCommentService>(context, listen: false).setLoading(false),
-                                );
-                              },
-                              maxCharacters: maxCommentLength,
-                              feedController: feedListController,
-                              postCreatedAtTime: postState.post.post.createdAt,
-                            ),
-                          ),
-                        ),
-                        child: Align(
-                          alignment: Alignment.topCenter,
-                          child: Column(
-                            children: [
-                              StatTileGroup(
-                                icon1Text: "Back",
-                                icon2Text: addCommasToNumber(postState.post.post.commentCount),
-                                icon3Text: "More",
-                                icon4Text: largeNumberFormatter(postState.post.post.upvote),
-                                icon5Text: largeNumberFormatter(postState.post.post.downvote),
-                                icon1OnPress: () => router.pop(context),
-                                icon2OnPress: () => commentSheetController.isFocused()
-                                    ? verifiedUserOnly(context, () => commentSheetController.unfocus())
-                                    : verifiedUserOnly(context, () => commentSheetController.focus()),
-                                icon3OnPress: () => buildOptionsSheet(context, postState.post),
-                                icon4OnPress: () async => upvote(postState.post),
-                                icon5OnPress: () async => verifiedUserOnly(
-                                    context,
-                                    () async => await Provider.of<GlobalContentService>(context, listen: false)
-                                        .voteOnPost(postState.post, postState.post.userVote != -1 ? -1 : 0)
-                                        .then((value) => value.fold(
-                                            (err) => context.read<NotificationsCubit>().showErr(err), (_) => null))),
-                                icon4Selected: Provider.of<GlobalContentService>(context)
-                                        .posts[postState.post.post.id]!
-                                        .userVote ==
-                                    1,
-                                icon5Selected: Provider.of<GlobalContentService>(context)
-                                        .posts[postState.post.post.id]!
-                                        .userVote ==
-                                    -1,
-                              ),
-                              Expanded(
-                                child: FeedList(
-                                  header: buildHeader(context, commentState, postState),
-                                  isScrollable: true,
-                                  shrinkWrap: true,
-                                  controller: feedListController
-                                    ..items =
-                                        generateComments(context, commentState, feedListController, postState.post),
-                                  loadMore: (_) async => await context.read<CommentSectionCubit>().loadInitial(
-                                      postState.post.post.id.mid, CommentSortType.recent,
-                                      refresh: commentState.commentIds.isEmpty),
-                                  hasError: commentState.paginationState == CommentFeedState.error,
-                                  onErrorButtonPressed: () async => await context
-                                      .read<CommentSectionCubit>()
-                                      .loadInitial(postState.post.post.id.mid, CommentSortType.recent),
-                                  onPullToRefresh: () async {
-                                    Provider.of<GlobalContentService>(context, listen: false).clearComments();
-                                    context.read<CreateCommentCubit>().clear();
-                                    context.read<CommentSectionCubit>().clear();
-                                    context.read<IndividualPostCubit>().setLoading();
-                                    await delegateInitialLoad(refresh: true);
+                                    }).then(
+                                      (value) =>
+                                          Provider.of<CreateCommentService>(ogContext, listen: false).setLoading(false),
+                                    );
                                   },
-                                  onWontLoadMoreButtonPressed: () async => await context
-                                      .read<CommentSectionCubit>()
-                                      .loadInitial(postState.post.post.id.mid, CommentSortType.recent,
-                                          refresh: commentState.commentIds.isEmpty),
-                                  wontLoadMore: commentState.paginationState == CommentFeedState.end,
-                                  wontLoadMoreMessage: "You've reached the end",
+                                  maxCharacters: maxCommentLength,
+                                  feedController: feedListController,
+                                  postCreatedAtTime: postState.post.post.createdAt,
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-                      );
-                    } else {
-                      return LoadingOrAlert(
-                          message: StateMessage(
-                              commentState is CommentSectionError ? commentState.message : "Unknown error",
-                              () => context
-                                  .read<CommentSectionCubit>()
-                                  .loadInitial(postState.post.post.id.mid, CommentSortType.recent)),
-                          isLoading: false);
-                    }
-                  },
-                );
-              } else {
-                return LoadingOrAlert(
-                    message: StateMessage(postState is IndividualPostError ? postState.message : "Unknown error",
-                        () => delegateInitialLoad()),
-                    isLoading: postState is IndividualPostLoading);
-              }
-            },
-          ),
+                            ),
+                            child: Align(
+                              alignment: Alignment.topCenter,
+                              child: Column(
+                                children: [
+                                  StatTileGroup(
+                                    icon1Text: "Back",
+                                    icon2Text: addCommasToNumber(postState.post.post.commentCount),
+                                    icon3Text: "More",
+                                    icon4Text: largeNumberFormatter(postState.post.post.upvote),
+                                    icon5Text: largeNumberFormatter(postState.post.post.downvote),
+                                    icon1OnPress: () => router.pop(ogContext),
+                                    icon2OnPress: () => commentSheetController.isFocused()
+                                        ? verifiedUserOnly(ogContext, () => commentSheetController.unfocus())
+                                        : verifiedUserOnly(ogContext, () => commentSheetController.focus()),
+                                    icon3OnPress: () => buildOptionsSheet(ogContext, postState.post),
+                                    icon4OnPress: () async => upvote(postState.post),
+                                    icon5OnPress: () async => verifiedUserOnly(
+                                        ogContext,
+                                        () async => await Provider.of<GlobalContentService>(ogContext, listen: false)
+                                            .voteOnPost(postState.post, postState.post.userVote != -1 ? -1 : 0)
+                                            .then((value) => value.fold(
+                                                (err) => ogContext.read<NotificationsCubit>().showErr(err),
+                                                (_) => null))),
+                                    icon4Selected: Provider.of<GlobalContentService>(ogContext)
+                                            .posts[postState.post.post.id]!
+                                            .userVote ==
+                                        1,
+                                    icon5Selected: Provider.of<GlobalContentService>(ogContext)
+                                            .posts[postState.post.post.id]!
+                                            .userVote ==
+                                        -1,
+                                  ),
+                                  Expanded(
+                                    child: FeedList(
+                                      header: buildHeader(ogContext, commentState, postState),
+                                      isScrollable: true,
+                                      shrinkWrap: true,
+                                      controller: feedListController
+                                        ..items = generateComments(
+                                            ogContext, commentState, feedListController, postState.post),
+                                      loadMore: (_) async => await ogContext.read<CommentSectionCubit>().loadInitial(
+                                          postState.post.post.id.mid, CommentSortType.recent,
+                                          refresh: commentState.commentIds.isEmpty),
+                                      hasError: commentState.paginationState == CommentFeedState.error,
+                                      onErrorButtonPressed: () async => await ogContext
+                                          .read<CommentSectionCubit>()
+                                          .loadInitial(postState.post.post.id.mid, CommentSortType.recent),
+                                      onPullToRefresh: () async {
+                                        Provider.of<GlobalContentService>(ogContext, listen: false).clearComments();
+                                        ogContext.read<CreateCommentCubit>().clear();
+                                        ogContext.read<CommentSectionCubit>().clear();
+                                        ogContext.read<IndividualPostCubit>().setLoading();
+                                        await delegateInitialLoad(ogContext, refresh: true);
+                                      },
+                                      onWontLoadMoreButtonPressed: () async => await ogContext
+                                          .read<CommentSectionCubit>()
+                                          .loadInitial(postState.post.post.id.mid, CommentSortType.recent,
+                                              refresh: commentState.commentIds.isEmpty),
+                                      wontLoadMore: commentState.paginationState == CommentFeedState.end,
+                                      wontLoadMoreMessage: "You've reached the end",
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        } else {
+                          return LoadingOrAlert(
+                              message: StateMessage(
+                                  commentState is CommentSectionError ? commentState.message : "Unknown error",
+                                  () => ogContext
+                                      .read<CommentSectionCubit>()
+                                      .loadInitial(postState.post.post.id.mid, CommentSortType.recent)),
+                              isLoading: false);
+                        }
+                      },
+                    );
+                  });
+                } else {
+                  return LoadingOrAlert(
+                      message: StateMessage(postState is IndividualPostError ? postState.message : "Unknown error",
+                          () => delegateInitialLoad(ogContext)),
+                      isLoading: postState is IndividualPostLoading);
+                }
+              },
+            );
+          }),
         ),
       ),
     );
