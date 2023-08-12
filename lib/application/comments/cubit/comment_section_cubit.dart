@@ -128,9 +128,9 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
                 // if it is a reply
                 sl.get<GlobalContentService>().plusOneChildToComment(replyingToUser!.replyingToCommentId);
                 for (var i = 0; i < updatedCommentIds.length; i++) {
-                  if (updatedCommentIds[i].containsKey(replyingToUser.rootCommentIdReplyingUnder)) {
-                    final repliesList = updatedCommentIds[i][replyingToUser.rootCommentIdReplyingUnder] ?? [];
-                    repliesList.insert(0, comment.comment.id);
+                  if (updatedCommentIds[i].containsKey(replyingToUser.rootCommentIdReplyingUnder.uid)) {
+                    final repliesList = updatedCommentIds[i][replyingToUser.rootCommentIdReplyingUnder.uid] ?? [];
+                    repliesList.add(comment.comment.id); // Add to the end of the list
                     updatedCommentIds[i][replyingToUser.rootCommentIdReplyingUnder.uid] = repliesList;
                     emit(currentState.copyWith(commentIds: updatedCommentIds));
                     return Right(comment);
@@ -139,7 +139,8 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
                 // If parent comment index was not found, return Left indicating an error
                 return const Left("Parent comment not found");
               } else {
-                updatedCommentIds.insert(0, LinkedHashMap<String, List<EncryptedId>>()..[comment.comment.id.uid] = []);
+                final newCommentIdsMap = LinkedHashMap<String, List<EncryptedId>>()..[comment.comment.id.uid] = [];
+                updatedCommentIds.insert(0, newCommentIdsMap);
                 emit(currentState.copyWith(commentIds: updatedCommentIds));
                 return Right(comment);
               }

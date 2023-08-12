@@ -94,24 +94,29 @@ class _SimpleCommentSortState extends State<SimpleCommentSort> {
           ],
         ),
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+          padding: const EdgeInsets.only(top: 10, bottom: 12, left: 15, right: 15),
           width: double.infinity,
           color: Colors.transparent,
           child: Row(
             children: [
               Expanded(
                 child: Text(
-                  "Sort by: ${commentSortTypeToString(commentSortType)}",
-                  style: kTitle.copyWith(
-                    color: Theme.of(context).colorScheme.primary,
+                  "Sort by",
+                  style: kDetail.copyWith(
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                   textAlign: TextAlign.left,
                 ),
               ),
               const SizedBox(width: 5),
-              Icon(
-                CupertinoIcons.slider_horizontal_3,
-                color: Theme.of(context).colorScheme.primary,
+              Expanded(
+                child: Text(
+                  commentSortTypeToString(commentSortType),
+                  style: kDetail.copyWith(
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+                  textAlign: TextAlign.right,
+                ),
               ),
             ],
           ),

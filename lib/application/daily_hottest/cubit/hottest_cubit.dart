@@ -16,7 +16,7 @@ class HottestCubit extends Cubit<HottestState> {
   HottestCubit() : super(DailyHottestLoading());
 
   Future<void> loadYesterday() async {
-    final yesterday = DateTime.now().subtract(const Duration(days: 1));
+    final yesterday = DateTime.now().toUtc().subtract(const Duration(days: 1));
     _loadFromDate(yesterday);
   }
 

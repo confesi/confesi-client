@@ -32,15 +32,15 @@ class SettingsHome extends StatelessWidget {
     final isAnon = Provider.of<UserAuthService>(context, listen: true).isAnon;
     return ThemeStatusBar(
       child: Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.shadow,
-        body: SafeArea(
-          bottom: false,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AppbarLayout(
+        backgroundColor: Theme.of(context).colorScheme.background,
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SafeArea(
+              bottom: false,
+              child: AppbarLayout(
                 bottomBorder: true,
-                backgroundColor: Theme.of(context).colorScheme.shadow,
+                backgroundColor: Theme.of(context).colorScheme.background,
                 centerWidget: Text(
                   "Settings",
                   style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
@@ -52,7 +52,10 @@ class SettingsHome extends StatelessWidget {
                 rightIconOnPress: () => showInfoSheet(context, "Preferences",
                     "Most of these preferences are saved locally to your device, and are deleted upon logout."),
               ),
-              Expanded(
+            ),
+            Expanded(
+              child: Container(
+                color: Theme.of(context).colorScheme.shadow,
                 child: ScrollableView(
                   controller: ScrollController(),
                   scrollBarVisible: false,
@@ -257,8 +260,8 @@ class SettingsHome extends StatelessWidget {
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

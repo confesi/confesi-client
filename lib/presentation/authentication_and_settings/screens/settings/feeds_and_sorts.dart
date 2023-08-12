@@ -39,41 +39,41 @@ class FeedsAndSortsScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         TileGroup(
-                          text: "Adjust your default feed view",
+                          text: "Default feed view",
                           tiles: [
                             BoolSelectionTile(
                               isActive: true,
                               icon: CupertinoIcons.sparkles,
-                              text: "Trending",
+                              text: "Trending 🔥",
                               onTap: () => {},
                             ),
                             BoolSelectionTile(
                               isActive: true,
                               icon: CupertinoIcons.sparkles,
-                              text: "Recents",
+                              text: "Recents ⏳",
                               onTap: () => {},
                             ),
                             BoolSelectionTile(
                               isActive: true,
                               icon: CupertinoIcons.sparkles,
-                              text: "Positivity",
+                              text: "Positivity ✨",
                               onTap: () => {},
                             ),
                           ],
                         ),
                         TileGroup(
-                          text: "Adjust your default comment sort",
+                          text: "Default comment sort",
                           tiles: [
                             BoolSelectionTile(
                               isActive: true,
                               icon: CupertinoIcons.sparkles,
-                              text: "Trending",
+                              text: "Trending 🔥",
                               onTap: () => {},
                             ),
                             BoolSelectionTile(
                               isActive: true,
                               icon: CupertinoIcons.sparkles,
-                              text: "Recents",
+                              text: "Recents ⏳",
                               onTap: () => {},
                             ),
                           ],

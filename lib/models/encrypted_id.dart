@@ -36,7 +36,7 @@ class EncryptedId implements Comparable<EncryptedId> {
   @override
   bool operator ==(Object other) {
     if (other is EncryptedId) {
-      return this.uid == other.uid;
+      return uid == other.uid;
     }
     return false;
   }

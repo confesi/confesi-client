@@ -63,6 +63,19 @@ class CommentWithMetadata {
   String toString() {
     return 'CommentWithMetadata{comment: $comment, userVote: $userVote, owner: $owner}';
   }
+
+  // copyWith method
+  CommentWithMetadata copyWith({
+    Comment? comment,
+    int? userVote,
+    bool? owner,
+  }) {
+    return CommentWithMetadata(
+      comment: comment ?? this.comment,
+      userVote: userVote ?? this.userVote,
+      owner: owner ?? this.owner,
+    );
+  }
 }
 
 class Comment {
@@ -139,6 +152,45 @@ class Comment {
         "hidden": hidden,
         "edited": edited,
       };
+
+  // copyWith method
+  Comment copyWith({
+    EncryptedId? id,
+    int? createdAt,
+    int? updatedAt,
+    EncryptedId? postId,
+    int? numericalUser,
+    int? numericalReplyingUser,
+    bool? numericalUserIsOp,
+    bool? numericalReplyingUserIsOp,
+    EncryptedId? parentRootId,
+    int? childrenCount,
+    String? content,
+    int? downvote,
+    int? upvote,
+    num? trendingScore,
+    bool? hidden,
+    bool? edited,
+  }) {
+    return Comment(
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      postId: postId ?? this.postId,
+      numericalUser: numericalUser ?? this.numericalUser,
+      numericalReplyingUser: numericalReplyingUser ?? this.numericalReplyingUser,
+      numericalUserIsOp: numericalUserIsOp ?? this.numericalUserIsOp,
+      numericalReplyingUserIsOp: numericalReplyingUserIsOp ?? this.numericalReplyingUserIsOp,
+      parentRootId: parentRootId ?? this.parentRootId,
+      childrenCount: childrenCount ?? this.childrenCount,
+      content: content ?? this.content,
+      downvote: downvote ?? this.downvote,
+      upvote: upvote ?? this.upvote,
+      trendingScore: trendingScore ?? this.trendingScore,
+      hidden: hidden ?? this.hidden,
+      edited: edited ?? this.edited,
+    );
+  }
 
   // tostring simple
   @override

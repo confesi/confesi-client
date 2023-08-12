@@ -36,7 +36,7 @@ class ExploreHome extends StatefulWidget {
 
 class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClientMixin {
   final PageController _pageController = PageController(initialPage: 0);
-  FeedType selectedFeedType = FeedType.trending;
+  FeedType selectedFeedType = FeedType.recents;
 
   @override
   bool get wantKeepAlive => true;

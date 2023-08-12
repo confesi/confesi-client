@@ -18,6 +18,7 @@ class SimpleTextButton extends StatelessWidget {
     this.bgColor,
     this.textColor,
     this.maxLines = 1,
+    this.disabled = false,
     Key? key,
   }) : super(key: key);
 
@@ -32,43 +33,52 @@ class SimpleTextButton extends StatelessWidget {
   final bool isErrorText;
   final TapType tapType;
   final bool infiniteWidth;
+  final bool disabled;
 
   @override
   Widget build(BuildContext context) {
-    return TouchableScale(
-      tapType: tapType,
-      onTap: () => onTap(),
-      child: AnimatedContainer(
-        key: UniqueKey(),
-        margin: EdgeInsets.symmetric(horizontal: horizontalPadding),
-        duration: const Duration(milliseconds: 175),
-        width: infiniteWidth ? double.infinity : null,
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          border: Border.all(
-              color: Theme.of(context).colorScheme.onBackground, width: 0.8, strokeAlign: BorderSide.strokeAlignInside),
-          color: bgColor ??
-              (secondaryColors
-                  ? Theme.of(context).colorScheme.secondary
-                  : thirdColors
-                      ? Theme.of(context).colorScheme.onSecondary
-                      : Theme.of(context).colorScheme.surface),
-          borderRadius: const BorderRadius.all(Radius.circular(15)),
-        ),
-        child: Text(
-          text,
-          textAlign: TextAlign.center,
-          overflow: TextOverflow.ellipsis,
-          maxLines: maxLines,
-          style: kTitle.copyWith(
-            color: textColor ??
-                (isErrorText
-                    ? Theme.of(context).colorScheme.error
-                    : secondaryColors
-                        ? Theme.of(context).colorScheme.onSecondary
-                        : thirdColors
-                            ? Theme.of(context).colorScheme.onSurfaceVariant
-                            : Theme.of(context).colorScheme.primary),
+    return IgnorePointer(
+      ignoring: disabled,
+      child: Opacity(
+        opacity: disabled ? 0.5 : 1,
+        child: TouchableScale(
+          tapType: tapType,
+          onTap: () => onTap(),
+          child: AnimatedContainer(
+            key: UniqueKey(),
+            margin: EdgeInsets.symmetric(horizontal: horizontalPadding),
+            duration: const Duration(milliseconds: 175),
+            width: infiniteWidth ? double.infinity : null,
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              border: Border.all(
+                  color: Theme.of(context).colorScheme.onBackground,
+                  width: 0.8,
+                  strokeAlign: BorderSide.strokeAlignInside),
+              color: bgColor ??
+                  (secondaryColors
+                      ? Theme.of(context).colorScheme.secondary
+                      : thirdColors
+                          ? Theme.of(context).colorScheme.onSecondary
+                          : Theme.of(context).colorScheme.surface),
+              borderRadius: const BorderRadius.all(Radius.circular(15)),
+            ),
+            child: Text(
+              text,
+              textAlign: TextAlign.center,
+              overflow: TextOverflow.ellipsis,
+              maxLines: maxLines,
+              style: kTitle.copyWith(
+                color: textColor ??
+                    (isErrorText
+                        ? Theme.of(context).colorScheme.error
+                        : secondaryColors
+                            ? Theme.of(context).colorScheme.onSecondary
+                            : thirdColors
+                                ? Theme.of(context).colorScheme.onSurfaceVariant
+                                : Theme.of(context).colorScheme.primary),
+              ),
+            ),
           ),
         ),
       ),

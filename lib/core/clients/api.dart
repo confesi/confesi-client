@@ -153,9 +153,9 @@ class Api {
 
       if (debugMode) {
         print("================================ DEBUG API ================================");
-        print("Req body: ${request.body}");
-        print("${streamResponse.statusCode} ${streamResponse.reasonPhrase}");
         print("Req endpoint: $url");
+        print("${streamResponse.statusCode} ${streamResponse.reasonPhrase}");
+        print("Req body: ${request.body}");
       }
 
       // Handle any 5xx status codes

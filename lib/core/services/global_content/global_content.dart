@@ -12,11 +12,11 @@ import '../../../models/post.dart';
 import '../../clients/api.dart';
 
 class GlobalContentService extends ChangeNotifier {
-  final Api _postVoteApi;
+  final Api _voteApi;
   final Api _setHomeApi;
   final Api _watchedSchoolApi;
 
-  GlobalContentService(this._postVoteApi, this._watchedSchoolApi, this._setHomeApi);
+  GlobalContentService(this._voteApi, this._watchedSchoolApi, this._setHomeApi);
 
   // LinkedHashMap of int id key to Post type value
   LinkedHashMap<EncryptedId, PostWithMetadata> posts = LinkedHashMap<EncryptedId, PostWithMetadata>();
@@ -110,6 +110,10 @@ class GlobalContentService extends ChangeNotifier {
     for (final comment in comments) {
       this.comments[comment.comment.id] = comment;
     }
+  }
+
+  void setComment(CommentWithMetadata comment) {
+    comments[comment.comment.id] = comment;
     notifyListeners();
   }
 
@@ -130,9 +134,9 @@ class GlobalContentService extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setPosts(List<PostWithMetadata> posts) {
-    for (final post in posts) {
-      this.posts[post.post.id] = post;
+  void setPosts(List<PostWithMetadata> postsToAdd) {
+    for (PostWithMetadata post in postsToAdd) {
+      posts[post.post.id] = post;
     }
     notifyListeners();
   }
@@ -150,7 +154,7 @@ class GlobalContentService extends ChangeNotifier {
   }
 
   Future<Either<String, ApiSuccess>> voteOnComment(CommentWithMetadata comment, int vote) async {
-    _postVoteApi.cancelCurrReq();
+    _voteApi.cancelCurrReq();
 
     if (vote != -1 && vote != 0 && vote != 1) {
       notifyListeners();
@@ -160,19 +164,14 @@ class GlobalContentService extends ChangeNotifier {
     final int oldVote = comment.userVote;
     final int newVote = vote;
 
-    // Check if the user is changing their vote
-    bool changingVote = oldVote != newVote;
-
     // Update the user's vote and associated counts
     comment.userVote = newVote;
 
     // Revert the original vote counts
-    if (changingVote) {
-      if (oldVote == 1) {
-        comment.comment.upvote--;
-      } else if (oldVote == -1) {
-        comment.comment.downvote--;
-      }
+    if (oldVote == 1) {
+      comment.comment.upvote--;
+    } else if (oldVote == -1) {
+      comment.comment.downvote--;
     }
 
     // Increment the new vote counts
@@ -192,12 +191,28 @@ class GlobalContentService extends ChangeNotifier {
     };
 
     // Make the request to update the vote on the server
-    return await _postVoteApi.req(Verb.put, true, "/api/v1/votes/vote", requestBody).then(
+    return await _voteApi.req(Verb.put, true, "/api/v1/votes/vote", requestBody).then(
       (responseEither) {
         return responseEither.fold(
           (failureWithMsg) {
             // Revert the user's vote and counts if the request fails
-            if (changingVote) {
+            comment.userVote = oldVote;
+            if (oldVote == 1) {
+              comment.comment.upvote++;
+            } else if (oldVote == -1) {
+              comment.comment.downvote++;
+            }
+            if (newVote == 1) {
+              comment.comment.upvote--;
+            } else if (newVote == -1) {
+              comment.comment.downvote--;
+            }
+            notifyListeners();
+            return const Left("Error voting");
+          },
+          (response) {
+            if (response.statusCode.toString()[0] != "2") {
+              // Revert the user's vote and counts if the request fails
               comment.userVote = oldVote;
               if (oldVote == 1) {
                 comment.comment.upvote++;
@@ -210,26 +225,6 @@ class GlobalContentService extends ChangeNotifier {
                 comment.comment.downvote--;
               }
               notifyListeners();
-            }
-            return const Left("Error voting");
-          },
-          (response) {
-            if (response.statusCode.toString()[0] != "2") {
-              // Revert the user's vote and counts if the request fails
-              if (changingVote) {
-                comment.userVote = oldVote;
-                if (oldVote == 1) {
-                  comment.comment.upvote++;
-                } else if (oldVote == -1) {
-                  comment.comment.downvote++;
-                }
-                if (newVote == 1) {
-                  comment.comment.upvote--;
-                } else if (newVote == -1) {
-                  comment.comment.downvote--;
-                }
-                notifyListeners();
-              }
               return const Left("Error voting");
             }
             notifyListeners();
@@ -242,7 +237,7 @@ class GlobalContentService extends ChangeNotifier {
   }
 
   Future<Either<String, ApiSuccess>> voteOnPost(PostWithMetadata post, int vote) async {
-    _postVoteApi.cancelCurrReq();
+    _voteApi.cancelCurrReq();
 
     if (vote != -1 && vote != 0 && vote != 1) {
       notifyListeners();
@@ -252,19 +247,14 @@ class GlobalContentService extends ChangeNotifier {
     final int oldVote = post.userVote;
     final int newVote = vote;
 
-    // Check if the user is changing their vote
-    bool changingVote = oldVote != newVote;
-
     // Update the user's vote and associated counts
     post.userVote = newVote;
 
     // Revert the original vote counts
-    if (changingVote) {
-      if (oldVote == 1) {
-        post.post.upvote--;
-      } else if (oldVote == -1) {
-        post.post.downvote--;
-      }
+    if (oldVote == 1) {
+      post.post.upvote--;
+    } else if (oldVote == -1) {
+      post.post.downvote--;
     }
 
     // Increment the new vote counts
@@ -284,12 +274,28 @@ class GlobalContentService extends ChangeNotifier {
     };
 
     // Make the request to update the vote on the server
-    return await _postVoteApi.req(Verb.put, true, "/api/v1/votes/vote", requestBody).then(
+    return await _voteApi.req(Verb.put, true, "/api/v1/votes/vote", requestBody).then(
       (responseEither) {
         return responseEither.fold(
           (failureWithMsg) {
             // Revert the user's vote and counts if the request fails
-            if (changingVote) {
+            post.userVote = oldVote;
+            if (oldVote == 1) {
+              post.post.upvote++;
+            } else if (oldVote == -1) {
+              post.post.downvote++;
+            }
+            if (newVote == 1) {
+              post.post.upvote--;
+            } else if (newVote == -1) {
+              post.post.downvote--;
+            }
+            notifyListeners();
+            return const Left("Error voting");
+          },
+          (response) {
+            if (response.statusCode.toString()[0] != "2") {
+              // Revert the user's vote and counts if the request fails
               post.userVote = oldVote;
               if (oldVote == 1) {
                 post.post.upvote++;
@@ -302,26 +308,6 @@ class GlobalContentService extends ChangeNotifier {
                 post.post.downvote--;
               }
               notifyListeners();
-            }
-            return const Left("Error voting");
-          },
-          (response) {
-            if (response.statusCode.toString()[0] != "2") {
-              // Revert the user's vote and counts if the request fails
-              if (changingVote) {
-                post.userVote = oldVote;
-                if (oldVote == 1) {
-                  post.post.upvote++;
-                } else if (oldVote == -1) {
-                  post.post.downvote++;
-                }
-                if (newVote == 1) {
-                  post.post.upvote--;
-                } else if (newVote == -1) {
-                  post.post.downvote--;
-                }
-                notifyListeners();
-              }
               return const Left("Error voting");
             }
             notifyListeners();

@@ -253,14 +253,32 @@ class PreloadedPost extends PostLoadType {
   final bool openKeyboard;
 
   PreloadedPost(this.post, this.openKeyboard);
+
+  // toString
+  @override
+  String toString() {
+    return 'PreloadedPost{post: $post, openKeyboard: $openKeyboard}';
+  }
 }
 
 class NeedToLoadPost extends PostLoadType {
   final String maskedPostId;
   NeedToLoadPost(this.maskedPostId);
+
+  // toString
+  @override
+  String toString() {
+    return 'NeedToLoadPost{maskedPostId: $maskedPostId}';
+  }
 }
 
 class HomePostsCommentsProps {
   final PostLoadType postLoadType;
   const HomePostsCommentsProps(this.postLoadType);
+
+  // toString
+  @override
+  String toString() {
+    return 'HomePostsCommentsProps{postLoadType: $postLoadType}';
+  }
 }

@@ -18,7 +18,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/cli_commands.dart';
-import 'package:http/http.dart';
 import 'package:keyboard_attachable/keyboard_attachable.dart';
 import 'package:provider/provider.dart';
 import 'package:screenshot_callback/screenshot_callback.dart';
@@ -38,8 +37,7 @@ import '../../create_post/overlays/confetti_blaster.dart';
 import '../../feed/methods/show_post_options.dart';
 import '../../feed/utils/post_metadata_formatters.dart';
 import '../../shared/behaviours/url_preview.dart';
-import '../widgets/simple_comment_root_group.dart';
-import '../widgets/simple_comment_tile.dart';
+import '../widgets/comment_tile.dart';
 import '../../shared/other/feed_list.dart';
 import '../../shared/overlays/notification_chip.dart';
 import '../../shared/stat_tiles/stat_tile_group.dart';
@@ -58,96 +56,112 @@ class _CommentsHomeState extends State<CommentsHome> {
   final CommentSheetController commentSheetController = CommentSheetController();
   final ScreenshotCallback screenshotCallback = ScreenshotCallback();
 
-  Future<void> delegateInitialLoad() async {
+  Future<void> delegateInitialLoad({bool refresh = false}) async {
     // await Future.delayed(const Duration(milliseconds: 500));
-    if (widget.props.postLoadType is PreloadedPost) {
+    if (widget.props.postLoadType is PreloadedPost && !refresh) {
       // preloaded
       context.read<IndividualPostCubit>().setPost((widget.props.postLoadType as PreloadedPost).post);
-    } else if (widget.props.postLoadType is NeedToLoadPost) {
+    } else if (widget.props.postLoadType is NeedToLoadPost && !refresh) {
       // not preloaded
       await context.read<IndividualPostCubit>().loadPost((widget.props.postLoadType as NeedToLoadPost).maskedPostId);
+    } else if (widget.props.postLoadType is PreloadedPost && refresh) {
+      await context.read<IndividualPostCubit>().loadPost((widget.props.postLoadType as PreloadedPost).post.post.id.mid);
     } else {
       context.read<NotificationsCubit>().showErr("Error loading content");
     }
   }
 
   List<InfiniteScrollIndexable> generateComments(
-      BuildContext context, CommentSectionState state, FeedListController feedController, PostWithMetadata post) {
+    BuildContext context,
+    CommentSectionState state,
+    FeedListController feedController,
+    PostWithMetadata post,
+  ) {
     if (state is CommentSectionData) {
       final List<InfiniteScrollIndexable> commentWidgets = [];
-      int commentIndex = 0; // Counter variable to keep track of the index
       LinkedHashMap<EncryptedId, CommentWithMetadata> commentSet = Provider.of<GlobalContentService>(context).comments;
 
       // Set to keep track of comments that have already been added
       Set<EncryptedId> addedComments = <EncryptedId>{};
+      List<CommentWithMetadata> commentsToUpdate = [];
 
       for (LinkedHashMap<String, List<EncryptedId>> commentIds in state.commentIds) {
         final rootCommentId = commentIds.keys.first;
         final rootCommentIdsList = commentIds[rootCommentId]!;
 
-        final commentId = EncryptedId(uid: rootCommentId, mid: ''); // mid doesn't matter
-        final comment = commentSet[commentId];
+        final rootCommentIdEncrypted = EncryptedId(uid: rootCommentId, mid: '');
+        final rootComment = commentSet[rootCommentIdEncrypted];
 
-        if (comment != null && !addedComments.contains(commentId)) {
-          context.read<CommentSectionCubit>().updateCommentIdToIndex(comment.comment.id, commentIndex);
+        if (rootComment != null && !addedComments.contains(rootCommentIdEncrypted)) {
+          int totalReplies = rootComment.comment.childrenCount; // Initialize with root comment's childrenCount
+          print("Root children count: ${rootComment.comment.childrenCount} $totalReplies");
+
+          for (final replyId in rootCommentIdsList) {
+            final replyComment = commentSet[replyId];
+
+            if (replyComment != null) {
+              totalReplies += replyComment.comment.childrenCount;
+            }
+          }
+
+          int commentIndex = commentWidgets.length;
+          context.read<CommentSectionCubit>().updateCommentIdToIndex(rootComment.comment.id, commentIndex);
+
           commentWidgets.add(
             InfiniteScrollIndexable(
               rootCommentId,
-              SimpleCommentRootGroup(
-                root: SimpleCommentTile(
-                  postCreatedAtTime: post.post.createdAt,
-                  commentSheetController: commentSheetController,
-                  feedController: feedController,
-                  currentReplyNum: 0, // doesn't matter for root
-                  currentlyRetrievedReplies: 0, // doesn't matter for root
-                  totalNumOfReplies: comment.comment.childrenCount,
-                  isRootComment: true,
-                  comment: comment,
-                ),
-                subTree: const [], // No sub-replies since they are one level deep
+              CommentTile(
+                postCreatedAtTime: post.post.createdAt,
+                commentSheetController: commentSheetController,
+                feedController: feedController,
+                commentType: RootComment(rootComment, totalReplies, rootCommentIdsList.length),
               ),
             ),
           );
-          addedComments.add(commentId); // Mark the comment as added
 
-          commentIndex++; // Increment the counter for the next comment
-          int totalReplies = comment.comment.childrenCount;
+          addedComments.add(rootCommentIdEncrypted);
+
           int iter = 1;
           for (final replyId in rootCommentIdsList) {
             final replyComment = commentSet[replyId];
 
             if (replyComment != null) {
-              // Check if the reply comment has already been added
-              final replyCommentId = EncryptedId(uid: replyId.uid, mid: ''); // mid doesn't matter
-              if (!addedComments.contains(replyCommentId)) {
+              final replyCommentIdEncrypted = EncryptedId(uid: replyId.uid, mid: '');
+              if (!addedComments.contains(replyCommentIdEncrypted)) {
                 totalReplies += replyComment.comment.childrenCount;
                 context.read<CommentSectionCubit>().updateCommentIdToIndex(replyComment.comment.id, commentIndex);
                 commentWidgets.add(
                   InfiniteScrollIndexable(
                     replyId.uid,
-                    SimpleCommentRootGroup(
-                      root: SimpleCommentTile(
-                        postCreatedAtTime: post.post.createdAt,
-                        commentSheetController: commentSheetController,
-                        feedController: feedController,
-                        currentlyRetrievedReplies: rootCommentIdsList.length,
-                        currentReplyNum: iter,
-                        totalNumOfReplies: totalReplies,
-                        isRootComment: false,
-                        comment: replyComment,
-                      ),
-                      subTree: const [], // No sub-replies since they are one level deep
+                    CommentTile(
+                      postCreatedAtTime: post.post.createdAt,
+                      commentSheetController: commentSheetController,
+                      feedController: feedController,
+                      commentType: ReplyComment(replyComment, iter),
                     ),
                   ),
                 );
-                addedComments.add(replyCommentId); // Mark the reply comment as added
-                commentIndex++; // Increment the counter for the next comment
+                addedComments.add(replyCommentIdEncrypted);
+                commentIndex++;
               }
             }
             iter++;
           }
+
+          // Reset totalReplies to the current value in state
+          final currentState = state;
+          final currentRootComment = commentSet[rootCommentIdEncrypted];
+          if (currentRootComment != null) {
+            totalReplies = currentRootComment.comment.childrenCount;
+          }
+
+          rootComment.comment.childrenCount = totalReplies;
+          commentsToUpdate.add(rootComment);
         }
       }
+
+      Provider.of<GlobalContentService>(context, listen: false).setComments(commentsToUpdate);
+
       return commentWidgets;
     } else {
       return [];
@@ -272,8 +286,24 @@ class _CommentsHomeState extends State<CommentsHome> {
     );
   }
 
+  void tryOpenKeyboard() {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      if (widget.props.postLoadType is PreloadedPost && (widget.props.postLoadType as PreloadedPost).openKeyboard) {
+        commentSheetController.focus();
+      }
+    });
+  }
+
+  void startCommentSheetListener() {
+    commentSheetController.addListener(() {
+      setState(() {});
+    });
+  }
+
   @override
   void initState() {
+    startCommentSheetListener();
+    tryOpenKeyboard();
     startScreenshotListener();
     clearOldState();
     delegateInitialLoad();
@@ -283,7 +313,6 @@ class _CommentsHomeState extends State<CommentsHome> {
   @override
   void dispose() {
     feedListController.dispose();
-    commentSheetController.dispose();
     screenshotCallback.dispose();
     super.dispose();
   }
@@ -295,6 +324,7 @@ class _CommentsHomeState extends State<CommentsHome> {
           context.watch<IndividualPostCubit>().state is IndividualPostLoading ? Brightness.dark : Brightness.light,
       child: KeyboardDismiss(
         child: Scaffold(
+          resizeToAvoidBottomInset: true,
           backgroundColor: Theme.of(context).colorScheme.shadow,
           body: BlocConsumer<IndividualPostCubit, IndividualPostState>(
             listenWhen: (previous, current) => previous is IndividualPostLoading && current is IndividualPostData,
@@ -315,17 +345,52 @@ class _CommentsHomeState extends State<CommentsHome> {
                           top: false,
                           child: Container(
                             padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              border: Border(
-                                top: BorderSide(
-                                  color: Theme.of(context).colorScheme.onBackground,
-                                  width: 0.8,
-                                ),
-                              ),
-                            ),
                             child: CommentSheet(
                               controller: commentSheetController,
-                              onSubmit: (value) => print(value),
+                              onSubmit: (value) async {
+                                commentSheetController.unfocus();
+                                Provider.of<CreateCommentService>(context, listen: false).setLoading(true);
+                                // todo: implement
+                                final possibleReplyingTo = context.read<CreateCommentCubit>().replyingToComment();
+                                int? replyingToIdx;
+                                if (possibleReplyingTo != null) {
+                                  context
+                                      .read<CommentSectionCubit>()
+                                      .indexFromCommentId(possibleReplyingTo.rootCommentIdReplyingUnder)
+                                      .fold(
+                                        (idx) => replyingToIdx = idx,
+                                        (_) => null, // do nothing
+                                      );
+                                }
+                                await context
+                                    .read<CommentSectionCubit>()
+                                    .uploadComment(
+                                      postState.post.post.id,
+                                      value,
+                                      possibleReplyingTo,
+                                    )
+                                    .then((errOrComment) {
+                                  errOrComment.fold(
+                                    (errMsg) => context.read<NotificationsCubit>().showErr(errMsg),
+                                    (comment) {
+                                      sl.get<ConfettiBlaster>().show(context);
+                                      context.read<CreateCommentCubit>().clear();
+                                      commentSheetController.delete();
+                                      context.read<CreateCommentCubit>().updateReplyingTo(ReplyingToNothing());
+                                      Provider.of<GlobalContentService>(context, listen: false)
+                                          .updatePostCommentCount(postState.post.post.id, 1);
+                                      if (replyingToIdx == null) {
+                                        feedListController.scrollToIndex(1);
+                                      } else {
+                                        feedListController.scrollToIndex(replyingToIdx! + 2);
+                                      }
+                                    },
+                                  );
+                                }).then(
+                                  (value) =>
+                                      Provider.of<CreateCommentService>(context, listen: false).setLoading(false),
+                                );
+                              },
                               maxCharacters: maxCommentLength,
                               feedController: feedListController,
                               postCreatedAtTime: postState.post.post.createdAt,
@@ -383,7 +448,7 @@ class _CommentsHomeState extends State<CommentsHome> {
                                     context.read<CreateCommentCubit>().clear();
                                     context.read<CommentSectionCubit>().clear();
                                     context.read<IndividualPostCubit>().setLoading();
-                                    await delegateInitialLoad();
+                                    await delegateInitialLoad(refresh: true);
                                   },
                                   onWontLoadMoreButtonPressed: () async => await context
                                       .read<CommentSectionCubit>()

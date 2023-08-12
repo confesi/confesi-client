@@ -1,6 +1,7 @@
 import 'package:confesi/application/comments/cubit/comment_section_cubit.dart';
 import 'package:confesi/application/comments/cubit/create_comment_cubit.dart';
 import 'package:confesi/application/user/cubit/notifications_cubit.dart';
+import 'package:confesi/core/services/create_comment_service/create_comment_service.dart';
 import 'package:confesi/core/services/global_content/global_content.dart';
 import 'package:confesi/core/styles/typography.dart';
 import 'package:confesi/core/utils/colors/deterministic_random_color.dart';
@@ -22,11 +23,10 @@ import '../../shared/textfields/expandable_textfield.dart';
 class CommentSheetController extends ChangeNotifier {
   bool _blockingInteraction = false;
   late TextEditingController commentController;
-  late FocusNode textFocusNode;
+  final FocusNode textFocusNode = FocusNode();
 
-  void _init(TextEditingController commentController, FocusNode textFocusNode) {
+  void _init(TextEditingController commentController) {
     this.commentController = commentController;
-    this.textFocusNode = textFocusNode;
   }
 
   bool get isBlocking => _blockingInteraction;
@@ -39,6 +39,8 @@ class CommentSheetController extends ChangeNotifier {
 
   void focus() {
     textFocusNode.requestFocus();
+    // check if disposed/unmounted
+
     notifyListeners();
   }
 
@@ -57,7 +59,6 @@ class CommentSheetController extends ChangeNotifier {
 
   @override
   void dispose() {
-    commentController.dispose();
     textFocusNode.dispose();
     super.dispose();
   }
@@ -85,11 +86,11 @@ class CommentSheet extends StatefulWidget {
 
 class _CommentSheetState extends State<CommentSheet> {
   final TextEditingController commentController = TextEditingController();
-  final FocusNode textFocusNode = FocusNode();
   bool isDisposed = false;
 
   @override
   void initState() {
+    widget.controller._init(commentController);
     widget.controller.addListener(() => isDisposed ? null : setState(() => {}));
     super.initState();
   }
@@ -169,13 +170,13 @@ class _CommentSheetState extends State<CommentSheet> {
                   ? context
                       .read<CommentSectionCubit>()
                       .indexFromCommentId((state.possibleReply as ReplyingToUser).replyingToCommentId)
-                      .fold((idx) => widget.feedController.scrollToIndex(idx + 1, hapticFeedback: false),
+                      .fold((idx) => widget.feedController.scrollToIndex(idx + 2, hapticFeedback: false),
                           (_) => context.read<NotificationsCubit>().showErr("Error jumping to comment"))
                   : null;
               setState(() => {});
             },
             color: Theme.of(context).colorScheme.background,
-            focusNode: textFocusNode,
+            focusNode: widget.controller.textFocusNode,
             hintText: "Add a comment...",
             maxLines: 4,
             minLines: 1,
@@ -198,15 +199,16 @@ class _CommentSheetState extends State<CommentSheet> {
                             isErrorText: true,
                             onTap: () => widget.controller.delete(),
                           ),
-                          Expanded(
-                            child: TextLimitTracker(
-                              noText: false,
-                              value: commentController.text.runes.length / widget.maxCharacters,
-                            ),
+                          const SizedBox(width: 15),
+                          TextLimitTracker(
+                            noText: true,
+                            value: commentController.text.runes.length / widget.maxCharacters,
                           ),
+                          const Spacer(),
                           SimpleTextButton(
+                            disabled: Provider.of<CreateCommentService>(context).isLoading,
                             tapType: TapType.strongImpact,
-                            text: "Submit",
+                            text: Provider.of<CreateCommentService>(context).isLoading ? "Posting..." : "Post",
                             onTap: () {
                               verifiedUserOnly(context, () {
                                 widget.onSubmit(commentController.text);
