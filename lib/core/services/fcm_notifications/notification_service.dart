@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:confesi/core/clients/api.dart';
+import 'package:confesi/core/services/api_client/api.dart';
 import 'package:confesi/core/results/failures.dart';
 import 'package:confesi/core/results/successes.dart';
 import 'package:confesi/core/services/fcm_notifications/token_data.dart';
-import 'package:confesi/core/services/hive/hive_client.dart';
+import 'package:confesi/core/services/hive_client/hive_client.dart';
 import 'package:confesi/init.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';

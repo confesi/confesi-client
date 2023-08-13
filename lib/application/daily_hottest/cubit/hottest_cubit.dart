@@ -6,7 +6,7 @@ import 'package:confesi/core/services/global_content/global_content.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
-import '../../../core/clients/api.dart';
+import '../../../core/services/api_client/api.dart';
 import '../../../init.dart';
 import '../../../models/post.dart';
 

@@ -4,16 +4,16 @@ import 'dart:io';
 
 import 'package:confesi/core/services/user_auth/user_auth_data.dart';
 
-import '../../constants/shared/constants.dart';
-import '../results/failures.dart';
-import '../services/user_auth/user_auth_service.dart';
-import '../utils/numbers/is_plural.dart';
-import '../../init.dart';
+import '../../../constants/shared/constants.dart';
+import '../../results/failures.dart';
+import '../user_auth/user_auth_service.dart';
+import '../../utils/numbers/is_plural.dart';
+import '../../../init.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 
-import '../utils/numbers/add_commas_to_number.dart';
+import '../../utils/numbers/add_commas_to_number.dart';
 
 /// The different RESTful API verbs.
 enum Verb {

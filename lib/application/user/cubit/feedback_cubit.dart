@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../core/clients/api.dart';
+import '../../../core/services/api_client/api.dart';
 
 part 'feedback_state.dart';
 

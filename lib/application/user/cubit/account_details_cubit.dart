@@ -5,7 +5,7 @@ import 'package:confesi/core/results/failures.dart';
 import 'package:confesi/models/user.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../core/clients/api.dart';
+import '../../../core/services/api_client/api.dart';
 
 part 'account_details_state.dart';
 

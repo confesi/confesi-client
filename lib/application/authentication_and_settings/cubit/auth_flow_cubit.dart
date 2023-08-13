@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:confesi/core/services/fcm_notifications/notification_service.dart';
-import 'package:confesi/core/services/hive/hive_client.dart';
-import '../../../core/clients/api.dart';
+import 'package:confesi/core/services/hive_client/hive_client.dart';
+import '../../../core/services/api_client/api.dart';
 import '../../../core/router/go_router.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';

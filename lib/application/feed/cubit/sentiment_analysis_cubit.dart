@@ -4,7 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:confesi/models/encrypted_id.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../core/clients/api.dart';
+import '../../../core/services/api_client/api.dart';
 import '../../../models/sentiment_analysis.dart';
 
 part 'sentiment_analysis_state.dart';

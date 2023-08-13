@@ -9,7 +9,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../../constants/shared/constants.dart';
-import '../../../core/clients/api.dart';
+import '../../../core/services/api_client/api.dart';
 import '../../../core/types/infinite_scrollable_indexable.dart';
 import '../../../init.dart';
 import '../../../models/encrypted_id.dart';

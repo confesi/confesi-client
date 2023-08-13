@@ -10,7 +10,7 @@ import '../../../application/feed/cubit/schools_drawer_cubit.dart';
 import '../../../application/user/cubit/saved_posts_cubit.dart';
 import '../../../init.dart';
 import '../../../models/post.dart';
-import '../../clients/api.dart';
+import '../api_client/api.dart';
 import '../global_content/global_content.dart';
 
 enum FeedType { trending, recents, sentiment }
