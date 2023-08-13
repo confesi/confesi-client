@@ -21,13 +21,13 @@ class CurvyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return ThemeStatusBar(
       child: Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.shadow,
+        backgroundColor: Theme.of(context).colorScheme.background,
         body: SafeArea(
           child: Column(
             children: [
               AppbarLayout(
                 bottomBorder: true,
-                backgroundColor: Theme.of(context).colorScheme.shadow,
+                backgroundColor: Theme.of(context).colorScheme.background,
                 centerWidget: Text(
                   "Curviness",
                   style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
@@ -36,67 +36,70 @@ class CurvyScreen extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: ScrollableArea(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        TileGroup(
-                          text: "Adjust the curviness of in-app components",
-                          tiles: [
-                            BoolSelectionTile(
-                              isActive: Provider.of<UserAuthService>(context).data().componentCurviness ==
-                                  ComponentCurviness.none,
-                              icon: CupertinoIcons.sparkles,
-                              text: "No curves",
-                              onTap: () => Provider.of<UserAuthService>(context, listen: false).saveData(
-                                Provider.of<UserAuthService>(context, listen: false)
-                                    .data()
-                                    .copyWith(componentCurviness: ComponentCurviness.none),
+                child: Container(
+                  color: Theme.of(context).colorScheme.shadow,
+                  child: ScrollableArea(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TileGroup(
+                            text: "Adjust the curviness of in-app components",
+                            tiles: [
+                              BoolSelectionTile(
+                                isActive: Provider.of<UserAuthService>(context).data().componentCurviness ==
+                                    ComponentCurviness.none,
+                                icon: CupertinoIcons.sparkles,
+                                text: "No curves",
+                                onTap: () => Provider.of<UserAuthService>(context, listen: false).saveData(
+                                  Provider.of<UserAuthService>(context, listen: false)
+                                      .data()
+                                      .copyWith(componentCurviness: ComponentCurviness.none),
+                                ),
                               ),
-                            ),
-                            BoolSelectionTile(
-                              isActive: Provider.of<UserAuthService>(context).data().componentCurviness ==
-                                  ComponentCurviness.small,
-                              icon: CupertinoIcons.sparkles,
-                              text: "Small curves",
-                              onTap: () => Provider.of<UserAuthService>(context, listen: false).saveData(
-                                Provider.of<UserAuthService>(context, listen: false)
-                                    .data()
-                                    .copyWith(componentCurviness: ComponentCurviness.small),
+                              BoolSelectionTile(
+                                isActive: Provider.of<UserAuthService>(context).data().componentCurviness ==
+                                    ComponentCurviness.small,
+                                icon: CupertinoIcons.sparkles,
+                                text: "Small curves",
+                                onTap: () => Provider.of<UserAuthService>(context, listen: false).saveData(
+                                  Provider.of<UserAuthService>(context, listen: false)
+                                      .data()
+                                      .copyWith(componentCurviness: ComponentCurviness.small),
+                                ),
                               ),
-                            ),
-                            BoolSelectionTile(
-                              isActive: Provider.of<UserAuthService>(context).data().componentCurviness ==
-                                  ComponentCurviness.regular,
-                              icon: CupertinoIcons.sparkles,
-                              text: "Regular curves",
-                              onTap: () => Provider.of<UserAuthService>(context, listen: false).saveData(
-                                Provider.of<UserAuthService>(context, listen: false)
-                                    .data()
-                                    .copyWith(componentCurviness: ComponentCurviness.regular),
+                              BoolSelectionTile(
+                                isActive: Provider.of<UserAuthService>(context).data().componentCurviness ==
+                                    ComponentCurviness.regular,
+                                icon: CupertinoIcons.sparkles,
+                                text: "Regular curves",
+                                onTap: () => Provider.of<UserAuthService>(context, listen: false).saveData(
+                                  Provider.of<UserAuthService>(context, listen: false)
+                                      .data()
+                                      .copyWith(componentCurviness: ComponentCurviness.regular),
+                                ),
                               ),
-                            ),
-                            BoolSelectionTile(
-                              isActive: Provider.of<UserAuthService>(context).data().componentCurviness ==
-                                  ComponentCurviness.alot,
-                              bottomRounded: true,
-                              icon: CupertinoIcons.sparkles,
-                              text: "Super curvy",
-                              onTap: () => Provider.of<UserAuthService>(context, listen: false).saveData(
-                                Provider.of<UserAuthService>(context, listen: false)
-                                    .data()
-                                    .copyWith(componentCurviness: ComponentCurviness.alot),
+                              BoolSelectionTile(
+                                isActive: Provider.of<UserAuthService>(context).data().componentCurviness ==
+                                    ComponentCurviness.alot,
+                                bottomRounded: true,
+                                icon: CupertinoIcons.sparkles,
+                                text: "Super curvy",
+                                onTap: () => Provider.of<UserAuthService>(context, listen: false).saveData(
+                                  Provider.of<UserAuthService>(context, listen: false)
+                                      .data()
+                                      .copyWith(componentCurviness: ComponentCurviness.alot),
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        const DisclaimerText(
-                          text: "This preference is saved locally to your device.",
-                        ),
-                        const SimulatedBottomSafeArea(),
-                      ],
+                            ],
+                          ),
+                          const DisclaimerText(
+                            text: "This preference is saved locally to your device.",
+                          ),
+                          const SimulatedBottomSafeArea(),
+                        ],
+                      ),
                     ),
                   ),
                 ),

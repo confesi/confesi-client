@@ -33,16 +33,14 @@ import '../../feed/utils/post_metadata_formatters.dart';
 
 abstract class CommentType {
   CommentWithMetadata get comment;
-  int get totalReplies;
   int get totalRetrievedReplies;
 }
 
 class RootComment extends CommentType {
   final CommentWithMetadata commentWithMetaData;
-  final int _totalReplies;
   final int _totalRetrievedReplies;
 
-  RootComment(this.commentWithMetaData, this._totalReplies, this._totalRetrievedReplies);
+  RootComment(this.commentWithMetaData, this._totalRetrievedReplies);
 
   @override
   CommentWithMetadata get comment => commentWithMetaData;
@@ -50,34 +48,26 @@ class RootComment extends CommentType {
   @override
   int get totalRetrievedReplies => _totalRetrievedReplies;
 
-  @override
-  int get totalReplies => _totalReplies;
-
   // tostring with all field listed simply
   @override
   String toString() {
-    return "totalReplies: $_totalReplies, totalRetrievedReplies: $_totalRetrievedReplies";
+    return "totalRetrievedReplies: $_totalRetrievedReplies";
   }
 }
 
 class ReplyComment extends CommentType {
   final CommentWithMetadata commentWithMetaData;
   final int currentReplyNum;
-  final int _totalReplies;
   final int _totalRetrievedReplies;
 
   ReplyComment(
     this.commentWithMetaData,
     this.currentReplyNum,
-    this._totalReplies,
     this._totalRetrievedReplies,
   );
 
   @override
   int get totalRetrievedReplies => _totalRetrievedReplies;
-
-  @override
-  int get totalReplies => _totalReplies;
 
   @override
   CommentWithMetadata get comment => commentWithMetaData;
@@ -194,6 +184,14 @@ class _CommentTileState extends State<CommentTile> {
 
   @override
   Widget build(BuildContext context) {
+    final int totalReplies = widget.commentType.comment.comment.parentRootId == null
+        ? 0
+        : Provider.of<GlobalContentService>(context)
+                    .repliesPerCommentThread[widget.commentType.comment.comment.parentRootId] ==
+                null
+            ? 0
+            : Provider.of<GlobalContentService>(context)
+                .repliesPerCommentThread[widget.commentType.comment.comment.parentRootId]!;
     final state = context.watch<CreateCommentCubit>().state;
     return GestureDetector(
       onTap: () => setState(() => truncating = !truncating),
@@ -273,7 +271,7 @@ class _CommentTileState extends State<CommentTile> {
                                         icon: CupertinoIcons.flag,
                                         onTap: () => print("tap"),
                                       ),
-                                      if ((widget.commentType.totalReplies > widget.commentType.totalRetrievedReplies ||
+                                      if ((totalReplies > widget.commentType.totalRetrievedReplies ||
                                               ((widget.commentType is RootComment &&
                                                   widget.commentType.totalRetrievedReplies == 0))) ||
                                           isLoading ||
@@ -408,17 +406,17 @@ class _CommentTileState extends State<CommentTile> {
                                   ),
                                 ],
                               ),
-                              Text(widget.commentType.toString()),
-                              Text(widget.commentType.totalReplies.toString()),
+                              // Text(widget.commentType.toString()),
+                              // Text("total replies: ${totalReplies.toString()}"),
+                              // Text("CHILDREN COUNT: ${widget.commentType.comment.comment.childrenCount}"),
                               WidgetOrNothing(
-                                showWidget:
-                                    (widget.commentType.totalReplies > widget.commentType.totalRetrievedReplies &&
-                                            ((widget.commentType is RootComment &&
-                                                    widget.commentType.totalRetrievedReplies == 0) ||
-                                                (widget.commentType is ReplyComment &&
-                                                    widget.commentType.totalRetrievedReplies ==
-                                                        (widget.commentType as ReplyComment).currentReplyNum))) ||
-                                        isLoading,
+                                showWidget: (totalReplies > widget.commentType.totalRetrievedReplies &&
+                                        ((widget.commentType is RootComment &&
+                                                widget.commentType.totalRetrievedReplies == 0) ||
+                                            (widget.commentType is ReplyComment &&
+                                                widget.commentType.totalRetrievedReplies ==
+                                                    (widget.commentType as ReplyComment).currentReplyNum))) ||
+                                    isLoading,
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(vertical: 5),
                                   child: Align(
@@ -426,9 +424,7 @@ class _CommentTileState extends State<CommentTile> {
                                     child: SimpleTextButton(
                                       infiniteWidth: true,
                                       onTap: () async => await loadMore(),
-                                      text: isLoading
-                                          ? "Loading..."
-                                          : "Load ${widget.commentType.totalReplies - widget.commentType.totalRetrievedReplies} more",
+                                      text: isLoading ? "Loading..." : "Load more",
                                     ),
                                   ),
                                 ),

@@ -49,13 +49,13 @@ final GoRouter router = GoRouter(
     GoRoute(path: '/verify-email', builder: (BuildContext context, GoRouterState state) => const VerifyEmailScreen()),
 
     GoRoute(path: '/open', builder: (BuildContext context, GoRouterState state) => const OpenScreen()),
-
     GoRoute(
       path: '/home',
       pageBuilder: (context, state) {
+        HomeProps? props = state.extra == null ? null : state.extra as HomeProps;
         return CustomTransitionPage(
           key: state.pageKey,
-          child: const HomeScreen(),
+          child: HomeScreen(props: props),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             // Change the opacity of the screen using a Curve based on the animation's value
             var tween = CurveTween(curve: Curves.easeInOut);
@@ -244,6 +244,29 @@ class HomeLeaderboardSchoolProps {
   const HomeLeaderboardSchoolProps(this.school);
 }
 
+class HomePostsCommentsProps {
+  final PostLoadType postLoadType;
+  const HomePostsCommentsProps(this.postLoadType);
+
+  // toString
+  @override
+  String toString() {
+    return 'HomePostsCommentsProps{postLoadType: $postLoadType}';
+  }
+}
+
+class HomeProps {
+  final VoidCallback? executeAfterHomeLoad;
+
+  const HomeProps(this.executeAfterHomeLoad);
+
+  // toString
+  @override
+  String toString() {
+    return 'HomeProps{executeAfterHomeLoad: $executeAfterHomeLoad}';
+  }
+}
+
 //! Home posts comment props with abstract classes
 
 abstract class PostLoadType {}
@@ -269,16 +292,5 @@ class NeedToLoadPost extends PostLoadType {
   @override
   String toString() {
     return 'NeedToLoadPost{maskedPostId: $maskedPostId}';
-  }
-}
-
-class HomePostsCommentsProps {
-  final PostLoadType postLoadType;
-  const HomePostsCommentsProps(this.postLoadType);
-
-  // toString
-  @override
-  String toString() {
-    return 'HomePostsCommentsProps{postLoadType: $postLoadType}';
   }
 }

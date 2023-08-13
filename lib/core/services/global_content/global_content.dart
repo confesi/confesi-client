@@ -22,6 +22,28 @@ class GlobalContentService extends ChangeNotifier {
   LinkedHashMap<EncryptedId, PostWithMetadata> posts = LinkedHashMap<EncryptedId, PostWithMetadata>();
   LinkedHashMap<EncryptedId, CommentWithMetadata> comments = LinkedHashMap<EncryptedId, CommentWithMetadata>();
   LinkedHashMap<EncryptedId, SchoolWithMetadata> schools = LinkedHashMap<EncryptedId, SchoolWithMetadata>();
+  LinkedHashMap<EncryptedId, int> repliesPerCommentThread = LinkedHashMap<EncryptedId, int>();
+
+  void setRepliesPerSchool(EncryptedId rootComment, int replies) {
+    repliesPerCommentThread[rootComment] = replies;
+  }
+
+  int getRepliesPerSchool(EncryptedId rootComment) {
+    if (repliesPerCommentThread.containsKey(rootComment) && repliesPerCommentThread[rootComment] != null) {
+      return repliesPerCommentThread[rootComment]!;
+    } else {
+      return 0;
+    }
+  }
+
+  void addToRepliesPerSchool(EncryptedId rootComment, int replies) {
+    if (repliesPerCommentThread.containsKey(rootComment)) {
+      repliesPerCommentThread[rootComment] = repliesPerCommentThread[rootComment]! + replies;
+    } else {
+      repliesPerCommentThread[rootComment] = replies;
+    }
+    notifyListeners();
+  }
 
   Future<Either<ApiSuccess, String>> setHome(SchoolWithMetadata school) async {
     _setHomeApi.cancelCurrReq();

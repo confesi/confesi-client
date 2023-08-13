@@ -22,7 +22,9 @@ import '../../shared/overlays/registered_users_only_sheet.dart';
 import '../../watched_universities/drawers/feed_drawer.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({Key? key, required this.props}) : super(key: key);
+
+  final HomeProps? props;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -39,6 +41,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   @override
   void initState() {
     tabController = TabController(vsync: this, length: 5);
+    Future.delayed(const Duration(milliseconds: 500)).then((value) {
+      if (mounted && widget.props != null && widget.props!.executeAfterHomeLoad != null) {
+        widget.props!.executeAfterHomeLoad!();
+      }
+    });
     super.initState();
   }
 

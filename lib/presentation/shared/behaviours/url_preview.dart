@@ -58,9 +58,8 @@ class _UrlPreviewTileState extends State<UrlPreviewTile> {
           children: [
             metaData.image == null
                 ? Container()
-                : SizedBox(
-                    height: double.infinity,
-                    width: widthFraction(context, 1 / 3),
+                : FractionallySizedBox(
+                    heightFactor: 1,
                     child: ClipRRect(
                       borderRadius:
                           const BorderRadius.only(topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
@@ -78,25 +77,34 @@ class _UrlPreviewTileState extends State<UrlPreviewTile> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      metaData.title == null ? widget.url : metaData.title!,
-                      style: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
-                      textScaleFactor: 1,
-                      overflow: TextOverflow.ellipsis,
+                    Visibility(
+                      visible: metaData.title != null && metaData.title != "null",
+                      child: Text(
+                        metaData.title!,
+                        style: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
+                        textScaleFactor: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
-                    SizedBox(height: metaData.desc == null ? 0 : 5),
-                    Text(
-                      metaData.desc == null ? "" : metaData.desc!,
-                      style: kDetail.copyWith(color: Theme.of(context).colorScheme.onSurface),
-                      textScaleFactor: 1,
-                      overflow: TextOverflow.ellipsis,
+                    SizedBox(height: metaData.desc == null || metaData.desc == "null" ? 0 : 5),
+                    Visibility(
+                      visible: metaData.desc != null && metaData.desc != "null",
+                      child: Text(
+                        metaData.desc!,
+                        style: kDetail.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                        textScaleFactor: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
-                    SizedBox(height: metaData.url == null ? 0 : 5),
-                    Text(
-                      metaData.url == null ? "" : metaData.url!,
-                      style: kDetail.copyWith(color: Theme.of(context).colorScheme.onSurface),
-                      textScaleFactor: 1,
-                      overflow: TextOverflow.ellipsis,
+                    SizedBox(height: metaData.url == null || metaData.url == "null" ? 0 : 5),
+                    Visibility(
+                      visible: metaData.url != null && metaData.url != "null",
+                      child: Text(
+                        metaData.url!,
+                        style: kDetail.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                        textScaleFactor: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                   ],
                 ),

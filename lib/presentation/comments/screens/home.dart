@@ -62,7 +62,7 @@ class _CommentsHomeState extends State<CommentsHome> {
     if (widget.props.postLoadType is PreloadedPost && !refresh) {
       // preloaded
       context.read<IndividualPostCubit>().setPost((widget.props.postLoadType as PreloadedPost).post);
-    } else if (widget.props.postLoadType is NeedToLoadPost && !refresh) {
+    } else if (widget.props.postLoadType is NeedToLoadPost) {
       // not preloaded
       await context.read<IndividualPostCubit>().loadPost((widget.props.postLoadType as NeedToLoadPost).maskedPostId);
     } else if (widget.props.postLoadType is PreloadedPost && refresh) {
@@ -80,36 +80,22 @@ class _CommentsHomeState extends State<CommentsHome> {
   ) {
     if (state is CommentSectionData) {
       final List<InfiniteScrollIndexable> commentWidgets = [];
-      // make empty
-      // LinkedHashMap<EncryptedId, CommentWithMetadata> commentSet = LinkedHashMap<EncryptedId, CommentWithMetadata>();
       LinkedHashMap<EncryptedId, CommentWithMetadata> commentSet =
           Provider.of<GlobalContentService>(context, listen: false).comments;
-
-      // Set to keep track of comments that have already been added
-      Set<EncryptedId> addedComments = <EncryptedId>{};
-      List<CommentWithMetadata> commentsToUpdate = [];
 
       for (LinkedHashMap<String, List<EncryptedId>> commentIds in state.commentIds) {
         final rootCommentId = commentIds.keys.first;
         final rootCommentIdsList = commentIds[rootCommentId]!;
 
+        int totalChildren = 0;
+
         final rootCommentIdEncrypted = EncryptedId(uid: rootCommentId, mid: '');
         final rootComment = commentSet[rootCommentIdEncrypted];
 
-        if (rootComment != null && !addedComments.contains(rootCommentIdEncrypted)) {
-          int totalReplies = rootComment.comment.childrenCount; // Initialize with root comment's childrenCount
-
-          for (final replyId in rootCommentIdsList) {
-            final replyComment = commentSet[replyId];
-
-            if (replyComment != null) {
-              totalReplies += replyComment.comment.childrenCount;
-            }
-          }
-
+        if (rootComment != null) {
           int commentIndex = commentWidgets.length;
           context.read<CommentSectionCubit>().updateCommentIdToIndex(rootComment.comment.id, commentIndex);
-
+          totalChildren += rootComment.comment.childrenCount;
           commentWidgets.add(
             InfiniteScrollIndexable(
               rootCommentId,
@@ -117,52 +103,46 @@ class _CommentsHomeState extends State<CommentsHome> {
                 postCreatedAtTime: post.post.createdAt,
                 commentSheetController: commentSheetController,
                 feedController: feedController,
-                commentType: RootComment(rootComment, totalReplies, rootCommentIdsList.length),
+                commentType: RootComment(rootComment, rootCommentIdsList.length),
               ),
             ),
           );
 
-          addedComments.add(rootCommentIdEncrypted);
-
-          int iter = 1;
-          for (final replyId in rootCommentIdsList) {
-            final replyComment = commentSet[replyId];
+          for (final commentId in rootCommentIdsList) {
+            final replyComment = commentSet[commentId];
 
             if (replyComment != null) {
-              final replyCommentIdEncrypted = EncryptedId(uid: replyId.uid, mid: '');
-              if (!addedComments.contains(replyCommentIdEncrypted)) {
-                totalReplies += replyComment.comment.childrenCount;
-                context.read<CommentSectionCubit>().updateCommentIdToIndex(replyComment.comment.id, commentIndex);
-                commentWidgets.add(
-                  InfiniteScrollIndexable(
-                    replyId.uid,
-                    CommentTile(
-                      postCreatedAtTime: post.post.createdAt,
-                      commentSheetController: commentSheetController,
-                      feedController: feedController,
-                      commentType: ReplyComment(replyComment, iter, totalReplies - 1, rootCommentIdsList.length),
-                    ),
+              totalChildren += replyComment.comment.childrenCount;
+            }
+          }
+
+          int iter = 1;
+          for (final commentId in rootCommentIdsList) {
+            final replyComment = commentSet[commentId];
+
+            if (replyComment != null) {
+              context.read<CommentSectionCubit>().updateCommentIdToIndex(replyComment.comment.id, commentIndex);
+
+              commentWidgets.add(
+                InfiniteScrollIndexable(
+                  commentId.uid,
+                  CommentTile(
+                    postCreatedAtTime: post.post.createdAt,
+                    commentSheetController: commentSheetController,
+                    feedController: feedController,
+                    commentType: ReplyComment(replyComment, iter, rootCommentIdsList.length),
                   ),
-                );
-                addedComments.add(replyCommentIdEncrypted);
-                commentIndex++;
-              }
+                ),
+              );
+              commentIndex++;
             }
             iter++;
           }
 
-          // Reset totalReplies to the current value in state
-          final currentRootComment = commentSet[rootCommentIdEncrypted];
-          if (currentRootComment != null) {
-            totalReplies = currentRootComment.comment.childrenCount;
-          }
-
-          rootComment.comment.childrenCount = totalReplies;
-          commentsToUpdate.add(rootComment);
+          // Update the totalChildren for the root comment outside the loop
+          sl.get<GlobalContentService>().setRepliesPerSchool(rootCommentIdEncrypted, totalChildren);
         }
       }
-
-      Provider.of<GlobalContentService>(context, listen: false).setComments(commentsToUpdate);
 
       return commentWidgets;
     } else {

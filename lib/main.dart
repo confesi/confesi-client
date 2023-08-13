@@ -156,26 +156,28 @@ class _MyAppState extends State<MyApp> {
     super.dispose();
   }
 
-  void startDeepLinkListener() => sl.get<AppLinks>().allStringLinkStream.listen((link) => handleDeepLink(link));
+  void startDeepLinkListener() =>
+      sl.get<AppLinks>().allStringLinkStream.listen((link) => handleQuickAuthAndAction(() => routeDeepLink(link)));
 
   void routeDeepLink(String deepLink) async {
     final postRegex = RegExp(r"^https:\/\/confesi\.com\/p\/([a-zA-Z0-9_-]+)$");
-    print(deepLink);
     final match = postRegex.firstMatch(deepLink);
     if (match != null) {
       final postId = match.group(1);
-      if (postId == null) {
+      if (postId != null) {
+        router.push("/home",
+            extra: HomeProps(
+                () => router.push("/home/posts/comments", extra: HomePostsCommentsProps(NeedToLoadPost(postId)))));
+        // router.push("/home");
+      } else {
         context.read<NotificationsCubit>().showErr("Unable to open deep link");
-        return;
       }
-      await router.push("/home").then((_) => router.push("/post/$postId"));
-      router.push("/home/posts/comments", extra: HomePostsCommentsProps(NeedToLoadPost(postId!)));
     } else {
       context.read<NotificationsCubit>().showErr("Unable to open deep link");
     }
   }
 
-  void handleDeepLink(String deepLink) {
+  void handleQuickAuthAndAction(VoidCallback onAction) {
     final auth = sl.get<FirebaseAuth>();
 
     if (auth.currentUser != null) {
@@ -184,7 +186,7 @@ class _MyAppState extends State<MyApp> {
           router.go("/error");
           return;
         }
-        routeDeepLink(deepLink);
+        onAction();
       });
     } else {
       context.read<NotificationsCubit>().showErr("Only guests and registered users can open deep links");
@@ -270,9 +272,18 @@ class _MyAppState extends State<MyApp> {
     await sl.get<NotificationService>().init();
     sl.get<NotificationService>().onMessage((msg) {
       print("onMessage: $msg");
+      print(msg.data);
+      print(msg.notification!.title);
+      print(msg.notification!.body);
     });
     sl.get<NotificationService>().onMessageOpenedInApp((msg) {
-      print("onMessageOpenedApp: ${msg.data}");
+      print("onMessonMessageOpenedAppage: $msg");
+      handleQuickAuthAndAction(() => router.push("/home",
+          extra: HomeProps(() => router.push("/home/posts/comments",
+              extra: HomePostsCommentsProps(NeedToLoadPost("TqGRLQZ-BRO5ieESwaRA7Hf0"))))));
+      print(msg.data);
+      print(msg.notification!.title);
+      print(msg.notification!.body);
     });
     sl
         .get<NotificationService>()
