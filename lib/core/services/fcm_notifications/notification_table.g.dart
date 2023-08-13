@@ -254,8 +254,8 @@ class FcmNotificationsCompanion extends UpdateCompanion<FcmNotification> {
   }
 }
 
-abstract class _$AppDatabase extends GeneratedDatabase {
-  _$AppDatabase(QueryExecutor e) : super(e);
+abstract class _$FcmDatabase extends GeneratedDatabase {
+  _$FcmDatabase(QueryExecutor e) : super(e);
   late final $FcmNotificationsTable fcmNotifications =
       $FcmNotificationsTable(this);
   @override

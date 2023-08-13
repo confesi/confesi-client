@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:app_links/app_links.dart';
 import 'package:confesi/application/feed/cubit/schools_drawer_cubit.dart';
@@ -10,6 +11,7 @@ import 'package:confesi/core/services/create_comment_service/create_comment_serv
 import 'package:confesi/core/services/global_content/global_content.dart';
 import 'package:confesi/core/services/posts_service/posts_service.dart';
 import 'package:shake/shake.dart';
+import 'package:drift/drift.dart' as drift;
 
 import 'package:confesi/presentation/create_post/overlays/confetti_blaster.dart';
 
@@ -25,6 +27,7 @@ import 'application/user/cubit/notifications_cubit.dart';
 import 'application/user/cubit/quick_actions_cubit.dart';
 import 'application/user/cubit/saved_posts_cubit.dart';
 import 'application/user/cubit/stats_cubit.dart';
+import 'core/services/fcm_notifications/notification_table.dart';
 import 'core/services/hive_client/hive_client.dart';
 import 'core/services/primary_tab_service/primary_tab_service.dart';
 import 'core/services/user_auth/user_auth_service.dart';
@@ -54,9 +57,15 @@ import 'init.dart';
 @pragma('vm:entry-point')
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  sl.get<NotificationService>().onMessage((p0) {
-    print("backgroundMessage: $p0");
+  sl.get<NotificationService>().onMessage((msg) async {
+    await sl.get<NotificationService>().insertFcmMsgToLocalDb(FcmNotificationCompanion(
+          // todo: no bang ops?
+          title: drift.Value(msg.notification!.title),
+          body: drift.Value(msg.notification!.body),
+          data: drift.Value(jsonEncode(msg.data)),
+        ));
   });
+  sl.get<NotificationService>().dispose();
 }
 
 void main() async => await init().then(
@@ -270,8 +279,14 @@ class _MyAppState extends State<MyApp> {
     });
     sl.get<NotificationService>().requestPermissions();
     await sl.get<NotificationService>().init();
-    sl.get<NotificationService>().onMessage((msg) {
-      print("onMessage: $msg");
+    sl.get<NotificationService>().onMessage((msg) async {
+      await sl.get<NotificationService>().insertFcmMsgToLocalDb(FcmNotificationCompanion(
+            // todo: no bang ops?
+            title: drift.Value(msg.notification!.title),
+            body: drift.Value(msg.notification!.body),
+            data: drift.Value(jsonEncode(msg.data)),
+          ));
+      print("on MESSAGE INSERTING: $msg");
       print(msg.data);
       print(msg.notification!.title);
       print(msg.notification!.body);
@@ -378,7 +393,8 @@ class _MyAppState extends State<MyApp> {
                               final MediaQueryData data = MediaQuery.of(context);
                               return MediaQuery(
                                 // update max width
-                                // Force the textScaleFactor that's loaded from the device
+                                // Force the text
+                                //leFactor that's loaded from the device
                                 // to lock to 1 (you can change it in-app independent of the inherited scale).
                                 data: data.copyWith(textScaleFactor: 1),
                                 child: child!,

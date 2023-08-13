@@ -9,6 +9,7 @@ import 'package:confesi/application/user/cubit/notifications_cubit.dart';
 import 'package:confesi/application/user/cubit/stats_cubit.dart';
 import 'package:confesi/core/services/api_client/api.dart';
 import 'package:confesi/core/services/create_comment_service/create_comment_service.dart';
+import 'package:confesi/core/services/fcm_notifications/notification_table.dart';
 import 'package:confesi/core/services/fcm_notifications/token_data.dart';
 import 'package:confesi/core/services/global_content/global_content.dart';
 import 'package:confesi/core/utils/funcs/debouncer.dart';
@@ -106,6 +107,9 @@ Future<void> init() async {
   HiveService hiveService = HiveService(sl());
   await hiveService.init();
   sl.registerLazySingleton(() => hiveService);
+
+  //! Drift datbase
+  sl.registerLazySingleton(() => FcmDatabase());
 
   //! Services
   UserAuthService userAuthService = UserAuthService(sl());
