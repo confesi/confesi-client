@@ -1,4 +1,4 @@
-package com.example.flutter_mobile_client
+package com.confesi.app
 
 import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.plugins.GeneratedPluginRegistrant

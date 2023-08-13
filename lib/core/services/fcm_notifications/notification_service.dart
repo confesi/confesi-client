@@ -88,14 +88,17 @@ class NotificationService {
     try {
       final msgs = await _db.getAllNotifications();
       return Right(msgs);
-    } catch (_) {
+    } catch (e) {
+      print(e);
       return Left(GeneralFailure());
     }
   }
 
   Future<Either<Failure, Success>> insertFcmMsgToLocalDb(FcmNotificationCompanion entry) async {
+    print("trying.......");
     try {
       await _db.insertNotification(entry);
+      print("successfully inserted...");
       return Right(ApiSuccess());
     } catch (_) {
       return Left(GeneralFailure());

@@ -51,13 +51,17 @@ class PostTile extends StatelessWidget {
             borderRadius: const BorderRadius.all(Radius.circular(15)),
             child: Stack(
               children: [
-                Positioned(
-                  bottom: -30,
-                  right: -30,
-                  child: Icon(
-                    postCategoryToIcon(post.post.category.category),
-                    color: Theme.of(context).colorScheme.tertiary.withOpacity(0.175),
-                    size: 150,
+                Visibility(
+                  visible: Provider.of<UserAuthService>(context).data().categorySplashes,
+                  child: Positioned(
+                    bottom: -20,
+                    right: -20,
+                    child: Icon(
+                      postCategoryToIcon(post.post.category.category),
+                      // color: Colors.transparent,
+                      color: Theme.of(context).colorScheme.tertiary.withOpacity(1),
+                      size: 100,
+                    ),
                   ),
                 ),
                 Column(
@@ -118,14 +122,14 @@ class PostTile extends StatelessWidget {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 15, right: 15, top: 15),
+                            padding: const EdgeInsets.only(left: 15, right: 15, top: 30, bottom: 15),
                             child: Text(
                               truncateText(post.post.title.isEmpty ? post.post.content : post.post.title,
                                   postTitlePreviewLength),
                               style: kDisplay1.copyWith(
                                 color: Theme.of(context).colorScheme.primary,
-                                fontSize:
-                                    kBody.fontSize! * Provider.of<UserAuthService>(context).data().textSize.multiplier,
+                                fontSize: kDisplay1.fontSize! *
+                                    Provider.of<UserAuthService>(context).data().textSize.multiplier,
                               ),
                             ),
                           ),
@@ -161,14 +165,14 @@ class PostTile extends StatelessWidget {
                               ),
                             ),
                           ),
-                          ...linksFromText(post.post.content)
-                              .take(maxNumberOfLinkPreviewsPerPostTile) // Limit to a maximum of 3 links
-                              .map((link) {
-                            return Padding(
-                              padding: const EdgeInsets.only(top: 15, left: 15, right: 15),
-                              child: UrlPreviewTile(url: link),
-                            );
-                          }).toList(),
+                          // ...linksFromText(post.post.content)
+                          //     .take(maxNumberOfLinkPreviewsPerPostTile) // Limit to a maximum of 3 links
+                          //     .map((link) {
+                          //   return Padding(
+                          //     padding: const EdgeInsets.only(top: 15, left: 15, right: 15),
+                          //     child: UrlPreviewTile(url: link),
+                          //   );
+                          // }).toList(),
                           Padding(
                             padding: const EdgeInsets.all(15),
                             child: Wrap(

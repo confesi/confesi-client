@@ -69,13 +69,6 @@ class _HottestTileState extends State<HottestTile> {
                                 topRight: Radius.circular(
                                     Provider.of<UserAuthService>(context).data().componentCurviness.borderRadius)),
                             color: Theme.of(context).colorScheme.secondary,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Theme.of(context).colorScheme.secondary,
-                                blurRadius: 15,
-                                offset: const Offset(0, 0),
-                              ),
-                            ],
                           ),
                           padding: const EdgeInsets.all(10),
                           child: Text(
@@ -113,9 +106,9 @@ class _HottestTileState extends State<HottestTile> {
                                     shaderCallback: (Rect bounds) {
                                       return LinearGradient(
                                         colors: [
-                                          Theme.of(context).colorScheme.tertiary.withOpacity(0.6),
-                                          Theme.of(context).colorScheme.tertiary.withOpacity(0.8),
-                                          Theme.of(context).colorScheme.tertiary,
+                                          Theme.of(context).colorScheme.onBackground.withOpacity(0.6),
+                                          Theme.of(context).colorScheme.onBackground.withOpacity(0.8),
+                                          Theme.of(context).colorScheme.secondary.withOpacity(0.8),
                                         ], // Replace with your desired gradient colors
                                         stops: const [0.0, 0.5, 1.0],
                                       ).createShader(bounds);

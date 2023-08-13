@@ -55,59 +55,69 @@ import 'init.dart';
 
 // FCM background messager handler. Required to be top-level. Needs `@pragma` to prevent function being moved during release compilation.
 @pragma('vm:entry-point')
-Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  sl.get<NotificationService>().onMessage((msg) async {
-    await sl.get<NotificationService>().insertFcmMsgToLocalDb(FcmNotificationCompanion(
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage msg) async {
+  try {
+    // await init();
+    print(sl.get<NotificationService>());
+    print("trying.......1");
+    await sl
+        .get<NotificationService>()
+        .insertFcmMsgToLocalDb(FcmNotificationCompanion(
           // todo: no bang ops?
-          title: drift.Value(msg.notification!.title),
-          body: drift.Value(msg.notification!.body),
+          title: drift.Value(msg.notification?.title),
+          body: drift.Value(msg.notification?.body),
           data: drift.Value(jsonEncode(msg.data)),
-        ));
-  });
-  sl.get<NotificationService>().dispose();
+        ))
+        .then((value) => print("VALUE: $value"));
+  } catch (e) {
+    print(e);
+  }
 }
 
-void main() async => await init().then(
-      (_) => analytics.logAppOpen().then(
-            (value) => runApp(
-              MultiProvider(
-                providers: [
-                  ChangeNotifierProvider(create: (context) => sl<UserAuthService>(), lazy: true),
-                  ChangeNotifierProvider(create: (context) => sl<GlobalContentService>(), lazy: true),
-                  ChangeNotifierProvider(create: (context) => sl<CreateCommentService>(), lazy: true),
-                  ChangeNotifierProvider(create: (context) => sl<PostsService>(), lazy: true),
-                  ChangeNotifierProvider(create: (context) => sl<PrimaryTabControllerService>(), lazy: true),
-                ],
-                child: MultiBlocProvider(
-                  providers: [
-                    BlocProvider(lazy: false, create: (context) => sl<SentimentAnalysisCubit>()),
-                    BlocProvider(lazy: false, create: (context) => sl<CreatePostCubit>()),
-                    BlocProvider(lazy: false, create: (context) => sl<PostCategoriesCubit>()),
-                    BlocProvider(lazy: false, create: (context) => sl<HottestCubit>()),
-                    BlocProvider(lazy: false, create: (context) => sl<LeaderboardCubit>()),
-                    BlocProvider(lazy: false, create: (context) => sl<AuthFlowCubit>()),
-                    BlocProvider(lazy: false, create: (context) => sl<AccountDetailsCubit>()),
-                    BlocProvider(lazy: false, create: (context) => sl<FeedbackCubit>()),
-                    BlocProvider(lazy: false, create: (context) => sl<FeedbackCategoriesCubit>()),
-                    BlocProvider(lazy: false, create: (context) => sl<StatsCubit>()),
-                    BlocProvider(lazy: false, create: (context) => sl<SearchSchoolsCubit>()),
-                    BlocProvider(lazy: false, create: (context) => sl<SavedPostsCubit>()),
-                    BlocProvider(lazy: false, create: (context) => sl<SchoolsDrawerCubit>()),
-                    BlocProvider(lazy: false, create: (context) => sl<QuickActionsCubit>()),
-                    BlocProvider(lazy: false, create: (context) => sl<NotificationsCubit>()),
-                    BlocProvider(lazy: false, create: (context) => sl<CommentSectionCubit>()),
-                    BlocProvider(lazy: false, create: (context) => sl<CreateCommentCubit>()),
-                    BlocProvider(lazy: false, create: (context) => sl<IndividualPostCubit>()),
-                  ],
-                  child: debugMode && devicePreview
-                      ? DevicePreview(builder: (context) => const ShrinkView())
-                      : const ShrinkView(),
-                ),
-              ),
-            ),
-          ),
-    );
+// Background message handler
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  analytics.logAppOpen();
+  await init();
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => sl<UserAuthService>(), lazy: true),
+        ChangeNotifierProvider(create: (context) => sl<GlobalContentService>(), lazy: true),
+        ChangeNotifierProvider(create: (context) => sl<CreateCommentService>(), lazy: true),
+        ChangeNotifierProvider(create: (context) => sl<PostsService>(), lazy: true),
+        ChangeNotifierProvider(create: (context) => sl<PrimaryTabControllerService>(), lazy: true),
+      ],
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(lazy: false, create: (context) => sl<SentimentAnalysisCubit>()),
+          BlocProvider(lazy: false, create: (context) => sl<CreatePostCubit>()),
+          BlocProvider(lazy: false, create: (context) => sl<PostCategoriesCubit>()),
+          BlocProvider(lazy: false, create: (context) => sl<HottestCubit>()),
+          BlocProvider(lazy: false, create: (context) => sl<LeaderboardCubit>()),
+          BlocProvider(lazy: false, create: (context) => sl<AuthFlowCubit>()),
+          BlocProvider(lazy: false, create: (context) => sl<AccountDetailsCubit>()),
+          BlocProvider(lazy: false, create: (context) => sl<FeedbackCubit>()),
+          BlocProvider(lazy: false, create: (context) => sl<FeedbackCategoriesCubit>()),
+          BlocProvider(lazy: false, create: (context) => sl<StatsCubit>()),
+          BlocProvider(lazy: false, create: (context) => sl<SearchSchoolsCubit>()),
+          BlocProvider(lazy: false, create: (context) => sl<SavedPostsCubit>()),
+          BlocProvider(lazy: false, create: (context) => sl<SchoolsDrawerCubit>()),
+          BlocProvider(lazy: false, create: (context) => sl<QuickActionsCubit>()),
+          BlocProvider(lazy: false, create: (context) => sl<NotificationsCubit>()),
+          BlocProvider(lazy: false, create: (context) => sl<CommentSectionCubit>()),
+          BlocProvider(lazy: false, create: (context) => sl<CreateCommentCubit>()),
+          BlocProvider(lazy: false, create: (context) => sl<IndividualPostCubit>()),
+        ],
+        child:
+            debugMode && devicePreview ? DevicePreview(builder: (context) => const ShrinkView()) : const ShrinkView(),
+      ),
+    ),
+  );
+}
 
 class ShrinkView extends StatelessWidget {
   const ShrinkView({super.key});
@@ -188,7 +198,6 @@ class _MyAppState extends State<MyApp> {
 
   void handleQuickAuthAndAction(VoidCallback onAction) {
     final auth = sl.get<FirebaseAuth>();
-
     if (auth.currentUser != null) {
       sl.get<UserAuthService>().getData(auth.currentUser!.uid).then((_) {
         if (sl.get<UserAuthService>().state is! UserAuthData) {
@@ -273,7 +282,6 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> startFcmListener() async {
-    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
     sl.get<NotificationService>().token.then((token) {
       token.fold((l) => print(l), (r) => print(r));
     });

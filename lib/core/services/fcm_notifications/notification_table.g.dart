@@ -21,26 +21,33 @@ class $FcmNotificationsTable extends FcmNotifications
   static const VerificationMeta _titleMeta = const VerificationMeta('title');
   @override
   late final GeneratedColumn<String> title = GeneratedColumn<String>(
-      'title', aliasedName, false,
+      'title', aliasedName, true,
       additionalChecks:
           GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 255),
       type: DriftSqlType.string,
-      requiredDuringInsert: true);
+      requiredDuringInsert: false);
   static const VerificationMeta _bodyMeta = const VerificationMeta('body');
   @override
   late final GeneratedColumn<String> body = GeneratedColumn<String>(
-      'body', aliasedName, false,
+      'body', aliasedName, true,
       additionalChecks:
           GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 255),
       type: DriftSqlType.string,
-      requiredDuringInsert: true);
+      requiredDuringInsert: false);
   static const VerificationMeta _dataMeta = const VerificationMeta('data');
   @override
   late final GeneratedColumn<String> data = GeneratedColumn<String>(
-      'data', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+      'data', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _dateMeta = const VerificationMeta('date');
   @override
-  List<GeneratedColumn> get $columns => [id, title, body, data];
+  late final GeneratedColumn<DateTime> date = GeneratedColumn<DateTime>(
+      'date', aliasedName, false,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: Constant(DateTime.now()));
+  @override
+  List<GeneratedColumn> get $columns => [id, title, body, data, date];
   @override
   String get aliasedName => _alias ?? 'fcm_notifications';
   @override
@@ -56,20 +63,18 @@ class $FcmNotificationsTable extends FcmNotifications
     if (data.containsKey('title')) {
       context.handle(
           _titleMeta, title.isAcceptableOrUnknown(data['title']!, _titleMeta));
-    } else if (isInserting) {
-      context.missing(_titleMeta);
     }
     if (data.containsKey('body')) {
       context.handle(
           _bodyMeta, body.isAcceptableOrUnknown(data['body']!, _bodyMeta));
-    } else if (isInserting) {
-      context.missing(_bodyMeta);
     }
     if (data.containsKey('data')) {
       context.handle(
           _dataMeta, this.data.isAcceptableOrUnknown(data['data']!, _dataMeta));
-    } else if (isInserting) {
-      context.missing(_dataMeta);
+    }
+    if (data.containsKey('date')) {
+      context.handle(
+          _dateMeta, date.isAcceptableOrUnknown(data['date']!, _dateMeta));
     }
     return context;
   }
@@ -83,11 +88,13 @@ class $FcmNotificationsTable extends FcmNotifications
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       title: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}title'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}title']),
       body: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}body'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}body']),
       data: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}data'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}data']),
+      date: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}date'])!,
     );
   }
 
@@ -99,30 +106,37 @@ class $FcmNotificationsTable extends FcmNotifications
 
 class FcmNotification extends DataClass implements Insertable<FcmNotification> {
   final int id;
-  final String title;
-  final String body;
-  final String data;
+  final String? title;
+  final String? body;
+  final String? data;
+  final DateTime date;
   const FcmNotification(
-      {required this.id,
-      required this.title,
-      required this.body,
-      required this.data});
+      {required this.id, this.title, this.body, this.data, required this.date});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
-    map['title'] = Variable<String>(title);
-    map['body'] = Variable<String>(body);
-    map['data'] = Variable<String>(data);
+    if (!nullToAbsent || title != null) {
+      map['title'] = Variable<String>(title);
+    }
+    if (!nullToAbsent || body != null) {
+      map['body'] = Variable<String>(body);
+    }
+    if (!nullToAbsent || data != null) {
+      map['data'] = Variable<String>(data);
+    }
+    map['date'] = Variable<DateTime>(date);
     return map;
   }
 
   FcmNotificationsCompanion toCompanion(bool nullToAbsent) {
     return FcmNotificationsCompanion(
       id: Value(id),
-      title: Value(title),
-      body: Value(body),
-      data: Value(data),
+      title:
+          title == null && nullToAbsent ? const Value.absent() : Value(title),
+      body: body == null && nullToAbsent ? const Value.absent() : Value(body),
+      data: data == null && nullToAbsent ? const Value.absent() : Value(data),
+      date: Value(date),
     );
   }
 
@@ -131,9 +145,10 @@ class FcmNotification extends DataClass implements Insertable<FcmNotification> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return FcmNotification(
       id: serializer.fromJson<int>(json['id']),
-      title: serializer.fromJson<String>(json['title']),
-      body: serializer.fromJson<String>(json['body']),
-      data: serializer.fromJson<String>(json['data']),
+      title: serializer.fromJson<String?>(json['title']),
+      body: serializer.fromJson<String?>(json['body']),
+      data: serializer.fromJson<String?>(json['data']),
+      date: serializer.fromJson<DateTime>(json['date']),
     );
   }
   @override
@@ -141,19 +156,25 @@ class FcmNotification extends DataClass implements Insertable<FcmNotification> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'title': serializer.toJson<String>(title),
-      'body': serializer.toJson<String>(body),
-      'data': serializer.toJson<String>(data),
+      'title': serializer.toJson<String?>(title),
+      'body': serializer.toJson<String?>(body),
+      'data': serializer.toJson<String?>(data),
+      'date': serializer.toJson<DateTime>(date),
     };
   }
 
   FcmNotification copyWith(
-          {int? id, String? title, String? body, String? data}) =>
+          {int? id,
+          Value<String?> title = const Value.absent(),
+          Value<String?> body = const Value.absent(),
+          Value<String?> data = const Value.absent(),
+          DateTime? date}) =>
       FcmNotification(
         id: id ?? this.id,
-        title: title ?? this.title,
-        body: body ?? this.body,
-        data: data ?? this.data,
+        title: title.present ? title.value : this.title,
+        body: body.present ? body.value : this.body,
+        data: data.present ? data.value : this.data,
+        date: date ?? this.date,
       );
   @override
   String toString() {
@@ -161,13 +182,14 @@ class FcmNotification extends DataClass implements Insertable<FcmNotification> {
           ..write('id: $id, ')
           ..write('title: $title, ')
           ..write('body: $body, ')
-          ..write('data: $data')
+          ..write('data: $data, ')
+          ..write('date: $date')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, title, body, data);
+  int get hashCode => Object.hash(id, title, body, data, date);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -175,52 +197,58 @@ class FcmNotification extends DataClass implements Insertable<FcmNotification> {
           other.id == this.id &&
           other.title == this.title &&
           other.body == this.body &&
-          other.data == this.data);
+          other.data == this.data &&
+          other.date == this.date);
 }
 
 class FcmNotificationsCompanion extends UpdateCompanion<FcmNotification> {
   final Value<int> id;
-  final Value<String> title;
-  final Value<String> body;
-  final Value<String> data;
+  final Value<String?> title;
+  final Value<String?> body;
+  final Value<String?> data;
+  final Value<DateTime> date;
   const FcmNotificationsCompanion({
     this.id = const Value.absent(),
     this.title = const Value.absent(),
     this.body = const Value.absent(),
     this.data = const Value.absent(),
+    this.date = const Value.absent(),
   });
   FcmNotificationsCompanion.insert({
     this.id = const Value.absent(),
-    required String title,
-    required String body,
-    required String data,
-  })  : title = Value(title),
-        body = Value(body),
-        data = Value(data);
+    this.title = const Value.absent(),
+    this.body = const Value.absent(),
+    this.data = const Value.absent(),
+    this.date = const Value.absent(),
+  });
   static Insertable<FcmNotification> custom({
     Expression<int>? id,
     Expression<String>? title,
     Expression<String>? body,
     Expression<String>? data,
+    Expression<DateTime>? date,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (title != null) 'title': title,
       if (body != null) 'body': body,
       if (data != null) 'data': data,
+      if (date != null) 'date': date,
     });
   }
 
   FcmNotificationsCompanion copyWith(
       {Value<int>? id,
-      Value<String>? title,
-      Value<String>? body,
-      Value<String>? data}) {
+      Value<String?>? title,
+      Value<String?>? body,
+      Value<String?>? data,
+      Value<DateTime>? date}) {
     return FcmNotificationsCompanion(
       id: id ?? this.id,
       title: title ?? this.title,
       body: body ?? this.body,
       data: data ?? this.data,
+      date: date ?? this.date,
     );
   }
 
@@ -239,6 +267,9 @@ class FcmNotificationsCompanion extends UpdateCompanion<FcmNotification> {
     if (data.present) {
       map['data'] = Variable<String>(data.value);
     }
+    if (date.present) {
+      map['date'] = Variable<DateTime>(date.value);
+    }
     return map;
   }
 
@@ -248,7 +279,8 @@ class FcmNotificationsCompanion extends UpdateCompanion<FcmNotification> {
           ..write('id: $id, ')
           ..write('title: $title, ')
           ..write('body: $body, ')
-          ..write('data: $data')
+          ..write('data: $data, ')
+          ..write('date: $date')
           ..write(')'))
         .toString();
   }

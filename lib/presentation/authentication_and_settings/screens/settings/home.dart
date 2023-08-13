@@ -164,6 +164,23 @@ class SettingsHome extends StatelessWidget {
                                           .data()
                                           .copyWith(isShrunkView: true)),
                             ),
+                            SwitchSelectionTile(
+                              bottomRounded: true,
+                              isActive: Provider.of<UserAuthService>(context).data().categorySplashes,
+                              icon: CupertinoIcons.paintbrush,
+                              text: "Category splashes",
+                              secondaryText:
+                                  Provider.of<UserAuthService>(context).data().categorySplashes ? "On" : "Off",
+                              onTap: () => Provider.of<UserAuthService>(context, listen: false).data().categorySplashes
+                                  ? Provider.of<UserAuthService>(context, listen: false).saveData(
+                                      Provider.of<UserAuthService>(context, listen: false)
+                                          .data()
+                                          .copyWith(categorySplashes: false))
+                                  : Provider.of<UserAuthService>(context, listen: false).saveData(
+                                      Provider.of<UserAuthService>(context, listen: false)
+                                          .data()
+                                          .copyWith(categorySplashes: true)),
+                            ),
                             SettingTile(
                               leftIcon: CupertinoIcons.textformat_size,
                               text: "Text size",

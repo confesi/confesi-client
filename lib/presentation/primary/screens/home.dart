@@ -1,4 +1,5 @@
 import 'package:confesi/application/create_post/cubit/post_categories_cubit.dart';
+import 'package:confesi/application/user/cubit/notifications_cubit.dart';
 import 'package:confesi/core/services/fcm_notifications/notification_service.dart';
 import 'package:confesi/core/services/fcm_notifications/notification_table.dart';
 import 'package:confesi/core/services/primary_tab_service/primary_tab_service.dart';
@@ -67,17 +68,20 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       onWillPop: () async => false,
       child: ThemeStatusBar(
         child: Scaffold(
-          floatingActionButton: FloatingActionButton(onPressed: () async {
-            await sl.get<NotificationService>().deleteAllFcmMsgsFromLocalDb();
-            // insert
-            // await sl.get<NotificationService>().insertFcmMsgToLocalDb(const FcmNotificationCompanion(
-            //       title: drift.Value("title"),
-            //       body: drift.Value("body"),
-            //       data: drift.Value("data"),
-            //     ));
-            final vals = await sl.get<NotificationService>().getAllFcmMsgsFromLocalDb();
-            print(vals);
-          }),
+          // floatingActionButton: FloatingActionButton(onPressed: () async {
+          //   // await sl.get<NotificationService>().deleteAllFcmMsgsFromLocalDb();
+          //   // insert
+          //   // await sl.get<NotificationService>().insertFcmMsgToLocalDb(const FcmNotificationCompanion(
+          //   //       title: drift.Value("title"),
+          //   //       body: drift.Value("body"),
+          //   //       data: drift.Value("data"),
+          //   //     ));
+          //   await sl.get<NotificationService>().getAllFcmMsgsFromLocalDb().then(
+          //         (value) => context.read<NotificationsCubit>().showSuccess(
+          //               value.toString(),
+          //             ),
+          //       );
+          // }),
           backgroundColor: Theme.of(context).colorScheme.background,
           drawerScrimColor: Colors.black.withOpacity(0.7),
           drawerEnableOpenDragGesture: Provider.of<PrimaryTabControllerService>(context).tabIdx == 0,

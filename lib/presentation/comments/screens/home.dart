@@ -178,7 +178,7 @@ class _CommentsHomeState extends State<CommentsHome> {
                           style: kDisplay1.copyWith(
                             color: Theme.of(context).colorScheme.primary,
                             fontSize:
-                                kBody.fontSize! * Provider.of<UserAuthService>(context).data().textSize.multiplier,
+                                kDisplay1.fontSize! * Provider.of<UserAuthService>(context).data().textSize.multiplier,
                           ),
                         ),
                       ],
@@ -221,14 +221,14 @@ class _CommentsHomeState extends State<CommentsHome> {
                       ],
                     ),
                   ),
-                  ...linksFromText(postState.post.post.content)
-                      .take(maxNumberOfLinkPreviewsPerDetailCommentView) // Limit to a maximum of 3 links
-                      .map((link) {
-                    return Padding(
-                      padding: const EdgeInsets.only(top: 15),
-                      child: UrlPreviewTile(url: link),
-                    );
-                  }).toList(),
+                  // ...linksFromText(postState.post.post.content)
+                  //     .take(maxNumberOfLinkPreviewsPerDetailCommentView) // Limit to a maximum of 3 links
+                  //     .map((link) {
+                  //   return Padding(
+                  //     padding: const EdgeInsets.only(top: 15),
+                  //     child: UrlPreviewTile(url: link),
+                  //   );
+                  // }).toList(),
                   const SizedBox(height: 15),
                 ],
               ),

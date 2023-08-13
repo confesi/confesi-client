@@ -55,6 +55,7 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 // Get the GetIt instance to use for injection
 final GetIt sl = GetIt.instance;
 FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+bool slInitialized = false;
 
 Future<void> initFirebase() async {
   // init
@@ -82,8 +83,10 @@ Future<void> initFirebase() async {
 
 /// Injects the needed dependencies for the app to run.
 Future<void> init() async {
+  // if (slInitialized) return;
+  // slInitialized = true;
+
   //! Required first inits
-  WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
   //! Alt

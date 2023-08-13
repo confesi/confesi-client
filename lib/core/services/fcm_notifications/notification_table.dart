@@ -50,6 +50,7 @@ class FcmNotificationCompanion extends UpdateCompanion<FcmNotification> {
 }
 
 LazyDatabase openDb() {
+  driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
   return LazyDatabase(() async {
     final dbFolder = await getApplicationDocumentsDirectory();
     final file = File(p.join(dbFolder.path, 'db.sqlite'));
