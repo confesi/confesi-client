@@ -1,4 +1,4 @@
-import '../hive/hive_client.dart';
+import '../hive_client/hive_client.dart';
 import 'package:uuid/uuid.dart';
 
 import 'user_auth_data.dart';

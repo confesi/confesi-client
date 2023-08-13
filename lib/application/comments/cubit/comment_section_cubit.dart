@@ -15,7 +15,7 @@ import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../constants/shared/constants.dart';
-import '../../../core/clients/api.dart';
+import '../../../core/services/api_client/api.dart';
 import '../../../core/results/failures.dart';
 import '../../../core/services/global_content/global_content.dart';
 import '../../../presentation/comments/widgets/simple_comment_sort.dart';

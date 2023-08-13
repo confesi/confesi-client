@@ -7,8 +7,9 @@ import 'package:confesi/application/user/cubit/feedback_categories_cubit.dart';
 import 'package:confesi/application/user/cubit/feedback_cubit.dart';
 import 'package:confesi/application/user/cubit/notifications_cubit.dart';
 import 'package:confesi/application/user/cubit/stats_cubit.dart';
-import 'package:confesi/core/clients/api.dart';
+import 'package:confesi/core/services/api_client/api.dart';
 import 'package:confesi/core/services/create_comment_service/create_comment_service.dart';
+import 'package:confesi/core/services/fcm_notifications/notification_table.dart';
 import 'package:confesi/core/services/fcm_notifications/token_data.dart';
 import 'package:confesi/core/services/global_content/global_content.dart';
 import 'package:confesi/core/utils/funcs/debouncer.dart';
@@ -32,7 +33,7 @@ import 'core/services/splash_screen_hint_text/splash_screen_hint_text.dart';
 import 'core/services/user_auth/user_auth_data.dart';
 import 'core/services/user_auth/user_auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'core/services/hive/hive_client.dart';
+import 'core/services/hive_client/hive_client.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'core/services/fcm_notifications/notification_service.dart';
@@ -54,6 +55,7 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 // Get the GetIt instance to use for injection
 final GetIt sl = GetIt.instance;
 FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+bool slInitialized = false;
 
 Future<void> initFirebase() async {
   // init
@@ -81,8 +83,10 @@ Future<void> initFirebase() async {
 
 /// Injects the needed dependencies for the app to run.
 Future<void> init() async {
+  // if (slInitialized) return;
+  // slInitialized = true;
+
   //! Required first inits
-  WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
   //! Alt
@@ -106,6 +110,9 @@ Future<void> init() async {
   HiveService hiveService = HiveService(sl());
   await hiveService.init();
   sl.registerLazySingleton(() => hiveService);
+
+  //! Drift datbase
+  sl.registerLazySingleton(() => FcmDatabase());
 
   //! Services
   UserAuthService userAuthService = UserAuthService(sl());

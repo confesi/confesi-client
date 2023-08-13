@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import '../../../init.dart';
 import '../../../models/comment.dart';
 import '../../../models/post.dart';
-import '../../clients/api.dart';
+import '../api_client/api.dart';
 
 class GlobalContentService extends ChangeNotifier {
   final Api _voteApi;

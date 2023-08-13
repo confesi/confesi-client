@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
-import 'package:confesi/core/clients/api.dart';
+import 'package:confesi/core/services/api_client/api.dart';
 import 'package:confesi/models/school_with_metadata.dart';
 import 'package:equatable/equatable.dart';
 

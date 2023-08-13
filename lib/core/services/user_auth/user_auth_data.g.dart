@@ -26,13 +26,14 @@ class UserAuthDataAdapter extends TypeAdapter<UserAuthData> {
       defaultPostFeed: fields[15] as DefaultPostFeed,
       textSize: fields[16] as TextSize,
       componentCurviness: fields[18] as ComponentCurviness,
+      categorySplashes: fields[20] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, UserAuthData obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(10)
       ..writeByte(0)
       ..write(obj.themePref)
       ..writeByte(6)
@@ -50,7 +51,9 @@ class UserAuthDataAdapter extends TypeAdapter<UserAuthData> {
       ..writeByte(16)
       ..write(obj.textSize)
       ..writeByte(18)
-      ..write(obj.componentCurviness);
+      ..write(obj.componentCurviness)
+      ..writeByte(20)
+      ..write(obj.categorySplashes);
   }
 
   @override

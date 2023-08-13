@@ -5,7 +5,7 @@ import 'package:confesi/models/encrypted_id.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../constants/shared/constants.dart';
-import '../../../core/clients/api.dart';
+import '../../../core/services/api_client/api.dart';
 import '../../../core/services/global_content/global_content.dart';
 import '../../../init.dart';
 import '../../../models/post.dart';

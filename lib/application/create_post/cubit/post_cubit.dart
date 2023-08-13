@@ -1,4 +1,4 @@
-import 'package:confesi/core/clients/api.dart';
+import 'package:confesi/core/services/api_client/api.dart';
 
 import '../../../core/utils/validators/either_not_empty_validator.dart';
 import 'package:bloc/bloc.dart';

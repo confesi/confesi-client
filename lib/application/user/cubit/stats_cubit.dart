@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../core/clients/api.dart';
+import '../../../core/services/api_client/api.dart';
 import '../../../models/stats.dart';
 
 part 'stats_state.dart';

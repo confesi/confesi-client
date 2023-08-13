@@ -4,7 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:confesi/models/post.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../core/clients/api.dart';
+import '../../../core/services/api_client/api.dart';
 import '../../../core/services/global_content/global_content.dart';
 import '../../../init.dart';
 
