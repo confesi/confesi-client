@@ -22,14 +22,14 @@ class AppearanceScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return ThemeStatusBar(
       child: Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.shadow,
+        backgroundColor: Theme.of(context).colorScheme.background,
         body: SafeArea(
+          bottom: false,
           child: Column(
             children: [
               AppbarLayout(
-                                  bottomBorder: true,
-
-                backgroundColor: Theme.of(context).colorScheme.shadow,
+                bottomBorder: true,
+                backgroundColor: Theme.of(context).colorScheme.background,
                 centerWidget: Text(
                   "Appearance",
                   style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
@@ -38,54 +38,57 @@ class AppearanceScreen extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: ScrollableArea(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 10),
-                        TileGroup(
-                          text: "Choose appearance",
-                          tiles: [
-                            BoolSelectionTile(
-                              isActive: Provider.of<UserAuthService>(context).data().themePref == ThemePref.system,
-                              icon: CupertinoIcons.device_laptop,
-                              text: "System (currently ${appearanceName(context)})",
-                              onTap: () => Provider.of<UserAuthService>(context, listen: false).saveData(
-                                Provider.of<UserAuthService>(context, listen: false)
-                                    .data()
-                                    .copyWith(themePref: ThemePref.system),
+                child: Container(
+                  color: Theme.of(context).colorScheme.shadow,
+                  child: ScrollableArea(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 10),
+                          TileGroup(
+                            text: "Choose appearance",
+                            tiles: [
+                              BoolSelectionTile(
+                                isActive: Provider.of<UserAuthService>(context).data().themePref == ThemePref.system,
+                                icon: CupertinoIcons.device_laptop,
+                                text: "System (currently ${appearanceName(context)})",
+                                onTap: () => Provider.of<UserAuthService>(context, listen: false).saveData(
+                                  Provider.of<UserAuthService>(context, listen: false)
+                                      .data()
+                                      .copyWith(themePref: ThemePref.system),
+                                ),
                               ),
-                            ),
-                            BoolSelectionTile(
-                              isActive: Provider.of<UserAuthService>(context).data().themePref == ThemePref.light,
-                              icon: CupertinoIcons.sun_min,
-                              text: "Light - BETA",
-                              onTap: () => Provider.of<UserAuthService>(context, listen: false).saveData(
-                                Provider.of<UserAuthService>(context, listen: false)
-                                    .data()
-                                    .copyWith(themePref: ThemePref.light),
+                              BoolSelectionTile(
+                                isActive: Provider.of<UserAuthService>(context).data().themePref == ThemePref.light,
+                                icon: CupertinoIcons.sun_min,
+                                text: "Light - BETA",
+                                onTap: () => Provider.of<UserAuthService>(context, listen: false).saveData(
+                                  Provider.of<UserAuthService>(context, listen: false)
+                                      .data()
+                                      .copyWith(themePref: ThemePref.light),
+                                ),
                               ),
-                            ),
-                            BoolSelectionTile(
-                              bottomRounded: true,
-                              isActive: Provider.of<UserAuthService>(context).data().themePref == ThemePref.dark,
-                              icon: CupertinoIcons.moon,
-                              text: "Dark",
-                              onTap: () => Provider.of<UserAuthService>(context, listen: false).saveData(
-                                Provider.of<UserAuthService>(context, listen: false)
-                                    .data()
-                                    .copyWith(themePref: ThemePref.dark),
+                              BoolSelectionTile(
+                                bottomRounded: true,
+                                isActive: Provider.of<UserAuthService>(context).data().themePref == ThemePref.dark,
+                                icon: CupertinoIcons.moon,
+                                text: "Dark",
+                                onTap: () => Provider.of<UserAuthService>(context, listen: false).saveData(
+                                  Provider.of<UserAuthService>(context, listen: false)
+                                      .data()
+                                      .copyWith(themePref: ThemePref.dark),
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        const DisclaimerText(
-                          text: "This preference is saved locally to your device.",
-                        ),
-                        const SimulatedBottomSafeArea(),
-                      ],
+                            ],
+                          ),
+                          const DisclaimerText(
+                            text: "This preference is saved locally to your device.",
+                          ),
+                          const SimulatedBottomSafeArea(),
+                        ],
+                      ),
                     ),
                   ),
                 ),

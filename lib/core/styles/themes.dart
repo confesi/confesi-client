@@ -11,7 +11,7 @@ class AppTheme {
       brightness: Brightness.dark,
       primary: Color.fromARGB(255, 238, 239, 240),
       onPrimary: Color(0xff333333),
-      tertiary: Color.fromARGB(255, 134, 240, 254),
+      tertiary: Color(0xff62D5FF),
       onSecondary: Color.fromARGB(255, 45, 45, 45),
       secondary: Color.fromARGB(255, 255, 193, 131),
       surfaceTint: Color(0xff90A17D),

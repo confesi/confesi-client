@@ -50,31 +50,83 @@ import 'core/router/go_router.dart';
 import 'core/services/fcm_notifications/notification_service.dart';
 import 'core/services/user_auth/user_auth_data.dart';
 import 'core/styles/themes.dart';
-import 'firebase_options.dart';
 import 'init.dart';
 
 // FCM background messager handler. Required to be top-level. Needs `@pragma` to prevent function being moved during release compilation.
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage msg) async {
-  try {
-    // await init();
-    print(sl.get<NotificationService>());
-    print("trying.......1");
-    await sl
-        .get<NotificationService>()
-        .insertFcmMsgToLocalDb(FcmNotificationCompanion(
-          // todo: no bang ops?
-          title: drift.Value(msg.notification?.title),
-          body: drift.Value(msg.notification?.body),
-          data: drift.Value(jsonEncode(msg.data)),
-        ))
-        .then((value) => print("VALUE: $value"));
-  } catch (e) {
-    print(e);
-  }
+  await sl
+      .get<NotificationService>()
+      .insertFcmMsgToLocalDb(FcmNotificationCompanion(
+        // todo: no bang ops?
+        title: drift.Value(msg.notification?.title),
+        body: drift.Value(msg.notification?.body),
+        data: drift.Value(jsonEncode(msg.data)),
+      ))
+      .then((value) => print("VALUE: $value"));
 }
 
 // Background message handler
+
+StreamSubscription<User?>? _userChangeStream;
+bool firstOpen = true;
+
+Future<void> startAuthListener() async {
+  Completer<void> completer = Completer<void>();
+
+  // clear user data
+  sl.get<UserAuthService>().clearCurrentExtraData();
+  sl.get<FirebaseAuth>().authStateChanges().listen((User? user) => sl.get<StreamController<User?>>().add(user));
+  _userChangeStream = sl.get<StreamController<User?>>().stream.listen((User? user) async {
+    sl.get<NotificationService>().updateToken(user?.uid);
+    if (user == null) {
+      // firstOpen = true;
+      await Future.delayed(const Duration(milliseconds: 500)).then((_) {
+        sl.get<UserAuthService>().setNoDataState();
+        HapticFeedback.lightImpact();
+        router.go("/open");
+        sl.get<AuthFlowCubit>().emitDefault();
+      });
+    } else {
+      await Future.delayed(const Duration(milliseconds: 500)).then(
+        (_) async {
+          sl.get<UserAuthService>().setNoDataState();
+          await sl.get<UserAuthService>().getData(sl.get<FirebaseAuth>().currentUser!.uid).then((_) {
+            if (sl.get<UserAuthService>().state is! UserAuthData) {
+              router.go("/error");
+              sl.get<AuthFlowCubit>().emitDefault();
+              return;
+            }
+            if (user.isAnonymous) {
+              sl.get<UserAuthService>().isAnon = true;
+              sl.get<UserAuthService>().uid = user.uid;
+              sl.get<UserAuthService>().setSessionKeys();
+              router.go("/home");
+            } else {
+              sl.get<UserAuthService>().isAnon = false;
+              sl.get<UserAuthService>().email = user.email!;
+              sl.get<UserAuthService>().uid = user.uid;
+              sl.get<UserAuthService>().setSessionKeys();
+              if (user.emailVerified) {
+                router.go("/home");
+              } else {
+                router.go("/verify-email");
+              }
+            }
+            sl.get<AuthFlowCubit>().emitDefault();
+            if (firstOpen) {
+              sl.get<SchoolsDrawerCubit>().loadSchools();
+              firstOpen = false;
+            }
+          });
+        },
+      );
+    }
+    // returns only once at least one state has been emitted
+    completer.complete();
+  });
+  await completer.future;
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -82,6 +134,7 @@ void main() async {
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   analytics.logAppOpen();
   await init();
+  await startAuthListener();
   runApp(
     MultiProvider(
       providers: [
@@ -152,17 +205,11 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  StreamSubscription<User?>? _userChangeStream;
-  bool firstOpen = true;
-
   @override
   void initState() {
     startFcmListener();
     startShakeForFeedbackListener();
     startDeepLinkListener();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      startAuthListener();
-    });
     super.initState();
   }
 
@@ -227,58 +274,6 @@ class _MyAppState extends State<MyApp> {
       shakeCountResetTime: 1500,
       minimumShakeCount: 2,
     );
-  }
-
-  Future<void> startAuthListener() async {
-    // clear user data
-    sl.get<UserAuthService>().clearCurrentExtraData();
-    sl.get<FirebaseAuth>().authStateChanges().listen((User? user) => sl.get<StreamController<User?>>().add(user));
-    _userChangeStream = sl.get<StreamController<User?>>().stream.listen((User? user) async {
-      sl.get<NotificationService>().updateToken(user?.uid);
-      if (user == null) {
-        firstOpen = true;
-        await Future.delayed(const Duration(milliseconds: 500)).then((_) {
-          sl.get<UserAuthService>().setNoDataState();
-          HapticFeedback.lightImpact();
-          router.go("/open");
-          context.read<AuthFlowCubit>().emitDefault();
-        });
-      } else {
-        await Future.delayed(const Duration(milliseconds: 500)).then(
-          (_) async {
-            sl.get<UserAuthService>().setNoDataState();
-            await sl.get<UserAuthService>().getData(sl.get<FirebaseAuth>().currentUser!.uid).then((_) {
-              if (sl.get<UserAuthService>().state is! UserAuthData) {
-                router.go("/error");
-                context.read<AuthFlowCubit>().emitDefault();
-                return;
-              }
-              if (user.isAnonymous) {
-                sl.get<UserAuthService>().isAnon = true;
-                sl.get<UserAuthService>().uid = user.uid;
-                sl.get<UserAuthService>().setSessionKeys();
-                router.go("/home");
-              } else {
-                sl.get<UserAuthService>().isAnon = false;
-                sl.get<UserAuthService>().email = user.email!;
-                sl.get<UserAuthService>().uid = user.uid;
-                sl.get<UserAuthService>().setSessionKeys();
-                if (user.emailVerified) {
-                  router.go("/home");
-                } else {
-                  router.go("/verify-email");
-                }
-              }
-              context.read<AuthFlowCubit>().emitDefault();
-              if (firstOpen) {
-                context.read<SchoolsDrawerCubit>().loadSchools();
-                firstOpen = false;
-              }
-            });
-          },
-        );
-      }
-    });
   }
 
   Future<void> startFcmListener() async {
