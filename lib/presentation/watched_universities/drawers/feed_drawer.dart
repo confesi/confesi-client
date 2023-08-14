@@ -117,12 +117,23 @@ class _FeedDrawerState extends State<FeedDrawer> {
                 ],
               ),
             if (state.isGuest)
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                child: DisclaimerText(
-                  text: "To watch, search, and jump between schools, create an account.",
-                ),
-              )
+              Column(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
+                      ),
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 45),
+                    child: DisclaimerText(
+                      text: "To watch, search, and jump between schools, create an account.",
+                    ),
+                  )
+                ],
+              ),
           ],
         );
       } else {

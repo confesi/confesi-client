@@ -26,3 +26,5 @@ class StatsData extends StatsState {
   @override
   List<Object> get props => [stats];
 }
+
+class StatsGuest extends StatsState {}

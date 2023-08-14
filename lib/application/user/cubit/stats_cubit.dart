@@ -18,7 +18,11 @@ class StatsCubit extends Cubit<StatsState> {
       (response) async {
         try {
           if (response.statusCode.toString()[0] == "4") {
-            emit(const StatsError("TODO: 4XX"));
+            if (response.statusCode == 401) {
+              emit(StatsGuest());
+            } else {
+              emit(const StatsError("TODO: 4XX"));
+            }
           } else if (response.statusCode.toString()[0] == "2") {
             emit(StatsData(Stats.fromJson(json.decode(response.body)["value"])));
           } else {

@@ -75,3 +75,4 @@ class AccData extends Equatable {
   @override
   List<Object?> get props => [school, yearOfStudy, faculty];
 }
+

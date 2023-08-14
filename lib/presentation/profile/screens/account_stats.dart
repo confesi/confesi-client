@@ -1,8 +1,10 @@
+import 'package:confesi/application/user/cubit/account_details_cubit.dart';
 import 'package:confesi/application/user/cubit/stats_cubit.dart';
 import 'package:confesi/core/services/sharing/sharing.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:confesi/presentation/shared/indicators/loading_or_alert.dart';
 import 'package:confesi/presentation/shared/selection_groups/tile_group.dart';
+import 'package:confesi/presentation/shared/text/disclaimer_text.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/services/user_auth/user_auth_service.dart';
@@ -152,6 +154,10 @@ class _AccountProfileStatsState extends State<AccountProfileStats> {
                                       rightText: percentToRelativeMsg(state.stats.dislikesPerc),
                                     ),
                                   ],
+                                );
+                              } else if (state is StatsGuest) {
+                                return const DisclaimerText(
+                                  text: "To see your unique account statistics, create an account.",
                                 );
                               } else {
                                 return LoadingOrAlert(
