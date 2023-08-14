@@ -1,4 +1,5 @@
 import '../../../../application/authentication_and_settings/cubit/auth_flow_cubit.dart';
+import '../../../../constants/shared/constants.dart';
 import '../../../../core/router/go_router.dart';
 import '../../../../core/utils/sizing/width_fraction.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -45,12 +46,7 @@ class _OpenScreenState extends State<OpenScreen> {
                           child: child,
                         );
                       },
-                      child: AspectRatio(
-                        aspectRatio: 1,
-                        child: Image.asset(
-                          "assets/images/logos/logo_transparent.png",
-                        ),
-                      ),
+                      child: Image.asset(walrusFullBodyImgPath),
                     ),
                   ),
                   const Spacer(),

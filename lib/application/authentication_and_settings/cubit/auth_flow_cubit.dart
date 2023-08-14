@@ -66,6 +66,7 @@ class AuthFlowCubit extends Cubit<AuthFlowState> {
         await sl.get<NotificationService>().deleteTokenFromLocalDb();
         try {
           await sl.get<FirebaseAuth>().signOut();
+          emitDefault();
         } catch (_) {
           emit(const AuthFlowNotification("Unknown error", NotificationType.failure));
         }

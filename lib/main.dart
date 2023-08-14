@@ -69,7 +69,6 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage msg) async {
 // Background message handler
 
 StreamSubscription<User?>? _userChangeStream;
-bool firstOpen = true;
 
 Future<void> startAuthListener() async {
   Completer<void> completer = Completer<void>();
@@ -114,18 +113,18 @@ Future<void> startAuthListener() async {
               }
             }
             sl.get<AuthFlowCubit>().emitDefault();
-            if (firstOpen) {
-              sl.get<SchoolsDrawerCubit>().loadSchools();
-              firstOpen = false;
-            }
           });
         },
       );
     }
     // returns only once at least one state has been emitted
-    completer.complete();
+    // ensure it hasn't already been completed
+    if (!completer.isCompleted) {
+      completer.complete();
+    }
   });
   await completer.future;
+  completer = Completer<void>();
 }
 
 void main() async {
@@ -158,7 +157,7 @@ void main() async {
           BlocProvider(lazy: false, create: (context) => sl<StatsCubit>()),
           BlocProvider(lazy: false, create: (context) => sl<SearchSchoolsCubit>()),
           BlocProvider(lazy: false, create: (context) => sl<SavedPostsCubit>()),
-          BlocProvider(lazy: false, create: (context) => sl<SchoolsDrawerCubit>()),
+          BlocProvider(lazy: false, create: (context) => sl<SchoolsDrawerCubit>()..loadSchools()),
           BlocProvider(lazy: false, create: (context) => sl<QuickActionsCubit>()),
           BlocProvider(lazy: false, create: (context) => sl<NotificationsCubit>()),
           BlocProvider(lazy: false, create: (context) => sl<CommentSectionCubit>()),

@@ -10,6 +10,7 @@ import '../../../init.dart';
 import '../../../models/comment.dart';
 import '../../../models/post.dart';
 import '../api_client/api.dart';
+import '../user_auth/user_auth_service.dart';
 
 class GlobalContentService extends ChangeNotifier {
   final Api _voteApi;
@@ -48,7 +49,12 @@ class GlobalContentService extends ChangeNotifier {
   Future<Either<ApiSuccess, String>> setHome(SchoolWithMetadata school) async {
     _setHomeApi.cancelCurrReq();
     // save old home
-    SchoolWithMetadata oldHome = schools.values.firstWhere((element) => element.home);
+    late SchoolWithMetadata oldHome;
+    try {
+      oldHome = schools.values.firstWhere((element) => element.home);
+    } catch (_) {
+      return const Right("Cannot set home as guest");
+    }
     // eagerly unset old home
     sl.get<GlobalContentService>().setSchool(oldHome..home = false);
     // eagerly set new home
@@ -82,6 +88,10 @@ class GlobalContentService extends ChangeNotifier {
   }
 
   Future<Either<ApiSuccess, String>> updateWatched(SchoolWithMetadata school, bool watch) async {
+    if (sl.get<UserAuthService>().isAnon) {
+      return const Right("Cannot watch school as guest");
+    }
+
     _watchedSchoolApi.cancelCurrReq();
     // eagerly set new watched status
     sl.get<GlobalContentService>().setSchool(school..watched = watch);

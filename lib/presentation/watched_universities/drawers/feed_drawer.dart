@@ -2,6 +2,8 @@ import 'package:confesi/core/services/global_content/global_content.dart';
 import 'package:confesi/core/services/posts_service/posts_service.dart';
 import 'package:confesi/models/school_with_metadata.dart';
 import 'package:confesi/presentation/shared/indicators/loading_or_alert.dart';
+import 'package:confesi/presentation/shared/other/widget_or_nothing.dart';
+import 'package:confesi/presentation/shared/text/disclaimer_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
@@ -53,17 +55,18 @@ class _FeedDrawerState extends State<FeedDrawer> {
                 ],
               ),
             ),
-            ...schools.where((school) => school.home).map((watchedHomeSchool) => DrawerUniversityTile(
-                  text: "Home: ${watchedHomeSchool.school.name}",
-                  onTap: () {
-                    context
-                        .read<SchoolsDrawerCubit>()
-                        .setSelectedSchoolInUI(SelectedSchool(watchedHomeSchool.school.id));
-                    Provider.of<PostsService>(context, listen: false).reloadAllFeeds();
-                    // check if the current route can be popped as well
-                    // if (mounted) router.pop();
-                  },
-                )),
+            if (!state.isGuest)
+              ...schools.where((school) => school.home).map((watchedHomeSchool) => DrawerUniversityTile(
+                    text: "Home: ${watchedHomeSchool.school.name}",
+                    onTap: () {
+                      context
+                          .read<SchoolsDrawerCubit>()
+                          .setSelectedSchoolInUI(SelectedSchool(watchedHomeSchool.school.id));
+                      Provider.of<PostsService>(context, listen: false).reloadAllFeeds();
+                      // check if the current route can be popped as well
+                      // if (mounted) router.pop();
+                    },
+                  )),
             IgnorePointer(
               ignoring: state.isLoadingRandomSchool,
               child: DrawerUniversityTile(
@@ -90,35 +93,44 @@ class _FeedDrawerState extends State<FeedDrawer> {
                 Provider.of<PostsService>(context, listen: false).reloadAllFeeds();
               },
             ),
-            SectionAccordian(
-              startsOpen: false,
-              bottomBorder: true,
-              topBorder: true,
-              title: "Watched schools (${schools.where((school) => school.watched).length})",
-              items: [
-                ...schools.where((school) => school.watched).map((watchedSchool) => DrawerUniversityTile(
-                      onSwipe: () => Provider.of<GlobalContentService>(context, listen: false)
-                          .updateWatched(watchedSchool, false)
-                          .then((f) =>
-                              f.fold((_) => null, (errMsg) => context.read<NotificationsCubit>().showErr(errMsg))),
-                      text: watchedSchool.school.name,
-                      onTap: () {
-                        context
-                            .read<SchoolsDrawerCubit>()
-                            .setSelectedSchoolInUI(SelectedSchool(watchedSchool.school.id));
-                        Provider.of<PostsService>(context, listen: false).reloadAllFeeds();
-                        // if (mounted) router.pop();
-                      },
-                    )),
-              ],
-            ),
+            if (!state.isGuest)
+              SectionAccordian(
+                startsOpen: false,
+                bottomBorder: false,
+                topBorder: true,
+                title: "Watched schools (${schools.where((school) => school.watched).length})",
+                items: [
+                  ...schools.where((school) => school.watched).map((watchedSchool) => DrawerUniversityTile(
+                        onSwipe: () => Provider.of<GlobalContentService>(context, listen: false)
+                            .updateWatched(watchedSchool, false)
+                            .then((f) =>
+                                f.fold((_) => null, (errMsg) => context.read<NotificationsCubit>().showErr(errMsg))),
+                        text: watchedSchool.school.name,
+                        onTap: () {
+                          context
+                              .read<SchoolsDrawerCubit>()
+                              .setSelectedSchoolInUI(SelectedSchool(watchedSchool.school.id));
+                          Provider.of<PostsService>(context, listen: false).reloadAllFeeds();
+                          // if (mounted) router.pop();
+                        },
+                      )),
+                ],
+              ),
+            if (state.isGuest)
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                child: DisclaimerText(
+                  text: "To watch, search, and jump between schools, create an account.",
+                ),
+              )
           ],
         );
       } else {
         return Padding(
           padding: EdgeInsets.only(bottom: bottomSafeArea(context)),
           child: LoadingOrAlert(
-            message: StateMessage("Error loading", () => context.read<SchoolsDrawerCubit>().loadSchools()),
+            message: StateMessage(state is SchoolDrawerError ? state.message : "Error loading",
+                () => context.read<SchoolsDrawerCubit>().loadSchools()),
             isLoading: state is SchoolsDrawerLoading,
           ),
         );
@@ -159,21 +171,31 @@ class _FeedDrawerState extends State<FeedDrawer> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Currently viewing",
+                          context.watch<SchoolsDrawerCubit>().state is SchoolsDrawerData
+                              ? "Currently viewing"
+                              : context.watch<SchoolsDrawerCubit>().state is SchoolsDrawerLoading
+                                  ? "Loading..."
+                                  : context.watch<SchoolsDrawerCubit>().state is SchoolsDrawerData &&
+                                          (context.watch<SchoolsDrawerCubit>().state as SchoolsDrawerData).isGuest
+                                      ? "To watch schools, set your home, and jump between feeds, create an account."
+                                      : "Error",
                           style: kDetail.copyWith(
                             color: Theme.of(context).colorScheme.onSecondary,
                           ),
                           textAlign: TextAlign.left,
                         ),
-                        const SizedBox(height: 5),
-                        Text(
-                          context.watch<SchoolsDrawerCubit>().state is SchoolsDrawerData
-                              ? context.watch<SchoolsDrawerCubit>().selectedStr(context)
-                              : context.watch<SchoolsDrawerCubit>().state is SchoolsDrawerLoading
-                                  ? "Loading..."
-                                  : "Error",
-                          style: kDisplay1.copyWith(color: Theme.of(context).colorScheme.onSecondary),
-                          textAlign: TextAlign.left,
+                        WidgetOrNothing(
+                          showWidget: context.watch<SchoolsDrawerCubit>().state is SchoolsDrawerData,
+                          child: Column(
+                            children: [
+                              const SizedBox(height: 5),
+                              Text(
+                                context.watch<SchoolsDrawerCubit>().selectedStr(context),
+                                style: kDisplay1.copyWith(color: Theme.of(context).colorScheme.onSecondary),
+                                textAlign: TextAlign.left,
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),

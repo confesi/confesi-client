@@ -2,6 +2,7 @@ import 'package:confesi/presentation/shared/behaviours/init_scale.dart';
 import 'package:confesi/presentation/shared/other/widget_or_nothing.dart';
 import 'package:flutter/material.dart';
 
+import '../../../constants/shared/constants.dart';
 import 'alert.dart';
 import 'loading_cupertino.dart';
 import '../behaviours/animated_bobbing.dart';
@@ -50,23 +51,18 @@ class LoadingOrAlert extends StatelessWidget {
                           height: 60,
                           width: 60,
                           child: isLogo
-                              ? InitScale(
-                                  child: Bobbing(
-                                    child: AspectRatio(
-                                      aspectRatio: 1,
-                                      child: Container(
-                                        constraints: const BoxConstraints(maxHeight: 20),
-                                        decoration: BoxDecoration(
-                                          color: Theme.of(context).colorScheme.surface,
-                                          shape: BoxShape.circle,
-                                          border: Border.all(
-                                            color: Theme.of(context).colorScheme.onBackground,
-                                            width: 0.8,
-                                          ),
-                                        ),
-                                        child: Image.asset(
-                                          "assets/images/logos/logo_transparent.png",
-                                        ),
+                              ? Bobbing(
+                                  child: AspectRatio(
+                                    aspectRatio: 1,
+                                    child: Container(
+                                      constraints: const BoxConstraints(maxHeight: 20),
+                                      padding: const EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context).colorScheme.tertiary,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: Image.asset(
+                                        walrusHeadImgPath,
                                       ),
                                     ),
                                   ),

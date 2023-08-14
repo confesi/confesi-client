@@ -36,14 +36,11 @@ import '../../presentation/authentication_and_settings/screens/settings/appearan
 import '../../presentation/authentication_and_settings/screens/settings/curvy.dart';
 import '../../presentation/authentication_and_settings/screens/settings/notifications.dart';
 import '../../presentation/authentication_and_settings/screens/settings/text_size.dart';
-import '../../presentation/primary/screens/splash.dart';
 import '../../presentation/profile/screens/account_stats.dart';
 
 final GoRouter router = GoRouter(
   onException: (context, state, router) => router.go("/error"),
-  initialLocation: "/",
   routes: <GoRoute>[
-    GoRoute(path: '/', builder: (BuildContext context, GoRouterState state) => const SplashScreen()),
     GoRoute(path: '/error', builder: (BuildContext context, GoRouterState state) => const CriticalErrorScreen()),
     GoRoute(path: '/login', builder: (BuildContext context, GoRouterState state) => const LoginScreen()),
     GoRoute(path: '/verify-email', builder: (BuildContext context, GoRouterState state) => const VerifyEmailScreen()),

@@ -1,3 +1,4 @@
+import '../../../constants/shared/constants.dart';
 import '../../../core/utils/sizing/width_fraction.dart';
 import '../behaviours/animated_bobbing.dart';
 import '../buttons/simple_text.dart';
@@ -41,12 +42,19 @@ class AlertIndicator extends StatelessWidget {
                           child: Bobbing(
                             child: AspectRatio(
                               aspectRatio: 1,
-                              child: Image.asset(
-                                "assets/images/logos/logo_transparent.png",
+                              child: Container(
+                                constraints: const BoxConstraints(maxHeight: 20),
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).colorScheme.tertiary,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Image.asset(
+                                  walrusHeadImgPath,
+                                ),
                               ),
                             ),
-                          ),
-                        )
+                          ))
                       : const LoadingCupertinoIndicator()
                   : Column(
                       mainAxisAlignment: MainAxisAlignment.center,

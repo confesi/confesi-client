@@ -8,6 +8,10 @@ const String domain = "http://10.0.0.173:8080";
 /// If debug mode is enabled. OFF for prod.
 const bool debugMode = true;
 
+const String walrusHeadImgPath = "assets/images/logos/walrus_head.png";
+
+const String walrusFullBodyImgPath = "assets/images/logos/walrus_full_body.png";
+
 const bool devicePreview = false;
 
 /// Min length for passwords.

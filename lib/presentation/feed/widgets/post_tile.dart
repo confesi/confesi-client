@@ -35,16 +35,21 @@ class PostTile extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(top: 15),
         child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 5),
+          margin: const EdgeInsets.symmetric(horizontal: 0),
           width: double.infinity,
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.background,
-            borderRadius: BorderRadius.all(
-                Radius.circular(Provider.of<UserAuthService>(context).data().componentCurviness.borderRadius)),
-            border: Border.all(
-              color: Theme.of(context).colorScheme.onBackground,
-              width: 0.8,
-              style: BorderStyle.solid,
+            border: Border(
+              top: BorderSide(
+                color: Theme.of(context).colorScheme.onBackground,
+                width: 0.8,
+                style: BorderStyle.solid,
+              ),
+              bottom: BorderSide(
+                color: Theme.of(context).colorScheme.onBackground,
+                width: 0.8,
+                style: BorderStyle.solid,
+              ),
             ),
           ),
           child: ClipRRect(

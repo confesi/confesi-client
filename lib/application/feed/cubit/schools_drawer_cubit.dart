@@ -27,6 +27,7 @@ class SchoolsDrawerCubit extends Cubit<SchoolsDrawerState> {
           .school
           .name;
     } else {
+      // everyone defaults to everything
       return "All";
     }
   }
@@ -91,10 +92,20 @@ class SchoolsDrawerCubit extends Cubit<SchoolsDrawerState> {
             sl.get<GlobalContentService>().setSchool(homeUniversity);
 
             emit(SchoolsDrawerData(
-              // SelectedSchool(homeUniversity.id),
               SelectedAll(),
               SchoolsDrawerNoErr(),
+              isGuest: false,
             ));
+          } else if (response.statusCode == 401) {
+            if (state is SchoolsDrawerData) {
+              emit((state as SchoolsDrawerData).copyWith(isGuest: true));
+            } else {
+              emit(SchoolsDrawerData(
+                SelectedAll(),
+                SchoolsDrawerNoErr(),
+                isGuest: true,
+              ));
+            }
           } else {
             emit(const SchoolDrawerError("Unknown error"));
           }

@@ -3,10 +3,16 @@ import 'package:flutter/material.dart';
 class Bobbing extends StatefulWidget {
   final Widget child;
   final Duration duration;
-  final bool rotate; // New optional parameter
+  final bool rotate;
+  final bool bobbing;
 
-  const Bobbing({Key? key, required this.child, this.duration = const Duration(milliseconds: 1000), this.rotate = true})
-      : super(key: key);
+  const Bobbing({
+    Key? key,
+    required this.child,
+    this.duration = const Duration(milliseconds: 1000),
+    this.rotate = true,
+    this.bobbing = true,
+  }) : super(key: key);
 
   @override
   BobbingState createState() => BobbingState();
@@ -31,17 +37,27 @@ class BobbingState extends State<Bobbing> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final tween = TweenSequence([
-      TweenSequenceItem(tween: Tween(begin: 0.75, end: 1.0).chain(CurveTween(curve: Curves.decelerate)), weight: 1),
-      TweenSequenceItem(tween: Tween(begin: 1.0, end: 0.75).chain(CurveTween(curve: Curves.decelerate)), weight: 1),
+      TweenSequenceItem(
+        tween: Tween(begin: 0.75, end: 1.0).chain(CurveTween(curve: Curves.decelerate)),
+        weight: 1,
+      ),
+      TweenSequenceItem(
+        tween: Tween(begin: 1.0, end: 0.75).chain(CurveTween(curve: Curves.decelerate)),
+        weight: 1,
+      ),
     ]);
 
     return AnimatedBuilder(
       animation: _controller,
       builder: (context, child) {
-        Widget content = Transform.scale(
-          scale: tween.evaluate(_controller),
-          child: widget.child,
-        );
+        Widget content = widget.child; // Default to original child
+
+        if (widget.bobbing) {
+          content = Transform.scale(
+            scale: tween.evaluate(_controller),
+            child: content,
+          );
+        }
 
         if (widget.rotate) {
           // Add optional rotation logic here

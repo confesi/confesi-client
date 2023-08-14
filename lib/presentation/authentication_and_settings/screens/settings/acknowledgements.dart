@@ -25,16 +25,15 @@ class _AcknowledgementsScreenState extends State<AcknowledgementsScreen> {
   Widget build(BuildContext context) {
     return ThemeStatusBar(
         child: Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.shadow,
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: SafeArea(
         bottom: false,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             AppbarLayout(
-                                bottomBorder: true,
-
-              backgroundColor: Theme.of(context).colorScheme.shadow,
+              bottomBorder: true,
+              backgroundColor: Theme.of(context).colorScheme.background,
               centerWidget: Text(
                 "Acknowledgements",
                 style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
@@ -43,41 +42,44 @@ class _AcknowledgementsScreenState extends State<AcknowledgementsScreen> {
               ),
             ),
             Expanded(
-              child: ScrollableView(
-                controller: ScrollController(),
-                scrollBarVisible: false,
-                physics: const BouncingScrollPhysics(),
-                hapticsEnabled: false,
-                inlineBottomOrRightPadding: bottomSafeArea(context),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const TileGroup(
-                        text: "Alpha testers",
-                        tiles: [
-                          TextStatTile(leftText: "John Doe"),
-                        ],
-                      ),
-                      const TileGroup(
-                        text: "Beta testers",
-                        tiles: [
-                          TextStatTile(leftText: "Jane Doe"),
-                          TextStatTile(leftText: "Bob Dave"),
-                        ],
-                      ),
-                      TileGroup(
-                        text: "Attribution",
-                        tiles: [
-                          TextStatTile(
-                              onTap: () => launchUrl(Uri.parse("https://lite.ip2location.com")),
-                              leftText:
-                                  'This site or product includes IP2Location LITE available data. Tap to view the website.'),
-                        ],
-                      ),
-                      const SimulatedBottomSafeArea(),
-                    ],
+              child: Container(
+                color: Theme.of(context).colorScheme.shadow,
+                child: ScrollableView(
+                  controller: ScrollController(),
+                  scrollBarVisible: false,
+                  physics: const BouncingScrollPhysics(),
+                  hapticsEnabled: false,
+                  inlineBottomOrRightPadding: bottomSafeArea(context),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const TileGroup(
+                          text: "Alpha testers",
+                          tiles: [
+                            TextStatTile(leftText: "John Doe"),
+                          ],
+                        ),
+                        const TileGroup(
+                          text: "Beta testers",
+                          tiles: [
+                            TextStatTile(leftText: "Jane Doe"),
+                            TextStatTile(leftText: "Bob Dave"),
+                          ],
+                        ),
+                        TileGroup(
+                          text: "Attribution",
+                          tiles: [
+                            TextStatTile(
+                                onTap: () => launchUrl(Uri.parse("https://lite.ip2location.com")),
+                                leftText:
+                                    'This site or product includes IP2Location LITE available data. Tap to view the website.'),
+                          ],
+                        ),
+                        const SimulatedBottomSafeArea(),
+                      ],
+                    ),
                   ),
                 ),
               ),

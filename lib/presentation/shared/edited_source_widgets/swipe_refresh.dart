@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../../constants/shared/constants.dart';
 import '../behaviours/animated_bobbing.dart';
 import '../behaviours/init_scale.dart';
 
@@ -573,13 +574,10 @@ class SwipeRefreshState extends State<SwipeRefresh> with TickerProviderStateMixi
                             child: Container(
                               width: 60,
                               height: 60,
+                              padding: const EdgeInsets.all(10),
                               decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.surface,
+                                color: Theme.of(context).colorScheme.tertiary,
                                 shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: Theme.of(context).colorScheme.onBackground,
-                                  width: 0.8,
-                                ),
                                 boxShadow: [
                                   BoxShadow(
                                     color: Theme.of(context).colorScheme.shadow,
@@ -591,7 +589,7 @@ class SwipeRefreshState extends State<SwipeRefresh> with TickerProviderStateMixi
                               child: AspectRatio(
                                 aspectRatio: 1,
                                 child: Image.asset(
-                                  "assets/images/logos/logo_transparent.png",
+                                  walrusHeadImgPath,
                                 ),
                               ),
                             ),

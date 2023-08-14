@@ -138,7 +138,7 @@ class Sharing {
                         child: AspectRatio(
                           aspectRatio: 1,
                           child: Image.asset(
-                            "assets/images/logos/logo_transparent.png",
+                            walrusHeadImgPath,
                           ),
                         ),
                       ),
@@ -292,7 +292,7 @@ class Sharing {
                         child: AspectRatio(
                           aspectRatio: 1,
                           child: Image.asset(
-                            "assets/images/logos/logo_transparent.png",
+                            walrusHeadImgPath,
                           ),
                         ),
                       ),

@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_shake_animated/flutter_shake_animated.dart';
 
+import '../../../constants/shared/constants.dart';
 import '../../../core/router/go_router.dart';
 import '../../../core/utils/sizing/bottom_safe_area.dart';
 import '../layout/swipebar.dart';
@@ -58,25 +59,21 @@ Future<dynamic> showRegisteredUserOnlySheet(BuildContext context, {VoidCallback?
                   physics: const BouncingScrollPhysics(),
                   child: Column(
                     children: [
-                      ShakeWidget(
-                        shakeConstant: _randomShakeConstant(),
-                        duration: const Duration(milliseconds: 1500),
-                        autoPlay: true,
-                        child: Bobbing(
-                          child: Container(
-                            constraints: const BoxConstraints(maxHeight: 100, maxWidth: 100),
-                            child: AspectRatio(
-                              aspectRatio: 1,
-                              child: Image.asset(
-                                "assets/images/logos/logo_transparent.png",
-                              ),
+                      SizedBox(
+                        width: 250,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: AspectRatio(
+                            aspectRatio: 1,
+                            child: Image.asset(
+                              walrusFullBodyImgPath,
                             ),
                           ),
                         ),
                       ),
-                      const SizedBox(height: 30),
+                      const SizedBox(height: 15),
                       Text(
-                        "Verified students only!",
+                        "The walrus is not impressed",
                         style: kDisplay1.copyWith(color: Theme.of(context).colorScheme.primary),
                         textAlign: TextAlign.center,
                       ),

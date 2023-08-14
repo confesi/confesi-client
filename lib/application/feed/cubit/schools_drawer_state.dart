@@ -22,21 +22,27 @@ class SchoolsDrawerData extends SchoolsDrawerState {
   final SelectedSchoolFeed selected;
   final SchoolsDrawerPossibleError possibleErr;
   final bool isLoadingRandomSchool;
+  final bool isGuest;
 
-  const SchoolsDrawerData(this.selected, this.possibleErr, {this.isLoadingRandomSchool = false});
+  const SchoolsDrawerData(this.selected, this.possibleErr, {this.isLoadingRandomSchool = false, this.isGuest = true});
 
   // copyWith method
-  SchoolsDrawerData copyWith(
-      {SelectedSchoolFeed? selected, SchoolsDrawerPossibleError? possibleErr, bool? isLoadingRandomSchool}) {
+  SchoolsDrawerData copyWith({
+    SelectedSchoolFeed? selected,
+    SchoolsDrawerPossibleError? possibleErr,
+    bool? isLoadingRandomSchool,
+    bool? isGuest,
+  }) {
     return SchoolsDrawerData(
       selected ?? this.selected,
       possibleErr ?? this.possibleErr,
       isLoadingRandomSchool: isLoadingRandomSchool ?? this.isLoadingRandomSchool,
+      isGuest: isGuest ?? this.isGuest,
     );
   }
 
   @override
-  List<Object> get props => [selected, possibleErr, isLoadingRandomSchool, selected];
+  List<Object> get props => [selected, possibleErr, isLoadingRandomSchool, selected, isGuest];
 }
 
 //! Error type
