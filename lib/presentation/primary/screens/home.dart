@@ -135,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       } else if (newIndex == 2) {
                         // create post
                         verifiedUserOnly(context, () {
-                          router.push("/create");
+                          router.push("/create", extra: CreatingNewPost());
                           context.read<PostCategoriesCubit>().resetCategoryAndText();
                         });
                       } else {

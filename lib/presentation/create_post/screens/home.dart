@@ -21,17 +21,15 @@ import '../../../core/styles/typography.dart';
 import '../../shared/layout/appbar.dart';
 import '../../shared/layout/scrollable_area.dart';
 
-// TODO: move to feature constants file and document?
-enum FocusedField {
-  title,
-  body,
-  none,
-}
+enum FocusedField { title, body, none }
 
 class CreatePostHome extends StatefulWidget {
   const CreatePostHome({
     Key? key,
+    required this.props,
   }) : super(key: key);
+
+  final GenericPost props;
 
   @override
   State<CreatePostHome> createState() => _CreatePostHomeState();
@@ -70,6 +68,7 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
 
   @override
   void initState() {
+    // hint text
     HintText hintText = sl.get<CreatePostHintManager>().getHint();
     titleHint = hintText.title;
     bodyHint = hintText.body;
@@ -81,7 +80,11 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
       setNoFocus();
       if (bodyFocusNode.hasFocus) setFocus(FocusedField.body);
     });
-
+    // edited post
+    if (widget.props is EditedPost) {
+      titleController.text = (widget.props as EditedPost).title;
+      bodyController.text = (widget.props as EditedPost).body;
+    }
     super.initState();
   }
 
@@ -99,6 +102,24 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
     titleController.clear();
     bodyController.clear();
     FocusScope.of(context).unfocus();
+  }
+
+  void updateTextWithCursor({
+    required String Function(String) updateCallback,
+    required TextEditingController controller,
+    required TextSelection newCursorPosition,
+  }) {
+    final updatedText = updateCallback(controller.text);
+
+    controller.text = updatedText;
+
+    if (newCursorPosition.extentOffset <= updatedText.length) {
+      controller.selection = newCursorPosition;
+    } else {
+      controller.selection = TextSelection.fromPosition(
+        TextPosition(offset: updatedText.length),
+      );
+    }
   }
 
   @override
@@ -123,7 +144,7 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                               width: widthFraction(context, 1),
                               child: Center(child: TextLimitTracker(value: getLimitPercent())))
                           : Text(
-                              'Confess Anonymously',
+                              widget.props is EditedPost ? "Edit confession" : "Create confession",
                               style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.center,
@@ -164,7 +185,7 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                                         physics: const ClampingScrollPhysics(),
                                         controller: scrollController,
                                         child: Padding(
-                                          padding: const EdgeInsets.only(left: 10, right: 10),
+                                          padding: const EdgeInsets.symmetric(horizontal: 15),
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.center,
                                             children: [
@@ -181,10 +202,11 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                                                     LengthLimitingTextInputFormatter(kPostTitleMaxLength),
                                                   ],
                                                   onChanged: (value) {
-                                                    context.read<PostCategoriesCubit>().updateTitle(value);
-                                                    titleController.text = value;
-                                                    titleController.selection = TextSelection.fromPosition(
-                                                      TextPosition(offset: titleController.text.length),
+                                                    updateTextWithCursor(
+                                                      updateCallback: (v) =>
+                                                          context.read<PostCategoriesCubit>().updateTitle(v),
+                                                      controller: titleController,
+                                                      newCursorPosition: titleController.selection,
                                                     );
                                                     setState(() {});
                                                   },
@@ -220,10 +242,11 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                                                   color: Colors.transparent,
                                                   child: TextField(
                                                     onChanged: (value) {
-                                                      context.read<PostCategoriesCubit>().updateBody(value);
-                                                      bodyController.text = value;
-                                                      bodyController.selection = TextSelection.fromPosition(
-                                                        TextPosition(offset: bodyController.text.length),
+                                                      updateTextWithCursor(
+                                                        updateCallback: (v) =>
+                                                            context.read<PostCategoriesCubit>().updateBody(v),
+                                                        controller: bodyController,
+                                                        newCursorPosition: bodyController.selection,
                                                       );
                                                       setState(() {});
                                                     },

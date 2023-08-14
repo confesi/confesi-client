@@ -69,9 +69,10 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/create',
       pageBuilder: (context, state) {
+        GenericPost props = state.extra as GenericPost;
         return CustomTransitionPage(
           key: state.pageKey,
-          child: const CreatePostHome(),
+          child: CreatePostHome(props: props),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             // Change the opacity of the screen using a Curve based on the animation's value
             var tween = CurveTween(curve: Curves.easeInOut);
@@ -263,6 +264,26 @@ class HomeProps {
     return 'HomeProps{executeAfterHomeLoad: $executeAfterHomeLoad}';
   }
 }
+
+class CreateProps {
+  final GenericPost post;
+
+  const CreateProps(this.post);
+}
+
+//! Editing post props
+
+class GenericPost {}
+
+class EditedPost extends GenericPost {
+  final String title;
+  final String body;
+  final String mid;
+
+  EditedPost(this.title, this.body, this.mid);
+}
+
+class CreatingNewPost extends GenericPost {}
 
 //! Home posts comment props with abstract classes
 

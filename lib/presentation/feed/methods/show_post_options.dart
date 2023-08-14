@@ -20,11 +20,12 @@ void buildOptionsSheet(BuildContext context, PostWithMetadata post) => showButto
         icon: CupertinoIcons.share,
         onTap: () => context.read<QuickActionsCubit>().sharePost(context, post),
       ),
-      // OptionButton(
-      //   text: "Owner? ${post.owner}",
-      //   icon: CupertinoIcons.pencil,
-      //   onTap: () => context.read<QuickActionsCubit>().sharePost(context, post),
-      // ),
+      if (post.owner)
+        OptionButton(
+          text: "Edit content",
+          icon: CupertinoIcons.pencil,
+          onTap: () => router.push("/create", extra: EditedPost(post.post.title, post.post.content, post.post.id.mid)),
+        ),
       OptionButton(
         text: "Sentiment analysis",
         icon: CupertinoIcons.doc_text,

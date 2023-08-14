@@ -3,6 +3,8 @@ import 'package:confesi/constants/shared/constants.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../../../core/router/go_router.dart';
+
 part 'post_categories_state.dart';
 
 PostCategoriesData _defaultState() => PostCategoriesData(
@@ -10,6 +12,7 @@ PostCategoriesData _defaultState() => PostCategoriesData(
       selectedIndex: 0,
       title: "",
       body: "",
+      postType: CreatingNewPost(),
     );
 
 class PostCategoriesCubit extends Cubit<PostCategoriesState> {
@@ -24,23 +27,26 @@ class PostCategoriesCubit extends Cubit<PostCategoriesState> {
     }
   }
 
-  void updateTitle(String text) {
+  String updateTitle(String text) {
     if (state is PostCategoriesData) {
       emit(
         PostCategoriesData(
           title: text,
+          postType: (state as PostCategoriesData).postType,
           body: (state as PostCategoriesData).body,
           categories: (state as PostCategoriesData).categories,
           selectedIndex: (state as PostCategoriesData).selectedIndex,
         ),
       );
     }
+    return text;
   }
 
-  void updateBody(String text) {
+  String updateBody(String text) {
     if (state is PostCategoriesData) {
       emit(
         PostCategoriesData(
+          postType: (state as PostCategoriesData).postType,
           title: (state as PostCategoriesData).title,
           body: text,
           categories: (state as PostCategoriesData).categories,
@@ -48,12 +54,14 @@ class PostCategoriesCubit extends Cubit<PostCategoriesState> {
         ),
       );
     }
+    return text;
   }
 
   void updateCategoryIdx(int index) {
     if (state is PostCategoriesData) {
       emit(
         PostCategoriesData(
+          postType: (state as PostCategoriesData).postType,
           title: (state as PostCategoriesData).title,
           body: (state as PostCategoriesData).body,
           categories: (state as PostCategoriesData).categories,
@@ -67,6 +75,7 @@ class PostCategoriesCubit extends Cubit<PostCategoriesState> {
     if (state is PostCategoriesData) {
       emit(
         PostCategoriesData(
+          postType: (state as PostCategoriesData).postType,
           title: "",
           body: "",
           categories: (state as PostCategoriesData).categories,
