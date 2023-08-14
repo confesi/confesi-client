@@ -156,13 +156,17 @@ class _AccountProfileStatsState extends State<AccountProfileStats> {
                                   ],
                                 );
                               } else if (state is StatsGuest) {
-                                return const DisclaimerText(
+                                return DisclaimerText(
                                   text: "To see your unique account statistics, create an account.",
+                                  onTap: () => router.push("/register", extra: const RegistrationPops(true)),
+                                  btnText: "Create account ->",
                                 );
                               } else {
                                 return LoadingOrAlert(
-                                  message: StateMessage(state is StatsError ? state.message : null,
-                                      () => context.read<StatsCubit>().loadStats()),
+                                  message: StateMessage(
+                                    state is StatsError ? state.message : null,
+                                    () => context.read<StatsCubit>().loadStats(),
+                                  ),
                                   isLoading: state is StatsLoading,
                                 );
                               }

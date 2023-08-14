@@ -20,6 +20,11 @@ void buildOptionsSheet(BuildContext context, PostWithMetadata post) => showButto
         icon: CupertinoIcons.share,
         onTap: () => context.read<QuickActionsCubit>().sharePost(context, post),
       ),
+      // OptionButton(
+      //   text: "Owner? ${post.owner}",
+      //   icon: CupertinoIcons.pencil,
+      //   onTap: () => context.read<QuickActionsCubit>().sharePost(context, post),
+      // ),
       OptionButton(
         text: "Sentiment analysis",
         icon: CupertinoIcons.doc_text,

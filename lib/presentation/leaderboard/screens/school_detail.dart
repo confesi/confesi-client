@@ -17,6 +17,7 @@ import '../../../core/services/posts_service/posts_service.dart';
 import '../../../core/services/user_auth/user_auth_service.dart';
 import '../../../core/utils/numbers/add_commas_to_number.dart';
 import '../../../core/utils/numbers/is_plural.dart';
+import '../../../init.dart';
 import '../../shared/buttons/circle_icon_btn.dart';
 import '../../shared/buttons/pop.dart';
 import '../../shared/other/cached_online_image.dart';
@@ -175,22 +176,24 @@ class SchoolDetail extends StatelessWidget {
                                 props.school.school.name),
                             text: "Locate on map",
                           ),
-                          IgnorePointer(
-                            ignoring: Provider.of<GlobalContentService>(context).schools[props.school.school.id]!.home,
-                            child: SimpleTextButton(
-                              disabled:
+                          if (!sl.get<UserAuthService>().isAnon)
+                            IgnorePointer(
+                              ignoring:
                                   Provider.of<GlobalContentService>(context).schools[props.school.school.id]!.home,
-                              bgColor: Theme.of(context).colorScheme.surface,
-                              textColor: Theme.of(context).colorScheme.secondary,
-                              onTap: () async => await Provider.of<GlobalContentService>(context, listen: false)
-                                  .setHome(props.school)
-                                  .then((f) => f.fold(
-                                      (_) => null, (errMsg) => context.read<NotificationsCubit>().showErr(errMsg))),
-                              text: Provider.of<GlobalContentService>(context).schools[props.school.school.id]!.home
-                                  ? "Current home school"
-                                  : "Set as home school",
+                              child: SimpleTextButton(
+                                disabled:
+                                    Provider.of<GlobalContentService>(context).schools[props.school.school.id]!.home,
+                                bgColor: Theme.of(context).colorScheme.surface,
+                                textColor: Theme.of(context).colorScheme.secondary,
+                                onTap: () async => await Provider.of<GlobalContentService>(context, listen: false)
+                                    .setHome(props.school)
+                                    .then((f) => f.fold(
+                                        (_) => null, (errMsg) => context.read<NotificationsCubit>().showErr(errMsg))),
+                                text: Provider.of<GlobalContentService>(context).schools[props.school.school.id]!.home
+                                    ? "Current home school"
+                                    : "Set as home school",
+                              ),
                             ),
-                          ),
                           SimpleTextButton(
                             bgColor: Theme.of(context).colorScheme.surface,
                             textColor: Theme.of(context).colorScheme.secondary,
@@ -199,7 +202,7 @@ class SchoolDetail extends StatelessWidget {
                           ),
                         ],
                       ),
-                      buildBottomBtn(context, false), // for sizing reasons
+                      if (!sl.get<UserAuthService>().isAnon) buildBottomBtn(context, false), // for sizing reasons
                       const SimulatedBottomSafeArea(),
                     ],
                   ),
@@ -207,7 +210,7 @@ class SchoolDetail extends StatelessWidget {
               ],
             ),
           ),
-          buildBottomBtn(context, true)
+          if (!sl.get<UserAuthService>().isAnon) buildBottomBtn(context, true)
         ],
       ),
     );

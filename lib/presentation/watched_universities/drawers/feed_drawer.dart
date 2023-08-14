@@ -100,21 +100,31 @@ class _FeedDrawerState extends State<FeedDrawer> {
                 topBorder: true,
                 title: "Watched schools (${schools.where((school) => school.watched).length})",
                 items: [
-                  ...schools.where((school) => school.watched).map((watchedSchool) => DrawerUniversityTile(
-                        onSwipe: () => Provider.of<GlobalContentService>(context, listen: false)
-                            .updateWatched(watchedSchool, false)
-                            .then((f) =>
-                                f.fold((_) => null, (errMsg) => context.read<NotificationsCubit>().showErr(errMsg))),
-                        text: watchedSchool.school.name,
-                        onTap: () {
-                          context
-                              .read<SchoolsDrawerCubit>()
-                              .setSelectedSchoolInUI(SelectedSchool(watchedSchool.school.id));
-                          Provider.of<PostsService>(context, listen: false).reloadAllFeeds();
-                          // if (mounted) router.pop();
-                        },
-                      )),
+                  ...schools.where((school) => school.watched).map(
+                        (watchedSchool) => DrawerUniversityTile(
+                          onSwipe: () => Provider.of<GlobalContentService>(context, listen: false)
+                              .updateWatched(watchedSchool, false)
+                              .then((f) =>
+                                  f.fold((_) => null, (errMsg) => context.read<NotificationsCubit>().showErr(errMsg))),
+                          text: watchedSchool.school.name,
+                          onTap: () {
+                            context
+                                .read<SchoolsDrawerCubit>()
+                                .setSelectedSchoolInUI(SelectedSchool(watchedSchool.school.id));
+                            Provider.of<PostsService>(context, listen: false).reloadAllFeeds();
+                            // if (mounted) router.pop();
+                          },
+                        ),
+                      ),
                 ],
+              ),
+            if (!state.isGuest)
+              Container(
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
+                  ),
+                ),
               ),
             if (state.isGuest)
               Column(
@@ -126,10 +136,12 @@ class _FeedDrawerState extends State<FeedDrawer> {
                       ),
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 45),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
                     child: DisclaimerText(
-                      text: "To watch, search, and jump between schools, create an account.",
+                      text: "To watch schools, set your home, and jump between feeds, create an account.",
+                      onTap: () => router.push("/register", extra: const RegistrationPops(true)),
+                      btnText: "Create account ->",
                     ),
                   )
                 ],
