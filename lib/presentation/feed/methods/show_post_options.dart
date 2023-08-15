@@ -24,7 +24,7 @@ void buildOptionsSheet(BuildContext context, PostWithMetadata post) => showButto
         OptionButton(
           text: "Edit content",
           icon: CupertinoIcons.pencil,
-          onTap: () => router.push("/create", extra: EditedPost(post.post.title, post.post.content, post.post.id.mid)),
+          onTap: () => router.push("/create", extra: EditedPost(post.post.title, post.post.content, post.post.id)),
         ),
       OptionButton(
         text: "Sentiment analysis",

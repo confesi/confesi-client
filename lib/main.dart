@@ -27,6 +27,7 @@ import 'application/user/cubit/notifications_cubit.dart';
 import 'application/user/cubit/quick_actions_cubit.dart';
 import 'application/user/cubit/saved_posts_cubit.dart';
 import 'application/user/cubit/stats_cubit.dart';
+import 'core/services/creating_and_editing_posts_service/create_edit_posts_service.dart';
 import 'core/services/fcm_notifications/notification_table.dart';
 import 'core/services/hive_client/hive_client.dart';
 import 'core/services/primary_tab_service/primary_tab_service.dart';
@@ -142,6 +143,7 @@ void main() async {
         ChangeNotifierProvider(create: (context) => sl<CreateCommentService>(), lazy: true),
         ChangeNotifierProvider(create: (context) => sl<PostsService>(), lazy: true),
         ChangeNotifierProvider(create: (context) => sl<PrimaryTabControllerService>(), lazy: true),
+        ChangeNotifierProvider(create: (context) => sl<CreatingEditingPostsService>(), lazy: true),
       ],
       child: MultiBlocProvider(
         providers: [

@@ -278,9 +278,9 @@ class GenericPost {}
 class EditedPost extends GenericPost {
   final String title;
   final String body;
-  final String mid;
+  final EncryptedId id;
 
-  EditedPost(this.title, this.body, this.mid);
+  EditedPost(this.title, this.body, this.id);
 }
 
 class CreatingNewPost extends GenericPost {}

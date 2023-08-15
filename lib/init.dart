@@ -25,6 +25,7 @@ import 'application/posts/cubit/individual_post_cubit.dart';
 import 'application/user/cubit/quick_actions_cubit.dart';
 import 'application/user/cubit/saved_posts_cubit.dart';
 import 'core/services/create_post_hint_text/create_post_hint_text.dart';
+import 'core/services/creating_and_editing_posts_service/create_edit_posts_service.dart';
 import 'core/services/posts_service/posts_service.dart';
 import 'core/services/primary_tab_service/primary_tab_service.dart';
 import 'core/services/remote_config/remote_config.dart';
@@ -120,6 +121,7 @@ Future<void> init() async {
   PostsService postsService = PostsService(Api(), Api(), Api());
   CreateCommentService createCommentService = CreateCommentService();
   PrimaryTabControllerService primaryTabControllerService = PrimaryTabControllerService();
+  CreatingEditingPostsService creatingEditingPostsService = CreatingEditingPostsService(Api());
 
   //! Local storage type adapters
   userAuthService.hive.registerAdapter<UserAuthData>(UserAuthDataAdapter());
@@ -133,6 +135,7 @@ Future<void> init() async {
   userAuthService.hive.registerAdapter(ComponentCurvinessAdapter());
 
   sl.registerLazySingleton(() => userAuthService);
+  sl.registerLazySingleton(() => creatingEditingPostsService);
   sl.registerLazySingleton(() => globalContentService);
   sl.registerLazySingleton(() => postsService);
   sl.registerLazySingleton(() => primaryTabControllerService);

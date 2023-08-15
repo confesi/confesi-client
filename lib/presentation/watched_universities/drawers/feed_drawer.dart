@@ -150,7 +150,7 @@ class _FeedDrawerState extends State<FeedDrawer> {
         );
       } else {
         return Padding(
-          padding: EdgeInsets.only(bottom: bottomSafeArea(context)),
+          padding: EdgeInsets.only(bottom: bottomSafeArea(context) * 2),
           child: LoadingOrAlert(
             message: StateMessage(state is SchoolDrawerError ? state.message : "Error loading",
                 () => context.read<SchoolsDrawerCubit>().loadSchools()),
