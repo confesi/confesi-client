@@ -37,6 +37,11 @@ class GlobalContentService extends ChangeNotifier {
     }
   }
 
+  void removePost(EncryptedId id) {
+    posts.remove(id);
+    notifyListeners();
+  }
+
   void addToRepliesPerSchool(EncryptedId rootComment, int replies) {
     if (repliesPerCommentThread.containsKey(rootComment)) {
       repliesPerCommentThread[rootComment] = repliesPerCommentThread[rootComment]! + replies;

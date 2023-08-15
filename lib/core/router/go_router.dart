@@ -125,10 +125,7 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/create/details',
-      builder: (BuildContext context, GoRouterState state) {
-        CreatePostDetailsProps props = state.extra as CreatePostDetailsProps;
-        return CreatePostDetails(props: props);
-      },
+      builder: (BuildContext context, GoRouterState state) => const CreatePostDetails(),
     ),
 
     GoRoute(path: '/onboarding', builder: (BuildContext context, GoRouterState state) => const ShowcaseScreen()),

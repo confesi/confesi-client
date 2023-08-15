@@ -1,3 +1,5 @@
+import 'package:flutter/services.dart';
+
 import 'stat_tile_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -50,14 +52,20 @@ class StatTileGroup extends StatelessWidget {
                 StatTileItem(
                   text: icon4Text,
                   icon: CupertinoIcons.arrow_up,
-                  onTap: () => icon4OnPress(),
+                  onTap: () {
+                    HapticFeedback.lightImpact();
+                    icon4OnPress();
+                  },
                   iconColor: icon4Selected ? Theme.of(context).colorScheme.onErrorContainer : null,
                   textColor: icon4Selected ? Theme.of(context).colorScheme.onErrorContainer : null,
                 ),
                 StatTileItem(
                   text: icon5Text,
                   icon: CupertinoIcons.arrow_down,
-                  onTap: () => icon5OnPress(),
+                  onTap: () {
+                    HapticFeedback.lightImpact();
+                    icon5OnPress();
+                  },
                   iconColor: icon5Selected ? Theme.of(context).colorScheme.onSecondaryContainer : null,
                   textColor: icon5Selected ? Theme.of(context).colorScheme.onSecondaryContainer : null,
                 ),

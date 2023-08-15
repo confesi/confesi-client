@@ -5,19 +5,16 @@ import 'package:confesi/core/utils/strings/truncate_text.dart';
 import 'package:confesi/core/utils/verified_students/verified_user_only.dart';
 import 'package:confesi/models/post.dart';
 import 'package:confesi/presentation/feed/widgets/reaction_tile.dart';
-import 'package:confesi/presentation/shared/behaviours/url_preview.dart';
 import 'package:confesi/presentation/shared/other/widget_or_nothing.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:link_preview_generator/link_preview_generator.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants/shared/constants.dart';
 import '../../../core/router/go_router.dart';
 import '../../../core/services/user_auth/user_auth_service.dart';
 import '../../../core/styles/typography.dart';
-import '../../../core/utils/funcs/links_from_text.dart';
 import '../methods/show_post_options.dart';
 import '../utils/post_metadata_formatters.dart';
 

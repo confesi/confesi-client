@@ -16,12 +16,14 @@ class AppbarLayout extends StatefulWidget {
     this.rightIconVisible = false,
     required this.centerWidget,
     this.leftIconDisabled = false,
+    this.rightIconLoading = false,
     this.leftIconIgnored = false,
     this.leftIconTag,
     this.backgroundColor,
     Key? key,
   }) : super(key: key);
 
+  final bool rightIconLoading;
   final String? leftIconTag;
   final bool leftIconIgnored;
   final Widget centerWidget;
@@ -67,6 +69,53 @@ class _AppbarLayoutState extends State<AppbarLayout> {
         ),
       );
 
+  Widget buildRightLoading() => Padding(
+        key: const ValueKey("buildRightLoading"),
+        padding: const EdgeInsets.all(15),
+        child: SizedBox(
+          height: 20,
+          width: 20,
+          child: CupertinoActivityIndicator(color: Theme.of(context).colorScheme.primary),
+        ),
+      );
+
+  Widget buildRightIcon() => TouchableOpacity(
+        key: const ValueKey("buildRightIcon"),
+        onTap: () {
+          if (widget.rightIconOnPress != null) {
+            FocusScope.of(context).unfocus();
+            widget.rightIconOnPress!();
+          }
+        },
+        child: Container(
+          // Transparent hitbox trick.
+          color: Colors.transparent,
+          child: Padding(
+            padding: const EdgeInsets.all(15),
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              child: Icon(
+                widget.rightIcon,
+              ),
+            ),
+          ),
+        ),
+      );
+
+  Widget buildRightSide() {
+    if (widget.rightIconVisible && !widget.rightIconLoading) {
+      return buildRightIcon();
+    } else if (widget.rightIconLoading) {
+      return buildRightLoading();
+    } else {
+      return Padding(
+        key: const ValueKey("rightIcon"),
+        padding: const EdgeInsets.all(15),
+        child: Icon(widget.rightIcon ?? CupertinoIcons.arrow_clockwise, color: Colors.transparent),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -98,33 +147,10 @@ class _AppbarLayoutState extends State<AppbarLayout> {
                 child: widget.centerWidget,
               ),
             ),
-            if (widget.rightIconVisible)
-              TouchableOpacity(
-                onTap: () {
-                  if (widget.rightIconOnPress != null) {
-                    FocusScope.of(context).unfocus();
-                    widget.rightIconOnPress!();
-                  }
-                },
-                child: Container(
-                  // Transparent hitbox trick.
-                  color: Colors.transparent,
-                  child: Padding(
-                    padding: const EdgeInsets.all(15),
-                    child: AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 300),
-                      child: Icon(
-                        widget.rightIcon,
-                      ),
-                    ),
-                  ),
-                ),
-              )
-            else
-              Padding(
-                padding: const EdgeInsets.all(15),
-                child: Icon(widget.rightIcon ?? CupertinoIcons.arrow_clockwise, color: Colors.transparent),
-              ),
+            AnimatedSwitcher(
+              duration: const Duration(milliseconds: 250),
+              child: buildRightSide(),
+            ),
           ],
         ),
       ),

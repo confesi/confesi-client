@@ -31,13 +31,6 @@ Future<dynamic> showButtonOptionsSheet(BuildContext context, List<OptionButton> 
                   Column(
                     children: [
                       ...buttons,
-                      OptionButton(
-                        onTap: () => print("tap"),
-                        text: "Close",
-                        icon: CupertinoIcons.xmark,
-                        isRed: true,
-                        noBottomPadding: true,
-                      ),
                     ],
                   ),
                 ],

@@ -23,12 +23,7 @@ import '../../shared/buttons/pop.dart';
 import '../../shared/layout/appbar.dart';
 
 class CreatePostDetails extends StatefulWidget {
-  const CreatePostDetails({
-    Key? key,
-    required this.props,
-  }) : super(key: key);
-
-  final CreatePostDetailsProps props;
+  const CreatePostDetails({Key? key}) : super(key: key);
 
   @override
   State<CreatePostDetails> createState() => _CreatePostDetailsState();
@@ -64,7 +59,7 @@ class _CreatePostDetailsState extends State<CreatePostDetails> with AutomaticKee
                                 centerWidget: AnimatedSwitcher(
                                   duration: const Duration(milliseconds: 250),
                                   child: Text(
-                                    widget.props.post is CreatingNewPost ? "Add Details" : "Editing Confession",
+                                    "Add Details",
                                     style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
                                     overflow: TextOverflow.ellipsis,
                                     textAlign: TextAlign.center,
@@ -78,49 +73,43 @@ class _CreatePostDetailsState extends State<CreatePostDetails> with AutomaticKee
                                     "Please be civil when posting, but have fun! All confessions are anonymous, excluding the details provided here plus your school, and your faculty and year of study if you provided them."),
                               ),
                             ),
-                            if (widget.props.post is EditedPost)
-                              const Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 15),
-                                child: DisclaimerText(text: "Updated confessions are marked as \"edited\"."),
-                              ),
-                            if (widget.props.post is CreatingNewPost)
-                              Expanded(
-                                child: ScrollableView(
-                                  physics: const BouncingScrollPhysics(),
-                                  scrollBarVisible: false,
-                                  hapticsEnabled: false,
-                                  inlineBottomOrRightPadding: 20,
-                                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                                  controller: ScrollController(),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      BlocBuilder<PostCategoriesCubit, PostCategoriesState>(
-                                        builder: (context, state) {
-                                          if (state is PostCategoriesData) {
-                                            return TileGroup(
-                                              text: "Select genre",
-                                              tiles: state.categories.map((category) {
-                                                return BoolSelectionTile(
-                                                  isActive: state.selectedIndex == state.categories.indexOf(category),
-                                                  icon: category.icon,
-                                                  text: category.name,
-                                                  backgroundColor: Theme.of(context).colorScheme.surface,
-                                                  onTap: () => context
-                                                      .read<PostCategoriesCubit>()
-                                                      .updateCategoryIdx(state.categories.indexOf(category)),
-                                                );
-                                              }).toList(),
-                                            );
-                                          } else {
-                                            throw Exception("bad state");
-                                          }
-                                        },
-                                      ),
-                                    ],
-                                  ),
+                            Expanded(
+                              child: ScrollableView(
+                                physics: const BouncingScrollPhysics(),
+                                scrollBarVisible: false,
+                                hapticsEnabled: false,
+                                inlineBottomOrRightPadding: 20,
+                                padding: const EdgeInsets.symmetric(horizontal: 15),
+                                controller: ScrollController(),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    BlocBuilder<PostCategoriesCubit, PostCategoriesState>(
+                                      builder: (context, state) {
+                                        if (state is PostCategoriesData) {
+                                          return TileGroup(
+                                            text: "Select genre",
+                                            tiles: state.categories.map((category) {
+                                              return BoolSelectionTile(
+                                                isActive: state.selectedIndex == state.categories.indexOf(category),
+                                                icon: category.icon,
+                                                text: category.name,
+                                                backgroundColor: Theme.of(context).colorScheme.surface,
+                                                onTap: () => context
+                                                    .read<PostCategoriesCubit>()
+                                                    .updateCategoryIdx(state.categories.indexOf(category)),
+                                              );
+                                            }).toList(),
+                                          );
+                                        } else {
+                                          throw Exception("bad state");
+                                        }
+                                      },
+                                    ),
+                                  ],
                                 ),
                               ),
+                            ),
                           ],
                         ),
                       ),
@@ -147,44 +136,26 @@ class _CreatePostDetailsState extends State<CreatePostDetails> with AutomaticKee
                               loading: Provider.of<CreatingEditingPostsService>(context).metaState
                                   is CreatingEditingPostMetaStateLoading,
                               justText: true,
-                              onPress: () {
+                              onPress: () async {
                                 final provider = Provider.of<CreatingEditingPostsService>(context, listen: false);
-
-                                final editingOrPostingNewFuture = widget.props.post is EditedPost
-                                    ? () {
-                                        final editingState = widget.props.post as EditedPost;
-                                        return provider.editPost(
-                                            editingState.title, editingState.body, editingState.id);
-                                      }()
-                                    : () {
-                                        final creatingState = widget.props.post as CreatingNewPost;
-                                        final selectedCategory = context
-                                            .read<PostCategoriesCubit>()
-                                            .data
-                                            .categories[context.read<PostCategoriesCubit>().data.selectedIndex]
-                                            .name;
-                                        return provider.createNewPost(
-                                            creatingState.title, creatingState.body, selectedCategory);
-                                      }();
-
-                                editingOrPostingNewFuture.then(
-                                  (result) {
-                                    result.fold(
-                                      (_) {
-                                        HapticFeedback.lightImpact();
-                                        sl.get<ConfettiBlaster>().show(context);
-                                        router.go("/home");
-                                        provider.clear();
-                                      },
-                                      (failureMsg) => context.read<NotificationsCubit>().showErr(failureMsg),
-                                    );
+                                final selectedCategory = context
+                                    .read<PostCategoriesCubit>()
+                                    .data
+                                    .categories[context.read<PostCategoriesCubit>().data.selectedIndex]
+                                    .name;
+                                (await provider.createNewPost(provider.title, provider.body, selectedCategory)).fold(
+                                  (_) {
+                                    sl.get<ConfettiBlaster>().show(context);
+                                    provider.clear();
+                                    router.go("/home");
                                   },
+                                  (failureMsg) => context.read<NotificationsCubit>().showErr(failureMsg),
                                 );
                               },
                               icon: CupertinoIcons.chevron_right,
                               backgroundColor: Theme.of(context).colorScheme.secondary,
                               textColor: Theme.of(context).colorScheme.onSecondary,
-                              text: widget.props.post is CreatingNewPost ? 'Submit confession' : "Update confession",
+                              text: "Submit confession",
                             ),
                           ),
                         ),

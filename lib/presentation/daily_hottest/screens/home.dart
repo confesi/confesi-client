@@ -53,15 +53,15 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
         return Center(
           key: const ValueKey('alert'),
           child: AlertIndicator(
-            btnMsg: "Jump to yesterday",
-            message: "There are no hottest confessions for this date",
+            btnMsg: "Load the most recent",
+            message: "There are no confessions for this day",
             onPress: () => context.read<HottestCubit>().loadYesterday(),
           ),
         );
       }
       return TouchableOpacity(
-        onTap: () =>
-            router.push("/home/posts/comments", extra: HomePostsCommentsProps(PreloadedPost(state.posts[currentIndex], false))),
+        onTap: () => router.push("/home/posts/comments",
+            extra: HomePostsCommentsProps(PreloadedPost(state.posts[currentIndex], false))),
         child: PageView(
           controller: pageController,
           physics: const BouncingScrollPhysics(),

@@ -26,7 +26,6 @@ class StatTileItem extends StatelessWidget {
     return Expanded(
       child: TouchableScale(
         onTap: () {
-          HapticFeedback.lightImpact();
           onTap();
         },
         child: Container(

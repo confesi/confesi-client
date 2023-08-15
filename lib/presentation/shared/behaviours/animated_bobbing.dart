@@ -25,6 +25,7 @@ class BobbingState extends State<Bobbing> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
     _controller = AnimationController(vsync: this, duration: widget.duration);
+    _controller.addListener(() => setState(() {}));
     _controller.repeat(); // Remove reverse: true to make it spin in one direction
   }
 
@@ -36,39 +37,31 @@ class BobbingState extends State<Bobbing> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final tween = TweenSequence([
-      TweenSequenceItem(
-        tween: Tween(begin: 0.75, end: 1.0).chain(CurveTween(curve: Curves.decelerate)),
-        weight: 1,
-      ),
-      TweenSequenceItem(
-        tween: Tween(begin: 1.0, end: 0.75).chain(CurveTween(curve: Curves.decelerate)),
-        weight: 1,
-      ),
-    ]);
+    final double rotationValue = _controller.value * 2 * 3.141592653589793;
 
-    return AnimatedBuilder(
-      animation: _controller,
-      builder: (context, child) {
-        Widget content = widget.child; // Default to original child
+    double bobbingScale = 1.0;
+    if (widget.bobbing) {
+      // Adjust the bobbing scale based on the animation progress
+      bobbingScale = 0.6 + 0.3 * (1 - (_controller.value * 2 - 1).abs());
+    }
 
-        if (widget.bobbing) {
-          content = Transform.scale(
-            scale: tween.evaluate(_controller),
-            child: content,
-          );
-        }
+    Widget content = widget.child; // Default to original child
 
-        if (widget.rotate) {
-          // Add optional rotation logic here
-          content = Transform.rotate(
-            angle: _controller.value * 2 * 3.141592653589793, // Apply rotation without easing
-            child: content,
-          );
-        }
+    if (widget.bobbing) {
+      content = Transform.scale(
+        scale: bobbingScale,
+        child: content,
+      );
+    }
 
-        return content;
-      },
-    );
+    if (widget.rotate && rotationValue != 0) {
+      // Add optional rotation logic here
+      content = Transform.rotate(
+        angle: rotationValue,
+        child: content,
+      );
+    }
+
+    return content;
   }
 }

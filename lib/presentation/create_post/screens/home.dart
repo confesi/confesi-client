@@ -1,8 +1,11 @@
 import 'package:confesi/application/create_post/cubit/post_categories_cubit.dart';
 import 'package:confesi/presentation/shared/behaviours/nav_blocker.dart';
+import 'package:provider/provider.dart';
 
+import '../../../application/user/cubit/notifications_cubit.dart';
 import '../../../constants/shared/constants.dart';
 import '../../../core/router/go_router.dart';
+import '../../../core/services/creating_and_editing_posts_service/create_edit_posts_service.dart';
 import '../../../init.dart';
 
 import '../../../core/utils/sizing/width_fraction.dart';
@@ -20,6 +23,7 @@ import '../../../core/services/create_post_hint_text/create_post_hint_text.dart'
 import '../../../core/styles/typography.dart';
 import '../../shared/layout/appbar.dart';
 import '../../shared/layout/scrollable_area.dart';
+import '../overlays/confetti_blaster.dart';
 
 enum FocusedField { title, body, none }
 
@@ -127,7 +131,7 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
     super.build(context);
     return KeyboardDismiss(
       child: NavBlocker(
-        blocking: true,
+        blocking: Provider.of<CreatingEditingPostsService>(context).metaState is CreatingEditingPostMetaStateLoading,
         child: ThemeStatusBar(
           child: Scaffold(
             resizeToAvoidBottomInset: true,
@@ -152,25 +156,43 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                             ),
                     ),
                     rightIconVisible: true,
-                    rightIcon: CupertinoIcons.arrow_right,
-                    rightIconOnPress: () {
-                      if (titleController.text.trim().isEmpty && bodyController.text.trim().isEmpty) {
+                    rightIcon: widget.props is EditedPost ? CupertinoIcons.check_mark : CupertinoIcons.arrow_right,
+                    rightIconLoading: Provider.of<CreatingEditingPostsService>(context).metaState
+                        is CreatingEditingPostMetaStateLoading,
+                    rightIconOnPress: () async {
+                      final provider = Provider.of<CreatingEditingPostsService>(context, listen: false);
+                      provider.title = titleController.text;
+                      provider.body = bodyController.text;
+                      if (widget.props is EditedPost) {
+                        (await provider.editPost(provider.title, provider.body, (widget.props as EditedPost).id)).fold(
+                          (_) {
+                            sl.get<ConfettiBlaster>().show(context);
+                            provider.clear();
+                            router.pop();
+                          },
+                          (failureMsg) => context.read<NotificationsCubit>().showErr(failureMsg),
+                        );
+                        return;
+                      } else if (titleController.text.trim().isEmpty && bodyController.text.trim().isEmpty) {
                         showNotificationChip(context, "You can't post... nothing!");
                         return;
                       }
+
                       FocusManager.instance.primaryFocus?.unfocus();
-                      router.push(
-                        "/create/details",
-                        extra: CreatePostDetailsProps(
-                          widget.props is EditedPost
-                              ? EditedPost(titleController.text, bodyController.text, (widget.props as EditedPost).id)
-                              : CreatingNewPost(
-                                  title: titleController.text,
-                                  body: bodyController.text,
-                                ),
-                        ),
-                      );
-                      FocusScope.of(context).unfocus();
+                      router
+                          .push(
+                            "/create/details",
+                            extra: CreatePostDetailsProps(
+                              widget.props is EditedPost
+                                  ? EditedPost(
+                                      titleController.text, bodyController.text, (widget.props as EditedPost).id)
+                                  : CreatingNewPost(
+                                      title: titleController.text,
+                                      body: bodyController.text,
+                                    ),
+                            ),
+                          )
+                          .then((value) => FocusScope.of(context).unfocus());
                     },
                     leftIconVisible: true,
                     leftIcon: CupertinoIcons.xmark,

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/services/user_auth/user_auth_service.dart';
 import 'package:confesi/models/encrypted_id.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:ordered_set/ordered_set.dart';
 
@@ -10,6 +11,7 @@ import '../../../application/feed/cubit/schools_drawer_cubit.dart';
 import '../../../application/user/cubit/saved_posts_cubit.dart';
 import '../../../init.dart';
 import '../../../models/post.dart';
+import '../../results/successes.dart';
 import '../api_client/api.dart';
 import '../global_content/global_content.dart';
 
@@ -28,6 +30,25 @@ class PostsService extends ChangeNotifier {
   PaginationState trendingPaginationState = PaginationState.loading;
   PaginationState recentsPaginationState = PaginationState.loading;
   PaginationState sentimentPaginationState = PaginationState.loading;
+
+  Future<Either<ApiSuccess, String>> deletePost(PostWithMetadata post) async {
+    final oldPost = post;
+    sl.get<GlobalContentService>().removePost(oldPost.post.id);
+    return (await Api().req(Verb.patch, true, "/api/v1/posts/hide", {"post_id": post.post.id.mid})).fold(
+      (failureWithMsg) {
+        sl.get<GlobalContentService>().setPost(oldPost);
+        return Right(failureWithMsg.msg());
+      },
+      (response) {
+        if (response.statusCode.toString()[0] == "2") {
+          return Left(ApiSuccess());
+        } else {
+          sl.get<GlobalContentService>().setPost(oldPost);
+          return const Right("Something went wrong");
+        }
+      },
+    );
+  }
 
   void _cancelCurrentReq(FeedType feedType) {
     switch (feedType) {

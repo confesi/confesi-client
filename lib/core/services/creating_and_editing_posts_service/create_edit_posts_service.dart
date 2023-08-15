@@ -20,23 +20,12 @@ class CreatingEditingPostMetaStateEnteringData extends CreatingEditingPostMetaSt
 
 class CreatingEditingPostMetaStateLoading extends CreatingEditingPostMetaState {}
 
-//! Post type
-
-abstract class CreatingEditingPostsType {}
-
-class CreatingEditingPostsNewPost extends CreatingEditingPostsType {}
-
-class CreatingEditingPostsEditPost extends CreatingEditingPostsType {
-  final EncryptedId id;
-
-  CreatingEditingPostsEditPost(this.id);
-}
-
 //! Actual service
 
 class CreatingEditingPostsService extends ChangeNotifier {
   CreatingEditingPostMetaState metaState = CreatingEditingPostMetaStateEnteringData();
-  CreatingEditingPostsType type = CreatingEditingPostsNewPost();
+  String title = "";
+  String body = "";
 
   final Api _api;
 
@@ -49,12 +38,8 @@ class CreatingEditingPostsService extends ChangeNotifier {
 
   void clear() {
     metaState = CreatingEditingPostMetaStateEnteringData();
-    type = CreatingEditingPostsNewPost();
-    notifyListeners();
-  }
-
-  void setPostType(CreatingEditingPostsType type) {
-    this.type = type;
+    title = "";
+    body = "";
     notifyListeners();
   }
 
