@@ -124,6 +124,7 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return KeyboardDismiss(
       child: NavBlocker(
         blocking: true,
@@ -158,7 +159,17 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                         return;
                       }
                       FocusManager.instance.primaryFocus?.unfocus();
-                      router.push("/create/details");
+                      router.push(
+                        "/create/details",
+                        extra: CreatePostDetailsProps(
+                          widget.props is EditedPost
+                              ? EditedPost(titleController.text, bodyController.text, (widget.props as EditedPost).id)
+                              : CreatingNewPost(
+                                  title: titleController.text,
+                                  body: bodyController.text,
+                                ),
+                        ),
+                      );
                       FocusScope.of(context).unfocus();
                     },
                     leftIconVisible: true,

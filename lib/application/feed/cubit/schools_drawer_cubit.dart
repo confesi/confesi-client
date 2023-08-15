@@ -58,11 +58,13 @@ class SchoolsDrawerCubit extends Cubit<SchoolsDrawerState> {
               final school = SchoolWithMetadata.fromJson(body["value"]);
               sl.get<GlobalContentService>().setSchool(school);
               setSelectedSchoolInUI(SelectedSchool(school.school.id));
-              emit(SchoolsDrawerData(
-                SelectedSchool(school.school.id),
-                SchoolsDrawerNoErr(),
-                isLoadingRandomSchool: false,
-              ));
+              if (response.statusCode == 401) {
+                emit(SchoolsDrawerData(SelectedSchool(school.school.id), SchoolsDrawerNoErr(),
+                    isLoadingRandomSchool: false, isGuest: true));
+              } else {
+                emit(SchoolsDrawerData(SelectedSchool(school.school.id), SchoolsDrawerNoErr(),
+                    isLoadingRandomSchool: false, isGuest: false));
+              }
             } else {
               emit(s.copyWith(possibleErr: SchoolsDrawerErr("TODO: ~2xx error"), isLoadingRandomSchool: false));
             }

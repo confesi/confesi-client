@@ -1,4 +1,12 @@
+import 'dart:convert';
+
+import 'package:confesi/core/results/successes.dart';
+import 'package:confesi/core/services/global_content/global_content.dart';
+import 'package:confesi/core/services/posts_service/posts_service.dart';
+import 'package:confesi/init.dart';
 import 'package:confesi/models/encrypted_id.dart';
+import 'package:confesi/models/post.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../utils/validators/either_not_empty_validator.dart';
@@ -11,14 +19,6 @@ abstract class CreatingEditingPostMetaState {}
 class CreatingEditingPostMetaStateEnteringData extends CreatingEditingPostMetaState {}
 
 class CreatingEditingPostMetaStateLoading extends CreatingEditingPostMetaState {}
-
-class CreatingEditingPostMetaStateSuccess extends CreatingEditingPostMetaState {}
-
-class CreatingEditingPostMetaStateErr extends CreatingEditingPostMetaState {
-  final String message;
-
-  CreatingEditingPostMetaStateErr(this.message);
-}
 
 //! Post type
 
@@ -58,74 +58,70 @@ class CreatingEditingPostsService extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> editPost(String title, String body, EncryptedId id) async {
-    type = CreatingEditingPostsEditPost(id);
+  Future<Either<ApiSuccess, String>> editPost(String title, String body, EncryptedId id) async {
+    _api.cancelCurrReq();
     metaState = CreatingEditingPostMetaStateLoading();
     notifyListeners();
-    _api.cancelCurrReq();
-    return (await _api.req(Verb.patch, true, "/api/v1/posts/edit", {
+    final response = await _api.req(Verb.patch, true, "/api/v1/posts/edit", {
       "post_id": id.mid,
       "title": title,
       "body": body,
-    }))
-        .fold(
-      (failureWithMsg) {
-        metaState = CreatingEditingPostMetaStateErr(failureWithMsg.msg());
-        notifyListeners();
-      },
+    });
+
+    return response.fold(
+      (failureWithMsg) => Right(failureWithMsg.msg()),
       (response) {
         if (response.statusCode.toString()[0] == "2") {
-          metaState = CreatingEditingPostMetaStateSuccess();
-          notifyListeners();
-          clear();
+          try {
+            final post = PostWithMetadata.fromJson(json.decode(response.body)["value"]);
+            sl.get<GlobalContentService>().setPost(post);
+            return Left(ApiSuccess());
+          } catch (_) {
+            return const Right("Confession created, but unable to load locally");
+          }
         } else {
           // todo: fill in the appropriate error message
-          metaState = CreatingEditingPostMetaStateErr(response.body);
-          notifyListeners();
+          return Right(response.body);
         }
       },
     );
   }
 
-  Future<void> createNewPost(String title, String body, String category) async {
-    type = CreatingEditingPostsNewPost();
+  Future<Either<ApiSuccess, String>> createNewPost(String title, String body, String category) async {
+    _api.cancelCurrReq();
     metaState = CreatingEditingPostMetaStateLoading();
     notifyListeners();
-    _api.cancelCurrReq();
+    final validation = eitherNotEmptyValidator(title, body);
+    if (validation.isLeft()) {
+      return const Right("Can't submit empty confession");
+    }
 
-    return eitherNotEmptyValidator(title, body).fold(
-      (failure) {
-        metaState = CreatingEditingPostMetaStateErr("Can't submit empty confession");
-        notifyListeners();
+    final response = await _api.req(
+      Verb.post,
+      true,
+      "/api/v1/posts/create",
+      {
+        "title": title,
+        "body": body,
+        "category": category,
       },
-      (_) async {
-        (await _api.req(
-          Verb.post,
-          true,
-          "/api/v1/posts/create",
-          {
-            "title": title,
-            "body": body,
-            "category": category,
-          },
-        ))
-            .fold(
-          (failure) {
-            metaState = CreatingEditingPostMetaStateErr(failure.msg());
-            notifyListeners();
-            clear();
-          },
-          (response) {
-            if (response.statusCode.toString()[0] == "2") {
-              metaState = CreatingEditingPostMetaStateSuccess();
-              notifyListeners();
-            } else {
-              // todo: fill in the appropriate error message
-              metaState = CreatingEditingPostMetaStateErr(response.body);
-              notifyListeners();
-            }
-          },
-        );
+    );
+
+    return response.fold(
+      (failureWithMsg) => Right(failureWithMsg.msg()),
+      (response) {
+        if (response.statusCode.toString()[0] == "2") {
+          try {
+            final post = PostWithMetadata.fromJson(json.decode(response.body)["value"]);
+            sl.get<GlobalContentService>().setPost(post);
+            return Left(ApiSuccess());
+          } catch (_) {
+            return const Right("Confession edited, but unable to update locally");
+          }
+        } else {
+          // todo: fill in the appropriate error message
+          return Right(response.body);
+        }
       },
     );
   }

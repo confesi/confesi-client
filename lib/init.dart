@@ -39,7 +39,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'core/services/fcm_notifications/notification_service.dart';
 
-import 'application/create_post/cubit/post_cubit.dart';
 import 'application/daily_hottest/cubit/hottest_cubit.dart';
 import 'application/leaderboard/cubit/leaderboard_cubit.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -150,7 +149,6 @@ Future<void> init() async {
   sl.registerFactory(() => LeaderboardCubit(Api()));
   sl.registerFactory(() => AuthFlowCubit());
   sl.registerFactory(() => HottestCubit());
-  sl.registerFactory(() => CreatePostCubit());
   sl.registerFactory(() => PostCategoriesCubit());
   sl.registerFactory(() => AccountDetailsCubit());
   sl.registerFactory(() => FeedbackCubit());
