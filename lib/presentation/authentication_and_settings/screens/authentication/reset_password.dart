@@ -55,13 +55,14 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> with TickerPr
         child: KeyboardDismiss(
           child: Scaffold(
             resizeToAvoidBottomInset: true,
-            backgroundColor: Theme.of(context).colorScheme.shadow,
+            backgroundColor: Theme.of(context).colorScheme.background,
             body: SafeArea(
               bottom: false,
               child: Column(
                 children: [
                   AppbarLayout(
-                    backgroundColor: Theme.of(context).colorScheme.shadow,
+                    bottomBorder: true,
+                    backgroundColor: Theme.of(context).colorScheme.background,
                     centerWidget: Text(
                       "Reset Password",
                       style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
@@ -69,48 +70,51 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> with TickerPr
                     leftIconDisabled: context.watch<AuthFlowCubit>().isLoading,
                   ),
                   Expanded(
-                    child: ScrollableView(
-                      physics: const BouncingScrollPhysics(),
-                      inlineBottomOrRightPadding: bottomSafeArea(context),
-                      scrollBarVisible: false,
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      controller: ScrollController(),
-                      hapticsEnabled: false,
-                      child: Column(
-                        children: [
-                          const SizedBox(height: 15),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "This will only send if the account exists. You're limited to 3 reset emails per hour. Don't spam.",
-                              style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
-                              textAlign: TextAlign.left,
+                    child: Container(
+                      color: Theme.of(context).colorScheme.shadow,
+                      child: ScrollableView(
+                        physics: const BouncingScrollPhysics(),
+                        inlineBottomOrRightPadding: bottomSafeArea(context),
+                        scrollBarVisible: false,
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        controller: ScrollController(),
+                        hapticsEnabled: false,
+                        child: Column(
+                          children: [
+                            const SizedBox(height: 15),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "This will only send if the account exists. You're limited to 3 reset emails per hour. Don't spam.",
+                                style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                                textAlign: TextAlign.left,
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 15),
-                          ExpandableTextfield(
-                            keyboardType: TextInputType.emailAddress,
-                            autoCorrectAndCaps: false,
-                            maxLines: 1,
-                            focusNode: emailFocusNode,
-                            controller: emailController,
-                            hintText: "Your account's email",
-                          ),
-                          const SizedBox(height: 30),
-                          PopButton(
-                            loading: context.watch<AuthFlowCubit>().isLoading,
-                            justText: true,
-                            onPress: () async {
-                              FocusScope.of(context).unfocus();
-                              await context.read<AuthFlowCubit>().sendPasswordResetEmail(emailController.text);
-                              FocusManager.instance.primaryFocus?.unfocus();
-                            },
-                            icon: CupertinoIcons.chevron_right,
-                            backgroundColor: Theme.of(context).colorScheme.secondary,
-                            textColor: Theme.of(context).colorScheme.onSecondary,
-                            text: "Send",
-                          ),
-                        ],
+                            const SizedBox(height: 15),
+                            ExpandableTextfield(
+                              keyboardType: TextInputType.emailAddress,
+                              autoCorrectAndCaps: false,
+                              maxLines: 1,
+                              focusNode: emailFocusNode,
+                              controller: emailController,
+                              hintText: "Your account's email",
+                            ),
+                            const SizedBox(height: 30),
+                            PopButton(
+                              loading: context.watch<AuthFlowCubit>().isLoading,
+                              justText: true,
+                              onPress: () async {
+                                FocusScope.of(context).unfocus();
+                                await context.read<AuthFlowCubit>().sendPasswordResetEmail(emailController.text);
+                                FocusManager.instance.primaryFocus?.unfocus();
+                              },
+                              icon: CupertinoIcons.chevron_right,
+                              backgroundColor: Theme.of(context).colorScheme.secondary,
+                              textColor: Theme.of(context).colorScheme.onSecondary,
+                              text: "Send",
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),

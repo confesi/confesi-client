@@ -37,7 +37,7 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
   @override
   void initState() {
     pageController = PageController(initialPage: 0, viewportFraction: 0.95);
-    context.read<HottestCubit>().loadYesterday();
+    context.read<HottestCubit>().loadMostRecent();
     super.initState();
   }
 
@@ -55,11 +55,11 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
           child: AlertIndicator(
             btnMsg: "Load the most recent",
             message: "There are no confessions for this day",
-            onPress: () => context.read<HottestCubit>().loadYesterday(),
+            onPress: () => context.read<HottestCubit>().loadMostRecent(),
           ),
         );
       }
-      return TouchableOpacity(
+      return GestureDetector(
         onTap: () => router.push("/home/posts/comments",
             extra: HomePostsCommentsProps(PreloadedPost(state.posts[currentIndex], false))),
         child: PageView(
@@ -89,7 +89,7 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
     } else {
       return LoadingOrAlert(
         message: StateMessage(
-            state is DailyHottestError ? state.message : null, () => context.read<HottestCubit>().loadYesterday()),
+            state is DailyHottestError ? state.message : null, () => context.read<HottestCubit>().loadMostRecent()),
         isLoading: state is! DailyHottestError,
       );
     }
@@ -111,9 +111,7 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
                 : "Hottest of ${state.date.readableLocalDateFormat()}";
           }
           if (state is DailyHottestError) {
-            headerText = state.date.isSameDate(DateTime.now().toUtc().subtract(const Duration(days: 1)))
-                ? headerText
-                : "Hottest of ${state.date.readableLocalDateFormat()}";
+            setState(() => headerText = "Daily Hottest");
           }
           if (pageController.hasClients) {
             pageController.animateToPage(0, duration: const Duration(milliseconds: 250), curve: Curves.easeInOut);

@@ -30,13 +30,13 @@ class _DatePickerState extends State<DatePicker> {
                 bottomPadding: 15,
                 justText: true,
                 onPress: () {
-                  context.read<HottestCubit>().loadYesterday();
+                  context.read<HottestCubit>().loadMostRecent();
                   Navigator.pop(context);
                 },
                 icon: CupertinoIcons.chevron_right,
                 backgroundColor: Theme.of(context).colorScheme.surface,
                 textColor: Theme.of(context).colorScheme.primary,
-                text: "Yesterday's",
+                text: "Newest",
               ),
             ),
             const SizedBox(width: 15),

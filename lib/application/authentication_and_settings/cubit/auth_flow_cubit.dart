@@ -81,6 +81,7 @@ class AuthFlowCubit extends Cubit<AuthFlowState> {
       if (user.user == null) {
         emit(const AuthFlowNotification("Unknown error", NotificationType.failure));
       }
+      emitDefault();
     } catch (_) {
       emit(const AuthFlowNotification("Unknown error", NotificationType.failure));
     }
@@ -93,6 +94,7 @@ class AuthFlowCubit extends Cubit<AuthFlowState> {
       if (user.user == null) {
         emit(const AuthFlowNotification("Unknown error", NotificationType.failure));
       }
+      emitDefault();
       // catch all firebase auth exceptions
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {

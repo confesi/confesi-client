@@ -11,22 +11,20 @@ class TextStatTile extends StatefulWidget {
     required this.leftText,
     this.onTap,
     this.rightText,
-    this.topRounded = true,
-    this.bottomRounded = true,
     this.backgroundColor,
     this.foregroundColor,
     this.secondaryColor,
     this.noHorizontalPadding = false,
+    this.isSharing = false,
   });
 
+  final bool isSharing;
   final String leftText;
   final String? rightText;
   final VoidCallback? onTap;
   final Color? backgroundColor;
   final Color? foregroundColor;
   final Color? secondaryColor;
-  final bool topRounded;
-  final bool bottomRounded;
   final bool noHorizontalPadding;
 
   @override
@@ -42,12 +40,8 @@ class _TextStatTileState extends State<TextStatTile> {
         color: widget.backgroundColor ?? Theme.of(context).colorScheme.background,
         border: Border.all(
             color: Theme.of(context).colorScheme.onBackground, width: 0.8, strokeAlign: BorderSide.strokeAlignInside),
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(widget.topRounded ? Provider.of<UserAuthService>(context).data().componentCurviness.borderRadius : 0),
-          topRight: Radius.circular(widget.topRounded ? Provider.of<UserAuthService>(context).data().componentCurviness.borderRadius : 0),
-          bottomRight: Radius.circular(widget.bottomRounded ? Provider.of<UserAuthService>(context).data().componentCurviness.borderRadius : 0),
-          bottomLeft: Radius.circular(widget.bottomRounded ? Provider.of<UserAuthService>(context).data().componentCurviness.borderRadius : 0),
-        ),
+        borderRadius: BorderRadius.all(Radius.circular(
+            !widget.isSharing ? Provider.of<UserAuthService>(context).data().componentCurviness.borderRadius : 15)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -35,10 +35,13 @@ class CachedOnlineImage extends StatelessWidget {
         ),
         errorWidget: (context, url, error) => SafeArea(
           bottom: false,
-          child: Center(
-            child: Text(
-              "Error loading image",
-              style: kDetail.copyWith(color: Theme.of(context).colorScheme.onSurface),
+          child: Container(
+            color: Theme.of(context).colorScheme.surface,
+            child: Center(
+              child: Text(
+                "Error loading image",
+                style: kDetail.copyWith(color: Theme.of(context).colorScheme.onSurface),
+              ),
             ),
           ),
         ),

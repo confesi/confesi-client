@@ -15,31 +15,28 @@ part 'hottest_state.dart';
 class HottestCubit extends Cubit<HottestState> {
   HottestCubit() : super(DailyHottestLoading());
 
-  Future<void> loadYesterday() async {
-    final yesterday = DateTime.now().toUtc().subtract(const Duration(days: 1));
-    _loadFromDate(yesterday);
-  }
+  Future<void> loadMostRecent() async => await _loadFromDate(null);
 
-  Future<void> loadPastDate(DateTime date) async {
-    _loadFromDate(date);
-  }
+  Future<void> loadPastDate(DateTime date) async => await _loadFromDate(date);
 
-  Future<void> _loadFromDate(DateTime date) async {
+  Future<void> _loadFromDate(DateTime? date) async {
     emit(DailyHottestLoading());
-    (await Api().req(Verb.get, true, "/api/v1/posts/hottest?day=${date.yearMonthDay()}", {})).fold(
-      (failure) => emit(DailyHottestError(message: failure.msg(), date: date)),
+    String queryParam = date == null ? "" : "?day=${date.yearMonthDay()}";
+    (await Api().req(Verb.get, true, "/api/v1/posts/hottest$queryParam", {})).fold(
+      (failure) => emit(DailyHottestError(message: failure.msg())),
       (response) {
         try {
           if (response.statusCode.toString()[0] == "2") {
-            final posts =
-                (json.decode(response.body)["value"] as List).map((e) => PostWithMetadata.fromJson(e)).toList();
+            final body = json.decode(response.body)["value"];
+            final posts = (body["posts"] as List).map((e) => PostWithMetadata.fromJson(e)).toList();
+            final resDate = DateTime.parse(body["date"]);
             sl.get<GlobalContentService>().setPosts(posts);
-            emit(DailyHottestData(posts: posts, date: date));
+            emit(DailyHottestData(posts: posts, date: resDate));
           } else {
-            emit(DailyHottestError(message: "Unknown error", date: date));
+            emit(DailyHottestError(message: "Unknown error"));
           }
         } catch (_) {
-          emit(DailyHottestError(message: "Unknown error", date: date));
+          emit(DailyHottestError(message: "Unknown error"));
         }
       },
     );

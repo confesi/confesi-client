@@ -88,6 +88,8 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
     if (widget.props is EditedPost) {
       titleController.text = (widget.props as EditedPost).title;
       bodyController.text = (widget.props as EditedPost).body;
+      hintText.body = "...";
+      hintText.title = "...";
     }
     super.initState();
   }
@@ -197,7 +199,6 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                     leftIconVisible: true,
                     leftIcon: CupertinoIcons.xmark,
                     leftIconOnPress: () {
-                      clearTextfields();
                       router.pop(context);
                     },
                   ),
@@ -255,6 +256,9 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                                                     border: InputBorder.none,
                                                     hintMaxLines: 3,
                                                     hintText: titleHint,
+                                                    hintStyle: kDisplay1.copyWith(
+                                                      color: Theme.of(context).colorScheme.onSurface,
+                                                    ),
                                                   ),
                                                   textAlign: TextAlign.left,
                                                 ),
@@ -297,6 +301,8 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                                                       border: InputBorder.none,
                                                       hintMaxLines: 3,
                                                       hintText: bodyHint,
+                                                      hintStyle: kBody.copyWith(
+                                                          color: Theme.of(context).colorScheme.onSurface),
                                                     ),
                                                   ),
                                                 ),

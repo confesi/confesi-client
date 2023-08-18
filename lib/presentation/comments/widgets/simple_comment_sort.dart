@@ -73,23 +73,13 @@ class _SimpleCommentSortState extends State<SimpleCommentSort> {
           [
             OptionButton(
               onTap: () => updateCommentType(CommentSortType.best),
-              text: "Best (recommended)",
+              text: "Trending",
               icon: CupertinoIcons.flame,
             ),
             OptionButton(
               onTap: () => updateCommentType(CommentSortType.recent),
               text: "Recent",
               icon: CupertinoIcons.clock,
-            ),
-            OptionButton(
-              onTap: () => updateCommentType(CommentSortType.liked),
-              text: "Liked",
-              icon: CupertinoIcons.arrow_up,
-            ),
-            OptionButton(
-              onTap: () => updateCommentType(CommentSortType.hated),
-              text: "Hated",
-              icon: CupertinoIcons.arrow_down,
             ),
           ],
         ),

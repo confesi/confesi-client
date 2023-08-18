@@ -12,12 +12,11 @@ class DailyHottestLoading extends HottestState {}
 /// Error loading page.
 class DailyHottestError extends HottestState {
   final String message;
-  final DateTime date;
 
-  DailyHottestError({required this.message, required this.date});
+  DailyHottestError({required this.message});
 
   @override
-  List<Object?> get props => [message, date];
+  List<Object?> get props => [message];
 }
 
 /// Success loading page, it now has data to display.

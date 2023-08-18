@@ -27,8 +27,8 @@ class CreatePostHintManager {
 }
 
 class HintText {
-  final String title;
-  final String body;
+  String title;
+  String body;
 
   HintText({required this.title, required this.body});
 }

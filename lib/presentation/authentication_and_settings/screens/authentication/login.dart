@@ -54,13 +54,14 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
         child: KeyboardDismiss(
           child: Scaffold(
             resizeToAvoidBottomInset: true,
-            backgroundColor: Theme.of(context).colorScheme.shadow,
+            backgroundColor: Theme.of(context).colorScheme.background,
             body: SafeArea(
               bottom: false,
               child: Column(
                 children: [
                   AppbarLayout(
-                    backgroundColor: Theme.of(context).colorScheme.shadow,
+                    bottomBorder: true,
+                    backgroundColor: Theme.of(context).colorScheme.background,
                     centerWidget: Text(
                       "Login",
                       style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
@@ -68,72 +69,77 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                     leftIconDisabled: context.watch<AuthFlowCubit>().isLoading,
                   ),
                   Expanded(
-                    child: SingleChildScrollView(
-                      physics: const BouncingScrollPhysics(),
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      controller: scrollController,
-                      child: Column(
-                        children: [
-                          const SizedBox(height: 15),
-                          ExpandableTextfield(
-                            focusNode: emailFocusNode,
-                            keyboardType: TextInputType.emailAddress,
-                            autoCorrectAndCaps: false,
-                            maxLines: 1,
-                            controller: emailController,
-                            hintText: "Email",
-                          ),
-                          const SizedBox(height: 15),
-                          ExpandableTextfield(
-                            focusNode: passwordFocusNode,
-                            autoCorrectAndCaps: false,
-                            obscured: true,
-                            maxLines: 1,
-                            controller: passwordController,
-                            hintText: "Password",
-                          ),
-                          const SizedBox(height: 30),
-                          PopButton(
-                            loading: context.watch<AuthFlowCubit>().isLoading,
-                            justText: true,
-                            onPress: () async {
-                              FocusScope.of(context).unfocus();
-                              await context.read<AuthFlowCubit>().login(emailController.text, passwordController.text);
-                              FocusManager.instance.primaryFocus?.unfocus();
-                            },
-                            icon: CupertinoIcons.chevron_right,
-                            backgroundColor: Theme.of(context).colorScheme.secondary,
-                            textColor: Theme.of(context).colorScheme.onSecondary,
-                            text: "Login",
-                          ),
-                          const SizedBox(height: 15),
-                          AbsorbPointer(
-                            absorbing: context.watch<AuthFlowCubit>().isLoading,
-                            child: TouchableOpacity(
-                              onTap: () => router.push("/reset-password"),
-                              child: Container(
-                                // Transparent hitbox trick.
-                                color: Colors.transparent,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        "Forget your password?",
-                                        style: kTitle.copyWith(
-                                          color: Theme.of(context).colorScheme.onSurface,
+                    child: Container(
+                      color: Theme.of(context).colorScheme.shadow,
+                      child: SingleChildScrollView(
+                        physics: const BouncingScrollPhysics(),
+                        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                        controller: scrollController,
+                        child: Column(
+                          children: [
+                            const SizedBox(height: 15),
+                            ExpandableTextfield(
+                              focusNode: emailFocusNode,
+                              keyboardType: TextInputType.emailAddress,
+                              autoCorrectAndCaps: false,
+                              maxLines: 1,
+                              controller: emailController,
+                              hintText: "Email",
+                            ),
+                            const SizedBox(height: 15),
+                            ExpandableTextfield(
+                              focusNode: passwordFocusNode,
+                              autoCorrectAndCaps: false,
+                              obscured: true,
+                              maxLines: 1,
+                              controller: passwordController,
+                              hintText: "Password",
+                            ),
+                            const SizedBox(height: 30),
+                            PopButton(
+                              loading: context.watch<AuthFlowCubit>().isLoading,
+                              justText: true,
+                              onPress: () async {
+                                FocusScope.of(context).unfocus();
+                                await context
+                                    .read<AuthFlowCubit>()
+                                    .login(emailController.text, passwordController.text);
+                                FocusManager.instance.primaryFocus?.unfocus();
+                              },
+                              icon: CupertinoIcons.chevron_right,
+                              backgroundColor: Theme.of(context).colorScheme.secondary,
+                              textColor: Theme.of(context).colorScheme.onSecondary,
+                              text: "Login",
+                            ),
+                            const SizedBox(height: 15),
+                            AbsorbPointer(
+                              absorbing: context.watch<AuthFlowCubit>().isLoading,
+                              child: TouchableOpacity(
+                                onTap: () => router.push("/reset-password"),
+                                child: Container(
+                                  // Transparent hitbox trick.
+                                  color: Colors.transparent,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          "Forget your password?",
+                                          style: kTitle.copyWith(
+                                            color: Theme.of(context).colorScheme.onSurface,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                          overflow: TextOverflow.ellipsis,
                                         ),
-                                        textAlign: TextAlign.center,
-                                        overflow: TextOverflow.ellipsis,
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          SizedBox(height: bottomSafeArea(context)),
-                        ],
+                            SizedBox(height: bottomSafeArea(context)),
+                          ],
+                        ),
                       ),
                     ),
                   ),

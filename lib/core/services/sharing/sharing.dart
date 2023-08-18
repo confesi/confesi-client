@@ -40,7 +40,7 @@ class Sharing {
       num likesPerc, num hottestPerc, num dislikesPerc) async {
     try {
       File file = await _screenshotStats(context, likes, hottests, dislikes, likesPerc, hottestPerc, dislikesPerc);
-      Share.shareXFiles([XFile(file.path)], text: "Check out my Confesi stats!", subject: "Confesi");
+      Share.shareXFiles([XFile(file.path)], text: "🎉 Check out my Confesi stats!", subject: "Confesi");
       return Right(ApiSuccess());
     } catch (_) {
       return Left(ShareFailure());
@@ -93,6 +93,7 @@ class Sharing {
                       ),
                       const SizedBox(height: 15),
                       StatTile(
+                        isSharing: true,
                         leftNumber: likes,
                         leftDescription: "Likes",
                         centerNumber: hottests,
@@ -101,14 +102,17 @@ class Sharing {
                         rightDescription: "Dislikes",
                       ),
                       TextStatTile(
+                        isSharing: true,
                         leftText: "Likes 🎉",
                         rightText: percentToRelativeMsg(likesPerc),
                       ),
                       TextStatTile(
+                        isSharing: true,
                         leftText: "Hottests 🔥",
                         rightText: percentToRelativeMsg(hottestPerc),
                       ),
                       TextStatTile(
+                        isSharing: true,
                         leftText: "Dislikes 🤮",
                         rightText: percentToRelativeMsg(dislikesPerc),
                       ),

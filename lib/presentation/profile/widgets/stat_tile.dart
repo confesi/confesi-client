@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../../core/services/user_auth/user_auth_service.dart';
 import '../../../core/styles/typography.dart';
 import '../../../core/utils/numbers/large_number_formatter.dart';
 
@@ -11,9 +13,11 @@ class StatTile extends StatelessWidget {
     required this.centerDescription,
     required this.rightNumber,
     required this.rightDescription,
+    this.isSharing = false,
     super.key,
   });
 
+  final bool isSharing;
   final int leftNumber;
   final String leftDescription;
   final int centerNumber;
@@ -29,7 +33,8 @@ class StatTile extends StatelessWidget {
         border: Border.all(
             color: Theme.of(context).colorScheme.onBackground, width: 0.8, strokeAlign: BorderSide.strokeAlignInside),
         color: Theme.of(context).colorScheme.background,
-        borderRadius: const BorderRadius.all(Radius.circular(15)),
+        borderRadius: BorderRadius.all(Radius.circular(
+            !isSharing ? Provider.of<UserAuthService>(context).data().componentCurviness.borderRadius : 15)),
       ),
       child: Row(
         children: [
