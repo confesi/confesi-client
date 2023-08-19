@@ -21,7 +21,7 @@ class AppTheme {
       onBackground: Color.fromARGB(255, 46, 46, 46),
       surface: Color.fromARGB(255, 36, 36, 36),
       onSurface: Color(0xff7d7d7d),
-      shadow: Color.fromARGB(255, 23, 23, 23),
+      shadow: Color(0xff171717),
       primaryContainer: Color(0xff333333),
       secondaryContainer: Color(0xfffde5b6),
       onErrorContainer: Color(0xff59CE8F),
@@ -49,7 +49,7 @@ class AppTheme {
       onBackground: Color.fromARGB(255, 46, 46, 46), // Same as dark theme
       surface: Color.fromARGB(255, 38, 38, 38), // Slightly brighter than dark theme
       onSurface: Color(0xff7d7d7d), // Same as dark theme
-      shadow: Color.fromARGB(255, 23, 23, 23), // Same as dark theme
+      shadow: Color(0xff171717),
       primaryContainer: Color(0xff333333), // Same as dark theme
       secondaryContainer: Color(0xfffde5b6), // Same as dark theme
       onErrorContainer: Color(0xff59CE8F), // Same as dark theme

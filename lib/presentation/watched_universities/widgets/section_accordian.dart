@@ -48,7 +48,7 @@ class DrawerUniversityTile extends StatelessWidget {
                   : Icon(
                       CupertinoIcons.arrow_right,
                       size: 18,
-                      color: Theme.of(context).colorScheme.secondary,
+                      color: Theme.of(context).colorScheme.tertiary,
                     ),
             ],
           ),

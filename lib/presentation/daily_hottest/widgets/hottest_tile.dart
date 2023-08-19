@@ -64,7 +64,7 @@ class _HottestTileState extends State<HottestTile> {
                           width: double.infinity,
                           decoration: BoxDecoration(
                             borderRadius:
-                                const BorderRadius.only(topLeft: Radius.circular(5), topRight: Radius.circular(5)),
+                                const BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
                             color: Theme.of(context).colorScheme.secondary,
                           ),
                           padding: const EdgeInsets.all(10),

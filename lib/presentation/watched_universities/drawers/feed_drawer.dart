@@ -230,7 +230,12 @@ class _FeedDrawerState extends State<FeedDrawer> {
           Expanded(
             child: SwipeRefresh(
               onRefresh: () async => await context.read<SchoolsDrawerCubit>().loadSchools(),
-              child: BlocBuilder<SchoolsDrawerCubit, SchoolsDrawerState>(
+              child: BlocConsumer<SchoolsDrawerCubit, SchoolsDrawerState>(
+                listener: (context, state) {
+                  if (state is SchoolsDrawerData) {
+                    Provider.of<PostsService>(context, listen: false).reloadAllFeeds();
+                  }
+                },
                 builder: (context, state) => buildChild(context, state),
               ),
             ),

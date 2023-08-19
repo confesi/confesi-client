@@ -95,7 +95,7 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
     }
   }
 
-  String headerText = "Yesterday's Hottest";
+  String headerText = "Daily Hottest";
 
   @override
   Widget build(BuildContext context) {
@@ -106,9 +106,7 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
         listener: (context, state) async {
           if (state is DailyHottestData) {
             currentIndex = 0;
-            headerText = state.date.isSameDate(DateTime.now().toUtc().subtract(const Duration(days: 1)))
-                ? headerText
-                : "Hottest of ${state.date.readableLocalDateFormat()}";
+            headerText = "Hottest of ${state.date.readableLocalDateFormat()}";
           }
           if (state is DailyHottestError) {
             setState(() => headerText = "Daily Hottest");
