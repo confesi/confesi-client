@@ -48,7 +48,7 @@ class StatTileGroup extends StatelessWidget {
               children: [
                 StatTileItem(text: icon1Text, icon: CupertinoIcons.arrow_turn_up_left, onTap: () => icon1OnPress()),
                 StatTileItem(text: icon2Text, icon: CupertinoIcons.chat_bubble, onTap: () => icon2OnPress()),
-                StatTileItem(text: icon3Text, icon: CupertinoIcons.ellipsis, onTap: () => icon3OnPress()),
+                StatTileItem(text: icon3Text, icon: CupertinoIcons.ellipsis_circle, onTap: () => icon3OnPress()),
                 StatTileItem(
                   text: icon4Text,
                   icon: CupertinoIcons.arrow_up,

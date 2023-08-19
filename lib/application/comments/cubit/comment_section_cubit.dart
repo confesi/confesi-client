@@ -263,7 +263,6 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
           try {
             final List<CommentGroup> commentGroups =
                 (json.decode(response.body)["value"] as List).map((i) => CommentGroup.fromJson(i)).toList();
-
             // Existing commentIds in the state (if any)
             final List<LinkedHashMap<String, List<EncryptedId>>> existingCommentIds =
                 state is CommentSectionData ? (state as CommentSectionData).commentIds : [];

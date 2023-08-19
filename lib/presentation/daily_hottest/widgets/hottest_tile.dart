@@ -63,11 +63,8 @@ class _HottestTileState extends State<HottestTile> {
                         Container(
                           width: double.infinity,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(
-                                    Provider.of<UserAuthService>(context).data().componentCurviness.borderRadius),
-                                topRight: Radius.circular(
-                                    Provider.of<UserAuthService>(context).data().componentCurviness.borderRadius)),
+                            borderRadius:
+                                const BorderRadius.only(topLeft: Radius.circular(5), topRight: Radius.circular(5)),
                             color: Theme.of(context).colorScheme.secondary,
                           ),
                           padding: const EdgeInsets.all(10),
@@ -83,12 +80,8 @@ class _HottestTileState extends State<HottestTile> {
                             duration: const Duration(milliseconds: 250),
                             width: double.infinity,
                             child: ClipRRect(
-                              borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(
-                                    Provider.of<UserAuthService>(context).data().componentCurviness.borderRadius),
-                                bottomRight: Radius.circular(
-                                    Provider.of<UserAuthService>(context).data().componentCurviness.borderRadius),
-                              ),
+                              borderRadius: const BorderRadius.only(
+                                  bottomLeft: Radius.circular(5), bottomRight: Radius.circular(5)),
                               child: CachedOnlineImage(url: widget.post.post.school.imgUrl),
                             ),
                           ),

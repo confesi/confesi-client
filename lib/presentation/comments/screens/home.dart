@@ -445,12 +445,9 @@ class _CommentsHomeState extends State<CommentsHome> {
                             shrinkWrap: true,
                             controller: feedListController
                               ..items = generateComments(ogContext, commentState, feedListController, postState.post),
-                            loadMore: (_) async {
-                              print("RE CALLING!!!!");
-                              await ogContext.read<CommentSectionCubit>().loadInitial(
-                                  postState.post.post.id.mid, CommentSortType.recent,
-                                  refresh: commentState.commentIds.isEmpty);
-                            },
+                            loadMore: (_) async => await ogContext.read<CommentSectionCubit>().loadInitial(
+                                postState.post.post.id.mid, CommentSortType.recent,
+                                refresh: feedListController.items.isEmpty),
                             hasError: commentState.paginationState == CommentFeedState.error,
                             onErrorButtonPressed: () async => await ogContext
                                 .read<CommentSectionCubit>()

@@ -10,7 +10,6 @@ import 'package:flutter/cupertino.dart';
 import '../../../presentation/profile/screens/account_stats.dart';
 import '../../../presentation/profile/widgets/stat_tile.dart';
 import '../../../presentation/shared/selection_groups/text_stat_tile.dart';
-import '../../../presentation/shared/selection_groups/tile_group.dart';
 import '../../styles/themes.dart';
 import '../../styles/typography.dart';
 import 'package:dartz/dartz.dart';
@@ -285,14 +284,7 @@ class Sharing {
                         height: 30,
                         width: 30,
                         padding: const EdgeInsets.all(1),
-                        decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.background,
-                            border: Border.all(
-                              color: Theme.of(context).colorScheme.onBackground,
-                              width: 0.8,
-                              strokeAlign: BorderSide.strokeAlignInside,
-                            ),
-                            shape: BoxShape.circle),
+                        decoration: const BoxDecoration(shape: BoxShape.circle),
                         child: AspectRatio(
                           aspectRatio: 1,
                           child: Image.asset(
