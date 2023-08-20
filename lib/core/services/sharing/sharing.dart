@@ -82,13 +82,13 @@ class Sharing {
             children: [
               Center(
                 child: Padding(
-                  padding: const EdgeInsets.all(15),
+                  padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Account Statistics",
-                        style: kDisplay1.copyWith(color: Theme.of(context).colorScheme.primary),
+                        "My Confesi",
+                        style: kDisplay2.copyWith(color: Theme.of(context).colorScheme.secondary),
                       ),
                       const SizedBox(height: 15),
                       StatTile(

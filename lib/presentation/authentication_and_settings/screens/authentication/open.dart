@@ -1,3 +1,5 @@
+import 'package:flutter/services.dart';
+
 import '../../../../application/authentication_and_settings/cubit/auth_flow_cubit.dart';
 import '../../../../constants/shared/constants.dart';
 import '../../../../core/router/go_router.dart';
@@ -19,6 +21,14 @@ class OpenScreen extends StatefulWidget {
 }
 
 class _OpenScreenState extends State<OpenScreen> {
+  final ValueNotifier<bool> _animationNotifier = ValueNotifier<bool>(true);
+
+  @override
+  void dispose() {
+    _animationNotifier.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -36,17 +46,29 @@ class _OpenScreenState extends State<OpenScreen> {
                 children: [
                   const SizedBox(height: 15),
                   Expanded(
-                    child: TweenAnimationBuilder<double>(
-                      duration: const Duration(milliseconds: 800), // Adjust duration as needed
-                      tween: Tween<double>(begin: 0, end: 1),
-                      curve: Curves.bounceOut, // Use different curves for different effects
-                      builder: (BuildContext context, double value, Widget? child) {
-                        return Transform.scale(
-                          scale: value,
-                          child: child,
-                        );
+                    child: GestureDetector(
+                      onTap: () {
+                        HapticFeedback.lightImpact();
+                        _animationNotifier.value = !_animationNotifier.value;
                       },
-                      child: Image.asset(walrusFullBodyImgPath),
+                      child: ValueListenableBuilder<bool>(
+                        valueListenable: _animationNotifier,
+                        builder: (context, trigger, __) {
+                          return TweenAnimationBuilder<double>(
+                            key: ValueKey(trigger),
+                            duration: const Duration(milliseconds: 800),
+                            tween: Tween<double>(begin: 0, end: 1),
+                            curve: Curves.bounceOut,
+                            builder: (BuildContext context, double value, Widget? child) {
+                              return Transform.scale(
+                                scale: value,
+                                child: child,
+                              );
+                            },
+                            child: Image.asset(walrusFullBodyImgPath),
+                          );
+                        },
+                      ),
                     ),
                   ),
                   const Spacer(),
