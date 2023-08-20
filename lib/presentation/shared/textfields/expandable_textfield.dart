@@ -100,7 +100,7 @@ class _ExpandableTextfieldState extends State<ExpandableTextfield> {
                                 : widget.onChange?.call(value);
                           },
                           autofocus: false,
-                          onTap: () => focusNode.unfocus(),
+                          // onTap: () => focusNode.unfocus(),
                           enableSuggestions: widget.enableSuggestions,
                           obscureText: widget.obscured,
                           inputFormatters: [

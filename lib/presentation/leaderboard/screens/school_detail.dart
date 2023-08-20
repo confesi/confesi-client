@@ -103,7 +103,7 @@ class SchoolDetail extends StatelessWidget {
                             child: ClipRRect(
                               borderRadius: BorderRadius.all(
                                 Radius.circular(
-                                    Provider.of<UserAuthService>(context).data().componentCurviness.borderRadius),
+                                    2 * Provider.of<UserAuthService>(context).data().componentCurviness.borderRadius),
                               ),
                               child: Zoomable(
                                 child: CachedOnlineImage(

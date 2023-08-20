@@ -190,6 +190,11 @@ PODS:
   - GoogleUtilities/UserDefaults (7.11.5):
     - GoogleUtilities/Logger
   - GTMSessionFetcher/Core (3.1.1)
+  - image_cropper (0.0.4):
+    - Flutter
+    - TOCropViewController (~> 2.6.1)
+  - image_picker_ios (0.0.1):
+    - Flutter
   - isar_flutter_libs (1.0.0):
     - Flutter
   - local_auth_ios (0.0.1):
@@ -236,6 +241,7 @@ PODS:
     - sqlite3/fts5
     - sqlite3/perf-threadsafe
     - sqlite3/rtree
+  - TOCropViewController (2.6.1)
   - url_launcher_ios (0.0.1):
     - Flutter
 
@@ -254,6 +260,8 @@ DEPENDENCIES:
   - flutter_native_splash (from `.symlinks/plugins/flutter_native_splash/ios`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
   - geolocator_apple (from `.symlinks/plugins/geolocator_apple/ios`)
+  - image_cropper (from `.symlinks/plugins/image_cropper/ios`)
+  - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - isar_flutter_libs (from `.symlinks/plugins/isar_flutter_libs/ios`)
   - local_auth_ios (from `.symlinks/plugins/local_auth_ios/ios`)
   - map_launcher (from `.symlinks/plugins/map_launcher/ios`)
@@ -292,6 +300,7 @@ SPEC REPOS:
     - PromisesObjC
     - PromisesSwift
     - sqlite3
+    - TOCropViewController
 
 EXTERNAL SOURCES:
   app_links:
@@ -322,6 +331,10 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_secure_storage/ios"
   geolocator_apple:
     :path: ".symlinks/plugins/geolocator_apple/ios"
+  image_cropper:
+    :path: ".symlinks/plugins/image_cropper/ios"
+  image_picker_ios:
+    :path: ".symlinks/plugins/image_picker_ios/ios"
   isar_flutter_libs:
     :path: ".symlinks/plugins/isar_flutter_libs/ios"
   local_auth_ios:
@@ -381,6 +394,8 @@ SPEC CHECKSUMS:
   GoogleDataTransport: 54dee9d48d14580407f8f5fbf2f496e92437a2f2
   GoogleUtilities: 13e2c67ede716b8741c7989e26893d151b2b2084
   GTMSessionFetcher: e8647203b65cee28c5f73d0f473d096653945e72
+  image_cropper: 60c2789d1f1a78c873235d4319ca0c34a69f2d98
+  image_picker_ios: 4a8aadfbb6dc30ad5141a2ce3832af9214a705b5
   isar_flutter_libs: b69f437aeab9c521821c3f376198c4371fa21073
   local_auth_ios: c6cf091ded637a88f24f86a8875d8b0f526e2605
   map_launcher: e325db1261d029ff33e08e03baccffe09593ffea
@@ -396,6 +411,7 @@ SPEC CHECKSUMS:
   sqflite: 31f7eba61e3074736dff8807a9b41581e4f7f15a
   sqlite3: fd89671d969f3e73efe503ce203e28b016b58f68
   sqlite3_flutter_libs: 04ba0d14a04335a2fbf9a331e8664f401fbccdd5
+  TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
   url_launcher_ios: 08a3dfac5fb39e8759aeb0abbd5d9480f30fc8b4
 
 PODFILE CHECKSUM: f10c0438b63bc24e6bbc207956dc27d16c4408f2

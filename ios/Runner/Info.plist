@@ -13,6 +13,14 @@
 	</array>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
+	<!-- camera keys START -->
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Choose a photo from the gallery.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Take a photo.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Record a video.</string>
+	<!-- camera keys DONE -->
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>

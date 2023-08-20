@@ -1,4 +1,7 @@
 import 'package:confesi/application/create_post/cubit/post_categories_cubit.dart';
+import 'package:confesi/core/utils/sizing/bottom_safe_area.dart';
+import 'package:confesi/core/utils/sizing/height_fraction.dart';
+import 'package:confesi/presentation/create_post/widgets/img.dart';
 import 'package:confesi/presentation/shared/behaviours/nav_blocker.dart';
 import 'package:provider/provider.dart';
 
@@ -143,7 +146,7 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
               child: Column(
                 children: [
                   AppbarLayout(
-                    bottomBorder: false,
+                    bottomBorder: true,
                     centerWidget: AnimatedSwitcher(
                       duration: const Duration(milliseconds: 250),
                       child: focusedField != FocusedField.none
@@ -201,10 +204,11 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                     leftIconOnPress: () {
                       router.pop(context);
                     },
+                    backgroundColor: Theme.of(context).colorScheme.background,
                   ),
                   Expanded(
                     child: Container(
-                      color: Theme.of(context).colorScheme.background,
+                      color: Theme.of(context).colorScheme.shadow,
                       child: Column(
                         children: [
                           Expanded(
@@ -216,7 +220,8 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                                     child: SizedBox(
                                       height: constraints.maxHeight,
                                       child: ScrollableArea(
-                                        physics: const ClampingScrollPhysics(),
+                                        thumbVisible: false,
+                                        physics: const BouncingScrollPhysics(),
                                         controller: scrollController,
                                         child: Padding(
                                           padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -272,6 +277,7 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                                                   child: const SizedBox(height: 15),
                                                 ),
                                               ),
+                                              const Img(),
                                               GestureDetector(
                                                 onTap: () => bodyFocusNode.requestFocus(),
                                                 child: Container(
@@ -308,8 +314,8 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                                                 ),
                                               ),
 
-                                              const SizedBox(
-                                                height: 30,
+                                              SizedBox(
+                                                height: bottomSafeArea(context) + heightFraction(context, 1 / 4),
                                               ), // Adds some padding to the bottom.
                                             ],
                                           ),

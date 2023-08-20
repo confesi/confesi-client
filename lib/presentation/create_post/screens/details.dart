@@ -55,7 +55,8 @@ class _CreatePostDetailsState extends State<CreatePostDetails> with AutomaticKee
                               blocking: Provider.of<CreatingEditingPostsService>(context).metaState
                                   is CreatingEditingPostMetaStateLoading,
                               child: AppbarLayout(
-                                bottomBorder: false,
+                                backgroundColor: Theme.of(context).colorScheme.background,
+                                bottomBorder: true,
                                 centerWidget: AnimatedSwitcher(
                                   duration: const Duration(milliseconds: 250),
                                   child: Text(
@@ -74,39 +75,42 @@ class _CreatePostDetailsState extends State<CreatePostDetails> with AutomaticKee
                               ),
                             ),
                             Expanded(
-                              child: ScrollableView(
-                                physics: const BouncingScrollPhysics(),
-                                scrollBarVisible: false,
-                                hapticsEnabled: false,
-                                inlineBottomOrRightPadding: 20,
-                                padding: const EdgeInsets.symmetric(horizontal: 15),
-                                controller: ScrollController(),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    BlocBuilder<PostCategoriesCubit, PostCategoriesState>(
-                                      builder: (context, state) {
-                                        if (state is PostCategoriesData) {
-                                          return TileGroup(
-                                            text: "Select genre",
-                                            tiles: state.categories.map((category) {
-                                              return BoolSelectionTile(
-                                                isActive: state.selectedIndex == state.categories.indexOf(category),
-                                                icon: category.icon,
-                                                text: category.name,
-                                                backgroundColor: Theme.of(context).colorScheme.surface,
-                                                onTap: () => context
-                                                    .read<PostCategoriesCubit>()
-                                                    .updateCategoryIdx(state.categories.indexOf(category)),
-                                              );
-                                            }).toList(),
-                                          );
-                                        } else {
-                                          throw Exception("bad state");
-                                        }
-                                      },
-                                    ),
-                                  ],
+                              child: Container(
+                                color: Theme.of(context).colorScheme.shadow,
+                                child: ScrollableView(
+                                  physics: const BouncingScrollPhysics(),
+                                  scrollBarVisible: false,
+                                  hapticsEnabled: false,
+                                  inlineBottomOrRightPadding: 20,
+                                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                                  controller: ScrollController(),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      BlocBuilder<PostCategoriesCubit, PostCategoriesState>(
+                                        builder: (context, state) {
+                                          if (state is PostCategoriesData) {
+                                            return TileGroup(
+                                              text: "Select genre",
+                                              tiles: state.categories.map((category) {
+                                                return BoolSelectionTile(
+                                                  isActive: state.selectedIndex == state.categories.indexOf(category),
+                                                  icon: category.icon,
+                                                  text: category.name,
+                                                  backgroundColor: Theme.of(context).colorScheme.surface,
+                                                  onTap: () => context
+                                                      .read<PostCategoriesCubit>()
+                                                      .updateCategoryIdx(state.categories.indexOf(category)),
+                                                );
+                                              }).toList(),
+                                            );
+                                          } else {
+                                            throw Exception("bad state");
+                                          }
+                                        },
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
