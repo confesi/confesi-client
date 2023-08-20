@@ -6,6 +6,7 @@ class AppTheme {
     highlightColor: Colors.transparent,
     splashColor: Colors.transparent,
     colorScheme: const ColorScheme(
+      
       onSurfaceVariant: Colors.white,
       surfaceVariant: Color.fromARGB(255, 23, 23, 23),
       brightness: Brightness.dark,
@@ -26,6 +27,7 @@ class AppTheme {
       secondaryContainer: Color(0xfffde5b6),
       onErrorContainer: Color(0xff59CE8F),
       onSecondaryContainer: Color(0xffEB4747),
+      
     ),
   );
 
