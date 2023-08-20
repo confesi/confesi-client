@@ -69,21 +69,29 @@ class AuthFlowCubit extends Cubit<AuthFlowState> {
 
   Future<void> logout(BuildContext context) async {
     _api.cancelCurrReq();
-
     emit(AuthFlowLoading());
-    (await sl.get<HiveService>().clearAllLocalData()).fold(
-      (failure) => emit(const AuthFlowNotification("Unknown error", NotificationType.failure)),
-      (success) async {
-        sl.get<UserAuthService>().clearAllAppState(context);
-        await sl.get<NotificationService>().deleteTokenFromLocalDb();
-        try {
-          await sl.get<FirebaseAuth>().signOut();
-          clear();
-        } catch (_) {
-          emit(const AuthFlowNotification("Unknown error", NotificationType.failure));
-        }
-      },
-    );
+
+    sl.get<HiveService>().clearAllLocalData().then((result) {
+      result.fold(
+        (failure) => emit(const AuthFlowNotification("Unknown error", NotificationType.failure)),
+        (success) {
+          sl.get<NotificationService>().deleteTokenFromLocalDb().then((_) {
+            sl.get<FirebaseAuth>().signOut().then((_) {
+              clear();
+              Future.delayed(const Duration(
+                      milliseconds: 1000)) // enough delay for the logout animation to finish before resetting state
+                  .then((value) => sl.get<UserAuthService>().clearAllAppState(context));
+            }).catchError((_) {
+              emit(const AuthFlowNotification("Unknown error", NotificationType.failure));
+            });
+          }).catchError((_) {
+            emit(const AuthFlowNotification("Unknown error", NotificationType.failure));
+          });
+        },
+      );
+    }).catchError((_) {
+      emit(const AuthFlowNotification("Unknown error", NotificationType.failure));
+    });
   }
 
   Future<void> registerAnon() async {

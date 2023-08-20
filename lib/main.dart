@@ -79,6 +79,7 @@ Future<void> startAuthListener() async {
   _userChangeStream = sl.get<StreamController<User?>>().stream.listen((User? user) async {
     sl.get<NotificationService>().updateToken(user?.uid);
     if (user == null) {
+      
       // firstOpen = true;
       await Future.delayed(const Duration(milliseconds: 500)).then((_) {
         sl.get<UserAuthService>().setNoDataState();
