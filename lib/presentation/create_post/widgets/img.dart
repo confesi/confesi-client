@@ -1,75 +1,87 @@
 import 'dart:io';
+import 'package:confesi/core/styles/typography.dart';
+import 'package:confesi/core/utils/sizing/width_fraction.dart';
+import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:confesi/presentation/shared/other/cached_online_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
 
 class Img extends StatefulWidget {
-  final String? imageUrl;
-  final File? fileImage;
-  final EdgeInsets? padding;
-  final VoidCallback? onDelete;
+  const Img({
+    Key? key,
+    this.maxImages = 5,
+  }) : super(key: key);
 
-  const Img({Key? key, this.imageUrl, this.fileImage, this.padding, this.onDelete})
-      : assert(imageUrl == null || fileImage == null),
-        super(key: key);
+  final int maxImages;
 
   @override
-  _ImgState createState() => _ImgState();
+  ImgState createState() => ImgState();
 }
 
-class _ImgState extends State<Img> {
-  File? fileImage;
-
-  @override
-  void initState() {
-    super.initState();
-    fileImage = widget.fileImage;
-  }
-
-  Future<void> _cropImage() async {
-    if (fileImage != null) {
-      File? croppedFile = await ImageCropper().cropImage(
-        sourcePath: fileImage!.path,
-        aspectRatioPresets: [
-          CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio4x3,
-          CropAspectRatioPreset.ratio5x4,
-        ],
-        androidUiSettings: const AndroidUiSettings(
-          toolbarTitle: 'Crop Image',
-          initAspectRatio: CropAspectRatioPreset.ratio5x4,
-          lockAspectRatio: false,
-        ),
-        iosUiSettings: const IOSUiSettings(
-          title: 'Crop Image',
-        ),
-      );
-
-      if (croppedFile != null) {
-        setState(() {
-          fileImage = croppedFile;
-        });
-      }
-    } else {
-      _selectFromGallery();
-    }
-  }
+class ImgState extends State<Img> {
+  final List<File?> _selectedFiles = [];
 
   Future<void> _selectFromGallery() async {
+    if (_selectedFiles.length >= widget.maxImages) {
+      return;
+    }
     final pickedFile = await ImagePicker().pickImage(
       source: ImageSource.gallery,
     );
 
     if (pickedFile != null) {
       setState(() {
-        fileImage = File(pickedFile.path);
+        _selectedFiles.add(File(pickedFile.path));
       });
-      _showEditor();
     }
   }
 
-  void _showEditor() {
+  Future<void> _selectFromCamera() async {
+    if (_selectedFiles.length >= widget.maxImages) {
+      return;
+    }
+    final pickedFile = await ImagePicker().pickImage(
+      source: ImageSource.camera,
+    );
+
+    if (pickedFile != null) {
+      setState(() {
+        _selectedFiles.add(File(pickedFile.path));
+      });
+    }
+  }
+
+  Future<void> _cropImage(File? file) async {
+    if (file != null) {
+      File? croppedFile = await ImageCropper().cropImage(
+        sourcePath: file.path,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio5x4,
+        ],
+        androidUiSettings: AndroidUiSettings(
+          toolbarTitle: 'Crop Image',
+          initAspectRatio: CropAspectRatioPreset.ratio5x4,
+          lockAspectRatio: false,
+        ),
+        iosUiSettings: IOSUiSettings(
+          title: 'Crop Image',
+        ),
+      );
+
+      setState(() {
+        int index = _selectedFiles.indexOf(file);
+        if (index != -1 && croppedFile != null) {
+          _selectedFiles[index] = croppedFile;
+        }
+      });
+    }
+  }
+
+  void _showEditor(File? file) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -77,31 +89,28 @@ class _ImgState extends State<Img> {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Expanded(child: buildImg(context, isThumbnail: false)),
+              Expanded(child: Image.file(file!)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.close, color: Colors.red),
+                    icon: Icon(Icons.close, color: Colors.red),
                     onPressed: () {
                       setState(() {
-                        fileImage = null;
+                        _selectedFiles.remove(file);
                       });
                       Navigator.of(context).pop();
-                      if (widget.onDelete != null) {
-                        widget.onDelete!();
-                      }
                     },
                   ),
                   IconButton(
-                    icon: const Icon(Icons.edit),
+                    icon: Icon(Icons.edit),
                     onPressed: () {
-                      _cropImage();
+                      _cropImage(file);
                       Navigator.of(context).pop();
                     },
                   ),
                 ],
-              )
+              ),
             ],
           ),
         );
@@ -109,35 +118,114 @@ class _ImgState extends State<Img> {
     );
   }
 
-  Widget buildImg(BuildContext context, {bool isThumbnail = true}) {
-    Widget imageWidget;
-    if (fileImage != null) {
-      imageWidget = Image.file(fileImage!);
-    } else if (widget.imageUrl != null) {
-      imageWidget = CachedOnlineImage(url: widget.imageUrl!);
-    } else {
-      return IconButton(
-        icon: Icon(Icons.add_photo_alternate, size: 50.0, color: Colors.grey[400]),
-        onPressed: _selectFromGallery,
-      );
-    }
-
-    if (isThumbnail) {
-      return AspectRatio(
-        aspectRatio: 1, // Ensure 1:1 for the thumbnail
-        child: ClipRect(child: imageWidget),
-      );
-    }
-    return ClipRect(child: imageWidget);
-  }
-
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: _showEditor,
+    return Container(
+      height: 150,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15.0),
+        color: Theme.of(context).colorScheme.background,
+        border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
+      ),
       child: Padding(
-        padding: widget.padding ?? const EdgeInsets.all(0),
-        child: buildImg(context, isThumbnail: true),
+        padding: const EdgeInsets.symmetric(vertical: 15),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start, // ensures the children are left-aligned
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                physics: const ClampingScrollPhysics(),
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const SizedBox(width: 15),
+                    ..._selectedFiles.map((file) {
+                      return TouchableScale(
+                        onLongPress: () {
+                          setState(() {
+                            _selectedFiles.remove(file);
+                          });
+                        },
+                        onTap: () => _showEditor(file),
+                        child: _buildFilePreview(file!),
+                      );
+                    }).toList(),
+                    if (_selectedFiles.length < widget.maxImages)
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 5),
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: TouchableScale(
+                                onTap: _selectFromGallery,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: Icon(CupertinoIcons.photo,
+                                      size: 35.0, color: Theme.of(context).colorScheme.onSurface),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 5),
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: TouchableScale(
+                                onTap: _selectFromCamera,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: Icon(CupertinoIcons.camera,
+                                      size: 35.0, color: Theme.of(context).colorScheme.onSurface),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    const SizedBox(width: 15),
+                  ],
+                ),
+              ),
+            ),
+            // if (_selectedFiles.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.only(top: 5, left: 15, right: 15),
+              child: Text(
+                "${_selectedFiles.length}/${widget.maxImages} images • long press to delete",
+                style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFilePreview(File file) {
+    return Container(
+      margin: const EdgeInsets.only(right: 5.0),
+      decoration: BoxDecoration(
+        border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
+        borderRadius: BorderRadius.circular(15.0),
+      ),
+      height: 100.0,
+      child: AspectRatio(
+        aspectRatio: 1,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(15.0),
+          child: Container(
+            color: Colors.transparent,
+            child: FittedBox(
+              fit: BoxFit.cover,
+              child: Image.file(file),
+            ),
+          ),
+        ),
       ),
     );
   }

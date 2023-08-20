@@ -228,9 +228,14 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.center,
                                             children: [
+                                              const SizedBox(height: 15),
+                                              const Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: Img(),
+                                              ),
                                               // Transparent hitbox trick.
                                               Container(
-                                                height: 20,
+                                                height: 10,
                                                 color: Colors.transparent,
                                               ),
                                               Container(
@@ -259,7 +264,7 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                                                   decoration: InputDecoration(
                                                     isCollapsed: true,
                                                     border: InputBorder.none,
-                                                    hintMaxLines: 3,
+                                                    hintMaxLines: 1,
                                                     hintText: titleHint,
                                                     hintStyle: kDisplay1.copyWith(
                                                       color: Theme.of(context).colorScheme.onSurface,
@@ -274,10 +279,10 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                                                   // Transparent hitbox trick.
                                                   color: Colors.transparent,
                                                   width: double.infinity,
-                                                  child: const SizedBox(height: 15),
+                                                  child: const SizedBox(height: 5),
                                                 ),
                                               ),
-                                              const Img(),
+
                                               GestureDetector(
                                                 onTap: () => bodyFocusNode.requestFocus(),
                                                 child: Container(
@@ -313,7 +318,6 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                                                   ),
                                                 ),
                                               ),
-
                                               SizedBox(
                                                 height: bottomSafeArea(context) + heightFraction(context, 1 / 4),
                                               ), // Adds some padding to the bottom.

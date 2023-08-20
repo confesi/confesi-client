@@ -15,11 +15,11 @@
 	<true/>
 	<!-- camera keys START -->
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Choose a photo from the gallery.</string>
+	<string>We need this to select images from your gallery</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Take a photo.</string>
+	<string>We need this to take pictures</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Record a video.</string>
+	<string>We need this to record videos</string>
 	<!-- camera keys DONE -->
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
