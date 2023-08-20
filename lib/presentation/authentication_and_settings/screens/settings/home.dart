@@ -208,7 +208,7 @@ class SettingsHome extends StatelessWidget {
                               secondaryText: isAnon ? "Guest" : sl.get<UserAuthService>().email,
                               onTap: () async {
                                 FocusScope.of(context).unfocus();
-                                await context.read<AuthFlowCubit>().logout();
+                                await context.read<AuthFlowCubit>().logout(context);
                               },
                             ),
                             if (!isAnon)

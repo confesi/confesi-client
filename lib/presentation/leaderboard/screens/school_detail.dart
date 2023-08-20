@@ -91,7 +91,7 @@ class SchoolDetail extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: heightFraction(context, .3),
+                  height: heightFraction(context, .5),
                   child: Stack(
                     children: [
                       Positioned.fill(

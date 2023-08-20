@@ -17,6 +17,10 @@ class QuickActionsCubit extends Cubit<QuickActionsState> {
 
   final Sharing _sharing;
 
+  void clear() {
+    emit(QuickActionsDefault(QuickActionsNoErr()));
+  }
+
   void locateOnMaps(double lat, double long, String title) async {
     if (state is QuickActionsDefault) {
       try {

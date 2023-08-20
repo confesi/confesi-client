@@ -23,6 +23,7 @@ import '../../presentation/primary/screens/critical_error.dart';
 import '../../presentation/primary/screens/home.dart';
 import '../../presentation/primary/screens/showcase.dart';
 import '../../presentation/profile/screens/account_details.dart';
+import '../../presentation/user/screens/emojis.dart';
 import '../../presentation/user/screens/your_posts.dart';
 import '../../presentation/user/screens/saved_posts.dart';
 import '../../presentation/watched_universities/screens/search_schools.dart';
@@ -185,7 +186,10 @@ final GoRouter router = GoRouter(
         return SchoolDetail(props: props);
       },
     ),
-
+    GoRoute(
+        path: "/home/emojis",
+        builder: (BuildContext context, GoRouterState state) =>
+            const EmojisScreen()), 
     GoRoute(
         path: '/home/profile/account',
         builder: (BuildContext context, GoRouterState state) => const AccountDetailsScreen()),

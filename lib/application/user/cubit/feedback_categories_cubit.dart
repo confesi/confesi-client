@@ -15,6 +15,10 @@ FeedbackCategoriesData _defaultState() => const FeedbackCategoriesData(
 class FeedbackCategoriesCubit extends Cubit<FeedbackCategoriesState> {
   FeedbackCategoriesCubit() : super(_defaultState());
 
+  void clear() {
+    emit(_defaultState());
+  }
+
   String category() {
     if (state is FeedbackCategoriesData) {
       return (state as FeedbackCategoriesData).categories[(state as FeedbackCategoriesData).selectedIndex].name;

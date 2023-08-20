@@ -103,7 +103,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                 FocusScope.of(context).unfocus();
                                 await context
                                     .read<AuthFlowCubit>()
-                                    .login(emailController.text, passwordController.text);
+                                    .login(context, emailController.text, passwordController.text);
                                 FocusManager.instance.primaryFocus?.unfocus();
                               },
                               icon: CupertinoIcons.chevron_right,

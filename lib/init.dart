@@ -147,13 +147,13 @@ Future<void> init() async {
   //! State (BLoC or Cubit)
   sl.registerFactory(() => SentimentAnalysisCubit());
   sl.registerFactory(() => LeaderboardCubit(Api()));
-  sl.registerFactory(() => AuthFlowCubit());
-  sl.registerFactory(() => HottestCubit());
+  sl.registerFactory(() => AuthFlowCubit(Api()));
+  sl.registerFactory(() => HottestCubit(Api()));
   sl.registerFactory(() => PostCategoriesCubit());
-  sl.registerFactory(() => AccountDetailsCubit());
-  sl.registerFactory(() => FeedbackCubit());
+  sl.registerFactory(() => AccountDetailsCubit(Api()));
+  sl.registerFactory(() => FeedbackCubit(Api()));
   sl.registerFactory(() => FeedbackCategoriesCubit());
-  sl.registerFactory(() => StatsCubit());
+  sl.registerFactory(() => StatsCubit(Api()));
   sl.registerFactory(() => SchoolsDrawerCubit(Api()));
   sl.registerFactory(() => SearchSchoolsCubit(Api()));
   sl.registerFactory(() => SavedPostsCubit(Api()));
@@ -161,7 +161,7 @@ Future<void> init() async {
   sl.registerFactory(() => NotificationsCubit());
   sl.registerFactory(() => CommentSectionCubit(Api(), Api(), Api()));
   sl.registerFactory(() => CreateCommentCubit());
-  sl.registerFactory(() => IndividualPostCubit());
+  sl.registerFactory(() => IndividualPostCubit(Api()));
 
   //! Firebase
   await initFirebase();

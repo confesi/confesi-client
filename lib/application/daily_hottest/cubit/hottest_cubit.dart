@@ -13,16 +13,25 @@ import '../../../models/post.dart';
 part 'hottest_state.dart';
 
 class HottestCubit extends Cubit<HottestState> {
-  HottestCubit() : super(DailyHottestLoading());
+  HottestCubit(this._api) : super(DailyHottestLoading());
+
+  final Api _api;
 
   Future<void> loadMostRecent() async => await _loadFromDate(null);
+
+  void clear() {
+    _api.cancelCurrReq();
+    sl.get<GlobalContentService>().setPosts([]);
+    emit(DailyHottestLoading());
+  }
 
   Future<void> loadPastDate(DateTime date) async => await _loadFromDate(date);
 
   Future<void> _loadFromDate(DateTime? date) async {
+    _api.cancelCurrReq();
     emit(DailyHottestLoading());
     String queryParam = date == null ? "" : "?day=${date.yearMonthDay()}";
-    (await Api().req(Verb.get, true, "/api/v1/posts/hottest$queryParam", {})).fold(
+    (await _api.req(Verb.get, true, "/api/v1/posts/hottest$queryParam", {})).fold(
       (failure) => emit(DailyHottestError(message: failure.msg())),
       (response) {
         try {

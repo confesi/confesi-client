@@ -6,11 +6,19 @@ import '../../../core/services/api_client/api.dart';
 part 'feedback_state.dart';
 
 class FeedbackCubit extends Cubit<FeedbackState> {
-  FeedbackCubit() : super(FeedbackInitial());
+  FeedbackCubit(this._api) : super(FeedbackInitial());
+
+  final Api _api;
+
+  void clear() {
+    _api.cancelCurrReq();
+    emit(FeedbackInitial());
+  }
 
   Future<void> sendFeedback(String feedback, String feedbackType) async {
+    _api.cancelCurrReq();
     emit(FeedbackLoading());
-    (await Api().req(Verb.post, true, "/api/v1/feedback/create", {
+    (await _api.req(Verb.post, true, "/api/v1/feedback/create", {
       "message": feedback,
       "type": feedbackType,
     }))

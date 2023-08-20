@@ -37,6 +37,7 @@ class CreatingEditingPostsService extends ChangeNotifier {
   }
 
   void clear() {
+    _api.cancelCurrReq();
     metaState = CreatingEditingPostMetaStateEnteringData();
     title = "";
     body = "";

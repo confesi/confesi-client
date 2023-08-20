@@ -121,7 +121,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> with TickerProvid
                         child: TouchableOpacity(
                           onTap: () async {
                             FocusScope.of(context).unfocus();
-                            await context.read<AuthFlowCubit>().logout();
+                            await context.read<AuthFlowCubit>().logout(context);
                           },
                           child: Container(
                             // Transparent hitbox trick.

@@ -20,6 +20,11 @@ class SchoolsDrawerCubit extends Cubit<SchoolsDrawerState> {
 
   final Api _api;
 
+  void clear() {
+    _api.cancelCurrReq();
+    emit(SchoolsDrawerLoading());
+  }
+
   String selectedStr(BuildContext context) {
     if (state is SchoolsDrawerData && (state as SchoolsDrawerData).selected is SelectedSchool) {
       return Provider.of<GlobalContentService>(context)

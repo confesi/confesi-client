@@ -17,6 +17,11 @@ class SavedPostsCubit extends Cubit<SavedPostsState> {
 
   final Api _api;
 
+  void clear() {
+    _api.cancelCurrReq();
+    emit(SavedPostsLoading());
+  }
+
   Future<void> loadPosts({bool refresh = false, bool fullScreenRefresh = false}) async {
     if (fullScreenRefresh || state is SavedPostsError) {
       refresh = true;

@@ -142,11 +142,20 @@ class PostsService extends ChangeNotifier {
     }
   }
 
-  void clearTrendingPosts() => trendingPostIds.clear();
+  void clearTrendingPosts() {
+    _trendingApi.cancelCurrReq();
+    trendingPostIds.clear();
+  }
 
-  void clearRecentsPosts() => recentsPostIds.clear();
+  void clearRecentsPosts() {
+    _recentsApi.cancelCurrReq();
+    recentsPostIds.clear();
+  }
 
-  void clearSentimentPosts() => sentimentPostIds.clear();
+  void clearSentimentPosts() {
+    _sentimentApi.cancelCurrReq();
+    sentimentPostIds.clear();
+  }
 
   void reloadAllFeeds() {
     // set pagination states to loading

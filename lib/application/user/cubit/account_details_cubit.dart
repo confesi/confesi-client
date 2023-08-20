@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:confesi/application/user/cubit/stats_cubit.dart';
 import 'package:confesi/core/results/failures.dart';
+import 'package:confesi/init.dart';
 import 'package:confesi/models/user.dart';
 import 'package:equatable/equatable.dart';
 
@@ -11,11 +12,20 @@ import '../../../core/services/api_client/api.dart';
 part 'account_details_state.dart';
 
 class AccountDetailsCubit extends Cubit<AccountDetailsState> {
-  AccountDetailsCubit() : super(AccountDetailsLoading());
+  AccountDetailsCubit(this._api) : super(AccountDetailsLoading());
+
+  final Api _api;
+
+  void clear() {
+    _api.cancelCurrReq();
+    emit(AccountDetailsLoading());
+  }
 
   Future<void> loadUserData() async {
+    _api.cancelCurrReq();
+
     emit(AccountDetailsLoading());
-    (await Api().req(Verb.get, true, "/api/v1/user/user", {})).fold(
+    (await _api.req(Verb.get, true, "/api/v1/user/user", {})).fold(
       (failureWithMsg) => emit(AccountDetailsError(failureWithMsg.msg())),
       (response) async {
         try {
@@ -94,7 +104,9 @@ class AccountDetailsCubit extends Cubit<AccountDetailsState> {
     AccData oldData,
     Function(AccData oldData) onSuccess,
   ) async {
-    (await Api().req(Verb.delete, true, endpoint, {})).fold(
+    _api.cancelCurrReq();
+
+    (await _api.req(Verb.delete, true, endpoint, {})).fold(
       (failureWithMsg) => emit(AccountDetailsTrueData(err: Err(failureWithMsg.msg()), data: oldData)),
       (response) async {
         try {
@@ -205,7 +217,9 @@ class AccountDetailsCubit extends Cubit<AccountDetailsState> {
     AccData oldData,
     Function(AccData oldData) onSuccess,
   ) async {
-    (await Api().req(Verb.patch, true, endpoint, {
+    _api.cancelCurrReq();
+
+    (await _api.req(Verb.patch, true, endpoint, {
       jsonBodyKey: jsonBodyValue,
     }))
         .fold(

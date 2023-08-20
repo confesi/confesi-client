@@ -76,7 +76,7 @@ String apiVerbToString(Verb method) {
 
 class Api {
   final Map<String, String> _headers = <String, String>{};
-  Duration _timeout = const Duration(seconds: 10);
+  Duration _timeout = const Duration(seconds: 4);
   http.Client? _client;
 
   Api() {

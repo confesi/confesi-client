@@ -9,11 +9,19 @@ import '../../../models/stats.dart';
 part 'stats_state.dart';
 
 class StatsCubit extends Cubit<StatsState> {
-  StatsCubit() : super(StatsLoading());
+  StatsCubit(this._api) : super(StatsLoading());
+
+  final Api _api;
+
+  void clear() {
+    _api.cancelCurrReq();
+    emit(StatsLoading());
+  }
 
   Future<void> loadStats() async {
+    _api.cancelCurrReq();
     emit(StatsLoading());
-    (await Api().req(Verb.get, true, "/api/v1/user/user-stats", {})).fold(
+    (await _api.req(Verb.get, true, "/api/v1/user/user-stats", {})).fold(
       (failureWithMessage) => emit(StatsError(failureWithMessage.msg())),
       (response) async {
         try {

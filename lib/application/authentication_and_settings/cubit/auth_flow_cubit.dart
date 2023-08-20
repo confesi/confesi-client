@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:confesi/core/services/fcm_notifications/notification_service.dart';
 import 'package:confesi/core/services/hive_client/hive_client.dart';
+import 'package:confesi/core/services/user_auth/user_auth_service.dart';
+import 'package:flutter/widgets.dart';
 import '../../../core/services/api_client/api.dart';
 import '../../../core/router/go_router.dart';
 import 'package:equatable/equatable.dart';
@@ -15,15 +17,20 @@ import '../../../presentation/shared/overlays/notification_chip.dart';
 part 'auth_flow_state.dart';
 
 class AuthFlowCubit extends Cubit<AuthFlowState> {
-  AuthFlowCubit() : super(AuthFlowDefault());
+  AuthFlowCubit(this._api) : super(AuthFlowDefault());
+
+  final Api _api;
 
   bool get isLoading => state is AuthFlowLoading;
 
-  void emitDefault() {
+  void clear() {
+    _api.cancelCurrReq();
     emit(AuthFlowDefault());
   }
 
   Future<void> sendPasswordResetEmail(String email) async {
+    _api.cancelCurrReq();
+
     emit(AuthFlowLoading());
 
     if (email.isEmpty) {
@@ -32,7 +39,7 @@ class AuthFlowCubit extends Cubit<AuthFlowState> {
       return;
     }
 
-    (await Api().req(Verb.post, false, "/api/v1/auth/send-password-reset-email", {"email": email}))
+    (await _api.req(Verb.post, false, "/api/v1/auth/send-password-reset-email", {"email": email}))
         .fold((failure) => emit(AuthFlowNotification(failure.msg(), NotificationType.failure)), (response) async {
       if (response.statusCode.toString()[0] == "4") {
         emit(const AuthFlowNotification("TODO: 4XX", NotificationType.failure));
@@ -45,8 +52,10 @@ class AuthFlowCubit extends Cubit<AuthFlowState> {
   }
 
   Future<void> sendVerificationEmail() async {
+    _api.cancelCurrReq();
+
     emit(AuthFlowLoading());
-    (await Api().req(Verb.post, true, "/api/v1/auth/resend-verification-email", {}))
+    (await _api.req(Verb.post, true, "/api/v1/auth/resend-verification-email", {}))
         .fold((failure) => emit(AuthFlowNotification(failure.msg(), NotificationType.failure)), (response) async {
       if (response.statusCode.toString()[0] == "4") {
         emit(const AuthFlowNotification("TODO: 4XX", NotificationType.failure));
@@ -58,15 +67,18 @@ class AuthFlowCubit extends Cubit<AuthFlowState> {
     });
   }
 
-  Future<void> logout() async {
+  Future<void> logout(BuildContext context) async {
+    _api.cancelCurrReq();
+
     emit(AuthFlowLoading());
-    (await sl.get<HiveService>().clearAllData()).fold(
+    (await sl.get<HiveService>().clearAllLocalData()).fold(
       (failure) => emit(const AuthFlowNotification("Unknown error", NotificationType.failure)),
       (success) async {
+        sl.get<UserAuthService>().clearAllAppState(context);
         await sl.get<NotificationService>().deleteTokenFromLocalDb();
         try {
           await sl.get<FirebaseAuth>().signOut();
-          emitDefault();
+          clear();
         } catch (_) {
           emit(const AuthFlowNotification("Unknown error", NotificationType.failure));
         }
@@ -75,26 +87,34 @@ class AuthFlowCubit extends Cubit<AuthFlowState> {
   }
 
   Future<void> registerAnon() async {
+    _api.cancelCurrReq();
+
     emit(AuthFlowLoading());
     try {
       UserCredential user = await sl.get<FirebaseAuth>().signInAnonymously();
       if (user.user == null) {
         emit(const AuthFlowNotification("Unknown error", NotificationType.failure));
       }
-      emitDefault();
+      clear();
     } catch (_) {
       emit(const AuthFlowNotification("Unknown error", NotificationType.failure));
     }
   }
 
-  Future<void> login(String email, String password) async {
+  Future<void> login(BuildContext context, String email, String password) async {
+    _api.cancelCurrReq();
+
     emit(AuthFlowLoading());
     try {
-      UserCredential user = await sl.get<FirebaseAuth>().signInWithEmailAndPassword(email: email, password: password);
-      if (user.user == null) {
-        emit(const AuthFlowNotification("Unknown error", NotificationType.failure));
-      }
-      emitDefault();
+      sl.get<FirebaseAuth>().signInWithEmailAndPassword(email: email, password: password).then((UserCredential user) {
+        if (user.user == null) {
+          emit(const AuthFlowNotification("Unknown error", NotificationType.failure));
+        } else {
+          sl.get<UserAuthService>().reloadAppStateThatNeedsAuth(context);
+        }
+        clear();
+      });
+
       // catch all firebase auth exceptions
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -114,6 +134,8 @@ class AuthFlowCubit extends Cubit<AuthFlowState> {
   }
 
   Future<void> refreshToken() async {
+    _api.cancelCurrReq();
+
     emit(AuthFlowLoading());
 
     try {
@@ -146,6 +168,8 @@ class AuthFlowCubit extends Cubit<AuthFlowState> {
 
   Future<void> register(String email, String password, String confirmPassword,
       {bool upgradingToFullAcc = false}) async {
+    _api.cancelCurrReq();
+
     emit(AuthFlowLoading());
 
     if (password != confirmPassword) {
@@ -160,7 +184,7 @@ class AuthFlowCubit extends Cubit<AuthFlowState> {
       emit(AuthFlowDefault());
       return;
     }
-    (await Api().req(
+    (await _api.req(
       Verb.post,
       false,
       "/api/v1/auth/register",

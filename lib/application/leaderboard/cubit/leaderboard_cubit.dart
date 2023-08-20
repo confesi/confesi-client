@@ -22,6 +22,12 @@ class LeaderboardCubit extends Cubit<LeaderboardState> {
 
   final Api _api;
 
+  void clear() async {
+    _api.cancelCurrReq();
+    sl.get<GlobalContentService>().clearSchools();
+    emit(LeaderboardLoading());
+  }
+
   Future<void> loadRankings({bool forceRefresh = false}) async {
     _api.cancelCurrReq();
 

@@ -29,6 +29,26 @@ class GlobalContentService extends ChangeNotifier {
     repliesPerCommentThread[rootComment] = replies;
   }
 
+  void clear() {
+    _setHomeApi.cancelCurrReq();
+    _voteApi.cancelCurrReq();
+    _watchedSchoolApi.cancelCurrReq();
+    clearPosts();
+    clearComments();
+    clearSchools();
+    clearRepliesPerSchool();
+  }
+
+  void clearPosts() {
+    posts.clear();
+    notifyListeners();
+  }
+
+  void clearRepliesPerSchool() {
+    repliesPerCommentThread.clear();
+    notifyListeners();
+  }
+
   int getRepliesPerSchool(EncryptedId rootComment) {
     if (repliesPerCommentThread.containsKey(rootComment) && repliesPerCommentThread[rootComment] != null) {
       return repliesPerCommentThread[rootComment]!;

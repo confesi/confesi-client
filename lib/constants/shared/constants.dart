@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import '../../application/create_post/cubit/post_categories_cubit.dart';
 
 /// The root endpoint (domain) for all api calls.
-const String domain = "http://10.0.0.173:8080";
+const String domain = "http://192.168.1.107:8080"; // 10.0.0.173
 
 /// If debug mode is enabled. OFF for prod.
 const bool debugMode = true;

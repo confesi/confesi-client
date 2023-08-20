@@ -215,7 +215,13 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
     }
   }
 
-  void clear() => emit(CommentSectionData.empty());
+  void clear() {
+    _repliesApi.cancelCurrReq();
+    _rootsApi.cancelCurrReq();
+    _createCommentApi.cancelCurrReq();
+
+    emit(CommentSectionData.empty());
+  }
 
   Future<void> loadInitial(
     String postId,

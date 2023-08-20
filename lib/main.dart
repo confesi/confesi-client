@@ -84,7 +84,7 @@ Future<void> startAuthListener() async {
         sl.get<UserAuthService>().setNoDataState();
         HapticFeedback.lightImpact();
         router.go("/open");
-        sl.get<AuthFlowCubit>().emitDefault();
+        sl.get<AuthFlowCubit>().clear();
       });
     } else {
       await Future.delayed(const Duration(milliseconds: 500)).then(
@@ -93,7 +93,7 @@ Future<void> startAuthListener() async {
           await sl.get<UserAuthService>().getData(sl.get<FirebaseAuth>().currentUser!.uid).then((_) {
             if (sl.get<UserAuthService>().state is! UserAuthData) {
               router.go("/error");
-              sl.get<AuthFlowCubit>().emitDefault();
+              sl.get<AuthFlowCubit>().clear();
               return;
             }
             if (user.isAnonymous) {
@@ -112,7 +112,7 @@ Future<void> startAuthListener() async {
                 router.go("/verify-email");
               }
             }
-            sl.get<AuthFlowCubit>().emitDefault();
+            sl.get<AuthFlowCubit>().clear();
           });
         },
       );
@@ -225,15 +225,15 @@ class _MyAppState extends State<MyApp> {
       sl.get<AppLinks>().allStringLinkStream.listen((link) => handleQuickAuthAndAction(() => routeDeepLink(link)));
 
   void routeDeepLink(String deepLink) async {
-    final postRegex = RegExp(r"^https:\/\/confesi\.com\/p\/([a-zA-Z0-9_-]+)$");
+    final postRegex = RegExp(r"^https://confesi.com/p/([a-zA-Z0-9_-]+=*)$");
     final match = postRegex.firstMatch(deepLink);
     if (match != null) {
       final postId = match.group(1);
       if (postId != null) {
-        router.push("/home",
-            extra: HomeProps(
-                () => router.push("/home/posts/comments", extra: HomePostsCommentsProps(NeedToLoadPost(postId)))));
-        // router.push("/home");
+        router.push("/home", extra: HomeProps(() {
+          context.read<CommentSectionCubit>().clear();
+          router.push("/home/posts/comments", extra: HomePostsCommentsProps(NeedToLoadPost(postId)));
+        }));
       } else {
         context.read<NotificationsCubit>().showErr("Unable to open deep link");
       }

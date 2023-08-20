@@ -15,6 +15,11 @@ class SearchSchoolsCubit extends Cubit<SearchSchoolsState> {
 
   final Api _searchSchoolsApi;
 
+  void clear() {
+    _searchSchoolsApi.cancelCurrReq();
+    emit(SearchSchoolsLoading());
+  }
+
   Future<void> loadNearby() async {
     _searchSchoolsApi.cancelCurrReq();
     emit(SearchSchoolsLoading());

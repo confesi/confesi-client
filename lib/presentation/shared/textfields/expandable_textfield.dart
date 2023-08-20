@@ -7,7 +7,6 @@ import 'package:provider/provider.dart';
 
 import '../../../core/services/user_auth/user_auth_service.dart';
 import '../../../core/styles/typography.dart';
-import '../../../init.dart';
 
 class ExpandableTextfield extends StatefulWidget {
   const ExpandableTextfield({

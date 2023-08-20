@@ -19,7 +19,7 @@ class HiveService {
 
   Future<void> dispose() async => await Hive.close();
 
-  Future<Either<GeneralFailure, ApiSuccess>> clearAllData() async {
+  Future<Either<GeneralFailure, ApiSuccess>> clearAllLocalData() async {
     try {
       await Hive.deleteFromDisk();
       await flutterSecureStorage.deleteAll();

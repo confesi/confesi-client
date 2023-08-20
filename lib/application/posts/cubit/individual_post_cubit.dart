@@ -11,15 +11,22 @@ import '../../../init.dart';
 part 'individual_post_state.dart';
 
 class IndividualPostCubit extends Cubit<IndividualPostState> {
-  IndividualPostCubit() : super(IndividualPostLoading());
+  IndividualPostCubit(this._api) : super(IndividualPostLoading());
+
+  final Api _api;
 
   void setLoading() => emit(IndividualPostLoading());
 
   void setPost(PostWithMetadata post) async => emit(IndividualPostData(post));
 
+  void clear() {
+    _api.cancelCurrReq();
+    emit(IndividualPostLoading());
+  }
+
   Future<void> loadPost(String postId) async {
     emit(IndividualPostLoading());
-    (await Api().req(Verb.get, true, "/api/v1/posts/post?id=$postId", {})).fold(
+    (await _api.req(Verb.get, true, "/api/v1/posts/post?id=$postId", {})).fold(
       (failureWithMsg) => emit(IndividualPostError(failureWithMsg.msg())),
       (response) {
         try {
