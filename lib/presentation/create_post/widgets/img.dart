@@ -1,26 +1,39 @@
 import 'dart:io';
+import 'package:confesi/application/user/cubit/notifications_cubit.dart';
+import 'package:confesi/core/styles/typography.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
-class ImgController {
+class ImgController extends ChangeNotifier {
   late ImgState _imgState;
 
   void _attach(ImgState state) {
     _imgState = state;
+    notifyListeners();
   }
 
   Future<void> selectFromGallery() async {
-    _imgState._selectFromGallery();
+    await _imgState._selectFromGallery();
     FocusManager.instance.primaryFocus?.unfocus();
+    notifyListeners();
+  }
+
+  void scrollToEnd() {
+    _imgState._scrollToEnd();
+    notifyListeners();
   }
 
   Future<void> selectFromCamera() async {
-    _imgState._selectFromCamera();
+    await _imgState._selectFromCamera();
     FocusManager.instance.primaryFocus?.unfocus();
+    notifyListeners();
   }
+
+  void notify() => notifyListeners();
 
   List<File> get images => _imgState._images;
 }
@@ -41,14 +54,32 @@ class Img extends StatefulWidget {
 
 class ImgState extends State<Img> {
   final List<File> _images = [];
+  final ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
-    super.initState();
     widget.controller?._attach(this);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    scrollController.dispose();
+  }
+
+  void _animateToEndOfScrollview() {
+    widget.controller!._imgState.scrollController.animateTo(
+        widget.controller!._imgState.scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 250),
+        curve: Curves.easeInOut);
   }
 
   Future<void> _selectFromGallery() async {
+    if (_images.length >= widget.maxImages) {
+      context.read<NotificationsCubit>().showErr("Max images reached");
+      return;
+    }
     final pickedFile = await ImagePicker().pickImage(
       source: ImageSource.gallery,
     );
@@ -56,11 +87,17 @@ class ImgState extends State<Img> {
     if (pickedFile != null && _images.length < widget.maxImages) {
       setState(() {
         _images.add(File(pickedFile.path));
+        widget.controller!.notify();
       });
     }
+    await Future.delayed(const Duration(milliseconds: 250)).then((value) => _animateToEndOfScrollview());
   }
 
   Future<void> _selectFromCamera() async {
+    if (_images.length >= widget.maxImages) {
+      context.read<NotificationsCubit>().showErr("Max images reached");
+      return;
+    }
     final pickedFile = await ImagePicker().pickImage(
       source: ImageSource.camera,
     );
@@ -68,8 +105,10 @@ class ImgState extends State<Img> {
     if (pickedFile != null && _images.length < widget.maxImages) {
       setState(() {
         _images.add(File(pickedFile.path));
+        widget.controller!.notify();
       });
     }
+    await Future.delayed(const Duration(milliseconds: 250)).then((value) => _animateToEndOfScrollview());
   }
 
   @override
@@ -81,6 +120,7 @@ class ImgState extends State<Img> {
         margin: EdgeInsets.only(top: _images.isEmpty ? 0 : 15),
         height: widget.controller != null && _images.isNotEmpty ? 100 : 0,
         child: SingleChildScrollView(
+          controller: scrollController,
           scrollDirection: Axis.horizontal,
           child: Row(
             children: [
@@ -114,8 +154,31 @@ class ImgState extends State<Img> {
                   ],
                 ),
               ),
-
               const SizedBox(width: 10), // SizedBox at the end
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    '${_images.length}/${widget.maxImages} images',
+                    style: kDetail.copyWith(
+                      color: _images.length == widget.maxImages
+                          ? Theme.of(context).colorScheme.error
+                          : Theme.of(context).colorScheme.onSurface,
+                    ),
+                    textAlign: TextAlign.left,
+                  ),
+                  const SizedBox(height: 10), // SizedBox at the end
+                  Text(
+                    'Hold + drag to reorder',
+                    style: kDetail.copyWith(
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                    textAlign: TextAlign.left,
+                  ),
+                ],
+              ),
+              const SizedBox(width: 15), // SizedBox at the end
             ],
           ),
         ),
@@ -130,8 +193,20 @@ class ImgState extends State<Img> {
 
     setState(() {
       final item = _images.removeAt(oldIndex);
+
       _images.insert(newIndex, item);
+      widget.controller!.notify();
     });
+  }
+
+  void _scrollToEnd() {
+    if (_images.isNotEmpty) {
+      scrollController.animateTo(
+        scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 250),
+        curve: Curves.easeInOut,
+      );
+    }
   }
 
   Widget _buildFilePreview(File file, int index) {
@@ -141,8 +216,15 @@ class ImgState extends State<Img> {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            SizedBox(
+            Container(
               height: 100.0,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Theme.of(context).colorScheme.onBackground,
+                  width: 0.8,
+                ),
+                borderRadius: BorderRadius.circular(15.0),
+              ),
               child: AspectRatio(
                 aspectRatio: 1,
                 child: ClipRRect(
@@ -185,6 +267,7 @@ class ImgState extends State<Img> {
             onTap: () {
               setState(() {
                 _images.removeAt(index);
+                widget.controller!.notify();
               });
             },
           ),

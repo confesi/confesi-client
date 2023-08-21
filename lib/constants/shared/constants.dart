@@ -8,6 +8,8 @@ const String domain = "http://192.168.1.107:8080"; // 10.0.0.173
 /// If debug mode is enabled. OFF for prod.
 const bool debugMode = true;
 
+const int maxImagesPerPost = 5;
+
 const String walrusHeadImgPath = "assets/images/logos/walrus_head.png";
 
 const String walrusFullBodyImgPath = "assets/images/logos/walrus_full_body.png";

@@ -155,18 +155,17 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                         CircleIconBtn(
                           color: Theme.of(context).colorScheme.tertiary,
                           icon: CupertinoIcons.photo,
-                          onTap: () => imgController.selectFromGallery(),
-                        ),
-                        CircleIconBtn(
-                          color: Theme.of(context).colorScheme.tertiary,
-                          icon: CupertinoIcons.smiley,
-                          onTap: () => print("tap"),
+                          onTap: () async {
+                            await imgController.selectFromGallery();
+                          },
                         ),
                         CircleIconBtn(
                           color: Theme.of(context).colorScheme.tertiary,
                           icon: CupertinoIcons.camera,
-                          onTap: () => imgController.selectFromCamera(),
-                        ),
+                          onTap: () async {
+                            await imgController.selectFromCamera();
+                          },
+                        )
                       ],
                     ),
                   ),
@@ -257,7 +256,7 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                                             child: Column(
                                               crossAxisAlignment: CrossAxisAlignment.center,
                                               children: [
-                                                Img(controller: imgController),
+                                                Img(controller: imgController, maxImages: maxImagesPerPost),
                                                 Container(
                                                   height: 15,
                                                   color: Colors.transparent,
