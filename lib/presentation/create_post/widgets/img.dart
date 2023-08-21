@@ -278,9 +278,11 @@ class ImgState extends State<Img> {
 
   void _showEditor(File file) {
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => ImageEditorScreen(file: file), fullscreenDialog: false));
+        .push(MaterialPageRoute(builder: (context) => ImageEditorScreen(file: file), fullscreenDialog: true));
   }
 }
+
+//! The actual editor screen:
 
 class ImageEditorScreen extends StatefulWidget {
   final File file;
@@ -292,12 +294,301 @@ class ImageEditorScreen extends StatefulWidget {
 }
 
 class ImageEditorScreenState extends State<ImageEditorScreen> {
+  double _rotation = 0;
+  TextEditingController _textEditingController = TextEditingController();
+  Mode _activeMode = Mode.none;
+  List<List<Offset>> _allLines = [];
+  List<Offset> _points = [];
+  TransformationController _transformationController = TransformationController();
+  String _displayedText = '';
+  Offset _textPosition = Offset(0, 0);
+  bool _isTextMoving = false;
+
+  // Stack for undo and redo
+  List<EditorAction> _actionStack = [];
+  List<EditorAction> _redoStack = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Image.file(widget.file),
+      body: Stack(
+        children: [
+          CheckeredBackground(),
+          Center(
+            child: InteractiveViewer(
+              transformationController: _transformationController,
+              panEnabled: _activeMode == Mode.none,
+              boundaryMargin: EdgeInsets.all(100),
+              minScale: 0.1,
+              maxScale: 2.0,
+              child: Transform.rotate(
+                angle: _rotation,
+                child: Image.file(widget.file),
+              ),
+            ),
+          ),
+          Builder(
+            builder: (context) => Stack(
+              children: [
+                GestureDetector(
+                  onPanUpdate: (details) {
+                    if (_activeMode == Mode.painting) {
+                      setState(() {
+                        RenderBox renderBox = context.findRenderObject() as RenderBox;
+                        _points.add(renderBox.globalToLocal(details.globalPosition));
+                      });
+                    } else if (_isTextMoving) {
+                      setState(() {
+                        RenderBox renderBox = context.findRenderObject() as RenderBox;
+                        _textPosition = renderBox.globalToLocal(details.globalPosition);
+                      });
+                    }
+                  },
+                  onPanEnd: (details) {
+                    if (_activeMode == Mode.painting) {
+                      setState(() {
+                        _allLines.add(List.from(_points));
+                        _pushAction(EditorAction(actionType: ActionType.paint, points: _points));
+                        _points.clear();
+                      });
+                    } else if (_isTextMoving) {
+                      _isTextMoving = false;
+                    }
+                  },
+                  child: CustomPaint(
+                    painter: MyPainter(_allLines + [_points]),
+                    child: Container(
+                      width: double.infinity,
+                      height: double.infinity,
+                    ),
+                  ),
+                ),
+                if (_displayedText.isNotEmpty)
+                  Positioned(
+                    left: _textPosition.dx,
+                    top: _textPosition.dy,
+                    child: GestureDetector(
+                      onPanDown: (details) => _isTextMoving = true,
+                      child: Text(
+                        _displayedText,
+                        style: TextStyle(color: Colors.white, fontSize: 24),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          if (_activeMode == Mode.textEditing)
+            Center(
+              child: TextField(
+                controller: _textEditingController,
+                style: TextStyle(color: Colors.white, fontSize: 24),
+                textAlign: TextAlign.center,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Enter your text here',
+                  hintStyle: TextStyle(color: Colors.white70),
+                ),
+                onSubmitted: (value) {
+                  setState(() {
+                    _displayedText = value;
+                    _textEditingController.clear();
+                    _activeMode = Mode.none;
+                  });
+                },
+              ),
+            ),
+          Positioned(
+            top: MediaQuery.of(context).padding.top + 10,
+            left: 10,
+            child: _shadowedIcon(
+              icon: Icon(CupertinoIcons.xmark, color: Colors.white),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ),
+          Positioned(
+            top: MediaQuery.of(context).padding.top + 10,
+            right: 10,
+            child: Column(
+              children: [
+                _shadowedIcon(
+                  icon: Icon(Icons.crop, color: Colors.white),
+                  onPressed: () {},
+                ),
+                _shadowedIcon(
+                  icon: Icon(Icons.rotate_right, color: Colors.white),
+                  onPressed: () {
+                    setState(() {
+                      _rotation += 0.5;
+                    });
+                  },
+                ),
+                _shadowedIcon(
+                  icon: Icon(Icons.rotate_left, color: Colors.white),
+                  onPressed: () {
+                    setState(() {
+                      _rotation -= 0.5;
+                    });
+                  },
+                ),
+                _shadowedIcon(
+                  icon: Icon(
+                    Icons.text_fields,
+                    color: _activeMode == Mode.textEditing ? Colors.red : Colors.white,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      if (_activeMode == Mode.textEditing) {
+                        _activeMode = Mode.none;
+                      } else {
+                        _activeMode = Mode.textEditing;
+                      }
+                    });
+                  },
+                ),
+                _shadowedIcon(
+                  icon: Icon(
+                    Icons.brush,
+                    color: _activeMode == Mode.painting ? Colors.red : Colors.white,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      if (_activeMode == Mode.painting) {
+                        _activeMode = Mode.none;
+                      } else {
+                        _activeMode = Mode.painting;
+                      }
+                    });
+                  },
+                ),
+                _shadowedIcon(
+                  icon: Icon(Icons.undo, color: Colors.white),
+                  onPressed: () {
+                    if (_allLines.isNotEmpty) {
+                      setState(() {
+                        _allLines.removeLast();
+                      });
+                    }
+                  },
+                ),
+                _shadowedIcon(
+                  icon: Icon(Icons.redo, color: Colors.white),
+                  onPressed: () {},
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
+
+  Widget _shadowedIcon({required Icon icon, required Function() onPressed}) {
+    return Container(
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.8),
+            blurRadius: 60.0,
+          )
+        ],
+      ),
+      child: IconButton(icon: icon, onPressed: onPressed),
+    );
+  }
+
+  void _pushAction(EditorAction action) {
+    _actionStack.add(action);
+    _redoStack.clear();
+  }
+}
+
+class CheckeredBackground extends StatelessWidget {
+  const CheckeredBackground();
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      painter: CheckeredPainter(),
+      child: Container(),
+    );
+  }
+}
+
+class CheckeredPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    const int squareSize = 24;
+    bool alternate = true;
+
+    for (var y = 0; y < size.height; y += squareSize) {
+      for (var x = 0; x < size.width; x += squareSize) {
+        if (alternate) {
+          canvas.drawRect(
+            Rect.fromLTWH(x.toDouble(), y.toDouble(), squareSize.toDouble(), squareSize.toDouble()),
+            Paint()..color = Colors.grey[300]!,
+          );
+        }
+        alternate = !alternate;
+      }
+      alternate = !alternate;
+    }
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
+}
+
+class MyPainter extends CustomPainter {
+  final List<List<Offset>> allLines;
+
+  MyPainter(this.allLines);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    Paint paint = Paint()
+      ..color = Colors.blue
+      ..strokeCap = StrokeCap.round
+      ..strokeWidth = 5.0;
+
+    for (var line in allLines) {
+      for (var i = 0; i < line.length - 1; i++) {
+        if (line[i] != null && line[i + 1] != null) {
+          canvas.drawLine(line[i], line[i + 1], paint);
+        }
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
+}
+
+enum Mode {
+  none,
+  painting,
+  textEditing,
+}
+
+class EditorAction {
+  final ActionType actionType;
+  final List<Offset>? points;
+  final String? text;
+  final Offset? textPosition;
+
+  EditorAction({
+    required this.actionType,
+    this.points,
+    this.text,
+    this.textPosition,
+  });
+}
+
+enum ActionType {
+  paint,
+  text,
+  rotate,
+  crop,
 }
