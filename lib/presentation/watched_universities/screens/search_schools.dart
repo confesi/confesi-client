@@ -8,6 +8,7 @@ import 'package:confesi/core/utils/funcs/debouncer.dart';
 import 'package:confesi/core/utils/sizing/height_fraction.dart';
 import 'package:confesi/presentation/shared/buttons/circle_icon_btn.dart';
 import 'package:confesi/presentation/shared/edited_source_widgets/swipe_refresh.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
@@ -163,7 +164,10 @@ class _SearchSchoolsScreenState extends State<SearchSchoolsScreen> {
                           ),
                         ),
                         const SizedBox(width: 15),
-                        CircleIconBtn(onTap: () => router.pop(context)),
+                        CircleIconBtn(
+                          icon: CupertinoIcons.xmark,
+                          onTap: () => router.pop(context),
+                        ),
                       ],
                     ),
                   ),

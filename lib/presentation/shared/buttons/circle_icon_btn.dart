@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import '../button_touch_effects/touchable_scale.dart';
 
 class CircleIconBtn extends StatelessWidget {
-  CircleIconBtn({super.key, required this.onTap});
+  CircleIconBtn({super.key, required this.onTap, required this.icon, this.color});
 
   VoidCallback onTap;
+  final IconData icon;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +26,8 @@ class CircleIconBtn extends StatelessWidget {
           ),
         ),
         child: Icon(
-          CupertinoIcons.xmark,
-          color: Theme.of(context).colorScheme.primary,
+          icon,
+          color: color ?? Theme.of(context).colorScheme.primary,
         ),
       ),
     );

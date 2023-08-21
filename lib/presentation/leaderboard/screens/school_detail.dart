@@ -119,6 +119,7 @@ class SchoolDetail extends StatelessWidget {
                         top: 15,
                         child: SafeArea(
                           child: CircleIconBtn(
+                            icon: CupertinoIcons.xmark,
                             onTap: () => router.pop(context),
                           ),
                         ),

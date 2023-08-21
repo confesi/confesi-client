@@ -3,6 +3,8 @@ import 'package:confesi/core/utils/sizing/bottom_safe_area.dart';
 import 'package:confesi/core/utils/sizing/height_fraction.dart';
 import 'package:confesi/presentation/create_post/widgets/img.dart';
 import 'package:confesi/presentation/shared/behaviours/nav_blocker.dart';
+import 'package:confesi/presentation/shared/buttons/circle_icon_btn.dart';
+import 'package:keyboard_attachable/keyboard_attachable.dart';
 import 'package:provider/provider.dart';
 
 import '../../../application/user/cubit/notifications_cubit.dart';
@@ -51,6 +53,7 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
   final FocusNode bodyFocusNode = FocusNode();
   final TextEditingController titleController = TextEditingController();
   final TextEditingController bodyController = TextEditingController();
+  final ImgController imgController = ImgController();
 
   FocusedField focusedField = FocusedField.none;
 
@@ -139,206 +142,228 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
         blocking: Provider.of<CreatingEditingPostsService>(context).metaState is CreatingEditingPostMetaStateLoading,
         child: ThemeStatusBar(
           child: Scaffold(
-            resizeToAvoidBottomInset: true,
-            backgroundColor: Theme.of(context).colorScheme.background,
-            body: SafeArea(
-              bottom: false,
-              child: Column(
-                children: [
-                  AppbarLayout(
-                    bottomBorder: true,
-                    centerWidget: AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 250),
-                      child: focusedField != FocusedField.none
-                          ? SizedBox(
-                              width: widthFraction(context, 1),
-                              child: Center(child: TextLimitTracker(value: getLimitPercent())))
-                          : Text(
-                              widget.props is EditedPost ? "Edit confession" : "Create confession",
-                              style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                            ),
+              resizeToAvoidBottomInset: true,
+              backgroundColor: Theme.of(context).colorScheme.background,
+              body: FooterLayout(
+                footer: SafeArea(
+                  top: false,
+                  child: Container(
+                    padding: const EdgeInsets.all(15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        CircleIconBtn(
+                          color: Theme.of(context).colorScheme.tertiary,
+                          icon: CupertinoIcons.photo,
+                          onTap: () => imgController.selectFromGallery(),
+                        ),
+                        CircleIconBtn(
+                          color: Theme.of(context).colorScheme.tertiary,
+                          icon: CupertinoIcons.smiley,
+                          onTap: () => print("tap"),
+                        ),
+                        CircleIconBtn(
+                          color: Theme.of(context).colorScheme.tertiary,
+                          icon: CupertinoIcons.camera,
+                          onTap: () => imgController.selectFromCamera(),
+                        ),
+                      ],
                     ),
-                    rightIconVisible: true,
-                    rightIcon: widget.props is EditedPost ? CupertinoIcons.check_mark : CupertinoIcons.arrow_right,
-                    rightIconLoading: Provider.of<CreatingEditingPostsService>(context).metaState
-                        is CreatingEditingPostMetaStateLoading,
-                    rightIconOnPress: () async {
-                      final provider = Provider.of<CreatingEditingPostsService>(context, listen: false);
-                      provider.title = titleController.text;
-                      provider.body = bodyController.text;
-                      if (widget.props is EditedPost) {
-                        (await provider.editPost(provider.title, provider.body, (widget.props as EditedPost).id)).fold(
-                          (_) {
-                            sl.get<ConfettiBlaster>().show(context);
-                            provider.clear();
-                            router.pop();
-                          },
-                          (failureMsg) => context.read<NotificationsCubit>().showErr(failureMsg),
-                        );
-                        return;
-                      } else if (titleController.text.trim().isEmpty && bodyController.text.trim().isEmpty) {
-                        showNotificationChip(context, "You can't post... nothing!");
-                        return;
-                      }
-
-                      FocusManager.instance.primaryFocus?.unfocus();
-                      router
-                          .push(
-                            "/create/details",
-                            extra: CreatePostDetailsProps(
-                              widget.props is EditedPost
-                                  ? EditedPost(
-                                      titleController.text, bodyController.text, (widget.props as EditedPost).id)
-                                  : CreatingNewPost(
-                                      title: titleController.text,
-                                      body: bodyController.text,
-                                    ),
-                            ),
-                          )
-                          .then((value) => FocusScope.of(context).unfocus());
-                    },
-                    leftIconVisible: true,
-                    leftIcon: CupertinoIcons.xmark,
-                    leftIconOnPress: () {
-                      router.pop(context);
-                    },
-                    backgroundColor: Theme.of(context).colorScheme.background,
                   ),
-                  Expanded(
-                    child: Container(
-                      color: Theme.of(context).colorScheme.shadow,
-                      child: Column(
-                        children: [
-                          Expanded(
-                            child: LayoutBuilder(
-                              builder: (context, constraints) {
-                                return KeyboardDismiss(
-                                  child: GestureDetector(
-                                    onTap: () => bodyFocusNode.requestFocus(),
-                                    child: SizedBox(
-                                      height: constraints.maxHeight,
-                                      child: ScrollableArea(
-                                        thumbVisible: false,
-                                        physics: const BouncingScrollPhysics(),
-                                        controller: scrollController,
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(horizontal: 15),
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                            children: [
-                                              const SizedBox(height: 15),
-                                              const Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: Img(),
-                                              ),
-                                              // Transparent hitbox trick.
-                                              Container(
-                                                height: 10,
-                                                color: Colors.transparent,
-                                              ),
-                                              Container(
-                                                // Transparent hitbox trick.
-                                                color: Colors.transparent,
-                                                child: TextField(
-                                                  inputFormatters: [
-                                                    LengthLimitingTextInputFormatter(kPostTitleMaxLength),
-                                                  ],
-                                                  onChanged: (value) {
-                                                    updateTextWithCursor(
-                                                      updateCallback: (v) =>
-                                                          context.read<PostCategoriesCubit>().updateTitle(v),
-                                                      controller: titleController,
-                                                      newCursorPosition: titleController.selection,
-                                                    );
-                                                    setState(() {});
-                                                  },
-                                                  controller: titleController,
-                                                  focusNode: titleFocusNode,
-                                                  textCapitalization: TextCapitalization.sentences,
-                                                  keyboardType: TextInputType.multiline,
-                                                  maxLines: null,
-                                                  style:
-                                                      kDisplay1.copyWith(color: Theme.of(context).colorScheme.primary),
-                                                  decoration: InputDecoration(
-                                                    isCollapsed: true,
-                                                    border: InputBorder.none,
-                                                    hintMaxLines: 1,
-                                                    hintText: titleHint,
-                                                    hintStyle: kDisplay1.copyWith(
-                                                      color: Theme.of(context).colorScheme.onSurface,
-                                                    ),
-                                                  ),
-                                                  textAlign: TextAlign.left,
-                                                ),
-                                              ),
-                                              GestureDetector(
-                                                onTap: () => titleFocusNode.requestFocus(),
-                                                child: Container(
-                                                  // Transparent hitbox trick.
-                                                  color: Colors.transparent,
-                                                  width: double.infinity,
-                                                  child: const SizedBox(height: 5),
-                                                ),
-                                              ),
+                ),
+                child: SafeArea(
+                  bottom: false,
+                  child: Column(
+                    children: [
+                      AppbarLayout(
+                        bottomBorder: true,
+                        centerWidget: AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 250),
+                          child: focusedField != FocusedField.none
+                              ? SizedBox(
+                                  width: widthFraction(context, 1),
+                                  child: Center(child: TextLimitTracker(value: getLimitPercent())))
+                              : Text(
+                                  widget.props is EditedPost ? "Edit confession" : "Create confession",
+                                  style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.center,
+                                ),
+                        ),
+                        rightIconVisible: true,
+                        rightIcon: widget.props is EditedPost ? CupertinoIcons.check_mark : CupertinoIcons.arrow_right,
+                        rightIconLoading: Provider.of<CreatingEditingPostsService>(context).metaState
+                            is CreatingEditingPostMetaStateLoading,
+                        rightIconOnPress: () async {
+                          final provider = Provider.of<CreatingEditingPostsService>(context, listen: false);
+                          provider.title = titleController.text;
+                          provider.body = bodyController.text;
+                          if (widget.props is EditedPost) {
+                            (await provider.editPost(provider.title, provider.body, (widget.props as EditedPost).id))
+                                .fold(
+                              (_) {
+                                sl.get<ConfettiBlaster>().show(context);
+                                provider.clear();
+                                router.pop();
+                              },
+                              (failureMsg) => context.read<NotificationsCubit>().showErr(failureMsg),
+                            );
+                            return;
+                          } else if (titleController.text.trim().isEmpty && bodyController.text.trim().isEmpty) {
+                            showNotificationChip(context, "You can't post... nothing!");
+                            return;
+                          }
 
-                                              GestureDetector(
-                                                onTap: () => bodyFocusNode.requestFocus(),
-                                                child: Container(
+                          FocusManager.instance.primaryFocus?.unfocus();
+                          router
+                              .push(
+                                "/create/details",
+                                extra: CreatePostDetailsProps(
+                                  widget.props is EditedPost
+                                      ? EditedPost(
+                                          titleController.text, bodyController.text, (widget.props as EditedPost).id)
+                                      : CreatingNewPost(
+                                          title: titleController.text,
+                                          body: bodyController.text,
+                                        ),
+                                ),
+                              )
+                              .then((value) => FocusScope.of(context).unfocus());
+                        },
+                        leftIconVisible: true,
+                        leftIcon: CupertinoIcons.xmark,
+                        leftIconOnPress: () {
+                          router.pop(context);
+                        },
+                        backgroundColor: Theme.of(context).colorScheme.background,
+                      ),
+                      Expanded(
+                        child: Container(
+                          color: Theme.of(context).colorScheme.shadow,
+                          child: Column(
+                            children: [
+                              Expanded(
+                                child: LayoutBuilder(
+                                  builder: (context, constraints) {
+                                    return KeyboardDismiss(
+                                      child: GestureDetector(
+                                        onTap: () => bodyFocusNode.requestFocus(),
+                                        child: SizedBox(
+                                          height: constraints.maxHeight,
+                                          child: ScrollableArea(
+                                            thumbVisible: false,
+                                            physics: const BouncingScrollPhysics(),
+                                            controller: scrollController,
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                              children: [
+                                                Img(controller: imgController),
+                                                Container(
+                                                  height: 15,
+                                                  color: Colors.transparent,
+                                                ),
+                                                Container(
+                                                  padding: const EdgeInsets.symmetric(horizontal: 15),
                                                   // Transparent hitbox trick.
                                                   color: Colors.transparent,
                                                   child: TextField(
-                                                    onChanged: (value) {
-                                                      updateTextWithCursor(
-                                                        updateCallback: (v) =>
-                                                            context.read<PostCategoriesCubit>().updateBody(v),
-                                                        controller: bodyController,
-                                                        newCursorPosition: bodyController.selection,
-                                                      );
-                                                      setState(() {});
-                                                    },
                                                     inputFormatters: [
                                                       LengthLimitingTextInputFormatter(kPostTitleMaxLength),
                                                     ],
-                                                    controller: bodyController,
-                                                    focusNode: bodyFocusNode,
+                                                    onChanged: (value) {
+                                                      updateTextWithCursor(
+                                                        updateCallback: (v) =>
+                                                            context.read<PostCategoriesCubit>().updateTitle(v),
+                                                        controller: titleController,
+                                                        newCursorPosition: titleController.selection,
+                                                      );
+                                                      setState(() {});
+                                                    },
+                                                    controller: titleController,
+                                                    focusNode: titleFocusNode,
                                                     textCapitalization: TextCapitalization.sentences,
                                                     keyboardType: TextInputType.multiline,
                                                     maxLines: null,
-                                                    style: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
+                                                    style: kDisplay1.copyWith(
+                                                        color: Theme.of(context).colorScheme.primary),
                                                     decoration: InputDecoration(
                                                       isCollapsed: true,
                                                       border: InputBorder.none,
-                                                      hintMaxLines: 3,
-                                                      hintText: bodyHint,
-                                                      hintStyle: kBody.copyWith(
-                                                          color: Theme.of(context).colorScheme.onSurface),
+                                                      hintMaxLines: 1,
+                                                      hintText: titleHint,
+                                                      hintStyle: kDisplay1.copyWith(
+                                                        color: Theme.of(context).colorScheme.onSurface,
+                                                      ),
+                                                    ),
+                                                    textAlign: TextAlign.left,
+                                                  ),
+                                                ),
+                                                GestureDetector(
+                                                  onTap: () => titleFocusNode.requestFocus(),
+                                                  child: Container(
+                                                    // Transparent hitbox trick.
+                                                    color: Colors.transparent,
+                                                    width: double.infinity,
+                                                    child: const SizedBox(height: 5),
+                                                  ),
+                                                ),
+                                                GestureDetector(
+                                                  onTap: () => bodyFocusNode.requestFocus(),
+                                                  child: Container(
+                                                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                                                    // Transparent hitbox trick.
+                                                    color: Colors.transparent,
+                                                    child: TextField(
+                                                      onChanged: (value) {
+                                                        updateTextWithCursor(
+                                                          updateCallback: (v) =>
+                                                              context.read<PostCategoriesCubit>().updateBody(v),
+                                                          controller: bodyController,
+                                                          newCursorPosition: bodyController.selection,
+                                                        );
+                                                        setState(() {});
+                                                      },
+                                                      inputFormatters: [
+                                                        LengthLimitingTextInputFormatter(kPostTitleMaxLength),
+                                                      ],
+                                                      controller: bodyController,
+                                                      focusNode: bodyFocusNode,
+                                                      textCapitalization: TextCapitalization.sentences,
+                                                      keyboardType: TextInputType.multiline,
+                                                      maxLines: null,
+                                                      style:
+                                                          kBody.copyWith(color: Theme.of(context).colorScheme.primary),
+                                                      decoration: InputDecoration(
+                                                        isCollapsed: true,
+                                                        border: InputBorder.none,
+                                                        hintMaxLines: 3,
+                                                        hintText: bodyHint,
+                                                        hintStyle: kBody.copyWith(
+                                                            color: Theme.of(context).colorScheme.onSurface),
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
-                                              ),
-                                              SizedBox(
-                                                height: bottomSafeArea(context) + heightFraction(context, 1 / 4),
-                                              ), // Adds some padding to the bottom.
-                                            ],
+                                                SizedBox(
+                                                  height: bottomSafeArea(context) + heightFraction(context, 1 / 4),
+                                                ), // Adds some padding to the bottom.
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
-            ),
-          ),
+                ),
+              )),
         ),
       ),
     );

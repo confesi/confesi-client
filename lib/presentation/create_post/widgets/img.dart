@@ -4,75 +4,96 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:flutter_reorderable_list/flutter_reorderable_list.dart';
+
+class ImgController {
+  late ImgState _imgState;
+
+  void _attach(ImgState state) {
+    _imgState = state;
+  }
+
+  Future<void> selectFromGallery() async {
+    _imgState._selectFromGallery();
+    FocusManager.instance.primaryFocus?.unfocus();
+  }
+
+  Future<void> selectFromCamera() async {
+    _imgState._selectFromCamera();
+    FocusManager.instance.primaryFocus?.unfocus();
+  }
+
+  List<File> get images => _imgState._images;
+}
 
 class Img extends StatefulWidget {
+  final ImgController? controller;
+  final int maxImages;
+
   const Img({
     Key? key,
+    this.controller,
     this.maxImages = 5,
   }) : super(key: key);
-
-  final int maxImages;
 
   @override
   ImgState createState() => ImgState();
 }
 
 class ImgState extends State<Img> {
-  final List<File> _selectedFiles = [];
+  final List<File> _images = [];
+
+  @override
+  void initState() {
+    super.initState();
+    widget.controller?._attach(this);
+  }
 
   Future<void> _selectFromGallery() async {
-    if (_selectedFiles.length >= widget.maxImages) {
-      return;
-    }
     final pickedFile = await ImagePicker().pickImage(
       source: ImageSource.gallery,
     );
 
-    if (pickedFile != null) {
+    if (pickedFile != null && _images.length < widget.maxImages) {
       setState(() {
-        _selectedFiles.add(File(pickedFile.path));
+        _images.add(File(pickedFile.path));
       });
     }
   }
 
   Future<void> _selectFromCamera() async {
-    if (_selectedFiles.length >= widget.maxImages) {
-      return;
-    }
     final pickedFile = await ImagePicker().pickImage(
       source: ImageSource.camera,
     );
 
-    if (pickedFile != null) {
+    if (pickedFile != null && _images.length < widget.maxImages) {
       setState(() {
-        _selectedFiles.add(File(pickedFile.path));
+        _images.add(File(pickedFile.path));
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 150,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15.0),
-        color: Theme.of(context).colorScheme.background,
-        border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 15),
+    return AnimatedSize(
+      duration: const Duration(milliseconds: 250),
+      child: Container(
+        width: double.infinity,
+        margin: EdgeInsets.only(top: _images.isEmpty ? 0 : 15),
+        height: widget.controller != null && _images.isNotEmpty ? 100 : 0,
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
             children: [
+              const SizedBox(width: 15), // SizedBox at the start
+
               Theme(
                 data: Theme.of(context).copyWith(
                   canvasColor: Colors.transparent,
                   shadowColor: Colors.transparent,
                 ),
                 child: ReorderableListView(
+                  primary: false,
+                  physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   onReorderStart: (_) => HapticFeedback.lightImpact(),
                   scrollDirection: Axis.horizontal,
@@ -81,35 +102,20 @@ class ImgState extends State<Img> {
                     _onReorder(oldIndex, newIndex);
                   },
                   children: <Widget>[
-                    for (int index = 0; index < _selectedFiles.length; index++)
-                      Material(
-                        key: ValueKey(_selectedFiles[index]),
-                        color: Colors.transparent, // Ensure this material is transparent.
-                        child: ReorderableListener(
-                          key: ValueKey(_selectedFiles[index]),
-                          child: TouchableScale(
-                            onTap: () {
-                              if (_selectedFiles[index] != null) {
-                                _showEditor(_selectedFiles[index]);
-                              }
-                            },
-                            child: _buildFilePreview(_selectedFiles[index]),
-                          ),
+                    for (int index = 0; index < _images.length; index++)
+                      TouchableScale(
+                        key: ValueKey(index),
+                        onTap: () => _showEditor(_images[index]),
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 5),
+                          child: _buildFilePreview(_images[index], index),
                         ),
                       ),
                   ],
                 ),
               ),
-              // Add from gallery icon
-              IconButton(
-                icon: Icon(Icons.photo_library),
-                onPressed: _selectFromGallery,
-              ),
-              // Add from camera icon
-              IconButton(
-                icon: Icon(Icons.camera_alt),
-                onPressed: _selectFromCamera,
-              ),
+
+              const SizedBox(width: 10), // SizedBox at the end
             ],
           ),
         ),
@@ -118,52 +124,83 @@ class ImgState extends State<Img> {
   }
 
   void _onReorder(int oldIndex, int newIndex) {
-    if (newIndex > _selectedFiles.length) {
-      newIndex = _selectedFiles.length;
-    }
-
     if (newIndex > oldIndex) {
       newIndex -= 1;
     }
 
     setState(() {
-      final item = _selectedFiles.removeAt(oldIndex);
-      _selectedFiles.insert(newIndex, item);
+      final item = _images.removeAt(oldIndex);
+      _images.insert(newIndex, item);
     });
   }
 
-  Widget _buildFilePreview(File file) {
-    return Material(
-      color: Colors.transparent, // Ensure this material is transparent.
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
-          borderRadius: BorderRadius.circular(15.0),
-        ),
-        height: 100.0,
-        child: AspectRatio(
-          aspectRatio: 1,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(15.0),
-            child: FittedBox(
-              fit: BoxFit.cover,
-              child: Image.file(file),
+  Widget _buildFilePreview(File file, int index) {
+    return Stack(
+      children: [
+        Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            SizedBox(
+              height: 100.0,
+              child: AspectRatio(
+                aspectRatio: 1,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(15.0),
+                  child: FittedBox(
+                    fit: BoxFit.cover,
+                    child: Image.file(
+                      file,
+                      frameBuilder: (BuildContext context, Widget child, int? frame, bool wasSynchronouslyLoaded) {
+                        if (wasSynchronouslyLoaded) {
+                          return child;
+                        }
+                        return AnimatedOpacity(
+                          opacity: frame == null ? 0 : 1, // Only animate the opacity if an image frame is available
+                          duration: const Duration(seconds: 1),
+                          curve: Curves.easeOut,
+                          child: child,
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ),
             ),
+          ],
+        ),
+        Positioned(
+          top: 5,
+          right: 5,
+          child: TouchableScale(
+            child: CircleAvatar(
+              backgroundColor: Theme.of(context).colorScheme.error,
+              radius: 15.0, // Adjust the size of the circle as needed
+              child: Icon(
+                CupertinoIcons.trash,
+                color: Theme.of(context).colorScheme.onError,
+                size: 15.0,
+              ),
+            ),
+            onTap: () {
+              setState(() {
+                _images.removeAt(index);
+              });
+            },
           ),
         ),
-      ),
+      ],
     );
   }
 
-  void _showEditor(File? file) {
-    if (file == null) return;
-    // Sample ImageEditorScreen function, adapt accordingly to your needs
-    //Navigator.of(context).push(MaterialPageRoute(builder: (context) => ImageEditorScreen(file: file), fullscreenDialog: true));
+  void _showEditor(File file) {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => ImageEditorScreen(file: file), fullscreenDialog: false));
   }
 }
 
 class ImageEditorScreen extends StatefulWidget {
-  final File? file;
+  final File file;
 
   const ImageEditorScreen({Key? key, required this.file}) : super(key: key);
 
@@ -175,41 +212,8 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.shadow,
-      body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.close, color: Colors.red),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.edit),
-                    onPressed: () {
-                      // Here you can add the function to crop or edit the image.
-                      // _cropImage(widget.file);
-                      // Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-                child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
-              ),
-              child: widget.file != null ? Image.file(widget.file!) : SizedBox.shrink(),
-            )),
-          ],
-        ),
+      body: Center(
+        child: Image.file(widget.file),
       ),
     );
   }
