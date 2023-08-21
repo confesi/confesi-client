@@ -284,6 +284,13 @@ class ImgState extends State<Img> {
 
 //! The actual editor screen:
 
+class TextEntry {
+  String text;
+  Offset position;
+
+  TextEntry(this.text, this.position);
+}
+
 class ImageEditorScreen extends StatefulWidget {
   final File file;
 
@@ -300,25 +307,37 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
   List<List<Offset>> _allLines = [];
   List<Offset> _points = [];
   TransformationController _transformationController = TransformationController();
-  String _displayedText = '';
+  GlobalKey _viewerKey = GlobalKey();
+
+  List<TextEntry> _textEntries = [];
   Offset _textPosition = Offset(0, 0);
   bool _isTextMoving = false;
+  Offset? _initialTouchOffset;
 
   // Stack for undo and redo
   List<EditorAction> _actionStack = [];
   List<EditorAction> _redoStack = [];
 
+  void _pushAction(EditorAction action) {
+    setState(() {
+      _actionStack.add(action);
+      _redoStack.clear(); // Clearing the redo stack whenever a new action is made
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
-          CheckeredBackground(),
+          const CheckeredBackground(),
           Center(
             child: InteractiveViewer(
+              key: _viewerKey,
               transformationController: _transformationController,
               panEnabled: _activeMode == Mode.none,
-              boundaryMargin: EdgeInsets.all(100),
+              boundaryMargin: const EdgeInsets.all(100),
               minScale: 0.1,
               maxScale: 2.0,
               child: Transform.rotate(
@@ -363,39 +382,63 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
                     ),
                   ),
                 ),
-                if (_displayedText.isNotEmpty)
-                  Positioned(
-                    left: _textPosition.dx,
-                    top: _textPosition.dy,
-                    child: GestureDetector(
-                      onPanDown: (details) => _isTextMoving = true,
-                      child: Text(
-                        _displayedText,
-                        style: TextStyle(color: Colors.white, fontSize: 24),
-                      ),
-                    ),
-                  ),
+                ..._textEntries
+                    .map((entry) => Positioned(
+                          left: entry.position.dx,
+                          top: entry.position.dy,
+                          child: GestureDetector(
+                            onPanDown: (details) {
+                              RenderBox renderBox = context.findRenderObject() as RenderBox;
+                              _initialTouchOffset = renderBox.globalToLocal(details.globalPosition) - entry.position;
+                              _isTextMoving = true;
+                            },
+                            onPanUpdate: (details) {
+                              setState(() {
+                                RenderBox renderBox = context.findRenderObject() as RenderBox;
+                                entry.position = renderBox.globalToLocal(details.globalPosition) - _initialTouchOffset!;
+                              });
+                            },
+                            child: Container(
+                              color: Colors.white,
+                              child: Text(
+                                entry.text,
+                                style: const TextStyle(color: Colors.black, fontSize: 24),
+                              ),
+                            ),
+                          ),
+                        ))
+                    .toList(),
               ],
             ),
           ),
           if (_activeMode == Mode.textEditing)
-            Center(
-              child: TextField(
-                controller: _textEditingController,
-                style: TextStyle(color: Colors.white, fontSize: 24),
-                textAlign: TextAlign.center,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'Enter your text here',
-                  hintStyle: TextStyle(color: Colors.white70),
+            SafeArea(
+              child: Align(
+                alignment: Alignment.center,
+                child: Container(
+                  color: Colors.black54, // dark background
+                  width: MediaQuery.of(context).size.width, // full width
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    controller: _textEditingController,
+                    style: TextStyle(color: Colors.white, fontSize: 24),
+                    textAlign: TextAlign.center,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: 'Enter your text here',
+                      hintStyle: TextStyle(color: Colors.white70),
+                    ),
+                    onSubmitted: (value) {
+                      RenderBox renderBox = _viewerKey.currentContext!.findRenderObject() as RenderBox;
+                      Offset centerOfViewer = renderBox.localToGlobal(renderBox.size.center(Offset.zero));
+                      setState(() {
+                        _textEntries.add(TextEntry(value, centerOfViewer));
+                        _textEditingController.clear();
+                        _activeMode = Mode.none;
+                      });
+                    },
+                  ),
                 ),
-                onSubmitted: (value) {
-                  setState(() {
-                    _displayedText = value;
-                    _textEditingController.clear();
-                    _activeMode = Mode.none;
-                  });
-                },
               ),
             ),
           Positioned(
@@ -490,18 +533,43 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.8),
-            blurRadius: 60.0,
-          )
+            color: Colors.black.withOpacity(0.3),
+            spreadRadius: 2,
+            blurRadius: 6,
+            offset: Offset(0, 2),
+          ),
         ],
       ),
-      child: IconButton(icon: icon, onPressed: onPressed),
+      child: IconButton(
+        icon: icon,
+        onPressed: onPressed,
+      ),
     );
   }
+}
 
-  void _pushAction(EditorAction action) {
-    _actionStack.add(action);
-    _redoStack.clear();
+class MyPainter extends CustomPainter {
+  final List<List<Offset>> allLines;
+
+  MyPainter(this.allLines);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.black
+      ..strokeWidth = 5.0
+      ..strokeCap = StrokeCap.round;
+
+    for (final line in allLines) {
+      for (int i = 0; i < line.length - 1; i++) {
+        canvas.drawLine(line[i], line[i + 1], paint);
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
   }
 }
 
@@ -512,7 +580,6 @@ class CheckeredBackground extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomPaint(
       painter: CheckeredPainter(),
-      child: Container(),
     );
   }
 }
@@ -520,75 +587,40 @@ class CheckeredBackground extends StatelessWidget {
 class CheckeredPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    const int squareSize = 24;
-    bool alternate = true;
+    final paintLight = Paint()..color = Colors.grey[200]!;
+    final paintDark = Paint()..color = Colors.grey[300]!;
+    final double step = 20.0;
 
-    for (var y = 0; y < size.height; y += squareSize) {
-      for (var x = 0; x < size.width; x += squareSize) {
-        if (alternate) {
-          canvas.drawRect(
-            Rect.fromLTWH(x.toDouble(), y.toDouble(), squareSize.toDouble(), squareSize.toDouble()),
-            Paint()..color = Colors.grey[300]!,
-          );
-        }
-        alternate = !alternate;
-      }
-      alternate = !alternate;
-    }
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) => false;
-}
-
-class MyPainter extends CustomPainter {
-  final List<List<Offset>> allLines;
-
-  MyPainter(this.allLines);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()
-      ..color = Colors.blue
-      ..strokeCap = StrokeCap.round
-      ..strokeWidth = 5.0;
-
-    for (var line in allLines) {
-      for (var i = 0; i < line.length - 1; i++) {
-        if (line[i] != null && line[i + 1] != null) {
-          canvas.drawLine(line[i], line[i + 1], paint);
-        }
+    for (var y = 0.0; y < size.height; y += step) {
+      for (var x = 0.0; x < size.width; x += step) {
+        final isDark = (x ~/ step + y ~/ step) % 2 == 1;
+        final currentRect = Rect.fromLTWH(x, y, step, step);
+        canvas.drawRect(currentRect, isDark ? paintDark : paintLight);
       }
     }
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return false;
+  }
 }
 
 enum Mode {
   none,
-  painting,
   textEditing,
-}
-
-class EditorAction {
-  final ActionType actionType;
-  final List<Offset>? points;
-  final String? text;
-  final Offset? textPosition;
-
-  EditorAction({
-    required this.actionType,
-    this.points,
-    this.text,
-    this.textPosition,
-  });
+  painting,
 }
 
 enum ActionType {
   paint,
   text,
-  rotate,
-  crop,
+}
+
+class EditorAction {
+  final ActionType actionType;
+  final List<Offset>? points;
+  final TextEntry? textEntry;
+
+  EditorAction({required this.actionType, this.points, this.textEntry});
 }
