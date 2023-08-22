@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:tuple/tuple.dart';
 
 class ImgController extends ChangeNotifier {
   late ImgState _imgState;
@@ -304,69 +305,87 @@ class ImageEditorScreen extends StatefulWidget {
 }
 
 class ImageEditorScreenState extends State<ImageEditorScreen> {
-  final TextEditingController _textEditingController = TextEditingController();
-  Mode _activeMode = Mode.none;
-  final List<List<Offset>> _allLines = [];
-  final List<Offset> _points = [];
   final TransformationController _transformationController = TransformationController();
   final List<TextEntry> _textEntries = [];
   TextEntry? _editingTextEntry;
   final List<EditorAction> _actionStack = [];
   final List<EditorAction> _redoStack = [];
-  double _startingScale = 1.0;
-
-  FocusNode _focusNode = FocusNode();
+  Map<TextEntry, Tuple2<TextEditingController, FocusNode>> _textControllers = {};
+  Mode _activeMode = Mode.none;
+  final List<List<Offset>> _allLines = [];
+  final List<Offset> _points = [];
 
   void _pushAction(EditorAction action) {
     _actionStack.add(action);
     _redoStack.clear();
   }
 
-  Widget _buildTextContent(TextEntry entry) {
-    return Material(
-      color: Colors.transparent,
-      child: Container(
-        padding: const EdgeInsets.all(8.0),
-        color: Colors.white,
-        child: Text(
-          entry.text,
-          style: const TextStyle(color: Colors.black, fontSize: 24),
-        ),
-      ),
-    );
+  @override
+  void dispose() {
+    for (var tuple in _textControllers.values) {
+      tuple.item1.dispose();
+      tuple.item2.dispose();
+    }
+    super.dispose();
   }
 
-  Widget _buildTransformedText(TextEntry entry) {
-    return GestureDetector(
-      onTap: () {
-        _editingTextEntry = entry;
-        _textEditingController.text = entry.text;
-        _activeMode = Mode.textEditing;
-        _focusNode.requestFocus();
+  Widget _buildEditableTransformedText({TextEntry? entry}) {
+    bool isNewEntry = entry == null;
+    final effectiveEntry = entry ??
+        TextEntry(
+          'Enter your text here!',
+          Offset(MediaQuery.of(context).size.width / 2, MediaQuery.of(context).size.height / 2),
+        );
 
-        setState(() {});
-      },
-      child: Transform.rotate(
-        angle: entry.rotation,
-        child: Transform.scale(
-          scale: entry.scale,
-          child: (_editingTextEntry == entry) // If we're editing this entry
-              ? EditableText(
-                  controller: _textEditingController,
-                  focusNode: _focusNode,
-                  style: const TextStyle(color: Colors.black, fontSize: 24),
-                  cursorColor: Colors.black,
-                  backgroundCursorColor: Colors.grey,
-                  onSubmitted: (value) {
+    _textControllers[effectiveEntry] ??= Tuple2(TextEditingController(text: effectiveEntry.text), FocusNode());
+    final TextEditingController currentController = _textControllers[effectiveEntry]!.item1;
+    final FocusNode currentFocusNode = _textControllers[effectiveEntry]!.item2;
+
+    return Center(
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxWidth: MediaQuery.of(context).size.width - 50,
+          maxHeight: MediaQuery.of(context).size.height -
+              MediaQuery.of(context).padding.top -
+              MediaQuery.of(context).padding.bottom -
+              50,
+        ),
+        child: GestureDetector(
+          onTap: () {
+            _editingTextEntry = effectiveEntry;
+            currentFocusNode.requestFocus();
+            setState(() {});
+          },
+          child: Transform.rotate(
+            angle: effectiveEntry.rotation,
+            child: Transform.scale(
+              scale: effectiveEntry.scale,
+              child: EditableText(
+                controller: currentController,
+                focusNode: currentFocusNode,
+                style: const TextStyle(color: Colors.black, fontSize: 24),
+                cursorColor: Colors.black,
+                backgroundCursorColor: Colors.green,
+                maxLines: null,
+                onSubmitted: (value) {
+                  if (isNewEntry) {
                     setState(() {
-                      _editingTextEntry!.text = value;
+                      _textEntries.add(effectiveEntry);
+                      _activeMode = Mode.none;
+                      currentFocusNode.unfocus();
+                    });
+                  } else {
+                    setState(() {
+                      effectiveEntry.text = value;
                       _activeMode = Mode.none;
                       _editingTextEntry = null;
-                      _focusNode.unfocus();
+                      currentFocusNode.unfocus();
                     });
-                  },
-                )
-              : _buildTextContent(entry),
+                  }
+                },
+              ),
+            ),
+          ),
         ),
       ),
     );
@@ -376,19 +395,29 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Stack(
-        children: [
-          const CheckeredBackground(),
-          InteractiveViewer(
-            transformationController: _transformationController,
-            panEnabled: _activeMode == Mode.none,
-            boundaryMargin: const EdgeInsets.all(100),
-            minScale: 0.1,
-            maxScale: 2.0,
-            child: Image.file(widget.file),
-          ),
-          Builder(
-            builder: (context) => Stack(
+      body: GestureDetector(
+        onTap: () {
+          if (_editingTextEntry != null) {
+            setState(() {
+              _editingTextEntry = null;
+              _activeMode = Mode.none;
+            });
+          }
+        },
+        child: Stack(
+          children: [
+            CheckeredBackground(),
+            Positioned.fill(
+              child: InteractiveViewer(
+                transformationController: _transformationController,
+                panEnabled: _activeMode == Mode.none,
+                boundaryMargin: const EdgeInsets.all(100),
+                minScale: 0.1,
+                maxScale: 2.0,
+                child: Image.file(widget.file),
+              ),
+            ),
+            Stack(
               children: [
                 GestureDetector(
                   onPanUpdate: (details) {
@@ -418,146 +447,107 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
                     left: entry.position.dx,
                     top: entry.position.dy,
                     child: Draggable<TextEntry>(
+                      maxSimultaneousDrags: 1,
                       data: entry,
-                      feedback: _buildTransformedText(entry),
+                      feedback: _buildEditableTransformedText(entry: entry),
                       onDragEnd: (details) {
                         setState(() {
                           entry.position = details.offset;
                         });
                       },
                       childWhenDragging: Container(),
-                      child: _buildTransformedText(entry),
+                      child: _buildEditableTransformedText(entry: entry),
                     ),
                   ),
               ],
             ),
-          ),
-          if (_activeMode == Mode.textEditing && _editingTextEntry == null)
-            SafeArea(
-              bottom: false,
-              child: Align(
-                alignment: Alignment.center,
-                child: TextField(
-                  controller: _textEditingController,
-                  style: const TextStyle(color: Colors.black, fontSize: 24),
-                  textAlign: TextAlign.center,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Enter your text here',
-                  ),
-                  onSubmitted: (value) {
-                    if (_editingTextEntry != null) {
-                      setState(() {
-                        _editingTextEntry!.text = value;
-                        _textEditingController.clear();
-                        _activeMode = Mode.none;
-                        _editingTextEntry = null;
-                      });
-                    } else {
-                      setState(() {
-                        _textEntries.add(TextEntry(value,
-                            Offset(MediaQuery.of(context).size.width / 2, MediaQuery.of(context).size.height / 2)));
-                        _textEditingController.clear();
-                        _activeMode = Mode.none;
-                      });
-                    }
-                  },
-                ),
+            if (_activeMode == Mode.textEditing && _editingTextEntry == null) _buildEditableTransformedText(),
+            Positioned(
+              top: MediaQuery.of(context).padding.top + 10,
+              left: 10,
+              child: _shadowedIcon(
+                icon: const Icon(CupertinoIcons.xmark, color: Colors.white),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
               ),
             ),
-          Positioned(
-            top: MediaQuery.of(context).padding.top + 10,
-            left: 10,
-            child: IconButton(
-              icon: const Icon(CupertinoIcons.xmark, color: Colors.white),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ),
-          Positioned(
-            top: MediaQuery.of(context).padding.top + 10,
-            right: 10,
-            child: Column(
-              children: [
-                _shadowedIcon(
-                  icon: const Icon(Icons.brush, color: Colors.white),
-                  onPressed: () {
-                    setState(() {
-                      _activeMode = Mode.painting;
-                    });
-                  },
-                ),
-                _shadowedIcon(
-                  icon: const Icon(Icons.text_fields, color: Colors.white),
-                  onPressed: () {
-                    setState(() {
-                      _activeMode = Mode.textEditing;
-                    });
-                  },
-                ),
-                _shadowedIcon(
-                  icon: const Icon(Icons.undo, color: Colors.white),
-                  onPressed: () {
-                    if (_actionStack.isNotEmpty) {
+            Positioned(
+              top: MediaQuery.of(context).padding.top + 10,
+              right: 10,
+              child: Column(
+                children: [
+                  _shadowedIcon(
+                    icon: const Icon(Icons.brush, color: Colors.white),
+                    onPressed: () {
                       setState(() {
-                        EditorAction lastAction = _actionStack.removeLast();
-                        if (lastAction.actionType == ActionType.paint) {
-                          _allLines.remove(lastAction.points);
-                        }
-                        _redoStack.add(lastAction);
+                        _activeMode = Mode.painting;
                       });
-                    }
-                  },
-                ),
-                _shadowedIcon(
-                  icon: const Icon(Icons.redo, color: Colors.white),
-                  onPressed: () {
-                    if (_redoStack.isNotEmpty) {
+                    },
+                  ),
+                  _shadowedIcon(
+                    icon: const Icon(Icons.text_fields, color: Colors.white),
+                    onPressed: () {
                       setState(() {
-                        EditorAction actionToRedo = _redoStack.removeLast();
-                        if (actionToRedo.actionType == ActionType.paint) {
-                          _allLines.add(actionToRedo.points!);
-                        }
-                        _actionStack.add(actionToRedo);
+                        _activeMode = Mode.textEditing;
                       });
-                    }
-                  },
-                ),
-              ],
+                    },
+                  ),
+                  _shadowedIcon(
+                    icon: const Icon(Icons.undo, color: Colors.white),
+                    onPressed: () {
+                      if (_actionStack.isNotEmpty) {
+                        setState(() {
+                          EditorAction lastAction = _actionStack.removeLast();
+                          if (lastAction.actionType == ActionType.paint) {
+                            _allLines.remove(lastAction.points);
+                          }
+                          _redoStack.add(lastAction);
+                        });
+                      }
+                    },
+                  ),
+                  _shadowedIcon(
+                    icon: const Icon(Icons.redo, color: Colors.white),
+                    onPressed: () {
+                      if (_redoStack.isNotEmpty) {
+                        setState(() {
+                          EditorAction lastAction = _redoStack.removeLast();
+                          if (lastAction.actionType == ActionType.paint) {
+                            _allLines.add(lastAction.points!);
+                          }
+                          _actionStack.add(lastAction);
+                        });
+                      }
+                    },
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
-  IconButton _shadowedIcon({
-    required Icon icon,
-    required VoidCallback onPressed,
-  }) {
-    return IconButton(
-      icon: icon,
-      onPressed: onPressed,
-      iconSize: 30,
-      color: Colors.white,
-      splashColor: Colors.transparent,
-      splashRadius: 1.0,
-      highlightColor: Colors.transparent,
+  Widget _shadowedIcon({required Icon icon, required Function() onPressed}) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      decoration: const BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black26,
+            offset: Offset(0, 2),
+            blurRadius: 3,
+          ),
+        ],
+      ),
+      child: IconButton(
+        onPressed: onPressed,
+        icon: icon,
+      ),
     );
   }
-}
-
-enum Mode { none, painting, textEditing }
-
-enum ActionType { paint, text }
-
-class EditorAction {
-  ActionType actionType;
-  List<Offset>? points;
-  TextEntry? textEntry;
-
-  EditorAction({required this.actionType, this.points, this.textEntry});
 }
 
 class MyPainter extends CustomPainter {
@@ -567,58 +557,60 @@ class MyPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()
+    var paint = Paint()
       ..color = Colors.black
       ..strokeWidth = 5
       ..strokeCap = StrokeCap.round;
 
     for (var line in allLines) {
-      for (int i = 0; i < line.length - 1; i++) {
+      for (var i = 0; i < line.length - 1; i++) {
         if (line[i] != null && line[i + 1] != null) canvas.drawLine(line[i], line[i + 1], paint);
       }
     }
   }
 
   @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return true;
-  }
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
+}
+
+class EditorAction {
+  final ActionType actionType;
+  final List<Offset>? points;
+
+  EditorAction({required this.actionType, this.points});
+}
+
+enum ActionType {
+  paint,
+  text,
+}
+
+enum Mode {
+  none,
+  painting,
+  textEditing,
 }
 
 class CheckeredBackground extends StatelessWidget {
-  const CheckeredBackground({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(
-      painter: CheckeredPainter(),
-      child: const SizedBox.expand(),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final int rows = (constraints.maxHeight / 20).ceil();
+        final int columns = (constraints.maxWidth / 20).ceil();
+        return GridView.builder(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 20,
+          ),
+          itemBuilder: (context, index) {
+            bool isOddRow = (index / rows).floor().isOdd;
+            bool isOddColumn = (index % columns).isOdd;
+            return Container(
+              color: (isOddRow && !isOddColumn) || (!isOddRow && isOddColumn) ? Colors.grey[300] : Colors.grey[200],
+            );
+          },
+        );
+      },
     );
-  }
-}
-
-class CheckeredPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final int squaresHorizontally = (size.width / 20).ceil();
-    final int squaresVertically = (size.height / 20).ceil();
-
-    final paint1 = Paint()..color = Colors.grey[300]!;
-    final paint2 = Paint()..color = Colors.grey[200]!;
-
-    for (int i = 0; i < squaresHorizontally; i++) {
-      for (int j = 0; j < squaresVertically; j++) {
-        if ((i + j) % 2 == 0) {
-          canvas.drawRect(Rect.fromLTWH(i * 20.0, j * 20.0, 20.0, 20.0), paint1);
-        } else {
-          canvas.drawRect(Rect.fromLTWH(i * 20.0, j * 20.0, 20.0, 20.0), paint2);
-        }
-      }
-    }
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return false;
   }
 }
