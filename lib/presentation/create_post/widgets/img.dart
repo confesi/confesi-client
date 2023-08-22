@@ -291,8 +291,9 @@ class ImgState extends State<Img> {
 class TextEntry {
   String text;
   Matrix4 matrix;
+  double fontSize;
 
-  TextEntry(this.text) : matrix = Matrix4.identity();
+  TextEntry(this.text, {this.fontSize = 14.0}) : matrix = Matrix4.identity();
 }
 
 class ImageEditorScreen extends StatefulWidget {
@@ -306,7 +307,28 @@ class ImageEditorScreen extends StatefulWidget {
 
 class ImageEditorScreenState extends State<ImageEditorScreen> {
   final List<TextEntry> _textEntries = [];
-  final Map<TextEntry, Tuple2<TextEditingController, FocusNode>> _textControllers = {};
+  final Map<TextEntry, Tuple3<TextEditingController, FocusNode, double>> _textControllers = {};
+
+  FocusNode? _currentFocusedField;
+  bool get _showFontSizeSlider => _currentFocusedField != null;
+  FocusAttachment? _focusAttachment; // Declare this at the class level
+
+  FocusNode _createFocusNode() {
+    final node = FocusNode();
+    _focusAttachment = node.attach(context); // Attach the focus node
+    node.addListener(() {
+      setState(() {
+        if (node.hasFocus) {
+          _focusAttachment?.reparent();
+          _currentFocusedField = node;
+        } else if (_currentFocusedField == node) {
+          _focusAttachment?.detach();
+          _currentFocusedField = null;
+        }
+      });
+    });
+    return node;
+  }
 
   @override
   void dispose() {
@@ -317,35 +339,53 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
     super.dispose();
   }
 
-  Widget _buildText(BuildContext context, TextEditingController controller, FocusNode focusNode,
+  Widget _buildText(BuildContext context, TextEditingController controller, FocusNode focusNode, double fontSize,
       {void Function()? onEditingComplete}) {
     return GestureDetector(
-      onTap: () => FocusScope.of(context).requestFocus(focusNode),
-      child: Container(
-        color: Theme.of(context).colorScheme.secondary,
-        width: 200,
-        child: Material(
-          type: MaterialType.transparency,
-          child: IgnorePointer(
-            ignoring: !focusNode.hasFocus,
-            child: TextField(
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Enter text',
-                hintStyle: TextStyle(color: Theme.of(context).colorScheme.primary),
+      onTap: () {
+        _currentFocusedField?.unfocus();
+        FocusScope.of(context).requestFocus(focusNode);
+        setState(() {
+          _currentFocusedField = focusNode;
+        });
+      },
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width - 32),
+        child: IntrinsicWidth(
+          child: Container(
+            padding: const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 8),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  color: Theme.of(context).colorScheme.shadow,
+                  blurRadius: 20,
+                  offset: const Offset(0, 0),
+                ),
+              ],
+            ),
+            child: Material(
+              type: MaterialType.transparency,
+              child: IgnorePointer(
+                ignoring: !focusNode.hasFocus,
+                child: TextField(
+                  scrollPadding: EdgeInsets.zero,
+                  maxLines: null,
+                  decoration: InputDecoration(
+                    isDense: true, // Add this line
+                    contentPadding: EdgeInsets.zero, // Removes internal padding
+                    border: InputBorder.none,
+                    hintText: 'Enter text',
+                    hintStyle: kBody.copyWith(color: Colors.black, fontSize: fontSize),
+                  ),
+                  style: kBody.copyWith(color: Colors.black, fontSize: fontSize),
+                  textAlign: TextAlign.center,
+                  controller: controller,
+                  focusNode: focusNode,
+                  onEditingComplete: onEditingComplete,
+                ),
               ),
-              style: TextStyle(color: Theme.of(context).colorScheme.primary),
-              textAlign: TextAlign.center,
-              controller: controller,
-              focusNode: focusNode,
-              onEditingComplete: () {
-                if (onEditingComplete != null) {
-                  onEditingComplete();
-                }
-                // Unfocus the current focused node to close the keyboard
-                FocusScope.of(context).unfocus();
-                FocusManager.instance.primaryFocus?.unfocus();
-              },
             ),
           ),
         ),
@@ -354,23 +394,22 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
   }
 
   Widget _buildEditableTransformedText(TextEntry entry) {
-    _textControllers[entry] ??= Tuple2(TextEditingController(text: entry.text), FocusNode());
-    final TextEditingController currentController = _textControllers[entry]!.item1;
-    final FocusNode currentFocusNode = _textControllers[entry]!.item2;
+    _textControllers[entry] ??= Tuple3(TextEditingController(text: entry.text), _createFocusNode(), entry.fontSize);
+    final currentController = _textControllers[entry]!.item1;
+    final currentFocusNode = _textControllers[entry]!.item2;
+    final currentFontSize = _textControllers[entry]!.item3;
 
     return Moveable(
-      // onDirectDownwardSwipe: () => FocusManager.instance.primaryFocus?.unfocus(),
-      initialMatrix: entry.matrix, // Use the matrix from the TextEntry
-      onMatrixChange: (m) {
-        setState(() => entry.matrix = m); // Update the TextEntry matrix when it changes
-      },
-      onDragEnd: (o) {},
-      onDragStart: (o) {},
-      onDragUpdate: (o) {},
+      onDragEnd: (offset) {},
+      onDragStart: (offset) {},
+      onDragUpdate: (offset) {},
+      initialMatrix: entry.matrix,
+      onMatrixChange: (m) => setState(() => entry.matrix = m),
       child: _buildText(
         context,
         currentController,
         currentFocusNode,
+        currentFontSize,
         onEditingComplete: () {
           entry.text = currentController.text;
         },
@@ -378,34 +417,92 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
     );
   }
 
+  TextEntry? _getCurrentEntry() {
+    for (var entry in _textEntries) {
+      if (_textControllers[entry]!.item2 == _currentFocusedField) {
+        return entry;
+      }
+    }
+    return null; // or return _textEntries.first; if you want a default
+  }
+
+  Widget buildSlider(BuildContext context) {
+    if (_currentFocusedField != null && _showFontSizeSlider) {
+      return RotatedBox(
+        key: const ValueKey("slider"),
+        quarterTurns: 3,
+        child: Slider(
+          focusNode: AlwaysDisabledFocusNode(), // Add this
+          value: _textControllers[_getCurrentEntry()]!.item3,
+          onChanged: (value) {
+            setState(() {
+              TextEntry? currentEntry = _getCurrentEntry();
+              if (currentEntry != null) {
+                // only proceed if we have a valid entry
+                Tuple3<TextEditingController, FocusNode, double> currentTuple = _textControllers[currentEntry]!;
+                currentTuple = Tuple3(
+                  currentTuple.item1,
+                  currentTuple.item2,
+                  value,
+                );
+                _textControllers[currentEntry] = currentTuple;
+                currentEntry.fontSize = value;
+              }
+            });
+          },
+          min: 10.0,
+          max: 40.0,
+        ),
+      );
+    } else {
+      return const SizedBox(
+        key: ValueKey("sizedbox"),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.shadow,
       resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           Positioned.fill(
             child: KeyboardDismiss(
-              child: Container(
-                color: Colors.green,
-                child: Image.file(widget.file, fit: BoxFit.contain),
-              ),
+              child: Image.file(widget.file, fit: BoxFit.contain),
             ),
           ),
           ..._textEntries.map((entry) => _buildEditableTransformedText(entry)).toList(),
-          Center(
-            child: ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  TextEntry newText = TextEntry('New Text'); // No need to pass position now
-                  _textEntries.add(newText);
-                });
-              },
-              child: const Text('Add Text'),
+          Align(
+            alignment: Alignment.topCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 50),
+              child: ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    _textEntries.add(TextEntry('New Text'));
+                  });
+                },
+                child: const Text('Add Text'),
+              ),
             ),
           ),
+          Positioned(
+            top: MediaQuery.of(context).size.height / 2 - 150,
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 250),
+              child: buildSlider(context),
+            ),
+          )
         ],
       ),
     );
   }
+}
+
+// Outside your class, create this:
+class AlwaysDisabledFocusNode extends FocusNode {
+  @override
+  bool get hasFocus => false;
 }
