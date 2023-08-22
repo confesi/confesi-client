@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:ui';
 import 'package:confesi/application/user/cubit/notifications_cubit.dart';
 import 'package:confesi/core/styles/typography.dart';
+import 'package:confesi/presentation/create_post/widgets/moveable.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable/exports.dart';
 import 'package:tuple/tuple.dart';
+
+import '../../shared/edited_source_widgets/matrix_gesture_detector.dart';
 
 class ImgController extends ChangeNotifier {
   late ImgState _imgState;
@@ -322,18 +325,22 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
       {void Function()? onEditingComplete}) {
     return GestureDetector(
       onTap: () {
-        // Focus the text field when it's tapped
         FocusScope.of(context).requestFocus(focusNode);
       },
       child: Container(
         color: Theme.of(context).colorScheme.secondary,
-        width: 200, // adjust as needed
+        width: 200,
         child: Material(
-          type: MaterialType.transparency, // makes it transparent
+          type: MaterialType.transparency,
           child: IgnorePointer(
-            ignoring: !focusNode.hasFocus, // Ignore pointer events if the text field is not focused
+            ignoring: !focusNode.hasFocus,
             child: TextField(
-              style: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                hintText: 'Enter text',
+                hintStyle: TextStyle(color: Theme.of(context).colorScheme.primary),
+              ),
+              style: TextStyle(color: Theme.of(context).colorScheme.primary),
               textAlign: TextAlign.center,
               controller: controller,
               focusNode: focusNode,
@@ -345,49 +352,28 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
     );
   }
 
-  Widget _buildEditableTransformedText({TextEntry? entry}) {
-    bool isNewEntry = entry == null;
-    final effectiveEntry = entry ??
-        TextEntry(
-          'Enter your text here!',
-          Offset(MediaQuery.of(context).size.width / 2, MediaQuery.of(context).size.height / 2),
-        );
+  Widget _buildEditableTransformedText(TextEntry entry) {
+    _textControllers[entry] ??= Tuple2(TextEditingController(text: entry.text), FocusNode());
+    final TextEditingController currentController = _textControllers[entry]!.item1;
+    final FocusNode currentFocusNode = _textControllers[entry]!.item2;
 
-    _textControllers[effectiveEntry] ??= Tuple2(TextEditingController(text: effectiveEntry.text), FocusNode());
-    final TextEditingController currentController = _textControllers[effectiveEntry]!.item1;
-    final FocusNode currentFocusNode = _textControllers[effectiveEntry]!.item2;
-
-    return Positioned(
-      left: effectiveEntry.position.dx,
-      top: effectiveEntry.position.dy,
-      child: Listener(
-        onPointerDown: (details) {
-          // Unfocus the text field to make sure drag starts immediately
-          currentFocusNode.unfocus();
+    return Moveable(
+      onDragEnd: (o) {
+        setState(() => entry.position = o);
+      },
+      onDragStart: (o) {
+        setState(() => entry.position = o);
+      },
+      onDragUpdate: (o) {
+        setState(() => entry.position = o);
+      },
+      child: _buildText(
+        context,
+        currentController,
+        currentFocusNode,
+        onEditingComplete: () {
+          entry.text = currentController.text;
         },
-        child: Draggable<TextEntry>(
-          maxSimultaneousDrags: 1,
-          childWhenDragging: const SizedBox.shrink(),
-          data: effectiveEntry,
-          feedback: _buildText(context, currentController, currentFocusNode),
-          onDragEnd: (details) {
-            setState(() {
-              effectiveEntry.position = details.offset;
-            });
-          },
-          child: _buildText(
-            context,
-            currentController,
-            currentFocusNode,
-            onEditingComplete: () {
-              if (isNewEntry) {
-                _textEntries.add(effectiveEntry);
-              }
-              effectiveEntry.text = currentController.text;
-              setState(() {});
-            },
-          ),
-        ),
       ),
     );
   }
@@ -399,23 +385,40 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
       body: KeyboardDismiss(
         child: Stack(
           children: [
-            Positioned.fill(
+            Positioned(
               child: Image.file(widget.file, fit: BoxFit.contain),
             ),
-            ..._textEntries.map((entry) => _buildEditableTransformedText(entry: entry)).toList(),
-            Positioned.fill(
-              child: Center(
-                child: ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      _textEntries.add(TextEntry(
-                        'New Text',
-                        Offset(MediaQuery.of(context).size.width / 2, MediaQuery.of(context).size.height / 2),
-                      ));
-                    });
-                  },
-                  child: const Text('Add Text'),
-                ),
+            // ..._textEntries.map((entry) => _buildEditableTransformedText(entry)).toList(),
+            ..._textEntries
+                .map((entry) => Moveable(
+                      child: Container(height: 200, width: 200, color: Colors.orange),
+                      onDragStart: (offset) {
+                        // print("START");
+                        // setState(() => entry.position = offset);
+                      },
+                      onDragEnd: (offset) {
+                        // setState(() => entry.position = offset);
+                        // print("END");
+                      },
+                      onDragUpdate: (offset) {
+                        // setState(() => entry.position = offset);
+                        // print("UPDATE");
+                      },
+                    ))
+                .toList(),
+            Center(
+              child: ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    // new text entry
+                    TextEntry newText = TextEntry(
+                      'New Text',
+                      Offset(MediaQuery.of(context).size.width / 4, MediaQuery.of(context).size.height / 4),
+                    );
+                    _textEntries.add(newText);
+                  });
+                },
+                child: const Text('Add Text'),
               ),
             ),
           ],
@@ -423,8 +426,4 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
       ),
     );
   }
-}
-
-void main() {
-  runApp(MaterialApp(home: ImageEditorScreen(file: File('path_to_your_image'))));
 }
