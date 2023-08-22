@@ -57,6 +57,9 @@ class MatrixGestureDetector extends StatefulWidget {
   /// aligned relative to the size of this widget.
   final Alignment? focalPointAlignment;
 
+  final VoidCallback onScaleStart;
+  final VoidCallback onScaleEnd;
+
   const MatrixGestureDetector({
     Key? key,
     required this.onMatrixUpdate,
@@ -67,6 +70,8 @@ class MatrixGestureDetector extends StatefulWidget {
     this.clipChild = true,
     this.focalPointAlignment,
     this.behavior = HitTestBehavior.deferToChild,
+    required this.onScaleStart,
+    required this.onScaleEnd,
   }) : super(key: key);
 
   @override
@@ -114,6 +119,7 @@ class _MatrixGestureDetectorState extends State<MatrixGestureDetector> {
       behavior: widget.behavior,
       onScaleStart: onScaleStart,
       onScaleUpdate: onScaleUpdate,
+      onScaleEnd: onScaleEnd,
       child: child,
     );
   }
@@ -132,12 +138,21 @@ class _MatrixGestureDetectorState extends State<MatrixGestureDetector> {
   );
 
   void onScaleStart(ScaleStartDetails details) {
+    widget.onScaleStart();
+
     translationUpdater.value = details.focalPoint;
     scaleUpdater.value = 1.0;
     rotationUpdater.value = 0.0;
   }
 
+  void onScaleEnd(ScaleEndDetails details) {
+    widget.onScaleEnd();
+  }
+
   void onScaleUpdate(ScaleUpdateDetails details) {
+    widget
+        .onScaleStart(); // Why added onScaleUpdate? refer: https://github.com/pskink/matrix_gesture_detector/issues/5#issuecomment-553748004
+
     translationDeltaMatrix = Matrix4.identity();
     scaleDeltaMatrix = Matrix4.identity();
     rotationDeltaMatrix = Matrix4.identity();

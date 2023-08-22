@@ -1,19 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:isar/isar.dart';
 
 import '../button_touch_effects/touchable_scale.dart';
 
 class CircleIconBtn extends StatelessWidget {
-  CircleIconBtn({
+  const CircleIconBtn({
     super.key,
     required this.onTap,
     required this.icon,
     this.color,
     this.disabled = false,
   });
-
-  VoidCallback onTap;
+  
+  final VoidCallback onTap;
   final IconData icon;
   final Color? color;
   final bool disabled;

@@ -4,20 +4,17 @@ import '../../shared/edited_source_widgets/matrix_gesture_detector.dart';
 class Moveable extends StatefulWidget {
   final Matrix4 initialMatrix;
   final Widget child;
-  final Function(Offset offset) onDragStart;
-  final Function(Offset offset) onDragEnd;
-  final Function(Offset offset) onDragUpdate;
+  final VoidCallback onDragStart;
+  final VoidCallback onDragEnd;
   final Function(Matrix4 matrix) onMatrixChange; // new callback for matrix changes
 
-  Moveable({
+  const Moveable({
     Key? key,
     required this.child,
     required this.onDragStart,
     required this.onDragEnd,
-    required this.onDragUpdate,
     required this.initialMatrix, // new parameter
     required this.onMatrixChange, // new parameter
-    // required this.onDirectDownwardSwipe,
   }) : super(key: key);
 
   @override
@@ -37,6 +34,12 @@ class MoveableState extends State<Moveable> {
   Widget build(BuildContext context) {
     return Listener(
       child: MatrixGestureDetector(
+        onScaleEnd: () {
+          widget.onDragEnd();
+        },
+        onScaleStart: () {
+          widget.onDragStart();
+        },
         shouldTranslate: true,
         shouldScale: true,
         shouldRotate: true,

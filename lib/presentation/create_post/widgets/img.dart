@@ -1,8 +1,10 @@
 import 'dart:io';
 import 'package:confesi/application/user/cubit/notifications_cubit.dart';
+import 'package:confesi/core/router/go_router.dart';
 import 'package:confesi/core/styles/typography.dart';
 import 'package:confesi/presentation/create_post/widgets/moveable.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
+import 'package:confesi/presentation/shared/buttons/circle_icon_btn.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -292,8 +294,10 @@ class TextEntry {
   String text;
   Matrix4 matrix;
   double fontSize;
+  bool hasBg;
+  bool isBold;
 
-  TextEntry(this.text, {this.fontSize = 14.0}) : matrix = Matrix4.identity();
+  TextEntry(this.text, {this.fontSize = 14.0, this.hasBg = false, this.isBold = false}) : matrix = Matrix4.identity();
 }
 
 class ImageEditorScreen extends StatefulWidget {
@@ -353,37 +357,36 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
         constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width - 32),
         child: IntrinsicWidth(
           child: Container(
-            padding: const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 8),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                  color: Theme.of(context).colorScheme.shadow,
-                  blurRadius: 20,
-                  offset: const Offset(0, 0),
-                ),
-              ],
-            ),
-            child: Material(
-              type: MaterialType.transparency,
-              child: IgnorePointer(
-                ignoring: !focusNode.hasFocus,
-                child: TextField(
-                  scrollPadding: EdgeInsets.zero,
-                  maxLines: null,
-                  decoration: InputDecoration(
-                    isDense: true, // Add this line
-                    contentPadding: EdgeInsets.zero, // Removes internal padding
-                    border: InputBorder.none,
-                    hintText: 'Enter text',
-                    hintStyle: kBody.copyWith(color: Colors.black, fontSize: fontSize),
+            // container to increase hitbox
+            color: Colors.transparent,
+            padding: const EdgeInsets.all(20),
+            child: Container(
+              padding: const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 8),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: Material(
+                type: MaterialType.transparency,
+                child: IgnorePointer(
+                  ignoring: !focusNode.hasFocus,
+                  child: TextField(
+                    scrollPadding: EdgeInsets.zero,
+                    maxLines: null,
+                    decoration: InputDecoration(
+                      isDense: true, // Add this line
+
+                      contentPadding: EdgeInsets.zero, // Removes internal padding
+                      border: InputBorder.none,
+                      hintText: 'Enter text',
+                      hintStyle: kBody.copyWith(color: Colors.black, fontSize: fontSize),
+                    ),
+                    style: kBody.copyWith(color: Colors.black, fontSize: fontSize),
+                    textAlign: TextAlign.center,
+                    controller: controller,
+                    focusNode: focusNode,
+                    onEditingComplete: onEditingComplete,
                   ),
-                  style: kBody.copyWith(color: Colors.black, fontSize: fontSize),
-                  textAlign: TextAlign.center,
-                  controller: controller,
-                  focusNode: focusNode,
-                  onEditingComplete: onEditingComplete,
                 ),
               ),
             ),
@@ -400,9 +403,8 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
     final currentFontSize = _textControllers[entry]!.item3;
 
     return Moveable(
-      onDragEnd: (offset) {},
-      onDragStart: (offset) {},
-      onDragUpdate: (offset) {},
+      onDragEnd: () {},
+      onDragStart: () => FocusManager.instance.primaryFocus?.unfocus(),
       initialMatrix: entry.matrix,
       onMatrixChange: (m) => setState(() => entry.matrix = m),
       child: _buildText(
@@ -474,25 +476,46 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
             ),
           ),
           ..._textEntries.map((entry) => _buildEditableTransformedText(entry)).toList(),
-          Align(
-            alignment: Alignment.topCenter,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 50),
-              child: ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    _textEntries.add(TextEntry('New Text'));
-                  });
-                },
-                child: const Text('Add Text'),
-              ),
-            ),
-          ),
+
           Positioned(
             top: MediaQuery.of(context).size.height / 2 - 150,
             child: AnimatedSwitcher(
               duration: const Duration(milliseconds: 250),
               child: buildSlider(context),
+            ),
+          ),
+          // positioned list of vertically stacked icons in the top right
+          Positioned.fill(
+            right: 10,
+            left: 10,
+            top: 20,
+            child: SafeArea(
+              bottom: false,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    children: [
+                      CircleIconBtn(onTap: () => router.pop(), icon: CupertinoIcons.arrow_left),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      CircleIconBtn(
+                          onTap: () {
+                            setState(() {
+                              _textEntries.add(TextEntry('New Text'));
+                            });
+                          },
+                          icon: Icons.text_fields),
+                      const SizedBox(height: 8),
+                      CircleIconBtn(onTap: () => print("tap"), icon: CupertinoIcons.paintbrush),
+                      const SizedBox(height: 8),
+                      CircleIconBtn(onTap: () => print("tap"), icon: Icons.download),
+                    ],
+                  ),
+                ],
+              ),
             ),
           )
         ],
@@ -501,7 +524,6 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
   }
 }
 
-// Outside your class, create this:
 class AlwaysDisabledFocusNode extends FocusNode {
   @override
   bool get hasFocus => false;
