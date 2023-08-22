@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:scrollable/exports.dart';
 import 'package:tuple/tuple.dart';
 
 class ImgController extends ChangeNotifier {
@@ -279,8 +280,8 @@ class ImgState extends State<Img> {
   }
 
   void _showEditor(File file) {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => ImageEditorScreen(file: file), fullscreenDialog: true));
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => ImageEditorScreen(file: file), fullscreenDialog: false)); // todo: full-screen: true
   }
 }
 
@@ -305,20 +306,8 @@ class ImageEditorScreen extends StatefulWidget {
 }
 
 class ImageEditorScreenState extends State<ImageEditorScreen> {
-  final TransformationController _transformationController = TransformationController();
   final List<TextEntry> _textEntries = [];
-  TextEntry? _editingTextEntry;
-  final List<EditorAction> _actionStack = [];
-  final List<EditorAction> _redoStack = [];
-  Map<TextEntry, Tuple2<TextEditingController, FocusNode>> _textControllers = {};
-  Mode _activeMode = Mode.none;
-  final List<List<Offset>> _allLines = [];
-  final List<Offset> _points = [];
-
-  void _pushAction(EditorAction action) {
-    _actionStack.add(action);
-    _redoStack.clear();
-  }
+  final Map<TextEntry, Tuple2<TextEditingController, FocusNode>> _textControllers = {};
 
   @override
   void dispose() {
@@ -327,6 +316,33 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
       tuple.item2.dispose();
     }
     super.dispose();
+  }
+
+  Widget _buildText(BuildContext context, TextEditingController controller, FocusNode focusNode,
+      {void Function()? onEditingComplete}) {
+    return GestureDetector(
+      onTap: () {
+        // Focus the text field when it's tapped
+        FocusScope.of(context).requestFocus(focusNode);
+      },
+      child: Container(
+        color: Theme.of(context).colorScheme.secondary,
+        width: 200, // adjust as needed
+        child: Material(
+          type: MaterialType.transparency, // makes it transparent
+          child: IgnorePointer(
+            ignoring: !focusNode.hasFocus, // Ignore pointer events if the text field is not focused
+            child: TextField(
+              style: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
+              textAlign: TextAlign.center,
+              controller: controller,
+              focusNode: focusNode,
+              onEditingComplete: onEditingComplete,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   Widget _buildEditableTransformedText({TextEntry? entry}) {
@@ -341,50 +357,35 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
     final TextEditingController currentController = _textControllers[effectiveEntry]!.item1;
     final FocusNode currentFocusNode = _textControllers[effectiveEntry]!.item2;
 
-    return Center(
-      child: ConstrainedBox(
-        constraints: BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width - 50,
-          maxHeight: MediaQuery.of(context).size.height -
-              MediaQuery.of(context).padding.top -
-              MediaQuery.of(context).padding.bottom -
-              50,
-        ),
-        child: GestureDetector(
-          onTap: () {
-            _editingTextEntry = effectiveEntry;
-            currentFocusNode.requestFocus();
-            setState(() {});
+    return Positioned(
+      left: effectiveEntry.position.dx,
+      top: effectiveEntry.position.dy,
+      child: Listener(
+        onPointerDown: (details) {
+          // Unfocus the text field to make sure drag starts immediately
+          currentFocusNode.unfocus();
+        },
+        child: Draggable<TextEntry>(
+          maxSimultaneousDrags: 1,
+          childWhenDragging: const SizedBox.shrink(),
+          data: effectiveEntry,
+          feedback: _buildText(context, currentController, currentFocusNode),
+          onDragEnd: (details) {
+            setState(() {
+              effectiveEntry.position = details.offset;
+            });
           },
-          child: Transform.rotate(
-            angle: effectiveEntry.rotation,
-            child: Transform.scale(
-              scale: effectiveEntry.scale,
-              child: EditableText(
-                controller: currentController,
-                focusNode: currentFocusNode,
-                style: const TextStyle(color: Colors.black, fontSize: 24),
-                cursorColor: Colors.black,
-                backgroundCursorColor: Colors.green,
-                maxLines: null,
-                onSubmitted: (value) {
-                  if (isNewEntry) {
-                    setState(() {
-                      _textEntries.add(effectiveEntry);
-                      _activeMode = Mode.none;
-                      currentFocusNode.unfocus();
-                    });
-                  } else {
-                    setState(() {
-                      effectiveEntry.text = value;
-                      _activeMode = Mode.none;
-                      _editingTextEntry = null;
-                      currentFocusNode.unfocus();
-                    });
-                  }
-                },
-              ),
-            ),
+          child: _buildText(
+            context,
+            currentController,
+            currentFocusNode,
+            onEditingComplete: () {
+              if (isNewEntry) {
+                _textEntries.add(effectiveEntry);
+              }
+              effectiveEntry.text = currentController.text;
+              setState(() {});
+            },
           ),
         ),
       ),
@@ -395,133 +396,26 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: GestureDetector(
-        onTap: () {
-          if (_editingTextEntry != null) {
-            setState(() {
-              _editingTextEntry = null;
-              _activeMode = Mode.none;
-            });
-          }
-        },
+      body: KeyboardDismiss(
         child: Stack(
           children: [
-            CheckeredBackground(),
             Positioned.fill(
-              child: InteractiveViewer(
-                transformationController: _transformationController,
-                panEnabled: _activeMode == Mode.none,
-                boundaryMargin: const EdgeInsets.all(100),
-                minScale: 0.1,
-                maxScale: 2.0,
-                child: Image.file(widget.file),
-              ),
+              child: Image.file(widget.file, fit: BoxFit.contain),
             ),
-            Stack(
-              children: [
-                GestureDetector(
-                  onPanUpdate: (details) {
-                    if (_activeMode == Mode.painting) {
-                      setState(() {
-                        RenderBox renderBox = context.findRenderObject() as RenderBox;
-                        _points.add(renderBox.globalToLocal(details.globalPosition));
-                      });
-                    }
+            ..._textEntries.map((entry) => _buildEditableTransformedText(entry: entry)).toList(),
+            Positioned.fill(
+              child: Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      _textEntries.add(TextEntry(
+                        'New Text',
+                        Offset(MediaQuery.of(context).size.width / 2, MediaQuery.of(context).size.height / 2),
+                      ));
+                    });
                   },
-                  onPanEnd: (details) {
-                    if (_activeMode == Mode.painting) {
-                      setState(() {
-                        _allLines.add(List.from(_points));
-                        _pushAction(EditorAction(actionType: ActionType.paint, points: _points));
-                        _points.clear();
-                      });
-                    }
-                  },
-                  child: CustomPaint(
-                    painter: MyPainter(_allLines + [_points]),
-                    child: const SizedBox.expand(),
-                  ),
+                  child: const Text('Add Text'),
                 ),
-                for (var entry in _textEntries)
-                  Positioned(
-                    left: entry.position.dx,
-                    top: entry.position.dy,
-                    child: Draggable<TextEntry>(
-                      maxSimultaneousDrags: 1,
-                      data: entry,
-                      feedback: _buildEditableTransformedText(entry: entry),
-                      onDragEnd: (details) {
-                        setState(() {
-                          entry.position = details.offset;
-                        });
-                      },
-                      childWhenDragging: Container(),
-                      child: _buildEditableTransformedText(entry: entry),
-                    ),
-                  ),
-              ],
-            ),
-            if (_activeMode == Mode.textEditing && _editingTextEntry == null) _buildEditableTransformedText(),
-            Positioned(
-              top: MediaQuery.of(context).padding.top + 10,
-              left: 10,
-              child: _shadowedIcon(
-                icon: const Icon(CupertinoIcons.xmark, color: Colors.white),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ),
-            Positioned(
-              top: MediaQuery.of(context).padding.top + 10,
-              right: 10,
-              child: Column(
-                children: [
-                  _shadowedIcon(
-                    icon: const Icon(Icons.brush, color: Colors.white),
-                    onPressed: () {
-                      setState(() {
-                        _activeMode = Mode.painting;
-                      });
-                    },
-                  ),
-                  _shadowedIcon(
-                    icon: const Icon(Icons.text_fields, color: Colors.white),
-                    onPressed: () {
-                      setState(() {
-                        _activeMode = Mode.textEditing;
-                      });
-                    },
-                  ),
-                  _shadowedIcon(
-                    icon: const Icon(Icons.undo, color: Colors.white),
-                    onPressed: () {
-                      if (_actionStack.isNotEmpty) {
-                        setState(() {
-                          EditorAction lastAction = _actionStack.removeLast();
-                          if (lastAction.actionType == ActionType.paint) {
-                            _allLines.remove(lastAction.points);
-                          }
-                          _redoStack.add(lastAction);
-                        });
-                      }
-                    },
-                  ),
-                  _shadowedIcon(
-                    icon: const Icon(Icons.redo, color: Colors.white),
-                    onPressed: () {
-                      if (_redoStack.isNotEmpty) {
-                        setState(() {
-                          EditorAction lastAction = _redoStack.removeLast();
-                          if (lastAction.actionType == ActionType.paint) {
-                            _allLines.add(lastAction.points!);
-                          }
-                          _actionStack.add(lastAction);
-                        });
-                      }
-                    },
-                  ),
-                ],
               ),
             ),
           ],
@@ -529,88 +423,8 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
       ),
     );
   }
-
-  Widget _shadowedIcon({required Icon icon, required Function() onPressed}) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      decoration: const BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black26,
-            offset: Offset(0, 2),
-            blurRadius: 3,
-          ),
-        ],
-      ),
-      child: IconButton(
-        onPressed: onPressed,
-        icon: icon,
-      ),
-    );
-  }
 }
 
-class MyPainter extends CustomPainter {
-  final List<List<Offset>> allLines;
-
-  MyPainter(this.allLines);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    var paint = Paint()
-      ..color = Colors.black
-      ..strokeWidth = 5
-      ..strokeCap = StrokeCap.round;
-
-    for (var line in allLines) {
-      for (var i = 0; i < line.length - 1; i++) {
-        if (line[i] != null && line[i + 1] != null) canvas.drawLine(line[i], line[i + 1], paint);
-      }
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
-}
-
-class EditorAction {
-  final ActionType actionType;
-  final List<Offset>? points;
-
-  EditorAction({required this.actionType, this.points});
-}
-
-enum ActionType {
-  paint,
-  text,
-}
-
-enum Mode {
-  none,
-  painting,
-  textEditing,
-}
-
-class CheckeredBackground extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final int rows = (constraints.maxHeight / 20).ceil();
-        final int columns = (constraints.maxWidth / 20).ceil();
-        return GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 20,
-          ),
-          itemBuilder: (context, index) {
-            bool isOddRow = (index / rows).floor().isOdd;
-            bool isOddColumn = (index % columns).isOdd;
-            return Container(
-              color: (isOddRow && !isOddColumn) || (!isOddRow && isOddColumn) ? Colors.grey[300] : Colors.grey[200],
-            );
-          },
-        );
-      },
-    );
-  }
+void main() {
+  runApp(MaterialApp(home: ImageEditorScreen(file: File('path_to_your_image'))));
 }
