@@ -1,23 +1,37 @@
 import 'package:flutter/material.dart';
 import '../../shared/edited_source_widgets/matrix_gesture_detector.dart';
 
-class Moveable extends StatelessWidget {
+class Moveable extends StatefulWidget {
+  final Matrix4 initialMatrix;
+  final Widget child;
+  final Function(Offset offset) onDragStart;
+  final Function(Offset offset) onDragEnd;
+  final Function(Offset offset) onDragUpdate;
+  final Function(Matrix4 matrix) onMatrixChange; // new callback for matrix changes
+
   Moveable({
     Key? key,
     required this.child,
     required this.onDragStart,
     required this.onDragEnd,
     required this.onDragUpdate,
+    required this.initialMatrix, // new parameter
+    required this.onMatrixChange, // new parameter
+    // required this.onDirectDownwardSwipe,
   }) : super(key: key);
 
-  final Widget child;
-  final Function(Offset offset) onDragStart;
-  final Function(Offset offset) onDragEnd;
-  final Function(Offset offset) onDragUpdate;
+  @override
+  MoveableState createState() => MoveableState();
+}
 
-  final Offset offset = Offset.zero;
+class MoveableState extends State<Moveable> {
+  late ValueNotifier<Matrix4> notifier;
 
-  final ValueNotifier<Matrix4> notifier = ValueNotifier(Matrix4.identity());
+  @override
+  void initState() {
+    super.initState();
+    notifier = ValueNotifier(widget.initialMatrix);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +40,10 @@ class Moveable extends StatelessWidget {
         shouldTranslate: true,
         shouldScale: true,
         shouldRotate: true,
-        onMatrixUpdate: (m, tm, sm, rm) => notifier.value = m,
+        onMatrixUpdate: (m, tm, sm, rm) {
+          notifier.value = m;
+          widget.onMatrixChange(m); // notify the parent of matrix changes
+        },
         child: AnimatedBuilder(
           animation: notifier,
           builder: (ctx, _) {
@@ -36,7 +53,7 @@ class Moveable extends StatelessWidget {
                 alignment: Alignment.center,
                 child: FittedBox(
                   fit: BoxFit.contain,
-                  child: child,
+                  child: widget.child,
                 ),
               ),
             );

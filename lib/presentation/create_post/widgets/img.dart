@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:ui';
 import 'package:confesi/application/user/cubit/notifications_cubit.dart';
 import 'package:confesi/core/styles/typography.dart';
 import 'package:confesi/presentation/create_post/widgets/moveable.dart';
@@ -8,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:isar/isar.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable/exports.dart';
 import 'package:tuple/tuple.dart';
@@ -229,20 +229,18 @@ class ImgState extends State<Img> {
                   color: Theme.of(context).colorScheme.onBackground,
                   width: 0.8,
                 ),
-                borderRadius: BorderRadius.circular(15.0),
+                borderRadius: BorderRadius.circular(15),
               ),
               child: AspectRatio(
                 aspectRatio: 1,
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(15.0),
+                  borderRadius: BorderRadius.circular(15),
                   child: FittedBox(
                     fit: BoxFit.cover,
                     child: Image.file(
                       file,
                       frameBuilder: (BuildContext context, Widget child, int? frame, bool wasSynchronouslyLoaded) {
-                        if (wasSynchronouslyLoaded) {
-                          return child;
-                        }
+                        if (wasSynchronouslyLoaded) return child;
                         return AnimatedOpacity(
                           opacity: frame == null ? 0 : 1, // Only animate the opacity if an image frame is available
                           duration: const Duration(seconds: 1),
@@ -292,11 +290,9 @@ class ImgState extends State<Img> {
 
 class TextEntry {
   String text;
-  Offset position;
-  double scale;
-  double rotation;
+  Matrix4 matrix;
 
-  TextEntry(this.text, this.position, {this.scale = 1.0, this.rotation = 0.0});
+  TextEntry(this.text) : matrix = Matrix4.identity();
 }
 
 class ImageEditorScreen extends StatefulWidget {
@@ -324,9 +320,7 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
   Widget _buildText(BuildContext context, TextEditingController controller, FocusNode focusNode,
       {void Function()? onEditingComplete}) {
     return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).requestFocus(focusNode);
-      },
+      onTap: () => FocusScope.of(context).requestFocus(focusNode),
       child: Container(
         color: Theme.of(context).colorScheme.secondary,
         width: 200,
@@ -344,7 +338,14 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
               textAlign: TextAlign.center,
               controller: controller,
               focusNode: focusNode,
-              onEditingComplete: onEditingComplete,
+              onEditingComplete: () {
+                if (onEditingComplete != null) {
+                  onEditingComplete();
+                }
+                // Unfocus the current focused node to close the keyboard
+                FocusScope.of(context).unfocus();
+                FocusManager.instance.primaryFocus?.unfocus();
+              },
             ),
           ),
         ),
@@ -358,15 +359,14 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
     final FocusNode currentFocusNode = _textControllers[entry]!.item2;
 
     return Moveable(
-      onDragEnd: (o) {
-        setState(() => entry.position = o);
+      // onDirectDownwardSwipe: () => FocusManager.instance.primaryFocus?.unfocus(),
+      initialMatrix: entry.matrix, // Use the matrix from the TextEntry
+      onMatrixChange: (m) {
+        setState(() => entry.matrix = m); // Update the TextEntry matrix when it changes
       },
-      onDragStart: (o) {
-        setState(() => entry.position = o);
-      },
-      onDragUpdate: (o) {
-        setState(() => entry.position = o);
-      },
+      onDragEnd: (o) {},
+      onDragStart: (o) {},
+      onDragUpdate: (o) {},
       child: _buildText(
         context,
         currentController,
@@ -382,47 +382,29 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: KeyboardDismiss(
-        child: Stack(
-          children: [
-            Positioned(
-              child: Image.file(widget.file, fit: BoxFit.contain),
-            ),
-            // ..._textEntries.map((entry) => _buildEditableTransformedText(entry)).toList(),
-            ..._textEntries
-                .map((entry) => Moveable(
-                      child: Container(height: 200, width: 200, color: Colors.orange),
-                      onDragStart: (offset) {
-                        // print("START");
-                        // setState(() => entry.position = offset);
-                      },
-                      onDragEnd: (offset) {
-                        // setState(() => entry.position = offset);
-                        // print("END");
-                      },
-                      onDragUpdate: (offset) {
-                        // setState(() => entry.position = offset);
-                        // print("UPDATE");
-                      },
-                    ))
-                .toList(),
-            Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    // new text entry
-                    TextEntry newText = TextEntry(
-                      'New Text',
-                      Offset(MediaQuery.of(context).size.width / 4, MediaQuery.of(context).size.height / 4),
-                    );
-                    _textEntries.add(newText);
-                  });
-                },
-                child: const Text('Add Text'),
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: KeyboardDismiss(
+              child: Container(
+                color: Colors.green,
+                child: Image.file(widget.file, fit: BoxFit.contain),
               ),
             ),
-          ],
-        ),
+          ),
+          ..._textEntries.map((entry) => _buildEditableTransformedText(entry)).toList(),
+          Center(
+            child: ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  TextEntry newText = TextEntry('New Text'); // No need to pass position now
+                  _textEntries.add(newText);
+                });
+              },
+              child: const Text('Add Text'),
+            ),
+          ),
+        ],
       ),
     );
   }
