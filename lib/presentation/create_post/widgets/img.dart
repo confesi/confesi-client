@@ -8,6 +8,8 @@ import 'package:confesi/presentation/shared/buttons/circle_icon_btn.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:vector_math/vector_math_64.dart' as v;
+
 import 'package:image_picker/image_picker.dart';
 import 'package:isar/isar.dart';
 import 'package:provider/provider.dart';
@@ -19,20 +21,28 @@ import '../../shared/edited_source_widgets/matrix_gesture_detector.dart';
 import 'package:flutter/material.dart';
 import '../../shared/edited_source_widgets/matrix_gesture_detector.dart';
 
+import 'package:flutter/material.dart';
+
+import 'package:flutter/material.dart';
+
+import 'package:flutter/material.dart';
+
+import 'package:flutter/material.dart';
+
 class Moveable extends StatefulWidget {
   final Matrix4 initialMatrix;
   final Widget child;
   final VoidCallback onDragStart;
   final VoidCallback onDragEnd;
-  final Function(Matrix4 matrix) onMatrixChange; // new callback for matrix changes
+  final Function(Matrix4 matrix) onMatrixChange;
 
   const Moveable({
     Key? key,
     required this.child,
     required this.onDragStart,
     required this.onDragEnd,
-    required this.initialMatrix, // new parameter
-    required this.onMatrixChange, // new parameter
+    required this.initialMatrix,
+    required this.onMatrixChange,
   }) : super(key: key);
 
   @override
@@ -48,35 +58,52 @@ class MoveableState extends State<Moveable> {
     notifier = ValueNotifier(widget.initialMatrix);
   }
 
+  Offset _getCenterPosition(Matrix4 matrix, Size size) {
+    final transformedCenter = matrix.transform3(v.Vector3(size.width / 2, size.height / 2, 0));
+    return Offset(transformedCenter.x, transformedCenter.y);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+
     return Listener(
       child: MatrixGestureDetector(
-        onScaleEnd: () {
-          widget.onDragEnd();
-        },
-        onScaleStart: () {
-          widget.onDragStart();
-        },
+        onScaleEnd: widget.onDragEnd,
+        onScaleStart: widget.onDragStart,
         shouldTranslate: true,
         shouldScale: true,
         shouldRotate: true,
         onMatrixUpdate: (m, tm, sm, rm) {
           notifier.value = m;
-          widget.onMatrixChange(m); // notify the parent of matrix changes
+          widget.onMatrixChange(m);
         },
         child: AnimatedBuilder(
           animation: notifier,
           builder: (ctx, _) {
-            return Transform(
-              transform: notifier.value,
-              child: Align(
-                alignment: Alignment.center,
-                child: FittedBox(
-                  fit: BoxFit.contain,
-                  child: widget.child,
+            var centerPos = _getCenterPosition(notifier.value, screenSize);
+
+            return Stack(
+              children: [
+                Transform(
+                  transform: notifier.value,
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: FittedBox(
+                      fit: BoxFit.contain,
+                      child: widget.child,
+                    ),
+                  ),
                 ),
-              ),
+                Positioned(
+                  top: 50,
+                  left: 0,
+                  child: Text(
+                    'Center X: ${centerPos.dx.toStringAsFixed(2)}, Y: ${centerPos.dy.toStringAsFixed(2)}',
+                    style: TextStyle(backgroundColor: Colors.black.withOpacity(0.5), color: Colors.white),
+                  ),
+                ),
+              ],
             );
           },
         ),
@@ -92,26 +119,30 @@ class AlwaysDisabledFocusNode extends FocusNode {
 
 class CheckeredBackground extends StatelessWidget {
   final double squareSize;
+  final Color color1;
+  final Color color2;
 
-  const CheckeredBackground({super.key, this.squareSize = 45.0});
+  const CheckeredBackground({super.key, this.squareSize = 45.0, required this.color1, required this.color2});
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
       size: MediaQuery.of(context).size,
-      painter: CheckeredPainter(squareSize),
+      painter: CheckeredPainter(squareSize, color1, color2),
     );
   }
 }
 
 class CheckeredPainter extends CustomPainter {
   final double squareSize;
+  final Color color1;
+  final Color color2;
 
-  CheckeredPainter(this.squareSize);
+  CheckeredPainter(this.squareSize, this.color1, this.color2);
 
   @override
   void paint(Canvas canvas, Size size) {
-    final Paint blackPaint = Paint()..color = const Color.fromARGB(255, 255, 255, 255);
-    final Paint whitePaint = Paint()..color = const Color.fromARGB(255, 20, 20, 20);
+    final Paint blackPaint = Paint()..color = color1;
+    final Paint whitePaint = Paint()..color = color2;
 
     // Calculate the number of squares for width and height
     int widthCount = (size.width / squareSize).ceil();
@@ -498,20 +529,24 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
         constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width - 32),
         child: IntrinsicWidth(
           child: Container(
-            color: hasBg ? colors.item1 : Colors.transparent, // Use the background color from the tuple
             padding: const EdgeInsets.all(5),
+            decoration: BoxDecoration(
+              color: hasBg ? colors.item1 : Colors.transparent, // Use the background color from the tuple
+              borderRadius: BorderRadius.circular(5),
+            ),
             child: Material(
               type: MaterialType.transparency,
               child: IgnorePointer(
                 ignoring: !focusNode.hasFocus,
                 child: TextField(
+                  cursorColor: colors.item2,
                   scrollPadding: EdgeInsets.zero,
                   maxLines: null,
                   decoration: InputDecoration(
                     isDense: true,
                     contentPadding: EdgeInsets.zero,
                     border: InputBorder.none,
-                    hintText: 'Enter text',
+                    hintText: 'text',
                     hintStyle: TextStyle(
                         color: colors.item2, // Use the foreground color from the tuple
                         fontSize: fontSize,
@@ -577,7 +612,9 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
         child: Column(
           children: [
             Slider(
-              // Assuming AlwaysDisabledFocusNode is a widget you've created. You might need to adjust accordingly.
+              thumbColor: Theme.of(context).colorScheme.secondary,
+              activeColor: Theme.of(context).colorScheme.secondary,
+              inactiveColor: Theme.of(context).colorScheme.onBackground,
               focusNode: AlwaysDisabledFocusNode(),
               value: _textControllers[_getCurrentEntry()]!.item3,
               onChanged: (value) {
@@ -635,7 +672,7 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
                     }
                   });
                 },
-                icon: CupertinoIcons.bold,
+                icon: CupertinoIcons.color_filter,
                 color: getColorsForSet(currentEntry.colorSet).item2, // Foreground color
                 bgColor: getColorsForSet(currentEntry.colorSet).item1, // Background color
               ),
@@ -679,21 +716,15 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
       resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
-          const CheckeredBackground(),
+          CheckeredBackground(
+              color1: Theme.of(context).colorScheme.tertiary, color2: Theme.of(context).colorScheme.secondary),
           Positioned.fill(
             child: KeyboardDismiss(
               child: Image.file(widget.file, fit: BoxFit.contain),
             ),
           ),
           ..._textEntries.map((entry) => _buildEditableTransformedText(entry)).toList(),
-          Positioned(
-            top: MediaQuery.of(context).size.height / 2 - 150,
-            child: AnimatedScale(
-              scale: _currentFocusedField != null && _showFontSizeSlider ? 1 : 0,
-              duration: const Duration(milliseconds: 125),
-              child: buildSlider(context),
-            ),
-          ),
+          Positioned(top: MediaQuery.of(context).size.height / 2 - 150, child: buildSlider(context)),
           Positioned.fill(
             right: 10,
             left: 10,
@@ -718,17 +749,13 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
                     children: [
                       Row(
                         children: [
-                          AnimatedScale(
-                            scale: _getCurrentEntry() != null ? 1 : 0,
-                            duration: const Duration(milliseconds: 125),
-                            child: buildSettingsMenu(context),
-                          ),
+                          buildSettingsMenu(context),
                           CircleIconBtn(
                               isBig: true,
                               onTap: () {
                                 HapticFeedback.lightImpact();
                                 setState(() {
-                                  _textEntries.add(TextEntry('New Text'));
+                                  _textEntries.add(TextEntry(""));
                                 });
                               },
                               icon: Icons.text_fields),
