@@ -4,21 +4,26 @@ import 'package:flutter/material.dart';
 import '../button_touch_effects/touchable_scale.dart';
 
 class CircleIconBtn extends StatelessWidget {
-  const CircleIconBtn(
-      {super.key,
-      required this.onTap,
-      required this.icon,
-      this.color,
-      this.disabled = false,
-      this.isSelected = false,
-      this.selectedColor});
+  const CircleIconBtn({
+    super.key,
+    required this.onTap,
+    required this.icon,
+    this.bgColor,
+    this.color,
+    this.disabled = false,
+    this.isSelected = false,
+    this.selectedColor,
+    this.isBig = false,
+  });
 
   final bool isSelected;
   final VoidCallback onTap;
   final IconData icon;
   final Color? color;
+  final Color? bgColor;
   final bool disabled;
   final Color? selectedColor;
+  final bool isBig;
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +34,10 @@ class CircleIconBtn extends StatelessWidget {
         child: TouchableScale(
           onTap: () => onTap(),
           child: Container(
-            padding: const EdgeInsets.all(8),
+            padding: EdgeInsets.all(isBig ? 16 : 8),
             // Transparent hitbox trick
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface,
+              color: bgColor ?? Theme.of(context).colorScheme.surface,
               shape: BoxShape.circle,
               border: Border.all(
                 color: Theme.of(context).colorScheme.onBackground,

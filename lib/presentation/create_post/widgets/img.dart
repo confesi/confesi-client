@@ -405,14 +405,26 @@ class ImgState extends State<Img> {
   }
 
   void _showEditor(File file) {
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => ImageEditorScreen(file: file), fullscreenDialog: false)); // todo: full-screen: true
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => ImageEditorScreen(file: file), fullscreenDialog: true));
   }
 }
 
 //! The actual editor screen:
 
-// Assuming these packages are imported. Make sure they exist in your environment.
+enum ColorSet { black, white, red }
+
+Map<ColorSet, Tuple2<Color, Color>> colorMap = {
+  ColorSet.black: const Tuple2<Color, Color>(Colors.black, Colors.white),
+  ColorSet.white: const Tuple2<Color, Color>(Colors.white, Colors.black),
+  ColorSet.red: const Tuple2<Color, Color>(Colors.red, Colors.white),
+};
+
+Tuple2<Color, Color> getColorsForSet(ColorSet colorSet) {
+  final res = colorMap[colorSet];
+  if (res == null) throw Exception("ColorSet not found");
+  return colorMap[colorSet]!;
+}
 
 class TextEntry {
   String text;
@@ -420,8 +432,10 @@ class TextEntry {
   double fontSize;
   bool hasBg;
   bool isBold;
+  ColorSet colorSet;
 
-  TextEntry(this.text, {this.fontSize = 30.0, this.hasBg = false, this.isBold = false}) : matrix = Matrix4.identity();
+  TextEntry(this.text, {this.fontSize = 30.0, this.hasBg = false, this.isBold = false, this.colorSet = ColorSet.black})
+      : matrix = Matrix4.identity();
 }
 
 class ImageEditorScreen extends StatefulWidget {
@@ -468,8 +482,10 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
   }
 
   Widget _buildText(BuildContext context, TextEditingController controller, FocusNode focusNode, double fontSize,
-      bool hasBg, bool isBold,
+      bool hasBg, bool isBold, ColorSet colorSet,
       {void Function()? onEditingComplete}) {
+    Tuple2<Color, Color> colors = getColorsForSet(colorSet);
+
     return GestureDetector(
       onTap: () {
         _currentFocusedField?.unfocus();
@@ -482,7 +498,7 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
         constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width - 32),
         child: IntrinsicWidth(
           child: Container(
-            color: hasBg ? Colors.white : Colors.transparent,
+            color: hasBg ? colors.item1 : Colors.transparent, // Use the background color from the tuple
             padding: const EdgeInsets.all(5),
             child: Material(
               type: MaterialType.transparency,
@@ -497,12 +513,12 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
                     border: InputBorder.none,
                     hintText: 'Enter text',
                     hintStyle: TextStyle(
-                        color: Colors.black,
+                        color: colors.item2, // Use the foreground color from the tuple
                         fontSize: fontSize,
                         fontWeight: isBold ? FontWeight.bold : FontWeight.normal),
                   ),
                   style: TextStyle(
-                      color: Colors.black,
+                      color: colors.item2, // Use the foreground color from the tuple
                       fontSize: fontSize,
                       fontWeight: isBold ? FontWeight.bold : FontWeight.normal),
                   textAlign: TextAlign.center,
@@ -536,6 +552,7 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
         currentFontSize,
         entry.hasBg,
         entry.isBold,
+        entry.colorSet,
         onEditingComplete: () {
           entry.text = currentController.text;
         },
@@ -597,32 +614,56 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
     if (currentEntry != null) {
       return SizedBox(
         key: const ValueKey("options"),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const SizedBox(width: 8),
-            CircleIconBtn(
-              isSelected: currentEntry.isBold,
-              onTap: () {
-                setState(() {
-                  currentEntry.isBold = !currentEntry.isBold;
-                });
-              },
-              icon: CupertinoIcons.bold,
-            ),
-            const SizedBox(width: 8),
-            CircleIconBtn(
-              isSelected: currentEntry.hasBg,
-              onTap: () {
-                setState(() {
-                  currentEntry.hasBg = !currentEntry.hasBg;
-                });
-              },
-              icon: CupertinoIcons.square_fill_on_square_fill,
-            ),
-            const SizedBox(width: 8),
-          ],
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(width: 8),
+              CircleIconBtn(
+                isBig: true,
+                onTap: () {
+                  // cycle through all ColorSet options
+                  setState(() {
+                    if (currentEntry.colorSet == ColorSet.black) {
+                      currentEntry.colorSet = ColorSet.white;
+                    } else if (currentEntry.colorSet == ColorSet.white) {
+                      currentEntry.colorSet = ColorSet.red;
+                    } else {
+                      currentEntry.colorSet = ColorSet.black;
+                    }
+                  });
+                },
+                icon: CupertinoIcons.bold,
+                color: getColorsForSet(currentEntry.colorSet).item2, // Foreground color
+                bgColor: getColorsForSet(currentEntry.colorSet).item1, // Background color
+              ),
+              const SizedBox(width: 8),
+              CircleIconBtn(
+                isBig: true,
+                isSelected: currentEntry.isBold,
+                onTap: () {
+                  setState(() {
+                    currentEntry.isBold = !currentEntry.isBold;
+                  });
+                },
+                icon: CupertinoIcons.bold,
+              ),
+              const SizedBox(width: 8),
+              CircleIconBtn(
+                isBig: true,
+                isSelected: currentEntry.hasBg,
+                onTap: () {
+                  setState(() {
+                    currentEntry.hasBg = !currentEntry.hasBg;
+                  });
+                },
+                icon: CupertinoIcons.square_fill_on_square_fill,
+              ),
+              const SizedBox(width: 8),
+            ],
+          ),
         ),
       );
     }
@@ -649,7 +690,7 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
             top: MediaQuery.of(context).size.height / 2 - 150,
             child: AnimatedScale(
               scale: _currentFocusedField != null && _showFontSizeSlider ? 1 : 0,
-              duration: const Duration(milliseconds: 250),
+              duration: const Duration(milliseconds: 125),
               child: buildSlider(context),
             ),
           ),
@@ -665,11 +706,11 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
                   Column(
                     children: [
                       CircleIconBtn(
+                          isBig: true,
                           onTap: () {
-                            HapticFeedback.lightImpact();
                             router.pop();
                           },
-                          icon: CupertinoIcons.arrow_left),
+                          icon: CupertinoIcons.xmark),
                     ],
                   ),
                   Column(
@@ -679,10 +720,11 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
                         children: [
                           AnimatedScale(
                             scale: _getCurrentEntry() != null ? 1 : 0,
-                            duration: const Duration(milliseconds: 250),
+                            duration: const Duration(milliseconds: 125),
                             child: buildSettingsMenu(context),
                           ),
                           CircleIconBtn(
+                              isBig: true,
                               onTap: () {
                                 HapticFeedback.lightImpact();
                                 setState(() {
@@ -693,9 +735,17 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
                         ],
                       ),
                       const SizedBox(height: 8),
-                      CircleIconBtn(onTap: () => print("tap"), icon: CupertinoIcons.paintbrush),
+                      CircleIconBtn(
+                        onTap: () => print("tap"),
+                        icon: CupertinoIcons.paintbrush,
+                        isBig: true,
+                      ),
                       const SizedBox(height: 8),
-                      CircleIconBtn(onTap: () => print("tap"), icon: Icons.download),
+                      CircleIconBtn(
+                        onTap: () => print("tap"),
+                        icon: Icons.download,
+                        isBig: true,
+                      ),
                     ],
                   ),
                 ],
