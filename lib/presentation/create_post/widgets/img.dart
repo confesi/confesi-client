@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:confesi/application/user/cubit/notifications_cubit.dart';
 import 'package:confesi/core/router/go_router.dart';
 import 'package:confesi/core/styles/typography.dart';
-import 'package:confesi/presentation/create_post/widgets/moveable.dart';
+import 'package:confesi/core/utils/sizing/width_fraction.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:confesi/presentation/shared/buttons/circle_icon_btn.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,6 +15,128 @@ import 'package:scrollable/exports.dart';
 import 'package:tuple/tuple.dart';
 
 import '../../shared/edited_source_widgets/matrix_gesture_detector.dart';
+
+import 'package:flutter/material.dart';
+import '../../shared/edited_source_widgets/matrix_gesture_detector.dart';
+
+class Moveable extends StatefulWidget {
+  final Matrix4 initialMatrix;
+  final Widget child;
+  final VoidCallback onDragStart;
+  final VoidCallback onDragEnd;
+  final Function(Matrix4 matrix) onMatrixChange; // new callback for matrix changes
+
+  const Moveable({
+    Key? key,
+    required this.child,
+    required this.onDragStart,
+    required this.onDragEnd,
+    required this.initialMatrix, // new parameter
+    required this.onMatrixChange, // new parameter
+  }) : super(key: key);
+
+  @override
+  MoveableState createState() => MoveableState();
+}
+
+class MoveableState extends State<Moveable> {
+  late ValueNotifier<Matrix4> notifier;
+
+  @override
+  void initState() {
+    super.initState();
+    notifier = ValueNotifier(widget.initialMatrix);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Listener(
+      child: MatrixGestureDetector(
+        onScaleEnd: () {
+          widget.onDragEnd();
+        },
+        onScaleStart: () {
+          widget.onDragStart();
+        },
+        shouldTranslate: true,
+        shouldScale: true,
+        shouldRotate: true,
+        onMatrixUpdate: (m, tm, sm, rm) {
+          notifier.value = m;
+          widget.onMatrixChange(m); // notify the parent of matrix changes
+        },
+        child: AnimatedBuilder(
+          animation: notifier,
+          builder: (ctx, _) {
+            return Transform(
+              transform: notifier.value,
+              child: Align(
+                alignment: Alignment.center,
+                child: FittedBox(
+                  fit: BoxFit.contain,
+                  child: widget.child,
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class AlwaysDisabledFocusNode extends FocusNode {
+  @override
+  bool get hasFocus => false;
+}
+
+class CheckeredBackground extends StatelessWidget {
+  final double squareSize;
+
+  const CheckeredBackground({super.key, this.squareSize = 45.0});
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: MediaQuery.of(context).size,
+      painter: CheckeredPainter(squareSize),
+    );
+  }
+}
+
+class CheckeredPainter extends CustomPainter {
+  final double squareSize;
+
+  CheckeredPainter(this.squareSize);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final Paint blackPaint = Paint()..color = const Color.fromARGB(255, 255, 255, 255);
+    final Paint whitePaint = Paint()..color = const Color.fromARGB(255, 20, 20, 20);
+
+    // Calculate the number of squares for width and height
+    int widthCount = (size.width / squareSize).ceil();
+    int heightCount = (size.height / squareSize).ceil();
+
+    for (int i = 0; i < widthCount; i++) {
+      for (int j = 0; j < heightCount; j++) {
+        bool isBlackSquare = (i + j) % 2 == 0;
+        final offset = Offset(i * squareSize, j * squareSize);
+        final rect = Rect.fromLTWH(offset.dx, offset.dy, squareSize, squareSize);
+
+        if (isBlackSquare) {
+          canvas.drawRect(rect, blackPaint);
+        } else {
+          canvas.drawRect(rect, whitePaint);
+        }
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return false;
+  }
+}
 
 class ImgController extends ChangeNotifier {
   late ImgState _imgState;
@@ -290,6 +412,8 @@ class ImgState extends State<Img> {
 
 //! The actual editor screen:
 
+// Assuming these packages are imported. Make sure they exist in your environment.
+
 class TextEntry {
   String text;
   Matrix4 matrix;
@@ -297,7 +421,7 @@ class TextEntry {
   bool hasBg;
   bool isBold;
 
-  TextEntry(this.text, {this.fontSize = 14.0, this.hasBg = false, this.isBold = false}) : matrix = Matrix4.identity();
+  TextEntry(this.text, {this.fontSize = 30.0, this.hasBg = false, this.isBold = false}) : matrix = Matrix4.identity();
 }
 
 class ImageEditorScreen extends StatefulWidget {
@@ -315,11 +439,11 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
 
   FocusNode? _currentFocusedField;
   bool get _showFontSizeSlider => _currentFocusedField != null;
-  FocusAttachment? _focusAttachment; // Declare this at the class level
+  FocusAttachment? _focusAttachment;
 
   FocusNode _createFocusNode() {
     final node = FocusNode();
-    _focusAttachment = node.attach(context); // Attach the focus node
+    _focusAttachment = node.attach(context);
     node.addListener(() {
       setState(() {
         if (node.hasFocus) {
@@ -344,6 +468,7 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
   }
 
   Widget _buildText(BuildContext context, TextEditingController controller, FocusNode focusNode, double fontSize,
+      bool hasBg, bool isBold,
       {void Function()? onEditingComplete}) {
     return GestureDetector(
       onTap: () {
@@ -357,36 +482,33 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
         constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width - 32),
         child: IntrinsicWidth(
           child: Container(
-            // container to increase hitbox
-            color: Colors.transparent,
-            padding: const EdgeInsets.all(20),
-            child: Container(
-              padding: const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 8),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: Material(
-                type: MaterialType.transparency,
-                child: IgnorePointer(
-                  ignoring: !focusNode.hasFocus,
-                  child: TextField(
-                    scrollPadding: EdgeInsets.zero,
-                    maxLines: null,
-                    decoration: InputDecoration(
-                      isDense: true, // Add this line
-
-                      contentPadding: EdgeInsets.zero, // Removes internal padding
-                      border: InputBorder.none,
-                      hintText: 'Enter text',
-                      hintStyle: kBody.copyWith(color: Colors.black, fontSize: fontSize),
-                    ),
-                    style: kBody.copyWith(color: Colors.black, fontSize: fontSize),
-                    textAlign: TextAlign.center,
-                    controller: controller,
-                    focusNode: focusNode,
-                    onEditingComplete: onEditingComplete,
+            color: hasBg ? Colors.white : Colors.transparent,
+            padding: const EdgeInsets.all(5),
+            child: Material(
+              type: MaterialType.transparency,
+              child: IgnorePointer(
+                ignoring: !focusNode.hasFocus,
+                child: TextField(
+                  scrollPadding: EdgeInsets.zero,
+                  maxLines: null,
+                  decoration: InputDecoration(
+                    isDense: true,
+                    contentPadding: EdgeInsets.zero,
+                    border: InputBorder.none,
+                    hintText: 'Enter text',
+                    hintStyle: TextStyle(
+                        color: Colors.black,
+                        fontSize: fontSize,
+                        fontWeight: isBold ? FontWeight.bold : FontWeight.normal),
                   ),
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: fontSize,
+                      fontWeight: isBold ? FontWeight.bold : FontWeight.normal),
+                  textAlign: TextAlign.center,
+                  controller: controller,
+                  focusNode: focusNode,
+                  onEditingComplete: onEditingComplete,
                 ),
               ),
             ),
@@ -412,6 +534,8 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
         currentController,
         currentFocusNode,
         currentFontSize,
+        entry.hasBg,
+        entry.isBold,
         onEditingComplete: () {
           entry.text = currentController.text;
         },
@@ -425,7 +549,7 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
         return entry;
       }
     }
-    return null; // or return _textEntries.first; if you want a default
+    return null;
   }
 
   Widget buildSlider(BuildContext context) {
@@ -433,27 +557,31 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
       return RotatedBox(
         key: const ValueKey("slider"),
         quarterTurns: 3,
-        child: Slider(
-          focusNode: AlwaysDisabledFocusNode(), // Add this
-          value: _textControllers[_getCurrentEntry()]!.item3,
-          onChanged: (value) {
-            setState(() {
-              TextEntry? currentEntry = _getCurrentEntry();
-              if (currentEntry != null) {
-                // only proceed if we have a valid entry
-                Tuple3<TextEditingController, FocusNode, double> currentTuple = _textControllers[currentEntry]!;
-                currentTuple = Tuple3(
-                  currentTuple.item1,
-                  currentTuple.item2,
-                  value,
-                );
-                _textControllers[currentEntry] = currentTuple;
-                currentEntry.fontSize = value;
-              }
-            });
-          },
-          min: 10.0,
-          max: 40.0,
+        child: Column(
+          children: [
+            Slider(
+              // Assuming AlwaysDisabledFocusNode is a widget you've created. You might need to adjust accordingly.
+              focusNode: AlwaysDisabledFocusNode(),
+              value: _textControllers[_getCurrentEntry()]!.item3,
+              onChanged: (value) {
+                setState(() {
+                  TextEntry? currentEntry = _getCurrentEntry();
+                  if (currentEntry != null) {
+                    Tuple3<TextEditingController, FocusNode, double> currentTuple = _textControllers[currentEntry]!;
+                    currentTuple = Tuple3(
+                      currentTuple.item1,
+                      currentTuple.item2,
+                      value,
+                    );
+                    _textControllers[currentEntry] = currentTuple;
+                    currentEntry.fontSize = value;
+                  }
+                });
+              },
+              min: 18.0,
+              max: 40.0,
+            ),
+          ],
         ),
       );
     } else {
@@ -463,6 +591,46 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
     }
   }
 
+  Widget buildSettingsMenu(BuildContext context) {
+    TextEntry? currentEntry = _getCurrentEntry();
+
+    if (currentEntry != null) {
+      return SizedBox(
+        key: const ValueKey("options"),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(width: 8),
+            CircleIconBtn(
+              isSelected: currentEntry.isBold,
+              onTap: () {
+                setState(() {
+                  currentEntry.isBold = !currentEntry.isBold;
+                });
+              },
+              icon: CupertinoIcons.bold,
+            ),
+            const SizedBox(width: 8),
+            CircleIconBtn(
+              isSelected: currentEntry.hasBg,
+              onTap: () {
+                setState(() {
+                  currentEntry.hasBg = !currentEntry.hasBg;
+                });
+              },
+              icon: CupertinoIcons.square_fill_on_square_fill,
+            ),
+            const SizedBox(width: 8),
+          ],
+        ),
+      );
+    }
+    return const SizedBox.shrink(
+      key: ValueKey("filler"),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -470,21 +638,21 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
       resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
+          const CheckeredBackground(),
           Positioned.fill(
             child: KeyboardDismiss(
               child: Image.file(widget.file, fit: BoxFit.contain),
             ),
           ),
           ..._textEntries.map((entry) => _buildEditableTransformedText(entry)).toList(),
-
           Positioned(
             top: MediaQuery.of(context).size.height / 2 - 150,
-            child: AnimatedSwitcher(
+            child: AnimatedScale(
+              scale: _currentFocusedField != null && _showFontSizeSlider ? 1 : 0,
               duration: const Duration(milliseconds: 250),
               child: buildSlider(context),
             ),
           ),
-          // positioned list of vertically stacked icons in the top right
           Positioned.fill(
             right: 10,
             left: 10,
@@ -496,18 +664,34 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
                 children: [
                   Column(
                     children: [
-                      CircleIconBtn(onTap: () => router.pop(), icon: CupertinoIcons.arrow_left),
+                      CircleIconBtn(
+                          onTap: () {
+                            HapticFeedback.lightImpact();
+                            router.pop();
+                          },
+                          icon: CupertinoIcons.arrow_left),
                     ],
                   ),
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      CircleIconBtn(
-                          onTap: () {
-                            setState(() {
-                              _textEntries.add(TextEntry('New Text'));
-                            });
-                          },
-                          icon: Icons.text_fields),
+                      Row(
+                        children: [
+                          AnimatedScale(
+                            scale: _getCurrentEntry() != null ? 1 : 0,
+                            duration: const Duration(milliseconds: 250),
+                            child: buildSettingsMenu(context),
+                          ),
+                          CircleIconBtn(
+                              onTap: () {
+                                HapticFeedback.lightImpact();
+                                setState(() {
+                                  _textEntries.add(TextEntry('New Text'));
+                                });
+                              },
+                              icon: Icons.text_fields),
+                        ],
+                      ),
                       const SizedBox(height: 8),
                       CircleIconBtn(onTap: () => print("tap"), icon: CupertinoIcons.paintbrush),
                       const SizedBox(height: 8),
@@ -517,14 +701,9 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
                 ],
               ),
             ),
-          )
+          ),
         ],
       ),
     );
   }
-}
-
-class AlwaysDisabledFocusNode extends FocusNode {
-  @override
-  bool get hasFocus => false;
 }
