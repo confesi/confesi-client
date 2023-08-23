@@ -1,7 +1,9 @@
+import 'dart:collection';
 import 'dart:io';
 import 'package:confesi/application/user/cubit/notifications_cubit.dart';
 import 'package:confesi/core/router/go_router.dart';
 import 'package:confesi/core/styles/typography.dart';
+import 'package:confesi/core/utils/sizing/height_fraction.dart';
 import 'package:confesi/core/utils/sizing/width_fraction.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:confesi/presentation/shared/buttons/circle_icon_btn.dart';
@@ -29,12 +31,18 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter/material.dart';
 
+import 'package:flutter/material.dart';
+
+import 'package:flutter/material.dart';
+import 'package:vector_math/vector_math_64.dart' as v;
+
 class Moveable extends StatefulWidget {
   final Matrix4 initialMatrix;
   final Widget child;
   final VoidCallback onDragStart;
   final VoidCallback onDragEnd;
-  final Function(Matrix4 matrix) onMatrixChange;
+  final Function(Matrix4 matrix, Offset offset) onMatrixChange;
+  final bool isDraggable;
 
   const Moveable({
     Key? key,
@@ -43,6 +51,7 @@ class Moveable extends StatefulWidget {
     required this.onDragEnd,
     required this.initialMatrix,
     required this.onMatrixChange,
+    this.isDraggable = true,
   }) : super(key: key);
 
   @override
@@ -67,45 +76,31 @@ class MoveableState extends State<Moveable> {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
 
-    return Listener(
-      child: MatrixGestureDetector(
-        onScaleEnd: widget.onDragEnd,
-        onScaleStart: widget.onDragStart,
-        shouldTranslate: true,
-        shouldScale: true,
-        shouldRotate: true,
-        onMatrixUpdate: (m, tm, sm, rm) {
-          notifier.value = m;
-          widget.onMatrixChange(m);
-        },
-        child: AnimatedBuilder(
-          animation: notifier,
-          builder: (ctx, _) {
-            var centerPos = _getCenterPosition(notifier.value, screenSize);
-
-            return Stack(
-              children: [
-                Transform(
-                  transform: notifier.value,
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: FittedBox(
-                      fit: BoxFit.contain,
-                      child: widget.child,
-                    ),
-                  ),
-                ),
-                Positioned(
-                  top: 50,
-                  left: 0,
-                  child: Text(
-                    'Center X: ${centerPos.dx.toStringAsFixed(2)}, Y: ${centerPos.dy.toStringAsFixed(2)}',
-                    style: TextStyle(backgroundColor: Colors.black.withOpacity(0.5), color: Colors.white),
-                  ),
-                ),
-              ],
-            );
+    return IgnorePointer(
+      ignoring: !widget.isDraggable,
+      child: Listener(
+        child: MatrixGestureDetector(
+          onScaleEnd: widget.onDragEnd,
+          onScaleStart: widget.onDragStart,
+          shouldTranslate: true,
+          shouldScale: true,
+          shouldRotate: true,
+          onMatrixUpdate: (m, tm, sm, rm) {
+            var centerPos =
+                _getCenterPosition(m, screenSize); // Compute the center position based on the current matrix.
+            notifier.value = m;
+            widget.onMatrixChange(m, centerPos); // Provide computed center position to the callback.
           },
+          child: Transform(
+            transform: notifier.value,
+            child: Align(
+              alignment: Alignment.center,
+              child: FittedBox(
+                fit: BoxFit.contain,
+                child: widget.child,
+              ),
+            ),
+          ),
         ),
       ),
     );
@@ -465,7 +460,7 @@ class TextEntry {
   bool isBold;
   ColorSet colorSet;
 
-  TextEntry(this.text, {this.fontSize = 30.0, this.hasBg = false, this.isBold = false, this.colorSet = ColorSet.black})
+  TextEntry(this.text, {this.fontSize = 30.0, this.hasBg = true, this.isBold = false, this.colorSet = ColorSet.white})
       : matrix = Matrix4.identity();
 }
 
@@ -480,11 +475,12 @@ class ImageEditorScreen extends StatefulWidget {
 
 class ImageEditorScreenState extends State<ImageEditorScreen> {
   final List<TextEntry> _textEntries = [];
-  final Map<TextEntry, Tuple3<TextEditingController, FocusNode, double>> _textControllers = {};
+  final Map<TextEntry, Tuple4<TextEditingController, FocusNode, double, bool>> _textControllers = {};
 
   FocusNode? _currentFocusedField;
   bool get _showFontSizeSlider => _currentFocusedField != null;
   FocusAttachment? _focusAttachment;
+  // the currently selected Moveable(s)
 
   FocusNode _createFocusNode() {
     final node = FocusNode();
@@ -513,7 +509,7 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
   }
 
   Widget _buildText(BuildContext context, TextEditingController controller, FocusNode focusNode, double fontSize,
-      bool hasBg, bool isBold, ColorSet colorSet,
+      bool hasBg, bool isBold, ColorSet colorSet, TextEntry t,
       {void Function()? onEditingComplete}) {
     Tuple2<Color, Color> colors = getColorsForSet(colorSet);
 
@@ -570,16 +566,38 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
   }
 
   Widget _buildEditableTransformedText(TextEntry entry) {
-    _textControllers[entry] ??= Tuple3(TextEditingController(text: entry.text), _createFocusNode(), entry.fontSize);
+    _textControllers[entry] ??=
+        Tuple4(TextEditingController(text: entry.text), _createFocusNode(), entry.fontSize, false);
     final currentController = _textControllers[entry]!.item1;
     final currentFocusNode = _textControllers[entry]!.item2;
     final currentFontSize = _textControllers[entry]!.item3;
 
     return Moveable(
-      onDragEnd: () {},
-      onDragStart: () => FocusManager.instance.primaryFocus?.unfocus(),
+      onDragEnd: () {
+        // if (willDelete) {
+        //   setState(() {
+        //     willDelete = false;
+        //     _textControllers.remove(entry);
+        //     _textEntries.remove(entry);
+        //   });
+        // }
+      },
+      onDragStart: () {
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
       initialMatrix: entry.matrix,
-      onMatrixChange: (m) => setState(() => entry.matrix = m),
+      onMatrixChange: (m, o) {
+        // and x is roughly in the center
+        if (o.dy > heightFraction(context, 14 / 16) &&
+            o.dx > widthFraction(context, 1 / 4) &&
+            o.dx < widthFraction(context, 3 / 4)) {
+          // if (!willDelete) HapticFeedback.lightImpact();
+          // setState(() => willDelete = true);
+        } else {
+          // setState(() => willDelete = false);
+        }
+        setState(() => entry.matrix = m);
+      },
       child: _buildText(
         context,
         currentController,
@@ -588,6 +606,7 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
         entry.hasBg,
         entry.isBold,
         entry.colorSet,
+        entry,
         onEditingComplete: () {
           entry.text = currentController.text;
         },
@@ -596,7 +615,7 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
   }
 
   TextEntry? _getCurrentEntry() {
-    for (var entry in _textEntries) {
+    for (var entry in _textControllers.keys) {
       if (_textControllers[entry]!.item2 == _currentFocusedField) {
         return entry;
       }
@@ -621,11 +640,13 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
                 setState(() {
                   TextEntry? currentEntry = _getCurrentEntry();
                   if (currentEntry != null) {
-                    Tuple3<TextEditingController, FocusNode, double> currentTuple = _textControllers[currentEntry]!;
-                    currentTuple = Tuple3(
+                    Tuple4<TextEditingController, FocusNode, double, bool> currentTuple =
+                        _textControllers[currentEntry]!;
+                    currentTuple = Tuple4(
                       currentTuple.item1,
                       currentTuple.item2,
                       value,
+                      currentTuple.item4,
                     );
                     _textControllers[currentEntry] = currentTuple;
                     currentEntry.fontSize = value;
@@ -659,6 +680,7 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
             children: [
               const SizedBox(width: 8),
               CircleIconBtn(
+                hasBorder: false,
                 isBig: true,
                 onTap: () {
                   // cycle through all ColorSet options
@@ -712,12 +734,18 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          print(_textControllers.keys.map((e) => e.hashCode).toList());
+          print(_textEntries.map((e) => e.hashCode).toList());
+        },
+      ),
       backgroundColor: Theme.of(context).colorScheme.shadow,
       resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           CheckeredBackground(
-              color1: Theme.of(context).colorScheme.tertiary, color2: Theme.of(context).colorScheme.secondary),
+              color1: Theme.of(context).colorScheme.tertiary, color2: Theme.of(context).colorScheme.tertiary),
           Positioned.fill(
             child: KeyboardDismiss(
               child: Image.file(widget.file, fit: BoxFit.contain),
@@ -776,6 +804,19 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
                     ],
                   ),
                 ],
+              ),
+            ),
+          ),
+          Positioned.fill(
+            bottom: heightFraction(context, 1 / 16),
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: CircleIconBtn(
+                hasBorder: false,
+                // isBig: willDelete,
+                bgColor: Theme.of(context).colorScheme.error,
+                icon: CupertinoIcons.trash,
+                color: Theme.of(context).colorScheme.onError,
               ),
             ),
           ),

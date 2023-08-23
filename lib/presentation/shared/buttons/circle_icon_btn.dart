@@ -5,8 +5,8 @@ import '../button_touch_effects/touchable_scale.dart';
 
 class CircleIconBtn extends StatelessWidget {
   const CircleIconBtn({
-    super.key,
-    required this.onTap,
+    Key? key,
+    this.onTap,
     required this.icon,
     this.bgColor,
     this.color,
@@ -14,10 +14,12 @@ class CircleIconBtn extends StatelessWidget {
     this.isSelected = false,
     this.selectedColor,
     this.isBig = false,
-  });
+    this.hasBorder = true,
+  }) : super(key: key);
 
+  final bool hasBorder;
   final bool isSelected;
-  final VoidCallback onTap;
+  final VoidCallback? onTap; // Made it nullable
   final IconData icon;
   final Color? color;
   final Color? bgColor;
@@ -27,32 +29,38 @@ class CircleIconBtn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget circleIconButton = AnimatedContainer(
+      duration: const Duration(milliseconds: 75),
+      padding: EdgeInsets.all(isBig ? 16 : 8),
+      decoration: BoxDecoration(
+        color: bgColor ?? Theme.of(context).colorScheme.surface,
+        shape: BoxShape.circle,
+        border: hasBorder
+            ? Border.all(
+                color: Theme.of(context).colorScheme.onBackground,
+                width: 0.8,
+                strokeAlign: BorderSide.strokeAlignInside,
+              )
+            : null,
+      ),
+      child: Icon(
+        icon,
+        color: isSelected
+            ? selectedColor ?? Theme.of(context).colorScheme.secondary
+            : color ?? Theme.of(context).colorScheme.primary,
+      ),
+    );
+
     return IgnorePointer(
       ignoring: disabled,
       child: Opacity(
         opacity: disabled ? 0.5 : 1,
-        child: TouchableScale(
-          onTap: () => onTap(),
-          child: Container(
-            padding: EdgeInsets.all(isBig ? 16 : 8),
-            // Transparent hitbox trick
-            decoration: BoxDecoration(
-              color: bgColor ?? Theme.of(context).colorScheme.surface,
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: Theme.of(context).colorScheme.onBackground,
-                width: 0.8,
-                strokeAlign: BorderSide.strokeAlignInside,
-              ),
-            ),
-            child: Icon(
-              icon,
-              color: isSelected
-                  ? selectedColor ?? Theme.of(context).colorScheme.secondary
-                  : color ?? Theme.of(context).colorScheme.primary,
-            ),
-          ),
-        ),
+        child: onTap != null // Conditional check
+            ? TouchableScale(
+                onTap: onTap!,
+                child: circleIconButton,
+              )
+            : circleIconButton,
       ),
     );
   }
