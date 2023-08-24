@@ -51,13 +51,13 @@ class CircleIconBtn extends StatelessWidget {
       ),
     );
 
-    return IgnorePointer(
-      ignoring: disabled,
+    return AbsorbPointer(
+      absorbing: disabled,
       child: Opacity(
         opacity: disabled ? 0.5 : 1,
         child: onTap != null // Conditional check
             ? TouchableScale(
-                onTap: onTap!,
+                onTap: disabled ? () {} : onTap!,
                 child: circleIconButton,
               )
             : circleIconButton,

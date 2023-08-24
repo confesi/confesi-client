@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'dart:io';
+import 'dart:math';
 import 'package:confesi/application/user/cubit/notifications_cubit.dart';
 import 'package:confesi/core/router/go_router.dart';
 import 'package:confesi/core/styles/typography.dart';
@@ -13,28 +14,11 @@ import 'package:flutter/services.dart';
 import 'package:vector_math/vector_math_64.dart' as v;
 
 import 'package:image_picker/image_picker.dart';
-import 'package:isar/isar.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable/exports.dart';
 import 'package:tuple/tuple.dart';
 
 import '../../shared/edited_source_widgets/matrix_gesture_detector.dart';
-
-import 'package:flutter/material.dart';
-import '../../shared/edited_source_widgets/matrix_gesture_detector.dart';
-
-import 'package:flutter/material.dart';
-
-import 'package:flutter/material.dart';
-
-import 'package:flutter/material.dart';
-
-import 'package:flutter/material.dart';
-
-import 'package:flutter/material.dart';
-
-import 'package:flutter/material.dart';
-import 'package:vector_math/vector_math_64.dart' as v;
 
 class Moveable extends StatefulWidget {
   final Matrix4 initialMatrix;
@@ -67,6 +51,14 @@ class MoveableState extends State<Moveable> {
     notifier = ValueNotifier(widget.initialMatrix);
   }
 
+  @override
+  void didUpdateWidget(covariant Moveable oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.initialMatrix != widget.initialMatrix) {
+      notifier.value = widget.initialMatrix;
+    }
+  }
+
   Offset _getCenterPosition(Matrix4 matrix, Size size) {
     final transformedCenter = matrix.transform3(v.Vector3(size.width / 2, size.height / 2, 0));
     return Offset(transformedCenter.x, transformedCenter.y);
@@ -86,10 +78,14 @@ class MoveableState extends State<Moveable> {
           shouldScale: true,
           shouldRotate: true,
           onMatrixUpdate: (m, tm, sm, rm) {
-            var centerPos =
-                _getCenterPosition(m, screenSize); // Compute the center position based on the current matrix.
-            notifier.value = m;
-            widget.onMatrixChange(m, centerPos); // Provide computed center position to the callback.
+            if (!widget.isDraggable) return;
+
+            // Combine the current matrix with the transformation matrix
+            final combinedMatrix = notifier.value * tm;
+
+            var centerPos = _getCenterPosition(combinedMatrix, screenSize);
+            notifier.value = combinedMatrix;
+            widget.onMatrixChange(combinedMatrix, centerPos);
           },
           child: Transform(
             transform: notifier.value,
@@ -461,6 +457,18 @@ class TextEntry {
   ColorSet colorSet;
   Offset offset;
 
+  // clone method
+  TextEntry clone() {
+    return TextEntry(
+      text,
+      fontSize: fontSize,
+      hasBg: hasBg,
+      isBold: isBold,
+      colorSet: colorSet,
+      offset: offset,
+    );
+  }
+
   TextEntry(this.text,
       {this.fontSize = 30.0,
       this.hasBg = true,
@@ -480,14 +488,100 @@ class ImageEditorScreen extends StatefulWidget {
 }
 
 class ImageEditorScreenState extends State<ImageEditorScreen> {
-  final List<TextEntry> _textEntries = [];
-  final Map<TextEntry, Tuple4<TextEditingController, FocusNode, double, Offset>> _textControllers = {};
+  List<TextEntry> _textEntries = [];
+  Map<TextEntry, Tuple4<TextEditingController, FocusNode, double, Offset>> _textControllers = {};
 
   FocusNode? _currentFocusedField;
   bool get _showFontSizeSlider => _currentFocusedField != null;
   FocusAttachment? _focusAttachment;
   HashSet<TextEntry> currentDraggingEntries = HashSet();
-  // the currently selected Moveable(s)
+  List<
+      Tuple3<List<TextEntry>, Map<TextEntry, Tuple4<TextEditingController, FocusNode, double, Offset>>,
+          List<List<Offset>>>> _undoStack = [];
+  List<
+      Tuple3<List<TextEntry>, Map<TextEntry, Tuple4<TextEditingController, FocusNode, double, Offset>>,
+          List<List<Offset>>>> _redoStack = [];
+
+  bool isDrawingMode = false;
+  List<List<Offset>> lines = [];
+
+  void _beforeChange() {
+    print("BEFORE CHANGE");
+    _undoStack.add(Tuple3(_textEntries.map((e) => e.clone()).toList(), _deepCopyTextControllers(_textControllers),
+        lines.isNotEmpty ? lines.map<List<Offset>>((line) => List<Offset>.from(line)).toList() : []));
+    _redoStack.clear();
+  }
+
+  void _refreshState() {
+    // Here you can refresh the state of your widget or perform any action that is required
+    // For example, you can update some variables and then call `setState` to rebuild the widget
+    setState(() {
+      // Update any state variables here
+    });
+  }
+
+  Map<TextEntry, Tuple4<TextEditingController, FocusNode, double, Offset>> _deepCopyTextControllers(
+      Map<TextEntry, Tuple4<TextEditingController, FocusNode, double, Offset>> original) {
+    Map<TextEntry, Tuple4<TextEditingController, FocusNode, double, Offset>> copy = {};
+
+    original.forEach((key, value) {
+      copy[key] = Tuple4(
+          TextEditingController(text: value.item1.text),
+          FocusNode(), // Creating a new focus node, if you have a different behavior in mind, adjust this
+          value.item3,
+          value.item4);
+    });
+
+    return copy;
+  }
+
+  void undo() {
+    if (_undoStack.isEmpty) return;
+    _moveCurrentStateToRedoStack();
+    _restoreStateFromUndoStack();
+    _updateUI();
+  }
+
+  void redo() {
+    if (_redoStack.isEmpty) return;
+    _moveCurrentStateToUndoStack();
+    _restoreStateFromRedoStack();
+    _updateUI();
+  }
+
+  void _moveCurrentStateToRedoStack() {
+    _redoStack.add(Tuple3(List.from(_textEntries), Map.from(_textControllers), List.from(lines)));
+  }
+
+  void _moveCurrentStateToUndoStack() {
+    _undoStack.add(Tuple3(List.from(_textEntries), Map.from(_textControllers), List.from(lines)));
+  }
+
+  void _restoreStateFromUndoStack() {
+    if (_undoStack.isNotEmpty) {
+      final lastState = _undoStack.removeLast();
+      _textEntries = lastState.item1;
+      _textControllers = _deepCopyTextControllers(lastState.item2);
+      lines = lastState.item3.map<List<Offset>>((line) => List<Offset>.from(line)).toList();
+
+      _refreshState();
+    }
+  }
+
+  void _restoreStateFromRedoStack() {
+    if (_redoStack.isNotEmpty) {
+      final nextState = _redoStack.removeLast();
+      _textEntries = nextState.item1;
+      _textControllers = _deepCopyTextControllers(nextState.item2);
+      lines = nextState.item3.map<List<Offset>>((line) => List<Offset>.from(line)).toList();
+
+      _refreshState();
+    }
+  }
+
+  void _updateUI() {
+    setState(() {});
+  }
 
   FocusNode _createFocusNode() {
     final node = FocusNode();
@@ -519,7 +613,6 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
       bool hasBg, bool isBold, ColorSet colorSet, TextEntry t,
       {void Function()? onEditingComplete}) {
     Tuple2<Color, Color> colors = getColorsForSet(colorSet);
-
     return GestureDetector(
       onTap: () {
         _currentFocusedField?.unfocus();
@@ -534,7 +627,7 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
           child: Container(
             padding: const EdgeInsets.all(5),
             decoration: BoxDecoration(
-              color: hasBg ? colors.item1 : Colors.transparent, // Use the background color from the tuple
+              color: hasBg ? colors.item1 : Colors.transparent,
               borderRadius: BorderRadius.circular(5),
             ),
             child: Material(
@@ -542,6 +635,7 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
               child: IgnorePointer(
                 ignoring: !focusNode.hasFocus,
                 child: TextField(
+                  // onChanged: (value) => _beforeChange(),
                   cursorColor: colors.item2,
                   scrollPadding: EdgeInsets.zero,
                   maxLines: null,
@@ -551,12 +645,12 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
                     border: InputBorder.none,
                     hintText: 'text',
                     hintStyle: TextStyle(
-                        color: colors.item2, // Use the foreground color from the tuple
+                        color: colors.item2,
                         fontSize: fontSize,
                         fontWeight: isBold ? FontWeight.bold : FontWeight.normal),
                   ),
                   style: TextStyle(
-                      color: colors.item2, // Use the foreground color from the tuple
+                      color: colors.item2,
                       fontSize: fontSize,
                       fontWeight: isBold ? FontWeight.bold : FontWeight.normal),
                   textAlign: TextAlign.center,
@@ -601,7 +695,6 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
     final currentFontSize = _textControllers[entry]!.item3;
 
     bool isEntryInDeletionBoundary() {
-      // the item4 of the tuple based on the current entry
       final Offset off = _textControllers[entry]!.item4;
       if (off.dy > heightFraction(context, 14 / 16) &&
           off.dx > widthFraction(context, 1 / 4) &&
@@ -615,7 +708,10 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
       duration: const Duration(milliseconds: 62),
       opacity: isEntryInDeletionBoundary() ? 0.5 : 1,
       child: Moveable(
+        initialMatrix: entry.matrix,
+        isDraggable: currentDraggingEntries.contains(entry) || currentDraggingEntries.isEmpty,
         onDragEnd: () {
+          if (!currentDraggingEntries.contains(entry)) return;
           currentDraggingEntries.remove(entry);
           if (isEntryInDeletionBoundary()) {
             setState(() {
@@ -625,12 +721,14 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
           }
         },
         onDragStart: () {
+          if (currentDraggingEntries.contains(entry)) return;
+          print("drag start");
+          _beforeChange();
           FocusManager.instance.primaryFocus?.unfocus();
           currentDraggingEntries.add(entry);
         },
-        initialMatrix: entry.matrix,
         onMatrixChange: (m, o) {
-          // set state the tuple4 that has the 4th item to the new Offset
+          if (currentDraggingEntries.isNotEmpty && !currentDraggingEntries.contains(entry)) return;
           setState(() {
             _textControllers[entry] = Tuple4(
               _textControllers[entry]!.item1,
@@ -737,7 +835,6 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
                 hasBorder: false,
                 isBig: true,
                 onTap: () {
-                  // cycle through all ColorSet options
                   setState(() {
                     if (currentEntry.colorSet == ColorSet.black) {
                       currentEntry.colorSet = ColorSet.white;
@@ -749,8 +846,8 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
                   });
                 },
                 icon: CupertinoIcons.color_filter,
-                color: getColorsForSet(currentEntry.colorSet).item2, // Foreground color
-                bgColor: getColorsForSet(currentEntry.colorSet).item1, // Background color
+                color: getColorsForSet(currentEntry.colorSet).item2,
+                bgColor: getColorsForSet(currentEntry.colorSet).item1,
               ),
               const SizedBox(width: 8),
               CircleIconBtn(
@@ -799,8 +896,54 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
               child: Image.file(widget.file, fit: BoxFit.contain),
             ),
           ),
+          Positioned.fill(
+            child: CustomPaint(painter: DrawingPainter(lines)),
+          ),
           ..._textEntries.map((entry) => _buildEditableTransformedText(entry)).toList(),
           Positioned(top: MediaQuery.of(context).size.height / 2 - 150, child: buildSlider(context)),
+          isDrawingMode
+              ? Positioned.fill(
+                  child: GestureDetector(
+                    onPanStart: (details) {
+                      if (isDrawingMode) {
+                        _beforeChange();
+                        setState(() {
+                          RenderBox renderBox = context.findRenderObject() as RenderBox;
+                          Offset touchPoint = renderBox.globalToLocal(details.globalPosition);
+
+                          List<Offset> points = [];
+                          double radius = 0.5; // or adjust as needed
+
+                          // Add several points around the touch point to simulate a small circle
+                          for (double angle = 0; angle <= 360; angle += 45) {
+                            double x = touchPoint.dx + radius * cos(angle * pi / 180);
+                            double y = touchPoint.dy + radius * sin(angle * pi / 180);
+                            points.add(Offset(x, y));
+                          }
+
+                          lines.add(points);
+                        });
+                      }
+                    },
+                    onPanEnd: (details) {
+                      if (isDrawingMode) {
+                        if (lines.last.isEmpty) {
+                          lines.removeLast();
+                        }
+                      }
+                    },
+                    onPanUpdate: (details) {
+                      if (isDrawingMode) {
+                        setState(() {
+                          RenderBox renderBox = context.findRenderObject() as RenderBox;
+                          lines.last
+                              .add(renderBox.globalToLocal(details.globalPosition)); // Add points to the current line
+                        });
+                      }
+                    },
+                  ),
+                )
+              : const SizedBox.shrink(),
           Positioned.fill(
             right: 10,
             left: 10,
@@ -830,6 +973,7 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
                               isBig: true,
                               onTap: () {
                                 HapticFeedback.lightImpact();
+                                _beforeChange();
                                 setState(() {
                                   _textEntries.add(TextEntry(""));
                                 });
@@ -839,8 +983,38 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
                       ),
                       const SizedBox(height: 8),
                       CircleIconBtn(
-                        onTap: () => print("tap"),
-                        icon: CupertinoIcons.paintbrush,
+                        isBig: true,
+                        isSelected: isDrawingMode,
+                        onTap: () {
+                          HapticFeedback.lightImpact();
+                          setState(() {
+                            isDrawingMode = !isDrawingMode;
+                            if (isDrawingMode) {
+                              // Disable text interaction when drawing is enabled
+                              _currentFocusedField?.unfocus();
+                            }
+                          });
+                        },
+                        icon: Icons.brush,
+                      ),
+                      const SizedBox(height: 8),
+                      CircleIconBtn(
+                        disabled: _undoStack.isEmpty,
+                        onTap: () {
+                          HapticFeedback.lightImpact();
+                          undo();
+                        },
+                        icon: Icons.undo,
+                        isBig: true,
+                      ),
+                      const SizedBox(height: 8),
+                      CircleIconBtn(
+                        disabled: _redoStack.isEmpty,
+                        onTap: () {
+                          HapticFeedback.lightImpact();
+                          redo();
+                        },
+                        icon: Icons.redo,
                         isBig: true,
                       ),
                       const SizedBox(height: 8),
@@ -871,5 +1045,30 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
         ],
       ),
     );
+  }
+}
+
+class DrawingPainter extends CustomPainter {
+  final List<List<Offset>> lines;
+
+  DrawingPainter(this.lines);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.black
+      ..strokeCap = StrokeCap.round
+      ..strokeWidth = 5.0;
+
+    for (final line in lines) {
+      for (int i = 0; i < line.length - 1; i++) {
+        canvas.drawLine(line[i], line[i + 1], paint);
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
   }
 }
