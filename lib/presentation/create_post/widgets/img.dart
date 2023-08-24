@@ -459,8 +459,14 @@ class TextEntry {
   bool hasBg;
   bool isBold;
   ColorSet colorSet;
+  Offset offset;
 
-  TextEntry(this.text, {this.fontSize = 30.0, this.hasBg = true, this.isBold = false, this.colorSet = ColorSet.white})
+  TextEntry(this.text,
+      {this.fontSize = 30.0,
+      this.hasBg = true,
+      this.isBold = false,
+      this.colorSet = ColorSet.white,
+      this.offset = Offset.zero})
       : matrix = Matrix4.identity();
 }
 
@@ -475,11 +481,12 @@ class ImageEditorScreen extends StatefulWidget {
 
 class ImageEditorScreenState extends State<ImageEditorScreen> {
   final List<TextEntry> _textEntries = [];
-  final Map<TextEntry, Tuple4<TextEditingController, FocusNode, double, bool>> _textControllers = {};
+  final Map<TextEntry, Tuple4<TextEditingController, FocusNode, double, Offset>> _textControllers = {};
 
   FocusNode? _currentFocusedField;
   bool get _showFontSizeSlider => _currentFocusedField != null;
   FocusAttachment? _focusAttachment;
+  HashSet<TextEntry> currentDraggingEntries = HashSet();
   // the currently selected Moveable(s)
 
   FocusNode _createFocusNode() {
@@ -565,51 +572,98 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
     );
   }
 
+  bool hasDoneHapticForDeleteAlready = false;
+
+  bool thereIsSomeEntryInDeletionBoundary() {
+    bool res = false;
+    for (var entry in _textControllers.keys) {
+      if (_textControllers[entry]!.item4.dy > heightFraction(context, 14 / 16) &&
+          _textControllers[entry]!.item4.dx > widthFraction(context, 1 / 4) &&
+          _textControllers[entry]!.item4.dx < widthFraction(context, 3 / 4)) {
+        res = true;
+      }
+    }
+    if (res && !hasDoneHapticForDeleteAlready) {
+      hasDoneHapticForDeleteAlready = true;
+      HapticFeedback.lightImpact();
+    }
+    if (!res) {
+      hasDoneHapticForDeleteAlready = false;
+    }
+    return res;
+  }
+
   Widget _buildEditableTransformedText(TextEntry entry) {
     _textControllers[entry] ??=
-        Tuple4(TextEditingController(text: entry.text), _createFocusNode(), entry.fontSize, false);
+        Tuple4(TextEditingController(text: entry.text), _createFocusNode(), entry.fontSize, entry.offset);
     final currentController = _textControllers[entry]!.item1;
     final currentFocusNode = _textControllers[entry]!.item2;
     final currentFontSize = _textControllers[entry]!.item3;
 
-    return Moveable(
-      onDragEnd: () {
-        // if (willDelete) {
-        //   setState(() {
-        //     willDelete = false;
-        //     _textControllers.remove(entry);
-        //     _textEntries.remove(entry);
-        //   });
-        // }
-      },
-      onDragStart: () {
-        FocusManager.instance.primaryFocus?.unfocus();
-      },
-      initialMatrix: entry.matrix,
-      onMatrixChange: (m, o) {
-        // and x is roughly in the center
-        if (o.dy > heightFraction(context, 14 / 16) &&
-            o.dx > widthFraction(context, 1 / 4) &&
-            o.dx < widthFraction(context, 3 / 4)) {
-          // if (!willDelete) HapticFeedback.lightImpact();
-          // setState(() => willDelete = true);
-        } else {
-          // setState(() => willDelete = false);
-        }
-        setState(() => entry.matrix = m);
-      },
-      child: _buildText(
-        context,
-        currentController,
-        currentFocusNode,
-        currentFontSize,
-        entry.hasBg,
-        entry.isBold,
-        entry.colorSet,
-        entry,
-        onEditingComplete: () {
-          entry.text = currentController.text;
+    bool isEntryInDeletionBoundary() {
+      // the item4 of the tuple based on the current entry
+      final Offset off = _textControllers[entry]!.item4;
+      if (off.dy > heightFraction(context, 14 / 16) &&
+          off.dx > widthFraction(context, 1 / 4) &&
+          off.dx < widthFraction(context, 3 / 4)) {
+        return true;
+      }
+      return false;
+    }
+
+    return AnimatedOpacity(
+      duration: const Duration(milliseconds: 62),
+      opacity: isEntryInDeletionBoundary() ? 0.5 : 1,
+      child: Moveable(
+        onDragEnd: () {
+          currentDraggingEntries.remove(entry);
+          if (isEntryInDeletionBoundary()) {
+            setState(() {
+              _textControllers.remove(entry);
+              _textEntries.remove(entry);
+            });
+          }
         },
+        onDragStart: () {
+          FocusManager.instance.primaryFocus?.unfocus();
+          currentDraggingEntries.add(entry);
+        },
+        initialMatrix: entry.matrix,
+        onMatrixChange: (m, o) {
+          // set state the tuple4 that has the 4th item to the new Offset
+          setState(() {
+            _textControllers[entry] = Tuple4(
+              _textControllers[entry]!.item1,
+              _textControllers[entry]!.item2,
+              _textControllers[entry]!.item3,
+              o,
+            );
+            entry.matrix = m;
+          });
+        },
+        child: TweenAnimationBuilder(
+          duration: const Duration(milliseconds: 62),
+          tween: Tween<double>(begin: 1, end: isEntryInDeletionBoundary() ? 0.5 : 1),
+          builder: (BuildContext context, double scaleValue, Widget? child) {
+            return Transform.scale(
+              scale: scaleValue,
+              child: child,
+            );
+          },
+          child: _buildText(
+            context,
+            currentController,
+            currentFocusNode,
+            currentFontSize,
+            entry.hasBg,
+            entry.isBold,
+            entry.colorSet,
+            entry,
+            onEditingComplete: () {
+              entry.text = currentController.text;
+            },
+          ),
+        ),
       ),
     );
   }
@@ -640,7 +694,7 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
                 setState(() {
                   TextEntry? currentEntry = _getCurrentEntry();
                   if (currentEntry != null) {
-                    Tuple4<TextEditingController, FocusNode, double, bool> currentTuple =
+                    Tuple4<TextEditingController, FocusNode, double, Offset> currentTuple =
                         _textControllers[currentEntry]!;
                     currentTuple = Tuple4(
                       currentTuple.item1,
@@ -734,12 +788,6 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          print(_textControllers.keys.map((e) => e.hashCode).toList());
-          print(_textEntries.map((e) => e.hashCode).toList());
-        },
-      ),
       backgroundColor: Theme.of(context).colorScheme.shadow,
       resizeToAvoidBottomInset: false,
       body: Stack(
@@ -813,7 +861,7 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
               alignment: Alignment.bottomCenter,
               child: CircleIconBtn(
                 hasBorder: false,
-                // isBig: willDelete,
+                isBig: thereIsSomeEntryInDeletionBoundary(),
                 bgColor: Theme.of(context).colorScheme.error,
                 icon: CupertinoIcons.trash,
                 color: Theme.of(context).colorScheme.onError,

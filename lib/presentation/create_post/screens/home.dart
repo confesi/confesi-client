@@ -153,14 +153,14 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         CircleIconBtn(
-                          color: Theme.of(context).colorScheme.tertiary,
+                          color: Theme.of(context).colorScheme.secondary,
                           icon: CupertinoIcons.photo,
                           onTap: () async {
                             await imgController.selectFromGallery();
                           },
                         ),
                         CircleIconBtn(
-                          color: Theme.of(context).colorScheme.tertiary,
+                          color: Theme.of(context).colorScheme.secondary,
                           icon: CupertinoIcons.camera,
                           onTap: () async {
                             await imgController.selectFromCamera();
