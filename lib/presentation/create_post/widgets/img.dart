@@ -25,6 +25,8 @@ import 'package:tuple/tuple.dart';
 
 import '../../shared/edited_source_widgets/matrix_gesture_detector.dart';
 
+// todo: preview mode that hides all editing options while held down
+
 class Moveable extends StatefulWidget {
   final Matrix4 initialMatrix;
   final Widget child;
@@ -477,7 +479,7 @@ class TextEntry {
   TextEntry(this.text,
       {this.fontSize = 30.0,
       this.hasBg = true,
-      this.isBold = false,
+      this.isBold = true,
       this.colorSet = ColorSet.white,
       this.offset = Offset.zero})
       : matrix = Matrix4.identity();
@@ -953,20 +955,26 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
 
   final GlobalKey _repaintKey = GlobalKey();
 
-  Future<void> _captureAndSaveImage() async {
+  /// Returns true if the image was saved successfully, else false.
+  Future<bool> _captureAndSaveImage(BuildContext context) async {
     RenderRepaintBoundary boundary = _repaintKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
     ui.Image image = await boundary.toImage();
-    ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-    if (byteData == null) throw Exception("ByteData is null");
-    Uint8List uint8list = byteData.buffer.asUint8List();
+    return await image.toByteData(format: ui.ImageByteFormat.png).then(
+      (ByteData? byteData) async {
+        if (byteData == null) {
+          return false;
+        }
+        Uint8List uint8list = byteData!.buffer.asUint8List();
 
-    // Save to gallery
-    final result = await ImageGallerySaver.saveImage(uint8list, quality: 9999999999);
-    if (result['isSuccess']) {
-      print("Image saved successfully!");
-    } else {
-      print("Error saving image: ${result['errorMessage']}");
-    }
+        // Save to gallery
+        final result = await ImageGallerySaver.saveImage(uint8list, quality: 9999999999);
+        if (result['isSuccess']) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+    );
   }
 
   bool isErasing = false;
@@ -1004,293 +1012,306 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(onPressed: () async => (await _captureAndSaveImage())),
       backgroundColor: Theme.of(context).colorScheme.shadow,
-      resizeToAvoidBottomInset: false,
-      body: Stack(
-        children: [
-          CheckeredBackground(
-              color1: Theme.of(context).colorScheme.tertiary, color2: Theme.of(context).colorScheme.tertiary),
-          Positioned.fill(
+      resizeToAvoidBottomInset: true, // todo: alter
+      body: SingleChildScrollView(
+        physics: const NeverScrollableScrollPhysics(),
+        child: Stack(
+          children: [
+            CheckeredBackground(
+                color1: Theme.of(context).colorScheme.tertiary, color2: Theme.of(context).colorScheme.tertiary),
+            Positioned.fill(child: _getCurrentEntry() != null ? Container() : const SizedBox.shrink()),
+            Positioned.fill(
               child: RepaintBoundary(
-            key: _repaintKey,
-            child: Stack(
-              children: [
-                Positioned.fill(
-                    child: Image.file(
-                  editingFile,
-                  fit: BoxFit.contain,
-                )),
-                Positioned.fill(child: CustomPaint(painter: DrawingPainter(lines))),
-                ..._textEntries.map((entry) => _buildEditableTransformedText(entry)).toList(),
-              ],
-            ),
-          )),
-          Positioned.fill(
-              child: _getCurrentEntry() != null ? KeyboardDismiss(child: Container()) : const SizedBox.shrink()),
-          Positioned(top: MediaQuery.of(context).size.height / 2 - 150, child: buildSlider(context)),
-          Stack(
-            children: [
-              Positioned.fill(
-                child: GestureDetector(
-                  onPanStart: (details) {
-                    _eraseLine(details.globalPosition);
-                    setState(() {
-                      _eraserPosition = details.localPosition;
-                    });
-                  },
-                  onPanUpdate: (details) {
-                    _eraseLine(details.globalPosition);
-                    setState(() {
-                      _eraserPosition = details.localPosition;
-                    });
-                  },
-                  onPanEnd: (details) {
-                    setState(() {
-                      _eraserPosition = null;
-                    });
-                  },
+                key: _repaintKey,
+                child: Stack(
+                  children: [
+                    Positioned.fill(
+                      child: Image.file(
+                        editingFile,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                    Positioned.fill(child: CustomPaint(painter: DrawingPainter(lines))),
+                    !isDrawing || !isErasing
+                        ? const Positioned.fill(child: KeyboardDismiss(child: SizedBox.expand()))
+                        : const SizedBox.shrink(),
+                    ..._textEntries.map((entry) => _buildEditableTransformedText(entry)).toList(),
+                  ],
                 ),
               ),
-              if (isErasing && _eraserPosition != null)
-                Positioned(
-                  top: _eraserPosition!.dy,
-                  left: _eraserPosition!.dx,
-                  child: Container(
-                    width: 30,
-                    height: 30,
-                    // white circle with black outline
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.onError,
-                      shape: BoxShape.circle,
-                      // shadow
-                      boxShadow: [
-                        BoxShadow(
-                          color: Theme.of(context).colorScheme.onError.withOpacity(0.5),
-                          spreadRadius: 2,
-                          blurRadius: 5,
-                          offset: const Offset(0, 0), // changes position of shadow
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-            ],
-          ),
-          isDrawingMode
-              ? Positioned.fill(
-                  child: GestureDetector(
-                    onPanStart: (details) {
-                      setState(() => isDrawing = true);
-                      _beforeChange();
-                      setState(() {
-                        RenderBox renderBox = context.findRenderObject() as RenderBox;
-                        Offset touchPoint = renderBox.globalToLocal(details.globalPosition);
-                        List<Line> points = [];
-                        double radius = 0.25; // or adjust as needed
-
-                        for (double angle = 0; angle <= 360; angle += 45) {
-                          double x = touchPoint.dx + radius * cos(angle * pi / 180);
-                          double y = touchPoint.dy + radius * sin(angle * pi / 180);
-                          points.add(Line(Offset(x, y), paintBrushBig, paintBrushColorSet));
-                        }
-                        lines.add(points);
-                      });
-                    },
-                    onPanEnd: (details) {
-                      setState(() => isDrawing = false);
-                      if (lines.last.isEmpty) {
-                        lines.removeLast();
-                      }
-                    },
-                    onPanUpdate: (details) {
-                      setState(() {
-                        RenderBox renderBox = context.findRenderObject() as RenderBox;
-                        lines.last.add(
-                            Line(renderBox.globalToLocal(details.globalPosition), paintBrushBig, paintBrushColorSet));
-                      });
-                    },
-                  ),
-                )
-              : const SizedBox.shrink(),
-          Positioned.fill(
-            right: 10,
-            left: 10,
-            top: 20,
-            child: SafeArea(
-              bottom: false,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    children: [
-                      CircleIconBtn(
-                          isBig: true,
-                          onTap: () {
-                            router.pop();
-                          },
-                          icon: CupertinoIcons.xmark),
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Row(
-                        children: [
-                          buildTextSettingsMenu(context),
-                          CircleIconBtn(
-                            isSelected: _getCurrentEntry() != null,
-                            isBig: true,
-                            onTap: () {
-                              HapticFeedback.lightImpact();
-                              _beforeChange();
+            ),
+            Positioned(top: MediaQuery.of(context).size.height / 2 - 150, child: buildSlider(context)),
+            isErasing
+                ? Positioned.fill(
+                    child: Stack(
+                      children: [
+                        Positioned.fill(
+                          child: GestureDetector(
+                            onPanStart: (details) {
+                              _eraseLine(details.globalPosition);
                               setState(() {
-                                if (isDrawingMode) {
-                                  isDrawingMode = false;
-                                }
-                                if (isErasing) {
-                                  isErasing = false;
-                                }
-                                _textEntries.add(TextEntry(""));
+                                _eraserPosition = details.localPosition;
                               });
                             },
-                            icon: Icons.text_fields,
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-                      Row(
-                        children: [
-                          buildDrawingSettingsMenu(context),
-                          CircleIconBtn(
-                            isBig: true,
-                            isSelected: isDrawingMode,
-                            onTap: () {
-                              HapticFeedback.lightImpact();
+                            onPanUpdate: (details) {
+                              _eraseLine(details.globalPosition);
                               setState(() {
-                                if (_currentFocusedField != null) {
-                                  return;
-                                }
-                                isDrawingMode = !isDrawingMode;
-                                if (isDrawingMode) {
-                                  _currentFocusedField?.unfocus();
+                                _eraserPosition = details.localPosition;
+                              });
+                            },
+                            onPanEnd: (details) {
+                              setState(() {
+                                _eraserPosition = null;
+                              });
+                            },
+                          ),
+                        ),
+                        if (isErasing && _eraserPosition != null)
+                          Positioned(
+                            top: _eraserPosition!.dy,
+                            left: _eraserPosition!.dx,
+                            child: Container(
+                              width: 30,
+                              height: 30,
+                              // white circle with black outline
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).colorScheme.onError,
+                                shape: BoxShape.circle,
+                                // shadow
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Theme.of(context).colorScheme.onError.withOpacity(0.5),
+                                    spreadRadius: 2,
+                                    blurRadius: 5,
+                                    offset: const Offset(0, 0), // changes position of shadow
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  )
+                : const SizedBox.shrink(),
+            isDrawingMode
+                ? Positioned.fill(
+                    child: GestureDetector(
+                      onPanStart: (details) {
+                        setState(() => isDrawing = true);
+                        _beforeChange();
+                        setState(() {
+                          RenderBox renderBox = context.findRenderObject() as RenderBox;
+                          Offset touchPoint = renderBox.globalToLocal(details.globalPosition);
+                          List<Line> points = [];
+                          double radius = 0.25; // or adjust as needed
+
+                          for (double angle = 0; angle <= 360; angle += 45) {
+                            double x = touchPoint.dx + radius * cos(angle * pi / 180);
+                            double y = touchPoint.dy + radius * sin(angle * pi / 180);
+                            points.add(Line(Offset(x, y), paintBrushBig, paintBrushColorSet));
+                          }
+                          lines.add(points);
+                        });
+                      },
+                      onPanEnd: (details) {
+                        setState(() => isDrawing = false);
+                        if (lines.last.isEmpty) {
+                          lines.removeLast();
+                        }
+                      },
+                      onPanUpdate: (details) {
+                        setState(() {
+                          RenderBox renderBox = context.findRenderObject() as RenderBox;
+                          lines.last.add(
+                              Line(renderBox.globalToLocal(details.globalPosition), paintBrushBig, paintBrushColorSet));
+                        });
+                      },
+                    ),
+                  )
+                : const SizedBox.shrink(),
+            Positioned.fill(
+              right: 10,
+              left: 10,
+              top: 20,
+              child: SafeArea(
+                bottom: false,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      children: [
+                        CircleIconBtn(
+                            isBig: true,
+                            onTap: () {
+                              router.pop();
+                            },
+                            icon: CupertinoIcons.xmark),
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Row(
+                          children: [
+                            buildTextSettingsMenu(context),
+                            CircleIconBtn(
+                              isSelected: _getCurrentEntry() != null,
+                              isBig: true,
+                              onTap: () {
+                                HapticFeedback.lightImpact();
+                                _beforeChange();
+                                setState(() {
+                                  if (isDrawingMode) {
+                                    isDrawingMode = false;
+                                  }
                                   if (isErasing) {
                                     isErasing = false;
                                   }
-                                }
-                              });
-                            },
-                            icon: Icons.brush,
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-                      CircleIconBtn(
-                        isSelected: isErasing,
-                        onTap: () {
-                          HapticFeedback.lightImpact();
-                          setState(() {
-                            if (_currentFocusedField != null) {
-                              _currentFocusedField?.unfocus();
-                            }
-                            if (isDrawingMode) {
-                              isDrawingMode = false;
-                            }
-                            isErasing = !isErasing;
-                          });
-                        },
-                        icon: CupertinoIcons.clear_thick_circled,
-                        isBig: true,
-                      ),
-                      const SizedBox(height: 8),
-                      CircleIconBtn(
-                        onTap: () {
-                          HapticFeedback.lightImpact();
-                          // unselects every other text, eraser, and draw
-                          setState(() {
-                            if (_currentFocusedField != null) {
-                              _currentFocusedField?.unfocus();
-                            }
-                            if (isDrawingMode) {
-                              isDrawingMode = false;
-                            }
-                            if (isErasing) {
-                              isErasing = false;
-                            }
-                          });
-                          // crops file using image_cropper pkg
-                          ImageCropper()
-                              .cropImage(
-                            sourcePath: editingFile.path,
-                            androidUiSettings: const AndroidUiSettings(
-                              toolbarTitle: 'Crop Image',
-                              initAspectRatio: CropAspectRatioPreset.original,
-                              lockAspectRatio: false,
+                                  _textEntries.add(TextEntry(""));
+                                });
+                              },
+                              icon: Icons.text_fields,
                             ),
-                            iosUiSettings: const IOSUiSettings(
-                              title: 'Crop Image',
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          children: [
+                            buildDrawingSettingsMenu(context),
+                            CircleIconBtn(
+                              isBig: true,
+                              isSelected: isDrawingMode,
+                              onTap: () {
+                                HapticFeedback.lightImpact();
+                                setState(() {
+                                  if (_currentFocusedField != null) {
+                                    return;
+                                  }
+                                  isDrawingMode = !isDrawingMode;
+                                  if (isDrawingMode) {
+                                    _currentFocusedField?.unfocus();
+                                    if (isErasing) {
+                                      isErasing = false;
+                                    }
+                                  }
+                                });
+                              },
+                              icon: Icons.brush,
                             ),
-                            compressQuality: 100,
-                            compressFormat: ImageCompressFormat.png,
-                            cropStyle: CropStyle.rectangle,
-                          )
-                              .then((value) {
-                            if (value != null) {
-                              setState(() {
-                                editingFile = value;
-                              });
-                            }
-                          });
-                        },
-                        icon: Icons.crop,
-                        isBig: true,
-                      ),
-                      const SizedBox(height: 8),
-                      CircleIconBtn(
-                        disabled: _undoStack.isEmpty,
-                        onTap: () {
-                          HapticFeedback.lightImpact();
-                          undo();
-                        },
-                        icon: Icons.undo,
-                        isBig: true,
-                      ),
-                      const SizedBox(height: 8),
-                      CircleIconBtn(
-                        disabled: _redoStack.isEmpty,
-                        onTap: () {
-                          HapticFeedback.lightImpact();
-                          redo();
-                        },
-                        icon: Icons.redo,
-                        isBig: true,
-                      ),
-                      const SizedBox(height: 8),
-                      CircleIconBtn(
-                        onTap: () => print("tap"),
-                        icon: Icons.download,
-                        isBig: true,
-                      ),
-                    ],
-                  ),
-                ],
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        CircleIconBtn(
+                          isSelected: isErasing,
+                          onTap: () {
+                            HapticFeedback.lightImpact();
+                            setState(() {
+                              if (_currentFocusedField != null) {
+                                _currentFocusedField?.unfocus();
+                              }
+                              if (isDrawingMode) {
+                                isDrawingMode = false;
+                              }
+                              isErasing = !isErasing;
+                            });
+                          },
+                          icon: CupertinoIcons.clear_thick_circled,
+                          isBig: true,
+                        ),
+                        const SizedBox(height: 8),
+                        CircleIconBtn(
+                          onTap: () {
+                            HapticFeedback.lightImpact();
+                            // unselects every other text, eraser, and draw
+                            setState(() {
+                              if (_currentFocusedField != null) {
+                                _currentFocusedField?.unfocus();
+                              }
+                              if (isDrawingMode) {
+                                isDrawingMode = false;
+                              }
+                              if (isErasing) {
+                                isErasing = false;
+                              }
+                            });
+                            // crops file using image_cropper pkg
+                            ImageCropper()
+                                .cropImage(
+                              sourcePath: editingFile.path,
+                              androidUiSettings: const AndroidUiSettings(
+                                toolbarTitle: 'Crop Image',
+                                initAspectRatio: CropAspectRatioPreset.original,
+                                lockAspectRatio: false,
+                              ),
+                              iosUiSettings: const IOSUiSettings(
+                                title: 'Crop Image',
+                              ),
+                              compressQuality: 100,
+                              compressFormat: ImageCompressFormat.png,
+                              cropStyle: CropStyle.rectangle,
+                            )
+                                .then((value) {
+                              if (value != null) {
+                                setState(() {
+                                  editingFile = value;
+                                });
+                              }
+                            });
+                          },
+                          icon: Icons.crop,
+                          isBig: true,
+                        ),
+                        const SizedBox(height: 8),
+                        CircleIconBtn(
+                          disabled: _undoStack.isEmpty,
+                          onTap: () {
+                            HapticFeedback.lightImpact();
+                            undo();
+                          },
+                          icon: Icons.undo,
+                          isBig: true,
+                        ),
+                        const SizedBox(height: 8),
+                        CircleIconBtn(
+                          disabled: _redoStack.isEmpty,
+                          onTap: () {
+                            HapticFeedback.lightImpact();
+                            redo();
+                          },
+                          icon: Icons.redo,
+                          isBig: true,
+                        ),
+                        const SizedBox(height: 8),
+                        CircleIconBtn(
+                          onTap: () async => (await _captureAndSaveImage(context).then((possibleSuccess) =>
+                              possibleSuccess
+                                  ? context.read<NotificationsCubit>().showSuccess("Image saved to gallery")
+                                  : context.read<NotificationsCubit>().showErr("Error saving image"))),
+                          icon: Icons.download,
+                          isBig: true,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          Positioned.fill(
-            bottom: heightFraction(context, 1 / 16),
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: CircleIconBtn(
-                hasBorder: false,
-                isBig: thereIsSomeEntryInDeletionBoundary(),
-                bgColor: Theme.of(context).colorScheme.error,
-                icon: CupertinoIcons.trash,
-                color: Theme.of(context).colorScheme.onError,
+            Positioned.fill(
+              bottom: heightFraction(context, 1 / 16),
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: CircleIconBtn(
+                  hasBorder: false,
+                  isBig: thereIsSomeEntryInDeletionBoundary(),
+                  bgColor: Theme.of(context).colorScheme.error,
+                  icon: CupertinoIcons.trash,
+                  color: Theme.of(context).colorScheme.onError,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
