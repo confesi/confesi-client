@@ -977,7 +977,7 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
 
     bool shouldErase = lines.any((line) {
       for (Line point in line) {
-        if ((point.offset - localPosition).distance < 5) {
+        if ((point.offset - localPosition).distance < 15) {
           return true;
         }
       }
@@ -989,7 +989,7 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
       setState(() {
         lines.removeWhere((line) {
           for (Line point in line) {
-            if ((point.offset - localPosition).distance < 5) {
+            if ((point.offset - localPosition).distance < 15) {
               return true;
             }
           }
@@ -998,6 +998,8 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
       });
     }
   }
+
+  Offset? _eraserPosition; // This is the position of the eraser indicator, not the actual eraser itself.
 
   @override
   Widget build(BuildContext context) {
@@ -1027,17 +1029,54 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
           Positioned.fill(
               child: _getCurrentEntry() != null ? KeyboardDismiss(child: Container()) : const SizedBox.shrink()),
           Positioned(top: MediaQuery.of(context).size.height / 2 - 150, child: buildSlider(context)),
-          isErasing
-              ? Positioned.fill(
-                  child: GestureDetector(
+          Stack(
+            children: [
+              Positioned.fill(
+                child: GestureDetector(
                   onPanStart: (details) {
                     _eraseLine(details.globalPosition);
+                    setState(() {
+                      _eraserPosition = details.localPosition;
+                    });
                   },
                   onPanUpdate: (details) {
                     _eraseLine(details.globalPosition);
+                    setState(() {
+                      _eraserPosition = details.localPosition;
+                    });
                   },
-                ))
-              : const SizedBox.shrink(),
+                  onPanEnd: (details) {
+                    setState(() {
+                      _eraserPosition = null;
+                    });
+                  },
+                ),
+              ),
+              if (isErasing && _eraserPosition != null)
+                Positioned(
+                  top: _eraserPosition!.dy,
+                  left: _eraserPosition!.dx,
+                  child: Container(
+                    width: 30,
+                    height: 30,
+                    // white circle with black outline
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.onError,
+                      shape: BoxShape.circle,
+                      // shadow
+                      boxShadow: [
+                        BoxShadow(
+                          color: Theme.of(context).colorScheme.onError.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: const Offset(0, 0), // changes position of shadow
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+            ],
+          ),
           isDrawingMode
               ? Positioned.fill(
                   child: GestureDetector(
