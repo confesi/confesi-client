@@ -1,6 +1,8 @@
 import 'dart:collection';
 import 'dart:io';
 import 'dart:math';
+import 'dart:ui' as ui;
+
 import 'package:confesi/application/user/cubit/notifications_cubit.dart';
 import 'package:confesi/core/router/go_router.dart';
 import 'package:confesi/core/styles/typography.dart';
@@ -10,8 +12,11 @@ import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale
 import 'package:confesi/presentation/shared/buttons/circle_icon_btn.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:vector_math/vector_math_64.dart' as v;
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -478,6 +483,14 @@ class TextEntry {
       : matrix = Matrix4.identity();
 }
 
+class Line {
+  Offset offset;
+  bool isBig;
+  ColorSet colorSet;
+
+  Line(this.offset, this.isBig, this.colorSet);
+}
+
 class ImageEditorScreen extends StatefulWidget {
   final File file;
 
@@ -488,6 +501,11 @@ class ImageEditorScreen extends StatefulWidget {
 }
 
 class ImageEditorScreenState extends State<ImageEditorScreen> {
+  bool paintBrushBig = false;
+  ColorSet paintBrushColorSet = ColorSet.red;
+
+  late File editingFile;
+
   List<TextEntry> _textEntries = [];
   Map<TextEntry, Tuple4<TextEditingController, FocusNode, double, Offset>> _textControllers = {};
 
@@ -497,28 +515,25 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
   HashSet<TextEntry> currentDraggingEntries = HashSet();
   List<
       Tuple3<List<TextEntry>, Map<TextEntry, Tuple4<TextEditingController, FocusNode, double, Offset>>,
-          List<List<Offset>>>> _undoStack = [];
+          List<List<Line>>>> _undoStack = [];
   List<
       Tuple3<List<TextEntry>, Map<TextEntry, Tuple4<TextEditingController, FocusNode, double, Offset>>,
-          List<List<Offset>>>> _redoStack = [];
+          List<List<Line>>>> _redoStack = [];
 
   bool isDrawingMode = false;
-  List<List<Offset>> lines = [];
+  List<List<Line>> lines = [];
 
   void _beforeChange() {
-    print("BEFORE CHANGE");
     _undoStack.add(Tuple3(_textEntries.map((e) => e.clone()).toList(), _deepCopyTextControllers(_textControllers),
-        lines.isNotEmpty ? lines.map<List<Offset>>((line) => List<Offset>.from(line)).toList() : []));
+        lines.isNotEmpty ? lines.map<List<Line>>((line) => List<Line>.from(line)).toList() : []));
     _redoStack.clear();
   }
 
   void _refreshState() {
-    // Here you can refresh the state of your widget or perform any action that is required
-    // For example, you can update some variables and then call `setState` to rebuild the widget
-    setState(() {
-      // Update any state variables here
-    });
+    setState(() {});
   }
+
+  bool hasDoneHapticForDeleteAlready = false;
 
   Map<TextEntry, Tuple4<TextEditingController, FocusNode, double, Offset>> _deepCopyTextControllers(
       Map<TextEntry, Tuple4<TextEditingController, FocusNode, double, Offset>> original) {
@@ -562,7 +577,7 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
       final lastState = _undoStack.removeLast();
       _textEntries = lastState.item1;
       _textControllers = _deepCopyTextControllers(lastState.item2);
-      lines = lastState.item3.map<List<Offset>>((line) => List<Offset>.from(line)).toList();
+      lines = lastState.item3.map<List<Line>>((line) => List<Line>.from(line)).toList();
 
       _refreshState();
     }
@@ -573,7 +588,7 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
       final nextState = _redoStack.removeLast();
       _textEntries = nextState.item1;
       _textControllers = _deepCopyTextControllers(nextState.item2);
-      lines = nextState.item3.map<List<Offset>>((line) => List<Offset>.from(line)).toList();
+      lines = nextState.item3.map<List<Line>>((line) => List<Line>.from(line)).toList();
 
       _refreshState();
     }
@@ -598,6 +613,12 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
       });
     });
     return node;
+  }
+
+  @override
+  initState() {
+    super.initState();
+    editingFile = widget.file;
   }
 
   @override
@@ -665,8 +686,6 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
       ),
     );
   }
-
-  bool hasDoneHapticForDeleteAlready = false;
 
   bool thereIsSomeEntryInDeletionBoundary() {
     bool res = false;
@@ -818,7 +837,55 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
     }
   }
 
-  Widget buildSettingsMenu(BuildContext context) {
+  // drawing menu (has color, size)
+
+  Widget buildDrawingSettingsMenu(BuildContext context) {
+    if (!isDrawingMode || isDrawing) return const SizedBox.shrink();
+    return SizedBox(
+      key: const ValueKey("options"),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(width: 8),
+            CircleIconBtn(
+              hasBorder: true,
+              isBig: true,
+              onTap: () {
+                setState(() {
+                  paintBrushBig = !paintBrushBig;
+                });
+              },
+              icon: paintBrushBig ? CupertinoIcons.largecircle_fill_circle : CupertinoIcons.smallcircle_fill_circle,
+            ),
+            const SizedBox(width: 8),
+            CircleIconBtn(
+              color: getColorsForSet(paintBrushColorSet).item1,
+              hasBorder: true,
+              isBig: true,
+              onTap: () {
+                setState(() {
+                  if (paintBrushColorSet == ColorSet.black) {
+                    paintBrushColorSet = ColorSet.white;
+                  } else if (paintBrushColorSet == ColorSet.white) {
+                    paintBrushColorSet = ColorSet.red;
+                  } else {
+                    paintBrushColorSet = ColorSet.black;
+                  }
+                });
+              },
+              icon: CupertinoIcons.color_filter,
+            ),
+            const SizedBox(width: 8),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildTextSettingsMenu(BuildContext context) {
     TextEntry? currentEntry = _getCurrentEntry();
 
     if (currentEntry != null) {
@@ -882,60 +949,127 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
     );
   }
 
+  bool isDrawing = false;
+
+  final GlobalKey _repaintKey = GlobalKey();
+
+  Future<void> _captureAndSaveImage() async {
+    RenderRepaintBoundary boundary = _repaintKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
+    ui.Image image = await boundary.toImage();
+    ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+    if (byteData == null) throw Exception("ByteData is null");
+    Uint8List uint8list = byteData.buffer.asUint8List();
+
+    // Save to gallery
+    final result = await ImageGallerySaver.saveImage(uint8list, quality: 9999999999);
+    if (result['isSuccess']) {
+      print("Image saved successfully!");
+    } else {
+      print("Error saving image: ${result['errorMessage']}");
+    }
+  }
+
+  bool isErasing = false;
+
+  void _eraseLine(Offset globalPosition) {
+    RenderBox renderBox = context.findRenderObject() as RenderBox;
+    Offset localPosition = renderBox.globalToLocal(globalPosition);
+
+    bool shouldErase = lines.any((line) {
+      for (Line point in line) {
+        if ((point.offset - localPosition).distance < 5) {
+          return true;
+        }
+      }
+      return false;
+    });
+
+    if (shouldErase) {
+      _beforeChange();
+      setState(() {
+        lines.removeWhere((line) {
+          for (Line point in line) {
+            if ((point.offset - localPosition).distance < 5) {
+              return true;
+            }
+          }
+          return false;
+        });
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(onPressed: () async => (await _captureAndSaveImage())),
       backgroundColor: Theme.of(context).colorScheme.shadow,
       resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           CheckeredBackground(
               color1: Theme.of(context).colorScheme.tertiary, color2: Theme.of(context).colorScheme.tertiary),
-          Positioned.fill(child: Image.file(widget.file, fit: BoxFit.contain)),
-          Positioned.fill(child: CustomPaint(painter: DrawingPainter(lines))),
-          ..._textEntries.map((entry) => _buildEditableTransformedText(entry)).toList(),
+          Positioned.fill(
+              child: RepaintBoundary(
+            key: _repaintKey,
+            child: Stack(
+              children: [
+                Positioned.fill(
+                    child: Image.file(
+                  editingFile,
+                  fit: BoxFit.contain,
+                )),
+                Positioned.fill(child: CustomPaint(painter: DrawingPainter(lines))),
+                ..._textEntries.map((entry) => _buildEditableTransformedText(entry)).toList(),
+              ],
+            ),
+          )),
           Positioned.fill(
               child: _getCurrentEntry() != null ? KeyboardDismiss(child: Container()) : const SizedBox.shrink()),
           Positioned(top: MediaQuery.of(context).size.height / 2 - 150, child: buildSlider(context)),
+          isErasing
+              ? Positioned.fill(
+                  child: GestureDetector(
+                  onPanStart: (details) {
+                    _eraseLine(details.globalPosition);
+                  },
+                  onPanUpdate: (details) {
+                    _eraseLine(details.globalPosition);
+                  },
+                ))
+              : const SizedBox.shrink(),
           isDrawingMode
               ? Positioned.fill(
                   child: GestureDetector(
                     onPanStart: (details) {
-                      if (isDrawingMode) {
-                        _beforeChange();
-                        setState(() {
-                          RenderBox renderBox = context.findRenderObject() as RenderBox;
-                          Offset touchPoint = renderBox.globalToLocal(details.globalPosition);
+                      setState(() => isDrawing = true);
+                      _beforeChange();
+                      setState(() {
+                        RenderBox renderBox = context.findRenderObject() as RenderBox;
+                        Offset touchPoint = renderBox.globalToLocal(details.globalPosition);
+                        List<Line> points = [];
+                        double radius = 0.25; // or adjust as needed
 
-                          List<Offset> points = [];
-                          double radius = 0.5; // or adjust as needed
-
-                          // Add several points around the touch point to simulate a small circle
-                          for (double angle = 0; angle <= 360; angle += 45) {
-                            double x = touchPoint.dx + radius * cos(angle * pi / 180);
-                            double y = touchPoint.dy + radius * sin(angle * pi / 180);
-                            points.add(Offset(x, y));
-                          }
-
-                          lines.add(points);
-                        });
-                      }
+                        for (double angle = 0; angle <= 360; angle += 45) {
+                          double x = touchPoint.dx + radius * cos(angle * pi / 180);
+                          double y = touchPoint.dy + radius * sin(angle * pi / 180);
+                          points.add(Line(Offset(x, y), paintBrushBig, paintBrushColorSet));
+                        }
+                        lines.add(points);
+                      });
                     },
                     onPanEnd: (details) {
-                      if (isDrawingMode) {
-                        if (lines.last.isEmpty) {
-                          lines.removeLast();
-                        }
+                      setState(() => isDrawing = false);
+                      if (lines.last.isEmpty) {
+                        lines.removeLast();
                       }
                     },
                     onPanUpdate: (details) {
-                      if (isDrawingMode) {
-                        setState(() {
-                          RenderBox renderBox = context.findRenderObject() as RenderBox;
-                          lines.last
-                              .add(renderBox.globalToLocal(details.globalPosition)); // Add points to the current line
-                        });
-                      }
+                      setState(() {
+                        RenderBox renderBox = context.findRenderObject() as RenderBox;
+                        lines.last.add(
+                            Line(renderBox.globalToLocal(details.globalPosition), paintBrushBig, paintBrushColorSet));
+                      });
                     },
                   ),
                 )
@@ -964,7 +1098,7 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
                     children: [
                       Row(
                         children: [
-                          buildSettingsMenu(context),
+                          buildTextSettingsMenu(context),
                           CircleIconBtn(
                             isSelected: _getCurrentEntry() != null,
                             isBig: true,
@@ -972,12 +1106,13 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
                               HapticFeedback.lightImpact();
                               _beforeChange();
                               setState(() {
-                                // If drawing mode is on, turn it off when adding text
                                 if (isDrawingMode) {
                                   isDrawingMode = false;
                                 }
+                                if (isErasing) {
+                                  isErasing = false;
+                                }
                                 _textEntries.add(TextEntry(""));
-                                // Implement logic to focus on the newly added TextEntry if necessary
                               });
                             },
                             icon: Icons.text_fields,
@@ -985,25 +1120,91 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
                         ],
                       ),
                       const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          buildDrawingSettingsMenu(context),
+                          CircleIconBtn(
+                            isBig: true,
+                            isSelected: isDrawingMode,
+                            onTap: () {
+                              HapticFeedback.lightImpact();
+                              setState(() {
+                                if (_currentFocusedField != null) {
+                                  return;
+                                }
+                                isDrawingMode = !isDrawingMode;
+                                if (isDrawingMode) {
+                                  _currentFocusedField?.unfocus();
+                                  if (isErasing) {
+                                    isErasing = false;
+                                  }
+                                }
+                              });
+                            },
+                            icon: Icons.brush,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
                       CircleIconBtn(
-                        isBig: true,
-                        isSelected: isDrawingMode,
+                        isSelected: isErasing,
                         onTap: () {
                           HapticFeedback.lightImpact();
                           setState(() {
                             if (_currentFocusedField != null) {
-                              // If text is focused, we don't switch to drawing mode
-                              return;
-                            }
-                            isDrawingMode = !isDrawingMode;
-                            if (isDrawingMode) {
-                              // Disable text interaction when drawing is enabled
                               _currentFocusedField?.unfocus();
-                              // Add additional logic to deselect text if necessary
+                            }
+                            if (isDrawingMode) {
+                              isDrawingMode = false;
+                            }
+                            isErasing = !isErasing;
+                          });
+                        },
+                        icon: CupertinoIcons.clear_thick_circled,
+                        isBig: true,
+                      ),
+                      const SizedBox(height: 8),
+                      CircleIconBtn(
+                        onTap: () {
+                          HapticFeedback.lightImpact();
+                          // unselects every other text, eraser, and draw
+                          setState(() {
+                            if (_currentFocusedField != null) {
+                              _currentFocusedField?.unfocus();
+                            }
+                            if (isDrawingMode) {
+                              isDrawingMode = false;
+                            }
+                            if (isErasing) {
+                              isErasing = false;
+                            }
+                          });
+                          // crops file using image_cropper pkg
+                          ImageCropper()
+                              .cropImage(
+                            sourcePath: editingFile.path,
+                            androidUiSettings: const AndroidUiSettings(
+                              toolbarTitle: 'Crop Image',
+                              initAspectRatio: CropAspectRatioPreset.original,
+                              lockAspectRatio: false,
+                            ),
+                            iosUiSettings: const IOSUiSettings(
+                              title: 'Crop Image',
+                            ),
+                            compressQuality: 100,
+                            compressFormat: ImageCompressFormat.png,
+                            cropStyle: CropStyle.rectangle,
+                          )
+                              .then((value) {
+                            if (value != null) {
+                              setState(() {
+                                editingFile = value;
+                              });
                             }
                           });
                         },
-                        icon: Icons.brush,
+                        icon: Icons.crop,
+                        isBig: true,
                       ),
                       const SizedBox(height: 8),
                       CircleIconBtn(
@@ -1057,20 +1258,20 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
 }
 
 class DrawingPainter extends CustomPainter {
-  final List<List<Offset>> lines;
+  final List<List<Line>> lines;
 
   DrawingPainter(this.lines);
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.red
-      ..strokeCap = StrokeCap.round
-      ..strokeWidth = 5.0;
+    final paint = Paint()..strokeCap = StrokeCap.round;
 
     for (final line in lines) {
       for (int i = 0; i < line.length - 1; i++) {
-        canvas.drawLine(line[i], line[i + 1], paint);
+        // Set the strokeWidth based on the isBig property
+        paint.strokeWidth = line[i].isBig ? 15 : 5;
+        paint.color = getColorsForSet(line[i].colorSet).item1;
+        canvas.drawLine(line[i].offset, line[i + 1].offset, paint);
       }
     }
   }

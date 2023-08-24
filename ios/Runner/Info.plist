@@ -13,6 +13,12 @@
 	</array>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
+	<!-- PHOTO LIBRARY START -->
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>App needs access to the photo library for saving images.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>App needs access to the photo library for saving images.</string>
+	<!-- PHOTO LIBRARY DONE -->
 	<!-- camera keys START -->
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>We need this to select images from your gallery</string>

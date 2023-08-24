@@ -89,6 +89,7 @@ dependencies:
   photo_view: ^0.14.0
   vector_math: ^2.1.0
   tuple: ^2.0.0
+  image_gallery_saver: ^2.0.3
   sqlite3_flutter_libs: ^0.5.13
   path: ^1.8.2
   path_provider: ^2.0.14
