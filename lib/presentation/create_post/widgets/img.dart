@@ -891,15 +891,11 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
         children: [
           CheckeredBackground(
               color1: Theme.of(context).colorScheme.tertiary, color2: Theme.of(context).colorScheme.tertiary),
-          Positioned.fill(
-            child: KeyboardDismiss(
-              child: Image.file(widget.file, fit: BoxFit.contain),
-            ),
-          ),
-          Positioned.fill(
-            child: CustomPaint(painter: DrawingPainter(lines)),
-          ),
+          Positioned.fill(child: Image.file(widget.file, fit: BoxFit.contain)),
+          Positioned.fill(child: CustomPaint(painter: DrawingPainter(lines))),
           ..._textEntries.map((entry) => _buildEditableTransformedText(entry)).toList(),
+          Positioned.fill(
+              child: _getCurrentEntry() != null ? KeyboardDismiss(child: Container()) : const SizedBox.shrink()),
           Positioned(top: MediaQuery.of(context).size.height / 2 - 150, child: buildSlider(context)),
           isDrawingMode
               ? Positioned.fill(
@@ -970,6 +966,7 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
                         children: [
                           buildSettingsMenu(context),
                           CircleIconBtn(
+                            isSelected: _getCurrentEntry() != null,
                             isBig: true,
                             onTap: () {
                               HapticFeedback.lightImpact();
@@ -1067,7 +1064,7 @@ class DrawingPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.black
+      ..color = Colors.red
       ..strokeCap = StrokeCap.round
       ..strokeWidth = 5.0;
 
