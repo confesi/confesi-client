@@ -970,15 +970,21 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
                         children: [
                           buildSettingsMenu(context),
                           CircleIconBtn(
-                              isBig: true,
-                              onTap: () {
-                                HapticFeedback.lightImpact();
-                                _beforeChange();
-                                setState(() {
-                                  _textEntries.add(TextEntry(""));
-                                });
-                              },
-                              icon: Icons.text_fields),
+                            isBig: true,
+                            onTap: () {
+                              HapticFeedback.lightImpact();
+                              _beforeChange();
+                              setState(() {
+                                // If drawing mode is on, turn it off when adding text
+                                if (isDrawingMode) {
+                                  isDrawingMode = false;
+                                }
+                                _textEntries.add(TextEntry(""));
+                                // Implement logic to focus on the newly added TextEntry if necessary
+                              });
+                            },
+                            icon: Icons.text_fields,
+                          ),
                         ],
                       ),
                       const SizedBox(height: 8),
@@ -988,10 +994,15 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
                         onTap: () {
                           HapticFeedback.lightImpact();
                           setState(() {
+                            if (_currentFocusedField != null) {
+                              // If text is focused, we don't switch to drawing mode
+                              return;
+                            }
                             isDrawingMode = !isDrawingMode;
                             if (isDrawingMode) {
                               // Disable text interaction when drawing is enabled
                               _currentFocusedField?.unfocus();
+                              // Add additional logic to deselect text if necessary
                             }
                           });
                         },
