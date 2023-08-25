@@ -636,6 +636,7 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
       bool hasBg, bool isBold, ColorSet colorSet, TextEntry t,
       {void Function()? onEditingComplete}) {
     Tuple2<Color, Color> colors = getColorsForSet(colorSet);
+
     return GestureDetector(
       onTap: () {
         _currentFocusedField?.unfocus();
@@ -648,9 +649,10 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
         constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width - 32),
         child: IntrinsicWidth(
           child: Container(
+            // Add padding dynamically based on keyboard visibility and widget position.
             padding: const EdgeInsets.all(5),
             decoration: BoxDecoration(
-              color: hasBg ? colors.item1 : Colors.transparent,
+              color: hasBg ? colors.item1 : Colors.red,
               borderRadius: BorderRadius.circular(5),
             ),
             child: Material(
@@ -658,9 +660,8 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
               child: IgnorePointer(
                 ignoring: !focusNode.hasFocus,
                 child: TextField(
-                  // onChanged: (value) => _beforeChange(),
                   cursorColor: colors.item2,
-                  scrollPadding: EdgeInsets.zero,
+                  // scrollPadding: EdgeInsets.zero,
                   maxLines: null,
                   decoration: InputDecoration(
                     isDense: true,
@@ -708,7 +709,7 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
     return res;
   }
 
-  Widget _buildEditableTransformedText(TextEntry entry) {
+  Widget _buildEditableTransformedText(TextEntry entry, double bottomInsetHeight) {
     _textControllers[entry] ??=
         Tuple4(TextEditingController(text: entry.text), _createFocusNode(), entry.fontSize, entry.offset);
     final currentController = _textControllers[entry]!.item1;
@@ -743,7 +744,6 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
         },
         onDragStart: () {
           if (currentDraggingEntries.contains(entry)) return;
-          print("drag start");
           _beforeChange();
           FocusManager.instance.primaryFocus?.unfocus();
           currentDraggingEntries.add(entry);
@@ -757,6 +757,7 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
               _textControllers[entry]!.item3,
               o,
             );
+            entry.offset = o;
             entry.matrix = m;
           });
         },
@@ -827,7 +828,7 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
                 });
               },
               min: 18.0,
-              max: 40.0,
+              max: 60.0,
             ),
           ],
         ),
@@ -1007,15 +1008,16 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
     }
   }
 
-  Offset? _eraserPosition; // This is the position of the eraser indicator, not the actual eraser itself.
+  Offset? _eraserPosition; // this is the pos of the eraser indicator, not the actual eraser itself
 
   @override
   Widget build(BuildContext context) {
+    final double keyboardHeight = MediaQuery.viewInsetsOf(context).bottom;
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.shadow,
-      resizeToAvoidBottomInset: true, // todo: alter
+      resizeToAvoidBottomInset: true, // todo: alter?
       body: SingleChildScrollView(
-        physics: const NeverScrollableScrollPhysics(),
+        physics: const NeverUserScrollablePhysics(),
         child: Stack(
           children: [
             CheckeredBackground(
@@ -1029,14 +1031,14 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
                     Positioned.fill(
                       child: Image.file(
                         editingFile,
-                        fit: BoxFit.contain,
+                        fit: BoxFit.fitWidth,
                       ),
                     ),
                     Positioned.fill(child: CustomPaint(painter: DrawingPainter(lines))),
-                    !isDrawing || !isErasing
+                    !isDrawingMode && !isErasing
                         ? const Positioned.fill(child: KeyboardDismiss(child: SizedBox.expand()))
                         : const SizedBox.shrink(),
-                    ..._textEntries.map((entry) => _buildEditableTransformedText(entry)).toList(),
+                    ..._textEntries.map((entry) => _buildEditableTransformedText(entry, keyboardHeight)).toList(),
                   ],
                 ),
               ),
@@ -1339,5 +1341,24 @@ class DrawingPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
     return true;
+  }
+}
+
+class NeverUserScrollablePhysics extends ScrollPhysics {
+  const NeverUserScrollablePhysics({ScrollPhysics? parent}) : super(parent: parent);
+
+  @override
+  NeverUserScrollablePhysics applyTo(ScrollPhysics? ancestor) {
+    return NeverUserScrollablePhysics(parent: buildParent(ancestor));
+  }
+
+  @override
+  bool shouldAcceptUserOffset(ScrollMetrics position) {
+    return false;
+  }
+
+  @override
+  double applyPhysicsToUserOffset(ScrollMetrics position, double offset) {
+    return 0.0;
   }
 }
