@@ -617,10 +617,20 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
     return node;
   }
 
+  bool _isImageLoaded = false;
+
   @override
   initState() {
     super.initState();
     editingFile = widget.file;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Trigger rebuild after the first frame
+      if (!_isImageLoaded) {
+        setState(() {
+          _isImageLoaded = true;
+        });
+      }
+    });
   }
 
   @override
@@ -1009,6 +1019,7 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
   }
 
   Offset? _eraserPosition; // this is the pos of the eraser indicator, not the actual eraser itself
+  final GlobalKey _imageKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -1021,26 +1032,57 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
         child: Stack(
           children: [
             CheckeredBackground(
-                color1: Theme.of(context).colorScheme.tertiary, color2: Theme.of(context).colorScheme.tertiary),
+              color1: Theme.of(context).colorScheme.tertiary,
+              color2: Theme.of(context).colorScheme.tertiary.withOpacity(0.2),
+            ),
             Positioned.fill(child: _getCurrentEntry() != null ? Container() : const SizedBox.shrink()),
-            Positioned.fill(
-              child: RepaintBoundary(
-                key: _repaintKey,
-                child: Stack(
-                  children: [
-                    Positioned.fill(
-                      child: Image.file(
-                        editingFile,
-                        fit: BoxFit.fitWidth,
+            SizedBox(
+              height: heightFraction(context, 1),
+              child: LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+                  final RenderBox? imageRenderBox = _imageKey.currentContext?.findRenderObject() as RenderBox?;
+                  final double imageHeight = imageRenderBox?.size.height ?? 0;
+                  final double imageWidth = imageRenderBox?.size.width ?? 0;
+
+                  return Stack(
+                    children: [
+                      Align(
+                        alignment: Alignment.center,
+                        child: Image.file(editingFile, fit: BoxFit.fitWidth, key: _imageKey),
                       ),
-                    ),
-                    Positioned.fill(child: CustomPaint(painter: DrawingPainter(lines))),
-                    !isDrawingMode && !isErasing
-                        ? const Positioned.fill(child: KeyboardDismiss(child: SizedBox.expand()))
-                        : const SizedBox.shrink(),
-                    ..._textEntries.map((entry) => _buildEditableTransformedText(entry, keyboardHeight)).toList(),
-                  ],
-                ),
+                      Positioned.fill(child: CustomPaint(painter: DrawingPainter(lines))),
+                      !isDrawingMode && !isErasing
+                          ? const Positioned.fill(child: KeyboardDismiss(child: SizedBox.expand()))
+                          : const SizedBox.shrink(),
+                      ..._textEntries
+                          .map((entry) => Positioned.fill(child: _buildEditableTransformedText(entry, keyboardHeight)))
+                          .toList(),
+                      // Use the image's dimensions to delineate the boundaries of the repaint area
+                      IgnorePointer(
+                        ignoring: true,
+                        child: Center(
+                          child: RepaintBoundary(
+                            key: _repaintKey,
+                            child: Container(
+                              height: imageHeight,
+                              width: imageWidth,
+                              color: Colors.transparent,
+                              child: Stack(
+                                children: [
+                                  Image.file(editingFile, fit: BoxFit.fitWidth),
+                                  CustomPaint(painter: DrawingPainter(lines)),
+                                  ..._textEntries
+                                      .map((entry) => _buildEditableTransformedText(entry, keyboardHeight))
+                                      .toList(),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                },
               ),
             ),
             Positioned(top: MediaQuery.of(context).size.height / 2 - 150, child: buildSlider(context)),
