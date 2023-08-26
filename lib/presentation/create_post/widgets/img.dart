@@ -4,7 +4,9 @@ import 'dart:math';
 import 'dart:ui' as ui;
 
 import 'package:confesi/application/user/cubit/notifications_cubit.dart';
+
 import 'package:confesi/core/router/go_router.dart';
+import 'package:confesi/core/services/creating_and_editing_posts_service/create_edit_posts_service.dart';
 import 'package:confesi/core/styles/typography.dart';
 import 'package:confesi/core/utils/sizing/height_fraction.dart';
 import 'package:confesi/core/utils/sizing/width_fraction.dart';
@@ -15,13 +17,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:image_cropper/image_cropper.dart';
+import 'package:tuple/tuple.dart';
 import 'package:vector_math/vector_math_64.dart' as v;
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable/exports.dart';
-import 'package:tuple/tuple.dart';
 
 import '../../shared/edited_source_widgets/matrix_gesture_detector.dart';
 
@@ -193,8 +195,6 @@ class ImgController extends ChangeNotifier {
   }
 
   void notify() => notifyListeners();
-
-  List<File> get images => _imgState._images;
 }
 
 class Img extends StatefulWidget {
@@ -212,7 +212,6 @@ class Img extends StatefulWidget {
 }
 
 class ImgState extends State<Img> {
-  final List<File> _images = [];
   final ScrollController scrollController = ScrollController();
 
   @override
@@ -235,25 +234,47 @@ class ImgState extends State<Img> {
   }
 
   Future<void> _selectFromGallery() async {
-    if (_images.length >= widget.maxImages) {
-      context.read<NotificationsCubit>().showErr("Max images reached");
+    final notificationsCubit = context.read<NotificationsCubit>();
+    final editingPostsService = Provider.of<CreatingEditingPostsService>(context, listen: false);
+
+    if (Provider.of<CreatingEditingPostsService>(context, listen: true)
+            .images
+            .map((e) => e.editingFile)
+            .toList()
+            .length >=
+        widget.maxImages) {
+      notificationsCubit.showErr("Max images reached");
       return;
     }
     final pickedFile = await ImagePicker().pickImage(
       source: ImageSource.gallery,
     );
 
-    if (pickedFile != null && _images.length < widget.maxImages) {
+    if (pickedFile != null &&
+        Provider.of<CreatingEditingPostsService>(context, listen: false)
+                .images
+                .map((e) => e.editingFile)
+                .toList()
+                .length <
+            widget.maxImages) {
+      editingPostsService.images.add(EditorState.empty(File(pickedFile.path)));
       setState(() {
-        _images.add(File(pickedFile.path));
         widget.controller!.notify();
       });
+      await Future.delayed(const Duration(milliseconds: 250));
+      _animateToEndOfScrollview();
     }
-    await Future.delayed(const Duration(milliseconds: 250)).then((value) => _animateToEndOfScrollview());
   }
 
   Future<void> _selectFromCamera() async {
-    if (_images.length >= widget.maxImages) {
+    final editingPostsService = Provider.of<CreatingEditingPostsService>(context, listen: false);
+
+    if (Provider.of<CreatingEditingPostsService>(context, listen: false)
+            .images
+            .map((e) => e.editingFile)
+            .toList()
+            .length >=
+        widget.maxImages) {
       context.read<NotificationsCubit>().showErr("Max images reached");
       return;
     }
@@ -261,13 +282,22 @@ class ImgState extends State<Img> {
       source: ImageSource.camera,
     );
 
-    if (pickedFile != null && _images.length < widget.maxImages) {
+    if (pickedFile != null &&
+        Provider.of<CreatingEditingPostsService>(context, listen: false)
+                .images
+                .map((e) => e.editingFile)
+                .toList()
+                .length <
+            widget.maxImages) {
+      print(EditorState.empty(File(pickedFile.path)).runtimeType);
+
+      editingPostsService.addImage(EditorState.empty(File(pickedFile.path)));
       setState(() {
-        _images.add(File(pickedFile.path));
         widget.controller!.notify();
       });
+      await Future.delayed(const Duration(milliseconds: 250));
+      _animateToEndOfScrollview();
     }
-    await Future.delayed(const Duration(milliseconds: 250)).then((value) => _animateToEndOfScrollview());
   }
 
   @override
@@ -276,8 +306,22 @@ class ImgState extends State<Img> {
       duration: const Duration(milliseconds: 250),
       child: Container(
         width: double.infinity,
-        margin: EdgeInsets.only(top: _images.isEmpty ? 0 : 15),
-        height: widget.controller != null && _images.isNotEmpty ? 100 : 0,
+        margin: EdgeInsets.only(
+            top: Provider.of<CreatingEditingPostsService>(context, listen: true)
+                    .images
+                    .map((e) => e.editingFile)
+                    .toList()
+                    .isEmpty
+                ? 0
+                : 15),
+        height: widget.controller != null &&
+                Provider.of<CreatingEditingPostsService>(context, listen: true)
+                    .images
+                    .map((e) => e.editingFile)
+                    .toList()
+                    .isNotEmpty
+            ? 100
+            : 0,
         child: SingleChildScrollView(
           controller: scrollController,
           scrollDirection: Axis.horizontal,
@@ -301,13 +345,28 @@ class ImgState extends State<Img> {
                     _onReorder(oldIndex, newIndex);
                   },
                   children: <Widget>[
-                    for (int index = 0; index < _images.length; index++)
+                    for (int index = 0;
+                        index <
+                            Provider.of<CreatingEditingPostsService>(context, listen: true)
+                                .images
+                                .map((e) => e.editingFile)
+                                .toList()
+                                .length;
+                        index++)
                       TouchableScale(
                         key: ValueKey(index),
-                        onTap: () => _showEditor(_images[index]),
+                        onTap: () => _showEditor(Provider.of<CreatingEditingPostsService>(context, listen: false)
+                            .images
+                            .map((e) => e.editingFile)
+                            .toList()[index]),
                         child: Padding(
                           padding: const EdgeInsets.only(right: 5),
-                          child: _buildFilePreview(_images[index], index),
+                          child: _buildFilePreview(
+                              Provider.of<CreatingEditingPostsService>(context, listen: true)
+                                  .images
+                                  .map((e) => e.editingFile)
+                                  .toList()[index],
+                              index),
                         ),
                       ),
                   ],
@@ -319,9 +378,14 @@ class ImgState extends State<Img> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    '${_images.length}/${widget.maxImages} images',
+                    '${Provider.of<CreatingEditingPostsService>(context, listen: true).images.map((e) => e.editingFile).toList().length}/${widget.maxImages} images',
                     style: kDetail.copyWith(
-                      color: _images.length == widget.maxImages
+                      color: Provider.of<CreatingEditingPostsService>(context, listen: true)
+                                  .images
+                                  .map((e) => e.editingFile)
+                                  .toList()
+                                  .length ==
+                              widget.maxImages
                           ? Theme.of(context).colorScheme.error
                           : Theme.of(context).colorScheme.onSurface,
                     ),
@@ -350,16 +414,25 @@ class ImgState extends State<Img> {
       newIndex -= 1;
     }
 
-    setState(() {
-      final item = _images.removeAt(oldIndex);
+    final service = Provider.of<CreatingEditingPostsService>(context, listen: false);
+    final List<EditorState> imagesList = List.from(service.images); // Deep copy of the original list.
 
-      _images.insert(newIndex, item);
+    final item = imagesList.removeAt(oldIndex);
+    imagesList.insert(newIndex, item);
+
+    service.updateImages(imagesList);
+
+    setState(() {
       widget.controller!.notify();
     });
   }
 
   void _scrollToEnd() {
-    if (_images.isNotEmpty) {
+    if (Provider.of<CreatingEditingPostsService>(context, listen: false)
+        .images
+        .map((e) => e.editingFile)
+        .toList()
+        .isNotEmpty) {
       scrollController.animateTo(
         scrollController.position.maxScrollExtent,
         duration: const Duration(milliseconds: 250),
@@ -423,7 +496,10 @@ class ImgState extends State<Img> {
             ),
             onTap: () {
               setState(() {
-                _images.removeAt(index);
+                Provider.of<CreatingEditingPostsService>(context, listen: false).images.removeWhere((element) {
+                  return element.editingFile == file;
+                });
+
                 widget.controller!.notify();
               });
             },
@@ -434,8 +510,12 @@ class ImgState extends State<Img> {
   }
 
   void _showEditor(File file) {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => ImageEditorScreen(file: file), fullscreenDialog: true));
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => ImageEditorScreen(
+            editorState: Provider.of<CreatingEditingPostsService>(context, listen: false)
+                .images
+                .firstWhere((element) => element.editingFile == file)),
+        fullscreenDialog: true));
   }
 }
 
@@ -494,37 +574,62 @@ class Line {
 }
 
 class ImageEditorScreen extends StatefulWidget {
-  final File file;
+  final EditorState editorState;
 
-  const ImageEditorScreen({Key? key, required this.file}) : super(key: key);
+  const ImageEditorScreen({Key? key, required this.editorState}) : super(key: key);
 
   @override
   ImageEditorScreenState createState() => ImageEditorScreenState();
 }
 
 class ImageEditorScreenState extends State<ImageEditorScreen> {
-  bool paintBrushBig = false;
-  ColorSet paintBrushColorSet = ColorSet.red;
-
   late File editingFile;
 
   List<TextEntry> _textEntries = [];
   Map<TextEntry, Tuple4<TextEditingController, FocusNode, double, Offset>> _textControllers = {};
-
-  FocusNode? _currentFocusedField;
   bool get _showFontSizeSlider => _currentFocusedField != null;
-  FocusAttachment? _focusAttachment;
-  HashSet<TextEntry> currentDraggingEntries = HashSet();
-  List<
+  final List<
       Tuple3<List<TextEntry>, Map<TextEntry, Tuple4<TextEditingController, FocusNode, double, Offset>>,
           List<List<Line>>>> _undoStack = [];
-  List<
+  final List<
       Tuple3<List<TextEntry>, Map<TextEntry, Tuple4<TextEditingController, FocusNode, double, Offset>>,
           List<List<Line>>>> _redoStack = [];
-
-  bool isDrawingMode = false;
   List<List<Line>> lines = [];
 
+  @override
+  initState() {
+    editingFile = widget.editorState.editingFile;
+    // put the editorState into the state of this widget
+    _textEntries = widget.editorState.textEntries;
+    _textControllers =
+        widget.editorState.textControllers as Map<TextEntry, Tuple4<TextEditingController, FocusNode, double, Offset>>;
+    currentDraggingEntries = widget.editorState.currentDraggingEntries;
+    _undoStack.addAll(widget.editorState.undoStack as List<
+        Tuple3<List<TextEntry>, Map<TextEntry, Tuple4<TextEditingController, FocusNode, double, Offset>>,
+            List<List<Line>>>>);
+    _redoStack.addAll(widget.editorState.redoStack as List<
+        Tuple3<List<TextEntry>, Map<TextEntry, Tuple4<TextEditingController, FocusNode, double, Offset>>,
+            List<List<Line>>>>);
+
+    lines = widget.editorState.lines;
+    super.initState();
+  }
+
+  // in-editor variables
+  HashSet<TextEntry> currentDraggingEntries = HashSet();
+  FocusNode? _currentFocusedField;
+  FocusAttachment? _focusAttachment;
+
+  bool paintBrushBig = false;
+  ColorSet paintBrushColorSet = ColorSet.red;
+  bool hasDoneHapticForDeleteAlready = false;
+  bool isDrawing = false;
+  final GlobalKey _repaintKey = GlobalKey();
+  bool isErasing = false;
+  Offset? _eraserPosition; // this is the pos of the eraser indicator, not the actual eraser itself
+  final GlobalKey _imageKey = GlobalKey();
+
+  bool isDrawingMode = false;
   void _beforeChange() {
     _undoStack.add(Tuple3(_textEntries.map((e) => e.clone()).toList(), _deepCopyTextControllers(_textControllers),
         lines.isNotEmpty ? lines.map<List<Line>>((line) => List<Line>.from(line)).toList() : []));
@@ -534,8 +639,6 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
   void _refreshState() {
     setState(() {});
   }
-
-  bool hasDoneHapticForDeleteAlready = false;
 
   Map<TextEntry, Tuple4<TextEditingController, FocusNode, double, Offset>> _deepCopyTextControllers(
       Map<TextEntry, Tuple4<TextEditingController, FocusNode, double, Offset>> original) {
@@ -615,22 +718,6 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
       });
     });
     return node;
-  }
-
-  bool _isImageLoaded = false;
-
-  @override
-  initState() {
-    super.initState();
-    editingFile = widget.file;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      // Trigger rebuild after the first frame
-      if (!_isImageLoaded) {
-        setState(() {
-          _isImageLoaded = true;
-        });
-      }
-    });
   }
 
   @override
@@ -962,10 +1049,6 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
     );
   }
 
-  bool isDrawing = false;
-
-  final GlobalKey _repaintKey = GlobalKey();
-
   /// Returns true if the image was saved successfully, else false.
   Future<bool> _captureAndSaveImage(BuildContext context) async {
     RenderRepaintBoundary boundary = _repaintKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
@@ -987,8 +1070,6 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
       },
     );
   }
-
-  bool isErasing = false;
 
   void _eraseLine(Offset globalPosition) {
     RenderBox renderBox = context.findRenderObject() as RenderBox;
@@ -1018,9 +1099,6 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
     }
   }
 
-  Offset? _eraserPosition; // this is the pos of the eraser indicator, not the actual eraser itself
-  final GlobalKey _imageKey = GlobalKey();
-
   @override
   Widget build(BuildContext context) {
     final double keyboardHeight = MediaQuery.viewInsetsOf(context).bottom;
@@ -1036,53 +1114,44 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
               color2: Theme.of(context).colorScheme.tertiary.withOpacity(0.2),
             ),
             Positioned.fill(child: _getCurrentEntry() != null ? Container() : const SizedBox.shrink()),
-            SizedBox(
-              height: heightFraction(context, 1),
-              child: LayoutBuilder(
-                builder: (BuildContext context, BoxConstraints constraints) {
-                  final RenderBox? imageRenderBox = _imageKey.currentContext?.findRenderObject() as RenderBox?;
-                  final double imageHeight = imageRenderBox?.size.height ?? 0;
-                  final double imageWidth = imageRenderBox?.size.width ?? 0;
-
-                  return Stack(
-                    children: [
-                      Align(
-                        alignment: Alignment.center,
-                        child: Image.file(editingFile, fit: BoxFit.fitWidth, key: _imageKey),
-                      ),
-                      Positioned.fill(child: CustomPaint(painter: DrawingPainter(lines))),
-                      !isDrawingMode && !isErasing
-                          ? const Positioned.fill(child: KeyboardDismiss(child: SizedBox.expand()))
-                          : const SizedBox.shrink(),
-                      ..._textEntries
-                          .map((entry) => Positioned.fill(child: _buildEditableTransformedText(entry, keyboardHeight)))
-                          .toList(),
-                      // Use the image's dimensions to delineate the boundaries of the repaint area
-                      IgnorePointer(
-                        ignoring: true,
-                        child: Center(
-                          child: RepaintBoundary(
-                            key: _repaintKey,
+            RepaintBoundary(
+              key: _repaintKey,
+              child: SizedBox(
+                height: heightFraction(context, 1),
+                child: LayoutBuilder(
+                  builder: (BuildContext context, BoxConstraints constraints) {
+                    final RenderBox? imageRenderBox = _imageKey.currentContext?.findRenderObject() as RenderBox?;
+                    final double imageHeight = imageRenderBox?.size.height ?? 0;
+                    final double imageWidth = imageRenderBox?.size.width ?? 0;
+                    return Stack(
+                      children: [
+                        Align(
+                          alignment: Alignment.center,
+                          child: Image.file(editingFile, fit: BoxFit.fitWidth, key: _imageKey),
+                        ),
+                        Positioned.fill(child: CustomPaint(painter: DrawingPainter(lines))),
+                        !isDrawingMode && !isErasing
+                            ? const Positioned.fill(child: KeyboardDismiss(child: SizedBox.expand()))
+                            : const SizedBox.shrink(),
+                        ..._textEntries
+                            .map(
+                                (entry) => Positioned.fill(child: _buildEditableTransformedText(entry, keyboardHeight)))
+                            .toList(),
+                        // Use the image's dimensions for your green container
+                        Center(
+                          child: IgnorePointer(
+                            ignoring: true,
                             child: Container(
                               height: imageHeight,
                               width: imageWidth,
                               color: Colors.transparent,
-                              child: Stack(
-                                children: [
-                                  Image.file(editingFile, fit: BoxFit.fitWidth),
-                                  CustomPaint(painter: DrawingPainter(lines)),
-                                  ..._textEntries
-                                      .map((entry) => _buildEditableTransformedText(entry, keyboardHeight))
-                                      .toList(),
-                                ],
-                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  );
-                },
+                      ],
+                    );
+                  },
+                ),
               ),
             ),
             Positioned(top: MediaQuery.of(context).size.height / 2 - 150, child: buildSlider(context)),
@@ -1188,6 +1257,16 @@ class ImageEditorScreenState extends State<ImageEditorScreen> {
                         CircleIconBtn(
                             isBig: true,
                             onTap: () {
+                              Provider.of<CreatingEditingPostsService>(context, listen: false).addImage(
+                                EditorState(
+                                    editingFile: editingFile,
+                                    textEntries: _textEntries,
+                                    textControllers: _textControllers,
+                                    currentDraggingEntries: currentDraggingEntries,
+                                    undoStack: _redoStack,
+                                    redoStack: _redoStack,
+                                    lines: lines),
+                              );
                               router.pop();
                             },
                             icon: CupertinoIcons.xmark),

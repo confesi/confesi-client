@@ -232,6 +232,7 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                         leftIconVisible: true,
                         leftIcon: CupertinoIcons.xmark,
                         leftIconOnPress: () {
+                          Provider.of<CreatingEditingPostsService>(context, listen: false).clear();
                           router.pop(context);
                         },
                         backgroundColor: Theme.of(context).colorScheme.background,

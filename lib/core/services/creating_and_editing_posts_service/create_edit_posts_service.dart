@@ -1,4 +1,6 @@
+import 'dart:collection';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:confesi/core/results/successes.dart';
 import 'package:confesi/core/services/global_content/global_content.dart';
@@ -6,11 +8,54 @@ import 'package:confesi/core/services/posts_service/posts_service.dart';
 import 'package:confesi/init.dart';
 import 'package:confesi/models/encrypted_id.dart';
 import 'package:confesi/models/post.dart';
-import 'package:dartz/dartz.dart';
+import 'package:confesi/presentation/create_post/widgets/img.dart';
+import 'package:dartz/dartz.dart' as d;
 import 'package:flutter/cupertino.dart';
+import 'package:ordered_set/ordered_set.dart';
+import 'package:tuple/tuple.dart';
 
 import '../../utils/validators/either_not_empty_validator.dart';
 import '../api_client/api.dart';
+
+//! Editor state
+
+class EditorState implements Comparable<EditorState> {
+  final File editingFile;
+  final List<TextEntry> textEntries;
+  final Map<TextEntry, Tuple4<TextEditingController, FocusNode, double, Offset>> textControllers;
+  final HashSet<TextEntry> currentDraggingEntries;
+  final List<
+      Tuple3<List<TextEntry>, Map<TextEntry, Tuple4<TextEditingController, FocusNode, double, Offset>>,
+          List<List<Line>>>> undoStack;
+  final List<
+      Tuple3<List<TextEntry>, Map<TextEntry, Tuple4<TextEditingController, FocusNode, double, Offset>>,
+          List<List<Line>>>> redoStack;
+  final List<List<Line>> lines;
+
+  @override
+  int compareTo(EditorState other) {
+    return editingFile.path.compareTo(other.editingFile.path);
+  }
+
+  EditorState({
+    required this.editingFile,
+    required this.textEntries,
+    required this.textControllers,
+    required this.currentDraggingEntries,
+    required this.undoStack,
+    required this.redoStack,
+    required this.lines,
+  });
+
+  EditorState.empty(File file)
+      : editingFile = file,
+        textEntries = [],
+        textControllers = {},
+        currentDraggingEntries = HashSet(),
+        undoStack = [],
+        redoStack = [],
+        lines = [];
+}
 
 //! Meta state
 
@@ -26,6 +71,27 @@ class CreatingEditingPostsService extends ChangeNotifier {
   CreatingEditingPostMetaState metaState = CreatingEditingPostMetaStateEnteringData();
   String title = "";
   String body = "";
+  final List<EditorState> _images = [];
+
+  // getter for image
+  List<EditorState> get images => _images;
+
+  // add an image to the list if it does not exist already in it, however, if it does exist, update the image with the new data
+  void addImage(EditorState image) {
+    final index = _images.indexWhere((element) => element.editingFile == image.editingFile);
+    if (index == -1) {
+      _images.add(image);
+    } else {
+      _images[index] = image;
+    }
+    notifyListeners();
+  }
+
+  void updateImages(List<EditorState> images) {
+    _images.clear();
+    _images.addAll(images);
+    notifyListeners();
+  }
 
   final Api _api;
 
@@ -41,10 +107,11 @@ class CreatingEditingPostsService extends ChangeNotifier {
     metaState = CreatingEditingPostMetaStateEnteringData();
     title = "";
     body = "";
+    images.clear();
     notifyListeners();
   }
 
-  Future<Either<ApiSuccess, String>> editPost(String title, String body, EncryptedId id) async {
+  Future<d.Either<ApiSuccess, String>> editPost(String title, String body, EncryptedId id) async {
     _api.cancelCurrReq();
     metaState = CreatingEditingPostMetaStateLoading();
     notifyListeners();
@@ -55,31 +122,31 @@ class CreatingEditingPostsService extends ChangeNotifier {
     });
 
     return response.fold(
-      (failureWithMsg) => Right(failureWithMsg.msg()),
+      (failureWithMsg) => d.Right(failureWithMsg.msg()),
       (response) {
         if (response.statusCode.toString()[0] == "2") {
           try {
             final post = PostWithMetadata.fromJson(json.decode(response.body)["value"]);
             sl.get<GlobalContentService>().setPost(post);
-            return Left(ApiSuccess());
+            return d.Left(ApiSuccess());
           } catch (_) {
-            return const Right("Confession created, but unable to load locally");
+            return const d.Right("Confession created, but unable to load locally");
           }
         } else {
           // todo: fill in the appropriate error message
-          return Right(response.body);
+          return d.Right(response.body);
         }
       },
     );
   }
 
-  Future<Either<ApiSuccess, String>> createNewPost(String title, String body, String category) async {
+  Future<d.Either<ApiSuccess, String>> createNewPost(String title, String body, String category) async {
     _api.cancelCurrReq();
     metaState = CreatingEditingPostMetaStateLoading();
     notifyListeners();
     final validation = eitherNotEmptyValidator(title, body);
     if (validation.isLeft()) {
-      return const Right("Can't submit empty confession");
+      return const d.Right("Can't submit empty confession");
     }
 
     final response = await _api.req(
@@ -94,19 +161,19 @@ class CreatingEditingPostsService extends ChangeNotifier {
     );
 
     return response.fold(
-      (failureWithMsg) => Right(failureWithMsg.msg()),
+      (failureWithMsg) => d.Right(failureWithMsg.msg()),
       (response) {
         if (response.statusCode.toString()[0] == "2") {
           try {
             final post = PostWithMetadata.fromJson(json.decode(response.body)["value"]);
             sl.get<GlobalContentService>().setPost(post);
-            return Left(ApiSuccess());
+            return d.Left(ApiSuccess());
           } catch (_) {
-            return const Right("Confession edited, but unable to update locally");
+            return const d.Right("Confession edited, but unable to update locally");
           }
         } else {
           // todo: fill in the appropriate error message
-          return Right(response.body);
+          return d.Right(response.body);
         }
       },
     );
