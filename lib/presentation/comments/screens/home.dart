@@ -10,6 +10,7 @@ import 'package:confesi/models/encrypted_id.dart';
 import 'package:confesi/models/post.dart';
 import 'package:confesi/presentation/comments/widgets/sheet.dart';
 import 'package:confesi/presentation/comments/widgets/simple_comment_sort.dart';
+import 'package:confesi/presentation/feed/widgets/img_viewer.dart';
 import 'package:confesi/presentation/shared/behaviours/nav_blocker.dart';
 import 'package:confesi/presentation/shared/behaviours/one_theme_status_bar.dart';
 import 'package:confesi/presentation/shared/behaviours/themed_status_bar.dart';
@@ -205,6 +206,16 @@ class _CommentsHomeState extends State<CommentsHome> {
                         ),
                         textAlign: TextAlign.left,
                       ),
+                      WidgetOrNothing(
+                        showWidget: post.post.edited,
+                        child: Text(
+                          "Edited",
+                          style: kDetail.copyWith(
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
                     ],
                   ),
                   WidgetOrNothing(
@@ -224,15 +235,9 @@ class _CommentsHomeState extends State<CommentsHome> {
                       ],
                     ),
                   ),
-                  // ...linksFromText(postState.post.post.content)
-                  //     .take(maxNumberOfLinkPreviewsPerDetailCommentView) // Limit to a maximum of 3 links
-                  //     .map((link) {
-                  //   return Padding(
-                  //     padding: const EdgeInsets.only(top: 15),
-                  //     child: UrlPreviewTile(url: link),
-                  //   );
-                  // }).toList(),
                   const SizedBox(height: 15),
+                  ImgViewer(imgUrls: post.post.imgUrls),
+                  post.post.imgUrls.isNotEmpty ? const SizedBox(height: 30) : const SizedBox()
                 ],
               ),
             ),

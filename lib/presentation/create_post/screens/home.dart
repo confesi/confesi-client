@@ -149,25 +149,31 @@ class _CreatePostHomeState extends State<CreatePostHome> with AutomaticKeepAlive
                   top: false,
                   child: Container(
                     padding: const EdgeInsets.all(15),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        CircleIconBtn(
-                          color: Theme.of(context).colorScheme.secondary,
-                          icon: CupertinoIcons.photo,
-                          onTap: () async {
-                            await imgController.selectFromGallery();
-                          },
-                        ),
-                        CircleIconBtn(
-                          color: Theme.of(context).colorScheme.secondary,
-                          icon: CupertinoIcons.camera,
-                          onTap: () async {
-                            await imgController.selectFromCamera();
-                          },
-                        )
-                      ],
-                    ),
+                    child: widget.props is EditedPost
+                        ? Text(
+                            "You can't edit a confession's images, sorry!",
+                            style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                            textAlign: TextAlign.center,
+                          )
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              CircleIconBtn(
+                                color: Theme.of(context).colorScheme.secondary,
+                                icon: CupertinoIcons.photo,
+                                onTap: () async {
+                                  await imgController.selectFromGallery();
+                                },
+                              ),
+                              CircleIconBtn(
+                                color: Theme.of(context).colorScheme.secondary,
+                                icon: CupertinoIcons.camera,
+                                onTap: () async {
+                                  await imgController.selectFromCamera();
+                                },
+                              )
+                            ],
+                          ),
                   ),
                 ),
                 child: SafeArea(

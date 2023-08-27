@@ -52,6 +52,7 @@ class Post {
   bool edited;
   Category category;
   int commentCount;
+  List<String> imgUrls;
 
   Post({
     required this.id,
@@ -71,6 +72,7 @@ class Post {
     required this.edited,
     required this.category,
     required this.commentCount,
+    required this.imgUrls,
   });
 
   factory Post.fromJson(Map<String, dynamic> json) => Post(
@@ -92,5 +94,8 @@ class Post {
         edited: json["edited"],
         category: Category.fromJson(json["category"]),
         commentCount: json["comment_count"],
+        imgUrls: json.containsKey("img_urls") && json["img_urls"] != null
+            ? List<String>.from(json["img_urls"].map((x) => x.toString()))
+            : [],
       );
 }

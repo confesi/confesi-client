@@ -237,7 +237,7 @@ class ImgState extends State<Img> {
     final notificationsCubit = context.read<NotificationsCubit>();
     final editingPostsService = Provider.of<CreatingEditingPostsService>(context, listen: false);
 
-    if (Provider.of<CreatingEditingPostsService>(context, listen: true)
+    if (Provider.of<CreatingEditingPostsService>(context, listen: false)
             .images
             .map((e) => e.editingFile)
             .toList()

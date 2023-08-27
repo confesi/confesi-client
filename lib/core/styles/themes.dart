@@ -6,13 +6,12 @@ class AppTheme {
     highlightColor: Colors.transparent,
     splashColor: Colors.transparent,
     colorScheme: const ColorScheme(
-      
       onSurfaceVariant: Colors.white,
       surfaceVariant: Color.fromARGB(255, 23, 23, 23),
       brightness: Brightness.dark,
       primary: Color.fromARGB(255, 238, 239, 240),
       onPrimary: Color(0xff333333),
-      tertiary: Color(0xff9796EA),
+      tertiary: Color.fromARGB(255, 255, 78, 164),
       onSecondary: Color.fromARGB(255, 45, 45, 45),
       secondary: Color.fromARGB(255, 255, 193, 131),
       surfaceTint: Color(0xff90A17D),
@@ -27,7 +26,6 @@ class AppTheme {
       secondaryContainer: Color(0xfffde5b6),
       onErrorContainer: Color(0xff59CE8F),
       onSecondaryContainer: Color(0xffEB4747),
-      
     ),
   );
 

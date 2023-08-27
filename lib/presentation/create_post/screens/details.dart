@@ -70,6 +70,8 @@ class _CreatePostDetailsState extends State<CreatePostDetails> with AutomaticKee
                                     is CreatingEditingPostMetaStateLoading,
                                 rightIcon: CupertinoIcons.info,
                                 rightIconVisible: true,
+                                leftIconDisabled: Provider.of<CreatingEditingPostsService>(context).metaState
+                                    is CreatingEditingPostMetaStateLoading,
                                 rightIconOnPress: () => showInfoSheet(context, "Confessing",
                                     "Please be civil when posting, but have fun! All confessions are anonymous, excluding the details provided here plus your school, and your faculty and year of study if you provided them."),
                               ),
@@ -147,13 +149,24 @@ class _CreatePostDetailsState extends State<CreatePostDetails> with AutomaticKee
                                     .data
                                     .categories[context.read<PostCategoriesCubit>().data.selectedIndex]
                                     .name;
-                                (await provider.createNewPost(provider.title, provider.body, selectedCategory)).fold(
+                                (await provider.createNewPost(
+                                        provider.title,
+                                        provider.body,
+                                        selectedCategory,
+                                        Provider.of<CreatingEditingPostsService>(context, listen: false)
+                                            .images
+                                            .map((e) => e.editingFile)
+                                            .toList())) // todo: files
+                                    .fold(
                                   (_) {
                                     sl.get<ConfettiBlaster>().show(context);
                                     provider.clear();
                                     router.go("/home");
                                   },
-                                  (failureMsg) => context.read<NotificationsCubit>().showErr(failureMsg),
+                                  (failureMsg) {
+                                    context.read<NotificationsCubit>().showErr(failureMsg);
+                                    provider.setMetaState(CreatingEditingPostMetaStateEnteringData());
+                                  },
                                 );
                               },
                               icon: CupertinoIcons.chevron_right,

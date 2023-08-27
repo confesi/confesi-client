@@ -4,6 +4,7 @@ import 'package:confesi/core/services/global_content/global_content.dart';
 import 'package:confesi/core/utils/strings/truncate_text.dart';
 import 'package:confesi/core/utils/verified_students/verified_user_only.dart';
 import 'package:confesi/models/post.dart';
+import 'package:confesi/presentation/feed/widgets/img_viewer.dart';
 import 'package:confesi/presentation/feed/widgets/reaction_tile.dart';
 import 'package:confesi/presentation/shared/other/widget_or_nothing.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
@@ -120,10 +121,20 @@ class PostTile extends StatelessWidget {
                                         ),
                                         textAlign: TextAlign.left,
                                       ),
+                                      WidgetOrNothing(
+                                        showWidget: post.post.edited,
+                                        child: Text(
+                                          "Edited",
+                                          style: kDetail.copyWith(
+                                            color: Theme.of(context).colorScheme.onSurface,
+                                          ),
+                                          textAlign: TextAlign.left,
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),
-                                const SizedBox(width: 5),
+                                // const SizedBox(width: 5),
                                 TouchableOpacity(
                                   onTap: () => buildOptionsSheet(context, post),
                                   child: Container(
@@ -138,7 +149,7 @@ class PostTile extends StatelessWidget {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 15, right: 15, top: 30, bottom: 15),
+                            padding: const EdgeInsets.only(left: 15, right: 15, top: 15),
                             child: Text(
                               truncateText(post.post.title.isEmpty ? post.post.content : post.post.title,
                                   postTitlePreviewLength),
@@ -153,7 +164,6 @@ class PostTile extends StatelessWidget {
                             showWidget: post.post.title.isNotEmpty && post.post.content.isNotEmpty,
                             child: Column(
                               children: [
-                                const SizedBox(height: 10),
                                 Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 15),
                                   child: Text(
@@ -169,28 +179,12 @@ class PostTile extends StatelessWidget {
                               ],
                             ),
                           ),
-                          WidgetOrNothing(
-                            showWidget: post.post.edited,
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 15, top: 15, bottom: 5),
-                              child: Text(
-                                "Edited",
-                                style: kDetail.copyWith(
-                                  color: Theme.of(context).colorScheme.onSurface,
-                                ),
-                              ),
-                            ),
-                          ),
-                          // ...linksFromText(post.post.content)
-                          //     .take(maxNumberOfLinkPreviewsPerPostTile) // Limit to a maximum of 3 links
-                          //     .map((link) {
-                          //   return Padding(
-                          //     padding: const EdgeInsets.only(top: 15, left: 15, right: 15),
-                          //     child: UrlPreviewTile(url: link),
-                          //   );
-                          // }).toList(),
                           Padding(
-                            padding: const EdgeInsets.all(15),
+                            padding: const EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 15),
+                            child: ImgViewer(imgUrls: post.post.imgUrls),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
                             child: Wrap(
                               runSpacing: 10,
                               spacing: 10,

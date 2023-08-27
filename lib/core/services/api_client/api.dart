@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:confesi/core/services/user_auth/user_auth_data.dart';
+import 'package:path/path.dart';
 
 import '../../../constants/shared/constants.dart';
 import '../../results/failures.dart';
@@ -76,7 +77,7 @@ String apiVerbToString(Verb method) {
 
 class Api {
   final Map<String, String> _headers = <String, String>{};
-  Duration _timeout = const Duration(seconds: 4);
+  Duration _timeout = apiDefaultTimeout;
   http.Client? _client;
 
   Api() {
@@ -92,6 +93,9 @@ class Api {
   void _setToken(String token) => _headers['Authorization'] = "Bearer $token";
   void setTimeout(Duration timeout) => _timeout = timeout;
   void addHeader(String key, String value) => _headers[key] = value;
+
+  bool _isMultipart = false;
+  void setMultipart(bool set) => _isMultipart = set;
 
   Future<bool> _getSetBearerToken() async {
     if (sl.get<FirebaseAuth>().currentUser != null) {
@@ -123,8 +127,9 @@ class Api {
     Verb method,
     bool needsBearerToken,
     String endpoint,
-    Map<String, dynamic> body,
-  ) async {
+    Map<String, dynamic> body, {
+    Map<String, File>? files,
+  }) async {
     try {
       String url = domain + endpoint;
 
@@ -141,41 +146,91 @@ class Api {
         url += "profanity=false";
       }
 
-      var request = http.Request(apiVerbToString(method), Uri.parse(url));
-      request.body = jsonEncode(body);
-      request.headers.addAll(_headers);
-      http.StreamedResponse streamResponse = await request.send().timeout(_timeout);
+      if (_isMultipart) {
+        var request = http.MultipartRequest(apiVerbToString(method), Uri.parse(url));
+        request.headers.addAll(_headers);
 
-      if (_client != null) _client!.close();
-      _client = null; // Reset the HTTP client instance after closing
-
-      http.Response response = await http.Response.fromStream(streamResponse);
-
-      if (debugMode) {
-        print("================================ DEBUG API ================================");
-        print("Req endpoint: $url");
-        print("${streamResponse.statusCode} ${streamResponse.reasonPhrase}");
-        print("Req body: ${request.body}");
-      }
-
-      // Handle any 5xx status codes
-      if (streamResponse.statusCode.toString()[0] == "5") {
-        return Left(ApiServerFailure());
-      } else if (streamResponse.statusCode == 429) {
-        // Check if response.body["error"] = "too many requests" safely
-        try {
-          if (response.body.contains("too many emails sent")) {
-            return Left(ApiTooManyEmailRequests(int.parse(json.decode(response.body)["value"]["reset_in_seconds"])));
-          } else {
-            // From the X-Ratelimit-Reset header
-            return Left(ApiTooManyGlobalRequests(int.parse(response.headers["x-ratelimit-reset"]!)));
-          }
-        } catch (e) {
-          return Left(ApiServerFailure());
+        // Add fields to the request
+        body.forEach((key, value) {
+          request.fields[key] = value.toString();
+        });
+// If files are provided, attach them to the request
+        if (files != null) {
+          files.forEach((_, file) async {
+            request.files.add(
+              await http.MultipartFile.fromPath(
+                'files', // Use a constant field name for all files
+                file.path,
+                filename: basename(file.path),
+              ),
+            );
+          });
         }
+
+        http.StreamedResponse streamResponse = await request.send().timeout(_timeout);
+        _timeout = apiDefaultTimeout; // Reset the timeout after the request
+        if (_client != null) _client!.close();
+        _client = null;
+
+        http.Response response = await http.Response.fromStream(streamResponse);
+
+        // Reset the _isMultipart flag after the request
+        _isMultipart = false;
+
+        // Handle any 5xx status codes
+        if (streamResponse.statusCode.toString()[0] == "5") {
+          return Left(ApiServerFailure());
+        } else if (streamResponse.statusCode == 429) {
+          try {
+            if (response.body.contains("too many emails sent")) {
+              return Left(ApiTooManyEmailRequests(int.parse(json.decode(response.body)["value"]["reset_in_seconds"])));
+            } else {
+              // From the X-Ratelimit-Reset header
+              return Left(ApiTooManyGlobalRequests(int.parse(response.headers["x-ratelimit-reset"]!)));
+            }
+          } catch (e) {
+            return Left(ApiServerFailure());
+          }
+        }
+        // "success"
+        return Right(response);
+      } else {
+        var request = http.Request(apiVerbToString(method), Uri.parse(url));
+        request.body = jsonEncode(body);
+        request.headers.addAll(_headers);
+        http.StreamedResponse streamResponse = await request.send().timeout(_timeout);
+        _timeout = apiDefaultTimeout; // Reset the timeout after the request
+
+        if (_client != null) _client!.close();
+        _client = null; // Reset the HTTP client instance after closing
+
+        http.Response response = await http.Response.fromStream(streamResponse);
+
+        if (debugMode) {
+          print("================================ DEBUG API ================================");
+          print("Req endpoint: $url");
+          print("${streamResponse.statusCode} ${streamResponse.reasonPhrase}");
+          print("Req body: ${request.body}");
+        }
+
+        // Handle any 5xx status codes
+        if (streamResponse.statusCode.toString()[0] == "5") {
+          return Left(ApiServerFailure());
+        } else if (streamResponse.statusCode == 429) {
+          try {
+            if (response.body.contains("too many emails sent")) {
+              return Left(ApiTooManyEmailRequests(int.parse(json.decode(response.body)["value"]["reset_in_seconds"])));
+            } else {
+              // From the X-Ratelimit-Reset header
+              return Left(ApiTooManyGlobalRequests(int.parse(response.headers["x-ratelimit-reset"]!)));
+            }
+          } catch (e) {
+            return Left(ApiServerFailure());
+          }
+        }
+        // "success"
+        return Right(response);
       }
-      // "success"
-      return Right(response);
     } on SocketException catch (_) {
       // Close the client in case of an exception
       _client?.close();

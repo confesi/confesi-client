@@ -11,6 +11,9 @@ import 'package:confesi/models/post.dart';
 import 'package:confesi/presentation/create_post/widgets/img.dart';
 import 'package:dartz/dartz.dart' as d;
 import 'package:flutter/cupertino.dart';
+import 'package:http/http.dart';
+import 'package:http/http.dart';
+import 'package:http/http.dart';
 import 'package:ordered_set/ordered_set.dart';
 import 'package:tuple/tuple.dart';
 
@@ -115,6 +118,7 @@ class CreatingEditingPostsService extends ChangeNotifier {
     _api.cancelCurrReq();
     metaState = CreatingEditingPostMetaStateLoading();
     notifyListeners();
+    _api.setMultipart(false);
     final response = await _api.req(Verb.patch, true, "/api/v1/posts/edit", {
       "post_id": id.mid,
       "title": title,
@@ -140,10 +144,17 @@ class CreatingEditingPostsService extends ChangeNotifier {
     );
   }
 
-  Future<d.Either<ApiSuccess, String>> createNewPost(String title, String body, String category) async {
+  Future<d.Either<ApiSuccess, String>> createNewPost(
+    String title,
+    String body,
+    String category,
+    List<File> files,
+  ) async {
     _api.cancelCurrReq();
+    _api.setTimeout(const Duration(seconds: 45));
     metaState = CreatingEditingPostMetaStateLoading();
     notifyListeners();
+    _api.setMultipart(true);
     final validation = eitherNotEmptyValidator(title, body);
     if (validation.isLeft()) {
       return const d.Right("Can't submit empty confession");
@@ -158,6 +169,7 @@ class CreatingEditingPostsService extends ChangeNotifier {
         "body": body,
         "category": category,
       },
+      files: Map.fromEntries(files.map((e) => MapEntry(e.path, e))),
     );
 
     return response.fold(
