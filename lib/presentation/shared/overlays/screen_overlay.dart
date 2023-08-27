@@ -22,6 +22,13 @@ enum NotificationDuration {
   long,
 }
 
+/// Show a full overlay entry.
+///
+/// Be sure to REMOVE IT once done with via ~ `overlay!.remove()`
+dynamic showFullOverlay(BuildContext context, OverlayEntry overlay) {
+  Overlay.of(context).insert(overlay);
+}
+
 dynamic showNotificationChip(
   BuildContext context,
   String text, {

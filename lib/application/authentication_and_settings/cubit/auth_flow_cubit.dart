@@ -12,7 +12,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../../constants/shared/constants.dart';
 import '../../../init.dart';
-import '../../../presentation/shared/overlays/notification_chip.dart';
+import '../../../presentation/shared/overlays/screen_overlay.dart';
 
 part 'auth_flow_state.dart';
 

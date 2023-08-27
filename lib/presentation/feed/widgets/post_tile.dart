@@ -33,7 +33,6 @@ class PostTile extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(top: 15),
         child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 0),
           width: double.infinity,
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.background,
@@ -114,27 +113,33 @@ class PostTile extends StatelessWidget {
                                         ),
                                         textAlign: TextAlign.left,
                                       ),
-                                      Text(
-                                        "${timeAgoFromMicroSecondUnixTime(post.post.createdAt)}${post.emojis.isNotEmpty ? " • ${post.emojis.map((e) => e).join("")}" : ""}",
-                                        style: kDetail.copyWith(
-                                          color: Theme.of(context).colorScheme.tertiary,
-                                        ),
-                                        textAlign: TextAlign.left,
-                                      ),
-                                      WidgetOrNothing(
-                                        showWidget: post.post.edited,
-                                        child: Text(
-                                          "Edited",
-                                          style: kDetail.copyWith(
-                                            color: Theme.of(context).colorScheme.onSurface,
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start, // adjust this as per your alignment preference
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center, // adjust this too as per your needs
+                                        children: <Widget>[
+                                          Text(
+                                            "${timeAgoFromMicroSecondUnixTime(post.post.createdAt)}${post.emojis.isNotEmpty ? " • ${post.emojis.map((e) => e).join("")}" : ""}",
+                                            style: kDetail.copyWith(
+                                              color: Theme.of(context).colorScheme.tertiary,
+                                            ),
                                           ),
-                                          textAlign: TextAlign.left,
-                                        ),
+                                          if (post.post.edited) ...[
+                                            // using spread operator to conditionally render widgets
+                                            const SizedBox(width: 5), // add some space between text widgets
+                                            Text(
+                                              "Edited",
+                                              style: kDetail.copyWith(
+                                                color: Theme.of(context).colorScheme.onSurface,
+                                              ),
+                                            ),
+                                          ],
+                                        ],
                                       ),
                                     ],
                                   ),
                                 ),
-                                // const SizedBox(width: 5),
                                 TouchableOpacity(
                                   onTap: () => buildOptionsSheet(context, post),
                                   child: Container(
@@ -180,8 +185,8 @@ class PostTile extends StatelessWidget {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 15),
-                            child: ImgViewer(imgUrls: post.post.imgUrls),
+                            padding: const EdgeInsets.symmetric(vertical: 15),
+                            child: ImgViewer(imgUrls: post.post.imgUrls, isBlurred: true, heroAnimPrefix: "post_tile"),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),

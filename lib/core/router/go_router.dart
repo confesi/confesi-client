@@ -2,6 +2,7 @@ import 'package:confesi/models/post.dart';
 import 'package:confesi/models/school_with_metadata.dart';
 import 'package:confesi/presentation/authentication_and_settings/screens/settings/acknowledgements.dart';
 import 'package:confesi/presentation/comments/screens/home.dart';
+import 'package:confesi/presentation/feed/widgets/img_viewer.dart';
 import 'package:confesi/presentation/notifications/screens/home.dart';
 
 import 'package:confesi/presentation/authentication_and_settings/screens/authentication/open.dart';
@@ -60,6 +61,26 @@ final GoRouter router = GoRouter(
             var curvedAnimation = tween.animate(animation);
             return FadeTransition(
               opacity: curvedAnimation, // Use the curvedAnimation for opacity
+              child: child,
+            );
+          },
+        );
+      },
+    ),
+
+    GoRoute(
+      path: '/img',
+      pageBuilder: (context, state) {
+        ImgProps props = state.extra as ImgProps;
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: ImgView(props: props),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            // Change the opacity of the screen using a Curve based on the animation's value
+            var tween = CurveTween(curve: Curves.easeInOut);
+            var curvedAnimation = tween.animate(animation);
+            return FadeTransition(
+              opacity: Tween<double>(begin: 0, end: 1).animate(curvedAnimation),
               child: child,
             );
           },
@@ -186,10 +207,8 @@ final GoRouter router = GoRouter(
         return SchoolDetail(props: props);
       },
     ),
-    GoRoute(
-        path: "/home/emojis",
-        builder: (BuildContext context, GoRouterState state) =>
-            const EmojisScreen()), 
+
+    GoRoute(path: "/home/emojis", builder: (BuildContext context, GoRouterState state) => const EmojisScreen()),
     GoRoute(
         path: '/home/profile/account',
         builder: (BuildContext context, GoRouterState state) => const AccountDetailsScreen()),
@@ -233,6 +252,14 @@ final GoRouter router = GoRouter(
         builder: (BuildContext context, GoRouterState state) => const FeedsAndSortsScreen()),
   ],
 );
+
+class ImgProps {
+  final String url;
+  final bool isBlurred;
+  final String? heroAnimPrefix;
+  final int idx;
+  const ImgProps(this.url, this.isBlurred, this.heroAnimPrefix, this.idx);
+}
 
 class HomePostsSentimentProps {
   final EncryptedId postId;

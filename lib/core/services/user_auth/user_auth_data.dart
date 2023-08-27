@@ -72,6 +72,9 @@ class UserAuthData extends HiveObject with UserAuthState {
   @HiveField(20)
   final bool categorySplashes;
 
+  @HiveField(21)
+  final bool blurImages;
+
   // default
   UserAuthData({
     this.themePref = ThemePref.dark,
@@ -84,6 +87,7 @@ class UserAuthData extends HiveObject with UserAuthState {
     this.textSize = TextSize.regular,
     this.componentCurviness = ComponentCurviness.regular,
     this.categorySplashes = true,
+    this.blurImages = false,
   });
 }
 
@@ -100,6 +104,7 @@ extension UserAuthDataCopyWith on UserAuthData {
     TextSize? textSize,
     ComponentCurviness? componentCurviness,
     bool? categorySplashes,
+    bool? blurImages,
   }) {
     return UserAuthData(
       themePref: themePref ?? this.themePref,
@@ -112,6 +117,7 @@ extension UserAuthDataCopyWith on UserAuthData {
       textSize: textSize ?? this.textSize,
       componentCurviness: componentCurviness ?? this.componentCurviness,
       categorySplashes: categorySplashes ?? this.categorySplashes,
+      blurImages: blurImages ?? this.blurImages,
     );
   }
 }

@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class Zoomable extends StatefulWidget {
-  const Zoomable({Key? key, required this.child}) : super(key: key);
+  const Zoomable({Key? key, required this.child, this.clip = true}) : super(key: key);
 
   final Widget child;
+  final bool clip;
 
   @override
   State<Zoomable> createState() => _ZoomableState();
@@ -125,11 +126,12 @@ class _ZoomableState extends State<Zoomable> with TickerProviderStateMixin {
       onTapDown: (details) => _tapDetails = details,
       onLongPress: () => _zoomIn(_tapDetails!),
       child: ScrollConfiguration(
-        behavior: ScrollConfiguration.of(context).copyWith(
-          physics: const BouncingScrollPhysics(),
-        ),
+        behavior: ScrollConfiguration.of(context).copyWith(physics: const BouncingScrollPhysics()),
         child: InteractiveViewer(
+          clipBehavior: widget.clip ? Clip.hardEdge : Clip.none,
           panEnabled: true,
+          scaleEnabled: true,
+
           minScale: 0.8,
           maxScale: _maxScale + 1.5,
           // boundaryMargin: const EdgeInsets.all(20),

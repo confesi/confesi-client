@@ -12,6 +12,8 @@ const bool debugMode = true;
 
 const int maxImagesPerPost = 5;
 
+const double imgBlurSigma = 25;
+
 const String walrusHeadImgPath = "assets/images/logos/walrus_head.png";
 
 const String walrusFullBodyImgPath = "assets/images/logos/walrus_full_body.png";

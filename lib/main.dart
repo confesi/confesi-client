@@ -32,7 +32,7 @@ import 'core/services/fcm_notifications/notification_table.dart';
 import 'core/services/hive_client/hive_client.dart';
 import 'core/services/primary_tab_service/primary_tab_service.dart';
 import 'core/services/user_auth/user_auth_service.dart';
-import 'presentation/shared/overlays/notification_chip.dart';
+import 'presentation/shared/overlays/screen_overlay.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';

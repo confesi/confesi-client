@@ -44,7 +44,7 @@ import '../../shared/behaviours/url_preview.dart';
 import '../../shared/indicators/alert.dart';
 import '../widgets/comment_tile.dart';
 import '../../shared/other/feed_list.dart';
-import '../../shared/overlays/notification_chip.dart';
+import '../../shared/overlays/screen_overlay.dart';
 import '../../shared/stat_tiles/stat_tile_group.dart';
 
 class CommentsHome extends StatefulWidget {
@@ -159,21 +159,17 @@ class _CommentsHomeState extends State<CommentsHome> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         GestureDetector(
-          onDoubleTap: () {
-            HapticFeedback.lightImpact();
-            upvote(postState.post);
-          },
           child: Container(
             width: double.infinity,
             // transparent container to make the whole header clickable
             color: Colors.transparent,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  WidgetOrNothing(
-                    showWidget: post.post.title.isNotEmpty,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                WidgetOrNothing(
+                  showWidget: post.post.title.isNotEmpty,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
                     child: Column(
                       children: [
                         const SizedBox(height: 15),
@@ -188,8 +184,11 @@ class _CommentsHomeState extends State<CommentsHome> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 10),
-                  Column(
+                ),
+                const SizedBox(height: 10),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
@@ -199,27 +198,35 @@ class _CommentsHomeState extends State<CommentsHome> {
                         ),
                         textAlign: TextAlign.left,
                       ),
-                      Text(
-                        "${timeAgoFromMicroSecondUnixTime(post.post.createdAt)}${post.emojis.isNotEmpty ? " • ${post.emojis.map((e) => e).join("")}" : ""}",
-                        style: kDetail.copyWith(
-                          color: Theme.of(context).colorScheme.tertiary,
-                        ),
-                        textAlign: TextAlign.left,
-                      ),
-                      WidgetOrNothing(
-                        showWidget: post.post.edited,
-                        child: Text(
-                          "Edited",
-                          style: kDetail.copyWith(
-                            color: Theme.of(context).colorScheme.onSurface,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start, // adjust this as per your alignment preference
+                        crossAxisAlignment: CrossAxisAlignment.center, // adjust this too as per your needs
+                        children: <Widget>[
+                          Text(
+                            "${timeAgoFromMicroSecondUnixTime(post.post.createdAt)}${post.emojis.isNotEmpty ? " • ${post.emojis.map((e) => e).join("")}" : ""}",
+                            style: kDetail.copyWith(
+                              color: Theme.of(context).colorScheme.tertiary,
+                            ),
                           ),
-                          textAlign: TextAlign.left,
-                        ),
+                          if (post.post.edited) ...[
+                            // using spread operator to conditionally render widgets
+                            const SizedBox(width: 5), // add some space between text widgets
+                            Text(
+                              "Edited",
+                              style: kDetail.copyWith(
+                                color: Theme.of(context).colorScheme.onSurface,
+                              ),
+                            ),
+                          ],
+                        ],
                       ),
                     ],
                   ),
-                  WidgetOrNothing(
-                    showWidget: post.post.content.isNotEmpty,
+                ),
+                WidgetOrNothing(
+                  showWidget: post.post.content.isNotEmpty,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
                     child: Column(
                       children: [
                         const SizedBox(height: 10),
@@ -235,11 +242,10 @@ class _CommentsHomeState extends State<CommentsHome> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 15),
-                  ImgViewer(imgUrls: post.post.imgUrls),
-                  post.post.imgUrls.isNotEmpty ? const SizedBox(height: 30) : const SizedBox()
-                ],
-              ),
+                ),
+                const SizedBox(height: 15),
+                ImgViewer(imgUrls: post.post.imgUrls, isBlurred: true, heroAnimPrefix: "comments_view"),
+              ],
             ),
           ),
         ),

@@ -108,6 +108,22 @@ class SettingsHome extends StatelessWidget {
                             ),
                             SwitchSelectionTile(
                               bottomRounded: true,
+                              isActive: Provider.of<UserAuthService>(context).data().blurImages,
+                              icon: CupertinoIcons.photo,
+                              text: "Blur images",
+                              secondaryText: Provider.of<UserAuthService>(context).data().blurImages ? "On" : "Off",
+                              onTap: () => Provider.of<UserAuthService>(context, listen: false).data().blurImages
+                                  ? Provider.of<UserAuthService>(context, listen: false).saveData(
+                                      Provider.of<UserAuthService>(context, listen: false)
+                                          .data()
+                                          .copyWith(blurImages: false))
+                                  : Provider.of<UserAuthService>(context, listen: false).saveData(
+                                      Provider.of<UserAuthService>(context, listen: false)
+                                          .data()
+                                          .copyWith(blurImages: true)),
+                            ),
+                            SwitchSelectionTile(
+                              bottomRounded: true,
                               isActive:
                                   Provider.of<UserAuthService>(context).data().profanityFilter == ProfanityFilter.on,
                               icon: CupertinoIcons.strikethrough,

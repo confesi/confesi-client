@@ -14,7 +14,7 @@ import '../../../core/services/creating_and_editing_posts_service/create_edit_po
 import '../../../init.dart';
 
 import '../../../core/utils/sizing/width_fraction.dart';
-import '../../shared/overlays/notification_chip.dart';
+import '../../shared/overlays/screen_overlay.dart';
 import 'package:scrollable/exports.dart';
 
 import '../../shared/behaviours/themed_status_bar.dart';
