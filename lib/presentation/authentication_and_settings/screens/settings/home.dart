@@ -108,7 +108,7 @@ class SettingsHome extends StatelessWidget {
                             ),
                             SettingTile(
                               leftIcon: CupertinoIcons.square_fill_line_vertical_square,
-                              text: "Filters",
+                              text: "Safety filters",
                               onTap: () => router.push('/settings/filters'),
                             ),
                             SwitchSelectionTile(

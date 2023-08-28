@@ -31,7 +31,7 @@ class FiltersScreen extends StatelessWidget {
                 bottomBorder: true,
                 backgroundColor: Theme.of(context).colorScheme.background,
                 centerWidget: Text(
-                  "Filters",
+                  "Safety filters",
                   style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
@@ -90,7 +90,7 @@ class FiltersScreen extends StatelessWidget {
                             ],
                           ),
                           const DisclaimerText(
-                            text: "This preference affects the next time you fetch content; it's not immediately.",
+                            text: "This preference affects the next time you fetch content; it's not immediate.",
                           ),
                           const SimulatedBottomSafeArea(),
                         ],
