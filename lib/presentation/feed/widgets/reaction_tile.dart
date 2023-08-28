@@ -27,10 +27,10 @@ class ReactionTile extends StatefulWidget {
   final bool extraLeftPadding;
 
   @override
-  _ReactionTileState createState() => _ReactionTileState();
+  ReactionTileState createState() => ReactionTileState();
 }
 
-class _ReactionTileState extends State<ReactionTile> with SingleTickerProviderStateMixin {
+class ReactionTileState extends State<ReactionTile> with SingleTickerProviderStateMixin {
   late AnimationController animController;
 
   @override
@@ -51,6 +51,7 @@ class _ReactionTileState extends State<ReactionTile> with SingleTickerProviderSt
   @override
   Widget build(BuildContext context) {
     Widget content = Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
       children: [
         Transform.scale(

@@ -34,9 +34,7 @@ class KeepWidgetAlive extends StatefulWidget {
 class KeepWidgetAliveState extends State<KeepWidgetAlive> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
-    /// Dont't forget this
-    super.build(context);
-
+    super.build(context); // Don't forget this
     return widget.child;
   }
 
@@ -65,43 +63,39 @@ class _ImgViewerState extends State<ImgViewer> {
     super.initState();
   }
 
+  String generateUniqueHeroTag(String url, int idx) {
+    return "img$url${widget.heroAnimPrefix}$idx";
+  }
+
   @override
   Widget build(BuildContext context) {
     return widget.imgUrls.isEmpty
         ? const SizedBox()
         : AspectRatio(
-            aspectRatio: 4 / 5,
+            aspectRatio: 1,
             child: Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surface,
-                border: Border(
-                  top: BorderSide(
-                    color: Theme.of(context).colorScheme.onBackground,
-                    width: 0.8,
-                  ),
-                  bottom: BorderSide(
-                    color: Theme.of(context).colorScheme.onBackground,
-                    width: 0.8,
-                  ),
-                ),
-              ),
+              color: Theme.of(context).colorScheme.surface,
               width: MediaQuery.of(context).size.width,
               child: Stack(
                 clipBehavior: Clip.hardEdge,
                 alignment: Alignment.bottomCenter,
                 children: [
                   GestureDetector(
-                    onTap: () => router.push("/img",
-                        extra: ImgProps(widget.imgUrls[currentIdx], isBlurred, widget.heroAnimPrefix, currentIdx)),
+                    onTap: () => !isBlurred
+                        ? router.push("/img",
+                            extra: ImgProps(widget.imgUrls[currentIdx], isBlurred, widget.heroAnimPrefix, currentIdx))
+                        : null,
                     child: PageView(
-                      physics: const BouncingScrollPhysics(),
+                      physics: const ClampingScrollPhysics(),
                       onPageChanged: (v) => setState(() => currentIdx = v),
-                      children: widget.imgUrls.map((e) {
+                      children: widget.imgUrls.asMap().entries.map((entry) {
+                        int idx = entry.key;
+                        String imgUrl = entry.value;
                         return KeepWidgetAlive(
                           child: Hero(
-                            tag: "img${widget.imgUrls[currentIdx]}${widget.heroAnimPrefix}$currentIdx",
+                            tag: generateUniqueHeroTag(imgUrl, idx),
                             child: CachedOnlineImage(
-                              url: e,
+                              url: imgUrl,
                               isBlurred: isBlurred,
                               fit: BoxFit.fitWidth,
                               onBlur: (blur) => setState(() => isBlurred = blur),
@@ -128,18 +122,16 @@ class _ImgViewerState extends State<ImgViewer> {
   }
 }
 
-// [Rest of your code including ImgView]
-
 class ImgView extends StatefulWidget {
   const ImgView({super.key, required this.props});
 
   final ImgProps props;
 
   @override
-  _ImgViewState createState() => _ImgViewState();
+  ImgViewState createState() => ImgViewState();
 }
 
-class _ImgViewState extends State<ImgView> {
+class ImgViewState extends State<ImgView> {
   late bool blur;
 
   @override
@@ -164,7 +156,7 @@ class _ImgViewState extends State<ImgView> {
                   child: Zoomable(
                     clip: false,
                     child: Hero(
-                      tag: "img${widget.props.url}${widget.props.heroAnimPrefix}${widget.props.idx}",
+                      tag: "img${widget.props.url}${widget.props.heroAnimPrefix}${widget.props.uidForHero}",
                       child: CachedOnlineImage(
                         isBlurred: blur,
                         fit: BoxFit.fitWidth,

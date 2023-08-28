@@ -50,7 +50,7 @@ class LeaderboardItemTile extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border.all(
               color: Theme.of(context).colorScheme.onBackground, width: 0.8, strokeAlign: BorderSide.strokeAlignInside),
-          color: Theme.of(context).colorScheme.background,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.all(
               Radius.circular(Provider.of<UserAuthService>(context).data().componentCurviness.borderRadius)),
         ),

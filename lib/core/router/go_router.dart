@@ -1,6 +1,7 @@
 import 'package:confesi/models/post.dart';
 import 'package:confesi/models/school_with_metadata.dart';
 import 'package:confesi/presentation/authentication_and_settings/screens/settings/acknowledgements.dart';
+import 'package:confesi/presentation/authentication_and_settings/screens/settings/filters.dart';
 import 'package:confesi/presentation/comments/screens/home.dart';
 import 'package:confesi/presentation/feed/widgets/img_viewer.dart';
 import 'package:confesi/presentation/notifications/screens/home.dart';
@@ -228,6 +229,7 @@ final GoRouter router = GoRouter(
     GoRoute(path: '/settings', builder: (BuildContext context, GoRouterState state) => const SettingsHome()),
 
     GoRoute(path: '/settings/faq', builder: (BuildContext context, GoRouterState state) => const FAQScreen()),
+    GoRoute(path: '/settings/filters', builder: (BuildContext context, GoRouterState state) => const FiltersScreen()),
 
     GoRoute(
         path: '/home/notifications',
@@ -257,8 +259,8 @@ class ImgProps {
   final String url;
   final bool isBlurred;
   final String? heroAnimPrefix;
-  final int idx;
-  const ImgProps(this.url, this.isBlurred, this.heroAnimPrefix, this.idx);
+  final int uidForHero;
+  const ImgProps(this.url, this.isBlurred, this.heroAnimPrefix, this.uidForHero);
 }
 
 class HomePostsSentimentProps {

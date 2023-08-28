@@ -68,20 +68,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       onWillPop: () async => false,
       child: ThemeStatusBar(
         child: Scaffold(
-          // floatingActionButton: FloatingActionButton(onPressed: () async {
-          //   // await sl.get<NotificationService>().deleteAllFcmMsgsFromLocalDb();
-          //   // insert
-          //   // await sl.get<NotificationService>().insertFcmMsgToLocalDb(const FcmNotificationCompanion(
-          //   //       title: drift.Value("title"),
-          //   //       body: drift.Value("body"),
-          //   //       data: drift.Value("data"),
-          //   //     ));
-          //   await sl.get<NotificationService>().getAllFcmMsgsFromLocalDb().then(
-          //         (value) => context.read<NotificationsCubit>().showSuccess(
-          //               value.toString(),
-          //             ),
-          //       );
-          // }),
           backgroundColor: Theme.of(context).colorScheme.background,
           drawerScrimColor: Colors.black.withOpacity(0.7),
           drawerEnableOpenDragGesture: Provider.of<PrimaryTabControllerService>(context).tabIdx == 0,

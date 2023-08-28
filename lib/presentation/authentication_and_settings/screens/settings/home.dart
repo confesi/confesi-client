@@ -106,43 +106,10 @@ class SettingsHome extends StatelessWidget {
                               text: "Appearance",
                               onTap: () => router.push("/settings/appearance"),
                             ),
-                            SwitchSelectionTile(
-                              bottomRounded: true,
-                              isActive: Provider.of<UserAuthService>(context).data().blurImages,
-                              icon: CupertinoIcons.photo,
-                              text: "Blur images",
-                              secondaryText: Provider.of<UserAuthService>(context).data().blurImages ? "On" : "Off",
-                              onTap: () => Provider.of<UserAuthService>(context, listen: false).data().blurImages
-                                  ? Provider.of<UserAuthService>(context, listen: false).saveData(
-                                      Provider.of<UserAuthService>(context, listen: false)
-                                          .data()
-                                          .copyWith(blurImages: false))
-                                  : Provider.of<UserAuthService>(context, listen: false).saveData(
-                                      Provider.of<UserAuthService>(context, listen: false)
-                                          .data()
-                                          .copyWith(blurImages: true)),
-                            ),
-                            SwitchSelectionTile(
-                              bottomRounded: true,
-                              isActive:
-                                  Provider.of<UserAuthService>(context).data().profanityFilter == ProfanityFilter.on,
-                              icon: CupertinoIcons.strikethrough,
-                              text: "Profanity filter",
-                              secondaryText:
-                                  Provider.of<UserAuthService>(context).data().profanityFilter == ProfanityFilter.on
-                                      ? "On"
-                                      : "Off",
-                              onTap: () =>
-                                  Provider.of<UserAuthService>(context, listen: false).data().profanityFilter ==
-                                          ProfanityFilter.off
-                                      ? Provider.of<UserAuthService>(context, listen: false).saveData(
-                                          Provider.of<UserAuthService>(context, listen: false)
-                                              .data()
-                                              .copyWith(profanityFilter: ProfanityFilter.on))
-                                      : Provider.of<UserAuthService>(context, listen: false).saveData(
-                                          Provider.of<UserAuthService>(context, listen: false)
-                                              .data()
-                                              .copyWith(profanityFilter: ProfanityFilter.off)),
+                            SettingTile(
+                              leftIcon: CupertinoIcons.square_fill_line_vertical_square,
+                              text: "Filters",
+                              onTap: () => router.push('/settings/filters'),
                             ),
                             SwitchSelectionTile(
                               bottomRounded: true,

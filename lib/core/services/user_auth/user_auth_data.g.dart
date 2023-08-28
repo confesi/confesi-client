@@ -27,13 +27,14 @@ class UserAuthDataAdapter extends TypeAdapter<UserAuthData> {
       textSize: fields[16] as TextSize,
       componentCurviness: fields[18] as ComponentCurviness,
       categorySplashes: fields[20] as bool,
+      blurImages: fields[21] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, UserAuthData obj) {
     writer
-      ..writeByte(10)
+      ..writeByte(11)
       ..writeByte(0)
       ..write(obj.themePref)
       ..writeByte(6)
@@ -53,7 +54,9 @@ class UserAuthDataAdapter extends TypeAdapter<UserAuthData> {
       ..writeByte(18)
       ..write(obj.componentCurviness)
       ..writeByte(20)
-      ..write(obj.categorySplashes);
+      ..write(obj.categorySplashes)
+      ..writeByte(21)
+      ..write(obj.blurImages);
   }
 
   @override

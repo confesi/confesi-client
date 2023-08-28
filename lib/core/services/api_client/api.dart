@@ -9,6 +9,8 @@ import '../../../constants/shared/constants.dart';
 import '../../results/failures.dart';
 import '../user_auth/user_auth_service.dart';
 import '../../utils/numbers/is_plural.dart';
+import 'package:archive/archive.dart';
+import 'package:archive/archive_io.dart';
 import '../../../init.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -154,17 +156,21 @@ class Api {
         body.forEach((key, value) {
           request.fields[key] = value.toString();
         });
-// If files are provided, attach them to the request
+        // If files are provided, attach them to the request
         if (files != null) {
-          files.forEach((_, file) async {
+          for (var file in files.values) {
+            // Compress the file first
+            File compressedFile = await _compressFile(file);
+
+            // Add the compressed file to the multipart request
             request.files.add(
               await http.MultipartFile.fromPath(
                 'files', // Use a constant field name for all files
-                file.path,
-                filename: basename(file.path),
+                compressedFile.path,
+                filename: basename(compressedFile.path),
               ),
             );
-          });
+          }
         }
 
         http.StreamedResponse streamResponse = await request.send().timeout(_timeout);
@@ -189,6 +195,7 @@ class Api {
               return Left(ApiTooManyGlobalRequests(int.parse(response.headers["x-ratelimit-reset"]!)));
             }
           } catch (e) {
+            print(e);
             return Left(ApiServerFailure());
           }
         }
@@ -225,6 +232,7 @@ class Api {
               return Left(ApiTooManyGlobalRequests(int.parse(response.headers["x-ratelimit-reset"]!)));
             }
           } catch (e) {
+            print(e);
             return Left(ApiServerFailure());
           }
         }
@@ -242,7 +250,24 @@ class Api {
     } catch (e) {
       // Close the client in case of any other exception
       _client?.close();
+      print(e);
       return Left(ApiServerFailure());
     }
   }
+}
+
+Future<File> _compressFile(File file) async {
+  final originalBytes = await file.readAsBytes();
+
+  // Compress the bytes
+  final List<int>? compressedData = GZipEncoder().encode(originalBytes);
+  if (compressedData == null) {
+    throw Exception('Failed to compress the file.');
+  }
+
+  // Save the compressed bytes to a new file
+  final compressedFile = File('${file.path}.gz');
+  await compressedFile.writeAsBytes(compressedData, flush: true);
+
+  return compressedFile;
 }

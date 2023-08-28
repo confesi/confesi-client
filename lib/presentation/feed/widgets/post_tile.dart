@@ -26,10 +26,8 @@ class PostTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TouchableOpacity(
-      behavior: HitTestBehavior.opaque,
+    return GestureDetector(
       onTap: () => router.push("/home/posts/comments", extra: HomePostsCommentsProps(PreloadedPost(post, false))),
-      onLongPress: () => context.read<QuickActionsCubit>().sharePost(context, post),
       child: Padding(
         padding: const EdgeInsets.only(top: 15),
         child: Container(
@@ -70,13 +68,13 @@ class PostTile extends StatelessWidget {
                 Visibility(
                   visible: Provider.of<UserAuthService>(context).data().categorySplashes,
                   child: Positioned(
-                    bottom: -20,
-                    right: -20,
+                    bottom: -75,
+                    right: -75,
                     child: Icon(
                       postCategoryToIcon(post.post.category.category),
                       // color: Colors.transparent,
-                      color: Theme.of(context).colorScheme.tertiary.withOpacity(1),
-                      size: 100,
+                      color: Theme.of(context).colorScheme.secondary.withOpacity(1),
+                      size: 250,
                     ),
                   ),
                 ),
@@ -99,6 +97,7 @@ class PostTile extends StatelessWidget {
                                   style: BorderStyle.solid,
                                 ),
                               ),
+                              color: Theme.of(context).colorScheme.background,
                             ),
                             child: Row(
                               children: [
@@ -184,53 +183,68 @@ class PostTile extends StatelessWidget {
                               ],
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 15),
-                            child: ImgViewer(imgUrls: post.post.imgUrls, isBlurred: true, heroAnimPrefix: "post_tile"),
+                          SizedBox(height: post.post.imgUrls.isEmpty ? 15 : 0),
+                          WidgetOrNothing(
+                            showWidget: post.post.imgUrls.isNotEmpty,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 15),
+                              child: ImgViewer(
+                                imgUrls: post.post.imgUrls,
+                                isBlurred: Provider.of<UserAuthService>(context, listen: true).data().blurImages,
+                                heroAnimPrefix: "post_tile",
+                              ),
+                            ),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
-                            child: Wrap(
-                              runSpacing: 10,
-                              spacing: 10,
+                            child: Row(
                               children: [
-                                ReactionTile(
-                                  simpleView: false,
-                                  amount: post.post.commentCount,
-                                  icon: CupertinoIcons.chat_bubble,
-                                  iconColor: Theme.of(context).colorScheme.tertiary,
-                                  isSelected: true,
-                                  onTap: () => verifiedUserOnly(
-                                      context,
-                                      () => router.push("/home/posts/comments",
-                                          extra: HomePostsCommentsProps(PreloadedPost(post, true)))),
-                                ),
-                                ReactionTile(
-                                  onTap: () async => verifiedUserOnly(
-                                    context,
-                                    () async => await Provider.of<GlobalContentService>(context, listen: false)
-                                        .voteOnPost(post, post.userVote != 1 ? 1 : 0)
-                                        .then(
-                                          (value) => value.fold(
-                                              (err) => context.read<NotificationsCubit>().showErr(err), (_) => null),
-                                        ),
+                                Expanded(
+                                  child: ReactionTile(
+                                    simpleView: false,
+                                    amount: post.post.commentCount,
+                                    icon: CupertinoIcons.chat_bubble,
+                                    iconColor: Theme.of(context).colorScheme.tertiary,
+                                    isSelected: true,
+                                    onTap: () => verifiedUserOnly(
+                                        context,
+                                        () => router.push("/home/posts/comments",
+                                            extra: HomePostsCommentsProps(PreloadedPost(post, true)))),
                                   ),
-                                  isSelected: post.userVote == 1,
-                                  amount: post.post.upvote,
-                                  icon: CupertinoIcons.up_arrow,
-                                  iconColor: Theme.of(context).colorScheme.onErrorContainer,
                                 ),
-                                ReactionTile(
-                                  onTap: () async => verifiedUserOnly(
+                                const SizedBox(width: 15),
+                                Expanded(
+                                  child: ReactionTile(
+                                    onTap: () async => verifiedUserOnly(
                                       context,
                                       () async => await Provider.of<GlobalContentService>(context, listen: false)
-                                          .voteOnPost(post, post.userVote != -1 ? -1 : 0)
-                                          .then((value) => value.fold(
-                                              (err) => context.read<NotificationsCubit>().showErr(err), (_) => null))),
-                                  amount: post.post.downvote,
-                                  icon: CupertinoIcons.down_arrow,
-                                  iconColor: Theme.of(context).colorScheme.onSecondaryContainer,
-                                  isSelected: post.userVote == -1,
+                                          .voteOnPost(post, post.userVote != 1 ? 1 : 0)
+                                          .then(
+                                            (value) => value.fold(
+                                                (err) => context.read<NotificationsCubit>().showErr(err), (_) => null),
+                                          ),
+                                    ),
+                                    isSelected: post.userVote == 1,
+                                    amount: post.post.upvote,
+                                    icon: CupertinoIcons.up_arrow,
+                                    iconColor: Theme.of(context).colorScheme.onErrorContainer,
+                                  ),
+                                ),
+                                const SizedBox(width: 15),
+                                Expanded(
+                                  child: ReactionTile(
+                                    onTap: () async => verifiedUserOnly(
+                                        context,
+                                        () async => await Provider.of<GlobalContentService>(context, listen: false)
+                                            .voteOnPost(post, post.userVote != -1 ? -1 : 0)
+                                            .then((value) => value.fold(
+                                                (err) => context.read<NotificationsCubit>().showErr(err),
+                                                (_) => null))),
+                                    amount: post.post.downvote,
+                                    icon: CupertinoIcons.down_arrow,
+                                    iconColor: Theme.of(context).colorScheme.onSecondaryContainer,
+                                    isSelected: post.userVote == -1,
+                                  ),
                                 ),
                               ],
                             ),

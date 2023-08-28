@@ -12,7 +12,7 @@ const bool debugMode = true;
 
 const int maxImagesPerPost = 5;
 
-const double imgBlurSigma = 25;
+const double imgBlurSigma = 15;
 
 const String walrusHeadImgPath = "assets/images/logos/walrus_head.png";
 
@@ -85,6 +85,7 @@ List<PostCategory> postCategories = const [
   PostCategory("Politics", CupertinoIcons.chat_bubble_2),
   PostCategory("Relationships", CupertinoIcons.suit_heart),
   PostCategory("Wholesome", CupertinoIcons.bandage),
+  PostCategory("Marketplace", CupertinoIcons.money_dollar),
 ];
 
 const int maxNumberOfLinkPreviewsPerPostTile = 3;
