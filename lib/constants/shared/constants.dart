@@ -12,7 +12,7 @@ const bool debugMode = true;
 
 const int maxImagesPerPost = 5;
 
-const double borderSize = 0.6;
+const double borderSize = 0.4;
 
 const double imgBlurSigma = 15;
 

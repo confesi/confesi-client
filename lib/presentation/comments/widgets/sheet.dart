@@ -191,7 +191,7 @@ class _CommentSheetState extends State<CommentSheet> {
               }
               setState(() {});
             },
-            color: Theme.of(context).colorScheme.background,
+            color: Theme.of(context).colorScheme.shadow,
             focusNode: widget.controller.textFocusNode,
             hintText: "Add a comment...",
             maxLines: 4,

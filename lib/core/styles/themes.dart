@@ -17,9 +17,9 @@ class AppTheme {
       surfaceTint: Color(0xff90A17D),
       error: Color.fromARGB(255, 231, 104, 104),
       onError: Colors.white,
-      background: Color.fromARGB(255, 37, 42, 54),
+      background: Color.fromARGB(255, 30, 34, 43),
       onBackground: Color.fromARGB(255, 64, 69, 87),
-      surface: Color.fromARGB(255, 35, 42, 55),
+      surface: Color.fromARGB(255, 27, 32, 42),
       onSurface: Color.fromARGB(255, 73, 95, 120),
       shadow: Color.fromARGB(255, 26, 27, 36), // Color.fromARGB(255, 26, 27, 36)
       primaryContainer: Color(0xff333333),

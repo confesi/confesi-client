@@ -37,14 +37,14 @@ class StatTileItem extends StatelessWidget {
               children: [
                 Icon(
                   icon,
-                  color: iconColor ?? Theme.of(context).colorScheme.onSecondary,
+                  color: iconColor ?? Theme.of(context).colorScheme.background,
                   // color: Colors.white,
                 ),
                 const SizedBox(height: 3),
                 Text(
                   text,
                   style: kDetail.copyWith(
-                    color: textColor ?? Theme.of(context).colorScheme.onSecondary,
+                    color: textColor ?? Theme.of(context).colorScheme.background,
                     // color: Colors.white,
                   ),
                   textAlign: TextAlign.center,
