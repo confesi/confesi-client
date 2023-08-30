@@ -167,7 +167,9 @@ class SchoolDetail extends StatelessWidget {
                                   .setSelectedSchoolInUI(SelectedSchool(props.school.school.id));
                               router.go("/home");
                               Provider.of<PrimaryTabControllerService>(context, listen: false).setTabIdx(0);
-                              Provider.of<PostsService>(context, listen: false).reloadAllFeeds();
+                              Provider.of<PostsService>(context, listen: false).clearAllFeeds();
+                              context.read<PostsService>().setCurrentlySelectedFeedAndReloadIfNeeded(
+                                  context, context.read<PostsService>().currentlySelectedFeed);
                             },
                             text: "Jump to this school's feed",
                           ),

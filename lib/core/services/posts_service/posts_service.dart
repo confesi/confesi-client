@@ -6,6 +6,7 @@ import 'package:confesi/models/encrypted_id.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:ordered_set/ordered_set.dart';
+import 'package:provider/provider.dart';
 
 import '../../../application/feed/cubit/schools_drawer_cubit.dart';
 import '../../../application/user/cubit/saved_posts_cubit.dart';
@@ -15,7 +16,7 @@ import '../../results/successes.dart';
 import '../api_client/api.dart';
 import '../global_content/global_content.dart';
 
-enum FeedType { trending, recents, sentiment }
+enum FeedType { recents, trending, sentiment }
 
 class PostsService extends ChangeNotifier {
   final Api _trendingApi;
@@ -48,6 +49,23 @@ class PostsService extends ChangeNotifier {
         }
       },
     );
+  }
+
+  FeedType currentlySelectedFeed = FeedType.recents;
+
+  void notify() => notifyListeners();
+
+  void setCurrentlySelectedFeedAndReloadIfNeeded(BuildContext context, FeedType feedType) {
+    currentlySelectedFeed = feedType;
+    // if feed type is empty, reload it
+    if (feedType == FeedType.trending && trendingPostIds.isEmpty) {
+      loadMore(feedType, context.read<SchoolsDrawerCubit>().selectedSchoolFeed, refresh: true);
+    } else if (feedType == FeedType.recents && recentsPostIds.isEmpty) {
+      loadMore(feedType, context.read<SchoolsDrawerCubit>().selectedSchoolFeed, refresh: true);
+    } else if (feedType == FeedType.sentiment && sentimentPostIds.isEmpty) {
+      loadMore(feedType, context.read<SchoolsDrawerCubit>().selectedSchoolFeed, refresh: true);
+    }
+    notifyListeners();
   }
 
   void _cancelCurrentReq(FeedType feedType) {
@@ -157,18 +175,17 @@ class PostsService extends ChangeNotifier {
     sentimentPostIds.clear();
   }
 
-  void reloadAllFeeds() {
+  void clearAllFeeds() {
+    notifyListeners();
+    clearTrendingPosts();
+    clearRecentsPosts();
+    clearSentimentPosts();
     // set pagination states to loading
     trendingPaginationState = PaginationState.loading;
     recentsPaginationState = PaginationState.loading;
     sentimentPaginationState = PaginationState.loading;
-    clearTrendingPosts();
-    clearRecentsPosts();
-    clearSentimentPosts();
     notifyListeners();
   }
-
-  void notify() => notifyListeners();
 
   Future<void> loadMore(FeedType feedType, SelectedSchoolFeed selectedType, {bool refresh = false}) async {
     _cancelCurrentReq(feedType);

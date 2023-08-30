@@ -15,18 +15,14 @@ import '../../../core/router/go_router.dart';
 import '../../../core/styles/typography.dart';
 import '../../../core/utils/sizing/bottom_safe_area.dart';
 import '../../../core/utils/verified_students/verified_user_only.dart';
+import '../../../init.dart';
 import '../widgets/section_accordian.dart';
 import '../../shared/buttons/simple_text.dart';
 import 'package:confesi/presentation/shared/edited_source_widgets/swipe_refresh.dart';
 
-class FeedDrawer extends StatefulWidget {
+class FeedDrawer extends StatelessWidget {
   const FeedDrawer({Key? key}) : super(key: key);
 
-  @override
-  State<FeedDrawer> createState() => _FeedDrawerState();
-}
-
-class _FeedDrawerState extends State<FeedDrawer> {
   @override
   Widget build(BuildContext context) {
     final globalContentService = Provider.of<GlobalContentService>(context);
@@ -63,7 +59,7 @@ class _FeedDrawerState extends State<FeedDrawer> {
                       context
                           .read<SchoolsDrawerCubit>()
                           .setSelectedSchoolInUI(SelectedSchool(watchedHomeSchool.school.id));
-                      Provider.of<PostsService>(context, listen: false).reloadAllFeeds();
+                      Provider.of<PostsService>(context, listen: false).clearAllFeeds();
                       // check if the current route can be popped as well
                       // if (mounted) router.pop();
                     },
@@ -80,7 +76,7 @@ class _FeedDrawerState extends State<FeedDrawer> {
                       .getAndSetRandomSchool(
                           state.selected is SelectedSchool ? (state.selected as SelectedSchool).id : null)
                       .then((value) => ((state.possibleErr is! SchoolsDrawerErr)
-                          ? Provider.of<PostsService>(context, listen: false).reloadAllFeeds()
+                          ? Provider.of<PostsService>(context, listen: false).clearAllFeeds()
                           : null));
                   // only if drawer is still up, pop context
                   // if (mounted) router.pop();
@@ -91,7 +87,7 @@ class _FeedDrawerState extends State<FeedDrawer> {
               text: "All ✨",
               onTap: () {
                 context.read<SchoolsDrawerCubit>().setSelectedSchoolInUI(SelectedAll());
-                Provider.of<PostsService>(context, listen: false).reloadAllFeeds();
+                Provider.of<PostsService>(context, listen: false).clearAllFeeds();
               },
             ),
             if (!state.isGuest)
@@ -112,7 +108,7 @@ class _FeedDrawerState extends State<FeedDrawer> {
                             context
                                 .read<SchoolsDrawerCubit>()
                                 .setSelectedSchoolInUI(SelectedSchool(watchedSchool.school.id));
-                            Provider.of<PostsService>(context, listen: false).reloadAllFeeds();
+                            Provider.of<PostsService>(context, listen: false).clearAllFeeds();
                             // if (mounted) router.pop();
                           },
                         ),
@@ -230,10 +226,18 @@ class _FeedDrawerState extends State<FeedDrawer> {
             child: SwipeRefresh(
               onRefresh: () async => await context.read<SchoolsDrawerCubit>().loadSchools(),
               child: BlocConsumer<SchoolsDrawerCubit, SchoolsDrawerState>(
-                listener: (context, state) {
-                  if (state is SchoolsDrawerData) {
-                    Provider.of<PostsService>(context, listen: false).reloadAllFeeds();
-                  }
+                listener: (context, state) async {
+                  // if (state is SchoolsDrawerData) {
+                  //   Provider.of<PostsService>(context, listen: false).clearAllFeeds();
+                  //   FeedType feedType = context.read<PostsService>().currentlySelectedFeed;
+                  //   // reload based on the feed type
+                  //   print(feedType);
+                  context.read<PostsService>().setCurrentlySelectedFeedAndReloadIfNeeded(
+                      context, context.read<PostsService>().currentlySelectedFeed);
+                  //   await sl
+                  //       .get<PostsService>()
+                  //       .loadMore(feedType, context.read<SchoolsDrawerCubit>().selectedSchoolFeed, refresh: true);
+                  // }
                 },
                 builder: (context, state) => Container(
                   color: Theme.of(context).colorScheme.shadow,

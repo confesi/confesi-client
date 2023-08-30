@@ -258,9 +258,8 @@ final GoRouter router = GoRouter(
 class ImgProps {
   final String url;
   final bool isBlurred;
-  final String? heroAnimPrefix;
-  final int uidForHero;
-  const ImgProps(this.url, this.isBlurred, this.heroAnimPrefix, this.uidForHero);
+  final String heroTag;
+  const ImgProps(this.url, this.isBlurred, this.heroTag);
 }
 
 class HomePostsSentimentProps {

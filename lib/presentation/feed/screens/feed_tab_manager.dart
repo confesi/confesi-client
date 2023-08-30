@@ -1,21 +1,17 @@
+import 'package:confesi/core/services/posts_service/posts_service.dart';
 import 'package:confesi/presentation/feed/tabs/sentiment_feed.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:confesi/presentation/shared/other/feed_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 import '../../../core/router/go_router.dart';
 import '../../shared/buttons/circle_emoji_button.dart';
 import '../../shared/layout/appbar.dart';
 import '../tabs/recents_feed.dart';
 import '../tabs/trending_feed.dart';
-
-enum FeedType {
-  recents,
-  trending,
-  sentiment,
-}
 
 class ExploreHome extends StatefulWidget {
   const ExploreHome({
@@ -37,37 +33,30 @@ class ExploreHome extends StatefulWidget {
 
 class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClientMixin {
   final PageController _pageController = PageController(initialPage: 0);
-  FeedType selectedFeedType = FeedType.recents;
 
   @override
   bool get wantKeepAlive => true;
 
-  void changeFeed() {
-    int currentPage = _pageController.page?.toInt() ?? 0;
-    int nextPage = (currentPage + 1) % FeedType.values.length;
-    setState(() {
-      selectedFeedType = FeedType.values[nextPage];
-    });
-    _pageController.jumpToPage(nextPage);
-  }
-
   void previousPage() {
     HapticFeedback.lightImpact();
     int currentPage = _pageController.page?.toInt() ?? 0;
-    int previousPage = (currentPage - 1) % FeedType.values.length;
-    setState(() {
-      selectedFeedType = FeedType.values[previousPage];
-    });
+
+    int previousPage = currentPage - 1;
+    if (previousPage < 0) {
+      previousPage = FeedType.values.length - 1;
+    }
+
+    context.read<PostsService>().setCurrentlySelectedFeedAndReloadIfNeeded(context, FeedType.values[previousPage]);
     _pageController.jumpToPage(previousPage);
   }
 
   void nextPage() {
     HapticFeedback.lightImpact();
     int currentPage = _pageController.page?.toInt() ?? 0;
+
     int nextPage = (currentPage + 1) % FeedType.values.length;
-    setState(() {
-      selectedFeedType = FeedType.values[nextPage];
-    });
+
+    context.read<PostsService>().setCurrentlySelectedFeedAndReloadIfNeeded(context, FeedType.values[nextPage]);
     _pageController.jumpToPage(nextPage);
   }
 
@@ -115,10 +104,10 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
                           }
                         },
                         child: CircleEmojiButton(
-                          onTap: () => changeFeed(),
-                          text: selectedFeedType == FeedType.sentiment
+                          onTap: () => nextPage(),
+                          text: context.watch<PostsService>().currentlySelectedFeed == FeedType.sentiment
                               ? 'Positivity ✨'
-                              : selectedFeedType == FeedType.trending
+                              : context.watch<PostsService>().currentlySelectedFeed == FeedType.trending
                                   ? 'Trending 🔥'
                                   : 'Recents ⏳',
                         ),
@@ -143,22 +132,19 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
                 leftIconOnPress: () => widget.scaffoldKey.currentState!.openDrawer(),
               ),
               Expanded(
-                child: PageView.builder(
+                child: PageView(
                   physics: const BouncingScrollPhysics(), // Add this line
-
-                  onPageChanged: (value) => setState(() {
-                    selectedFeedType = FeedType.values[value];
-                  }),
-                  controller: _pageController,
-                  itemCount: FeedType.values.length,
-                  itemBuilder: (context, index) {
-                    FeedType feedType = FeedType.values[index];
-                    return feedType == FeedType.trending
-                        ? ExploreTrending(feedController: widget.trendingFeedListController)
-                        : feedType == FeedType.sentiment
-                            ? ExploreSentiment(feedController: widget.sentimentFeedListController)
-                            : ExploreRecents(feedController: widget.recentsFeedListController);
+                  onPageChanged: (value) {
+                    context
+                        .read<PostsService>()
+                        .setCurrentlySelectedFeedAndReloadIfNeeded(context, FeedType.values[value]);
                   },
+                  controller: _pageController,
+                  children: [
+                    ExploreRecents(feedController: widget.recentsFeedListController),
+                    ExploreTrending(feedController: widget.trendingFeedListController),
+                    ExploreSentiment(feedController: widget.sentimentFeedListController),
+                  ],
                 ),
               ),
             ],

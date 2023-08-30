@@ -157,7 +157,7 @@ void main() async {
           BlocProvider(lazy: false, create: (context) => sl<StatsCubit>()),
           BlocProvider(lazy: false, create: (context) => sl<SearchSchoolsCubit>()),
           BlocProvider(lazy: false, create: (context) => sl<SavedPostsCubit>()),
-          BlocProvider(lazy: false, create: (context) => sl<SchoolsDrawerCubit>()..loadSchools()),
+          BlocProvider(lazy: false, create: (context) => sl<SchoolsDrawerCubit>()),
           BlocProvider(lazy: false, create: (context) => sl<QuickActionsCubit>()),
           BlocProvider(lazy: false, create: (context) => sl<NotificationsCubit>()),
           BlocProvider(lazy: false, create: (context) => sl<CommentSectionCubit>()),

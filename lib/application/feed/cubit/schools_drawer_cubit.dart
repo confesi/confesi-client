@@ -81,6 +81,14 @@ class SchoolsDrawerCubit extends Cubit<SchoolsDrawerState> {
     }
   }
 
+  void setSchoolsGuest() async {
+    emit(SchoolsDrawerData(
+      SelectedAll(),
+      SchoolsDrawerNoErr(),
+      isGuest: true,
+    ));
+  }
+
   Future<void> loadSchools() async {
     _api.cancelCurrReq();
     emit(SchoolsDrawerLoading());
@@ -94,6 +102,8 @@ class SchoolsDrawerCubit extends Cubit<SchoolsDrawerState> {
                 (body["value"]["schools"] as List<dynamic>).map((e) => SchoolWithMetadata.fromJson(e)).toList();
             final homeUniversity = SchoolWithMetadata.fromJson(body["value"]["user_school"]);
 
+            // clear any previous schools
+            sl.get<GlobalContentService>().clearSchools();
             // add all to global content service
             sl.get<GlobalContentService>().setSchools(schools);
             sl.get<GlobalContentService>().setSchool(homeUniversity);

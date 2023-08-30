@@ -18,6 +18,7 @@ import 'package:pie_chart/pie_chart.dart';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 class KeepWidgetAlive extends StatefulWidget {
   const KeepWidgetAlive({
@@ -56,15 +57,13 @@ class ImgViewer extends StatefulWidget {
 class _ImgViewerState extends State<ImgViewer> {
   int currentIdx = 0;
   late bool isBlurred;
+  late String heroTag;
 
   @override
   void initState() {
     isBlurred = widget.isBlurred;
+    heroTag = const Uuid().v4();
     super.initState();
-  }
-
-  String generateUniqueHeroTag(String url, int idx) {
-    return "img$url${widget.heroAnimPrefix}$idx";
   }
 
   @override
@@ -83,7 +82,11 @@ class _ImgViewerState extends State<ImgViewer> {
                   GestureDetector(
                     onTap: () => !isBlurred
                         ? router.push("/img",
-                            extra: ImgProps(widget.imgUrls[currentIdx], isBlurred, widget.heroAnimPrefix, currentIdx))
+                            extra: ImgProps(
+                              widget.imgUrls[currentIdx],
+                              isBlurred,
+                              heroTag,
+                            ))
                         : null,
                     child: PageView(
                       physics: const ClampingScrollPhysics(),
@@ -93,7 +96,7 @@ class _ImgViewerState extends State<ImgViewer> {
                         String imgUrl = entry.value;
                         return KeepWidgetAlive(
                           child: Hero(
-                            tag: generateUniqueHeroTag(imgUrl, idx),
+                            tag: heroTag,
                             child: CachedOnlineImage(
                               url: imgUrl,
                               isBlurred: isBlurred,
@@ -156,7 +159,7 @@ class ImgViewState extends State<ImgView> {
                   child: Zoomable(
                     clip: false,
                     child: Hero(
-                      tag: "img${widget.props.url}${widget.props.heroAnimPrefix}${widget.props.uidForHero}",
+                      tag: widget.props.heroTag,
                       child: CachedOnlineImage(
                         isBlurred: blur,
                         fit: BoxFit.fitWidth,

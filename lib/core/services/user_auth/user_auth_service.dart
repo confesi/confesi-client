@@ -121,6 +121,10 @@ class UserAuthService extends ChangeNotifier {
     context.read<IndividualPostCubit>().clear();
   }
 
+  void loadAllAppState(BuildContext context) {
+    print("LOADING ALL");
+  }
+
   Future<void> getData(String uid) async {
     try {
       final box = await hive.openBoxByClass<UserAuthData>(); // Use await here

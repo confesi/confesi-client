@@ -1,14 +1,15 @@
 import 'package:confesi/application/create_post/cubit/post_categories_cubit.dart';
+import 'package:confesi/application/feed/cubit/schools_drawer_cubit.dart';
 import 'package:confesi/application/user/cubit/notifications_cubit.dart';
 import 'package:confesi/core/services/fcm_notifications/notification_service.dart';
 import 'package:confesi/core/services/fcm_notifications/notification_table.dart';
 import 'package:confesi/core/services/primary_tab_service/primary_tab_service.dart';
+import 'package:confesi/core/services/user_auth/user_auth_service.dart';
 import 'package:confesi/init.dart';
 import 'package:drift/drift.dart' as drift;
 import 'package:provider/provider.dart';
 
 import '../../../core/router/go_router.dart';
-import '../../../core/services/user_auth/user_auth_service.dart';
 import '../../../core/utils/verified_students/verified_user_only.dart';
 import '../../profile/screens/account_stats.dart';
 import '../../shared/other/feed_list.dart';
@@ -16,13 +17,11 @@ import '../../shared/other/widget_or_nothing.dart';
 
 import '../../authentication_and_settings/screens/settings/home.dart';
 import '../../leaderboard/screens/home.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../daily_hottest/screens/home.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../feed/screens/feed_tab_manager.dart';
-import '../../shared/overlays/registered_users_only_sheet.dart';
 import '../../watched_universities/drawers/feed_drawer.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -44,6 +43,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   @override
   void initState() {
+    if (!sl.get<UserAuthService>().isAnon) {
+      context.read<SchoolsDrawerCubit>().loadSchools();
+    } else {
+      context.read<SchoolsDrawerCubit>().setSchoolsGuest();
+    }
     tabController = TabController(vsync: this, length: 5);
     Future.delayed(const Duration(milliseconds: 500)).then((value) {
       if (mounted && widget.props != null && widget.props!.executeAfterHomeLoad != null) {
