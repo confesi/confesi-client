@@ -14,76 +14,80 @@ import '../../shared/buttons/option.dart';
 import '../../shared/overlays/button_options_sheet.dart';
 
 // Show the options for this post.
-void buildOptionsSheet(BuildContext context, PostWithMetadata post, {bool showSaved = true}) =>
-    showButtonOptionsSheet(context, [
-      if (post.owner)
-        OptionButton(
-          isRed: true,
-          text: "Delete",
-          icon: CupertinoIcons.trash,
-          onTap: () => Provider.of<PostsService>(context, listen: false).deletePost(post).then(
-                (either) => either.fold(
-                  (_) => null, // do nothing on success
-                  (errMsg) => context.read<NotificationsCubit>().showErr(errMsg),
-                ),
+void buildOptionsSheet(BuildContext context, PostWithMetadata post, {bool showSaved = true}) {
+  // Obtain necessary dependencies up front
+  final postsService = Provider.of<PostsService>(context, listen: false);
+  final globalContentService = Provider.of<GlobalContentService>(context, listen: false);
+  final notificationsCubit = context.read<NotificationsCubit>();
+  final quickActionsCubit = context.read<QuickActionsCubit>();
+
+  showButtonOptionsSheet(context, [
+    if (post.owner)
+      OptionButton(
+        isRed: true,
+        text: "Delete",
+        icon: CupertinoIcons.trash,
+        onTap: () => postsService.deletePost(post).then(
+              (either) => either.fold(
+                (_) => null, // do nothing on success
+                (errMsg) => notificationsCubit.showErr(errMsg),
               ),
-        ),
-      if (showSaved)
-        OptionButton(
-          text: post.saved ? "Unsave" : "Save",
-          icon: post.saved ? CupertinoIcons.bookmark_fill : CupertinoIcons.bookmark,
-          onTap: () => verifiedUserOnly(
-              context,
-              () async => await Provider.of<GlobalContentService>(context, listen: false)
-                  .updatePostSaved(post.post.id, !post.saved)
-                  .then(
-                    (value) => value.fold(
-                      (_) => null,
-                      (err) => context.read<NotificationsCubit>().showErr(err),
-                    ),
-                  )),
-        ),
-      OptionButton(
-        text: "Share",
-        icon: CupertinoIcons.share,
-        onTap: () => context.read<QuickActionsCubit>().sharePost(context, post),
-      ),
-      if (post.owner)
-        OptionButton(
-          text: "Edit",
-          icon: CupertinoIcons.pencil,
-          onTap: () => router.push("/create", extra: EditedPost(post.post.title, post.post.content, post.post.id)),
-        ),
-      OptionButton(
-        text: "Sentiment analysis",
-        icon: CupertinoIcons.doc_text,
-        onTap: () => router.push(
-          "/home/posts/sentiment",
-          extra: HomePostsSentimentProps(post.post.id),
-        ),
-      ),
-      OptionButton(
-        text: "School location",
-        icon: CupertinoIcons.map,
-        onTap: () => context
-            .read<QuickActionsCubit>()
-            .locateOnMaps(post.post.school.lat.toDouble(), post.post.school.lon.toDouble(), post.post.school.name),
-      ),
-      if (!post.reported)
-        OptionButton(
-          text: "Report",
-          icon: CupertinoIcons.flag,
-          onTap: () => print("tap"),
-        ),
-      if (post.reported)
-        Padding(
-          padding: const EdgeInsets.only(top: 15),
-          child: Text(
-            "Content already reported. We're reviewing it now. Thank you. 🙏",
-            style: kDetail.copyWith(
-              color: Theme.of(context).colorScheme.onSurface,
             ),
-            textAlign: TextAlign.center,
+      ),
+    if (showSaved)
+      OptionButton(
+        text: post.saved ? "Unsave" : "Save",
+        icon: post.saved ? CupertinoIcons.bookmark_fill : CupertinoIcons.bookmark,
+        onTap: () => verifiedUserOnly(
+            context,
+            () async => await globalContentService.updatePostSaved(post.post.id, !post.saved).then(
+                  (value) => value.fold(
+                    (_) => null,
+                    (err) => notificationsCubit.showErr(err),
+                  ),
+                )),
+      ),
+    OptionButton(
+      text: "Share",
+      icon: CupertinoIcons.share,
+      onTap: () => quickActionsCubit.sharePost(context, post),
+    ),
+    if (post.owner)
+      OptionButton(
+        text: "Edit",
+        icon: CupertinoIcons.pencil,
+        onTap: () => router.push("/create", extra: EditedPost(post.post.title, post.post.content, post.post.id)),
+      ),
+    OptionButton(
+      text: "Sentiment analysis",
+      icon: CupertinoIcons.doc_text,
+      onTap: () => router.push(
+        "/home/posts/sentiment",
+        extra: HomePostsSentimentProps(post.post.id),
+      ),
+    ),
+    OptionButton(
+      text: "School location",
+      icon: CupertinoIcons.map,
+      onTap: () => quickActionsCubit.locateOnMaps(
+          post.post.school.lat.toDouble(), post.post.school.lon.toDouble(), post.post.school.name),
+    ),
+    if (!post.reported)
+      OptionButton(
+        text: "Report",
+        icon: CupertinoIcons.flag,
+        onTap: () => print("tap"),
+      ),
+    if (post.reported)
+      Padding(
+        padding: const EdgeInsets.only(top: 15),
+        child: Text(
+          "Content already reported. We're reviewing it now. Thank you. 🙏",
+          style: kDetail.copyWith(
+            color: Theme.of(context).colorScheme.onSurface,
           ),
-        )
-    ]);
+          textAlign: TextAlign.center,
+        ),
+      )
+  ]);
+}

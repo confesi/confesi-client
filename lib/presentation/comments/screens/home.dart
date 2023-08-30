@@ -60,6 +60,7 @@ class _CommentsHomeState extends State<CommentsHome> {
   final FeedListController feedListController = FeedListController();
   late CommentSheetController commentSheetController;
   final ScreenshotCallback screenshotCallback = ScreenshotCallback();
+  bool isScrolling = false;
 
   Future<void> delegateInitialLoad(BuildContext context, {bool refresh = false}) async {
     if (widget.props.postLoadType is PreloadedPost && !refresh) {
@@ -454,6 +455,11 @@ class _CommentsHomeState extends State<CommentsHome> {
                         ),
                         Expanded(
                           child: FeedList(
+                            onScrollChange: (start) => WidgetsBinding.instance.addPostFrameCallback((_) {
+                              setState(() {
+                                isScrolling = start;
+                              });
+                            }),
                             header: buildHeader(ogContext, commentState, postState),
                             isScrollable: true,
                             shrinkWrap: true,

@@ -130,7 +130,7 @@ class PostTile extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 15, right: 15, top: 15),
+                          padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
                           child: Text(
                             truncateText(
                                 post.post.title.isEmpty ? post.post.content : post.post.title, postTitlePreviewLength),

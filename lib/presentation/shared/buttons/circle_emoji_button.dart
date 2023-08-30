@@ -34,7 +34,7 @@ class CircleEmojiButton extends StatelessWidget {
               text,
               textAlign: TextAlign.center,
               overflow: TextOverflow.ellipsis,
-              style: kTitle.copyWith(color: Theme.of(context).colorScheme.secondary),
+              style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
             ),
           ),
         ),

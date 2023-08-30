@@ -36,7 +36,7 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
 
   @override
   void initState() {
-    pageController = PageController(initialPage: 0, viewportFraction: 0.95);
+    pageController = PageController(initialPage: 0, viewportFraction: 0.9);
     context.read<HottestCubit>().loadMostRecent();
     super.initState();
   }
@@ -66,7 +66,7 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
           controller: pageController,
           physics: const BouncingScrollPhysics(),
           onPageChanged: (selectedIndex) {
-            HapticFeedback.lightImpact();
+            HapticFeedback.selectionClick();
             setState(() => currentIndex = selectedIndex);
           },
           children: state.posts

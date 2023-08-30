@@ -134,7 +134,7 @@ class _SearchSchoolsScreenState extends State<SearchSchoolsScreen> {
     return ThemeStatusBar(
       child: KeyboardDismiss(
         child: Scaffold(
-          backgroundColor: Theme.of(context).colorScheme.shadow,
+          backgroundColor: Theme.of(context).colorScheme.secondary,
           body: SafeArea(
             bottom: false,
             child: Column(
@@ -142,6 +142,7 @@ class _SearchSchoolsScreenState extends State<SearchSchoolsScreen> {
                 Container(
                   padding: const EdgeInsets.only(bottom: 10),
                   decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.secondary,
                     border: Border(
                       bottom: BorderSide(
                         color: Theme.of(context).colorScheme.onBackground,
@@ -166,6 +167,8 @@ class _SearchSchoolsScreenState extends State<SearchSchoolsScreen> {
                         ),
                         const SizedBox(width: 15),
                         CircleIconBtn(
+                          bgColor: Theme.of(context).colorScheme.background,
+                          color: Theme.of(context).colorScheme.primary,
                           icon: CupertinoIcons.xmark,
                           onTap: () => router.pop(context),
                         ),
@@ -175,9 +178,12 @@ class _SearchSchoolsScreenState extends State<SearchSchoolsScreen> {
                 ),
                 Expanded(
                   child: BlocBuilder<SearchSchoolsCubit, SearchSchoolsState>(
-                    builder: (context, state) => AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 250),
-                      child: buildBody(context, state),
+                    builder: (context, state) => Container(
+                      color: Theme.of(context).colorScheme.shadow,
+                      child: AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 250),
+                        child: buildBody(context, state),
+                      ),
                     ),
                   ),
                 ),

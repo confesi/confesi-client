@@ -71,7 +71,7 @@ class _RectangleTileState extends State<RectangleTile> {
                       Text(
                         widget.leftText,
                         style: kDetail.copyWith(
-                          color: widget.foregroundColor ?? Theme.of(context).colorScheme.onSurface,
+                          color: widget.foregroundColor ?? Theme.of(context).colorScheme.primary,
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -96,7 +96,7 @@ class _RectangleTileState extends State<RectangleTile> {
                       Text(
                         widget.rightText,
                         style: kDetail.copyWith(
-                          color: widget.foregroundColor ?? Theme.of(context).colorScheme.onSurface,
+                          color: widget.foregroundColor ?? Theme.of(context).colorScheme.primary,
                         ),
                         textAlign: TextAlign.center,
                       ),

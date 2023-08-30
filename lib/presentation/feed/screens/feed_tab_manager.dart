@@ -3,6 +3,7 @@ import 'package:confesi/presentation/shared/button_touch_effects/touchable_opaci
 import 'package:confesi/presentation/shared/other/feed_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../../core/router/go_router.dart';
 import '../../shared/buttons/circle_emoji_button.dart';
@@ -51,6 +52,7 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
   }
 
   void previousPage() {
+    HapticFeedback.lightImpact();
     int currentPage = _pageController.page?.toInt() ?? 0;
     int previousPage = (currentPage - 1) % FeedType.values.length;
     setState(() {
@@ -60,6 +62,7 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
   }
 
   void nextPage() {
+    HapticFeedback.lightImpact();
     int currentPage = _pageController.page?.toInt() ?? 0;
     int nextPage = (currentPage + 1) % FeedType.values.length;
     setState(() {
@@ -102,13 +105,23 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
                     const SizedBox(width: 7),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 5),
-                      child: CircleEmojiButton(
-                        onTap: () => changeFeed(),
-                        text: selectedFeedType == FeedType.sentiment
-                            ? 'Positivity ✨'
-                            : selectedFeedType == FeedType.trending
-                                ? 'Trending 🔥'
-                                : 'Recents ⏳',
+                      child: GestureDetector(
+                        // swipe left & right to switch forward/back
+                        onHorizontalDragEnd: (details) {
+                          if (details.primaryVelocity! > 0) {
+                            previousPage();
+                          } else if (details.primaryVelocity! < 0) {
+                            nextPage();
+                          }
+                        },
+                        child: CircleEmojiButton(
+                          onTap: () => changeFeed(),
+                          text: selectedFeedType == FeedType.sentiment
+                              ? 'Positivity ✨'
+                              : selectedFeedType == FeedType.trending
+                                  ? 'Trending 🔥'
+                                  : 'Recents ⏳',
+                        ),
                       ),
                     ),
                     TouchableOpacity(

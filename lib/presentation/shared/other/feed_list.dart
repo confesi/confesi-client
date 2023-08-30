@@ -125,6 +125,7 @@ class FeedList extends StatefulWidget {
     this.isScrollable = true,
     this.swipeRefreshEnabled = true,
     this.debug = false,
+    this.onScrollChange,
   });
 
   final bool swipeRefreshEnabled;
@@ -140,6 +141,7 @@ class FeedList extends StatefulWidget {
   final Function onErrorButtonPressed;
   final Function onWontLoadMoreButtonPressed;
   final Function onPullToRefresh;
+  final Function(bool start)? onScrollChange;
 
   @override
   State<FeedList> createState() => _FeedListState();
@@ -225,26 +227,42 @@ class _FeedListState extends State<FeedList> {
     return SwipeRefresh(
       enabled: widget.swipeRefreshEnabled,
       onRefresh: () async => await widget.onPullToRefresh(),
-      child: ScrollablePositionedList.builder(
-        shrinkWrap: widget.shrinkWrap,
-        physics: widget.isScrollable
-            ? const AlwaysScrollableScrollPhysics(parent: ClampingScrollPhysics())
-            : const NeverScrollableScrollPhysics(),
-        itemBuilder: (context, index) {
-          if (index == 0) {
-            return widget.header ?? const SizedBox();
-          } else if (index == widget.controller.items.length + 1) {
-            return AnimatedSwitcher(
-              duration: const Duration(milliseconds: 250),
-              child: buildIndicator(),
-            );
-          } else {
-            return widget.controller.items[index - 1].child;
+      child: NotificationListener<ScrollNotification>(
+        onNotification: (scrollNotification) {
+          if (scrollNotification is ScrollStartNotification) {
+            // Scrolling has started.
+            if (widget.onScrollChange != null) {
+              widget.onScrollChange!(true);
+            }
+          } else if (scrollNotification is ScrollEndNotification) {
+            // Scrolling has stopped.
+            if (widget.onScrollChange != null) {
+              widget.onScrollChange!(false);
+            }
           }
+          return false; // Returning false means the notification will continue to be dispatched to further ancestors.
         },
-        itemCount: widget.controller.items.length + 2,
-        itemPositionsListener: widget.controller.itemPositionsListener,
-        itemScrollController: widget.controller.itemScrollController,
+        child: ScrollablePositionedList.builder(
+          shrinkWrap: widget.shrinkWrap,
+          physics: widget.isScrollable
+              ? const AlwaysScrollableScrollPhysics(parent: ClampingScrollPhysics())
+              : const NeverScrollableScrollPhysics(),
+          itemBuilder: (context, index) {
+            if (index == 0) {
+              return widget.header ?? const SizedBox();
+            } else if (index == widget.controller.items.length + 1) {
+              return AnimatedSwitcher(
+                duration: const Duration(milliseconds: 250),
+                child: buildIndicator(),
+              );
+            } else {
+              return widget.controller.items[index - 1].child;
+            }
+          },
+          itemCount: widget.controller.items.length + 2,
+          itemPositionsListener: widget.controller.itemPositionsListener,
+          itemScrollController: widget.controller.itemScrollController,
+        ),
       ),
     );
   }

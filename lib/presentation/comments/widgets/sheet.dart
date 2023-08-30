@@ -213,7 +213,12 @@ class _CommentSheetState extends State<CommentSheet> {
                           SimpleTextButton(
                             text: "Delete",
                             isErrorText: true,
-                            onTap: () => setState(() => widget.controller.delete()),
+                            onTap: () {
+                              // clear text
+                              setState(() => widget.controller.delete());
+                              // set replying to nothing
+                              context.read<CreateCommentCubit>().clear();
+                            },
                           ),
                           const SizedBox(width: 15),
                           TextLimitTracker(

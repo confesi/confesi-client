@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/animation.dart';
 
 class Bobbing extends StatefulWidget {
   final Widget child;
@@ -26,7 +27,7 @@ class BobbingState extends State<Bobbing> with SingleTickerProviderStateMixin {
     super.initState();
     _controller = AnimationController(vsync: this, duration: widget.duration);
     _controller.addListener(() => setState(() {}));
-    _controller.repeat(); // Remove reverse: true to make it spin in one direction
+    _controller.repeat();
   }
 
   @override
@@ -37,12 +38,12 @@ class BobbingState extends State<Bobbing> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final double rotationValue = _controller.value * 2 * 3.141592653589793;
+    final double curvedValue = Curves.easeInOut.transform(_controller.value);
+    final double rotationValue = curvedValue * 2 * 3.141592653589793;
 
     double bobbingScale = 1.0;
     if (widget.bobbing) {
-      // Adjust the bobbing scale based on the animation progress
-      bobbingScale = 0.6 + 0.3 * (1 - (_controller.value * 2 - 1).abs());
+      bobbingScale = 0.6 + 0.3 * (1 - (curvedValue * 2 - 1).abs());
     }
 
     Widget content = widget.child; // Default to original child
@@ -55,7 +56,6 @@ class BobbingState extends State<Bobbing> with SingleTickerProviderStateMixin {
     }
 
     if (widget.rotate && rotationValue != 0) {
-      // Add optional rotation logic here
       content = Transform.rotate(
         angle: rotationValue,
         child: content,

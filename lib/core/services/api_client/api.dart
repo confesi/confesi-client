@@ -59,7 +59,7 @@ class ApiTooManyEmailRequests extends FailureWithMsg {
 
 class ApiTimeoutFailure extends FailureWithMsg {
   @override
-  String msg() => "Connection timeout error";
+  String msg() => "Connection timeout";
 }
 
 String apiVerbToString(Verb method) {

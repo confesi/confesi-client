@@ -18,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:image_cropper/image_cropper.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:tuple/tuple.dart';
 import 'package:vector_math/vector_math_64.dart' as v;
 import 'package:image_gallery_saver/image_gallery_saver.dart';
@@ -236,28 +237,25 @@ class ImgState extends State<Img> {
 
   Future<void> _selectFromGallery() async {
     final notificationsCubit = context.read<NotificationsCubit>();
-    final editingPostsService = Provider.of<CreatingEditingPostsService>(context, listen: false);
+    final editingPostsService = context.read<CreatingEditingPostsService>();
 
-    if (Provider.of<CreatingEditingPostsService>(context, listen: false)
-            .images
-            .map((e) => e.editingFile)
-            .toList()
-            .length >=
-        widget.maxImages) {
+    // Check for permissions
+    final galleryPermission = await Permission.photos.request();
+    if (!galleryPermission.isGranted) {
+      notificationsCubit.showErr("Permission denied");
+      return;
+    }
+
+    if (editingPostsService.images.map((e) => e.editingFile).toList().length >= widget.maxImages) {
       notificationsCubit.showErr("Max images reached");
       return;
     }
+
     final pickedFile = await ImagePicker().pickImage(
       source: ImageSource.gallery,
     );
 
-    if (pickedFile != null &&
-        Provider.of<CreatingEditingPostsService>(context, listen: false)
-                .images
-                .map((e) => e.editingFile)
-                .toList()
-                .length <
-            widget.maxImages) {
+    if (pickedFile != null && editingPostsService.images.map((e) => e.editingFile).toList().length < widget.maxImages) {
       editingPostsService.images.add(EditorState.empty(File(pickedFile.path)));
       setState(() {
         widget.controller!.notify();
@@ -268,30 +266,26 @@ class ImgState extends State<Img> {
   }
 
   Future<void> _selectFromCamera() async {
-    final editingPostsService = Provider.of<CreatingEditingPostsService>(context, listen: false);
+    final notificationsCubit = context.read<NotificationsCubit>();
+    final editingPostsService = context.read<CreatingEditingPostsService>();
 
-    if (Provider.of<CreatingEditingPostsService>(context, listen: false)
-            .images
-            .map((e) => e.editingFile)
-            .toList()
-            .length >=
-        widget.maxImages) {
-      context.read<NotificationsCubit>().showErr("Max images reached");
+    // Check for permissions
+    final cameraPermission = await Permission.camera.request();
+    if (!cameraPermission.isGranted) {
+      notificationsCubit.showErr("Permission denied");
       return;
     }
+
+    if (editingPostsService.images.map((e) => e.editingFile).toList().length >= widget.maxImages) {
+      notificationsCubit.showErr("Max images reached");
+      return;
+    }
+
     final pickedFile = await ImagePicker().pickImage(
       source: ImageSource.camera,
     );
 
-    if (pickedFile != null &&
-        Provider.of<CreatingEditingPostsService>(context, listen: false)
-                .images
-                .map((e) => e.editingFile)
-                .toList()
-                .length <
-            widget.maxImages) {
-      print(EditorState.empty(File(pickedFile.path)).runtimeType);
-
+    if (pickedFile != null && editingPostsService.images.map((e) => e.editingFile).toList().length < widget.maxImages) {
       editingPostsService.addImage(EditorState.empty(File(pickedFile.path)));
       setState(() {
         widget.controller!.notify();

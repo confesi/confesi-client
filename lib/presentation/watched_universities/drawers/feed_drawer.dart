@@ -79,7 +79,7 @@ class _FeedDrawerState extends State<FeedDrawer> {
                       .read<SchoolsDrawerCubit>()
                       .getAndSetRandomSchool(
                           state.selected is SelectedSchool ? (state.selected as SelectedSchool).id : null)
-                      .then((value) => (state is SchoolsDrawerData && (state.possibleErr is! SchoolsDrawerErr)
+                      .then((value) => ((state.possibleErr is! SchoolsDrawerErr)
                           ? Provider.of<PostsService>(context, listen: false).reloadAllFeeds()
                           : null));
                   // only if drawer is still up, pop context
@@ -176,8 +176,6 @@ class _FeedDrawerState extends State<FeedDrawer> {
                 end: Alignment.topRight,
                 colors: [
                   Theme.of(context).colorScheme.secondary,
-                  Theme.of(context).colorScheme.secondary,
-                  Theme.of(context).colorScheme.secondary,
                   Theme.of(context).colorScheme.tertiary,
                 ],
               ),
@@ -203,7 +201,7 @@ class _FeedDrawerState extends State<FeedDrawer> {
                                           (context.watch<SchoolsDrawerCubit>().state as SchoolsDrawerData).isGuest
                                       ? "To watch schools, set your home, and jump between feeds, create an account."
                                       : "Error",
-                          style: kDetail.copyWith(
+                          style: kTitle.copyWith(
                             color: Theme.of(context).colorScheme.onSecondary,
                           ),
                           textAlign: TextAlign.left,
@@ -238,7 +236,7 @@ class _FeedDrawerState extends State<FeedDrawer> {
                   }
                 },
                 builder: (context, state) => Container(
-                  color: Theme.of(context).colorScheme.background,
+                  color: Theme.of(context).colorScheme.shadow,
                   child: buildChild(context, state),
                 ),
               ),
