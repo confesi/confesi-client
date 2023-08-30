@@ -66,6 +66,8 @@ class _ImgViewerState extends State<ImgViewer> {
     super.initState();
   }
 
+  int heroCounter = 0;
+
   @override
   Widget build(BuildContext context) {
     return widget.imgUrls.isEmpty
@@ -82,21 +84,16 @@ class _ImgViewerState extends State<ImgViewer> {
                   GestureDetector(
                     onTap: () => !isBlurred
                         ? router.push("/img",
-                            extra: ImgProps(
-                              widget.imgUrls[currentIdx],
-                              isBlurred,
-                              heroTag,
-                            ))
+                            extra: ImgProps(widget.imgUrls[currentIdx], isBlurred, "$heroTag$currentIdx"))
                         : null,
                     child: PageView(
                       physics: const ClampingScrollPhysics(),
                       onPageChanged: (v) => setState(() => currentIdx = v),
-                      children: widget.imgUrls.asMap().entries.map((entry) {
-                        int idx = entry.key;
-                        String imgUrl = entry.value;
+                      children: widget.imgUrls.map((imgUrl) {
+                        if (heroCounter == widget.imgUrls.length) heroCounter = 0;
                         return KeepWidgetAlive(
                           child: Hero(
-                            tag: heroTag,
+                            tag: "$heroTag${heroCounter++}", // Increment heroCounter for each image
                             child: CachedOnlineImage(
                               url: imgUrl,
                               isBlurred: isBlurred,

@@ -36,7 +36,7 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
 
   @override
   void initState() {
-    pageController = PageController(initialPage: 0, viewportFraction: 0.9);
+    pageController = PageController(initialPage: 0, viewportFraction: 0.95);
     context.read<HottestCubit>().loadMostRecent();
     super.initState();
   }
