@@ -1,4 +1,5 @@
 
+import 'package:confesi/constants/shared/constants.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
@@ -21,7 +22,7 @@ class NotificationTile extends StatelessWidget {
         border: Border(
           bottom: BorderSide(
             color: Theme.of(context).colorScheme.onBackground,
-            width: 0.8,
+            width: borderSize,
             style: BorderStyle.solid,
           ),
         ),

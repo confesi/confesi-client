@@ -1,6 +1,7 @@
 import 'package:confesi/application/feed/cubit/schools_drawer_cubit.dart';
 import 'package:confesi/application/feed/cubit/search_schools_cubit.dart';
 import 'package:confesi/application/user/cubit/notifications_cubit.dart';
+import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/router/go_router.dart';
 import 'package:confesi/core/services/global_content/global_content.dart';
 import 'package:confesi/core/styles/typography.dart';
@@ -144,7 +145,7 @@ class _SearchSchoolsScreenState extends State<SearchSchoolsScreen> {
                     border: Border(
                       bottom: BorderSide(
                         color: Theme.of(context).colorScheme.onBackground,
-                        width: .8,
+                        width: borderSize,
                       ),
                     ),
                   ),

@@ -1,4 +1,6 @@
 
+import 'package:confesi/constants/shared/constants.dart';
+
 import '../button_touch_effects/touchable_opacity.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +20,7 @@ class EmblemButton extends StatelessWidget {
       onTap: () => onPress(),
       child: Container(
         decoration: BoxDecoration(
-          border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8,strokeAlign: BorderSide.strokeAlignInside),
+          border: Border.all(color: Theme.of(context).colorScheme.onBackground, width:borderSize,strokeAlign: BorderSide.strokeAlignInside),
           color: backgroundColor,
           shape: BoxShape.circle,
         ),

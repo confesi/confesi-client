@@ -71,7 +71,7 @@
 //                 padding: const EdgeInsets.all(15),
 //                 decoration: BoxDecoration(
 //                   color: Theme.of(context).colorScheme.surface,
-//                   border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
+//                   border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: borderSize),
 //                 ),
 //                 child: Column(
 //                   crossAxisAlignment: CrossAxisAlignment.start,

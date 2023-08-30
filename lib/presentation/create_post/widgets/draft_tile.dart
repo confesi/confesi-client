@@ -1,3 +1,5 @@
+import 'package:confesi/constants/shared/constants.dart';
+
 import '../../shared/other/widget_or_nothing.dart';
 import 'package:flutter/material.dart';
 
@@ -25,7 +27,7 @@ class DraftTile extends StatelessWidget {
           border: Border(
             bottom: BorderSide(
               color: Theme.of(context).colorScheme.onBackground,
-              width: 0.8,
+              width: borderSize,
             ),
           ),
         ),

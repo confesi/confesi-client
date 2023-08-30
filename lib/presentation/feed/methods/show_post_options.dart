@@ -34,8 +34,14 @@ void buildOptionsSheet(BuildContext context, PostWithMetadata post, {bool showSa
           icon: post.saved ? CupertinoIcons.bookmark_fill : CupertinoIcons.bookmark,
           onTap: () => verifiedUserOnly(
               context,
-              () =>
-                  Provider.of<GlobalContentService>(context, listen: false).updatePostSaved(post.post.id, !post.saved)),
+              () async => await Provider.of<GlobalContentService>(context, listen: false)
+                  .updatePostSaved(post.post.id, !post.saved)
+                  .then(
+                    (value) => value.fold(
+                      (_) => null,
+                      (err) => context.read<NotificationsCubit>().showErr(err),
+                    ),
+                  )),
         ),
       OptionButton(
         text: "Share",

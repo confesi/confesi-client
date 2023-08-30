@@ -1,4 +1,5 @@
 import 'package:confesi/application/user/cubit/quick_actions_cubit.dart';
+import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/services/primary_tab_service/primary_tab_service.dart';
 import 'package:confesi/core/styles/typography.dart';
 import 'package:confesi/core/utils/sizing/height_fraction.dart';
@@ -46,7 +47,7 @@ class SchoolDetail extends StatelessWidget {
                     border: Border(
                       top: BorderSide(
                         color: Theme.of(context).colorScheme.onBackground,
-                        width: 0.8,
+                        width: borderSize,
                       ),
                     ),
                   ),

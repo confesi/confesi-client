@@ -214,11 +214,11 @@ class _CommentTileState extends State<CommentTile> {
                             state.possibleReply is ReplyingToUser &&
                             (state.possibleReply as ReplyingToUser).replyingToCommentId ==
                                 widget.commentType.comment.comment.id
-                        ? Theme.of(context).colorScheme.surface // surface for highlight
-                        : Theme.of(context).colorScheme.shadow,
+                        ? Theme.of(context).colorScheme.shadow // shadow for highlight
+                        : Theme.of(context).colorScheme.background,
                     border: Border.all(
                       color: Theme.of(context).colorScheme.onBackground,
-                      width: 0.8,
+                      width: borderSize,
                       strokeAlign: BorderSide.strokeAlignCenter,
                     ),
                   ),

@@ -478,7 +478,6 @@ class SwipeRefreshState extends State<SwipeRefresh> with TickerProviderStateMixi
           }
           return true;
         }());
-        if (refreshResult == null) return;
         refreshResult.whenComplete(() {
           if (mounted && _mode == _RefreshIndicatorMode.refresh) {
             completer.complete();
@@ -581,7 +580,7 @@ class SwipeRefreshState extends State<SwipeRefresh> with TickerProviderStateMixi
                                 boxShadow: [
                                   BoxShadow(
                                     color: Theme.of(context).colorScheme.shadow,
-                                    blurRadius: 30,
+                                    blurRadius: 10,
                                     offset: const Offset(0, 0),
                                   ),
                                 ],

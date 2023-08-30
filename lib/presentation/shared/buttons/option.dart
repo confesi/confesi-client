@@ -1,3 +1,5 @@
+import 'package:confesi/constants/shared/constants.dart';
+
 import '../button_touch_effects/touchable_scale.dart';
 import 'package:flutter/material.dart';
 
@@ -33,7 +35,9 @@ class OptionButton extends StatelessWidget {
         width: double.infinity,
         decoration: BoxDecoration(
           border: Border.all(
-              color: Theme.of(context).colorScheme.onBackground, width: 0.8, strokeAlign: BorderSide.strokeAlignInside),
+              color: Theme.of(context).colorScheme.onBackground,
+              width: borderSize,
+              strokeAlign: BorderSide.strokeAlignInside),
           borderRadius: const BorderRadius.all(Radius.circular(15)),
           color: Theme.of(context).colorScheme.surface,
         ),

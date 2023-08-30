@@ -1,3 +1,4 @@
+import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/utils/verified_students/verified_user_only.dart';
 import 'package:flutter/services.dart';
 
@@ -81,7 +82,7 @@ class _ExpandableTextfieldState extends State<ExpandableTextfield> {
                     Radius.circular(Provider.of<UserAuthService>(context).data().componentCurviness.borderRadius)),
                 border: Border.all(
                   color: Theme.of(context).colorScheme.onBackground,
-                  width: 0.8,
+                  width: borderSize,
                   strokeAlign: BorderSide.strokeAlignInside,
                 ),
               ),

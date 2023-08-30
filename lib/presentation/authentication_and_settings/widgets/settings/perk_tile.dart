@@ -1,3 +1,4 @@
+import 'package:confesi/constants/shared/constants.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/styles/typography.dart';
@@ -22,7 +23,7 @@ class PerkTile extends StatelessWidget {
         // boxShadow: [BoxShadow(color: Theme.of(context).colorScheme.error, blurRadius: 10)],
         color: Theme.of(context).colorScheme.surface,
         borderRadius: const BorderRadius.all(Radius.circular(15)),
-        border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8,strokeAlign: BorderSide.strokeAlignInside),
+        border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: borderSize,strokeAlign: BorderSide.strokeAlignInside),
       ),
       child: ClipRRect(
         borderRadius: const BorderRadius.all(Radius.circular(15)),

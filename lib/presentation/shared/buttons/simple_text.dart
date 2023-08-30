@@ -1,3 +1,4 @@
+import 'package:confesi/constants/shared/constants.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/services/user_auth/user_auth_service.dart';
@@ -56,7 +57,7 @@ class SimpleTextButton extends StatelessWidget {
             decoration: BoxDecoration(
                 border: Border.all(
                     color: Theme.of(context).colorScheme.onBackground,
-                    width: 0.8,
+                    width: borderSize,
                     strokeAlign: BorderSide.strokeAlignInside),
                 color: bgColor ??
                     (secondaryColors

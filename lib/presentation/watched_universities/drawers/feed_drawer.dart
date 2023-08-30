@@ -1,3 +1,4 @@
+import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/services/global_content/global_content.dart';
 import 'package:confesi/core/services/posts_service/posts_service.dart';
 import 'package:confesi/models/school_with_metadata.dart';
@@ -42,7 +43,7 @@ class _FeedDrawerState extends State<FeedDrawer> {
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 border: Border(
-                  bottom: BorderSide(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
+                  bottom: BorderSide(color: Theme.of(context).colorScheme.onBackground, width: borderSize),
                 ),
               ),
               child: Column(
@@ -122,7 +123,7 @@ class _FeedDrawerState extends State<FeedDrawer> {
               Container(
                 decoration: BoxDecoration(
                   border: Border(
-                    bottom: BorderSide(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
+                    bottom: BorderSide(color: Theme.of(context).colorScheme.onBackground, width: borderSize),
                   ),
                 ),
               ),
@@ -132,7 +133,7 @@ class _FeedDrawerState extends State<FeedDrawer> {
                   Container(
                     decoration: BoxDecoration(
                       border: Border(
-                        bottom: BorderSide(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
+                        bottom: BorderSide(color: Theme.of(context).colorScheme.onBackground, width: borderSize),
                       ),
                     ),
                   ),
@@ -236,7 +237,10 @@ class _FeedDrawerState extends State<FeedDrawer> {
                     Provider.of<PostsService>(context, listen: false).reloadAllFeeds();
                   }
                 },
-                builder: (context, state) => buildChild(context, state),
+                builder: (context, state) => Container(
+                  color: Theme.of(context).colorScheme.background,
+                  child: buildChild(context, state),
+                ),
               ),
             ),
           ),

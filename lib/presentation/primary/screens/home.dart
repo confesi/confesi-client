@@ -96,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.background,
                   border: Border(
-                    top: BorderSide(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
+                    top: BorderSide(color: Theme.of(context).colorScheme.onBackground, width: 0.4),
                   ),
                 ),
                 child: SafeArea(

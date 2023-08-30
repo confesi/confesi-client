@@ -1,5 +1,6 @@
 import 'package:confesi/application/create_post/cubit/post_categories_cubit.dart';
 import 'package:confesi/application/user/cubit/notifications_cubit.dart';
+import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/services/creating_and_editing_posts_service/create_edit_posts_service.dart';
 import 'package:confesi/presentation/create_post/overlays/confetti_blaster.dart';
 import 'package:confesi/presentation/shared/text/disclaimer_text.dart';
@@ -132,7 +133,7 @@ class _CreatePostDetailsState extends State<CreatePostDetails> with AutomaticKee
                               border: Border(
                                 top: BorderSide(
                                   color: Theme.of(context).colorScheme.onBackground,
-                                  width: 0.8,
+                                  width: borderSize,
                                 ),
                               ),
                             ),

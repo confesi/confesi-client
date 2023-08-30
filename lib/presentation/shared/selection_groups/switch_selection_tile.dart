@@ -1,3 +1,4 @@
+import 'package:confesi/constants/shared/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
@@ -44,7 +45,7 @@ class _SwitchSelectionTileState extends State<SwitchSelectionTile> {
       margin: const EdgeInsets.only(top: 10),
       decoration: BoxDecoration(
         border: Border.all(
-            color: Theme.of(context).colorScheme.onBackground, width: 0.8, strokeAlign: BorderSide.strokeAlignInside),
+            color: Theme.of(context).colorScheme.onBackground, width: borderSize, strokeAlign: BorderSide.strokeAlignInside),
         color: widget.backgroundColor ?? Theme.of(context).colorScheme.background,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(widget.topRounded ? Provider.of<UserAuthService>(context).data().componentCurviness.borderRadius : 0),

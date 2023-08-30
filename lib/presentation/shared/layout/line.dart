@@ -1,3 +1,4 @@
+import 'package:confesi/constants/shared/constants.dart';
 import 'package:flutter/material.dart';
 
 class LineLayout extends StatelessWidget {
@@ -22,7 +23,7 @@ class LineLayout extends StatelessWidget {
       padding:
           EdgeInsets.only(left: horizontalPadding, right: horizontalPadding, top: topPadding, bottom: bottomPadding),
       child: Container(
-        height: 0.8,
+        height: borderSize,
         width: width,
         color: color,
       ),

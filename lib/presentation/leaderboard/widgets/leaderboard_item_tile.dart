@@ -1,3 +1,4 @@
+import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/router/go_router.dart';
 import 'package:confesi/models/school_with_metadata.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
@@ -49,8 +50,10 @@ class LeaderboardItemTile extends StatelessWidget {
         margin: const EdgeInsets.only(left: 15, right: 15, top: 10),
         decoration: BoxDecoration(
           border: Border.all(
-              color: Theme.of(context).colorScheme.onBackground, width: 0.8, strokeAlign: BorderSide.strokeAlignInside),
-          color: Theme.of(context).colorScheme.surface,
+              color: Theme.of(context).colorScheme.onBackground,
+              width: borderSize,
+              strokeAlign: BorderSide.strokeAlignInside),
+          color: Theme.of(context).colorScheme.background,
           borderRadius: BorderRadius.all(
               Radius.circular(Provider.of<UserAuthService>(context).data().componentCurviness.borderRadius)),
         ),

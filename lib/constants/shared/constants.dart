@@ -12,6 +12,8 @@ const bool debugMode = true;
 
 const int maxImagesPerPost = 5;
 
+const double borderSize = 0.6;
+
 const double imgBlurSigma = 15;
 
 const String walrusHeadImgPath = "assets/images/logos/walrus_head.png";

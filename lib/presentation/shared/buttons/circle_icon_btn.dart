@@ -1,3 +1,4 @@
+import 'package:confesi/constants/shared/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -38,7 +39,7 @@ class CircleIconBtn extends StatelessWidget {
         border: hasBorder
             ? Border.all(
                 color: Theme.of(context).colorScheme.onBackground,
-                width: 0.8,
+                width:borderSize,
                 strokeAlign: BorderSide.strokeAlignInside,
               )
             : null,

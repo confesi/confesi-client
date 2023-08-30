@@ -28,7 +28,7 @@ class AlertIndicator extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(15),
       child: Container(
-          constraints: BoxConstraints(maxWidth: widthFraction(context, .8)),
+          constraints: BoxConstraints(maxWidth: widthFraction(context, borderSize)),
           // Transparent hitbox trick.
           color: Colors.transparent,
           child: Center(

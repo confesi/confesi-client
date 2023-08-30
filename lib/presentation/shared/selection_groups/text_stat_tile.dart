@@ -1,3 +1,4 @@
+import 'package:confesi/constants/shared/constants.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/services/user_auth/user_auth_service.dart';
@@ -39,7 +40,7 @@ class _TextStatTileState extends State<TextStatTile> {
       decoration: BoxDecoration(
         color: widget.backgroundColor ?? Theme.of(context).colorScheme.background,
         border: Border.all(
-            color: Theme.of(context).colorScheme.onBackground, width: 0.8, strokeAlign: BorderSide.strokeAlignInside),
+            color: Theme.of(context).colorScheme.onBackground, width: borderSize, strokeAlign: BorderSide.strokeAlignInside),
         borderRadius: BorderRadius.all(Radius.circular(
             !widget.isSharing ? Provider.of<UserAuthService>(context).data().componentCurviness.borderRadius : 15)),
       ),

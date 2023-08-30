@@ -1,4 +1,5 @@
 
+import 'package:confesi/constants/shared/constants.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/services/user_auth/user_auth_service.dart';
@@ -41,7 +42,7 @@ class SettingTile extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
         decoration: BoxDecoration(
           border: Border.all(
-              color: Theme.of(context).colorScheme.onBackground, width: 0.8, strokeAlign: BorderSide.strokeAlignInside),
+              color: Theme.of(context).colorScheme.onBackground, width: borderSize, strokeAlign: BorderSide.strokeAlignInside),
           color: bgColor ?? Theme.of(context).colorScheme.background,
           borderRadius:  BorderRadius.all(Radius.circular(Provider.of<UserAuthService>(context).data().componentCurviness.borderRadius)),
         ),

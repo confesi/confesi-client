@@ -1,3 +1,4 @@
+import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/presentation/shared/behaviours/init_scale.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:flutter/gestures.dart';
@@ -96,7 +97,7 @@ class _SectionAccordianState extends State<SectionAccordian> {
             border: widget.topBorder
                 ? Border(
                     top: BorderSide(
-                      width: 0.8,
+                      width: borderSize,
                       color: Theme.of(context).colorScheme.onBackground,
                     ),
                   )
@@ -190,7 +191,7 @@ class _SectionAccordianState extends State<SectionAccordian> {
             border: widget.bottomBorder
                 ? Border(
                     bottom: BorderSide(
-                      width: 0.8,
+                      width: borderSize,
                       color: Theme.of(context).colorScheme.onBackground,
                     ),
                   )

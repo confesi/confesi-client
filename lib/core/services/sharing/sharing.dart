@@ -134,7 +134,7 @@ class Sharing {
                             color: Theme.of(context).colorScheme.background,
                             border: Border.all(
                               color: Theme.of(context).colorScheme.onBackground,
-                              width: 0.8,
+                              width: borderSize,
                               strokeAlign: BorderSide.strokeAlignInside,
                             ),
                             shape: BoxShape.circle),
@@ -181,7 +181,7 @@ class Sharing {
                     color: Theme.of(context).colorScheme.background,
                     border: Border.all(
                         color: Theme.of(context).colorScheme.onBackground,
-                        width: 0.8,
+                        width: borderSize,
                         strokeAlign: BorderSide.strokeAlignInside),
                     borderRadius: const BorderRadius.all(Radius.circular(15)),
                     boxShadow: [

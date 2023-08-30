@@ -1,3 +1,4 @@
+import 'package:confesi/constants/shared/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -57,7 +58,7 @@ class ReactionTileState extends State<ReactionTile> with SingleTickerProviderSta
       child: Icon(
         widget.icon,
         color: widget.isSelected ? widget.iconColor : Theme.of(context).colorScheme.onSurface,
-        size: 17,
+        size: 18,
       ),
     ));
 
@@ -91,6 +92,7 @@ class ReactionTileState extends State<ReactionTile> with SingleTickerProviderSta
           });
         },
         child: AnimatedContainer(
+          height: 50,
           duration: const Duration(milliseconds: 250),
           padding: EdgeInsets.only(
             top: 11,
@@ -103,7 +105,7 @@ class ReactionTileState extends State<ReactionTile> with SingleTickerProviderSta
                 ? null
                 : Border.all(
                     color: Theme.of(context).colorScheme.onBackground,
-                    width: 0.8,
+                    width: borderSize,
                   ),
             color: widget.simpleView ? Colors.transparent : Theme.of(context).colorScheme.surface,
             borderRadius: BorderRadius.all(Radius.circular(

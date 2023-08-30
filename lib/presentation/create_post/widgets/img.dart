@@ -4,6 +4,7 @@ import 'dart:math';
 import 'dart:ui' as ui;
 
 import 'package:confesi/application/user/cubit/notifications_cubit.dart';
+import 'package:confesi/constants/shared/constants.dart';
 
 import 'package:confesi/core/router/go_router.dart';
 import 'package:confesi/core/services/creating_and_editing_posts_service/create_edit_posts_service.dart';
@@ -453,7 +454,7 @@ class ImgState extends State<Img> {
               decoration: BoxDecoration(
                 border: Border.all(
                   color: Theme.of(context).colorScheme.onBackground,
-                  width: 0.8,
+                  width: borderSize,
                 ),
                 borderRadius: BorderRadius.circular(15),
               ),

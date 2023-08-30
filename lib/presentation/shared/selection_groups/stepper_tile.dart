@@ -1,3 +1,4 @@
+import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +34,7 @@ class _StepperTileState extends State<StepperTile> {
         margin: const EdgeInsets.only(top: 10),
         decoration: BoxDecoration(
           border: Border.all(
-              color: Theme.of(context).colorScheme.onBackground, width: 0.8, strokeAlign: BorderSide.strokeAlignInside),
+              color: Theme.of(context).colorScheme.onBackground, width:borderSize, strokeAlign: BorderSide.strokeAlignInside),
           color: Theme.of(context).colorScheme.background,
           borderRadius:  BorderRadius.all(
             Radius.circular(Provider.of<UserAuthService>(context).data().componentCurviness.borderRadius),

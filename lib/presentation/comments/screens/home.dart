@@ -244,7 +244,10 @@ class _CommentsHomeState extends State<CommentsHome> {
                   ),
                 ),
                 const SizedBox(height: 15),
-                ImgViewer(imgUrls: post.post.imgUrls, isBlurred: Provider.of<UserAuthService>(context, listen: true).data().blurImages, heroAnimPrefix: "comments_view"),
+                ImgViewer(
+                    imgUrls: post.post.imgUrls,
+                    isBlurred: Provider.of<UserAuthService>(context, listen: true).data().blurImages,
+                    heroAnimPrefix: "comments_view"),
               ],
             ),
           ),
@@ -512,7 +515,7 @@ class _CommentsHomeState extends State<CommentsHome> {
       child: KeyboardDismiss(
         child: Scaffold(
           resizeToAvoidBottomInset: true,
-          backgroundColor: Theme.of(ogContext).colorScheme.shadow,
+          backgroundColor: Theme.of(ogContext).colorScheme.background,
           body: Builder(builder: (context) {
             return BlocConsumer<IndividualPostCubit, IndividualPostState>(
               listenWhen: (previous, current) => previous is IndividualPostLoading && current is IndividualPostData,

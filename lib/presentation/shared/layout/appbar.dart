@@ -1,3 +1,5 @@
+import 'package:confesi/constants/shared/constants.dart';
+
 import '../../../core/router/go_router.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -126,7 +128,7 @@ class _AppbarLayoutState extends State<AppbarLayout> {
           border: Border(
             bottom: BorderSide(
               color: widget.bottomBorder ? Theme.of(context).colorScheme.onBackground : Colors.transparent,
-              width: .8,
+              width: borderSize,
             ),
           ),
         ),

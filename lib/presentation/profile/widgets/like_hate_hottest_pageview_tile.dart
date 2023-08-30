@@ -1,3 +1,5 @@
+import 'package:confesi/constants/shared/constants.dart';
+
 import '../../../core/styles/typography.dart';
 import '../../../core/utils/numbers/is_plural.dart';
 import '../../shared/other/widget_or_nothing.dart';
@@ -31,7 +33,7 @@ class LikeHateHottestPageviewTile extends StatelessWidget {
         borderRadius: const BorderRadius.all(Radius.circular(20)),
         color: Theme.of(context).colorScheme.background,
         border: Border.all(
-            color: Theme.of(context).colorScheme.onBackground, width: 0.8, strokeAlign: BorderSide.strokeAlignInside),
+            color: Theme.of(context).colorScheme.onBackground, width: borderSize, strokeAlign: BorderSide.strokeAlignInside),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

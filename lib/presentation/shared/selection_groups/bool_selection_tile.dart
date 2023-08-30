@@ -1,3 +1,4 @@
+import 'package:confesi/constants/shared/constants.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/services/user_auth/user_auth_service.dart';
@@ -46,7 +47,7 @@ class _BoolSelectionTileState extends State<BoolSelectionTile> {
         margin: const EdgeInsets.only(top: 10),
         decoration: BoxDecoration(
           color: widget.backgroundColor ?? Theme.of(context).colorScheme.background,
-          border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: 0.8),
+          border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: borderSize),
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(
                 widget.topRounded ? Provider.of<UserAuthService>(context).data().componentCurviness.borderRadius : 0),

@@ -1,3 +1,4 @@
+import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:provider/provider.dart';
 
@@ -7,18 +8,20 @@ import 'package:flutter/material.dart';
 
 class RectangleTile extends StatefulWidget {
   const RectangleTile({
-    super.key,
+    Key? key,
     required this.leftText,
     required this.rightText,
     this.backgroundColor,
     this.foregroundColor,
     this.secondaryColor,
-    required this.icon,
+    required this.leftIcon,
+    required this.rightIcon,
     required this.onLeftTap,
     required this.onRightTap,
-  });
+  }) : super(key: key);
 
-  final IconData icon;
+  final IconData leftIcon;
+  final IconData rightIcon;
   final String leftText;
   final String rightText;
   final Color? backgroundColor;
@@ -39,9 +42,15 @@ class _RectangleTileState extends State<RectangleTile> {
       decoration: BoxDecoration(
         color: widget.backgroundColor ?? Theme.of(context).colorScheme.background,
         border: Border.all(
-            color: Theme.of(context).colorScheme.onBackground, width: 0.8, strokeAlign: BorderSide.strokeAlignInside),
+          color: Theme.of(context).colorScheme.onBackground,
+          width: borderSize,
+          strokeAlign: BorderSide.strokeAlignInside,
+        ),
         borderRadius: BorderRadius.all(
-            Radius.circular(Provider.of<UserAuthService>(context).data().componentCurviness.borderRadius)),
+          Radius.circular(
+            Provider.of<UserAuthService>(context).data().componentCurviness.borderRadius,
+          ),
+        ),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 15),
@@ -49,15 +58,14 @@ class _RectangleTileState extends State<RectangleTile> {
           children: [
             Expanded(
               child: TouchableScale(
-                onTap: () => widget.onLeftTap(),
+                onTap: widget.onLeftTap,
                 child: Container(
-                  // transparent hitbox trick
-                  color: Colors.transparent,
+                  color: Colors.transparent, // transparent hitbox trick
                   child: Column(
                     children: [
                       Icon(
-                        widget.icon,
-                        color: Theme.of(context).colorScheme.secondary,
+                        widget.leftIcon,
+                        color: widget.secondaryColor ?? Theme.of(context).colorScheme.secondary,
                       ),
                       const SizedBox(height: 10),
                       Text(
@@ -75,15 +83,14 @@ class _RectangleTileState extends State<RectangleTile> {
             const SizedBox(width: 5),
             Expanded(
               child: TouchableScale(
-                onTap: () => widget.onRightTap(),
+                onTap: widget.onRightTap,
                 child: Container(
-                  // transparent hitbox trick
-                  color: Colors.transparent,
+                  color: Colors.transparent, // transparent hitbox trick
                   child: Column(
                     children: [
                       Icon(
-                        widget.icon,
-                        color: Theme.of(context).colorScheme.secondary,
+                        widget.rightIcon,
+                        color: widget.secondaryColor ?? Theme.of(context).colorScheme.secondary,
                       ),
                       const SizedBox(height: 10),
                       Text(

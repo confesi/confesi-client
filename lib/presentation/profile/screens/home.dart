@@ -1,3 +1,5 @@
+import 'package:confesi/constants/shared/constants.dart';
+
 import '../../../core/router/go_router.dart';
 
 import '../../../core/utils/sizing/height_fraction.dart';
@@ -75,7 +77,7 @@ class _ProfileHomeState extends State<ProfileHome> with AutomaticKeepAliveClient
                     color: Theme.of(context).colorScheme.background,
                     border: Border.all(
                         color: Theme.of(context).colorScheme.onBackground,
-                        width: 0.8,
+                        width: borderSize,
                         strokeAlign: BorderSide.strokeAlignInside),
                   ),
                   child: Row(

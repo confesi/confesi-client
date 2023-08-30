@@ -1,3 +1,5 @@
+import 'package:confesi/constants/shared/constants.dart';
+
 import '../../../core/styles/typography.dart';
 import '../../shared/button_touch_effects/touchable_opacity.dart';
 import '../../shared/buttons/option.dart';
@@ -63,7 +65,7 @@ class _SimpleCommentSortState extends State<SimpleCommentSort> {
         border: Border(
           top: BorderSide(
             color: Theme.of(context).colorScheme.onBackground,
-            width: 0.8,
+            width: borderSize,
           ),
         ),
       ),

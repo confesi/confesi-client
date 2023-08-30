@@ -72,7 +72,7 @@ class CachedOnlineImageState extends State<CachedOnlineImage> with TickerProvide
         borderRadius: BorderRadius.circular(15),
         border: Border.all(
           color: Theme.of(context).colorScheme.onBackground,
-          width: 0.8,
+          width: borderSize,
         ),
         color: Theme.of(context).colorScheme.surface,
       ),

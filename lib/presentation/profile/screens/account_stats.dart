@@ -114,14 +114,16 @@ class _AccountProfileStatsState extends State<AccountProfileStats> {
                               RectangleTile(
                                 onLeftTap: () => router.push('/home/profile/saved/comments'),
                                 onRightTap: () => router.push('/home/profile/saved/posts'),
-                                icon: CupertinoIcons.bookmark,
+                                leftIcon: CupertinoIcons.chat_bubble_2,
+                                rightIcon: CupertinoIcons.cube_box,
                                 leftText: "Saved comments",
                                 rightText: "Saved confessions",
                               ),
                               RectangleTile(
                                 onLeftTap: () => router.push('/home/profile/comments'),
                                 onRightTap: () => router.push('/home/profile/posts'),
-                                icon: CupertinoIcons.cube_box,
+                                leftIcon: CupertinoIcons.chat_bubble_2,
+                                rightIcon: CupertinoIcons.cube_box,
                                 leftText: "Your comments",
                                 rightText: "Your confessions",
                               ),

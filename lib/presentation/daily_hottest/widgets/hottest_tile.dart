@@ -1,3 +1,4 @@
+import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/models/post.dart';
 import 'package:confesi/presentation/shared/behaviours/init_scale.dart';
 import 'package:confesi/presentation/shared/other/cached_online_image.dart';
@@ -48,12 +49,10 @@ class _HottestTileState extends State<HottestTile> {
                     curve: Curves.decelerate,
                     height: isSelected ? constraints.maxHeight : constraints.maxHeight * .92,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(
-                          Provider.of<UserAuthService>(context).data().componentCurviness.borderRadius)),
                       color: Theme.of(context).colorScheme.background,
                       border: Border.all(
                         color: Theme.of(context).colorScheme.onBackground,
-                        width: 0.8,
+                        width: borderSize,
                         strokeAlign: BorderSide.strokeAlignInside,
                       ),
                     ),
@@ -63,8 +62,6 @@ class _HottestTileState extends State<HottestTile> {
                         Container(
                           width: double.infinity,
                           decoration: BoxDecoration(
-                            borderRadius:
-                                const BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
                             color: Theme.of(context).colorScheme.secondary,
                           ),
                           padding: const EdgeInsets.all(10),
@@ -79,11 +76,7 @@ class _HottestTileState extends State<HottestTile> {
                           child: AnimatedContainer(
                             duration: const Duration(milliseconds: 250),
                             width: double.infinity,
-                            child: ClipRRect(
-                              borderRadius: const BorderRadius.only(
-                                  bottomLeft: Radius.circular(5), bottomRight: Radius.circular(5)),
-                              child: CachedOnlineImage(url: widget.post.post.school.imgUrl),
-                            ),
+                            child: CachedOnlineImage(url: widget.post.post.school.imgUrl),
                           ),
                         ),
                         Expanded(

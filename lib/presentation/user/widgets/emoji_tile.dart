@@ -1,3 +1,4 @@
+import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/styles/typography.dart';
 import 'package:confesi/presentation/shared/behaviours/init_scale.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
@@ -20,7 +21,7 @@ class EmojiTile extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border.all(
             color: Theme.of(context).colorScheme.onBackground,
-            width: 0.8,
+            width: borderSize,
           ),
           color: Theme.of(context).colorScheme.background,
           borderRadius: const BorderRadius.all(Radius.circular(15)),

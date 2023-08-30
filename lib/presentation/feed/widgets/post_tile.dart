@@ -28,175 +28,153 @@ class PostTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => router.push("/home/posts/comments", extra: HomePostsCommentsProps(PreloadedPost(post, false))),
-      child: Padding(
-        padding: const EdgeInsets.only(top: 15),
-        child: Container(
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.background,
-            border: Border(
-              top: BorderSide(
-                color: Theme.of(context).colorScheme.onBackground,
-                width: 0.8,
-                style: BorderStyle.solid,
-                strokeAlign: BorderSide.strokeAlignCenter,
-              ),
-              bottom: BorderSide(
-                color: Theme.of(context).colorScheme.onBackground,
-                width: 0.8,
-                style: BorderStyle.solid,
-                strokeAlign: BorderSide.strokeAlignCenter,
-              ),
-              left: BorderSide(
-                color: Theme.of(context).colorScheme.onBackground,
-                width: 0.8,
-                style: BorderStyle.solid,
-                strokeAlign: BorderSide.strokeAlignCenter,
-              ),
-              right: BorderSide(
-                color: Theme.of(context).colorScheme.onBackground,
-                width: 0.8,
-                style: BorderStyle.solid,
-                strokeAlign: BorderSide.strokeAlignCenter,
-              ),
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.background,
+          border: Border(
+            // top: BorderSide(
+            //   color: Theme.of(context).colorScheme.onBackground,
+            //   width: borderSize,
+            //   style: BorderStyle.solid,
+            // ),
+            bottom: BorderSide(
+              color: Theme.of(context).colorScheme.onBackground,
+              width: borderSize,
+              style: BorderStyle.solid,
             ),
           ),
-          child: ClipRRect(
-            borderRadius: const BorderRadius.all(Radius.circular(15)),
-            child: Stack(
-              children: [
-                Visibility(
-                  visible: Provider.of<UserAuthService>(context).data().categorySplashes,
-                  child: Positioned(
-                    bottom: -75,
-                    right: -75,
-                    child: Icon(
-                      postCategoryToIcon(post.post.category.category),
-                      // color: Colors.transparent,
-                      color: Theme.of(context).colorScheme.secondary.withOpacity(1),
-                      size: 250,
-                    ),
+        ),
+        child: ClipRRect(
+          borderRadius: const BorderRadius.all(Radius.circular(15)),
+          child: Stack(
+            children: [
+              Visibility(
+                visible: Provider.of<UserAuthService>(context).data().categorySplashes,
+                child: Positioned(
+                  bottom: -75,
+                  right: -75,
+                  child: Icon(
+                    postCategoryToIcon(post.post.category.category),
+                    // color: Colors.transparent,
+                    color: Theme.of(context).colorScheme.secondary.withOpacity(1),
+                    size: 250,
                   ),
                 ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                  color: Theme.of(context).colorScheme.onBackground,
-                                  width: 0.8,
-                                  style: BorderStyle.solid,
-                                ),
-                              ),
-                              color: Theme.of(context).colorScheme.background,
-                            ),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "${post.post.school.name}${buildFaculty(post)}${buildYear(post)}",
-                                        style: kDetail.copyWith(
-                                          color: Theme.of(context).colorScheme.secondary,
-                                        ),
-                                        textAlign: TextAlign.left,
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.background,
+                          ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "${post.post.school.name}${buildFaculty(post)}${buildYear(post)}",
+                                      style: kDetail.copyWith(
+                                        color: Theme.of(context).colorScheme.secondary,
                                       ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start, // adjust this as per your alignment preference
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center, // adjust this too as per your needs
-                                        children: <Widget>[
+                                      textAlign: TextAlign.left,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start, // adjust this as per your alignment preference
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center, // adjust this too as per your needs
+                                      children: <Widget>[
+                                        Text(
+                                          "${timeAgoFromMicroSecondUnixTime(post.post.createdAt)}${post.emojis.isNotEmpty ? " • ${post.emojis.map((e) => e).join("")}" : ""}",
+                                          style: kDetail.copyWith(
+                                            color: Theme.of(context).colorScheme.tertiary,
+                                          ),
+                                        ),
+                                        if (post.post.edited) ...[
+                                          // using spread operator to conditionally render widgets
+                                          const SizedBox(width: 5), // add some space between text widgets
                                           Text(
-                                            "${timeAgoFromMicroSecondUnixTime(post.post.createdAt)}${post.emojis.isNotEmpty ? " • ${post.emojis.map((e) => e).join("")}" : ""}",
+                                            "Edited",
                                             style: kDetail.copyWith(
-                                              color: Theme.of(context).colorScheme.tertiary,
+                                              color: Theme.of(context).colorScheme.onSurface,
                                             ),
                                           ),
-                                          if (post.post.edited) ...[
-                                            // using spread operator to conditionally render widgets
-                                            const SizedBox(width: 5), // add some space between text widgets
-                                            Text(
-                                              "Edited",
-                                              style: kDetail.copyWith(
-                                                color: Theme.of(context).colorScheme.onSurface,
-                                              ),
-                                            ),
-                                          ],
                                         ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                TouchableOpacity(
-                                  onTap: () => buildOptionsSheet(context, post, showSaved: false),
-                                  child: Container(
-                                    color: Colors.transparent,
-                                    child: Icon(
-                                      CupertinoIcons.ellipsis_circle,
-                                      color: Theme.of(context).colorScheme.primary,
+                                      ],
                                     ),
+                                  ],
+                                ),
+                              ),
+                              TouchableOpacity(
+                                onTap: () => buildOptionsSheet(context, post, showSaved: false),
+                                child: Container(
+                                  color: Colors.transparent,
+                                  child: Icon(
+                                    CupertinoIcons.ellipsis_circle,
+                                    color: Theme.of(context).colorScheme.primary,
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 15, right: 15, top: 15),
-                            child: Text(
-                              truncateText(post.post.title.isEmpty ? post.post.content : post.post.title,
-                                  postTitlePreviewLength),
-                              style: kDisplay1.copyWith(
-                                color: Theme.of(context).colorScheme.primary,
-                                fontSize: kDisplay1.fontSize! *
-                                    Provider.of<UserAuthService>(context).data().textSize.multiplier,
                               ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 15, right: 15, top: 15),
+                          child: Text(
+                            truncateText(
+                                post.post.title.isEmpty ? post.post.content : post.post.title, postTitlePreviewLength),
+                            style: kDisplay1.copyWith(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontSize: kDisplay1.fontSize! *
+                                  Provider.of<UserAuthService>(context).data().textSize.multiplier,
                             ),
                           ),
-                          WidgetOrNothing(
-                            showWidget: post.post.title.isNotEmpty && post.post.content.isNotEmpty,
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                                  child: Text(
-                                    truncateText(post.post.content, postBodyPreviewLength),
-                                    style: kBody.copyWith(
-                                      color: Theme.of(context).colorScheme.primary,
-                                      fontSize: kBody.fontSize! *
-                                          Provider.of<UserAuthService>(context).data().textSize.multiplier,
-                                    ),
-                                    textAlign: TextAlign.left,
+                        ),
+                        WidgetOrNothing(
+                          showWidget: post.post.title.isNotEmpty && post.post.content.isNotEmpty,
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 15),
+                                child: Text(
+                                  truncateText(post.post.content, postBodyPreviewLength),
+                                  style: kBody.copyWith(
+                                    color: Theme.of(context).colorScheme.primary,
+                                    fontSize: kBody.fontSize! *
+                                        Provider.of<UserAuthService>(context).data().textSize.multiplier,
                                   ),
+                                  textAlign: TextAlign.left,
                                 ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(height: post.post.imgUrls.isEmpty ? 15 : 0),
-                          WidgetOrNothing(
-                            showWidget: post.post.imgUrls.isNotEmpty,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 15),
-                              child: ImgViewer(
-                                imgUrls: post.post.imgUrls,
-                                isBlurred: Provider.of<UserAuthService>(context, listen: true).data().blurImages,
-                                heroAnimPrefix: "post_tile",
                               ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: post.post.imgUrls.isEmpty ? 15 : 0),
+                        WidgetOrNothing(
+                          showWidget: post.post.imgUrls.isNotEmpty,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 15),
+                            child: ImgViewer(
+                              imgUrls: post.post.imgUrls,
+                              isBlurred: Provider.of<UserAuthService>(context, listen: true).data().blurImages,
+                              heroAnimPrefix: "post_tile",
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
+                          child: IntrinsicHeight(
                             child: Row(
                               children: [
                                 Expanded(
@@ -267,13 +245,13 @@ class PostTile extends StatelessWidget {
                               ],
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ],
-            ),
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ),
