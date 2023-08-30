@@ -86,7 +86,7 @@ class UserAuthData extends HiveObject with UserAuthState {
     this.defaultPostFeed = DefaultPostFeed.trending,
     this.textSize = TextSize.regular,
     this.componentCurviness = ComponentCurviness.regular,
-    this.categorySplashes = true,
+    this.categorySplashes = false,
     this.blurImages = false,
   });
 }

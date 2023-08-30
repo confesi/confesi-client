@@ -116,7 +116,7 @@ Future<void> init() async {
 
   //! Services
   UserAuthService userAuthService = UserAuthService(sl());
-  GlobalContentService globalContentService = GlobalContentService(Api(), Api(), Api());
+  GlobalContentService globalContentService = GlobalContentService(Api(), Api(), Api(), Api());
   PostsService postsService = PostsService(Api(), Api(), Api());
   CreateCommentService createCommentService = CreateCommentService();
   PrimaryTabControllerService primaryTabControllerService = PrimaryTabControllerService();

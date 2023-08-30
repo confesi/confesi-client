@@ -17,6 +17,8 @@ class PostWithMetadata {
   Post post;
   int userVote;
   bool owner;
+  bool saved;
+  bool reported;
   List<String> emojis;
 
   PostWithMetadata({
@@ -24,14 +26,37 @@ class PostWithMetadata {
     required this.userVote,
     required this.owner,
     required this.emojis,
+    required this.saved,
+    required this.reported,
   });
 
   factory PostWithMetadata.fromJson(Map<String, dynamic> json) => PostWithMetadata(
         post: Post.fromJson(json["post"]),
+        saved: json["saved"],
+        reported: json["reported"],
         userVote: json["user_vote"],
         owner: json["owner"],
         emojis: List<String>.from(json["emojis"].map((x) => x)).toList(),
       );
+
+  // make a copyWith method for the PostWithMetadata
+  PostWithMetadata copyWith({
+    Post? post,
+    int? userVote,
+    bool? owner,
+    bool? saved,
+    bool? reported,
+    List<String>? emojis,
+  }) {
+    return PostWithMetadata(
+      post: post ?? this.post,
+      userVote: userVote ?? this.userVote,
+      owner: owner ?? this.owner,
+      saved: saved ?? this.saved,
+      reported: reported ?? this.reported,
+      emojis: emojis ?? this.emojis,
+    );
+  }
 }
 
 class Post {

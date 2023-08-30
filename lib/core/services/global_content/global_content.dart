@@ -16,8 +16,9 @@ class GlobalContentService extends ChangeNotifier {
   final Api _voteApi;
   final Api _setHomeApi;
   final Api _watchedSchoolApi;
+  final Api _saveApi;
 
-  GlobalContentService(this._voteApi, this._watchedSchoolApi, this._setHomeApi);
+  GlobalContentService(this._voteApi, this._watchedSchoolApi, this._setHomeApi, this._saveApi);
 
   // LinkedHashMap of int id key to Post type value
   LinkedHashMap<EncryptedId, PostWithMetadata> posts = LinkedHashMap<EncryptedId, PostWithMetadata>();
@@ -69,6 +70,47 @@ class GlobalContentService extends ChangeNotifier {
       repliesPerCommentThread[rootComment] = replies;
     }
     notifyListeners();
+  }
+
+  void _setSavedStatus(String contentType, EncryptedId contentId, bool saved) {
+    if (contentType == "post") {
+      sl.get<GlobalContentService>().setPost(posts[contentId]!..saved = saved);
+    } else if (contentType == "comment") {
+      sl.get<GlobalContentService>().setComment(comments[contentId]!..saved = saved);
+    }
+  }
+
+  Future<Either<ApiSuccess, String>> updatePostSaved(EncryptedId postId, bool save) async =>
+      await _saveInternal("post", postId, save);
+
+  Future<Either<ApiSuccess, String>> updateCommentSaved(EncryptedId commentId, bool save) async =>
+      await _saveInternal("comment", commentId, save);
+
+  Future<Either<ApiSuccess, String>> _saveInternal(String contentType, EncryptedId contentId, bool save) async {
+    final oldSavedStatus = !save;
+    _saveApi.cancelCurrReq();
+    // eargerly set saved
+    _setSavedStatus(contentType, contentId, save);
+    final response = await _saveApi.req(
+      save ? Verb.post : Verb.delete,
+      true,
+      "/api/v1/saves/${save ? "save" : "unsave"}",
+      {"content_id": contentId.mid, "content_type": contentType},
+    );
+    return response.fold(
+      (failureWithMsg) {
+        _setSavedStatus(contentType, contentId, oldSavedStatus);
+        return Right(failureWithMsg.msg());
+      },
+      (response) {
+        if (response.statusCode.toString()[0] != "2") {
+          _setSavedStatus(contentType, contentId, oldSavedStatus);
+          return const Right("TODO: error");
+        } else {
+          return Left(ApiSuccess());
+        }
+      },
+    );
   }
 
   Future<Either<ApiSuccess, String>> setHome(SchoolWithMetadata school) async {

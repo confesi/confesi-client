@@ -140,7 +140,7 @@ class PostTile extends StatelessWidget {
                                   ),
                                 ),
                                 TouchableOpacity(
-                                  onTap: () => buildOptionsSheet(context, post),
+                                  onTap: () => buildOptionsSheet(context, post, showSaved: false),
                                   child: Container(
                                     color: Colors.transparent,
                                     child: Icon(
@@ -210,6 +210,24 @@ class PostTile extends StatelessWidget {
                                         context,
                                         () => router.push("/home/posts/comments",
                                             extra: HomePostsCommentsProps(PreloadedPost(post, true)))),
+                                  ),
+                                ),
+                                const SizedBox(width: 15),
+                                Expanded(
+                                  child: ReactionTile(
+                                    onTap: () async => verifiedUserOnly(
+                                        context,
+                                        () async => await Provider.of<GlobalContentService>(context, listen: false)
+                                            .updatePostSaved(post.post.id, !post.saved)
+                                            .then(
+                                              (value) => value.fold(
+                                                (_) => null,
+                                                (err) => context.read<NotificationsCubit>().showErr(err),
+                                              ),
+                                            )),
+                                    icon: post.saved ? CupertinoIcons.bookmark_fill : CupertinoIcons.bookmark,
+                                    iconColor: Theme.of(context).colorScheme.secondary,
+                                    isSelected: post.saved,
                                   ),
                                 ),
                                 const SizedBox(width: 15),

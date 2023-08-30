@@ -39,16 +39,22 @@ class CommentWithMetadata {
   Comment comment;
   int userVote;
   bool owner;
+  bool saved;
+  bool reported;
 
   CommentWithMetadata({
     required this.comment,
     required this.userVote,
     required this.owner,
+    required this.saved,
+    required this.reported,
   });
 
   factory CommentWithMetadata.fromJson(Map<String, dynamic> json) => CommentWithMetadata(
         comment: Comment.fromJson(json["comment"]),
         userVote: json["user_vote"],
+        reported: json["reported"],
+        saved: json["saved"],
         owner: json["owner"],
       );
 
@@ -69,11 +75,15 @@ class CommentWithMetadata {
     Comment? comment,
     int? userVote,
     bool? owner,
+    bool? saved,
+    bool? reported,
   }) {
     return CommentWithMetadata(
       comment: comment ?? this.comment,
       userVote: userVote ?? this.userVote,
       owner: owner ?? this.owner,
+      saved: saved ?? this.saved,
+      reported: reported ?? this.reported,
     );
   }
 }

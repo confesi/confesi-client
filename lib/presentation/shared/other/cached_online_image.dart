@@ -85,20 +85,27 @@ class CachedOnlineImageState extends State<CachedOnlineImage> with TickerProvide
               _blurAnimationController.forward();
               widget.onBlur!(false);
             },
-            child: Text(
-              "Temporary unblur 👀",
-              style: kTitle.copyWith(
-                color: Theme.of(context).colorScheme.secondary,
+            child: Container(
+              padding: const EdgeInsets.all(15),
+              color: Colors.transparent,
+              child: Text(
+                "Temporarily unblur 👀",
+                style: kTitle.copyWith(
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
               ),
             ),
           ),
-          const SizedBox(height: 15),
           TouchableScale(
             onTap: () => router.push('/settings/filters'),
-            child: Text(
-              "Update blur settings ->",
-              style: kBody.copyWith(
-                color: Theme.of(context).colorScheme.onSurface,
+            child: Container(
+              padding: const EdgeInsets.all(15),
+              color: Colors.transparent,
+              child: Text(
+                "Update safety settings ->",
+                style: kBody.copyWith(
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
               ),
             ),
           ),

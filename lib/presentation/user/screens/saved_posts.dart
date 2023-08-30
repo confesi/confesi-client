@@ -44,7 +44,7 @@ class _YourSavedPostsScreenState extends State<YourSavedPostsScreen> {
           ..items = (state.postIds
               .map((postId) {
                 final post = Provider.of<GlobalContentService>(context).posts[postId];
-                return post != null
+                return post != null && post.saved // Added check here
                     ? InfiniteScrollIndexable(
                         postId,
                         PostTile(post: post),
