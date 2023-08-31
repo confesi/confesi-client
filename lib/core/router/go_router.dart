@@ -2,6 +2,8 @@ import 'package:confesi/models/post.dart';
 import 'package:confesi/models/school_with_metadata.dart';
 import 'package:confesi/presentation/authentication_and_settings/screens/settings/acknowledgements.dart';
 import 'package:confesi/presentation/authentication_and_settings/screens/settings/filters.dart';
+import 'package:confesi/presentation/chat/screens/chat.dart';
+import 'package:confesi/presentation/chat/screens/rooms.dart';
 import 'package:confesi/presentation/comments/screens/home.dart';
 import 'package:confesi/presentation/feed/widgets/img_viewer.dart';
 import 'package:confesi/presentation/notifications/screens/home.dart';
@@ -210,6 +212,11 @@ final GoRouter router = GoRouter(
     ),
 
     GoRoute(path: "/home/emojis", builder: (BuildContext context, GoRouterState state) => const EmojisScreen()),
+    GoRoute(path: "/home/rooms", builder: (BuildContext context, GoRouterState state) => const RoomsScreen()),
+    GoRoute(
+        path: "/home/rooms/chat",
+        builder: (BuildContext context, GoRouterState state) => const ChatScreen(initialChats: [])),
+
     GoRoute(
         path: '/home/profile/account',
         builder: (BuildContext context, GoRouterState state) => const AccountDetailsScreen()),

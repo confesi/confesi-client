@@ -1,3 +1,4 @@
+import 'package:confesi/core/router/go_router.dart';
 import 'package:confesi/models/encrypted_id.dart';
 import 'package:confesi/models/school_with_metadata.dart';
 import 'package:confesi/presentation/shared/other/widget_or_nothing.dart';
@@ -150,8 +151,10 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
             child: Column(
               children: [
                 AppbarLayout(
+                  leftIconOnPress: () => router.push("/home/rooms"),
+                  leftIcon: CupertinoIcons.paperplane,
+                  leftIconVisible: true,
                   bottomBorder: true,
-                  leftIconVisible: false,
                   centerWidget: Text(
                     "School Leaderboard",
                     style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
