@@ -25,9 +25,8 @@ import '../../shared/selection_groups/rectangle_selection_tile.dart';
 import '../../shared/selection_groups/text_stat_tile.dart';
 
 String percentToRelativeMsg(num percentage) {
-  percentage = 1 - percentage;
-  // cap percent at 1% at best
-  if (percentage < 0.01) {
+  // cap percent at 1% at worst
+  if (percentage <= 0.01 || percentage >= 0.99) {
     percentage = 0.01;
   }
 

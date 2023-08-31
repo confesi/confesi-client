@@ -1,4 +1,6 @@
 import 'package:confesi/models/encrypted_id.dart';
+import 'package:confesi/models/school_with_metadata.dart';
+import 'package:confesi/presentation/shared/other/widget_or_nothing.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/services/global_content/global_content.dart';
@@ -51,22 +53,30 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
 
   Widget buildChild(BuildContext context, LeaderboardState state) {
     if (state is LeaderboardData) {
+      SchoolWithMetadata? school = Provider.of<GlobalContentService>(context).schools[state.userSchoolId];
       return FeedList(
         header: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 15),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: Text(
-                "Your school",
-                style: kDisplay1.copyWith(color: Theme.of(context).colorScheme.primary),
-                textAlign: TextAlign.left,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            const SizedBox(height: 5),
-            LeaderboardItemTile(school: Provider.of<GlobalContentService>(context).schools[state.userSchoolId]!),
+            WidgetOrNothing(
+                showWidget: school != null,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 15),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: Text(
+                        "Your school",
+                        style: kDisplay1.copyWith(color: Theme.of(context).colorScheme.primary),
+                        textAlign: TextAlign.left,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    const SizedBox(height: 5),
+                    if (school != null) LeaderboardItemTile(school: school) else const SizedBox.shrink()
+                  ],
+                )),
             const SizedBox(height: 15),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -153,7 +163,6 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                   rightIconOnPress: () => scrolledDownFromTop
                       ? controller.scrollToTop()
                       : showInfoSheet(context, kLeaderboardInfoHeader, kLeaderboardInfoBody),
-                  // todo: icon here to open a random school?
                 ),
                 Expanded(
                   child: BlocBuilder<LeaderboardCubit, LeaderboardState>(
