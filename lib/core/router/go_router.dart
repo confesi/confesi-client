@@ -1,4 +1,5 @@
 import 'package:confesi/models/post.dart';
+import 'package:confesi/models/room.dart';
 import 'package:confesi/models/school_with_metadata.dart';
 import 'package:confesi/presentation/authentication_and_settings/screens/settings/acknowledgements.dart';
 import 'package:confesi/presentation/authentication_and_settings/screens/settings/filters.dart';
@@ -215,7 +216,10 @@ final GoRouter router = GoRouter(
     GoRoute(path: "/home/rooms", builder: (BuildContext context, GoRouterState state) => const RoomsScreen()),
     GoRoute(
         path: "/home/rooms/chat",
-        builder: (BuildContext context, GoRouterState state) => const ChatScreen(initialChats: [])),
+        builder: (BuildContext context, GoRouterState state) {
+          ChatProps props = state.extra as ChatProps;
+          return ChatScreen(props: props);
+        }),
 
     GoRoute(
         path: '/home/profile/account',
@@ -317,6 +321,12 @@ class CreateProps {
   final GenericPost post;
 
   const CreateProps(this.post);
+}
+
+class ChatProps {
+  final String roomId;
+
+  const ChatProps(this.roomId);
 }
 
 //! Editing post props

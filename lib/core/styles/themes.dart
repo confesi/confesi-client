@@ -20,7 +20,7 @@ class AppTheme {
       background: Color.fromARGB(255, 30, 34, 43),
       onBackground: Color.fromARGB(255, 76, 82, 102),
       surface: Color.fromARGB(255, 38, 44, 58),
-      onSurface: Color.fromARGB(255, 73, 95, 120),
+      onSurface: Color.fromARGB(255, 78, 102, 128),
       shadow: Color.fromARGB(255, 26, 27, 36), // Color.fromARGB(255, 26, 27, 36)
       primaryContainer: Color(0xff333333),
       secondaryContainer: Color(0xfffde5b6),

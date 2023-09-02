@@ -12,6 +12,7 @@ import 'package:confesi/core/services/create_comment_service/create_comment_serv
 import 'package:confesi/core/services/fcm_notifications/notification_table.dart';
 import 'package:confesi/core/services/fcm_notifications/token_data.dart';
 import 'package:confesi/core/services/global_content/global_content.dart';
+import 'package:confesi/core/services/rooms/rooms_service.dart';
 import 'package:confesi/core/utils/funcs/debouncer.dart';
 import 'package:confesi/presentation/create_post/overlays/confetti_blaster.dart';
 import 'package:uuid/uuid.dart';
@@ -143,6 +144,9 @@ Future<void> init() async {
   sl.registerLazySingleton(() => CreatePostHintManager());
   sl.registerLazySingleton(() => SplashScreenHintManager());
   sl.registerLazySingleton(() => Sharing());
+
+  RoomsService roomsService = RoomsService(sl());
+  sl.registerLazySingleton(() => roomsService);
 
   //! State (BLoC or Cubit)
   sl.registerFactory(() => SentimentAnalysisCubit());

@@ -143,21 +143,17 @@ class PostTile extends StatelessWidget {
                         ),
                         WidgetOrNothing(
                           showWidget: post.post.title.isNotEmpty && post.post.content.isNotEmpty,
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 15),
-                                child: Text(
-                                  truncateText(post.post.content, postBodyPreviewLength),
-                                  style: kBody.copyWith(
-                                    color: Theme.of(context).colorScheme.primary,
-                                    fontSize: kBody.fontSize! *
-                                        Provider.of<UserAuthService>(context).data().textSize.multiplier,
-                                  ),
-                                  textAlign: TextAlign.left,
-                                ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 15, right: 15, top: 5),
+                            child: Text(
+                              truncateText(post.post.content, postBodyPreviewLength),
+                              style: kBody.copyWith(
+                                color: Theme.of(context).colorScheme.primary,
+                                fontSize:
+                                    kBody.fontSize! * Provider.of<UserAuthService>(context).data().textSize.multiplier,
                               ),
-                            ],
+                              textAlign: TextAlign.left,
+                            ),
                           ),
                         ),
                         SizedBox(height: post.post.imgUrls.isEmpty ? 15 : 0),

@@ -1,37 +1,113 @@
+import 'package:confesi/core/router/go_router.dart';
+import 'package:confesi/core/services/rooms/rooms_service.dart';
 import 'package:confesi/models/chat.dart';
+import 'package:confesi/models/room.dart';
+import 'package:confesi/presentation/chat/widgets/chat_tile.dart';
+import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ChatScreen extends StatefulWidget {
-  const ChatScreen({Key? key, required this.initialChats}) : super(key: key);
+  final ChatProps props;
 
-  final List<Chat> initialChats;
+  const ChatScreen({Key? key, required this.props}) : super(key: key);
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  late TextEditingController chatNameController;
+
+  @override
+  void initState() {
+    super.initState();
+    chatNameController = TextEditingController();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Chat Screen"),
-      ),
-      body: ListView.builder(
-        reverse: true, // Makes the ListView reversed
-        itemCount: widget.initialChats.length,
-        itemBuilder: (BuildContext context, int index) {
-          // To display chats in reverse order
-          Chat chat = widget.initialChats[widget.initialChats.length - index - 1];
+    return Consumer<RoomsService>(
+      builder: (context, roomsService, child) {
+        Room room = roomsService.rooms[widget.props.roomId]!;
+        chatNameController.text = room.name;
 
-          return ListTile(
-            leading:
-                CircleAvatar(child: Text(chat.userId.substring(0, 1))), // Show the first letter of the userId as avatar
-            title: Text(chat.userId),
-            subtitle: Text(chat.date.toIso8601String()), // Display the chat date in ISO8601 format
-          );
-        },
-      ),
+        final chatsQuery =
+            FirebaseFirestore.instance.collection('chats').orderBy('date', descending: true).withConverter<Chat>(
+                  fromFirestore: (snapshot, _) => Chat.fromJson(snapshot.data()!),
+                  toFirestore: (chat, _) => chat.toJson(),
+                );
+
+        return Scaffold(
+          body: Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                color: Theme.of(context).colorScheme.surface,
+                child: SafeArea(
+                  bottom: false,
+                  child: Row(
+                    children: [
+                      TouchableOpacity(
+                        onTap: () => router.pop(),
+                        child: Container(
+                          padding: const EdgeInsets.all(5),
+                          color: Colors.transparent,
+                          child: Icon(CupertinoIcons.arrow_left, color: Theme.of(context).colorScheme.primary),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Flexible(
+                        child: TextField(
+                          textAlign: TextAlign.center,
+                          controller: chatNameController,
+                          decoration: const InputDecoration(
+                            hintText: "Chat name",
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.all(0),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      TouchableOpacity(
+                        onTap: () => print("TAP"),
+                        child: Container(
+                          padding: const EdgeInsets.all(5),
+                          color: Colors.transparent,
+                          child: Icon(CupertinoIcons.ellipsis_circle, color: Theme.of(context).colorScheme.primary),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  color: Theme.of(context).colorScheme.shadow,
+                  child: FirestoreListView<Chat>(
+                    reverse: true,
+                    query: chatsQuery,
+                    itemBuilder: (context, snapshot) {
+                      Chat chat = snapshot.data();
+                      return ChatTile(text: chat.msg, isYou: room.userNumber == chat.userNumber, datetime: chat.date);
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
+  }
+
+  @override
+  void dispose() {
+    chatNameController.dispose();
+    super.dispose();
   }
 }

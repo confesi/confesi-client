@@ -1,47 +1,73 @@
-// To parse this JSON data, do
-//
-//     final room = roomFromJson(jsonString);
-
 import 'dart:convert';
-
-import 'package:confesi/models/encrypted_id.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
-
-Room roomFromJson(String str) => Room.fromJson(json.decode(str));
-
-String roomToJson(Room data) => json.encode(data.toJson());
+import 'package:confesi/models/chat.dart'; // Assuming you have the Chat model in this path.
 
 class Room extends Equatable {
-  EncryptedId id;
-  String userCreator;
-  String userOther;
-  String name;
-  DateTime lastMsg;
+  final String userId;      // Added
+  final String name;
+  final String roomId;     // Changed from 'id'
+  final DateTime lastMsg;
+  final int postId;
+  final int userNumber;    // Added
+  final List<Chat> chats;
 
-  Room({
-    required this.id,
-    required this.userCreator,
-    required this.userOther,
+  const Room({
+    required this.userId,  // Added
     required this.name,
+    required this.roomId,  // Changed
     required this.lastMsg,
+    required this.postId,
+    required this.userNumber,  // Added
+    required this.chats,
   });
 
   factory Room.fromJson(Map<String, dynamic> json) => Room(
-        id: EncryptedId.fromJson(json["id"]),
-        userCreator: json["user_creator"],
-        userOther: json["user_other"],
+        userId: json["user_id"], // Added
         name: json["name"],
-        lastMsg: DateTime.parse(json["last_msg"]),
+        roomId: json["room_id"], // Changed
+        lastMsg: (json["last_msg"] as Timestamp).toDate().toLocal(),
+        postId: json["post_id"] as int,
+        userNumber: json["user_number"] as int, // Added
+        chats: const [],
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id.toJson(),
-        "user_creator": userCreator,
-        "user_other": userOther,
+        "user_id": userId,   // Added
         "name": name,
+        "room_id": roomId,   // Changed
         "last_msg": lastMsg.toIso8601String(),
+        "post_id": postId,
+        "user_number": userNumber, // Added
+        "chats": chats.map((chat) => chat.toJson()).toList(),
       };
 
   @override
-  List<Object?> get props => [id, userCreator, userOther, name, lastMsg];
+  List<Object?> get props => [
+        userId, name, roomId, lastMsg, postId, userNumber, chats
+      ];
+
+  Room copyWith({
+    String? userId, // Added
+    String? name,
+    String? roomId, // Changed
+    DateTime? lastMsg,
+    int? postId,
+    int? userNumber, // Added
+    List<Chat>? chats,
+  }) {
+    return Room(
+      userId: userId ?? this.userId, // Added
+      name: name ?? this.name,
+      roomId: roomId ?? this.roomId, // Changed
+      lastMsg: lastMsg ?? this.lastMsg,
+      postId: postId ?? this.postId,
+      userNumber: userNumber ?? this.userNumber, // Added
+      chats: chats ?? this.chats,
+    );
+  }
 }
+
+String roomToJson(Room data) => json.encode(data.toJson());
+
+Room roomFromJson(String str) => Room.fromJson(json.decode(str));

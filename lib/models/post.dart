@@ -113,7 +113,7 @@ class Post {
         upvote: json["upvote"],
         trendingScore: json["trending_score"],
         // hottestOn is dateTime, or null
-        hottestOn: json["hottest_on"] == null ? null : DateTime.parse(json["hottest_on"]),
+        hottestOn: json["hottest_on"] == null ? null : DateTime.parse(json["hottest_on"]).toLocal(),
         hidden: json["hidden"],
         sentiment: json["sentiment"],
         edited: json["edited"],

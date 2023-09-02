@@ -10,6 +10,7 @@ import 'package:confesi/core/results/failures.dart';
 import 'package:confesi/core/services/create_comment_service/create_comment_service.dart';
 import 'package:confesi/core/services/global_content/global_content.dart';
 import 'package:confesi/core/services/posts_service/posts_service.dart';
+import 'package:confesi/core/services/rooms/rooms_service.dart';
 import 'package:shake/shake.dart';
 import 'package:drift/drift.dart' as drift;
 
@@ -141,6 +142,7 @@ void main() async {
         ChangeNotifierProvider(create: (context) => sl<GlobalContentService>(), lazy: true),
         ChangeNotifierProvider(create: (context) => sl<CreateCommentService>(), lazy: true),
         ChangeNotifierProvider(create: (context) => sl<PostsService>(), lazy: true),
+        ChangeNotifierProvider(create: (context) => sl<RoomsService>(), lazy: true),
         ChangeNotifierProvider(create: (context) => sl<PrimaryTabControllerService>(), lazy: true),
         ChangeNotifierProvider(create: (context) => sl<CreatingEditingPostsService>(), lazy: true),
       ],
