@@ -1,12 +1,9 @@
 import 'package:confesi/core/router/go_router.dart';
 import 'package:confesi/core/services/rooms/rooms_service.dart';
-import 'package:confesi/models/encrypted_id.dart';
 import 'package:confesi/models/room.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RoomsScreen extends StatefulWidget {
   const RoomsScreen({Key? key}) : super(key: key);

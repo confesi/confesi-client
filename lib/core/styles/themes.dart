@@ -18,7 +18,7 @@ class AppTheme {
       error: Color.fromARGB(255, 231, 104, 104),
       onError: Colors.white,
       background: Color.fromARGB(255, 30, 34, 43),
-      onBackground: Color.fromARGB(255, 76, 82, 102),
+      onBackground: Color.fromARGB(255, 58, 63, 79),
       surface: Color.fromARGB(255, 38, 44, 58),
       onSurface: Color.fromARGB(255, 78, 102, 128),
       shadow: Color.fromARGB(255, 26, 27, 36), // Color.fromARGB(255, 26, 27, 36)
