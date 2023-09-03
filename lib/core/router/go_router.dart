@@ -3,8 +3,8 @@ import 'package:confesi/models/room.dart';
 import 'package:confesi/models/school_with_metadata.dart';
 import 'package:confesi/presentation/authentication_and_settings/screens/settings/acknowledgements.dart';
 import 'package:confesi/presentation/authentication_and_settings/screens/settings/filters.dart';
-import 'package:confesi/presentation/chat/screens/chat.dart';
-import 'package:confesi/presentation/chat/screens/rooms.dart';
+import 'package:confesi/presentation/dms/screens/chat.dart';
+import 'package:confesi/presentation/dms/screens/home.dart';
 import 'package:confesi/presentation/comments/screens/home.dart';
 import 'package:confesi/presentation/feed/widgets/img_viewer.dart';
 import 'package:confesi/presentation/notifications/screens/home.dart';
@@ -103,8 +103,8 @@ final GoRouter router = GoRouter(
             // Change the opacity of the screen using a Curve based on the animation's value
             var tween = CurveTween(curve: Curves.easeInOut);
             var curvedAnimation = tween.animate(animation);
-            return ScaleTransition(
-              scale: curvedAnimation,
+            return SlideTransition(
+              position: Tween<Offset>(begin: const Offset(0, 1), end: Offset.zero).animate(curvedAnimation),
               child: child,
             );
           },

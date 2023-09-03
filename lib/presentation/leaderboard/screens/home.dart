@@ -151,9 +151,8 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
             child: Column(
               children: [
                 AppbarLayout(
-                  leftIconOnPress: () => router.push("/home/rooms"),
-                  leftIcon: CupertinoIcons.paperplane,
-                  leftIconVisible: true,
+                  leftIconDisabled: true,
+                  leftIconVisible: false,
                   bottomBorder: true,
                   centerWidget: Text(
                     "School Leaderboard",

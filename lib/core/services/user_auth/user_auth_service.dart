@@ -1,7 +1,7 @@
 import 'package:confesi/core/services/create_comment_service/create_comment_service.dart';
 import 'package:confesi/core/services/global_content/global_content.dart';
 import 'package:confesi/core/services/rooms/rooms_service.dart';
-import 'package:confesi/presentation/chat/screens/rooms.dart';
+import 'package:confesi/presentation/dms/screens/home.dart';
 import 'package:provider/provider.dart';
 
 import '../../../application/authentication_and_settings/cubit/auth_flow_cubit.dart';

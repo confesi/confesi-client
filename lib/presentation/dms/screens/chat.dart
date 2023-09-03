@@ -1,8 +1,10 @@
+import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/router/go_router.dart';
 import 'package:confesi/core/services/rooms/rooms_service.dart';
+import 'package:confesi/core/styles/typography.dart';
 import 'package:confesi/models/chat.dart';
 import 'package:confesi/models/room.dart';
-import 'package:confesi/presentation/chat/widgets/chat_tile.dart';
+import 'package:confesi/presentation/dms/widgets/chat_tile.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -69,14 +71,14 @@ class _ChatScreenState extends State<ChatScreen> {
               child: Column(
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    padding: const EdgeInsets.only(left: 10, right: 10, bottom: 3),
                     // bottom border
                     decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surface,
+                      color: Theme.of(context).colorScheme.background,
                       border: Border(
                         bottom: BorderSide(
                           color: Theme.of(context).colorScheme.onBackground,
-                          width: 0.8,
+                          width: borderSize,
                         ),
                       ),
                     ),
@@ -94,13 +96,19 @@ class _ChatScreenState extends State<ChatScreen> {
                           ),
                           const SizedBox(width: 10),
                           Flexible(
-                            child: TextField(
-                              textAlign: TextAlign.center,
-                              controller: chatNameController,
-                              decoration: const InputDecoration(
-                                hintText: "Your private chat name",
-                                border: InputBorder.none,
-                                contentPadding: EdgeInsets.all(0),
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 3),
+                              child: TextField(
+                                textAlign: TextAlign.center,
+                                controller: chatNameController,
+                                style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
+                                decoration: InputDecoration(
+                                  hintText: "Your private chat name",
+                                  border: InputBorder.none,
+                                  contentPadding: const EdgeInsets.all(0),
+                                  hintStyle: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
+                                  // text: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
+                                ),
                               ),
                             ),
                           ),
@@ -122,10 +130,10 @@ class _ChatScreenState extends State<ChatScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 15),
                       color: Theme.of(context).colorScheme.shadow,
                       child: FirestoreListView<Chat>(
-                        pageSize: 50,
+                        pageSize: 20,
                         shrinkWrap: true,
                         physics: const ClampingScrollPhysics(),
-                        padding: const EdgeInsets.only(bottom: 13),
+                        padding: const EdgeInsets.only(bottom: 13, top: 13),
                         reverse: true,
                         query: chatsQuery,
                         itemBuilder: (context, snapshot) {

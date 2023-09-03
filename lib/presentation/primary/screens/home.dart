@@ -1,11 +1,14 @@
 import 'package:confesi/application/create_post/cubit/post_categories_cubit.dart';
 import 'package:confesi/application/feed/cubit/schools_drawer_cubit.dart';
 import 'package:confesi/application/user/cubit/notifications_cubit.dart';
+import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/services/fcm_notifications/notification_service.dart';
 import 'package:confesi/core/services/fcm_notifications/notification_table.dart';
 import 'package:confesi/core/services/primary_tab_service/primary_tab_service.dart';
 import 'package:confesi/core/services/user_auth/user_auth_service.dart';
 import 'package:confesi/init.dart';
+import 'package:confesi/presentation/dms/screens/chat.dart';
+import 'package:confesi/presentation/dms/screens/home.dart';
 import 'package:drift/drift.dart' as drift;
 import 'package:provider/provider.dart';
 
@@ -48,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     } else {
       context.read<SchoolsDrawerCubit>().setSchoolsGuest();
     }
-    tabController = TabController(vsync: this, length: 5);
+    tabController = TabController(vsync: this, length: 6);
     Future.delayed(const Duration(milliseconds: 500)).then((value) {
       if (mounted && widget.props != null && widget.props!.executeAfterHomeLoad != null) {
         widget.props!.executeAfterHomeLoad!();
@@ -92,6 +95,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   const HottestHome(),
                   const SettingsHome(),
                   const LeaderboardScreen(),
+                  const RoomsScreen(),
                   const AccountProfileStats(),
                   // const NotificationsScreen(),
                 ],
@@ -100,7 +104,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.background,
                   border: Border(
-                    top: BorderSide(color: Theme.of(context).colorScheme.onBackground, width: 0.4),
+                    top: BorderSide(color: Theme.of(context).colorScheme.onBackground, width: borderSize),
                   ),
                 ),
                 child: SafeArea(
@@ -160,6 +164,12 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       _BottomTab(
                         hasNotification: false,
                         indexMatcher: 4,
+                        currentIndex: Provider.of<PrimaryTabControllerService>(context).tabIdx,
+                        icon: CupertinoIcons.paperplane,
+                      ),
+                      _BottomTab(
+                        hasNotification: false,
+                        indexMatcher: 5,
                         currentIndex: Provider.of<PrimaryTabControllerService>(context).tabIdx,
                         icon: CupertinoIcons.profile_circled,
                       ),
