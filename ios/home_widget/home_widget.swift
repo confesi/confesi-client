@@ -81,75 +81,77 @@ struct YourWidgetEntryView: View {
     
     @Environment(\.widgetFamily) var widgetFamily  // Identify the widget's size/family
     var body: some View {
-        GeometryReader { geometry in
-            ZStack {
-                // Background
-                if let image = entry.backgroundImage {
-                    let resizedImage = image.resized(for: widgetFamily)
-                    Image(uiImage: resizedImage ?? image)
-                        .resizable()
-                        .scaledToFill()
+        ZStack {
+            GeometryReader { geometry in
+                ZStack {
+                    // Background
+                    if let image = entry.backgroundImage {
+                        let resizedImage = image.resized(for: widgetFamily)
+                        Image(uiImage: resizedImage ?? image)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: geometry.size.width, height: geometry.size.height)
+                            .clipped()
+                    } else {
+                        LinearGradient(
+                            gradient: Gradient(colors: [Color("purple").opacity(1), Color("purple").opacity(0.75)]),
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
                         .frame(width: geometry.size.width, height: geometry.size.height)
-                        .clipped()
-                } else {
-                    LinearGradient(
-                        gradient: Gradient(colors: [Color("purple").opacity(1), Color("purple").opacity(0.75)]),
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                    .frame(width: geometry.size.width, height: geometry.size.height)
-                }
-                
-                // Black overlay
-                if entry.title != "Error" {
-                    Color.black.opacity(0.4).frame(width: geometry.size.width, height: geometry.size.height)
-                }
+                    }
+                    
+                    // Black overlay
+                    if entry.title != "Error" {
+                        Color.black.opacity(0.4).frame(width: geometry.size.width, height: geometry.size.height)
+                    }
 
-                // Aligning content using VStack
-                VStack(alignment: .leading) {
-                    // School Abbreviation at top
-                    Text(entry.schoolAbbr)
-                        .font(.system(size: widgetSizeFont(for: widgetFamily, isTitle: false), weight: .bold))
-                        .foregroundColor(.white)
-                        .lineLimit(1)
-                        .padding(.top, widgetVerticalPadding(for: widgetFamily))
+                    // Aligning content using VStack
+                    VStack(alignment: .leading) {
+                        // School Abbreviation at top
+                        Text(entry.schoolAbbr)
+                            .font(.system(size: widgetSizeFont(for: widgetFamily, isTitle: false), weight: .bold))
+                            .foregroundColor(.white)
+                            .lineLimit(1)
+                            .padding(.top, widgetVerticalPadding(for: widgetFamily))
 
-                    Spacer()
+                        Spacer()
 
-                    // Main Content at bottom
-                    VStack(alignment: .leading, spacing: 10) {
-                        if entry.title == "Error" {
-                            Text(entry.title)
-                                .font(.system(size: widgetSizeFont(for: widgetFamily, isTitle: true), weight: .bold))
-                                .foregroundColor(.white)
+                        // Main Content at bottom
+                        VStack(alignment: .leading, spacing: 10) {
+                            if entry.title == "Error" {
+                                Text(entry.title)
+                                    .font(.system(size: widgetSizeFont(for: widgetFamily, isTitle: true), weight: .bold))
+                                    .foregroundColor(.white)
 
-                            Text(entry.content)
-                                .font(.system(size: widgetSizeFont(for: widgetFamily, isTitle: false)))
-                                .foregroundColor(.white)
-                                .truncationMode(.tail)
-                        } else {
-                            Text(entry.title.isEmpty ? entry.content : entry.title)
-                                .font(.system(size: widgetSizeFont(for: widgetFamily, isTitle: true), weight: .bold))
-                                .foregroundColor(.white)
-                                .truncationMode(.tail)
-
-                            if widgetFamily == .systemLarge && !entry.title.isEmpty {
                                 Text(entry.content)
                                     .font(.system(size: widgetSizeFont(for: widgetFamily, isTitle: false)))
                                     .foregroundColor(.white)
                                     .truncationMode(.tail)
+                            } else {
+                                Text(entry.title.isEmpty ? entry.content : entry.title)
+                                    .font(.system(size: widgetSizeFont(for: widgetFamily, isTitle: true), weight: .bold))
+                                    .foregroundColor(.white)
+                                    .truncationMode(.tail)
+
+                                if widgetFamily == .systemLarge && !entry.title.isEmpty {
+                                    Text(entry.content)
+                                        .font(.system(size: widgetSizeFont(for: widgetFamily, isTitle: false)))
+                                        .foregroundColor(.white)
+                                        .truncationMode(.tail)
+                                }
                             }
                         }
+                        .padding(.bottom, widgetVerticalPadding(for: widgetFamily))
                     }
-                    .padding(.bottom, widgetVerticalPadding(for: widgetFamily))
+                    .padding(.horizontal, widgetHorizontalPadding(for: widgetFamily))  // Apply the horizontal padding to the entire VStack
                 }
-                .padding(.horizontal, widgetHorizontalPadding(for: widgetFamily))  // Apply the horizontal padding to the entire VStack
+                .frame(width: geometry.size.width, height: geometry.size.height)
             }
-            .frame(width: geometry.size.width, height: geometry.size.height)
         }
+        .widgetURL(URL(string: "confesi://p/\(entry.id)")) // Moved this line here.
     }
 
-    
     
     func widgetVerticalPadding(for family: WidgetFamily) -> CGFloat {
         switch family {
@@ -202,32 +204,32 @@ extension UIImage {
 // MARK: - Timeline Provider
 struct Provider: TimelineProvider {
     func placeholder(in context: Context) -> SimpleEntry {
-        return SimpleEntry(date: Date(), id: "0", title: "Placeholder", content: "", backgroundImage: nil, schoolAbbr: "ABBR")
+        return SimpleEntry(date: Date(), id: "-1", title: "Placeholder", content: "", backgroundImage: nil, schoolAbbr: "ABBR")
     }
 
     func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> Void) {
         let defaultBackground = UIImage(named: "widget_preview")  // Load the image from asset catalog
 
-        let entry = SimpleEntry(date: Date(), id: "1", title: "Sus math profs, dude", content: "I heard there are 3 math profs that every weekend get together as a cult. I believe I even had one as my prof last term — it was wild. They discuss students' marks over a giant round table. Has anyone else seen this before?", backgroundImage: defaultBackground, schoolAbbr: "UBC")
+        let entry = SimpleEntry(date: Date(), id: "-1", title: "Sus math profs, dude", content: "I heard there are 3 math profs that every weekend get together as a cult. I believe I even had one as my prof last term — it was wild. They discuss students' marks over a giant round table. Has anyone else seen this before?", backgroundImage: defaultBackground, schoolAbbr: "UBC")
         completion(entry)
     }
 
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<SimpleEntry>) -> Void) {
-        fetchData { title, content, image, schoolAbbr in
-            let entry = SimpleEntry(date: Date(), id: "1", title: title, content: content, backgroundImage: image, schoolAbbr: schoolAbbr)
+        fetchData { title, content, image, schoolAbbr, maskedId in
+            let entry = SimpleEntry(date: Date(), id: maskedId, title: title, content: content, backgroundImage: image, schoolAbbr: schoolAbbr)
 
             let timeline = Timeline(entries: [entry], policy: .after(Date().addingTimeInterval(3600)))
             completion(timeline)
         }
     }
 
-    func fetchData(completion: @escaping (String, String, UIImage?, String) -> Void) {
+    func fetchData(completion: @escaping (String, String, UIImage?, String, String) -> Void) {
         print("Attempting to fetch data...")
         let urlString = "http://192.168.1.107:8080/api/v1/posts/widget"
         guard let url = URL(string: urlString) else {
             print("Invalid URL: \(urlString)")
-            completion("Error", "Invalid URL.", nil, "ABBR")
+            completion("Error", "Invalid URL.", nil, "ABBR", "0")
             return
         }
 
@@ -238,13 +240,13 @@ struct Provider: TimelineProvider {
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
                 print("Network Error: \(error.localizedDescription)")
-                completion("Error", "Failed to fetch data.", nil, "ABBR")
+                completion("Error", "Failed to fetch data.", nil, "ABBR", "0")
                 return
             }
 
             guard let data = data, let response = response as? HTTPURLResponse, response.statusCode == 200 else {
                 print("Unexpected response: \(response?.description ?? "nil")")
-                completion("Error", "Invalid response.", nil, "ABBR")
+                completion("Error", "Invalid response.", nil, "ABBR", "0")
                 return
             }
 
@@ -256,24 +258,26 @@ struct Provider: TimelineProvider {
                     let content = value["content"] as? String ?? "Unknown content"
                     let schoolImgUrl = value["school_img_url"] as? String ?? ""
                     let schoolAbbr = value["school_abbr"] as? String ?? "ABBR"
+                    let maskedId = (value["id"] as? [String: Any])?["masked"] as? String ?? "0"
 
                     if let imgUrl = URL(string: schoolImgUrl), let imageData = try? Data(contentsOf: imgUrl) {
                         let image = UIImage(data: imageData)
-                        completion(title, content, image, schoolAbbr)
+                        completion(title, content, image, schoolAbbr, maskedId)
                     } else {
-                        completion(title, content, nil, schoolAbbr)
+                        completion(title, content, nil, schoolAbbr, maskedId)
                     }
 
                 } else {
                     print("Invalid JSON structure.")
-                    completion("Error", "Failed to parse data.", nil, "ABBR")
+                    completion("Error", "Failed to parse data.", nil, "ABBR", "0")
                 }
             } catch let parseError {
                 print("Parsing Error: \(parseError.localizedDescription)")
-                completion("Error", "Failed to parse data.", nil, "ABBR")
+                completion("Error", "Failed to parse data.", nil, "ABBR", "0")
             }
         }.resume()
     }
+
 }
 
 // MARK: - Preview
@@ -283,8 +287,8 @@ struct YourWidget_Previews: PreviewProvider {
         let semaphore = DispatchSemaphore(value: 0)
         var resultEntry: SimpleEntry?
 
-        Provider().fetchData { title, content, image, schoolAbbr in
-            resultEntry = SimpleEntry(date: Date(), id: "1", title: title, content: content, backgroundImage: image, schoolAbbr: schoolAbbr)
+        Provider().fetchData { title, content, image, schoolAbbr, maskedId in
+            resultEntry = SimpleEntry(date: Date(), id: maskedId, title: title, content: content, backgroundImage: image, schoolAbbr: schoolAbbr)
             semaphore.signal()
         }
 

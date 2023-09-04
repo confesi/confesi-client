@@ -7,6 +7,15 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict> -->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>confesi</string>
+			</array>
+		</dict>
+	</array>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
 		<string>com.confesi.app</string>

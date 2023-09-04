@@ -64,3 +64,7 @@ flutter pub get
 ```sh
 flutter run
 ```
+
+## Todo for prod
+
+- Ensure the home widget has correct url endpoint. This is in the Swift code.

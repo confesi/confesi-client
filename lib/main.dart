@@ -227,7 +227,8 @@ class _MyAppState extends State<MyApp> {
       sl.get<AppLinks>().allStringLinkStream.listen((link) => handleQuickAuthAndAction(() => routeDeepLink(link)));
 
   void routeDeepLink(String deepLink) async {
-    final postRegex = RegExp(r"^https://confesi.com/p/([a-zA-Z0-9_-]+=*)$");
+    print("DEEP LINK: $deepLink");
+    final postRegex = RegExp(r"/p/([a-zA-Z0-9_-]+=*)$");
     final match = postRegex.firstMatch(deepLink);
     if (match != null) {
       final postId = match.group(1);
