@@ -3,7 +3,6 @@ import 'package:confesi/core/router/go_router.dart';
 import 'package:confesi/core/services/rooms/rooms_service.dart';
 import 'package:confesi/core/styles/typography.dart';
 import 'package:confesi/models/chat.dart';
-import 'package:confesi/models/room.dart';
 import 'package:confesi/presentation/dms/widgets/chat_tile.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:flutter/cupertino.dart';
@@ -27,12 +26,21 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   late TextEditingController chatNameController;
+  late TextEditingController chatInputController;
 
   @override
   void initState() {
     super.initState();
     chatNameController = TextEditingController();
+    chatInputController = TextEditingController();
     chatNameController.text = Provider.of<RoomsService>(context, listen: false).rooms[widget.props.roomId]!.name;
+  }
+
+  @override
+  void dispose() {
+    chatNameController.dispose();
+    chatInputController.dispose();
+    super.dispose();
   }
 
   @override
@@ -63,9 +71,12 @@ class _ChatScreenState extends State<ChatScreen> {
                     ),
                   ),
                 ),
-                child: const SafeArea(
+                child: SafeArea(
                   top: false,
-                  child: ChatInput(),
+                  child: ChatInput(
+                    roomId: widget.props.roomId,
+                    controller: chatInputController,
+                  ),
                 ),
               ),
               child: Column(
@@ -158,11 +169,5 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    chatNameController.dispose();
-    super.dispose();
   }
 }

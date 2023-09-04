@@ -1,8 +1,11 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:confesi/core/results/successes.dart';
+import 'package:confesi/core/services/api_client/api.dart';
 import 'package:confesi/core/services/user_auth/user_auth_service.dart';
 import 'package:confesi/models/chat.dart';
 import 'package:confesi/models/room.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 
 class RoomsService extends ChangeNotifier {
@@ -10,6 +13,7 @@ class RoomsService extends ChangeNotifier {
   final Map<String, Room> _rooms = {};
   final UserAuthService _userAuthService;
   StreamSubscription? _roomSubscription;
+  final Api _api;
 
   DocumentSnapshot? _lastDocument;
   bool _hasMoreData = true;
@@ -17,10 +21,28 @@ class RoomsService extends ChangeNotifier {
   Map<String, Room> get rooms => _rooms;
   bool get hasMoreData => _hasMoreData;
 
-  RoomsService(this._userAuthService) {
+  RoomsService(this._userAuthService, this._api) {
     loadRooms().then((_) {
       startListenerForRooms();
     });
+  }
+
+  Future<Either<ApiSuccess, String>> addChat(String roomId, String msg) async {
+    _api.cancelCurrReq();
+    return (await _api.req(Verb.post, true, "/api/v1/dms/chat", {
+      "room_id": roomId,
+      "msg": msg,
+    }))
+        .fold(
+      (failureWithMsg) => Right(failureWithMsg.msg()),
+      (response) {
+        if (response.statusCode.toString()[0] == "2") {
+          return Left(ApiSuccess());
+        } else {
+          return const Right("todo: error");
+        }
+      },
+    );
   }
 
   void clear() {
@@ -69,7 +91,6 @@ class RoomsService extends ChangeNotifier {
   }
 
   Future<void> loadRecentChatForRoom(String roomId) async {
-    print("CALLED!");
     QuerySnapshot chatSnapshot = await _firestore
         .collection('chats')
         .where('room_id', isEqualTo: roomId)

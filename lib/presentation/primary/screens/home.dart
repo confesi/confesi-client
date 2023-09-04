@@ -6,6 +6,7 @@ import 'package:confesi/core/services/fcm_notifications/notification_service.dar
 import 'package:confesi/core/services/fcm_notifications/notification_table.dart';
 import 'package:confesi/core/services/primary_tab_service/primary_tab_service.dart';
 import 'package:confesi/core/services/user_auth/user_auth_service.dart';
+import 'package:home_widget/home_widget.dart';
 import 'package:confesi/init.dart';
 import 'package:confesi/presentation/dms/screens/chat.dart';
 import 'package:confesi/presentation/dms/screens/home.dart';
