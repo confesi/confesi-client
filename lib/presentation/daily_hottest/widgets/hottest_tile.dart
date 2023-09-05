@@ -3,12 +3,9 @@ import 'package:confesi/models/post.dart';
 import 'package:confesi/presentation/shared/behaviours/init_scale.dart';
 import 'package:confesi/presentation/shared/other/cached_online_image.dart';
 import 'package:provider/provider.dart';
-
 import '../../../core/services/user_auth/user_auth_service.dart';
 import '../../../core/styles/typography.dart';
-
 import 'package:flutter/material.dart';
-
 import '../../shared/text/header_group.dart';
 
 class HottestTile extends StatefulWidget {
@@ -55,6 +52,7 @@ class _HottestTileState extends State<HottestTile> {
                         width: borderSize,
                         strokeAlign: BorderSide.strokeAlignInside,
                       ),
+                      borderRadius: BorderRadius.circular(10.0), // Added rounded corners
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,6 +61,10 @@ class _HottestTileState extends State<HottestTile> {
                           width: double.infinity,
                           decoration: BoxDecoration(
                             color: Theme.of(context).colorScheme.secondary,
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              topRight: Radius.circular(10),
+                            ),
                           ),
                           padding: const EdgeInsets.all(10),
                           child: Text(
@@ -92,7 +94,7 @@ class _HottestTileState extends State<HottestTile> {
                                     '0${widget.thisIndex + 1}',
                                     style: kFaded.copyWith(
                                       color: Theme.of(context).colorScheme.tertiary,
-                                    ), // Use white color as the gradient will apply the colors
+                                    ),
                                   ),
                                 ),
                               ),

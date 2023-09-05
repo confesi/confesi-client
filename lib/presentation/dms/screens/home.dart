@@ -6,6 +6,7 @@ import 'package:confesi/init.dart';
 import 'package:confesi/models/room.dart';
 import 'package:confesi/presentation/dms/widgets/room_tile.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
+import 'package:confesi/presentation/shared/indicators/loading_or_alert.dart';
 import 'package:confesi/presentation/shared/layout/appbar.dart';
 import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,6 +19,11 @@ class RoomsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final query = FirebaseFirestore.instance
+        .collection('rooms')
+        .where('user_id', isEqualTo: sl.get<UserAuthService>().uid)
+        .orderBy('last_msg', descending: true);
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: SafeArea(
@@ -38,31 +44,73 @@ class RoomsScreen extends StatelessWidget {
             Expanded(
               child: Container(
                 color: Theme.of(context).colorScheme.shadow,
-                child: FirestoreListView(
-                  query: FirebaseFirestore.instance
-                      .collection('rooms')
-                      .where('user_id', isEqualTo: sl.get<UserAuthService>().uid)
-                      .orderBy('last_msg', descending: true),
-                  itemBuilder: (context, item) {
-                    Room room = Room.fromJson({...item.data(), "id": item.id});
-                    final roomsService = Provider.of<RoomsService>(context, listen: false);
+                child: StreamBuilder<QuerySnapshot>(
+                  stream: query.snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError || snapshot.connectionState == ConnectionState.waiting) {
+                      LoadingOrAlert(
+                          message: StateMessage("Unknown error", () {}),
+                          isLoading: snapshot.connectionState == ConnectionState.waiting);
+                    }
 
-                    roomsService.addRoomAndLoadChat(room);
+                    // if (snapshot.hasError) {
+                    //   return Center(child: Text('Error: ${snapshot.error}'));
+                    // }
 
-                    return Consumer<RoomsService>(
-                      builder: (context, roomsService, _) {
-                        final updatedRoom = roomsService.rooms[room.roomId]!;
-                        return RoomTile(
-                          lastMsg: updatedRoom.lastMsg,
-                          name: updatedRoom.name,
-                          lastChat: updatedRoom.chats.isNotEmpty ? updatedRoom.chats.last.msg : null,
-                          onTap: () => router.push("/home/rooms/chat",
-                              extra: ChatProps(
-                                updatedRoom.roomId,
-                              )),
-                        );
-                      },
-                    );
+                    // if (snapshot.connectionState == ConnectionState.waiting) {
+                    //   return Center(child: CircularProgressIndicator());
+                    // }
+
+                    if (snapshot.data?.docs.isEmpty ?? true) {
+                      return Center(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                CupertinoIcons.chat_bubble_2_fill,
+                                size: 50,
+                                color: Theme.of(context).colorScheme.onSurface,
+                              ),
+                              const SizedBox(height: 15),
+                              Text(
+                                "No messages available",
+                                style: kBody.copyWith(
+                                  color: Theme.of(context).colorScheme.onSurface,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    } else {
+                      return FirestoreListView(
+                        query: query,
+                        itemBuilder: (context, item) {
+                          Room room = Room.fromJson({...item.data()!, "id": item.id});
+                          final roomsService = Provider.of<RoomsService>(context, listen: false);
+
+                          roomsService.addRoomAndLoadChat(room);
+
+                          return Consumer<RoomsService>(
+                            builder: (context, roomsService, _) {
+                              final updatedRoom = roomsService.rooms[room.roomId]!;
+                              return RoomTile(
+                                lastMsg: updatedRoom.lastMsg,
+                                name: updatedRoom.name,
+                                lastChat: updatedRoom.chats.isNotEmpty ? updatedRoom.chats.last.msg : null,
+                                onTap: () => router.push("/home/rooms/chat",
+                                    extra: ChatProps(
+                                      updatedRoom.roomId,
+                                    )),
+                              );
+                            },
+                          );
+                        },
+                      );
+                    }
                   },
                 ),
               ),

@@ -12,8 +12,11 @@ struct SimpleEntry: TimelineEntry {
     let content: String
     let backgroundImage: UIImage?
     let schoolAbbr: String
+    let isError: Bool
 }
 
+let retryQueue = DispatchQueue(label: "com.yourApp.retryQueue")
+var retryCount = 0 // This is the variable that will hold the retry count.
 
 // MARK: - Widget
 struct YourWidget: Widget {
@@ -76,82 +79,83 @@ extension UIImage {
 import SwiftUI
 import WidgetKit
 
+import SwiftUI
+import WidgetKit
+
 struct YourWidgetEntryView: View {
     var entry: SimpleEntry
     
-    @Environment(\.widgetFamily) var widgetFamily  // Identify the widget's size/family
+    @Environment(\.widgetFamily) var widgetFamily
+    
     var body: some View {
         ZStack {
             GeometryReader { geometry in
-                ZStack {
-                    // Background
-                    if let image = entry.backgroundImage {
-                        let resizedImage = image.resized(for: widgetFamily)
-                        Image(uiImage: resizedImage ?? image)
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: geometry.size.width, height: geometry.size.height)
-                            .clipped()
-                    } else {
-                        LinearGradient(
-                            gradient: Gradient(colors: [Color("purple").opacity(1), Color("purple").opacity(0.75)]),
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
+                // Background
+                if let image = entry.backgroundImage {
+                    let resizedImage = image.resized(for: widgetFamily)
+                    Image(uiImage: resizedImage ?? image)
+                        .resizable()
+                        .scaledToFill()
                         .frame(width: geometry.size.width, height: geometry.size.height)
-                    }
-                    
-                    // Black overlay
-                    if entry.title != "Error" {
-                        Color.black.opacity(0.4).frame(width: geometry.size.width, height: geometry.size.height)
-                    }
-
-                    // Aligning content using VStack
-                    VStack(alignment: .leading) {
-                        // School Abbreviation at top
-                        Text(entry.schoolAbbr)
-                            .font(.system(size: widgetSizeFont(for: widgetFamily, isTitle: false), weight: .bold))
-                            .foregroundColor(.white)
-                            .lineLimit(1)
-                            .padding(.top, widgetVerticalPadding(for: widgetFamily))
-
-                        Spacer()
-
-                        // Main Content at bottom
-                        VStack(alignment: .leading, spacing: 10) {
-                            if entry.title == "Error" {
-                                Text(entry.title)
-                                    .font(.system(size: widgetSizeFont(for: widgetFamily, isTitle: true), weight: .bold))
-                                    .foregroundColor(.white)
-
-                                Text(entry.content)
-                                    .font(.system(size: widgetSizeFont(for: widgetFamily, isTitle: false)))
-                                    .foregroundColor(.white)
-                                    .truncationMode(.tail)
-                            } else {
-                                Text(entry.title.isEmpty ? entry.content : entry.title)
-                                    .font(.system(size: widgetSizeFont(for: widgetFamily, isTitle: true), weight: .bold))
-                                    .foregroundColor(.white)
-                                    .truncationMode(.tail)
-
-                                if widgetFamily == .systemLarge && !entry.title.isEmpty {
-                                    Text(entry.content)
-                                        .font(.system(size: widgetSizeFont(for: widgetFamily, isTitle: false)))
-                                        .foregroundColor(.white)
-                                        .truncationMode(.tail)
-                                }
-                            }
-                        }
-                        .padding(.bottom, widgetVerticalPadding(for: widgetFamily))
-                    }
-                    .padding(.horizontal, widgetHorizontalPadding(for: widgetFamily))  // Apply the horizontal padding to the entire VStack
+                        .clipped()
+                } else {
+                    LinearGradient(
+                        gradient: Gradient(colors: [Color("purple").opacity(1), Color("purple").opacity(0.75)]),
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                    .frame(width: geometry.size.width, height: geometry.size.height)
                 }
-                .frame(width: geometry.size.width, height: geometry.size.height)
+
+                // Black Overlay
+                Color.black.opacity(0.65)
+                    .frame(width: geometry.size.width, height: geometry.size.height)
+
+                // Content
+                if entry.isError {
+                    VStack {
+                        Text("Connection error")
+                            .font(.system(size: widgetSizeFont(for: widgetFamily, isTitle: true), weight: .bold))
+                            .foregroundColor(.white)
+                            .padding(.bottom, 5)
+                        Text("We'll retry soon")
+                            .font(.system(size: widgetSizeFont(for: widgetFamily, isTitle: false)))
+                            .foregroundColor(.white)
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                }
+                else {
+                    VStack(alignment: .leading, spacing: 10) {
+                        // Display ABBR when there's no error and there's actual data
+                        if !entry.title.isEmpty {
+                            Text(entry.schoolAbbr)  // Use the abbreviation from your API
+                                .font(.system(size: 14, weight: .bold))
+                                .foregroundColor(.white)
+                        }
+                        
+                        Spacer().frame(height: 10)  // Adding a spacer between ABBR and title/body
+                        
+                        Text(entry.title.isEmpty ? entry.content : entry.title)
+                            .font(.system(size: widgetSizeFont(for: widgetFamily, isTitle: true), weight: .bold))
+                            .foregroundColor(.white)
+                            .truncationMode(.tail)
+                        if widgetFamily == .systemLarge && !entry.title.isEmpty {
+                            Text(entry.content)
+                                .font(.system(size: widgetSizeFont(for: widgetFamily, isTitle: false)))
+                                .foregroundColor(.white)
+                                .truncationMode(.tail)
+                        }
+                    }
+                    .padding(.horizontal, widgetHorizontalPadding(for: widgetFamily))
+                    .padding(.vertical, widgetVerticalPadding(for: widgetFamily))
+                }
             }
         }
-        .widgetURL(URL(string: "confesi://p/\(entry.id)")) // Moved this line here.
+        .widgetURL(URL(string: "confesi://p/\(entry.id)"))
     }
+}
 
+    
     
     func widgetVerticalPadding(for family: WidgetFamily) -> CGFloat {
         switch family {
@@ -191,8 +195,8 @@ struct YourWidgetEntryView: View {
             return isTitle ? 18 : 15
         }
     }
-    
-}
+
+
 
 extension UIImage {
     static func from(url: URL) -> UIImage? {
@@ -204,32 +208,55 @@ extension UIImage {
 // MARK: - Timeline Provider
 struct Provider: TimelineProvider {
     func placeholder(in context: Context) -> SimpleEntry {
-        return SimpleEntry(date: Date(), id: "-1", title: "Placeholder", content: "", backgroundImage: nil, schoolAbbr: "ABBR")
+        return SimpleEntry(date: Date(), id: "-1", title: "Placeholder", content: "", backgroundImage: nil, schoolAbbr: "ABBR", isError: false)
     }
 
     func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> Void) {
         let defaultBackground = UIImage(named: "widget_preview")  // Load the image from asset catalog
 
-        let entry = SimpleEntry(date: Date(), id: "-1", title: "Sus math profs, dude", content: "I heard there are 3 math profs that every weekend get together as a cult. I believe I even had one as my prof last term — it was wild. They discuss students' marks over a giant round table. Has anyone else seen this before?", backgroundImage: defaultBackground, schoolAbbr: "UBC")
+        let entry = SimpleEntry(date: Date(), id: "-1", title: "Sus math profs, dude", content: "I heard there are 3 math profs that every weekend get together as a cult. I believe I even had one as my prof last term — it was wild. They discuss students' marks over a giant round table. Has anyone else seen this before?", backgroundImage: defaultBackground, schoolAbbr: "UBC", isError: false)
         completion(entry)
     }
 
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<SimpleEntry>) -> Void) {
-        fetchData { title, content, image, schoolAbbr, maskedId in
-            let entry = SimpleEntry(date: Date(), id: maskedId, title: title, content: content, backgroundImage: image, schoolAbbr: schoolAbbr)
+        fetchData { title, content, image, schoolAbbr, maskedId, isError in
+            let entry = SimpleEntry(date: Date(), id: maskedId, title: title, content: content, backgroundImage: image, schoolAbbr: schoolAbbr, isError: isError)
+            
+            let refreshInterval: TimeInterval
+            if isError {
+                // Increase retryCount for consecutive errors
+                retryQueue.sync {
+                                retryCount += 1
+                            }
 
-            let timeline = Timeline(entries: [entry], policy: .after(Date().addingTimeInterval(3600)))
+                // Calculate backoff interval - start with 10 seconds and double for each retry, up to an hour
+                let backoffTime = min(10 * pow(2, Double(retryCount)), 3600)
+                refreshInterval = backoffTime
+                print("Retrying after \(backoffTime) seconds.")
+            } else {
+                // Reset retry count when fetch is successful
+                retryQueue.sync {
+                                retryCount = 0
+                            }
+
+                // Refresh every 11 hours if it's loaded successfully
+                refreshInterval = 11 * 3600
+                print("Refreshing in 12 hours.")
+            }
+
+            let timeline = Timeline(entries: [entry], policy: .after(Date().addingTimeInterval(refreshInterval)))
             completion(timeline)
         }
     }
 
-    func fetchData(completion: @escaping (String, String, UIImage?, String, String) -> Void) {
+
+    func fetchData(completion: @escaping (String, String, UIImage?, String, String, Bool) -> Void) {
         print("Attempting to fetch data...")
         let urlString = "http://192.168.1.107:8080/api/v1/posts/widget"
         guard let url = URL(string: urlString) else {
             print("Invalid URL: \(urlString)")
-            completion("Error", "Invalid URL.", nil, "ABBR", "0")
+            completion("Error", "Invalid URL.", nil, "ABBR", "-1", true)
             return
         }
 
@@ -240,13 +267,19 @@ struct Provider: TimelineProvider {
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
                 print("Network Error: \(error.localizedDescription)")
-                completion("Error", "Failed to fetch data.", nil, "ABBR", "0")
+                completion("Error", "Failed to fetch data.", nil, "ABBR", "0", true)
                 return
             }
 
-            guard let data = data, let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-                print("Unexpected response: \(response?.description ?? "nil")")
-                completion("Error", "Invalid response.", nil, "ABBR", "0")
+            guard let data = data, let response = response as? HTTPURLResponse else {
+                print("No data or unexpected response format.")
+                completion("Error", "Failed to fetch data.", nil, "ABBR", "-1", true)
+                return
+            }
+
+            if response.statusCode != 200 {
+                print("Unexpected response status code: \(response.statusCode)")
+                completion("Error", "Server responded with code: \(response.statusCode).", nil, "ABBR", "0", true)
                 return
             }
 
@@ -260,20 +293,26 @@ struct Provider: TimelineProvider {
                     let schoolAbbr = value["school_abbr"] as? String ?? "ABBR"
                     let maskedId = (value["id"] as? [String: Any])?["masked"] as? String ?? "0"
 
-                    if let imgUrl = URL(string: schoolImgUrl), let imageData = try? Data(contentsOf: imgUrl) {
-                        let image = UIImage(data: imageData)
-                        completion(title, content, image, schoolAbbr, maskedId)
+                    if let imgUrl = URL(string: schoolImgUrl) {
+                        URLSession.shared.dataTask(with: imgUrl) { imageData, imageResponse, imageError in
+                            if let imageData = imageData, let _ = imageResponse as? HTTPURLResponse {
+                                let image = UIImage(data: imageData)
+                                completion(title, content, image, schoolAbbr, maskedId, false)
+                            } else {
+                                completion(title, content, nil, schoolAbbr, maskedId, false)
+                            }
+                        }.resume()
                     } else {
-                        completion(title, content, nil, schoolAbbr, maskedId)
+                        completion(title, content, nil, schoolAbbr, maskedId, false)
                     }
 
                 } else {
                     print("Invalid JSON structure.")
-                    completion("Error", "Failed to parse data.", nil, "ABBR", "0")
+                    completion("Error", "Failed to parse data.", nil, "ABBR", "0", true)
                 }
             } catch let parseError {
                 print("Parsing Error: \(parseError.localizedDescription)")
-                completion("Error", "Failed to parse data.", nil, "ABBR", "0")
+                completion("Error", "Failed to parse data.", nil, "ABBR", "0", true)
             }
         }.resume()
     }
@@ -286,11 +325,12 @@ struct YourWidget_Previews: PreviewProvider {
     static func fetchPreviewData() -> SimpleEntry {
         let semaphore = DispatchSemaphore(value: 0)
         var resultEntry: SimpleEntry?
-
-        Provider().fetchData { title, content, image, schoolAbbr, maskedId in
-            resultEntry = SimpleEntry(date: Date(), id: maskedId, title: title, content: content, backgroundImage: image, schoolAbbr: schoolAbbr)
+        
+        Provider().fetchData { title, content, image, schoolAbbr, maskedId, isError in
+            resultEntry = SimpleEntry(date: Date(), id: maskedId, title: title, content: content, backgroundImage: image, schoolAbbr: schoolAbbr, isError: isError)
             semaphore.signal()
         }
+
 
         _ = semaphore.wait(timeout: .now() + 10)  // waiting up to 10 seconds
         return resultEntry!

@@ -145,7 +145,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => SplashScreenHintManager());
   sl.registerLazySingleton(() => Sharing());
 
-  RoomsService roomsService = RoomsService(sl(), Api());
+  RoomsService roomsService = RoomsService(sl(), Api(), Api());
   sl.registerLazySingleton(() => roomsService);
 
   //! State (BLoC or Cubit)

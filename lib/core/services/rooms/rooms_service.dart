@@ -13,7 +13,8 @@ class RoomsService extends ChangeNotifier {
   final Map<String, Room> _rooms = {};
   final UserAuthService _userAuthService;
   StreamSubscription? _roomSubscription;
-  final Api _api;
+  final Api _msgApi;
+  final Api _roomNameChangeApi;
 
   DocumentSnapshot? _lastDocument;
   bool _hasMoreData = true;
@@ -21,15 +22,42 @@ class RoomsService extends ChangeNotifier {
   Map<String, Room> get rooms => _rooms;
   bool get hasMoreData => _hasMoreData;
 
-  RoomsService(this._userAuthService, this._api) {
+  RoomsService(this._userAuthService, this._msgApi, this._roomNameChangeApi) {
     loadRooms().then((_) {
       startListenerForRooms();
     });
   }
 
+  Future<Either<ApiSuccess, String>> updateRoomName(String roomId, String name) async {
+    _roomNameChangeApi.cancelCurrReq();
+    String oldRoomName = _rooms[roomId]!.name;
+    // eagerly update immedietly
+    _rooms[roomId] = _rooms[roomId]!.copyWith(name: name);
+    notifyListeners();
+    return (await _roomNameChangeApi.req(Verb.put, true, "/api/v1/dms/chat", {
+      "room_id": roomId,
+      "new_name": name,
+    }))
+        .fold(
+      (failureWithMsg) {
+        _rooms[roomId] = _rooms[roomId]!.copyWith(name: oldRoomName);
+        return Right(failureWithMsg.msg());
+      },
+      (response) {
+        if (response.statusCode.toString()[0] == "2") {
+          return Left(ApiSuccess());
+        } else {
+          _rooms[roomId] = _rooms[roomId]!.copyWith(name: oldRoomName);
+          notifyListeners();
+          return const Right("todo: error");
+        }
+      },
+    );
+  }
+
   Future<Either<ApiSuccess, String>> addChat(String roomId, String msg) async {
-    _api.cancelCurrReq();
-    return (await _api.req(Verb.post, true, "/api/v1/dms/chat", {
+    _msgApi.cancelCurrReq();
+    return (await _msgApi.req(Verb.post, true, "/api/v1/dms/chat", {
       "room_id": roomId,
       "msg": msg,
     }))
