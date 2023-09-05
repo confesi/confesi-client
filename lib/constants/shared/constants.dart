@@ -28,6 +28,8 @@ const int passwordMinLength = 8;
 const int postTitlePreviewLength = 100;
 const int postBodyPreviewLength = 200;
 
+const int chatMessagePreviewLength = 50;
+
 const int kPostTitleMaxLength = 500;
 const int kPostBodyMaxLength = 10000;
 

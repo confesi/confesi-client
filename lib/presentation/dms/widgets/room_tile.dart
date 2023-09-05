@@ -1,8 +1,8 @@
 import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/styles/typography.dart';
+import 'package:confesi/core/utils/strings/truncate_text.dart';
 import 'package:confesi/presentation/dms/utils/time_ago.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
-import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:flutter/material.dart';
 
 class RoomTile extends StatelessWidget {
@@ -49,9 +49,10 @@ class RoomTile extends StatelessWidget {
               ],
             ),
             Text(
-              lastChat ?? "No messages",
+              truncateText(lastChat ?? "No messages", chatMessagePreviewLength),
               style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
               textAlign: TextAlign.left,
+              maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
           ],

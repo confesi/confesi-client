@@ -1,10 +1,15 @@
+import 'package:confesi/application/user/cubit/notifications_cubit.dart';
 import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/router/go_router.dart';
 import 'package:confesi/core/services/rooms/rooms_service.dart';
 import 'package:confesi/core/styles/typography.dart';
 import 'package:confesi/models/chat.dart';
 import 'package:confesi/presentation/dms/widgets/chat_tile.dart';
+import 'package:confesi/presentation/shared/button_touch_effects/touchable_delete.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
+import 'package:confesi/presentation/shared/button_touch_effects/touchable_shrink.dart';
+import 'package:confesi/presentation/shared/buttons/option.dart';
+import 'package:confesi/presentation/shared/overlays/button_options_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:keyboard_attachable/keyboard_attachable.dart';
@@ -43,11 +48,43 @@ class _ChatScreenState extends State<ChatScreen> {
     super.dispose();
   }
 
+  Future<void> _promptDeleteMessage(String docId) async {
+    bool shouldDelete = await showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Delete Message'),
+              content: Text('Are you sure you want to delete this message?'),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('Cancel'),
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                  },
+                ),
+                TextButton(
+                  child: Text('Delete'),
+                  onPressed: () {
+                    Navigator.of(context).pop(true);
+                  },
+                ),
+              ],
+            );
+          },
+        ) ??
+        false; // assuming that the dialog returns null when dismissed
+
+    if (shouldDelete) {
+      await FirebaseFirestore.instance.collection('chats').doc(docId).delete();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final chatsQuery =
         FirebaseFirestore.instance.collection('chats').orderBy('date', descending: true).withConverter<Chat>(
-              fromFirestore: (snapshot, _) => Chat.fromJson(snapshot.data()!),
+              fromFirestore: (snapshot, _) =>
+                  Chat.fromJson({...snapshot.data() as Map<String, dynamic>, "id": snapshot.id}),
               toFirestore: (chat, _) => chat.toJson(),
             );
 
@@ -110,6 +147,20 @@ class _ChatScreenState extends State<ChatScreen> {
                             child: Padding(
                               padding: const EdgeInsets.only(top: 3),
                               child: TextField(
+                                onEditingComplete: () async {
+                                  // unfocus keyboard
+                                  FocusManager.instance.primaryFocus?.unfocus();
+                                  (await Provider.of<RoomsService>(context, listen: false).updateRoomName(
+                                    widget.props.roomId,
+                                    chatNameController.text,
+                                  ))
+                                      .fold(
+                                    (_) => null, // do nothing on success
+                                    (errMsg) => context
+                                        .read<NotificationsCubit>()
+                                        .showErr(errMsg), // show notification on error
+                                  );
+                                },
                                 textAlign: TextAlign.center,
                                 controller: chatNameController,
                                 style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
@@ -150,7 +201,24 @@ class _ChatScreenState extends State<ChatScreen> {
                         itemBuilder: (context, snapshot) {
                           Chat chat = snapshot.data();
                           return ChatTile(
+                            onDelete: () => showButtonOptionsSheet(
+                              context,
+                              [
+                                OptionButton(
+                                    onTap: () =>
+                                        Provider.of<RoomsService>(context, listen: false).deleteChat(snapshot.id),
+                                    text: "Confirm deletion",
+                                    icon: CupertinoIcons.trash,
+                                    isRed: true),
+                                OptionButton(
+                                  onTap: () {}, // do nothing since this closes it anyway
+                                  text: "Nevermind",
+                                  icon: CupertinoIcons.arrow_turn_up_left,
+                                ),
+                              ],
+                            ),
                             key: ValueKey(chat.date),
+                            // plus ID
                             text: chat.msg,
                             isYou: Provider.of<RoomsService>(context, listen: false)
                                     .rooms[widget.props.roomId]!

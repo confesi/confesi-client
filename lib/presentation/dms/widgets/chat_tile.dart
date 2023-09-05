@@ -1,5 +1,8 @@
+import 'package:confesi/core/services/fcm_notifications/notification_table.dart';
 import 'package:confesi/core/styles/typography.dart';
+import 'package:confesi/presentation/shared/button_touch_effects/touchable_delete.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'dart:async';
 
 import '../utils/time_ago.dart';
@@ -10,11 +13,13 @@ class ChatTile extends StatefulWidget {
     required this.text,
     required this.isYou,
     required this.datetime,
+    required this.onDelete,
   }) : super(key: key);
 
   final String text;
   final bool isYou;
   final DateTime datetime;
+  final VoidCallback onDelete;
 
   @override
   _ChatTileState createState() => _ChatTileState();
@@ -61,30 +66,40 @@ class _ChatTileState extends State<ChatTile> {
                 ),
                 const SizedBox(width: 8),
               ],
-              Container(
-                constraints: BoxConstraints(maxWidth: maxWidth),
-                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-                decoration: BoxDecoration(
-                  color: widget.isYou ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.secondary,
-                  borderRadius: !widget.isYou
-                      ? const BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          bottomLeft: Radius.circular(2),
-                          topRight: Radius.circular(10),
-                          bottomRight: Radius.circular(10),
-                        )
-                      : const BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          bottomLeft: Radius.circular(10),
-                          topRight: Radius.circular(10),
-                          bottomRight: Radius.circular(2),
-                        ),
-                ),
-                child: Text(
-                  widget.text,
-                  style: kBody.copyWith(
+              TouchableDelete(
+                onLongPress: widget.isYou
+                    ? () {
+                        HapticFeedback.heavyImpact();
+                        widget.onDelete();
+                      }
+                    : null,
+                child: Container(
+                  constraints: BoxConstraints(maxWidth: maxWidth),
+                  padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+                  decoration: BoxDecoration(
                     color:
-                        widget.isYou ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.primary,
+                        widget.isYou ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.secondary,
+                    borderRadius: !widget.isYou
+                        ? const BorderRadius.only(
+                            topLeft: Radius.circular(10),
+                            bottomLeft: Radius.circular(2),
+                            topRight: Radius.circular(10),
+                            bottomRight: Radius.circular(10),
+                          )
+                        : const BorderRadius.only(
+                            topLeft: Radius.circular(10),
+                            bottomLeft: Radius.circular(10),
+                            topRight: Radius.circular(10),
+                            bottomRight: Radius.circular(2),
+                          ),
+                  ),
+                  child: Text(
+                    widget.text,
+                    style: kBody.copyWith(
+                      color: widget.isYou
+                          ? Theme.of(context).colorScheme.onPrimary
+                          : Theme.of(context).colorScheme.primary,
+                    ),
                   ),
                 ),
               ),

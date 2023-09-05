@@ -89,7 +89,7 @@ class RoomsScreen extends StatelessWidget {
                       return FirestoreListView(
                         query: query,
                         itemBuilder: (context, item) {
-                          Room room = Room.fromJson({...item.data()!, "id": item.id});
+                          Room room = Room.fromJson({...item.data(), "id": item.id});
                           final roomsService = Provider.of<RoomsService>(context, listen: false);
 
                           roomsService.addRoomAndLoadChat(room);

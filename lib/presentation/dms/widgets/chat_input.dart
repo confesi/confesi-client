@@ -42,6 +42,9 @@ class _ChatInputState extends State<ChatInput> {
                   absorbing: isLoading,
                   child: TouchableScale(
                     onTap: () async {
+                      // strip whitespace
+                      widget.controller.text = widget.controller.text.trim();
+                      // if empty return
                       if (widget.controller.text.isEmpty) return;
                       setState(() => isLoading = true);
                       String oldValue = widget.controller.text;
