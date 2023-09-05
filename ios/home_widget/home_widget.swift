@@ -108,53 +108,56 @@ struct YourWidgetEntryView: View {
                 }
 
                 // Black Overlay
-                Color.black.opacity(0.65)
+                Color.black.opacity(0.6)
                     .frame(width: geometry.size.width, height: geometry.size.height)
-
-                // Content
-                if entry.isError {
-                    VStack {
-                        Text("Connection error")
-                            .font(.system(size: widgetSizeFont(for: widgetFamily, isTitle: true), weight: .bold))
+                
+                VStack(spacing: 0) {
+                    if !entry.title.isEmpty {
+                        Text(entry.schoolAbbr)  // Use the abbreviation from your API
+                            .font(.system(size: 14, weight: .bold))
                             .foregroundColor(.white)
-                            .padding(.bottom, 5)
-                        Text("We'll retry soon")
-                            .font(.system(size: widgetSizeFont(for: widgetFamily, isTitle: false)))
-                            .foregroundColor(.white)
+                            .padding(.top, widgetVerticalPadding(for: widgetFamily))
+                            .padding(.leading, widgetHorizontalPadding(for: widgetFamily))
+                            .frame(maxWidth: .infinity, alignment: .leading)
                     }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                }
-                else {
-                    VStack(alignment: .leading, spacing: 10) {
-                        // Display ABBR when there's no error and there's actual data
-                        if !entry.title.isEmpty {
-                            Text(entry.schoolAbbr)  // Use the abbreviation from your API
-                                .font(.system(size: 14, weight: .bold))
+                    
+                    Spacer()  // This Spacer pushes content below to the bottom
+                    
+                    if entry.isError {
+                        VStack {
+                            Text("Connection error")
+                                .font(.system(size: widgetSizeFont(for: widgetFamily, isTitle: true), weight: .bold))
                                 .foregroundColor(.white)
-                        }
-                        
-                        Spacer().frame(height: 10)  // Adding a spacer between ABBR and title/body
-                        
-                        Text(entry.title.isEmpty ? entry.content : entry.title)
-                            .font(.system(size: widgetSizeFont(for: widgetFamily, isTitle: true), weight: .bold))
-                            .foregroundColor(.white)
-                            .truncationMode(.tail)
-                        if widgetFamily == .systemLarge && !entry.title.isEmpty {
-                            Text(entry.content)
+                                .padding(.bottom, 5)
+                            Text("We'll retry soon")
                                 .font(.system(size: widgetSizeFont(for: widgetFamily, isTitle: false)))
                                 .foregroundColor(.white)
-                                .truncationMode(.tail)
                         }
+                        .padding(.bottom, widgetVerticalPadding(for: widgetFamily)) // Added padding here
                     }
-                    .padding(.horizontal, widgetHorizontalPadding(for: widgetFamily))
-                    .padding(.vertical, widgetVerticalPadding(for: widgetFamily))
+                    else {
+                        VStack(alignment: .leading, spacing: 10) {
+                            Text(entry.title.isEmpty ? entry.content : entry.title)
+                                .font(.system(size: widgetSizeFont(for: widgetFamily, isTitle: true), weight: .bold))
+                                .foregroundColor(.white)
+                                .truncationMode(.tail)
+                            if widgetFamily == .systemLarge && !entry.title.isEmpty {
+                                Text(entry.content)
+                                    .font(.system(size: widgetSizeFont(for: widgetFamily, isTitle: false)))
+                                    .foregroundColor(.white)
+                                    .truncationMode(.tail)
+                            }
+                        }
+                        .padding(.horizontal, widgetHorizontalPadding(for: widgetFamily))
+                        .padding(.bottom, widgetVerticalPadding(for: widgetFamily)) // Added padding here
+                    }
                 }
+
             }
         }
         .widgetURL(URL(string: "confesi://p/\(entry.id)"))
     }
 }
-
     
     
     func widgetVerticalPadding(for family: WidgetFamily) -> CGFloat {
@@ -227,28 +230,30 @@ struct Provider: TimelineProvider {
             if isError {
                 // Increase retryCount for consecutive errors
                 retryQueue.sync {
-                                retryCount += 1
-                            }
+                    retryCount += 1
+                }
 
                 // Calculate backoff interval - start with 10 seconds and double for each retry, up to an hour
-                let backoffTime = min(10 * pow(2, Double(retryCount)), 3600)
+                // Introduce a base delay of 5 seconds even for the first error
+                let backoffTime = 5 + min(10 * pow(2, Double(retryCount)), 3600)
                 refreshInterval = backoffTime
                 print("Retrying after \(backoffTime) seconds.")
             } else {
                 // Reset retry count when fetch is successful
                 retryQueue.sync {
-                                retryCount = 0
-                            }
+                    retryCount = 0
+                }
 
                 // Refresh every 11 hours if it's loaded successfully
                 refreshInterval = 11 * 3600
-                print("Refreshing in 12 hours.")
+                print("Refreshing in 11 hours.")
             }
 
             let timeline = Timeline(entries: [entry], policy: .after(Date().addingTimeInterval(refreshInterval)))
             completion(timeline)
         }
     }
+
 
 
     func fetchData(completion: @escaping (String, String, UIImage?, String, String, Bool) -> Void) {
