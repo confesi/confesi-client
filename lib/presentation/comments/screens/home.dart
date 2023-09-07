@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:confesi/application/comments/cubit/comment_section_cubit.dart';
 import 'package:confesi/application/comments/cubit/create_comment_cubit.dart';
 import 'package:confesi/application/posts/cubit/individual_post_cubit.dart';
+import 'package:confesi/constants/feed/general.dart';
 import 'package:confesi/core/services/create_comment_service/create_comment_service.dart';
 import 'package:confesi/core/services/global_content/global_content.dart';
 import 'package:confesi/core/utils/numbers/large_number_formatter.dart';
@@ -153,8 +154,8 @@ class _CommentsHomeState extends State<CommentsHome> {
     }
   }
 
-  Widget _highlightText(String content, int? lastChar, TextStyle baseStyle) {
-    if (lastChar != null && lastChar < content.length) {
+  Widget _highlightText(String content, int? lastChar, TextStyle baseStyle, int limit) {
+    if (lastChar != null && lastChar < content.length && content.length >= limit) {
       final startIndex = content.lastIndexOf(' ', lastChar);
       final endIndex = content.indexOf(' ', lastChar);
 
@@ -224,6 +225,7 @@ class _CommentsHomeState extends State<CommentsHome> {
                             fontSize:
                                 kDisplay1.fontSize! * Provider.of<UserAuthService>(context).data().textSize.multiplier,
                           ),
+                          postTitlePreviewLength,
                         ),
                       ],
                     ),
@@ -282,6 +284,7 @@ class _CommentsHomeState extends State<CommentsHome> {
                             fontSize:
                                 kBody.fontSize! * Provider.of<UserAuthService>(context).data().textSize.multiplier,
                           ),
+                          postBodyPreviewLength,
                         ),
                       ],
                     ),
@@ -343,8 +346,6 @@ class _CommentsHomeState extends State<CommentsHome> {
 
   @override
   void initState() {
-    print(widget.props.bodyLastChar);
-    print(widget.props.titleLastChar);
     commentSheetController = CommentSheetController();
     tryOpenKeyboard();
     startScreenshotListener();
