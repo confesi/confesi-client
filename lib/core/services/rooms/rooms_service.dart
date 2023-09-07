@@ -63,15 +63,27 @@ class RoomsService extends ChangeNotifier {
     }
   }
 
-  Future<Either<ApiSuccess, String>> deleteChat(String chatId) async {
+  Future<Either<ApiSuccess, String>> deleteChat(String roomId, String chatId) async {
     try {
       _deleteChatApi.cancelCurrReq();
-      Chat oldChat = _rooms.values
-          .firstWhere((room) => room.chats.any((chat) => chat.id == chatId))
-          .chats
-          .firstWhere((chat) => chat.id == chatId);
+      if (_rooms[roomId] == null) {
+        return const Right("Unknown error");
+      }
+      // old to-remove chat
+      late Chat oldChat;
+      try {
+        print(_rooms[roomId]!);
+        oldChat = _rooms[roomId]!.chats.firstWhere((chat) {
+          print("chat.id: ${chat.id}, chatId: $chatId");
+          return chat.id == chatId;
+        });
+      } catch (e) {
+        chatsError = true;
+        print(e);
+        return const Right('Failed to delete chat due to an unexpected error.');
+      }
+
       // eagerly remove
-      String roomId = _rooms.values.firstWhere((room) => room.chats.any((chat) => chat.id == chatId)).roomId;
       _rooms[roomId] =
           _rooms[roomId]!.copyWith(chats: _rooms[roomId]!.chats.where((chat) => chat.id != chatId).toList());
       notifyListeners();

@@ -200,13 +200,25 @@ class _ChatScreenState extends State<ChatScreen> {
                         query: chatsQuery,
                         itemBuilder: (context, snapshot) {
                           Chat chat = snapshot.data();
+                          Provider.of<RoomsService>(context, listen: false).rooms[widget.props.roomId]!.chats.add(chat);
+                          // only return `ChatTile` if it exists in the room
+                          if (!Provider.of<RoomsService>(context, listen: false)
+                              .rooms[widget.props.roomId]!
+                              .chats
+                              .contains(chat)) {
+                            return const SizedBox.shrink();
+                          }
                           return ChatTile(
                             onDelete: () => showButtonOptionsSheet(
                               context,
                               [
                                 OptionButton(
-                                    onTap: () =>
-                                        Provider.of<RoomsService>(context, listen: false).deleteChat(snapshot.id),
+                                    onTap: () async => (await Provider.of<RoomsService>(context, listen: false)
+                                                .deleteChat(widget.props.roomId, snapshot.id))
+                                            .fold(
+                                          (_) => null, // do nothing on success
+                                          (errMsg) => context.read<NotificationsCubit>().showErr(errMsg),
+                                        ),
                                     text: "Confirm deletion",
                                     icon: CupertinoIcons.trash,
                                     isRed: true),

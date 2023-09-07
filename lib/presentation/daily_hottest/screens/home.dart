@@ -1,11 +1,10 @@
 import 'package:confesi/constants/shared/constants.dart';
+import 'package:confesi/core/utils/strings/truncate_text.dart';
+import 'package:confesi/models/post.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
-
 import '../../../core/router/go_router.dart';
 import 'package:flutter/services.dart';
-
 import '../../shared/indicators/loading_or_alert.dart';
-
 import '../../../application/daily_hottest/cubit/hottest_cubit.dart';
 import '../../../constants/leaderboard/general.dart';
 import '../../../core/utils/dates/two_dates_same.dart';
@@ -15,7 +14,6 @@ import '../widgets/date_picker_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../core/styles/typography.dart';
 import '../../shared/behaviours/themed_status_bar.dart';
 import '../../shared/indicators/alert.dart';
@@ -48,6 +46,29 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
     super.dispose();
   }
 
+  void handlePostTap(PostWithMetadata post) {
+    // Ensure dailyHottestPreviewLength does not exceed the length of the text
+    int bodyTruncationIndex =
+        dailyHottestPreviewLength < post.post.content.length ? dailyHottestPreviewLength : post.post.content.length;
+    int titleTruncationIndex =
+        dailyHottestPreviewLength < post.post.title.length ? dailyHottestPreviewLength : post.post.title.length;
+
+    // Get the truncated body and its last index
+    final truncatedBody = post.post.content.substring(0, bodyTruncationIndex);
+
+    // Get the truncated title and its last index
+    final truncatedTitle = post.post.title.substring(0, titleTruncationIndex);
+
+    router.push(
+      "/home/posts/comments",
+      extra: HomePostsCommentsProps(
+        PreloadedPost(post, false),
+        bodyLastChar: truncatedBody.length,
+        titleLastChar: truncatedTitle.length,
+      ),
+    );
+  }
+
   Widget buildChild(BuildContext context, HottestState state) {
     if (state is DailyHottestData) {
       if (state.posts.isEmpty) {
@@ -61,8 +82,7 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
         );
       }
       return GestureDetector(
-        onTap: () => router.push("/home/posts/comments",
-            extra: HomePostsCommentsProps(PreloadedPost(state.posts[currentIndex], false))),
+        onTap: () => handlePostTap(state.posts[currentIndex]),
         child: PageView(
           controller: pageController,
           physics: const BouncingScrollPhysics(),
@@ -161,7 +181,6 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
                                     child: buildChild(context, state),
                                   );
                                 },
-                                // listenWhen: ,
                               ),
                             ),
                           ],

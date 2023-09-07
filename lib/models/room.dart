@@ -4,21 +4,21 @@ import 'package:equatable/equatable.dart';
 import 'package:confesi/models/chat.dart'; // Assuming you have the Chat model in this path.
 
 class Room extends Equatable {
-  final String userId;      // Added
+  final String userId;    
   final String name;
-  final String roomId;     // Changed from 'id'
+  final String roomId;    
   final DateTime lastMsg;
   final int postId;
-  final int userNumber;    // Added
+  final int userNumber;  
   final List<Chat> chats;
 
   const Room({
-    required this.userId,  // Added
+    required this.userId, 
     required this.name,
-    required this.roomId,  // Changed
+    required this.roomId, 
     required this.lastMsg,
     required this.postId,
-    required this.userNumber,  // Added
+    required this.userNumber, 
     required this.chats,
   });
 

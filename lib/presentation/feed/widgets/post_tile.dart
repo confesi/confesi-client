@@ -23,13 +23,13 @@ import '../utils/post_metadata_formatters.dart';
 class PostTile extends StatefulWidget {
   final PostWithMetadata post;
 
-  PostTile({Key? key, required this.post}) : super(key: key);
+  const PostTile({Key? key, required this.post}) : super(key: key);
 
   @override
-  _PostTileState createState() => _PostTileState();
+  PostTileState createState() => PostTileState();
 }
 
-class _PostTileState extends State<PostTile> {
+class PostTileState extends State<PostTile> {
   late final String truncatedTitle;
   late final int titleLastIndex;
   late final String truncatedContent;

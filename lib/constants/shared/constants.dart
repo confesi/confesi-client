@@ -27,6 +27,8 @@ const bool devicePreview = false;
 /// Min length for passwords.
 const int passwordMinLength = 8;
 
+const int dailyHottestPreviewLength = 50;
+
 const int postTitlePreviewLength = 100;
 const int postBodyPreviewLength = 200;
 

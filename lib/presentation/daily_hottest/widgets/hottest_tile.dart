@@ -1,9 +1,6 @@
 import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/models/post.dart';
-import 'package:confesi/presentation/shared/behaviours/init_scale.dart';
 import 'package:confesi/presentation/shared/other/cached_online_image.dart';
-import 'package:provider/provider.dart';
-import '../../../core/services/user_auth/user_auth_service.dart';
 import '../../../core/styles/typography.dart';
 import 'package:flutter/material.dart';
 import '../../shared/text/header_group.dart';

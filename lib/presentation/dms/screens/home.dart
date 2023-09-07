@@ -60,14 +60,6 @@ class RoomsScreen extends StatelessWidget {
                                 isLoading: snapshot.connectionState == ConnectionState.waiting);
                           }
 
-                          // if (snapshot.hasError) {
-                          //   return Center(child: Text('Error: ${snapshot.error}'));
-                          // }
-
-                          // if (snapshot.connectionState == ConnectionState.waiting) {
-                          //   return Center(child: CircularProgressIndicator());
-                          // }
-
                           if (snapshot.data?.docs.isEmpty ?? true) {
                             return Center(
                               child: Padding(
@@ -97,24 +89,7 @@ class RoomsScreen extends StatelessWidget {
                               query: query,
                               itemBuilder: (context, item) {
                                 Room room = Room.fromJson({...item.data(), "id": item.id});
-                                final roomsService = Provider.of<RoomsService>(context, listen: false);
-
-                                roomsService.addRoomAndLoadChat(room);
-
-                                return Consumer<RoomsService>(
-                                  builder: (context, roomsService, _) {
-                                    final updatedRoom = roomsService.rooms[room.roomId]!;
-                                    return RoomTile(
-                                      lastMsg: updatedRoom.lastMsg,
-                                      name: updatedRoom.name,
-                                      lastChat: updatedRoom.chats.isNotEmpty ? updatedRoom.chats.last.msg : null,
-                                      onTap: () => router.push("/home/rooms/chat",
-                                          extra: ChatProps(
-                                            updatedRoom.roomId,
-                                          )),
-                                    );
-                                  },
-                                );
+                                return RoomWithChat(room: room);
                               },
                             );
                           }
@@ -128,6 +103,51 @@ class RoomsScreen extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class RoomWithChat extends StatefulWidget {
+  final Room room;
+
+  const RoomWithChat({required this.room});
+
+  @override
+  RoomWithChatState createState() => RoomWithChatState();
+}
+
+class RoomWithChatState extends State<RoomWithChat> {
+  Future<void>? _loadChatFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadChatFuture = Provider.of<RoomsService>(context, listen: false).addRoomAndLoadChat(widget.room);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<void>(
+      future: _loadChatFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator(); // Or some other loading widget
+        } else if (snapshot.hasError) {
+          return Text('Error loading chat');
+        } else {
+          return Consumer<RoomsService>(
+            builder: (context, roomsService, _) {
+              final updatedRoom = roomsService.rooms[widget.room.roomId]!;
+              return RoomTile(
+                lastMsg: updatedRoom.lastMsg,
+                name: updatedRoom.name,
+                lastChat: updatedRoom.chats.isNotEmpty ? updatedRoom.chats.last.msg : null,
+                onTap: () => router.push("/home/rooms/chat", extra: ChatProps(updatedRoom.roomId)),
+              );
+            },
+          );
+        }
+      },
     );
   }
 }
