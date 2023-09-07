@@ -256,7 +256,7 @@ class _FeedListState extends State<FeedList> {
                 child: buildIndicator(),
               );
             } else {
-              return widget.controller.items[index - 1].child;
+              return Center(child: widget.controller.items[index - 1].child);
             }
           },
           itemCount: widget.controller.items.length + 2,

@@ -155,7 +155,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       _BottomTab(
                         indexMatcher: 2,
                         currentIndex: Provider.of<PrimaryTabControllerService>(context).tabIdx,
-                        icon: CupertinoIcons.add,
+                        icon: CupertinoIcons.add_circled,
                       ),
                       _BottomTab(
                         indexMatcher: 3,
@@ -210,7 +210,7 @@ class _BottomTab extends StatelessWidget {
               icon,
               size: 24,
               color: currentIndex == indexMatcher
-                  ? Theme.of(context).colorScheme.secondary
+                  ? Theme.of(context).colorScheme.tertiary
                   : Theme.of(context).colorScheme.onSurface,
             ),
             WidgetOrNothing(

@@ -1,3 +1,4 @@
+import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 
 import '../../../core/router/go_router.dart';
@@ -72,10 +73,15 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
           children: state.posts
               .asMap()
               .entries
-              .map((post) => HottestTile(
-                    currentIndex: currentIndex,
-                    thisIndex: post.key,
-                    post: post.value,
+              .map((post) => Container(
+                    constraints: const BoxConstraints(maxWidth: maxStandardSizeOfContent),
+                    child: Center(
+                      child: HottestTile(
+                        currentIndex: currentIndex,
+                        thisIndex: post.key,
+                        post: post.value,
+                      ),
+                    ),
                   ))
               .toList()
               .sublist(

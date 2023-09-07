@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import '../../application/create_post/cubit/post_categories_cubit.dart';
 
 /// The root endpoint (domain) for all api calls.
-const String domain = "http://192.168.1.107:8080"; // 10.0.0.173
+const String domain = "http://10.0.0.173:8080";
 
 const Duration apiDefaultTimeout = Duration(seconds: 10);
 
@@ -11,6 +11,8 @@ const Duration apiDefaultTimeout = Duration(seconds: 10);
 const bool debugMode = true;
 
 const int maxImagesPerPost = 5;
+
+const double maxStandardSizeOfContent = 500;
 
 const double borderSize = 0.4;
 

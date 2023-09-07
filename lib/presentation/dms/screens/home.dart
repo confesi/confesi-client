@@ -1,3 +1,4 @@
+import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/router/go_router.dart';
 import 'package:confesi/core/services/rooms/rooms_service.dart';
 import 'package:confesi/core/services/user_auth/user_auth_service.dart';
@@ -25,97 +26,106 @@ class RoomsScreen extends StatelessWidget {
         .orderBy('last_msg', descending: true);
 
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
-      body: SafeArea(
-        bottom: false,
-        child: Column(
-          children: [
-            AppbarLayout(
-              leftIconVisible: false,
-              leftIconDisabled: true,
-              bottomBorder: true,
-              centerWidget: Text(
-                "Anonymous Messages",
-                style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.center,
-              ),
-            ),
-            Expanded(
-              child: Container(
-                color: Theme.of(context).colorScheme.shadow,
-                child: StreamBuilder<QuerySnapshot>(
-                  stream: query.snapshots(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError || snapshot.connectionState == ConnectionState.waiting) {
-                      LoadingOrAlert(
-                          message: StateMessage("Unknown error", () {}),
-                          isLoading: snapshot.connectionState == ConnectionState.waiting);
-                    }
-
-                    // if (snapshot.hasError) {
-                    //   return Center(child: Text('Error: ${snapshot.error}'));
-                    // }
-
-                    // if (snapshot.connectionState == ConnectionState.waiting) {
-                    //   return Center(child: CircularProgressIndicator());
-                    // }
-
-                    if (snapshot.data?.docs.isEmpty ?? true) {
-                      return Center(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                CupertinoIcons.chat_bubble_2_fill,
-                                size: 50,
-                                color: Theme.of(context).colorScheme.onSurface,
-                              ),
-                              const SizedBox(height: 15),
-                              Text(
-                                "No messages available",
-                                style: kBody.copyWith(
-                                  color: Theme.of(context).colorScheme.onSurface,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    } else {
-                      return FirestoreListView(
-                        query: query,
-                        itemBuilder: (context, item) {
-                          Room room = Room.fromJson({...item.data(), "id": item.id});
-                          final roomsService = Provider.of<RoomsService>(context, listen: false);
-
-                          roomsService.addRoomAndLoadChat(room);
-
-                          return Consumer<RoomsService>(
-                            builder: (context, roomsService, _) {
-                              final updatedRoom = roomsService.rooms[room.roomId]!;
-                              return RoomTile(
-                                lastMsg: updatedRoom.lastMsg,
-                                name: updatedRoom.name,
-                                lastChat: updatedRoom.chats.isNotEmpty ? updatedRoom.chats.last.msg : null,
-                                onTap: () => router.push("/home/rooms/chat",
-                                    extra: ChatProps(
-                                      updatedRoom.roomId,
-                                    )),
-                              );
-                            },
-                          );
-                        },
-                      );
-                    }
-                  },
+      backgroundColor: Theme.of(context).colorScheme.shadow,
+      body: Container(
+        color: Theme.of(context).colorScheme.background,
+        child: SafeArea(
+          bottom: false,
+          child: Column(
+            children: [
+              AppbarLayout(
+                leftIconVisible: false,
+                leftIconDisabled: true,
+                bottomBorder: true,
+                centerWidget: Text(
+                  "Anonymous Messages",
+                  style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
                 ),
               ),
-            ),
-          ],
+              Expanded(
+                child: Container(
+                  color: Theme.of(context).colorScheme.shadow,
+                  width: double.infinity,
+                  child: Center(
+                    child: Container(
+                      constraints: const BoxConstraints(maxWidth: maxStandardSizeOfContent),
+                      child: StreamBuilder<QuerySnapshot>(
+                        stream: query.snapshots(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasError || snapshot.connectionState == ConnectionState.waiting) {
+                            LoadingOrAlert(
+                                message: StateMessage("Unknown error", () {}),
+                                isLoading: snapshot.connectionState == ConnectionState.waiting);
+                          }
+
+                          // if (snapshot.hasError) {
+                          //   return Center(child: Text('Error: ${snapshot.error}'));
+                          // }
+
+                          // if (snapshot.connectionState == ConnectionState.waiting) {
+                          //   return Center(child: CircularProgressIndicator());
+                          // }
+
+                          if (snapshot.data?.docs.isEmpty ?? true) {
+                            return Center(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 15),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      CupertinoIcons.chat_bubble_2_fill,
+                                      size: 50,
+                                      color: Theme.of(context).colorScheme.onSurface,
+                                    ),
+                                    const SizedBox(height: 15),
+                                    Text(
+                                      "No messages available",
+                                      style: kBody.copyWith(
+                                        color: Theme.of(context).colorScheme.onSurface,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          } else {
+                            return FirestoreListView(
+                              query: query,
+                              itemBuilder: (context, item) {
+                                Room room = Room.fromJson({...item.data(), "id": item.id});
+                                final roomsService = Provider.of<RoomsService>(context, listen: false);
+
+                                roomsService.addRoomAndLoadChat(room);
+
+                                return Consumer<RoomsService>(
+                                  builder: (context, roomsService, _) {
+                                    final updatedRoom = roomsService.rooms[room.roomId]!;
+                                    return RoomTile(
+                                      lastMsg: updatedRoom.lastMsg,
+                                      name: updatedRoom.name,
+                                      lastChat: updatedRoom.chats.isNotEmpty ? updatedRoom.chats.last.msg : null,
+                                      onTap: () => router.push("/home/rooms/chat",
+                                          extra: ChatProps(
+                                            updatedRoom.roomId,
+                                          )),
+                                    );
+                                  },
+                                );
+                              },
+                            );
+                          }
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

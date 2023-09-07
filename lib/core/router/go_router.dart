@@ -290,7 +290,9 @@ class HomeLeaderboardSchoolProps {
 
 class HomePostsCommentsProps {
   final PostLoadType postLoadType;
-  const HomePostsCommentsProps(this.postLoadType);
+  HomePostsCommentsProps(this.postLoadType, {this.titleLastChar, this.bodyLastChar});
+  int? titleLastChar;
+  int? bodyLastChar;
 
   // toString
   @override

@@ -1,3 +1,4 @@
+import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/router/go_router.dart';
 import 'package:confesi/models/encrypted_id.dart';
 import 'package:confesi/models/school_with_metadata.dart';
@@ -167,13 +168,16 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                       : showInfoSheet(context, kLeaderboardInfoHeader, kLeaderboardInfoBody),
                 ),
                 Expanded(
-                  child: BlocBuilder<LeaderboardCubit, LeaderboardState>(
-                    builder: (context, state) {
-                      return AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 200),
-                        child: buildChild(context, state),
-                      );
-                    },
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: maxStandardSizeOfContent),
+                    child: BlocBuilder<LeaderboardCubit, LeaderboardState>(
+                      builder: (context, state) {
+                        return AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 200),
+                          child: buildChild(context, state),
+                        );
+                      },
+                    ),
                   ),
                 ),
               ],
