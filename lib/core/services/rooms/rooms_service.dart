@@ -87,7 +87,7 @@ class RoomsService extends ChangeNotifier {
       _rooms[roomId] =
           _rooms[roomId]!.copyWith(chats: _rooms[roomId]!.chats.where((chat) => chat.id != chatId).toList());
       notifyListeners();
-      return (await _deleteChatApi.req(Verb.delete, true, "/api/v1/chat/$chatId", {})).fold(
+      return (await _deleteChatApi.req(Verb.delete, true, "/api/v1/dms/chat?id=$chatId", {})).fold(
         (failureWithMsg) {
           print("GOT HERE 1");
           _rooms[roomId] = _rooms[roomId]!.copyWith(chats: [..._rooms[roomId]!.chats, oldChat]);
@@ -200,7 +200,6 @@ class RoomsService extends ChangeNotifier {
     } catch (e) {
       chatsError = true;
       notifyListeners();
-      print('Failed to load recent chat for room: $e');
     }
   }
 

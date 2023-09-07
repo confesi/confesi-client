@@ -62,7 +62,6 @@ class OptionButton extends StatelessWidget {
                       color: isRed ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.primary,
                     ),
                     textAlign: TextAlign.left,
-                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ],

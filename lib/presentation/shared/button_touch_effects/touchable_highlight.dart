@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class TouchableDelete extends StatefulWidget {
-  const TouchableDelete({
+class TouchableHighlight extends StatefulWidget {
+  const TouchableHighlight({
     Key? key,
     this.onLongPress,
     required this.child,
@@ -12,10 +12,10 @@ class TouchableDelete extends StatefulWidget {
   final Widget child;
 
   @override
-  TouchableDeleteState createState() => TouchableDeleteState();
+  TouchableHighlightState createState() => TouchableHighlightState();
 }
 
-class TouchableDeleteState extends State<TouchableDelete> with SingleTickerProviderStateMixin {
+class TouchableHighlightState extends State<TouchableHighlight> with SingleTickerProviderStateMixin {
   late AnimationController animController;
   late Animation anim;
 
@@ -57,7 +57,7 @@ class TouchableDeleteState extends State<TouchableDelete> with SingleTickerProvi
 
   @override
   Widget build(BuildContext context) {
-    final errorColor = Theme.of(context).colorScheme.error;
+    final errorColor = Theme.of(context).colorScheme.tertiary;
 
     if (widget.onLongPress == null) {
       return widget.child; // Return the child directly without any touch effects

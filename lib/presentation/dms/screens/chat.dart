@@ -5,7 +5,8 @@ import 'package:confesi/core/services/rooms/rooms_service.dart';
 import 'package:confesi/core/styles/typography.dart';
 import 'package:confesi/models/chat.dart';
 import 'package:confesi/presentation/dms/widgets/chat_tile.dart';
-import 'package:confesi/presentation/shared/button_touch_effects/touchable_delete.dart';
+import 'package:flutter/services.dart';
+import 'package:confesi/presentation/shared/button_touch_effects/touchable_highlight.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_shrink.dart';
 import 'package:confesi/presentation/shared/buttons/option.dart';
@@ -169,14 +170,29 @@ class _ChatScreenState extends State<ChatScreen> {
                                   border: InputBorder.none,
                                   contentPadding: const EdgeInsets.all(0),
                                   hintStyle: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
-                                  // text: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
                                 ),
                               ),
                             ),
                           ),
                           const SizedBox(width: 10),
                           TouchableOpacity(
-                            onTap: () => print("TAP"),
+                            onTap: () => showButtonOptionsSheet(
+                              context,
+                              [
+                                OptionButton(
+                                  onTap: () => print("todo"),
+                                  text: "Clear all room messages",
+                                  icon: CupertinoIcons.trash,
+                                  isRed: true,
+                                ),
+                                OptionButton(
+                                  onTap: () => print("todo"),
+                                  text: "Delete room",
+                                  icon: CupertinoIcons.trash,
+                                  isRed: true,
+                                ),
+                              ],
+                            ),
                             child: Container(
                               padding: const EdgeInsets.all(5),
                               color: Colors.transparent,
@@ -200,7 +216,10 @@ class _ChatScreenState extends State<ChatScreen> {
                         query: chatsQuery,
                         itemBuilder: (context, snapshot) {
                           Chat chat = snapshot.data();
-                          Provider.of<RoomsService>(context, listen: false).rooms[widget.props.roomId]!.chats.add(chat);
+                          Provider.of<RoomsService>(context, listen: false)
+                              .rooms[widget.props.roomId]!
+                              .chats
+                              .insert(0, chat);
                           // only return `ChatTile` if it exists in the room
                           if (!Provider.of<RoomsService>(context, listen: false)
                               .rooms[widget.props.roomId]!
@@ -209,23 +228,28 @@ class _ChatScreenState extends State<ChatScreen> {
                             return const SizedBox.shrink();
                           }
                           return ChatTile(
-                            onDelete: () => showButtonOptionsSheet(
+                            onLongPress: (isYou) => showButtonOptionsSheet(
                               context,
                               [
-                                OptionButton(
+                                if (isYou)
+                                  OptionButton(
                                     onTap: () async => (await Provider.of<RoomsService>(context, listen: false)
-                                                .deleteChat(widget.props.roomId, snapshot.id))
-                                            .fold(
-                                          (_) => null, // do nothing on success
-                                          (errMsg) => context.read<NotificationsCubit>().showErr(errMsg),
-                                        ),
-                                    text: "Confirm deletion",
+                                            .deleteChat(widget.props.roomId, snapshot.id))
+                                        .fold(
+                                      (_) => null, // do nothing on success
+                                      (errMsg) => context.read<NotificationsCubit>().showErr(errMsg),
+                                    ),
+                                    text: "Delete chat",
                                     icon: CupertinoIcons.trash,
-                                    isRed: true),
+                                    isRed: true,
+                                  ),
                                 OptionButton(
-                                  onTap: () {}, // do nothing since this closes it anyway
-                                  text: "Nevermind",
-                                  icon: CupertinoIcons.arrow_turn_up_left,
+                                  onTap: () {
+                                    Clipboard.setData(ClipboardData(text: chat.msg));
+                                    context.read<NotificationsCubit>().showSuccess("Chat copied");
+                                  },
+                                  text: "Copy text",
+                                  icon: CupertinoIcons.rectangle_on_rectangle_angled,
                                 ),
                               ],
                             ),

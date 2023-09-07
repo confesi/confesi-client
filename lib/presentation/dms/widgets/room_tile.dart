@@ -49,7 +49,7 @@ class RoomTile extends StatelessWidget {
               ],
             ),
             Text(
-              truncateText(lastChat ?? "No messages", chatMessagePreviewLength),
+              truncateText(lastChat ?? "No messages yet", chatMessagePreviewLength),
               style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
               textAlign: TextAlign.left,
               maxLines: 1,

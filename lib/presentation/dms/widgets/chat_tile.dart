@@ -1,6 +1,6 @@
 import 'package:confesi/core/services/fcm_notifications/notification_table.dart';
 import 'package:confesi/core/styles/typography.dart';
-import 'package:confesi/presentation/shared/button_touch_effects/touchable_delete.dart';
+import 'package:confesi/presentation/shared/button_touch_effects/touchable_highlight.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
@@ -13,19 +13,19 @@ class ChatTile extends StatefulWidget {
     required this.text,
     required this.isYou,
     required this.datetime,
-    required this.onDelete,
+    required this.onLongPress,
   }) : super(key: key);
 
   final String text;
   final bool isYou;
   final DateTime datetime;
-  final VoidCallback onDelete;
+  final Function(bool isYou) onLongPress;
 
   @override
-  _ChatTileState createState() => _ChatTileState();
+  ChatTileState createState() => ChatTileState();
 }
 
-class _ChatTileState extends State<ChatTile> {
+class ChatTileState extends State<ChatTile> {
   Timer? _timer;
 
   @override
@@ -66,13 +66,11 @@ class _ChatTileState extends State<ChatTile> {
                 ),
                 const SizedBox(width: 8),
               ],
-              TouchableDelete(
-                onLongPress: widget.isYou
-                    ? () {
-                        HapticFeedback.heavyImpact();
-                        widget.onDelete();
-                      }
-                    : null,
+              TouchableHighlight(
+                onLongPress: () {
+                  HapticFeedback.lightImpact();
+                  widget.onLongPress(widget.isYou);
+                },
                 child: Container(
                   constraints: BoxConstraints(maxWidth: maxWidth),
                   padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),

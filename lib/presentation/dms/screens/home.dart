@@ -131,9 +131,15 @@ class RoomWithChatState extends State<RoomWithChat> {
       future: _loadChatFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator(); // Or some other loading widget
+          return CupertinoActivityIndicator(color: Theme.of(context).colorScheme.primary);
         } else if (snapshot.hasError) {
-          return Text('Error loading chat');
+          return Text(
+            "Error loading rooms",
+            style: kBody.copyWith(
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            textAlign: TextAlign.center,
+          );
         } else {
           return Consumer<RoomsService>(
             builder: (context, roomsService, _) {
