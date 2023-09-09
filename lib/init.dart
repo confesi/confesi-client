@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:app_links/app_links.dart';
 import 'package:confesi/application/create_post/cubit/post_categories_cubit.dart';
+import 'package:confesi/application/dms/cubit/room_requests_cubit.dart';
 import 'package:confesi/application/user/cubit/account_details_cubit.dart';
 import 'package:confesi/application/user/cubit/feedback_categories_cubit.dart';
 import 'package:confesi/application/user/cubit/feedback_cubit.dart';
@@ -149,6 +150,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => roomsService);
 
   //! State (BLoC or Cubit)
+  sl.registerFactory(() => RoomRequestsCubit(Api()));
   sl.registerFactory(() => SentimentAnalysisCubit());
   sl.registerFactory(() => LeaderboardCubit(Api()));
   sl.registerFactory(() => AuthFlowCubit(Api()));

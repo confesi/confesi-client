@@ -215,7 +215,7 @@ class Api {
 
         if (debugMode) {
           print("================================ DEBUG API ================================");
-          print("Req endpoint: $url");
+          print("Req endpoint: $url, Method: ${apiVerbToString(method)}");
           print("${streamResponse.statusCode} ${streamResponse.reasonPhrase}");
           print("Req body: ${request.body}");
         }

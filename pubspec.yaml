@@ -20,7 +20,7 @@ version: 1.0.0+1
 isar_version: &isar_version 3.1.0
 
 environment:
-  sdk: ">=3.0.0 <=3.1.0"
+  sdk: ">=3.0.0 <=3.1.1"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -96,6 +96,7 @@ dependencies:
   sqlite3_flutter_libs: ^0.5.13
   path: ^1.8.2
   path_provider: ^2.0.14
+  desktop_window: ^0.4.0
   firebase_analytics: ^10.4.4
   screenshot: ^2.1.0
   screenshot_callback: ^2.0.3

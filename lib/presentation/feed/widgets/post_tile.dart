@@ -7,6 +7,7 @@ import 'package:confesi/core/utils/verified_students/verified_user_only.dart';
 import 'package:confesi/models/post.dart';
 import 'package:confesi/presentation/feed/widgets/img_viewer.dart';
 import 'package:confesi/presentation/feed/widgets/reaction_tile.dart';
+import 'package:confesi/presentation/shared/buttons/pop.dart';
 import 'package:confesi/presentation/shared/other/widget_or_nothing.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:flutter/cupertino.dart';
@@ -146,7 +147,7 @@ class PostTileState extends State<PostTile> {
                                 ),
                               ),
                               TouchableOpacity(
-                                onTap: () => buildOptionsSheet(context, widget.post, showSaved: false),
+                                onTap: () => buildOptionsSheet(context, widget.post),
                                 child: Container(
                                   color: Colors.transparent,
                                   child: Icon(

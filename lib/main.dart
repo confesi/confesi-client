@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:app_links/app_links.dart';
+import 'package:confesi/application/dms/cubit/room_requests_cubit.dart';
 import 'package:confesi/application/feed/cubit/schools_drawer_cubit.dart';
 import 'package:confesi/application/feed/cubit/sentiment_analysis_cubit.dart';
 import 'package:confesi/application/user/cubit/feedback_categories_cubit.dart';
@@ -11,6 +13,7 @@ import 'package:confesi/core/services/create_comment_service/create_comment_serv
 import 'package:confesi/core/services/global_content/global_content.dart';
 import 'package:confesi/core/services/posts_service/posts_service.dart';
 import 'package:confesi/core/services/rooms/rooms_service.dart';
+import 'package:desktop_window/desktop_window.dart';
 import 'package:shake/shake.dart';
 import 'package:drift/drift.dart' as drift;
 
@@ -133,6 +136,12 @@ void main() async {
   await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   analytics.logAppOpen();
+  // if windows or mac
+  if (Platform.isWindows || Platform.isMacOS) {
+    // set window size
+    await DesktopWindow.setMinWindowSize(const Size(400, 800));
+    await DesktopWindow.setMaxWindowSize(const Size(400, 800));
+  }
   await init();
   await startAuthListener();
   runApp(
@@ -148,6 +157,7 @@ void main() async {
       ],
       child: MultiBlocProvider(
         providers: [
+          BlocProvider(lazy: false, create: (context) => sl<RoomRequestsCubit>()),
           BlocProvider(lazy: false, create: (context) => sl<SentimentAnalysisCubit>()),
           BlocProvider(lazy: false, create: (context) => sl<PostCategoriesCubit>()),
           BlocProvider(lazy: false, create: (context) => sl<HottestCubit>()),
@@ -285,6 +295,8 @@ class _MyAppState extends State<MyApp> {
     sl.get<NotificationService>().requestPermissions();
     await sl.get<NotificationService>().init();
     sl.get<NotificationService>().onMessage((msg) async {
+      print("GOT MSG DUDE");
+      context.read<NotificationsCubit>().showSuccess(msg.notification!.body!);
       await sl.get<NotificationService>().insertFcmMsgToLocalDb(FcmNotificationCompanion(
             // todo: no bang ops?
             title: drift.Value(msg.notification!.title),

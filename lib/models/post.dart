@@ -77,6 +77,7 @@ class Post {
   bool edited;
   Category category;
   int commentCount;
+  bool chatPost;
   List<String> imgUrls;
 
   Post({
@@ -95,6 +96,7 @@ class Post {
     required this.hidden,
     required this.sentiment,
     required this.edited,
+    required this.chatPost,
     required this.category,
     required this.commentCount,
     required this.imgUrls,
@@ -110,6 +112,7 @@ class Post {
         title: json["title"],
         content: json["content"],
         downvote: json["downvote"],
+        chatPost: json["chat_post"],
         upvote: json["upvote"],
         trendingScore: json["trending_score"],
         // hottestOn is dateTime, or null

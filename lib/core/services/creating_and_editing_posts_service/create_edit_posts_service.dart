@@ -74,7 +74,13 @@ class CreatingEditingPostsService extends ChangeNotifier {
   CreatingEditingPostMetaState metaState = CreatingEditingPostMetaStateEnteringData();
   String title = "";
   String body = "";
+  bool isChatPost = true;
   final List<EditorState> _images = [];
+
+  void setIsChatPost(bool isChatPost) {
+    this.isChatPost = isChatPost;
+    notifyListeners();
+  }
 
   // getter for image
   List<EditorState> get images => _images;
@@ -149,6 +155,7 @@ class CreatingEditingPostsService extends ChangeNotifier {
     String body,
     String category,
     List<File> files,
+    bool isChatPost,
   ) async {
     _api.cancelCurrReq();
     _api.setTimeout(const Duration(seconds: 45));
@@ -168,6 +175,7 @@ class CreatingEditingPostsService extends ChangeNotifier {
         "title": title,
         "body": body,
         "category": category,
+        "is_chat_post": isChatPost,
       },
       files: Map.fromEntries(files.map((e) => MapEntry(e.path, e))),
     );

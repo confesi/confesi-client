@@ -23,6 +23,7 @@ class CurvyScreen extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
         body: SafeArea(
+          bottom: false,
           child: Column(
             children: [
               AppbarLayout(

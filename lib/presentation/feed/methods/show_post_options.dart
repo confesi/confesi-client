@@ -22,6 +22,17 @@ void buildOptionsSheet(BuildContext context, PostWithMetadata post, {bool showSa
   final quickActionsCubit = context.read<QuickActionsCubit>();
 
   showButtonOptionsSheet(context, [
+    if (post.post.chatPost)
+      Padding(
+        padding: const EdgeInsets.only(bottom: 15),
+        child: OptionButton(
+          borderColor: Theme.of(context).colorScheme.secondary,
+          text: "Open anonymous DM",
+          primaryColor: Theme.of(context).colorScheme.secondary,
+          icon: CupertinoIcons.chat_bubble_2_fill,
+          onTap: () => router.push("/home/chat", extra: post.post.id),
+        ),
+      ),
     if (post.owner)
       OptionButton(
         isRed: true,

@@ -6,7 +6,6 @@ import 'package:confesi/core/styles/typography.dart';
 import 'package:confesi/init.dart';
 import 'package:confesi/models/room.dart';
 import 'package:confesi/presentation/dms/widgets/room_tile.dart';
-import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:confesi/presentation/shared/indicators/loading_or_alert.dart';
 import 'package:confesi/presentation/shared/layout/appbar.dart';
 import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
@@ -14,6 +13,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+import '../overlays/room_request_sheet.dart';
 
 class RoomsScreen extends StatelessWidget {
   const RoomsScreen({Key? key}) : super(key: key);
@@ -24,7 +25,6 @@ class RoomsScreen extends StatelessWidget {
         .collection('rooms')
         .where('user_id', isEqualTo: sl.get<UserAuthService>().uid)
         .orderBy('last_msg', descending: true);
-
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.shadow,
       body: Container(
@@ -34,6 +34,9 @@ class RoomsScreen extends StatelessWidget {
           child: Column(
             children: [
               AppbarLayout(
+                rightIconOnPress: () => showRoomRequestsSheet(context),
+                rightIconVisible: true,
+                rightIcon: CupertinoIcons.archivebox,
                 leftIconVisible: false,
                 leftIconDisabled: true,
                 bottomBorder: true,

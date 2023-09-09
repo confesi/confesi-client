@@ -38,7 +38,7 @@ class StatTileGroup extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       child: Container(
-        color: Theme.of(context).colorScheme.secondary,
+        color: Theme.of(context).colorScheme.tertiary,
         width: double.infinity,
         child: SafeArea(
           bottom: false,
@@ -56,8 +56,8 @@ class StatTileGroup extends StatelessWidget {
                     HapticFeedback.lightImpact();
                     icon4OnPress();
                   },
-                  iconColor: icon4Selected ? Theme.of(context).colorScheme.background : null,
-                  textColor: icon4Selected ? Theme.of(context).colorScheme.background : null,
+                  iconColor: icon4Selected ? Theme.of(context).colorScheme.secondary : null,
+                  textColor: icon4Selected ? Theme.of(context).colorScheme.secondary : null,
                 ),
                 StatTileItem(
                   text: icon5Text,
@@ -66,8 +66,8 @@ class StatTileGroup extends StatelessWidget {
                     HapticFeedback.lightImpact();
                     icon5OnPress();
                   },
-                  iconColor: icon5Selected ? Theme.of(context).colorScheme.background : null,
-                  textColor: icon5Selected ? Theme.of(context).colorScheme.background : null,
+                  iconColor: icon5Selected ? Theme.of(context).colorScheme.secondary : null,
+                  textColor: icon5Selected ? Theme.of(context).colorScheme.secondary : null,
                 ),
               ],
             ),

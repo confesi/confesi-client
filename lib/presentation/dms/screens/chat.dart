@@ -246,7 +246,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                 OptionButton(
                                   onTap: () {
                                     Clipboard.setData(ClipboardData(text: chat.msg));
-                                    context.read<NotificationsCubit>().showSuccess("Chat copied");
+                                    context.read<NotificationsCubit>().showSuccess("Text copied");
                                   },
                                   text: "Copy text",
                                   icon: CupertinoIcons.rectangle_on_rectangle_angled,

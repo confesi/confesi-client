@@ -17,6 +17,7 @@ class ReactionTile extends StatefulWidget {
     this.isSelected = false,
     this.onTap,
     this.extraLeftPadding = false,
+    this.infiniteWidth = false,
   }) : super(key: key);
 
   final bool simpleView;
@@ -26,6 +27,7 @@ class ReactionTile extends StatefulWidget {
   final bool isSelected;
   final VoidCallback? onTap;
   final bool extraLeftPadding;
+  final bool infiniteWidth;
 
   @override
   ReactionTileState createState() => ReactionTileState();
@@ -92,6 +94,7 @@ class ReactionTileState extends State<ReactionTile> with SingleTickerProviderSta
           });
         },
         child: AnimatedContainer(
+          width: widget.infiniteWidth ? double.infinity : null,
           height: 50,
           duration: const Duration(milliseconds: 250),
           padding: EdgeInsets.only(

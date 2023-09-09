@@ -134,7 +134,7 @@ class _SearchSchoolsScreenState extends State<SearchSchoolsScreen> {
     return ThemeStatusBar(
       child: KeyboardDismiss(
         child: Scaffold(
-          backgroundColor: Theme.of(context).colorScheme.secondary,
+          backgroundColor: Theme.of(context).colorScheme.background,
           body: SafeArea(
             bottom: false,
             child: Column(
@@ -142,7 +142,7 @@ class _SearchSchoolsScreenState extends State<SearchSchoolsScreen> {
                 Container(
                   padding: const EdgeInsets.only(bottom: 10),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.secondary,
+                    color: Theme.of(context).colorScheme.background,
                     border: Border(
                       bottom: BorderSide(
                         color: Theme.of(context).colorScheme.onBackground,

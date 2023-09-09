@@ -146,9 +146,8 @@ struct YourWidgetEntryView: View {
 
                 // Black Overlay
                 
-                
                 if entry.isError {
-                    VStack {
+                    VStack(alignment: .leading) {
                         Text("Connection error")
                             .font(.system(size: widgetSizeFont(for: widgetFamily, isTitle: true), weight: .bold))
                             .foregroundColor(.white)
@@ -157,21 +156,22 @@ struct YourWidgetEntryView: View {
                             .font(.system(size: widgetSizeFont(for: widgetFamily, isTitle: false)))
                             .foregroundColor(.white)
                     }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity) // This line makes it centered horizontally and vertically
+                    .padding(.horizontal, widgetHorizontalPadding(for: widgetFamily))
+                    .frame(width: geometry.size.width, alignment: .leading)
                 } else {
                     Color.black.opacity(0.55)
                         .frame(width: geometry.size.width, height: geometry.size.height)
-                    VStack(spacing: 0) {
+                    
+                    VStack(alignment: .leading, spacing: 0) {
                         if !entry.title.isEmpty {
-                            Text(entry.schoolAbbr)  // Use the abbreviation from your API
+                            Text(entry.schoolAbbr)
                                 .font(.system(size: 14, weight: .bold))
                                 .foregroundColor(.white)
                                 .padding(.top, widgetVerticalPadding(for: widgetFamily))
                                 .padding(.leading, widgetHorizontalPadding(for: widgetFamily))
-                                .frame(maxWidth: .infinity, alignment: .leading)
                         }
                         
-                        Spacer()  // This Spacer pushes content below to the bottom
+                        Spacer()
 
                         VStack(alignment: .leading, spacing: 10) {
                             Text(entry.title.isEmpty ? entry.content : entry.title)
@@ -188,6 +188,7 @@ struct YourWidgetEntryView: View {
                         .padding(.horizontal, widgetHorizontalPadding(for: widgetFamily))
                         .padding(.bottom, widgetVerticalPadding(for: widgetFamily))
                     }
+                    .frame(width: geometry.size.width, alignment: .leading)
                 }
 
             }

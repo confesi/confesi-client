@@ -181,7 +181,10 @@ class NotificationService {
   }
 
   void onMessage(void Function(RemoteMessage) callback) {
-    _onMessageSubscription = FirebaseMessaging.onMessage.listen(callback);
+    _onMessageSubscription = FirebaseMessaging.onMessage.listen((x) {
+      print("☹️☹️☹️☹️☹️☹️☹️☹️☹️☹️☹️☹️☹️☹️☹️☹️");
+      callback(x);
+    });
   }
 
   void onMessageOpenedInApp(void Function(RemoteMessage) callback) {

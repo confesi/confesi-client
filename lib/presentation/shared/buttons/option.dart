@@ -13,6 +13,8 @@ class OptionButton extends StatelessWidget {
     required this.icon,
     this.isRed = false,
     this.noBottomPadding = false,
+    this.primaryColor,
+    this.borderColor,
     Key? key,
   }) : super(key: key);
 
@@ -22,6 +24,8 @@ class OptionButton extends StatelessWidget {
   final VoidCallback onTap;
   final bool isRed;
   final bool noBottomPadding;
+  final Color? primaryColor;
+  final Color? borderColor;
 
   @override
   Widget build(BuildContext context) {
@@ -35,10 +39,12 @@ class OptionButton extends StatelessWidget {
         width: double.infinity,
         decoration: BoxDecoration(
           border: Border.all(
-              color: Theme.of(context).colorScheme.onBackground,
-              width: borderSize,
-              strokeAlign: BorderSide.strokeAlignInside),
-          borderRadius: const BorderRadius.all(Radius.circular(15)),
+            color: borderColor ?? Theme.of(context).colorScheme.onBackground,
+            width: borderSize + 0.4,
+          ),
+          borderRadius: const BorderRadius.all(
+            Radius.circular(15),
+          ),
           color: Theme.of(context).colorScheme.surface,
         ),
         child: Container(
@@ -52,14 +58,16 @@ class OptionButton extends StatelessWidget {
               children: [
                 Icon(
                   icon,
-                  color: isRed ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.primary,
+                  color: primaryColor ??
+                      (isRed ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.primary),
                 ),
                 const SizedBox(width: 15),
                 Expanded(
                   child: Text(
                     text,
                     style: kTitle.copyWith(
-                      color: isRed ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.primary,
+                      color: primaryColor ??
+                          (isRed ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.primary),
                     ),
                     textAlign: TextAlign.left,
                   ),

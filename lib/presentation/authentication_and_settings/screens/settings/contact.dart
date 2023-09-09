@@ -1,4 +1,7 @@
+import 'package:confesi/application/user/cubit/notifications_cubit.dart';
 import 'package:confesi/application/user/cubit/quick_actions_cubit.dart';
+import 'package:confesi/constants/shared/constants.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../shared/behaviours/simulated_bottom_safe_area.dart';
@@ -63,7 +66,10 @@ class _ContactScreenState extends State<ContactScreen> {
                               rightIcon: CupertinoIcons.square_on_square,
                               leftIcon: CupertinoIcons.mail,
                               text: "Copy email address",
-                              onTap: () => print("COPY"),
+                              onTap: () {
+                                Clipboard.setData(const ClipboardData(text: confesiSupportEmail));
+                                context.read<NotificationsCubit>().showSuccess("Email copied");
+                              },
                             ),
                             SettingTile(
                               rightIcon: CupertinoIcons.link,
