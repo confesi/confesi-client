@@ -106,7 +106,7 @@ class UserAuthService extends ChangeNotifier {
     sl.get<PostsService>().clearTrendingPosts();
     sl.get<PrimaryTabControllerService>().setTabIdx(0);
     sl.get<CreatingEditingPostsService>().clear();
-    sl.get<RoomsService>().clear();
+    // sl.get<RoomsService>().clear();
     context.read<HottestCubit>().clear();
     context.read<LeaderboardCubit>().clear();
     context.read<AuthFlowCubit>().clear();

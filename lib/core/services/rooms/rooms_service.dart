@@ -8,6 +8,15 @@ import 'package:confesi/models/room.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 
+extension MyIterable<T> on Iterable<T> {
+  T? get firstOrNull => isEmpty ? null : first;
+
+  T? firstWhereOrNull(bool Function(T element) test) {
+    final list = where(test);
+    return list.isEmpty ? null : list.first;
+  }
+}
+
 class RoomsService extends ChangeNotifier {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final Map<String, Room> _rooms = {};
@@ -18,149 +27,110 @@ class RoomsService extends ChangeNotifier {
   final Api _deleteChatApi;
   bool roomsError = false;
   bool chatsError = false;
-
   DocumentSnapshot? _lastDocument;
   bool _hasMoreData = true;
+  final Map<String, StreamSubscription> _chatSubscriptions = {};
 
   Map<String, Room> get rooms => _rooms;
   bool get hasMoreData => _hasMoreData;
 
   RoomsService(this._userAuthService, this._msgApi, this._roomNameChangeApi, this._deleteChatApi) {
-    loadRooms().then((_) {
-      startListenerForRooms();
-    });
+    loadRooms();
+    startListenerForRooms();
   }
 
   Future<Either<ApiSuccess, String>> updateRoomName(String roomId, String name) async {
+    print("UPDATE ROOM NAME");
     try {
       _roomNameChangeApi.cancelCurrReq();
-      String oldRoomName = _rooms[roomId]!.name;
-      _rooms[roomId] = _rooms[roomId]!.copyWith(name: name);
-      notifyListeners();
-      return (await _roomNameChangeApi.req(Verb.put, true, "/api/v1/dms/chat", {
-        "room_id": roomId,
-        "new_name": name,
-      }))
-          .fold(
-        (failureWithMsg) {
-          _rooms[roomId] = _rooms[roomId]!.copyWith(name: oldRoomName);
-          return Right(failureWithMsg.msg());
-        },
-        (response) {
-          if (response.statusCode.toString()[0] == "2") {
-            return Left(ApiSuccess());
-          } else {
-            _rooms[roomId] = _rooms[roomId]!.copyWith(name: oldRoomName);
+      final oldRoom = _rooms[roomId];
+      if (oldRoom != null) {
+        final updatedRoom = oldRoom.copyWith(name: name);
+        _rooms[roomId] = updatedRoom;
+        notifyListeners();
+
+        final response = await _roomNameChangeApi.req(Verb.put, true, "/api/v1/dms/chat", {
+          "room_id": roomId,
+          "new_name": name,
+        });
+
+        return response.fold(
+          (failureWithMsg) {
+            _rooms[roomId] = oldRoom;
             notifyListeners();
-            return const Right("todo: error");
-          }
-        },
-      );
+            return Right(failureWithMsg.msg());
+          },
+          (response) {
+            if (response.statusCode.toString()[0] == "2") {
+              return Left(ApiSuccess());
+            } else {
+              _rooms[roomId] = oldRoom;
+              notifyListeners();
+              return Right("todo: error");
+            }
+          },
+        );
+      } else {
+        return Right("Room not found");
+      }
     } catch (e) {
       roomsError = true;
       notifyListeners();
-      return const Right('Failed to update room name due to an unexpected error.');
+      return Right('Failed to update room name due to an unexpected error.');
     }
   }
 
-  Future<Either<ApiSuccess, String>> deleteChat(String roomId, String chatId) async {
+  Future<void> addRoomAndLoadChat(Room room) async {
+    print("ADD ROOM AND LOAD CHAT");
     try {
-      _deleteChatApi.cancelCurrReq();
-      if (_rooms[roomId] == null) {
-        return const Right("Unknown error");
+      if (!_rooms.containsKey(room.roomId)) {
+        _rooms[room.roomId] = room;
+        await loadRecentChatForRoom(room.roomId);
+        notifyListeners();
+      } else {
+        print("Room already exists, not adding it again");
       }
-      // old to-remove chat
-      late Chat oldChat;
-      try {
-        print(_rooms[roomId]!);
-        oldChat = _rooms[roomId]!.chats.firstWhere((chat) {
-          print("chat.id: ${chat.id}, chatId: $chatId");
-          return chat.id == chatId;
-        });
-      } catch (e) {
-        chatsError = true;
-        print(e);
-        return const Right('Failed to delete chat due to an unexpected error.');
-      }
-
-      // eagerly remove
-      _rooms[roomId] =
-          _rooms[roomId]!.copyWith(chats: _rooms[roomId]!.chats.where((chat) => chat.id != chatId).toList());
-      notifyListeners();
-      return (await _deleteChatApi.req(Verb.delete, true, "/api/v1/dms/chat?id=$chatId", {})).fold(
-        (failureWithMsg) {
-          print("GOT HERE 1");
-          _rooms[roomId] = _rooms[roomId]!.copyWith(chats: [..._rooms[roomId]!.chats, oldChat]);
-          return Right(failureWithMsg.msg());
-        },
-        (response) {
-          print("GOT HERE 2");
-          if (response.statusCode.toString()[0] == "2") {
-            return Left(ApiSuccess());
-          } else {
-            _rooms[roomId] = _rooms[roomId]!.copyWith(chats: [..._rooms[roomId]!.chats, oldChat]);
-            notifyListeners();
-            return const Right("todo: error");
-          }
-        },
-      );
     } catch (e) {
-      print(e);
-      chatsError = true;
+      roomsError = true;
       notifyListeners();
-      return const Right('Failed to delete chat due to an unexpected error.');
     }
   }
 
   Future<Either<ApiSuccess, String>> addChat(String roomId, String msg) async {
+    print("ADD CHAT");
     try {
       _msgApi.cancelCurrReq();
-      return (await _msgApi.req(Verb.post, true, "/api/v1/dms/chat", {
+      final response = await _msgApi.req(Verb.post, true, "/api/v1/dms/chat", {
         "room_id": roomId,
         "msg": msg,
-      }))
-          .fold(
+      });
+
+      return response.fold(
         (failureWithMsg) => Right(failureWithMsg.msg()),
         (response) {
           if (response.statusCode.toString()[0] == "2") {
             return Left(ApiSuccess());
           } else {
-            return const Right("todo: error");
+            return Right("todo: error");
           }
         },
       );
     } catch (e) {
       chatsError = true;
       notifyListeners();
-      return const Right('Unknown error');
+      return Right('Unknown error');
     }
-  }
-
-  Future<void> addRoomAndLoadChat(Room room) async {
-    try {
-      _rooms[room.roomId] = room;
-      await loadRecentChatForRoom(room.roomId);
-      notifyListeners();
-    } catch (e) {
-      roomsError = true;
-      notifyListeners();
-      print('Failed to add room and load chat: $e');
-    }
-  }
-
-  void clear() {
-    _rooms.clear();
-    _lastDocument = null;
-    _hasMoreData = true;
-  }
-
-  List<Room> getRooms() {
-    return _rooms.values.toList();
   }
 
   void startListenerForRooms() {
+    print("START LISTENER FOR ROOMS");
     _roomSubscription?.cancel();
-    _roomSubscription = fetchRoomsStream().listen((snapshot) {
+    _roomSubscription = _firestore
+        .collection('rooms')
+        .where('user_id', isEqualTo: _userAuthService.uid)
+        .orderBy('last_msg', descending: true)
+        .snapshots()
+        .listen((snapshot) {
       for (var change in snapshot.docChanges) {
         switch (change.type) {
           case DocumentChangeType.added:
@@ -181,22 +151,52 @@ class RoomsService extends ChangeNotifier {
   }
 
   Future<void> loadRecentChatForRoom(String roomId) async {
+    print("LOAD RECENT CHAT FOR ROOM");
     try {
-      QuerySnapshot chatSnapshot = await _firestore
-          .collection('chats')
-          .where('room_id', isEqualTo: roomId)
-          .orderBy('date', descending: true)
-          .limit(1)
-          .get();
+      final chatCollection = _firestore.collection('chats');
 
-      List<Chat> chats = chatSnapshot.docs
+      // Retrieve the initial snapshot
+      final initialSnapshot =
+          await chatCollection.where('room_id', isEqualTo: roomId).orderBy('date', descending: true).get();
+
+      // Map the initial snapshot to Chat objects
+      List<Chat> currentChats = initialSnapshot.docs
           .map((chatDoc) => Chat.fromJson({...chatDoc.data() as Map<String, dynamic>, "id": chatDoc.id}))
           .toList();
 
-      if (chats.isNotEmpty) {
-        _rooms[roomId] = _rooms[roomId]!.copyWith(chats: chats);
+      if (_rooms.containsKey(roomId)) {
+        _rooms[roomId] = _rooms[roomId]!.copyWith(chats: currentChats);
+        notifyListeners();
       }
-      notifyListeners();
+
+      // Set up a stream subscription to listen for new chats added after the last document in the initial snapshot
+      if (initialSnapshot.docs.isNotEmpty) {
+        final lastDoc = initialSnapshot.docs.last;
+
+        final chatStream = chatCollection
+            .where('room_id', isEqualTo: roomId)
+            .orderBy('date', descending: true)
+            .startAfterDocument(lastDoc)
+            .snapshots();
+
+        _chatSubscriptions[roomId]?.cancel();
+        _chatSubscriptions[roomId] = chatStream.listen((querySnapshot) {
+          List<Chat> newChats = querySnapshot.docChanges
+              .where((docChange) => docChange.type == DocumentChangeType.added)
+              .map((docChange) =>
+                  Chat.fromJson({...docChange.doc.data() as Map<String, dynamic>, "id": docChange.doc.id}))
+              .toList();
+
+          if (newChats.isNotEmpty) {
+            currentChats.insertAll(0, newChats);
+
+            if (_rooms.containsKey(roomId)) {
+              _rooms[roomId] = _rooms[roomId]!.copyWith(chats: currentChats);
+              notifyListeners();
+            }
+          }
+        });
+      }
     } catch (e) {
       chatsError = true;
       notifyListeners();
@@ -204,47 +204,23 @@ class RoomsService extends ChangeNotifier {
   }
 
   Future<void> _processRoomDocument(DocumentSnapshot roomDoc) async {
+    print("PROCESS ROOM DOCUMENT");
     try {
       Room room = Room.fromJson({...roomDoc.data() as Map<String, dynamic>, "id": roomDoc.id});
-
-      QuerySnapshot chatSnapshot = await _firestore
-          .collection('chats')
-          .where('room_id', isEqualTo: room.roomId)
-          .orderBy('timestamp', descending: true)
-          .limit(1)
-          .get();
-
-      List<Chat> chats = chatSnapshot.docs
-          .map((chatDoc) => Chat.fromJson({...chatDoc.data() as Map<String, dynamic>, "id": chatDoc.id}))
-          .toList();
-
-      room = room.copyWith(chats: chats);
-
       _rooms[room.roomId] = room;
-      notifyListeners();
-    } catch (e) {
-      roomsError = true;
-      notifyListeners();
-      print('Failed to process room document: $e');
-    }
-  }
 
-  Stream<QuerySnapshot> fetchRoomsStream() {
-    try {
-      return _firestore
-          .collection('rooms')
-          .where('user_id', isEqualTo: _userAuthService.uid)
-          .orderBy('last_msg', descending: true)
-          .snapshots();
+      // Initialize chat listener for this room
+      await loadRecentChatForRoom(room.roomId);
+
+      notifyListeners();
     } catch (e) {
       roomsError = true;
       notifyListeners();
-      print('Failed to fetch room stream: $e');
-      return Stream.empty();
     }
   }
 
   Future<void> loadRooms() async {
+    print("LOAD ROOMS");
     try {
       if (!_hasMoreData) return;
 
@@ -279,6 +255,10 @@ class RoomsService extends ChangeNotifier {
 
   @override
   void dispose() {
+    print("dispose");
+    for (var subscription in _chatSubscriptions.values) {
+      subscription.cancel();
+    }
     _roomSubscription?.cancel();
     super.dispose();
   }

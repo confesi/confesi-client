@@ -6,6 +6,7 @@ import 'package:app_links/app_links.dart';
 import 'package:confesi/application/dms/cubit/room_requests_cubit.dart';
 import 'package:confesi/application/feed/cubit/schools_drawer_cubit.dart';
 import 'package:confesi/application/feed/cubit/sentiment_analysis_cubit.dart';
+import 'package:confesi/application/notifications/cubit/noti_server_cubit.dart';
 import 'package:confesi/application/user/cubit/feedback_categories_cubit.dart';
 import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/results/failures.dart';
@@ -157,6 +158,7 @@ void main() async {
       ],
       child: MultiBlocProvider(
         providers: [
+          BlocProvider(lazy: false, create: (context) => sl<NotiServerCubit>()),
           BlocProvider(lazy: false, create: (context) => sl<RoomRequestsCubit>()),
           BlocProvider(lazy: false, create: (context) => sl<SentimentAnalysisCubit>()),
           BlocProvider(lazy: false, create: (context) => sl<PostCategoriesCubit>()),

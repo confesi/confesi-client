@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 
 import '../../../init.dart';
 import '../../../models/comment.dart';
+import '../../../models/notification_log.dart';
 import '../../../models/post.dart';
 import '../api_client/api.dart';
 import '../user_auth/user_auth_service.dart';
@@ -25,16 +26,27 @@ class GlobalContentService extends ChangeNotifier {
   LinkedHashMap<EncryptedId, CommentWithMetadata> comments = LinkedHashMap<EncryptedId, CommentWithMetadata>();
   LinkedHashMap<EncryptedId, SchoolWithMetadata> schools = LinkedHashMap<EncryptedId, SchoolWithMetadata>();
   LinkedHashMap<EncryptedId, int> repliesPerCommentThread = LinkedHashMap<EncryptedId, int>();
+  LinkedHashMap<EncryptedId, ServerNoti> notificationLogs = LinkedHashMap<EncryptedId, ServerNoti>();
 
   void setRepliesPerSchool(EncryptedId rootComment, int replies) {
     repliesPerCommentThread[rootComment] = replies;
   }
 
+  void addServerNotis(List<ServerNoti> notis) {
+    for (final noti in notis) {
+      notificationLogs[noti.id] = noti;
+    }
+  }
+
+  void clearServerNotis() => notificationLogs.clear();
+
   void clear() {
     _setHomeApi.cancelCurrReq();
     _voteApi.cancelCurrReq();
     _watchedSchoolApi.cancelCurrReq();
+    _saveApi.cancelCurrReq();
     clearPosts();
+    clearServerNotis();
     clearComments();
     clearSchools();
     clearRepliesPerSchool();

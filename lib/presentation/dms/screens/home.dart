@@ -58,9 +58,10 @@ class RoomsScreen extends StatelessWidget {
                         stream: query.snapshots(),
                         builder: (context, snapshot) {
                           if (snapshot.hasError || snapshot.connectionState == ConnectionState.waiting) {
-                            LoadingOrAlert(
-                                message: StateMessage("Unknown error", () {}),
-                                isLoading: snapshot.connectionState == ConnectionState.waiting);
+                            return LoadingOrAlert(
+                              message: StateMessage("Unknown error", () {}),
+                              isLoading: snapshot.connectionState == ConnectionState.waiting,
+                            );
                           }
 
                           if (snapshot.data?.docs.isEmpty ?? true) {
@@ -91,7 +92,7 @@ class RoomsScreen extends StatelessWidget {
                             return FirestoreListView(
                               query: query,
                               itemBuilder: (context, item) {
-                                Room room = Room.fromJson({...item.data(), "id": item.id});
+                                final room = Room.fromJson({...item.data(), "id": item.id});
                                 return RoomWithChat(room: room);
                               },
                             );
@@ -113,7 +114,7 @@ class RoomsScreen extends StatelessWidget {
 class RoomWithChat extends StatefulWidget {
   final Room room;
 
-  const RoomWithChat({required this.room});
+  const RoomWithChat({Key? key, required this.room}) : super(key: key);
 
   @override
   RoomWithChatState createState() => RoomWithChatState();
@@ -133,27 +134,20 @@ class RoomWithChatState extends State<RoomWithChat> {
     return FutureBuilder<void>(
       future: _loadChatFuture,
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return CupertinoActivityIndicator(color: Theme.of(context).colorScheme.primary);
-        } else if (snapshot.hasError) {
-          return Text(
-            "Error loading rooms",
-            style: kBody.copyWith(
-              color: Theme.of(context).colorScheme.primary,
-            ),
-            textAlign: TextAlign.center,
+        if (snapshot.connectionState == ConnectionState.waiting || snapshot.hasError) {
+          return LoadingOrAlert(
+            message: StateMessage("Unknown error", () => setState(() => _loadChatFuture = null)),
+            isLoading: snapshot.connectionState == ConnectionState.waiting,
           );
         } else {
-          return Consumer<RoomsService>(
-            builder: (context, roomsService, _) {
-              final updatedRoom = roomsService.rooms[widget.room.roomId]!;
-              return RoomTile(
-                lastMsg: updatedRoom.lastMsg,
-                name: updatedRoom.name,
-                lastChat: updatedRoom.chats.isNotEmpty ? updatedRoom.chats.last.msg : null,
-                onTap: () => router.push("/home/rooms/chat", extra: ChatProps(updatedRoom.roomId)),
-              );
-            },
+          final roomsService = Provider.of<RoomsService>(context); // Get the RoomsService directly here
+          final updatedRoom =
+              roomsService.rooms[widget.room.roomId]!; // Get the updated room directly using the room ID
+          return RoomTile(
+            lastMsg: updatedRoom.lastMsg,
+            name: updatedRoom.name + updatedRoom.chats.map((e) => e.msg).toString(),
+            lastChat: updatedRoom.chats.isNotEmpty ? updatedRoom.chats.first.msg : null,
+            onTap: () => router.push("/home/rooms/chat", extra: ChatProps(updatedRoom.roomId)),
           );
         }
       },

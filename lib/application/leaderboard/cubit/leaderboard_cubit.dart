@@ -10,10 +10,8 @@ import 'package:flutter/cupertino.dart';
 
 import '../../../constants/shared/constants.dart';
 import '../../../core/services/api_client/api.dart';
-import '../../../core/types/infinite_scrollable_indexable.dart';
 import '../../../init.dart';
 import '../../../models/encrypted_id.dart';
-import '../../../presentation/leaderboard/widgets/leaderboard_item_tile.dart';
 
 part 'leaderboard_state.dart';
 

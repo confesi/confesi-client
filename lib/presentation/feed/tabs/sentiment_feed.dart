@@ -73,7 +73,7 @@ class _ExploreSentimentState extends State<ExploreSentiment> with AutomaticKeepA
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return buildBody(Provider.of<PostsService>(context));
+    return Center(child: buildBody(Provider.of<PostsService>(context)));
   }
 
   @override

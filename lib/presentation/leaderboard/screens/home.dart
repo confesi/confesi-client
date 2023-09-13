@@ -92,8 +92,6 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
             const SizedBox(height: 5),
           ],
         ),
-        // dontReRequestWhen: true,
-        // controller: controller,
         controller: controller
           ..items = (state.schoolIds
               .asMap()

@@ -233,12 +233,13 @@ class _ChatScreenState extends State<ChatScreen> {
                               [
                                 if (isYou)
                                   OptionButton(
-                                    onTap: () async => (await Provider.of<RoomsService>(context, listen: false)
-                                            .deleteChat(widget.props.roomId, snapshot.id))
-                                        .fold(
-                                      (_) => null, // do nothing on success
-                                      (errMsg) => context.read<NotificationsCubit>().showErr(errMsg),
-                                    ),
+                                    onTap: () => print("todo: delete"),
+                                    // onTap: () async => (await Provider.of<RoomsService>(context, listen: false)
+                                    //         .deleteChat(widget.props.roomId, snapshot.id))
+                                    //     .fold(
+                                    //   (_) => null, // do nothing on success
+                                    //   (errMsg) => context.read<NotificationsCubit>().showErr(errMsg),
+                                    // ),
                                     text: "Delete chat",
                                     icon: CupertinoIcons.trash,
                                     isRed: true,

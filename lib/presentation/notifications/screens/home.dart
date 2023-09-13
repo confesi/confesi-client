@@ -1,16 +1,15 @@
-
+import 'package:confesi/application/notifications/cubit/noti_server_cubit.dart';
 import 'package:confesi/presentation/shared/indicators/loading_or_alert.dart';
+import 'package:provider/provider.dart';
 
 import '../../../core/router/go_router.dart';
 
+import '../../../core/services/global_content/global_content.dart';
 import '../../../core/types/infinite_scrollable_indexable.dart';
-import '../../shared/indicators/loading_cupertino.dart';
 import '../../shared/other/feed_list.dart';
 import '../../shared/overlays/info_sheet_with_action.dart';
 
-import '../../shared/indicators/alert.dart';
 import '../../shared/layout/appbar.dart';
-import '../../../application/leaderboard/cubit/leaderboard_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,8 +30,9 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
 
   @override
   void initState() {
-    controller = FeedListController();
     super.initState();
+    controller = FeedListController();
+    context.read<NotiServerCubit>().loadNotis();
   }
 
   @override
@@ -41,35 +41,44 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     super.dispose();
   }
 
-  Widget buildChild(BuildContext context, LeaderboardState state) {
-    if (state is LeaderboardData) {
+  Widget buildChild(BuildContext context, NotiServerState state) {
+    if (state is NotiServerData) {
       return FeedList(
-        controller: controller,
-        loadMore: (id) {
-          // todo: make loop?
-          controller.addItem(InfiniteScrollIndexable(
-            1,
-            const NotificationTile(
-              title: "Here is a cool title from a notification",
-              body: "This is the body of the notification. It can possibly be a little bit longer.",
-            ),
-          ));
-        },
-        onPullToRefresh: () async {
-          await Future.delayed(const Duration(milliseconds: 500));
-          controller.clearList();
-        },
-        hasError: false,
-        wontLoadMore: false,
-        onWontLoadMoreButtonPressed: () => print("end of feed reached pressed"),
-        onErrorButtonPressed: () => print("error button pressed"),
-        wontLoadMoreMessage: "todo: wont load more",
+        key: const Key("noti_server_feed_list"),
+        controller: controller
+          ..items = (state.notificationIds
+              .asMap()
+              .map((index, id) {
+                final notification = Provider.of<GlobalContentService>(context).notificationLogs[id];
+                return MapEntry(
+                  id, // This is an EncryptedId, no need to wrap it
+                  notification != null
+                      ? InfiniteScrollIndexable(
+                          id,
+                          NotificationTile(title: notification.title, body: notification.body),
+                        )
+                      : null,
+                );
+              })
+              .values
+              .whereType<InfiniteScrollIndexable>()
+              .toList()),
+        loadMore: (_) async => await context.read<NotiServerCubit>().loadNotis(),
+        onPullToRefresh: () async => await context.read<NotiServerCubit>().loadNotis(),
+        hasError: state.feedState == NotiServerFeedState.errorLoadingMore,
+        wontLoadMore: state.feedState == NotiServerFeedState.noMore,
+        onWontLoadMoreButtonPressed: () async => await context.read<NotiServerCubit>().loadNotis(),
+        onErrorButtonPressed: () => context.read<NotiServerCubit>().loadNotis(refresh: true),
+        wontLoadMoreMessage: "You've reached the end",
       );
     } else {
       return LoadingOrAlert(
-        message: StateMessage(state is LeaderboardError ? state.message : "Error loading",
-            () => context.read<LeaderboardCubit>().loadRankings()),
-        isLoading: state is LeaderboardLoading,
+        key: const Key("noti_server_loading_or_alert"),
+        message: StateMessage(
+          state is NotiServerError ? state.message : "Error loading",
+          () => context.read<NotiServerCubit>().loadNotis(),
+        ),
+        isLoading: state is NotiServerLoading,
       );
     }
   }
@@ -103,10 +112,10 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                       "Edit"),
                 ),
                 Expanded(
-                  child: BlocBuilder<LeaderboardCubit, LeaderboardState>(
+                  child: BlocBuilder<NotiServerCubit, NotiServerState>(
                     builder: (context, state) {
                       return AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 200),
+                        duration: const Duration(milliseconds: 250),
                         child: buildChild(context, state),
                       );
                     },

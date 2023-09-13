@@ -10,14 +10,8 @@ const int kMaxCommentLength = 1000;
 /// The message header for the error message that is shown in the middle of the page when there's a loading error.
 const String kErrorLoadingAnyHeader = "Error loading content";
 
-/// The message body for the error message that is shown in the middle of the page when there's a loading error.
-const String kErrorLoadingAnyBody = "Try again";
-
 /// The message header for the error message that is shown at the bottom of the infinite scroll when there's a loading error.
 const String kErrorLoadingMoreHeader = "Error loading more";
-
-/// The message body for the error message that is shown at the bottom of the infinite scroll when there's a loading error.
-const String kErrorLoadingMoreBody = "Try again";
 
 /// The message header for the error message that is shown at the bottom of the infinite scroll when the end has been reached.
 const String kReachedEndHeader = "You've reached the end";

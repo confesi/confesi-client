@@ -30,7 +30,7 @@ void buildOptionsSheet(BuildContext context, PostWithMetadata post, {bool showSa
           text: "Open anonymous DM",
           primaryColor: Theme.of(context).colorScheme.secondary,
           icon: CupertinoIcons.chat_bubble_2_fill,
-          onTap: () => router.push("/home/chat", extra: post.post.id),
+          onTap: () => print("todo: room"),
         ),
       ),
     if (post.owner)

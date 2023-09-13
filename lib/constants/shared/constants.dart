@@ -8,10 +8,10 @@ import '../../application/create_post/cubit/post_categories_cubit.dart';
 /// SHERIDAN: 10.0.0.173
 const String domain = "http://10.0.0.173:8080";
 
-const Duration apiDefaultTimeout = Duration(seconds: 10);
+const Duration apiDefaultTimeout = Duration(seconds: 5);
 
 /// If debug mode is enabled. OFF for prod.
-const bool debugMode = true;
+const bool debugMode = false;
 
 const int maxImagesPerPost = 5;
 
