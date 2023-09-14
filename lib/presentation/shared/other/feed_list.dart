@@ -128,8 +128,10 @@ class FeedList extends StatefulWidget {
     this.swipeRefreshEnabled = true,
     this.debug = false,
     this.onScrollChange,
+    this.centeredEmptyIndicator = true,
   });
 
+  final bool centeredEmptyIndicator;
   final bool swipeRefreshEnabled;
   final bool debug;
   final bool isScrollable;
@@ -173,15 +175,15 @@ class _FeedListState extends State<FeedList> {
           !widget.wontLoadMore &&
           !endOfFeedReachedIsLoading &&
           !errorLoadingMoreIsLoading) {
-        setState(() => initLoad = false);
+        initLoad = false;
         lastLoadedIndex = lastVisibleIndex;
-        setState(() => isCurrentlyLoadingMore = true);
+        isCurrentlyLoadingMore = true;
         await widget.loadMore(
           widget.controller.items.isNotEmpty
               ? dartz.Right(widget.controller.items.last.key)
               : dartz.Left(NoneFailure()),
         );
-        setState(() => isCurrentlyLoadingMore = false);
+        isCurrentlyLoadingMore = false;
       }
     });
     widget.controller.addListener(() {
@@ -251,10 +253,15 @@ class _FeedListState extends State<FeedList> {
                 ? const AlwaysScrollableScrollPhysics(parent: ClampingScrollPhysics())
                 : const NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
+              if (index == 0) {
+                return widget.header ?? const SizedBox();
+              }
+
               if (!widget.hasError && widget.controller.items.isEmpty && !isCurrentlyLoadingMore) {
-                if (index == 0) {
-                  return SizedBox(
-                    height: constraints.maxHeight,
+                if (index == 1) {
+                  return Container(
+                    height: widget.centeredEmptyIndicator ? constraints.maxHeight : null,
+                    margin: EdgeInsets.symmetric(vertical: widget.centeredEmptyIndicator ? 0 : 30),
                     child: Center(
                       child: FractionallySizedBox(
                         widthFactor: 2 / 3,
@@ -267,7 +274,7 @@ class _FeedListState extends State<FeedList> {
                             ),
                             const SizedBox(height: 20),
                             Text(
-                              "Nothing found! Swipe to refresh.",
+                              "Nothing found. Swipe to refresh.",
                               style: kBody.copyWith(
                                 color: Theme.of(context).colorScheme.onSurface,
                               ),
@@ -278,24 +285,18 @@ class _FeedListState extends State<FeedList> {
                       ),
                     ),
                   );
-                } else if (index == widget.controller.items.length + 1 && widget.controller.items.isNotEmpty) {
-                  return AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 250),
-                    child: buildIndicator(),
-                  );
                 }
                 return const SizedBox();
               }
-              if (index == 0) {
-                return widget.header ?? const SizedBox();
-              } else if (index == widget.controller.items.length + 1) {
+
+              if (index == widget.controller.items.length + 1) {
                 return AnimatedSwitcher(
                   duration: const Duration(milliseconds: 250),
                   child: buildIndicator(),
                 );
-              } else {
-                return Center(child: widget.controller.items[index - 1].child);
               }
+
+              return Center(child: widget.controller.items[index - 1].child);
             },
             itemCount: widget.controller.items.length + 2,
             itemPositionsListener: widget.controller.itemPositionsListener,

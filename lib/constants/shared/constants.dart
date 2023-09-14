@@ -4,11 +4,13 @@ import '../../application/create_post/cubit/post_categories_cubit.dart';
 
 /// The root endpoint (domain) for all api calls.
 ///
-/// UVIC: 134.87.38.160
+/// UVIC: 134.87.34.204
 /// SHERIDAN: 10.0.0.173
-const String domain = "http://10.0.0.173:8080";
+const String domain = "http://134.87.34.204:8080";
 
 const Duration apiDefaultTimeout = Duration(seconds: 5);
+
+const int chatLoadLimit = 5;
 
 /// If debug mode is enabled. OFF for prod.
 const bool debugMode = false;

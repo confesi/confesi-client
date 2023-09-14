@@ -6,6 +6,7 @@ import 'package:confesi/core/styles/typography.dart';
 import 'package:confesi/init.dart';
 import 'package:confesi/models/room.dart';
 import 'package:confesi/presentation/dms/widgets/room_tile.dart';
+import 'package:confesi/presentation/shared/edited_source_widgets/swipe_refresh.dart';
 import 'package:confesi/presentation/shared/indicators/loading_or_alert.dart';
 import 'package:confesi/presentation/shared/layout/appbar.dart';
 import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
@@ -21,10 +22,16 @@ class RoomsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final uid = sl.get<UserAuthService>().uid;
     final query = FirebaseFirestore.instance
         .collection('rooms')
-        .where('user_id', isEqualTo: sl.get<UserAuthService>().uid)
-        .orderBy('last_msg', descending: true);
+        .where('user_id', isEqualTo: uid)
+        .orderBy('last_msg', descending: true)
+        .withConverter<Room>(
+          fromFirestore: (snapshot, _) => Room.fromJson({...snapshot.data()!, 'id': snapshot.id}),
+          toFirestore: (room, _) => room.toJson(),
+        );
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.shadow,
       body: Container(
@@ -54,7 +61,7 @@ class RoomsScreen extends StatelessWidget {
                   child: Center(
                     child: Container(
                       constraints: const BoxConstraints(maxWidth: maxStandardSizeOfContent),
-                      child: StreamBuilder<QuerySnapshot>(
+                      child: StreamBuilder<QuerySnapshot<Room>>(
                         stream: query.snapshots(),
                         builder: (context, snapshot) {
                           if (snapshot.hasError || snapshot.connectionState == ConnectionState.waiting) {
@@ -89,12 +96,16 @@ class RoomsScreen extends StatelessWidget {
                               ),
                             );
                           } else {
-                            return FirestoreListView(
-                              query: query,
-                              itemBuilder: (context, item) {
-                                final room = Room.fromJson({...item.data(), "id": item.id});
-                                return RoomWithChat(room: room);
-                              },
+                            return SwipeRefresh(
+                              onRefresh: () async =>
+                                  await Future.delayed(const Duration(milliseconds: 1000)), // todo: reloader
+                              child: FirestoreListView(
+                                query: query,
+                                itemBuilder: (context, item) {
+                                  final room = item.data()!;
+                                  return RoomWithChat(room: room);
+                                },
+                              ),
                             );
                           }
                         },

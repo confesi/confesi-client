@@ -34,7 +34,6 @@ class _ChatInputState extends State<ChatInput> {
         context.read<NotificationsCubit>().showErr(failureMsg);
       },
     );
-
     setState(() {
       isLoading = false;
     });

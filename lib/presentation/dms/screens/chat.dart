@@ -5,6 +5,7 @@ import 'package:confesi/core/services/rooms/rooms_service.dart';
 import 'package:confesi/core/styles/typography.dart';
 import 'package:confesi/models/chat.dart';
 import 'package:confesi/presentation/dms/widgets/chat_tile.dart';
+import 'package:confesi/presentation/shared/edited_source_widgets/swipe_refresh.dart';
 import 'package:flutter/services.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_highlight.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
@@ -39,7 +40,6 @@ class _ChatScreenState extends State<ChatScreen> {
     super.initState();
     chatNameController = TextEditingController();
     chatInputController = TextEditingController();
-    chatNameController.text = Provider.of<RoomsService>(context, listen: false).rooms[widget.props.roomId]!.name;
   }
 
   @override
@@ -82,6 +82,8 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    chatNameController.text = Provider.of<RoomsService>(context, listen: false).rooms[widget.props.roomId]!.name;
+
     final chatsQuery =
         FirebaseFirestore.instance.collection('chats').orderBy('date', descending: true).withConverter<Chat>(
               fromFirestore: (snapshot, _) =>
@@ -92,185 +94,185 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.shadow,
       body: KeyboardDismiss(
-        child: Consumer<RoomsService>(
-          builder: (context, roomService, _) {
-            final roomName = roomService.rooms[widget.props.roomId]!.name;
-            if (chatNameController.text != roomName) {
-              chatNameController.text = roomName;
-            }
-
-            return FooterLayout(
-              footer: Container(
+        child: FooterLayout(
+          footer: Container(
+            decoration: BoxDecoration(
+              border: Border(
+                top: BorderSide(
+                  color: Theme.of(context).colorScheme.surface,
+                  width: 0.8,
+                ),
+              ),
+            ),
+            child: SafeArea(
+              top: false,
+              child: ChatInput(
+                roomId: widget.props.roomId,
+                controller: chatInputController,
+              ),
+            ),
+          ),
+          child: Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.only(left: 10, right: 10, bottom: 3),
+                // bottom border
                 decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.background,
                   border: Border(
-                    top: BorderSide(
-                      color: Theme.of(context).colorScheme.surface,
-                      width: 0.8,
+                    bottom: BorderSide(
+                      color: Theme.of(context).colorScheme.onBackground,
+                      width: borderSize,
                     ),
                   ),
                 ),
                 child: SafeArea(
-                  top: false,
-                  child: ChatInput(
-                    roomId: widget.props.roomId,
-                    controller: chatInputController,
+                  bottom: false,
+                  child: Row(
+                    children: [
+                      TouchableOpacity(
+                        onTap: () => router.pop(),
+                        child: Container(
+                          padding: const EdgeInsets.all(5),
+                          color: Colors.transparent,
+                          child: Icon(CupertinoIcons.arrow_left, color: Theme.of(context).colorScheme.primary),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Flexible(
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 3),
+                          child: TextField(
+                            onEditingComplete: () async {
+                              // unfocus keyboard
+                              FocusManager.instance.primaryFocus?.unfocus();
+                              (await Provider.of<RoomsService>(context, listen: false).updateRoomName(
+                                widget.props.roomId,
+                                chatNameController.text,
+                              ))
+                                  .fold(
+                                (_) => null, // do nothing on success
+                                (errMsg) =>
+                                    context.read<NotificationsCubit>().showErr(errMsg), // show notification on error
+                              );
+                            },
+                            textAlign: TextAlign.center,
+                            controller: chatNameController,
+                            style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
+                            decoration: InputDecoration(
+                              hintText: "Your editable chat name",
+                              border: InputBorder.none,
+                              contentPadding: const EdgeInsets.all(0),
+                              hintStyle: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      TouchableOpacity(
+                        onTap: () => showButtonOptionsSheet(
+                          context,
+                          [
+                            OptionButton(
+                              onTap: () => print("todo"),
+                              text: "Clear all room messages",
+                              icon: CupertinoIcons.trash,
+                              isRed: true,
+                            ),
+                            OptionButton(
+                              onTap: () => print("todo"),
+                              text: "Delete room",
+                              icon: CupertinoIcons.trash,
+                              isRed: true,
+                            ),
+                          ],
+                        ),
+                        child: Container(
+                          padding: const EdgeInsets.all(5),
+                          color: Colors.transparent,
+                          child: Icon(CupertinoIcons.ellipsis_circle, color: Theme.of(context).colorScheme.primary),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-              child: Column(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.only(left: 10, right: 10, bottom: 3),
-                    // bottom border
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.background,
-                      border: Border(
-                        bottom: BorderSide(
-                          color: Theme.of(context).colorScheme.onBackground,
-                          width: borderSize,
-                        ),
-                      ),
-                    ),
-                    child: SafeArea(
-                      bottom: false,
-                      child: Row(
-                        children: [
-                          TouchableOpacity(
-                            onTap: () => router.pop(),
-                            child: Container(
-                              padding: const EdgeInsets.all(5),
-                              color: Colors.transparent,
-                              child: Icon(CupertinoIcons.arrow_left, color: Theme.of(context).colorScheme.primary),
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Flexible(
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 3),
-                              child: TextField(
-                                onEditingComplete: () async {
-                                  // unfocus keyboard
-                                  FocusManager.instance.primaryFocus?.unfocus();
-                                  (await Provider.of<RoomsService>(context, listen: false).updateRoomName(
-                                    widget.props.roomId,
-                                    chatNameController.text,
-                                  ))
-                                      .fold(
-                                    (_) => null, // do nothing on success
-                                    (errMsg) => context
-                                        .read<NotificationsCubit>()
-                                        .showErr(errMsg), // show notification on error
-                                  );
-                                },
-                                textAlign: TextAlign.center,
-                                controller: chatNameController,
-                                style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
-                                decoration: InputDecoration(
-                                  hintText: "Your private chat name",
-                                  border: InputBorder.none,
-                                  contentPadding: const EdgeInsets.all(0),
-                                  hintStyle: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
-                                ),
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  color: Theme.of(context).colorScheme.shadow,
+                  child: FirestoreListView<Chat>(
+                    pageSize: chatLoadLimit,
+                    shrinkWrap: true,
+                    physics: const ClampingScrollPhysics(),
+                    padding: const EdgeInsets.only(bottom: 13, top: 13),
+                    reverse: true,
+                    query: chatsQuery,
+                    itemBuilder: (context, snapshot) {
+                      // todo: O(n) | n=chats => inefficient
+                      Chat chat = snapshot.data();
+                      // if not contained, add
+                      // final List<Chat> chats =
+                      //     Provider.of<RoomsService>(context, listen: false).rooms[widget.props.roomId]!.chats;
+                      // if (chats.isNotEmpty && idx == length - 1) {
+                      //   chats.add(chats[len(chats) - 1]);
+                      // }
+                      // do the above but fix the idx bug
+
+                      // if (!Provider.of<RoomsService>(context, listen: false)
+                      //     .rooms[widget.props.roomId]!
+                      //     .chats
+                      //     .contains(chat)) {
+
+                      // }
+                      // // only return `ChatTile` if it exists in the room
+                      // if (!Provider.of<RoomsService>(context, listen: false)
+                      //     .rooms[widget.props.roomId]!
+                      //     .chats
+                      //     .contains(chat)) {
+                      //   return const SizedBox.shrink();
+                      // }
+                      return ChatTile(
+                        onLongPress: (isYou) => showButtonOptionsSheet(
+                          context,
+                          [
+                            if (isYou)
+                              OptionButton(
+                                onTap: () => print("todo: delete"),
+                                // onTap: () async => (await Provider.of<RoomsService>(context, listen: false)
+                                //         .deleteChat(widget.props.roomId, snapshot.id))
+                                //     .fold(
+                                //   (_) => null, // do nothing on success
+                                //   (errMsg) => context.read<NotificationsCubit>().showErr(errMsg),
+                                // ),
+                                text: "Delete chat",
+                                icon: CupertinoIcons.trash,
+                                isRed: true,
                               ),
+                            OptionButton(
+                              onTap: () {
+                                Clipboard.setData(ClipboardData(text: chat.msg));
+                                context.read<NotificationsCubit>().showSuccess("Text copied");
+                              },
+                              text: "Copy text",
+                              icon: CupertinoIcons.rectangle_on_rectangle_angled,
                             ),
-                          ),
-                          const SizedBox(width: 10),
-                          TouchableOpacity(
-                            onTap: () => showButtonOptionsSheet(
-                              context,
-                              [
-                                OptionButton(
-                                  onTap: () => print("todo"),
-                                  text: "Clear all room messages",
-                                  icon: CupertinoIcons.trash,
-                                  isRed: true,
-                                ),
-                                OptionButton(
-                                  onTap: () => print("todo"),
-                                  text: "Delete room",
-                                  icon: CupertinoIcons.trash,
-                                  isRed: true,
-                                ),
-                              ],
-                            ),
-                            child: Container(
-                              padding: const EdgeInsets.all(5),
-                              color: Colors.transparent,
-                              child: Icon(CupertinoIcons.ellipsis_circle, color: Theme.of(context).colorScheme.primary),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      color: Theme.of(context).colorScheme.shadow,
-                      child: FirestoreListView<Chat>(
-                        pageSize: 20,
-                        shrinkWrap: true,
-                        physics: const ClampingScrollPhysics(),
-                        padding: const EdgeInsets.only(bottom: 13, top: 13),
-                        reverse: true,
-                        query: chatsQuery,
-                        itemBuilder: (context, snapshot) {
-                          Chat chat = snapshot.data();
-                          Provider.of<RoomsService>(context, listen: false)
-                              .rooms[widget.props.roomId]!
-                              .chats
-                              .insert(0, chat);
-                          // only return `ChatTile` if it exists in the room
-                          if (!Provider.of<RoomsService>(context, listen: false)
-                              .rooms[widget.props.roomId]!
-                              .chats
-                              .contains(chat)) {
-                            return const SizedBox.shrink();
-                          }
-                          return ChatTile(
-                            onLongPress: (isYou) => showButtonOptionsSheet(
-                              context,
-                              [
-                                if (isYou)
-                                  OptionButton(
-                                    onTap: () => print("todo: delete"),
-                                    // onTap: () async => (await Provider.of<RoomsService>(context, listen: false)
-                                    //         .deleteChat(widget.props.roomId, snapshot.id))
-                                    //     .fold(
-                                    //   (_) => null, // do nothing on success
-                                    //   (errMsg) => context.read<NotificationsCubit>().showErr(errMsg),
-                                    // ),
-                                    text: "Delete chat",
-                                    icon: CupertinoIcons.trash,
-                                    isRed: true,
-                                  ),
-                                OptionButton(
-                                  onTap: () {
-                                    Clipboard.setData(ClipboardData(text: chat.msg));
-                                    context.read<NotificationsCubit>().showSuccess("Text copied");
-                                  },
-                                  text: "Copy text",
-                                  icon: CupertinoIcons.rectangle_on_rectangle_angled,
-                                ),
-                              ],
-                            ),
-                            key: ValueKey(chat.date),
-                            // plus ID
-                            text: chat.msg,
-                            isYou: Provider.of<RoomsService>(context, listen: false)
-                                    .rooms[widget.props.roomId]!
-                                    .userNumber ==
+                          ],
+                        ),
+                        key: ValueKey(chat.date),
+                        // plus ID
+                        text: chat.msg,
+                        isYou:
+                            Provider.of<RoomsService>(context, listen: false).rooms[widget.props.roomId]!.userNumber ==
                                 chat.userNumber,
-                            datetime: chat.date,
-                          );
-                        },
-                      ),
-                    ),
+                        datetime: chat.date,
+                      );
+                    },
                   ),
-                ],
+                ),
               ),
-            );
-          },
+            ],
+          ),
         ),
       ),
     );

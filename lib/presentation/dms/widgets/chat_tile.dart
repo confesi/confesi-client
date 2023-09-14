@@ -73,7 +73,7 @@ class ChatTileState extends State<ChatTile> {
                 },
                 child: Container(
                   constraints: BoxConstraints(maxWidth: maxWidth),
-                  padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+                  padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 13),
                   decoration: BoxDecoration(
                     color:
                         widget.isYou ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.secondary,

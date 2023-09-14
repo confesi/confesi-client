@@ -507,6 +507,7 @@ class _CommentsHomeState extends State<CommentsHome> {
                         ),
                         Expanded(
                           child: FeedList(
+                            centeredEmptyIndicator: false,
                             onScrollChange: (start) => WidgetsBinding.instance.addPostFrameCallback((_) {
                               setState(() {
                                 isScrolling = start;
