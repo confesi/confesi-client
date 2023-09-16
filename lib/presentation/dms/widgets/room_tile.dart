@@ -6,12 +6,14 @@ import 'package:confesi/presentation/shared/button_touch_effects/touchable_opaci
 import 'package:flutter/material.dart';
 
 class RoomTile extends StatelessWidget {
-  const RoomTile({super.key, required this.lastMsg, required this.name, this.lastChat, required this.onTap});
+  const RoomTile(
+      {super.key, required this.lastMsg, required this.name, this.lastChat, required this.onTap, this.read = false});
 
   final DateTime lastMsg;
   final String name;
   final String? lastChat;
   final VoidCallback onTap;
+  final bool read;
 
   @override
   Widget build(BuildContext context) {
@@ -48,12 +50,27 @@ class RoomTile extends StatelessWidget {
                 ),
               ],
             ),
-            Text(
-              truncateText(lastChat ?? "No messages yet", chatMessagePreviewLength),
-              style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
-              textAlign: TextAlign.left,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+            const SizedBox(width: 5),
+            Row(
+              children: [
+                if (!read)
+                  Container(
+                    margin: const EdgeInsets.only(right: 5, top: 4),
+                    width: 8,
+                    height: 8,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.secondary,
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                Text(
+                  truncateText(lastChat ?? "No messages yet", chatMessagePreviewLength),
+                  style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                  textAlign: TextAlign.left,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
             ),
           ],
         ),

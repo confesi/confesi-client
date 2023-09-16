@@ -61,54 +61,16 @@ class RoomsScreen extends StatelessWidget {
                   child: Center(
                     child: Container(
                       constraints: const BoxConstraints(maxWidth: maxStandardSizeOfContent),
-                      child: StreamBuilder<QuerySnapshot<Room>>(
-                        stream: query.snapshots(),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasError || snapshot.connectionState == ConnectionState.waiting) {
-                            return LoadingOrAlert(
-                              message: StateMessage("Unknown error", () {}),
-                              isLoading: snapshot.connectionState == ConnectionState.waiting,
-                            );
-                          }
-
-                          if (snapshot.data?.docs.isEmpty ?? true) {
-                            return Center(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 15),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      CupertinoIcons.chat_bubble_2_fill,
-                                      size: 50,
-                                      color: Theme.of(context).colorScheme.onSurface,
-                                    ),
-                                    const SizedBox(height: 15),
-                                    Text(
-                                      "No messages available",
-                                      style: kBody.copyWith(
-                                        color: Theme.of(context).colorScheme.onSurface,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          } else {
-                            return SwipeRefresh(
-                              onRefresh: () async =>
-                                  await Future.delayed(const Duration(milliseconds: 1000)), // todo: reloader
-                              child: FirestoreListView(
-                                query: query,
-                                itemBuilder: (context, item) {
-                                  final room = item.data();
-                                  return RoomWithChat(room: room);
-                                },
-                              ),
-                            );
-                          }
-                        },
+                      child: SwipeRefresh(
+                        onRefresh: () async =>
+                            await Future.delayed(const Duration(milliseconds: 1000)), // todo: reloader
+                        child: FirestoreListView(
+                          query: query,
+                          itemBuilder: (context, item) {
+                            final room = item.data();
+                            return RoomWithChat(room: room);
+                          },
+                        ),
                       ),
                     ),
                   ),
@@ -137,7 +99,16 @@ class RoomWithChatState extends State<RoomWithChat> {
   @override
   void initState() {
     super.initState();
-    _loadChatFuture = Provider.of<RoomsService>(context, listen: false).addRoomAndLoadChat(widget.room);
+    _loadChatFuture = _loadChat();
+  }
+
+  Future<void> _loadChat() async {
+    final roomsService = Provider.of<RoomsService>(context, listen: false);
+
+    // Ensuring the chat is added to roomsService's chats OrderedSet on the very first time it is loaded
+    if (!roomsService.rooms.containsKey(widget.room.roomId)) {
+      await roomsService.addRoomAndLoadChat(widget.room);
+    }
   }
 
   @override
@@ -147,18 +118,16 @@ class RoomWithChatState extends State<RoomWithChat> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting || snapshot.hasError) {
           return LoadingOrAlert(
-            message: StateMessage("Unknown error", () => setState(() => _loadChatFuture = null)),
+            message: StateMessage("Unknown error", () => setState(() => _loadChatFuture = _loadChat())),
             isLoading: snapshot.connectionState == ConnectionState.waiting,
           );
         } else {
-          final roomsService = Provider.of<RoomsService>(context); // Get the RoomsService directly here
-          final updatedRoom =
-              roomsService.rooms[widget.room.roomId]!; // Get the updated room directly using the room ID
+          final updatedRoom = Provider.of<RoomsService>(context).rooms[widget.room.roomId]!;
+
           return RoomTile(
             lastMsg: updatedRoom.lastMsg,
-            name: updatedRoom.name + updatedRoom.chats.map((e) => e.msg).toString(),
-            // lastChat: updatedRoom.chats.isNotEmpty ? updatedRoom.chats.first.msg : null,
-            lastChat: updatedRoom.chats.toString(),
+            name: updatedRoom.name,
+            lastChat: updatedRoom.recentChat?.msg,
             onTap: () => router.push("/home/rooms/chat", extra: ChatProps(updatedRoom.roomId)),
           );
         }

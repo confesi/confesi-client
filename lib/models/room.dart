@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:confesi/models/chat.dart';
-import 'package:ordered_set/ordered_set.dart'; // Assuming you have the Chat model in this path.
+import 'package:ordered_set/ordered_set.dart';
 
 class Room extends Equatable {
   final String userId;
@@ -11,7 +11,7 @@ class Room extends Equatable {
   final DateTime lastMsg;
   final int postId;
   final int userNumber;
-  final OrderedSet<Chat> chats;
+  final Chat? recentChat;
 
   const Room({
     required this.userId,
@@ -20,49 +20,49 @@ class Room extends Equatable {
     required this.lastMsg,
     required this.postId,
     required this.userNumber,
-    required this.chats,
+    required this.recentChat,
   });
 
   factory Room.fromJson(Map<String, dynamic> json) => Room(
-        userId: json["user_id"], // Added
+        userId: json["user_id"],
         name: json["name"],
-        roomId: json["room_id"], // Changed
+        roomId: json["room_id"],
         lastMsg: (json["last_msg"] as Timestamp).toDate().toLocal(),
-        postId: json["post_id"] as int,
-        userNumber: json["user_number"] as int, // Added
-        chats: OrderedSet(),
+        postId: json["post_id"],
+        userNumber: json["user_number"],
+        recentChat: json["recent_chat"] == null ? null : Chat.fromJson(json["recent_chat"] as Map<String, dynamic>),
       );
 
   Map<String, dynamic> toJson() => {
-        "user_id": userId, // Added
+        "user_id": userId,
         "name": name,
-        "room_id": roomId, // Changed
-        "last_msg": lastMsg.toIso8601String(),
+        "room_id": roomId,
+        "last_msg": Timestamp.fromDate(lastMsg.toUtc()),
         "post_id": postId,
-        "user_number": userNumber, // Added
-        "chats": chats.map((chat) => chat.toJson()).toList(),
+        "user_number": userNumber,
+        "recent_chat": recentChat?.toJson(),
       };
 
   @override
-  List<Object?> get props => [userId, name, roomId, lastMsg, postId, userNumber, chats];
+  List<Object?> get props => [userId, name, roomId, lastMsg, postId, userNumber, recentChat];
 
   Room copyWith({
-    String? userId, // Added
+    String? userId,
     String? name,
-    String? roomId, // Changed
+    String? roomId,
     DateTime? lastMsg,
     int? postId,
-    int? userNumber, // Added
-    OrderedSet<Chat>? chats,
+    int? userNumber,
+    Chat? recentChat,
   }) {
     return Room(
-      userId: userId ?? this.userId, // Added
+      userId: userId ?? this.userId,
       name: name ?? this.name,
-      roomId: roomId ?? this.roomId, // Changed
+      roomId: roomId ?? this.roomId,
       lastMsg: lastMsg ?? this.lastMsg,
       postId: postId ?? this.postId,
-      userNumber: userNumber ?? this.userNumber, // Added
-      chats: chats ?? this.chats,
+      userNumber: userNumber ?? this.userNumber,
+      recentChat: recentChat ?? this.recentChat,
     );
   }
 }

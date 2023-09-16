@@ -15,7 +15,6 @@ import 'package:confesi/core/services/global_content/global_content.dart';
 import 'package:confesi/core/services/posts_service/posts_service.dart';
 import 'package:confesi/core/services/rooms/rooms_service.dart';
 import 'package:desktop_window/desktop_window.dart';
-import 'package:scrollable/exports.dart';
 import 'package:shake/shake.dart';
 import 'package:drift/drift.dart' as drift;
 
@@ -82,53 +81,56 @@ Future<void> startAuthListener() async {
   // clear user data
   sl.get<UserAuthService>().clearCurrentExtraData();
   sl.get<FirebaseAuth>().authStateChanges().listen((User? user) => sl.get<StreamController<User?>>().add(user));
+
   _userChangeStream = sl.get<StreamController<User?>>().stream.listen((User? user) async {
     sl.get<NotificationService>().updateToken(user?.uid);
+
     if (user == null) {
-      // firstOpen = true;
-      await Future.delayed(const Duration(milliseconds: 500)).then((_) {
-        sl.get<UserAuthService>().setNoDataState();
-        HapticFeedback.lightImpact();
-        router.go("/open");
-        sl.get<AuthFlowCubit>().clear();
-      });
+      await Future.delayed(const Duration(milliseconds: 500));
+      sl.get<UserAuthService>().setNoDataState();
+      HapticFeedback.lightImpact();
+      router.go("/open");
+      sl.get<AuthFlowCubit>().clear();
     } else {
-      await Future.delayed(const Duration(milliseconds: 500)).then(
-        (_) async {
-          sl.get<UserAuthService>().setNoDataState();
-          await sl.get<UserAuthService>().getData(sl.get<FirebaseAuth>().currentUser!.uid).then((_) {
-            if (sl.get<UserAuthService>().state is! UserAuthData) {
-              router.go("/error");
-              sl.get<AuthFlowCubit>().clear();
-              return;
-            }
-            if (user.isAnonymous) {
-              sl.get<UserAuthService>().isAnon = true;
-              sl.get<UserAuthService>().uid = user.uid;
-              sl.get<UserAuthService>().setSessionKeys();
-              router.go("/home");
-            } else {
-              sl.get<UserAuthService>().isAnon = false;
-              sl.get<UserAuthService>().email = user.email!;
-              sl.get<UserAuthService>().uid = user.uid;
-              sl.get<UserAuthService>().setSessionKeys();
-              if (user.emailVerified) {
-                router.go("/home");
-              } else {
-                router.go("/verify-email");
-              }
-            }
-            sl.get<AuthFlowCubit>().clear();
-          });
-        },
-      );
+      await Future.delayed(const Duration(milliseconds: 500));
+      sl.get<UserAuthService>().setNoDataState();
+
+      await sl.get<UserAuthService>().getData(sl.get<FirebaseAuth>().currentUser!.uid);
+      var authState = sl.get<UserAuthService>().state;
+
+      // Check auth state to ensure valid data is loaded
+      if (authState is! UserAuthData) {
+        router.go("/error");
+        sl.get<AuthFlowCubit>().clear();
+        return;
+      }
+
+      if (user.isAnonymous) {
+        sl.get<UserAuthService>().isAnon = true;
+        sl.get<UserAuthService>().uid = user.uid;
+        sl.get<UserAuthService>().setSessionKeys();
+        router.go("/home");
+      } else {
+        sl.get<UserAuthService>().isAnon = false;
+        sl.get<UserAuthService>().email = user.email!;
+        sl.get<UserAuthService>().uid = user.uid;
+        sl.get<UserAuthService>().setSessionKeys();
+        if (user.emailVerified) {
+          router.go("/home");
+        } else {
+          router.go("/verify-email");
+        }
+      }
+      sl.get<AuthFlowCubit>().clear();
     }
-    // returns only once at least one state has been emitted
-    // ensure it hasn't already been completed
+
+    // Return only once at least one state has been emitted
+    // Ensure it hasn't already been completed
     if (!completer.isCompleted) {
       completer.complete();
     }
   });
+
   await completer.future;
   completer = Completer<void>();
 }
@@ -149,11 +151,11 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (context) => sl<RoomsService>(), lazy: true),
         ChangeNotifierProvider(create: (context) => sl<UserAuthService>(), lazy: true),
         ChangeNotifierProvider(create: (context) => sl<GlobalContentService>(), lazy: true),
         ChangeNotifierProvider(create: (context) => sl<CreateCommentService>(), lazy: true),
         ChangeNotifierProvider(create: (context) => sl<PostsService>(), lazy: true),
-        ChangeNotifierProvider(create: (context) => sl<RoomsService>(), lazy: true),
         ChangeNotifierProvider(create: (context) => sl<PrimaryTabControllerService>(), lazy: true),
         ChangeNotifierProvider(create: (context) => sl<CreatingEditingPostsService>(), lazy: true),
       ],

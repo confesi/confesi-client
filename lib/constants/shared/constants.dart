@@ -10,7 +10,7 @@ const String domain = "http://10.0.0.173:8080";
 
 const Duration apiDefaultTimeout = Duration(seconds: 5);
 
-const int chatLoadLimit = 5;
+const int chatPageSize = 15;
 
 /// If debug mode is enabled. OFF for prod.
 const bool debugMode = false;

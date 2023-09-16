@@ -116,6 +116,66 @@ class CachedOnlineImageState extends State<CachedOnlineImage> with TickerProvide
 
   @override
   Widget build(BuildContext context) {
+    Widget cachedNetworkImageWidget;
+
+    try {
+      cachedNetworkImageWidget = CachedNetworkImage(
+        fadeInDuration: Duration.zero,
+        fit: widget.fit,
+        imageUrl: _ensureHttpsUrl(widget.url),
+        placeholder: (context, url) => Center(
+          child: LoadingCupertinoIndicator(color: Theme.of(context).colorScheme.onSurface),
+        ),
+        errorWidget: (context, url, error) => Center(
+          child: Text(
+            "Error loading image",
+            style: kDetail.copyWith(color: Theme.of(context).colorScheme.onSurface),
+          ),
+        ),
+        imageBuilder: (context, imageProvider) {
+          List<Widget> stackChildren = [];
+          stackChildren.add(
+            Positioned.fill(
+              child: ImageFiltered(
+                imageFilter: ui.ImageFilter.blur(
+                  sigmaX: _blurAnimation.value,
+                  sigmaY: _blurAnimation.value,
+                  tileMode: TileMode.mirror,
+                ),
+                child: Image(
+                  image: imageProvider,
+                  fit: widget.fit,
+                ),
+              ),
+            ),
+          );
+
+          stackChildren.add(
+            AnimatedSwitcher(
+              duration: const Duration(milliseconds: 75),
+              child: (_blurAnimation.value == imgBlurSigma)
+                  ? _buildUnblurContainer()
+                  : const SizedBox.shrink(
+                      key: ValueKey("sbox"),
+                    ),
+            ),
+          );
+
+          return Stack(
+            alignment: Alignment.center,
+            children: stackChildren,
+          );
+        },
+      );
+    } catch (error) {
+      cachedNetworkImageWidget = Center(
+        child: Text(
+          "Error occurred",
+          style: kDetail.copyWith(color: Theme.of(context).colorScheme.onSurface),
+        ),
+      );
+    }
+
     return Material(
       color: Colors.transparent,
       child: ClipRRect(
@@ -126,55 +186,7 @@ class CachedOnlineImageState extends State<CachedOnlineImage> with TickerProvide
             SizedBox(
               width: double.infinity,
               height: double.infinity,
-              child: CachedNetworkImage(
-                fadeInDuration: const Duration(milliseconds: 0), // Set fade-in time to zero
-                fit: widget.fit,
-                imageUrl: _ensureHttpsUrl(widget.url),
-                placeholder: (context, url) => Center(
-                  child: LoadingCupertinoIndicator(color: Theme.of(context).colorScheme.onSurface),
-                ),
-                errorWidget: (context, url, error) => Center(
-                  child: Text(
-                    "Error loading image",
-                    style: kDetail.copyWith(color: Theme.of(context).colorScheme.onSurface),
-                  ),
-                ),
-                imageBuilder: (context, imageProvider) {
-                  List<Widget> stackChildren = [];
-
-                  stackChildren.add(
-                    Positioned.fill(
-                      child: ImageFiltered(
-                        imageFilter: ui.ImageFilter.blur(
-                          sigmaX: _blurAnimation.value,
-                          sigmaY: _blurAnimation.value,
-                          tileMode: TileMode.mirror,
-                        ),
-                        child: Image(
-                          image: imageProvider,
-                          fit: widget.fit,
-                        ),
-                      ),
-                    ),
-                  );
-
-                  stackChildren.add(
-                    AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 75),
-                      child: (_blurAnimation.value == imgBlurSigma)
-                          ? _buildUnblurContainer()
-                          : const SizedBox.shrink(
-                              key: ValueKey("sbox"),
-                            ),
-                    ),
-                  );
-
-                  return Stack(
-                    alignment: Alignment.center,
-                    children: stackChildren,
-                  );
-                },
-              ),
+              child: cachedNetworkImageWidget,
             )
           ],
         ),

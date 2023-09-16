@@ -73,21 +73,21 @@ class ChatTileState extends State<ChatTile> {
                 },
                 child: Container(
                   constraints: BoxConstraints(maxWidth: maxWidth),
-                  padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 13),
+                  padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                   decoration: BoxDecoration(
                     color:
                         widget.isYou ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.secondary,
                     borderRadius: !widget.isYou
                         ? const BorderRadius.only(
-                            topLeft: Radius.circular(10),
+                            topLeft: Radius.circular(15),
                             bottomLeft: Radius.circular(2),
-                            topRight: Radius.circular(10),
-                            bottomRight: Radius.circular(10),
+                            topRight: Radius.circular(15),
+                            bottomRight: Radius.circular(15),
                           )
                         : const BorderRadius.only(
-                            topLeft: Radius.circular(10),
-                            bottomLeft: Radius.circular(10),
-                            topRight: Radius.circular(10),
+                            topLeft: Radius.circular(15),
+                            bottomLeft: Radius.circular(15),
+                            topRight: Radius.circular(15),
                             bottomRight: Radius.circular(2),
                           ),
                   ),

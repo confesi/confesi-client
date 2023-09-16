@@ -18,6 +18,8 @@ import 'package:keyboard_attachable/keyboard_attachable.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
+import 'package:provider/provider.dart';
 import 'package:scrollable/exports.dart';
 
 import '../widgets/chat_input.dart';
@@ -40,13 +42,17 @@ class _ChatScreenState extends State<ChatScreen> {
     super.initState();
     chatNameController = TextEditingController();
     chatInputController = TextEditingController();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      chatNameController.text = Provider.of<RoomsService>(context, listen: false).rooms[widget.props.roomId]!.name;
+    });
   }
 
   @override
   void dispose() {
+    super.dispose();
     chatNameController.dispose();
     chatInputController.dispose();
-    super.dispose();
   }
 
   Future<void> _promptDeleteMessage(String docId) async {
@@ -82,8 +88,6 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    chatNameController.text = Provider.of<RoomsService>(context, listen: false).rooms[widget.props.roomId]!.name;
-
     final chatsQuery =
         FirebaseFirestore.instance.collection('chats').orderBy('date', descending: true).withConverter<Chat>(
               fromFirestore: (snapshot, _) =>
@@ -157,7 +161,8 @@ class _ChatScreenState extends State<ChatScreen> {
                               );
                             },
                             textAlign: TextAlign.center,
-                            controller: chatNameController,
+                            controller: chatNameController
+                              ..text = Provider.of<RoomsService>(context).rooms[widget.props.roomId]!.name,
                             style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
                             decoration: InputDecoration(
                               hintText: "Your editable chat name",
@@ -202,7 +207,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   color: Theme.of(context).colorScheme.shadow,
                   child: FirestoreListView<Chat>(
-                    pageSize: chatLoadLimit,
+                    pageSize: chatPageSize,
                     shrinkWrap: true,
                     physics: const ClampingScrollPhysics(),
                     padding: const EdgeInsets.only(bottom: 13, top: 13),
@@ -211,27 +216,6 @@ class _ChatScreenState extends State<ChatScreen> {
                     itemBuilder: (context, snapshot) {
                       // todo: O(n) | n=chats => inefficient
                       Chat chat = snapshot.data();
-                      // if not contained, add
-                      // final List<Chat> chats =
-                      //     Provider.of<RoomsService>(context, listen: false).rooms[widget.props.roomId]!.chats;
-                      // if (chats.isNotEmpty && idx == length - 1) {
-                      //   chats.add(chats[len(chats) - 1]);
-                      // }
-                      // do the above but fix the idx bug
-
-                      // if (!Provider.of<RoomsService>(context, listen: false)
-                      //     .rooms[widget.props.roomId]!
-                      //     .chats
-                      //     .contains(chat)) {
-
-                      // }
-                      // // only return `ChatTile` if it exists in the room
-                      // if (!Provider.of<RoomsService>(context, listen: false)
-                      //     .rooms[widget.props.roomId]!
-                      //     .chats
-                      //     .contains(chat)) {
-                      //   return const SizedBox.shrink();
-                      // }
                       return ChatTile(
                         onLongPress: (isYou) => showButtonOptionsSheet(
                           context,

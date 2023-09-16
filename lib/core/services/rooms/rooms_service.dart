@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:ordered_set/ordered_set.dart';
 
 import '../../../constants/shared/constants.dart';
+import '../../../init.dart';
 
 extension MyIterable<T> on Iterable<T> {
   T? get firstOrNull => isEmpty ? null : first;
@@ -23,11 +24,10 @@ extension MyIterable<T> on Iterable<T> {
 class RoomsService extends ChangeNotifier {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final Map<String, Room> _rooms = {};
-  final UserAuthService _userAuthService;
   StreamSubscription? _roomSubscription;
   final Api _msgApi;
   final Api _roomNameChangeApi;
-  final Api _deleteChatApi;
+  final Api _deleteChatApi; // todo: implement
   bool roomsError = false;
   bool chatsError = false;
   DocumentSnapshot? _lastDocument;
@@ -37,7 +37,11 @@ class RoomsService extends ChangeNotifier {
   Map<String, Room> get rooms => _rooms;
   bool get hasMoreData => _hasMoreData;
 
-  RoomsService(this._userAuthService, this._msgApi, this._roomNameChangeApi, this._deleteChatApi) {
+  // getter for _userAuthService
+  UserAuthService get userAuthService =>
+      sl.get<UserAuthService>()..uid = "kco5wCBnv7SOAaBFnHBHr7C3lsr1"; // todo: DONT HARD CODE
+
+  RoomsService(this._msgApi, this._roomNameChangeApi, this._deleteChatApi) {
     loadRooms();
     startListenerForRooms();
   }
@@ -125,31 +129,42 @@ class RoomsService extends ChangeNotifier {
   }
 
   void startListenerForRooms() {
-    print("START LISTENER FOR ROOMS");
+    print("START LISTENER FOR ROOMS2");
+
     _roomSubscription?.cancel();
+    print("this user's uid: ${userAuthService.uid}");
     _roomSubscription = _firestore
         .collection('rooms')
-        .where('user_id', isEqualTo: _userAuthService.uid)
+        .where('user_id', isEqualTo: userAuthService.uid)
         .orderBy('last_msg', descending: true)
         .snapshots()
-        .listen((snapshot) {
-      for (var change in snapshot.docChanges) {
-        switch (change.type) {
-          case DocumentChangeType.added:
-            if (!_rooms.containsKey(change.doc.id)) {
-              _processRoomDocument(change.doc);
-            }
-            break;
-          case DocumentChangeType.modified:
-            _processRoomDocument(change.doc);
-            break;
-          case DocumentChangeType.removed:
-            _rooms.remove(change.doc.id);
-            break;
+        .listen(
+      (QuerySnapshot snapshot) {
+        print('Snapshot size: ${snapshot.size}');
+        if (snapshot.size == 0) {
+          print('No documents found');
         }
-      }
-      notifyListeners();
-    });
+
+        for (var change in snapshot.docChanges) {
+          print("CHANGE!!!!!");
+          switch (change.type) {
+            case DocumentChangeType.added:
+              if (!_rooms.containsKey(change.doc.id)) {
+                _processRoomDocument(change.doc);
+              }
+              break;
+            case DocumentChangeType.modified:
+              _processRoomDocument(change.doc);
+              break;
+            case DocumentChangeType.removed:
+              _rooms.remove(change.doc.id);
+              break;
+          }
+        }
+
+        notifyListeners();
+      },
+    );
   }
 
   Future<void> loadRecentChatForRoom(String roomId) async {
@@ -161,51 +176,39 @@ class RoomsService extends ChangeNotifier {
       final initialSnapshot = await chatCollection
           .where('room_id', isEqualTo: roomId)
           .orderBy('date', descending: true)
-          .limit(chatLoadLimit)
-          .get(); // limit to [chatLoadLimit] recent + listen for snapshot(s)
+          .limit(chatPageSize)
+          .get();
 
       // Map the initial snapshot to Chat objects
       List<Chat> currentChats =
           initialSnapshot.docs.map((chatDoc) => Chat.fromJson({...chatDoc.data(), "id": chatDoc.id})).toList();
 
-      if (_rooms.containsKey(roomId)) {
-        // convert to orderedset
-        _rooms[roomId] = _rooms[roomId]!.copyWith(chats: OrderedSet());
+      // Set the most recent chat to the room
+      if (_rooms.containsKey(roomId) && currentChats.isNotEmpty) {
+        _rooms[roomId] = _rooms[roomId]!.copyWith(recentChat: currentChats.first);
         notifyListeners();
       }
 
-      // Set up a stream subscription to listen for new chats added after the last document in the initial snapshot
-      // if (initialSnapshot.docs.isNotEmpty) {
-      //   final lastDoc = initialSnapshot.docs.last;
+      // Set up a stream subscription to listen for new chats
+      final chatStream =
+          chatCollection.where('room_id', isEqualTo: roomId).orderBy('date', descending: true).limit(1).snapshots();
 
-      // final chatStream = chatCollection
-      //     .where('room_id', isEqualTo: roomId)
-      //     .orderBy('date', descending: true)
-      //     .startAfterDocument(lastDoc)
-      //     .snapshots();
+      _chatSubscriptions[roomId]?.cancel();
+      _chatSubscriptions[roomId] = chatStream.listen((querySnapshot) {
+        final newChatDocs = querySnapshot.docChanges
+            .where((docChange) => docChange.type == DocumentChangeType.added)
+            .map(
+                (docChange) => Chat.fromJson({...docChange.doc.data() as Map<String, dynamic>, "id": docChange.doc.id}))
+            .toList();
 
-      // _chatSubscriptions[roomId]?.cancel();
-      // _chatSubscriptions[roomId] = chatStream.listen((querySnapshot) {
-      //   // List<Chat> newChats = querySnapshot.docChanges
-      //   //     .where((docChange) => docChange.type == DocumentChangeType.added)
-      //   //     .map((docChange) =>
-      //   //         Chat.fromJson({...docChange.doc.data() as Map<String, dynamic>, "id": docChange.doc.id}))
-      //   //     .toList();
-
-      //   // if (newChats.isNotEmpty) {
-      //   //   currentChats.addAll(newChats);
-
-      //   //   // // Remove duplicate chats by id before updating the room's chats list
-      //   //   // Set<String> seenChatIds = {};
-      //   //   // currentChats.retainWhere((chat) {
-      //   //   //   final isSeen = seenChatIds.contains(chat.id);
-      //   //   //   seenChatIds.add(chat.id);
-      //   //   //   return !isSeen;
-      //   //   // });
-      //   // }
-      //   notifyListeners();
-      // });
-      // }
+        if (newChatDocs.isNotEmpty) {
+          // Update the recent chat of the room
+          if (_rooms.containsKey(roomId)) {
+            _rooms[roomId] = _rooms[roomId]!.copyWith(recentChat: newChatDocs.first);
+            notifyListeners();
+          }
+        }
+      });
     } catch (e) {
       chatsError = true;
       notifyListeners();
@@ -216,10 +219,12 @@ class RoomsService extends ChangeNotifier {
     print("PROCESS ROOM DOCUMENT");
     try {
       Room room = Room.fromJson({...roomDoc.data() as Map<String, dynamic>, "id": roomDoc.id});
-      _rooms[room.roomId] = room;
-
-      // Initialize chat listener for this room
-      await loadRecentChatForRoom(room.roomId);
+      if (_rooms[room.roomId] == null) return;
+      _rooms[room.roomId] = _rooms[room.roomId]!.copyWith(
+        name: room.name,
+        lastMsg: room.lastMsg,
+        userNumber: room.userNumber,
+      );
 
       notifyListeners();
     } catch (e) {
@@ -235,9 +240,9 @@ class RoomsService extends ChangeNotifier {
 
       Query query = _firestore
           .collection('rooms')
-          .where('user_id', isEqualTo: _userAuthService.uid)
+          .where('user_id', isEqualTo: userAuthService.uid)
           .orderBy('last_msg', descending: true)
-          .limit(chatLoadLimit);
+          .limit(chatPageSize);
 
       if (_lastDocument != null) {
         query = query.startAfterDocument(_lastDocument!);
@@ -245,7 +250,7 @@ class RoomsService extends ChangeNotifier {
 
       QuerySnapshot roomSnapshot = await query.get();
 
-      if (roomSnapshot.docs.length < chatLoadLimit) {
+      if (roomSnapshot.docs.length < chatPageSize) {
         _hasMoreData = false;
       }
 
