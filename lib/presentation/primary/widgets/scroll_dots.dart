@@ -26,29 +26,28 @@ class _ScrollDotsState extends State<ScrollDots> {
   List<Widget> dots = [];
 
   List<Widget> createDots() {
-    setState(
-      () {
-        dots.clear();
-        for (var i = 0; i < widget.pageLength; i++) {
-          dots.add(
-            Container(
-              width: 9,
-              height: 9,
-              decoration: BoxDecoration(
-                color: i == widget.pageIndex ? widget.activeColor : widget.bgColor,
-                shape: BoxShape.circle,
-                border: i == widget.pageIndex ? null : Border.all(color: widget.borderColor, width: 2),
-              ),
-            ),
-          );
-        }
-      },
-    );
+    dots.clear();
+    for (var i = 0; i < widget.pageLength; i++) {
+      dots.add(
+        Container(
+          width: 9,
+          height: 9,
+          decoration: BoxDecoration(
+            color: i == widget.pageIndex ? widget.activeColor : widget.bgColor,
+            shape: BoxShape.circle,
+            border: i == widget.pageIndex ? null : Border.all(color: widget.borderColor, width: 2),
+          ),
+        ),
+      );
+    }
     return dots;
   }
 
   @override
   Widget build(BuildContext context) {
+    if (widget.pageLength <= 1) {
+      return Container(); // Return an empty container for 0 or 1 item
+    }
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 30, vertical: widget.verticalPadding),
       child: Wrap(

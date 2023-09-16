@@ -102,7 +102,7 @@ class RoomsScreen extends StatelessWidget {
                               child: FirestoreListView(
                                 query: query,
                                 itemBuilder: (context, item) {
-                                  final room = item.data()!;
+                                  final room = item.data();
                                   return RoomWithChat(room: room);
                                 },
                               ),
@@ -157,7 +157,8 @@ class RoomWithChatState extends State<RoomWithChat> {
           return RoomTile(
             lastMsg: updatedRoom.lastMsg,
             name: updatedRoom.name + updatedRoom.chats.map((e) => e.msg).toString(),
-            lastChat: updatedRoom.chats.isNotEmpty ? updatedRoom.chats.first.msg : null,
+            // lastChat: updatedRoom.chats.isNotEmpty ? updatedRoom.chats.first.msg : null,
+            lastChat: updatedRoom.chats.toString(),
             onTap: () => router.push("/home/rooms/chat", extra: ChatProps(updatedRoom.roomId)),
           );
         }

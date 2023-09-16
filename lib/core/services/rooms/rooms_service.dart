@@ -7,6 +7,7 @@ import 'package:confesi/models/chat.dart';
 import 'package:confesi/models/room.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
+import 'package:ordered_set/ordered_set.dart';
 
 import '../../../constants/shared/constants.dart';
 
@@ -168,7 +169,8 @@ class RoomsService extends ChangeNotifier {
           initialSnapshot.docs.map((chatDoc) => Chat.fromJson({...chatDoc.data(), "id": chatDoc.id})).toList();
 
       if (_rooms.containsKey(roomId)) {
-        _rooms[roomId] = _rooms[roomId]!.copyWith(chats: currentChats);
+        // convert to orderedset
+        _rooms[roomId] = _rooms[roomId]!.copyWith(chats: OrderedSet());
         notifyListeners();
       }
 

@@ -1,24 +1,25 @@
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
-import 'package:confesi/models/chat.dart'; // Assuming you have the Chat model in this path.
+import 'package:confesi/models/chat.dart';
+import 'package:ordered_set/ordered_set.dart'; // Assuming you have the Chat model in this path.
 
 class Room extends Equatable {
-  final String userId;    
+  final String userId;
   final String name;
-  final String roomId;    
+  final String roomId;
   final DateTime lastMsg;
   final int postId;
-  final int userNumber;  
-  final List<Chat> chats;
+  final int userNumber;
+  final OrderedSet<Chat> chats;
 
   const Room({
-    required this.userId, 
+    required this.userId,
     required this.name,
-    required this.roomId, 
+    required this.roomId,
     required this.lastMsg,
     required this.postId,
-    required this.userNumber, 
+    required this.userNumber,
     required this.chats,
   });
 
@@ -29,13 +30,13 @@ class Room extends Equatable {
         lastMsg: (json["last_msg"] as Timestamp).toDate().toLocal(),
         postId: json["post_id"] as int,
         userNumber: json["user_number"] as int, // Added
-        chats: const [],
+        chats: OrderedSet(),
       );
 
   Map<String, dynamic> toJson() => {
-        "user_id": userId,   // Added
+        "user_id": userId, // Added
         "name": name,
-        "room_id": roomId,   // Changed
+        "room_id": roomId, // Changed
         "last_msg": lastMsg.toIso8601String(),
         "post_id": postId,
         "user_number": userNumber, // Added
@@ -43,9 +44,7 @@ class Room extends Equatable {
       };
 
   @override
-  List<Object?> get props => [
-        userId, name, roomId, lastMsg, postId, userNumber, chats
-      ];
+  List<Object?> get props => [userId, name, roomId, lastMsg, postId, userNumber, chats];
 
   Room copyWith({
     String? userId, // Added
@@ -54,7 +53,7 @@ class Room extends Equatable {
     DateTime? lastMsg,
     int? postId,
     int? userNumber, // Added
-    List<Chat>? chats,
+    OrderedSet<Chat>? chats,
   }) {
     return Room(
       userId: userId ?? this.userId, // Added

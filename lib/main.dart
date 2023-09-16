@@ -15,6 +15,7 @@ import 'package:confesi/core/services/global_content/global_content.dart';
 import 'package:confesi/core/services/posts_service/posts_service.dart';
 import 'package:confesi/core/services/rooms/rooms_service.dart';
 import 'package:desktop_window/desktop_window.dart';
+import 'package:scrollable/exports.dart';
 import 'package:shake/shake.dart';
 import 'package:drift/drift.dart' as drift;
 

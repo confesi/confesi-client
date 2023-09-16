@@ -6,7 +6,7 @@ import '../../application/create_post/cubit/post_categories_cubit.dart';
 ///
 /// UVIC: 134.87.34.204
 /// SHERIDAN: 10.0.0.173
-const String domain = "http://134.87.34.204:8080";
+const String domain = "http://10.0.0.173:8080";
 
 const Duration apiDefaultTimeout = Duration(seconds: 5);
 
