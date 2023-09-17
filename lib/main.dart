@@ -75,8 +75,10 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage msg) async {
 
 StreamSubscription<User?>? _userChangeStream;
 
-Future<void> startAuthListener() async {
-  Completer<void> completer = Completer<void>();
+Future<UserAuthService> startAuthListener() async {
+  Completer<UserAuthService> completer = Completer<UserAuthService>();
+
+  // await initAuthServiceAndDependencies();
 
   // clear user data
   sl.get<UserAuthService>().clearCurrentExtraData();
@@ -84,55 +86,52 @@ Future<void> startAuthListener() async {
 
   _userChangeStream = sl.get<StreamController<User?>>().stream.listen((User? user) async {
     sl.get<NotificationService>().updateToken(user?.uid);
-
     if (user == null) {
-      await Future.delayed(const Duration(milliseconds: 500));
-      sl.get<UserAuthService>().setNoDataState();
-      HapticFeedback.lightImpact();
-      router.go("/open");
-      sl.get<AuthFlowCubit>().clear();
-    } else {
-      await Future.delayed(const Duration(milliseconds: 500));
-      sl.get<UserAuthService>().setNoDataState();
-
-      await sl.get<UserAuthService>().getData(sl.get<FirebaseAuth>().currentUser!.uid);
-      var authState = sl.get<UserAuthService>().state;
-
-      // Check auth state to ensure valid data is loaded
-      if (authState is! UserAuthData) {
-        router.go("/error");
+      await Future.delayed(const Duration(milliseconds: 500)).then((_) {
+        sl.get<UserAuthService>().setNoDataState();
+        HapticFeedback.lightImpact();
+        router.go("/open");
         sl.get<AuthFlowCubit>().clear();
-        return;
-      }
-
-      if (user.isAnonymous) {
-        sl.get<UserAuthService>().isAnon = true;
-        sl.get<UserAuthService>().uid = user.uid;
-        sl.get<UserAuthService>().setSessionKeys();
-        router.go("/home");
-      } else {
-        sl.get<UserAuthService>().isAnon = false;
-        sl.get<UserAuthService>().email = user.email!;
-        sl.get<UserAuthService>().uid = user.uid;
-        sl.get<UserAuthService>().setSessionKeys();
-        if (user.emailVerified) {
-          router.go("/home");
-        } else {
-          router.go("/verify-email");
-        }
-      }
-      sl.get<AuthFlowCubit>().clear();
+      });
+    } else {
+      await Future.delayed(const Duration(milliseconds: 500)).then(
+        (_) async {
+          sl.get<UserAuthService>().setNoDataState();
+          await sl.get<UserAuthService>().getData(sl.get<FirebaseAuth>().currentUser!.uid).then((_) {
+            if (sl.get<UserAuthService>().state is! UserAuthData) {
+              router.go("/error");
+              sl.get<AuthFlowCubit>().clear();
+              return;
+            }
+            if (user.isAnonymous) {
+              sl.get<UserAuthService>().isAnon = true;
+              sl.get<UserAuthService>().uid = user.uid;
+              sl.get<UserAuthService>().setSessionKeys();
+              router.go("/home");
+            } else {
+              sl.get<UserAuthService>().isAnon = false;
+              sl.get<UserAuthService>().email = user.email!;
+              sl.get<UserAuthService>().uid = user.uid;
+              sl.get<UserAuthService>().setSessionKeys();
+              if (user.emailVerified) {
+                router.go("/home");
+              } else {
+                router.go("/verify-email");
+              }
+            }
+            sl.get<AuthFlowCubit>().clear();
+          });
+        },
+      );
     }
 
-    // Return only once at least one state has been emitted
-    // Ensure it hasn't already been completed
+    // Complete the completer with the first state
     if (!completer.isCompleted) {
-      completer.complete();
+      completer.complete(sl.get<UserAuthService>());
     }
   });
 
-  await completer.future;
-  completer = Completer<void>();
+  return await completer.future;
 }
 
 void main() async {
@@ -140,19 +139,24 @@ void main() async {
   await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   analytics.logAppOpen();
+
   // if windows or mac
   if (Platform.isWindows || Platform.isMacOS) {
     // set window size
     await DesktopWindow.setMinWindowSize(const Size(400, 800));
     await DesktopWindow.setMaxWindowSize(const Size(400, 800));
   }
-  await init();
+
+  // Get the UserAuthService instance from the startAuthListener
+  await initAuthAndDep();
   await startAuthListener();
+  await init();
+
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => sl<RoomsService>(), lazy: true),
         ChangeNotifierProvider(create: (context) => sl<UserAuthService>(), lazy: true),
+        ChangeNotifierProvider(create: (context) => sl<RoomsService>(), lazy: true),
         ChangeNotifierProvider(create: (context) => sl<GlobalContentService>(), lazy: true),
         ChangeNotifierProvider(create: (context) => sl<CreateCommentService>(), lazy: true),
         ChangeNotifierProvider(create: (context) => sl<PostsService>(), lazy: true),

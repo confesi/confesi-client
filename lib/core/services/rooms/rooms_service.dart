@@ -37,13 +37,13 @@ class RoomsService extends ChangeNotifier {
   Map<String, Room> get rooms => _rooms;
   bool get hasMoreData => _hasMoreData;
 
-  // getter for _userAuthService
-  UserAuthService get userAuthService =>
-      sl.get<UserAuthService>()..uid = "kco5wCBnv7SOAaBFnHBHr7C3lsr1"; // todo: DONT HARD CODE
+  UserAuthService get userAuthService => sl.get<UserAuthService>()..uid;
 
   RoomsService(this._msgApi, this._roomNameChangeApi, this._deleteChatApi) {
     loadRooms();
     startListenerForRooms();
+    // print uid
+    print("UIDDDDDD: ${userAuthService.uid}");
   }
 
   Future<Either<ApiSuccess, String>> updateRoomName(String roomId, String name) async {

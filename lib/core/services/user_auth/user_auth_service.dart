@@ -62,7 +62,7 @@ class UserAuthService extends ChangeNotifier {
     return def;
   }
 
-  final HiveService hive;
+  HiveService hive;
   UserAuthService(this.hive);
 
   void setNoDataState() {
