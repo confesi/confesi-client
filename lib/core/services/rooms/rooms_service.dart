@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:confesi/core/results/failures.dart';
 import 'package:confesi/core/results/successes.dart';
 import 'package:confesi/core/services/api_client/api.dart';
 import 'package:confesi/core/services/user_auth/user_auth_service.dart';
@@ -24,10 +25,11 @@ extension MyIterable<T> on Iterable<T> {
 class RoomsService extends ChangeNotifier {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final Map<String, Room> _rooms = {};
-  StreamSubscription? _roomSubscription;
+  StreamSubscription? _chatsInRoomSubscription;
   final Api _msgApi;
   final Api _roomNameChangeApi;
   final Api _deleteChatApi; // todo: implement
+  final Api _readApi;
   bool roomsError = false;
   bool chatsError = false;
   DocumentSnapshot? _lastDocument;
@@ -39,7 +41,7 @@ class RoomsService extends ChangeNotifier {
 
   UserAuthService get userAuthService => sl.get<UserAuthService>()..uid;
 
-  RoomsService(this._msgApi, this._roomNameChangeApi, this._deleteChatApi) {
+  RoomsService(this._readApi, this._msgApi, this._roomNameChangeApi, this._deleteChatApi) {
     loadRooms();
     startListenerForRooms();
     // print uid
@@ -92,7 +94,8 @@ class RoomsService extends ChangeNotifier {
     try {
       if (!_rooms.containsKey(room.roomId)) {
         _rooms[room.roomId] = room;
-        await loadRecentChatForRoom(room.roomId);
+        await loadInitialRoomData(room.roomId, sl.get<UserAuthService>().uid);
+        
         notifyListeners();
       } else {
         print("Room already exists, not adding it again");
@@ -131,9 +134,9 @@ class RoomsService extends ChangeNotifier {
   void startListenerForRooms() {
     print("START LISTENER FOR ROOMS2");
 
-    _roomSubscription?.cancel();
+    _chatsInRoomSubscription?.cancel();
     print("this user's uid: ${userAuthService.uid}");
-    _roomSubscription = _firestore
+    _chatsInRoomSubscription = _firestore
         .collection('rooms')
         .where('user_id', isEqualTo: userAuthService.uid)
         .orderBy('last_msg', descending: true)
@@ -146,17 +149,28 @@ class RoomsService extends ChangeNotifier {
         }
 
         for (var change in snapshot.docChanges) {
-          print("CHANGE!!!!!");
+          print("CHANGE, ${change.doc.id}, ${change.type}");
           switch (change.type) {
             case DocumentChangeType.added:
+              print("------------------------------> ADDED");
               if (!_rooms.containsKey(change.doc.id)) {
                 _processRoomDocument(change.doc);
               }
               break;
             case DocumentChangeType.modified:
-              _processRoomDocument(change.doc);
+              print("------------------------------> MODIFIED");
+              if (!_rooms.containsKey(change.doc.id)) {
+                _processRoomDocument(change.doc);
+                String roomId = change.doc['room_id'];
+
+                // Check if "read" field is not present in the modified document.
+                if (change.doc['read'] == null) {
+                  updateRoomReadTime(roomId);
+                }
+              }
               break;
             case DocumentChangeType.removed:
+              print("------------------------------> REMOVED");
               _rooms.remove(change.doc.id);
               break;
           }
@@ -165,9 +179,31 @@ class RoomsService extends ChangeNotifier {
         notifyListeners();
       },
     );
+    // _roomMetadataSubscription = _firestore
+    //     .collection('rooms')
+    //     .where('user_id', isEqualTo: userAuthService.uid)
+    //     .orderBy('last_msg', descending: true)
+    //     .snapshots()
+    //     .listen();
   }
 
-  Future<void> loadRecentChatForRoom(String roomId) async {
+  Future<Either<ApiSuccess, String>> updateRoomReadTime(String roomId) async {
+    print("UPDATE ROOM READ TIME");
+    print("ROOM ID: $roomId");
+    _readApi.cancelCurrReq();
+    return (await _readApi.req(Verb.put, true, "/api/v1/dms/read", {
+      "room_id": roomId,
+    }))
+        .fold((failureWithMsg) => Right(failureWithMsg.msg()), (response) {
+      if (response.statusCode.toString()[0] == "2") {
+        return Left(ApiSuccess());
+      } else {
+        return const Right("todo: error");
+      }
+    });
+  }
+
+  Future<void> loadInitialRoomData(String roomId, String userId) async {
     print("LOAD RECENT CHAT FOR ROOM");
     try {
       final chatCollection = _firestore.collection('chats');
@@ -219,13 +255,22 @@ class RoomsService extends ChangeNotifier {
     print("PROCESS ROOM DOCUMENT");
     try {
       Room room = Room.fromJson({...roomDoc.data() as Map<String, dynamic>, "id": roomDoc.id});
-      if (_rooms[room.roomId] == null) return;
+      print("GOT ROOM READ: ${room.read}");
+      if (_rooms[room.roomId] == null) {
+        // if null, create a new one and add it
+        _rooms[room.roomId] = room;
+        await loadInitialRoomData(room.roomId, sl.get<UserAuthService>().uid);
+        notifyListeners();
+        return;
+      }
+
+      print("ROOM ISNT NULL");
       _rooms[room.roomId] = _rooms[room.roomId]!.copyWith(
         name: room.name,
         lastMsg: room.lastMsg,
         userNumber: room.userNumber,
+        read: room.read == null ? null : Right(room.read!),
       );
-
       notifyListeners();
     } catch (e) {
       roomsError = true;
@@ -257,7 +302,8 @@ class RoomsService extends ChangeNotifier {
       if (roomSnapshot.docs.isNotEmpty) {
         _lastDocument = roomSnapshot.docs.last;
         for (DocumentSnapshot roomDoc in roomSnapshot.docs) {
-          await _processRoomDocument(roomDoc);
+          // await _processRoomDocument(roomDoc);
+          // todo: do I even need load rooms!???!?!?
         }
       }
     } catch (e) {
@@ -273,7 +319,7 @@ class RoomsService extends ChangeNotifier {
     for (var subscription in _chatSubscriptions.values) {
       subscription.cancel();
     }
-    _roomSubscription?.cancel();
+    _chatsInRoomSubscription?.cancel();
     super.dispose();
   }
 }

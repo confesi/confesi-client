@@ -123,12 +123,17 @@ class RoomWithChatState extends State<RoomWithChat> {
           );
         } else {
           final updatedRoom = Provider.of<RoomsService>(context).rooms[widget.room.roomId]!;
-
           return RoomTile(
+            read: updatedRoom.recentChat != null &&
+                updatedRoom.read != null &&
+                updatedRoom.read!.isAfter(updatedRoom.recentChat!.date),
             lastMsg: updatedRoom.lastMsg,
             name: updatedRoom.name,
             lastChat: updatedRoom.recentChat?.msg,
-            onTap: () => router.push("/home/rooms/chat", extra: ChatProps(updatedRoom.roomId)),
+            onTap: () {
+              router.push("/home/rooms/chat", extra: ChatProps(updatedRoom.roomId));
+              Provider.of<RoomsService>(context, listen: false).updateRoomReadTime(updatedRoom.roomId);
+            },
           );
         }
       },

@@ -76,7 +76,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       onWillPop: () async => false,
       child: ThemeStatusBar(
         child: Scaffold(
-          floatingActionButton: FloatingActionButton(onPressed: () => print(sl.get<UserAuthService>().uid)),
           backgroundColor: Theme.of(context).colorScheme.background,
           drawerScrimColor: Colors.black.withOpacity(0.7),
           drawerEnableOpenDragGesture: Provider.of<PrimaryTabControllerService>(context).tabIdx == 0,

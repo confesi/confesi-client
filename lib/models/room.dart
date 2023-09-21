@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:confesi/core/types/data.dart';
+import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:confesi/models/chat.dart';
 import 'package:ordered_set/ordered_set.dart';
@@ -12,6 +14,7 @@ class Room extends Equatable {
   final int postId;
   final int userNumber;
   final Chat? recentChat;
+  final DateTime? read;
 
   const Room({
     required this.userId,
@@ -21,6 +24,7 @@ class Room extends Equatable {
     required this.postId,
     required this.userNumber,
     required this.recentChat,
+    required this.read,
   });
 
   factory Room.fromJson(Map<String, dynamic> json) => Room(
@@ -31,6 +35,7 @@ class Room extends Equatable {
         postId: json["post_id"],
         userNumber: json["user_number"],
         recentChat: json["recent_chat"] == null ? null : Chat.fromJson(json["recent_chat"] as Map<String, dynamic>),
+        read: json["read"] != null ? (json["read"] as Timestamp).toDate().toLocal() : null, // added this new field
       );
 
   Map<String, dynamic> toJson() => {
@@ -41,10 +46,11 @@ class Room extends Equatable {
         "post_id": postId,
         "user_number": userNumber,
         "recent_chat": recentChat?.toJson(),
+        "read": read ?? Timestamp.fromDate(read!.toUtc()),
       };
 
   @override
-  List<Object?> get props => [userId, name, roomId, lastMsg, postId, userNumber, recentChat];
+  List<Object?> get props => [userId, name, roomId, lastMsg, postId, userNumber, recentChat, read];
 
   Room copyWith({
     String? userId,
@@ -54,7 +60,9 @@ class Room extends Equatable {
     int? postId,
     int? userNumber,
     Chat? recentChat,
+    Either<Empty, DateTime>? read, // added this new field
   }) {
+    print(read);
     return Room(
       userId: userId ?? this.userId,
       name: name ?? this.name,
@@ -63,6 +71,7 @@ class Room extends Equatable {
       postId: postId ?? this.postId,
       userNumber: userNumber ?? this.userNumber,
       recentChat: recentChat ?? this.recentChat,
+      read: read?.fold((empty) => null, (dateTime) => dateTime), // updated this line
     );
   }
 }

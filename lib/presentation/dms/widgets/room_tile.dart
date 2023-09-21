@@ -43,14 +43,17 @@ class RoomTile extends StatelessWidget {
                     textAlign: TextAlign.left,
                   ),
                 ),
-                Text(
-                  timeAgo(lastMsg),
-                  style: kDetail.copyWith(color: Theme.of(context).colorScheme.onSurface),
-                  textAlign: TextAlign.left,
+                Flexible(
+                  // Wrap this Text widget with a Flexible widget
+                  child: Text(
+                    timeAgo(lastMsg),
+                    style: kDetail.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                    textAlign: TextAlign.left,
+                  ),
                 ),
               ],
             ),
-            const SizedBox(width: 5),
+            const SizedBox(height: 5), // Change width to height
             Row(
               children: [
                 if (!read)
@@ -63,12 +66,15 @@ class RoomTile extends StatelessWidget {
                       shape: BoxShape.circle,
                     ),
                   ),
-                Text(
-                  truncateText(lastChat ?? "No messages yet", chatMessagePreviewLength),
-                  style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
-                  textAlign: TextAlign.left,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+                Flexible(
+                  // Wrap this Text widget with a Flexible widget
+                  child: Text(
+                    truncateText(lastChat ?? "No messages yet", chatMessagePreviewLength),
+                    style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                    textAlign: TextAlign.left,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ],
             ),

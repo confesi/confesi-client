@@ -34,6 +34,7 @@ class _ChatInputState extends State<ChatInput> {
         context.read<NotificationsCubit>().showErr(failureMsg);
       },
     );
+
     setState(() {
       isLoading = false;
     });
@@ -77,7 +78,6 @@ class _ChatInputState extends State<ChatInput> {
                 }
               },
               child: TextField(
-                // onChanged: (_) => setState(() {}),
                 controller: widget.controller,
                 maxLines: 4,
                 minLines: 1,
@@ -90,30 +90,31 @@ class _ChatInputState extends State<ChatInput> {
                   ),
                   fillColor: Theme.of(context).colorScheme.surface,
                   filled: true,
-                  suffixIcon: AbsorbPointer(
-                    absorbing: isLoading,
-                    child: TouchableScale(
-                      onTap: () {
-                        final oldVal = widget.controller.text;
-                        setState(() {
-                          widget.controller.clear();
-                        });
-                        sendMsg(oldVal);
-                      },
-                      child: Container(
-                        margin: const EdgeInsets.all(2),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.secondary,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(
-                          Icons.send,
-                          color: Theme.of(context).colorScheme.onSecondary,
-                          size: 20,
-                        ),
-                      ),
-                    ),
-                  ),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: 10),
+          AbsorbPointer(
+            absorbing: isLoading,
+            child: TouchableScale(
+              onTap: () {
+                final oldVal = widget.controller.text;
+                setState(() {
+                  widget.controller.clear();
+                });
+                sendMsg(oldVal);
+              },
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.secondary,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.send,
+                  color: Theme.of(context).colorScheme.onSecondary,
+                  size: 20,
                 ),
               ),
             ),

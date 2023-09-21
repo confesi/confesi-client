@@ -4,9 +4,9 @@ import '../../application/create_post/cubit/post_categories_cubit.dart';
 
 /// The root endpoint (domain) for all api calls.
 ///
-/// UVIC: 134.87.34.204
-/// SHERIDAN: 10.0.0.173
-const String domain = "http://10.0.0.173:8080";
+/// UVIC: 134.87.37.86 (ephemeral)
+/// SHERIDAN: 10.0.0.173 (ephemeral)
+const String domain = "http://134.87.35.15:8080";
 
 const Duration apiDefaultTimeout = Duration(seconds: 5);
 

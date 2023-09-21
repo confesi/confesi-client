@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_shake_animated/flutter_shake_animated.dart';
 
 class TouchableHighlight extends StatefulWidget {
   const TouchableHighlight({
@@ -17,7 +18,7 @@ class TouchableHighlight extends StatefulWidget {
 
 class TouchableHighlightState extends State<TouchableHighlight> with SingleTickerProviderStateMixin {
   late AnimationController animController;
-  late Animation anim;
+  late Animation<double> anim;
 
   @override
   void initState() {
@@ -28,6 +29,7 @@ class TouchableHighlightState extends State<TouchableHighlight> with SingleTicke
       duration: const Duration(milliseconds: 500),
       reverseDuration: const Duration(milliseconds: 300),
     );
+
     anim = CurvedAnimation(
       parent: animController,
       curve: Curves.linear,
@@ -35,18 +37,16 @@ class TouchableHighlightState extends State<TouchableHighlight> with SingleTicke
     );
   }
 
+  bool isAnimating = false;
+
   void startAnim() {
+    setState(() => isAnimating = true);
     animController.forward();
-    animController.addListener(() {
-      setState(() {});
-    });
   }
 
   void reverseAnim() {
+    setState(() => isAnimating = false);
     animController.reverse();
-    animController.addListener(() {
-      setState(() {});
-    });
   }
 
   @override
@@ -57,8 +57,6 @@ class TouchableHighlightState extends State<TouchableHighlight> with SingleTicke
 
   @override
   Widget build(BuildContext context) {
-    final errorColor = Theme.of(context).colorScheme.tertiary;
-
     if (widget.onLongPress == null) {
       return widget.child; // Return the child directly without any touch effects
     }
@@ -72,15 +70,25 @@ class TouchableHighlightState extends State<TouchableHighlight> with SingleTicke
         widget.onLongPress!();
         reverseAnim();
       },
-      child: Transform.scale(
-        scale: -1 / 8 * anim.value + 1,
-        child: ColorFiltered(
-          colorFilter: ColorFilter.mode(
-            errorColor.withOpacity(anim.value),
-            BlendMode.srcATop,
-          ),
-          child: widget.child,
-        ),
+      child: AnimatedBuilder(
+        animation: anim,
+        builder: (context, child) {
+          return ShakeWidget(
+            duration: const Duration(milliseconds: 500), // Fixed duration
+            shakeConstant:
+                ShakeLittleConstant1(), // Constants are usually not callable, remove parentheses if it's a property
+            autoPlay: isAnimating,
+            enableWebMouseHover: true,
+            child: Transform.scale(
+              scale: (1 - anim.value * 0.125)
+                  .clamp(0.0, 1.0), // Clamping the scale value to prevent it from going negative
+              child: Opacity(
+                opacity: 1 - anim.value * 0.75,
+                child: widget.child,
+              ),
+            ),
+          );
+        },
       ),
     );
   }
