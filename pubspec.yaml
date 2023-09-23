@@ -20,7 +20,7 @@ version: 1.0.0+1
 isar_version: &isar_version 3.1.0
 
 environment:
-  sdk: ">=3.0.0 <=3.1.0"
+  sdk: ">=3.0.0 <=3.1.2"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -46,12 +46,14 @@ dependencies:
   # visibility_detector: ^0.3.3
   # infinite_scroll_pagination: ^3.2.0
   scrollable_positioned_list: ^0.3.2
+  home_widget: ^0.3.0  
   # dio: ^4.0.6
   # mongo_dart: ^0.7.4+1
   equatable: ^2.0.3
   internet_connection_checker: ^0.0.1+4
   get_it: ^7.2.0
   flutter_bloc: ^8.0.1
+  cloud_firestore: ^4.9.1
   dartz: ^0.10.1
   jwt_decode: ^0.3.1
   keyboard_attachable: ^2.1.0
@@ -60,6 +62,7 @@ dependencies:
   confetti: ^0.7.0
   local_auth: ^2.1.2
   sticky_headers: ^0.3.0+2
+  firebase_ui_firestore: ^1.5.10
   shake: ^2.1.0
   # flutter_staggered_grid_view: ^0.6.2
   visibility_detector: ^0.3.3
@@ -68,7 +71,6 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   page_transition: ^2.0.9
-  flutter_native_splash: ^2.2.10+1
   back_button_interceptor: ^6.0.2
   scrollable: ^1.0.3
   url_launcher: ^6.1.6
@@ -94,6 +96,7 @@ dependencies:
   sqlite3_flutter_libs: ^0.5.13
   path: ^1.8.2
   path_provider: ^2.0.14
+  desktop_window: ^0.4.0
   firebase_analytics: ^10.4.4
   screenshot: ^2.1.0
   screenshot_callback: ^2.0.3

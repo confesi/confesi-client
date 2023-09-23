@@ -239,12 +239,12 @@ class ImgState extends State<Img> {
     final notificationsCubit = context.read<NotificationsCubit>();
     final editingPostsService = context.read<CreatingEditingPostsService>();
 
-    // Check for permissions
-    final galleryPermission = await Permission.photos.request();
-    if (!galleryPermission.isGranted) {
-      notificationsCubit.showErr("Permission denied");
-      return;
-    }
+    // // Check for permissions
+    // final galleryPermission = await Permission.photos.request();
+    // if (!galleryPermission.isGranted) {
+    //   notificationsCubit.showErr("Permission denied");
+    //   return;
+    // }
 
     if (editingPostsService.images.map((e) => e.editingFile).toList().length >= widget.maxImages) {
       notificationsCubit.showErr("Max images reached");
@@ -269,12 +269,12 @@ class ImgState extends State<Img> {
     final notificationsCubit = context.read<NotificationsCubit>();
     final editingPostsService = context.read<CreatingEditingPostsService>();
 
-    // Check for permissions
-    final cameraPermission = await Permission.camera.request();
-    if (!cameraPermission.isGranted) {
-      notificationsCubit.showErr("Permission denied");
-      return;
-    }
+    // // Check for permissions
+    // final cameraPermission = await Permission.camera.request();
+    // if (!cameraPermission.isGranted) {
+    //   notificationsCubit.showErr("Permission denied");
+    //   return;
+    // }
 
     if (editingPostsService.images.map((e) => e.editingFile).toList().length >= widget.maxImages) {
       notificationsCubit.showErr("Max images reached");

@@ -72,7 +72,7 @@ class _ExploreRecentsState extends State<ExploreRecents> with AutomaticKeepAlive
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return buildBody(Provider.of<PostsService>(context));
+    return Center(child: buildBody(Provider.of<PostsService>(context)));
   }
 
   @override

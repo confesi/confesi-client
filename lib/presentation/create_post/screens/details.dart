@@ -3,8 +3,7 @@ import 'package:confesi/application/user/cubit/notifications_cubit.dart';
 import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/services/creating_and_editing_posts_service/create_edit_posts_service.dart';
 import 'package:confesi/presentation/create_post/overlays/confetti_blaster.dart';
-import 'package:confesi/presentation/shared/text/disclaimer_text.dart';
-import 'package:flutter/services.dart';
+import 'package:confesi/presentation/shared/selection_groups/switch_selection_tile.dart';
 import 'package:provider/provider.dart';
 
 import 'package:scrollable/exports.dart';
@@ -93,19 +92,42 @@ class _CreatePostDetailsState extends State<CreatePostDetails> with AutomaticKee
                                       BlocBuilder<PostCategoriesCubit, PostCategoriesState>(
                                         builder: (context, state) {
                                           if (state is PostCategoriesData) {
-                                            return TileGroup(
-                                              text: "Select genre",
-                                              tiles: state.categories.map((category) {
-                                                return BoolSelectionTile(
-                                                  isActive: state.selectedIndex == state.categories.indexOf(category),
-                                                  icon: category.icon,
-                                                  text: category.name,
-                                                  backgroundColor: Theme.of(context).colorScheme.surface,
-                                                  onTap: () => context
-                                                      .read<PostCategoriesCubit>()
-                                                      .updateCategoryIdx(state.categories.indexOf(category)),
-                                                );
-                                              }).toList(),
+                                            return Column(
+                                              children: [
+                                                TileGroup(
+                                                  text: "Allow users to message you anonymously off this post",
+                                                  tiles: [
+                                                    SwitchSelectionTile(
+                                                      isActive:
+                                                          Provider.of<CreatingEditingPostsService>(context).isChatPost,
+                                                      backgroundColor: Theme.of(context).colorScheme.surface,
+                                                      icon: CupertinoIcons.chat_bubble_2,
+                                                      text: "Chat post",
+                                                      onTap: () => Provider.of<CreatingEditingPostsService>(context,
+                                                              listen: false)
+                                                          .setIsChatPost(!Provider.of<CreatingEditingPostsService>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .isChatPost),
+                                                    ),
+                                                  ],
+                                                ),
+                                                TileGroup(
+                                                  text: "Select genre",
+                                                  tiles: state.categories.map((category) {
+                                                    return BoolSelectionTile(
+                                                      isActive:
+                                                          state.selectedIndex == state.categories.indexOf(category),
+                                                      icon: category.icon,
+                                                      text: category.name,
+                                                      backgroundColor: Theme.of(context).colorScheme.surface,
+                                                      onTap: () => context
+                                                          .read<PostCategoriesCubit>()
+                                                          .updateCategoryIdx(state.categories.indexOf(category)),
+                                                    );
+                                                  }).toList(),
+                                                ),
+                                              ],
                                             );
                                           } else {
                                             throw Exception("bad state");
@@ -151,13 +173,15 @@ class _CreatePostDetailsState extends State<CreatePostDetails> with AutomaticKee
                                     .categories[context.read<PostCategoriesCubit>().data.selectedIndex]
                                     .name;
                                 (await provider.createNewPost(
-                                        provider.title,
-                                        provider.body,
-                                        selectedCategory,
-                                        Provider.of<CreatingEditingPostsService>(context, listen: false)
-                                            .images
-                                            .map((e) => e.editingFile)
-                                            .toList())) // todo: files
+                                  provider.title,
+                                  provider.body,
+                                  selectedCategory,
+                                  Provider.of<CreatingEditingPostsService>(context, listen: false)
+                                      .images
+                                      .map((e) => e.editingFile)
+                                      .toList(),
+                                  Provider.of<CreatingEditingPostsService>(context, listen: false).isChatPost,
+                                )) // todo: files
                                     .fold(
                                   (_) {
                                     sl.get<ConfettiBlaster>().show(context);

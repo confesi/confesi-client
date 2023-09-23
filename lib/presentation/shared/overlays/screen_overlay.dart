@@ -1,3 +1,6 @@
+import 'package:confesi/constants/shared/constants.dart';
+import 'package:flutter/services.dart';
+
 import '../button_touch_effects/touchable_scale.dart';
 
 import '../../../core/utils/sizing/width_fraction.dart';
@@ -21,6 +24,8 @@ enum NotificationDuration {
   regular,
   long,
 }
+
+const int _verticalSlideInOffset = 75;
 
 /// Show a full overlay entry.
 ///
@@ -160,31 +165,43 @@ class __OverlayItemState extends State<_OverlayItem> with TickerProviderStateMix
             });
           }
         },
-        child: Transform.scale(
-          scale: timeAnim.value,
+        child: Transform.translate(
+          offset: Offset(0, ((timeAnim.value * _verticalSlideInOffset) - _verticalSlideInOffset).toDouble()),
           child: TouchableScale(
             onTap: () {
+              HapticFeedback.lightImpact();
               reverseAnimEarly();
               if (widget.onTap != null) widget.onTap!();
             },
             child: Container(
+              width: double.infinity,
               margin: const EdgeInsets.only(top: 10),
               constraints: BoxConstraints(maxWidth: widthFraction(context, .95)),
               decoration: BoxDecoration(
+                // boxShadow: [
+                //   BoxShadow(
+                //     color: Theme.of(context).colorScheme.secondary.withOpacity(.25),
+                //     blurRadius: 15,
+                //   ),
+                // ],
                 color: widget.notificationChipType == NotificationType.failure
                     ? Theme.of(context).colorScheme.error
-                    : Theme.of(context).colorScheme.surfaceTint,
+                    : Theme.of(context).colorScheme.surface,
                 borderRadius: const BorderRadius.all(
                   Radius.circular(5),
                 ),
+                // border: Border.all(
+                //   color: Theme.of(context).colorScheme.secondary,
+                //   width: borderSize,
+                // ),
               ),
               child: Padding(
-                padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.all(15),
                 child: Material(
                   color: Colors.transparent,
                   child: Text(
                     widget.text,
-                    style: kBody.copyWith(
+                    style: kTitle.copyWith(
                       color: Theme.of(context).colorScheme.onError,
                     ),
                     maxLines: widget.maxLines,

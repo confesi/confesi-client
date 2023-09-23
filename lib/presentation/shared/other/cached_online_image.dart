@@ -16,15 +16,13 @@ class CachedOnlineImage extends StatefulWidget {
     this.fit = BoxFit.cover,
     this.isBlurred = false,
     this.onBlur,
-    this.onChangeBlurringSettings,
   }) : super(key: key);
 
   final String url;
   final bool isCircle;
   final BoxFit fit;
   final bool isBlurred;
-  final Function(bool blur)? onBlur;
-  final Function()? onChangeBlurringSettings;
+  final Function(bool)? onBlur;
 
   @override
   CachedOnlineImageState createState() => CachedOnlineImageState();
@@ -42,7 +40,7 @@ class CachedOnlineImageState extends State<CachedOnlineImage> with TickerProvide
       duration: const Duration(milliseconds: 500),
       vsync: this,
     )..addListener(() {
-        setState(() {}); // This will trigger a rebuild whenever the animation value changes
+        setState(() {});
       });
 
     _blurAnimation = Tween<double>(
@@ -83,7 +81,7 @@ class CachedOnlineImageState extends State<CachedOnlineImage> with TickerProvide
           TouchableScale(
             onTap: () {
               _blurAnimationController.forward();
-              widget.onBlur!(false);
+              widget.onBlur?.call(true);
             },
             child: Container(
               padding: const EdgeInsets.all(15),
@@ -97,7 +95,9 @@ class CachedOnlineImageState extends State<CachedOnlineImage> with TickerProvide
             ),
           ),
           TouchableScale(
-            onTap: () => router.push('/settings/filters'),
+            onTap: () {
+              router.push('/settings/filters');
+            },
             child: Container(
               padding: const EdgeInsets.all(15),
               color: Colors.transparent,
@@ -116,6 +116,66 @@ class CachedOnlineImageState extends State<CachedOnlineImage> with TickerProvide
 
   @override
   Widget build(BuildContext context) {
+    Widget cachedNetworkImageWidget;
+
+    try {
+      cachedNetworkImageWidget = CachedNetworkImage(
+        fadeInDuration: Duration.zero,
+        fit: widget.fit,
+        imageUrl: _ensureHttpsUrl(widget.url),
+        placeholder: (context, url) => Center(
+          child: LoadingCupertinoIndicator(color: Theme.of(context).colorScheme.onSurface),
+        ),
+        errorWidget: (context, url, error) => Center(
+          child: Text(
+            "Error loading image",
+            style: kDetail.copyWith(color: Theme.of(context).colorScheme.onSurface),
+          ),
+        ),
+        imageBuilder: (context, imageProvider) {
+          List<Widget> stackChildren = [];
+          stackChildren.add(
+            Positioned.fill(
+              child: ImageFiltered(
+                imageFilter: ui.ImageFilter.blur(
+                  sigmaX: _blurAnimation.value,
+                  sigmaY: _blurAnimation.value,
+                  tileMode: TileMode.mirror,
+                ),
+                child: Image(
+                  image: imageProvider,
+                  fit: widget.fit,
+                ),
+              ),
+            ),
+          );
+
+          stackChildren.add(
+            AnimatedSwitcher(
+              duration: const Duration(milliseconds: 75),
+              child: (_blurAnimation.value == imgBlurSigma)
+                  ? _buildUnblurContainer()
+                  : const SizedBox.shrink(
+                      key: ValueKey("sbox"),
+                    ),
+            ),
+          );
+
+          return Stack(
+            alignment: Alignment.center,
+            children: stackChildren,
+          );
+        },
+      );
+    } catch (error) {
+      cachedNetworkImageWidget = Center(
+        child: Text(
+          "Error occurred",
+          style: kDetail.copyWith(color: Theme.of(context).colorScheme.onSurface),
+        ),
+      );
+    }
+
     return Material(
       color: Colors.transparent,
       child: ClipRRect(
@@ -126,63 +186,8 @@ class CachedOnlineImageState extends State<CachedOnlineImage> with TickerProvide
             SizedBox(
               width: double.infinity,
               height: double.infinity,
-              child: CachedNetworkImage(
-                fadeInDuration: const Duration(milliseconds: 25),
-                fit: widget.fit,
-                imageUrl: _ensureHttpsUrl(widget.url),
-                placeholder: (context, url) => Container(
-                  color: Theme.of(context).colorScheme.surface,
-                  child: Center(child: LoadingCupertinoIndicator(color: Theme.of(context).colorScheme.onSurface)),
-                ),
-                errorWidget: (context, url, error) => SafeArea(
-                  bottom: false,
-                  child: Container(
-                    color: Theme.of(context).colorScheme.surface,
-                    child: Center(
-                      child: Text(
-                        "Error loading image",
-                        style: kDetail.copyWith(color: Theme.of(context).colorScheme.onSurface),
-                      ),
-                    ),
-                  ),
-                ),
-                imageBuilder: (context, imageProvider) {
-                  List<Widget> stackChildren = [];
-
-                  stackChildren.add(
-                    Positioned.fill(
-                      child: ImageFiltered(
-                        imageFilter: ui.ImageFilter.blur(
-                          sigmaX: _blurAnimation.value,
-                          sigmaY: _blurAnimation.value,
-                          tileMode: TileMode.mirror,
-                        ),
-                        child: Image(
-                          image: imageProvider,
-                          fit: widget.fit,
-                        ),
-                      ),
-                    ),
-                  );
-
-                  stackChildren.add(
-                    AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 75),
-                      child: (_blurAnimation.value == imgBlurSigma && widget.onBlur != null)
-                          ? _buildUnblurContainer()
-                          : const SizedBox.shrink(
-                              key: ValueKey("sbox"),
-                            ), // Display nothing if condition is false
-                    ),
-                  );
-
-                  return Stack(
-                    alignment: Alignment.center,
-                    children: stackChildren,
-                  );
-                },
-              ),
-            ),
+              child: cachedNetworkImageWidget,
+            )
           ],
         ),
       ),

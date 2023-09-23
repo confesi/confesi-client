@@ -43,6 +43,7 @@ class _ProfileHomeState extends State<ProfileHome> with AutomaticKeepAliveClient
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.shadow,
       body: SafeArea(

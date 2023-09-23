@@ -1,15 +1,20 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:app_links/app_links.dart';
+import 'package:confesi/application/dms/cubit/room_requests_cubit.dart';
 import 'package:confesi/application/feed/cubit/schools_drawer_cubit.dart';
 import 'package:confesi/application/feed/cubit/sentiment_analysis_cubit.dart';
+import 'package:confesi/application/notifications/cubit/noti_server_cubit.dart';
 import 'package:confesi/application/user/cubit/feedback_categories_cubit.dart';
 import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/results/failures.dart';
 import 'package:confesi/core/services/create_comment_service/create_comment_service.dart';
 import 'package:confesi/core/services/global_content/global_content.dart';
 import 'package:confesi/core/services/posts_service/posts_service.dart';
+import 'package:confesi/core/services/rooms/rooms_service.dart';
+import 'package:desktop_window/desktop_window.dart';
 import 'package:shake/shake.dart';
 import 'package:drift/drift.dart' as drift;
 
@@ -70,16 +75,18 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage msg) async {
 
 StreamSubscription<User?>? _userChangeStream;
 
-Future<void> startAuthListener() async {
-  Completer<void> completer = Completer<void>();
+Future<UserAuthService> startAuthListener() async {
+  Completer<UserAuthService> completer = Completer<UserAuthService>();
+
+  // await initAuthServiceAndDependencies();
 
   // clear user data
   sl.get<UserAuthService>().clearCurrentExtraData();
   sl.get<FirebaseAuth>().authStateChanges().listen((User? user) => sl.get<StreamController<User?>>().add(user));
+
   _userChangeStream = sl.get<StreamController<User?>>().stream.listen((User? user) async {
     sl.get<NotificationService>().updateToken(user?.uid);
     if (user == null) {
-      // firstOpen = true;
       await Future.delayed(const Duration(milliseconds: 500)).then((_) {
         sl.get<UserAuthService>().setNoDataState();
         HapticFeedback.lightImpact();
@@ -117,14 +124,14 @@ Future<void> startAuthListener() async {
         },
       );
     }
-    // returns only once at least one state has been emitted
-    // ensure it hasn't already been completed
+
+    // Complete the completer with the first state
     if (!completer.isCompleted) {
-      completer.complete();
+      completer.complete(sl.get<UserAuthService>());
     }
   });
-  await completer.future;
-  completer = Completer<void>();
+
+  return await completer.future;
 }
 
 void main() async {
@@ -132,12 +139,24 @@ void main() async {
   await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   analytics.logAppOpen();
-  await init();
+
+  // if windows or mac
+  if (Platform.isWindows || Platform.isMacOS) {
+    // set window size
+    await DesktopWindow.setMinWindowSize(const Size(400, 800));
+    await DesktopWindow.setMaxWindowSize(const Size(400, 800));
+  }
+
+  // Get the UserAuthService instance from the startAuthListener
+  await initAuthAndDep();
   await startAuthListener();
+  await init();
+
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => sl<UserAuthService>(), lazy: true),
+        ChangeNotifierProvider(create: (context) => sl<RoomsService>(), lazy: true),
         ChangeNotifierProvider(create: (context) => sl<GlobalContentService>(), lazy: true),
         ChangeNotifierProvider(create: (context) => sl<CreateCommentService>(), lazy: true),
         ChangeNotifierProvider(create: (context) => sl<PostsService>(), lazy: true),
@@ -146,6 +165,8 @@ void main() async {
       ],
       child: MultiBlocProvider(
         providers: [
+          BlocProvider(lazy: false, create: (context) => sl<NotiServerCubit>()),
+          BlocProvider(lazy: false, create: (context) => sl<RoomRequestsCubit>()),
           BlocProvider(lazy: false, create: (context) => sl<SentimentAnalysisCubit>()),
           BlocProvider(lazy: false, create: (context) => sl<PostCategoriesCubit>()),
           BlocProvider(lazy: false, create: (context) => sl<HottestCubit>()),
@@ -225,7 +246,8 @@ class _MyAppState extends State<MyApp> {
       sl.get<AppLinks>().allStringLinkStream.listen((link) => handleQuickAuthAndAction(() => routeDeepLink(link)));
 
   void routeDeepLink(String deepLink) async {
-    final postRegex = RegExp(r"^https://confesi.com/p/([a-zA-Z0-9_-]+=*)$");
+    print("DEEP LINK: $deepLink");
+    final postRegex = RegExp(r"/p/([a-zA-Z0-9_-]+=*)$");
     final match = postRegex.firstMatch(deepLink);
     if (match != null) {
       final postId = match.group(1);
@@ -282,6 +304,8 @@ class _MyAppState extends State<MyApp> {
     sl.get<NotificationService>().requestPermissions();
     await sl.get<NotificationService>().init();
     sl.get<NotificationService>().onMessage((msg) async {
+      print("GOT MSG DUDE");
+      context.read<NotificationsCubit>().showSuccess(msg.notification!.body!);
       await sl.get<NotificationService>().insertFcmMsgToLocalDb(FcmNotificationCompanion(
             // todo: no bang ops?
             title: drift.Value(msg.notification!.title),

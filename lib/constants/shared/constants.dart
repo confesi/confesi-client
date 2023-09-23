@@ -3,14 +3,21 @@ import 'package:flutter/cupertino.dart';
 import '../../application/create_post/cubit/post_categories_cubit.dart';
 
 /// The root endpoint (domain) for all api calls.
-const String domain = "http://192.168.1.107:8080"; // 10.0.0.173
+///
+/// UVIC: 134.87.37.86 (ephemeral)
+/// SHERIDAN: 10.0.0.173 (ephemeral)
+const String domain = "http://10.0.0.173:8080";
 
-const Duration apiDefaultTimeout = Duration(seconds: 10);
+const Duration apiDefaultTimeout = Duration(seconds: 5);
+
+const int chatPageSize = 15;
 
 /// If debug mode is enabled. OFF for prod.
-const bool debugMode = true;
+const bool debugMode = false;
 
 const int maxImagesPerPost = 5;
+
+const double maxStandardSizeOfContent = 500;
 
 const double borderSize = 0.4;
 
@@ -25,8 +32,12 @@ const bool devicePreview = false;
 /// Min length for passwords.
 const int passwordMinLength = 8;
 
+const int dailyHottestPreviewLength = 50;
+
 const int postTitlePreviewLength = 100;
 const int postBodyPreviewLength = 200;
+
+// const int chatMessagePreviewLength = 50;
 
 const int kPostTitleMaxLength = 500;
 const int kPostBodyMaxLength = 10000;

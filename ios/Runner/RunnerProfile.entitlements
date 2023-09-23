@@ -10,5 +10,9 @@
 		<string>applinks:links.confesi.com</string>
 		<string>applinks:app.confesi.com</string>
 	</array>
+	<key>com.apple.security.application-groups</key>
+	<array>
+		<string>group.com.confesi.app</string>
+	</array>
 </dict>
 </plist>

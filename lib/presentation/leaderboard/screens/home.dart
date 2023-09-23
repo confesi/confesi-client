@@ -1,3 +1,5 @@
+import 'package:confesi/constants/shared/constants.dart';
+import 'package:confesi/core/router/go_router.dart';
 import 'package:confesi/models/encrypted_id.dart';
 import 'package:confesi/models/school_with_metadata.dart';
 import 'package:confesi/presentation/shared/other/widget_or_nothing.dart';
@@ -90,8 +92,6 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
             const SizedBox(height: 5),
           ],
         ),
-        // dontReRequestWhen: true,
-        // controller: controller,
         controller: controller
           ..items = (state.schoolIds
               .asMap()
@@ -150,8 +150,9 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
             child: Column(
               children: [
                 AppbarLayout(
-                  bottomBorder: true,
+                  leftIconDisabled: true,
                   leftIconVisible: false,
+                  bottomBorder: true,
                   centerWidget: Text(
                     "School Leaderboard",
                     style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
@@ -165,13 +166,16 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                       : showInfoSheet(context, kLeaderboardInfoHeader, kLeaderboardInfoBody),
                 ),
                 Expanded(
-                  child: BlocBuilder<LeaderboardCubit, LeaderboardState>(
-                    builder: (context, state) {
-                      return AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 200),
-                        child: buildChild(context, state),
-                      );
-                    },
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: maxStandardSizeOfContent),
+                    child: BlocBuilder<LeaderboardCubit, LeaderboardState>(
+                      builder: (context, state) {
+                        return AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 200),
+                          child: buildChild(context, state),
+                        );
+                      },
+                    ),
                   ),
                 ),
               ],

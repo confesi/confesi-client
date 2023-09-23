@@ -17,7 +17,6 @@ import 'package:photo_view/photo_view_gallery.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'dart:ui' as ui;
 
-import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
 class KeepWidgetAlive extends StatefulWidget {
@@ -35,7 +34,7 @@ class KeepWidgetAlive extends StatefulWidget {
 class KeepWidgetAliveState extends State<KeepWidgetAlive> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
-    super.build(context); // Don't forget this
+    super.build(context);
     return widget.child;
   }
 
@@ -93,7 +92,7 @@ class _ImgViewerState extends State<ImgViewer> {
                         if (heroCounter == widget.imgUrls.length) heroCounter = 0;
                         return KeepWidgetAlive(
                           child: Hero(
-                            tag: "$heroTag${heroCounter++}", // Increment heroCounter for each image
+                            tag: "$heroTag${heroCounter++}",
                             child: CachedOnlineImage(
                               url: imgUrl,
                               isBlurred: isBlurred,
@@ -161,7 +160,7 @@ class ImgViewState extends State<ImgView> {
                         isBlurred: blur,
                         fit: BoxFit.fitWidth,
                         url: widget.props.url,
-                        onBlur: (b) => setState(() => blur = b),
+                        // onBlur: (b) => setState(() => blur = b),
                       ),
                     ),
                   ),

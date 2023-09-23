@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:app_links/app_links.dart';
 import 'package:confesi/application/create_post/cubit/post_categories_cubit.dart';
+import 'package:confesi/application/dms/cubit/room_requests_cubit.dart';
+import 'package:confesi/application/notifications/cubit/noti_server_cubit.dart';
 import 'package:confesi/application/user/cubit/account_details_cubit.dart';
 import 'package:confesi/application/user/cubit/feedback_categories_cubit.dart';
 import 'package:confesi/application/user/cubit/feedback_cubit.dart';
@@ -12,6 +14,7 @@ import 'package:confesi/core/services/create_comment_service/create_comment_serv
 import 'package:confesi/core/services/fcm_notifications/notification_table.dart';
 import 'package:confesi/core/services/fcm_notifications/token_data.dart';
 import 'package:confesi/core/services/global_content/global_content.dart';
+import 'package:confesi/core/services/rooms/rooms_service.dart';
 import 'package:confesi/core/utils/funcs/debouncer.dart';
 import 'package:confesi/presentation/create_post/overlays/confetti_blaster.dart';
 import 'package:uuid/uuid.dart';
@@ -81,48 +84,18 @@ Future<void> initFirebase() async {
   // );
 }
 
-/// Injects the needed dependencies for the app to run.
-Future<void> init() async {
-  // if (slInitialized) return;
-  // slInitialized = true;
-
-  //! Required first inits
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-
-  //! Alt
-  sl.registerLazySingleton(() => StreamController<User?>.broadcast());
-  sl.registerLazySingleton(() => ConfettiBlaster());
+Future<void> initAuthAndDep() async {
   sl.registerLazySingleton(() => const Uuid());
-  sl.registerLazySingleton(() => Debouncer());
-
-  //! External
-  sl.registerLazySingleton(() => InternetConnectionChecker());
   sl.registerLazySingleton(() => const FlutterSecureStorage());
-  sl.registerLazySingleton(() => LocalAuthentication());
-  sl.registerLazySingleton(() => AppLinks());
-
-  //! Already-singletons
-  sl.registerLazySingleton(() => FirebaseRemoteConfig.instance);
-  sl.registerLazySingleton(() => FirebaseAuth.instance);
-
-  //! Core
-  sl.registerLazySingleton(() => NetworkInfo(sl()));
   HiveService hiveService = HiveService(sl());
   await hiveService.init();
+  sl.registerLazySingleton(() => FirebaseAuth.instance);
   sl.registerLazySingleton(() => hiveService);
+  sl.registerLazySingleton(() => NotificationService()..init());
 
-  //! Drift datbase
-  sl.registerLazySingleton(() => FcmDatabase());
-
-  //! Services
+  sl.registerLazySingleton(() => StreamController<User?>.broadcast());
+  sl.registerFactory(() => AuthFlowCubit(Api()));
   UserAuthService userAuthService = UserAuthService(sl());
-  GlobalContentService globalContentService = GlobalContentService(Api(), Api(), Api(), Api());
-  PostsService postsService = PostsService(Api(), Api(), Api());
-  CreateCommentService createCommentService = CreateCommentService();
-  PrimaryTabControllerService primaryTabControllerService = PrimaryTabControllerService();
-  CreatingEditingPostsService creatingEditingPostsService = CreatingEditingPostsService(Api());
-
-  //! Local storage type adapters
   userAuthService.hive.registerAdapter<UserAuthData>(UserAuthDataAdapter());
   userAuthService.hive.registerAdapter(ThemePrefAdapter());
   userAuthService.hive.registerAdapter(UnitSystemAdapter());
@@ -132,22 +105,59 @@ Future<void> init() async {
   userAuthService.hive.registerAdapter(DefaultPostFeedAdapter());
   userAuthService.hive.registerAdapter(TextSizeAdapter());
   userAuthService.hive.registerAdapter(ComponentCurvinessAdapter());
-
   sl.registerLazySingleton(() => userAuthService);
+}
+
+/// Injects the needed dependencies for the app to run.
+Future<void> init() async {
+  // if (slInitialized) return;
+  // slInitialized = true;
+
+  //! Required first inits
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
+  //! Alt
+  sl.registerLazySingleton(() => ConfettiBlaster());
+  sl.registerLazySingleton(() => Debouncer());
+
+  //! External
+  sl.registerLazySingleton(() => InternetConnectionChecker());
+  sl.registerLazySingleton(() => LocalAuthentication());
+  sl.registerLazySingleton(() => AppLinks());
+
+  //! Already-singletons
+  sl.registerLazySingleton(() => FirebaseRemoteConfig.instance);
+
+  //! Core
+  sl.registerLazySingleton(() => NetworkInfo(sl()));
+
+  //! Drift datbase
+  sl.registerLazySingleton(() => FcmDatabase());
+
+  //! Services
+  GlobalContentService globalContentService = GlobalContentService(Api(), Api(), Api(), Api());
+  PostsService postsService = PostsService(Api(), Api(), Api());
+  CreateCommentService createCommentService = CreateCommentService();
+  PrimaryTabControllerService primaryTabControllerService = PrimaryTabControllerService();
+  CreatingEditingPostsService creatingEditingPostsService = CreatingEditingPostsService(Api());
+
   sl.registerLazySingleton(() => creatingEditingPostsService);
   sl.registerLazySingleton(() => globalContentService);
   sl.registerLazySingleton(() => postsService);
   sl.registerLazySingleton(() => primaryTabControllerService);
   sl.registerLazySingleton(() => createCommentService);
-  sl.registerLazySingleton(() => NotificationService()..init());
   sl.registerLazySingleton(() => CreatePostHintManager());
   sl.registerLazySingleton(() => SplashScreenHintManager());
   sl.registerLazySingleton(() => Sharing());
 
+  RoomsService roomsService = RoomsService(Api(), Api(), Api(), Api());
+  sl.registerLazySingleton(() => roomsService);
+
   //! State (BLoC or Cubit)
+  sl.registerFactory(() => RoomRequestsCubit(Api()));
   sl.registerFactory(() => SentimentAnalysisCubit());
+  sl.registerFactory(() => NotiServerCubit(Api()));
   sl.registerFactory(() => LeaderboardCubit(Api()));
-  sl.registerFactory(() => AuthFlowCubit(Api()));
   sl.registerFactory(() => HottestCubit(Api()));
   sl.registerFactory(() => PostCategoriesCubit());
   sl.registerFactory(() => AccountDetailsCubit(Api()));

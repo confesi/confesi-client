@@ -90,7 +90,7 @@ class FiltersScreen extends StatelessWidget {
                             ],
                           ),
                           const DisclaimerText(
-                            text: "This preference affects the next time you fetch content; it's not immediate.",
+                            text: "This preference may not take effect immediately.",
                           ),
                           const SimulatedBottomSafeArea(),
                         ],

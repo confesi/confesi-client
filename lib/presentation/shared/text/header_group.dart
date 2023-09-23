@@ -1,3 +1,5 @@
+import 'package:confesi/constants/shared/constants.dart';
+import 'package:confesi/core/utils/strings/truncate_text.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
@@ -25,7 +27,7 @@ class HeaderGroupText extends StatelessWidget {
   final double spaceBetween;
 
   Widget buildTopText(BuildContext context) => Text(
-        header,
+        truncateText(header, dailyHottestPreviewLength),
         style: kFunkyDisplay.copyWith(color: Theme.of(context).colorScheme.primary),
         textAlign: left ? TextAlign.left : TextAlign.center,
         overflow: TextOverflow.ellipsis,
@@ -49,7 +51,7 @@ class HeaderGroupText extends StatelessWidget {
           ),
           textAlign: left ? TextAlign.left : TextAlign.center,
           overflow: TextOverflow.ellipsis,
-          maxLines: multiLine ? 5 : null,
+          // maxLines: multiLine ? 5 : null,
         ),
       ],
     );

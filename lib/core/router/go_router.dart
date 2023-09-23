@@ -1,7 +1,10 @@
 import 'package:confesi/models/post.dart';
+import 'package:confesi/models/room.dart';
 import 'package:confesi/models/school_with_metadata.dart';
 import 'package:confesi/presentation/authentication_and_settings/screens/settings/acknowledgements.dart';
 import 'package:confesi/presentation/authentication_and_settings/screens/settings/filters.dart';
+import 'package:confesi/presentation/dms/screens/chat.dart';
+import 'package:confesi/presentation/dms/screens/home.dart';
 import 'package:confesi/presentation/comments/screens/home.dart';
 import 'package:confesi/presentation/feed/widgets/img_viewer.dart';
 import 'package:confesi/presentation/notifications/screens/home.dart';
@@ -100,8 +103,8 @@ final GoRouter router = GoRouter(
             // Change the opacity of the screen using a Curve based on the animation's value
             var tween = CurveTween(curve: Curves.easeInOut);
             var curvedAnimation = tween.animate(animation);
-            return ScaleTransition(
-              scale: curvedAnimation,
+            return SlideTransition(
+              position: Tween<Offset>(begin: const Offset(0, 1), end: Offset.zero).animate(curvedAnimation),
               child: child,
             );
           },
@@ -210,6 +213,14 @@ final GoRouter router = GoRouter(
     ),
 
     GoRoute(path: "/home/emojis", builder: (BuildContext context, GoRouterState state) => const EmojisScreen()),
+    GoRoute(path: "/home/rooms", builder: (BuildContext context, GoRouterState state) => const RoomsScreen()),
+    GoRoute(
+        path: "/home/rooms/chat",
+        builder: (BuildContext context, GoRouterState state) {
+          ChatProps props = state.extra as ChatProps;
+          return ChatScreen(props: props);
+        }),
+
     GoRoute(
         path: '/home/profile/account',
         builder: (BuildContext context, GoRouterState state) => const AccountDetailsScreen()),
@@ -279,7 +290,9 @@ class HomeLeaderboardSchoolProps {
 
 class HomePostsCommentsProps {
   final PostLoadType postLoadType;
-  const HomePostsCommentsProps(this.postLoadType);
+  HomePostsCommentsProps(this.postLoadType, {this.titleLastChar, this.bodyLastChar});
+  int? titleLastChar;
+  int? bodyLastChar;
 
   // toString
   @override
@@ -310,6 +323,12 @@ class CreateProps {
   final GenericPost post;
 
   const CreateProps(this.post);
+}
+
+class ChatProps {
+  final String roomId;
+
+  const ChatProps(this.roomId);
 }
 
 //! Editing post props

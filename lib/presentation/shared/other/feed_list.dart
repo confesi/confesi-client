@@ -2,8 +2,10 @@ import 'package:confesi/application/user/cubit/notifications_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../constants/shared/constants.dart';
 import '../../../core/results/failures.dart';
 import 'package:dartz/dartz.dart' as dartz;
+import '../../../core/styles/typography.dart';
 import '../../../core/types/infinite_scrollable_indexable.dart';
 import '../indicators/loading_or_alert.dart';
 import '../edited_source_widgets/swipe_refresh.dart';
@@ -126,8 +128,10 @@ class FeedList extends StatefulWidget {
     this.swipeRefreshEnabled = true,
     this.debug = false,
     this.onScrollChange,
+    this.centeredEmptyIndicator = true,
   });
 
+  final bool centeredEmptyIndicator;
   final bool swipeRefreshEnabled;
   final bool debug;
   final bool isScrollable;
@@ -148,13 +152,15 @@ class FeedList extends StatefulWidget {
 }
 
 class _FeedListState extends State<FeedList> {
-  bool isCurrentlyLoadingMore = false;
+  bool isCurrentlyLoadingMore = true;
   bool errorLoadingMoreIsLoading = false;
   bool endOfFeedReachedIsLoading = false;
   int? lastLoadedIndex;
+  bool initLoad = true;
 
   @override
   void initState() {
+    super.initState();
     widget.controller.itemPositionsListener.itemPositions.addListener(() async {
       if (widget.controller.itemPositionsListener.itemPositions.value.isEmpty) return;
       widget.controller
@@ -164,11 +170,12 @@ class _FeedListState extends State<FeedList> {
       int lastVisibleIndex = visibleIndexes.last;
       if (widget.controller.items.length - lastVisibleIndex < widget.controller.preloadBy &&
           lastLoadedIndex != lastVisibleIndex &&
-          !isCurrentlyLoadingMore &&
+          (!isCurrentlyLoadingMore || initLoad) &&
           !widget.hasError &&
           !widget.wontLoadMore &&
           !endOfFeedReachedIsLoading &&
           !errorLoadingMoreIsLoading) {
+        initLoad = false;
         lastLoadedIndex = lastVisibleIndex;
         isCurrentlyLoadingMore = true;
         await widget.loadMore(
@@ -183,7 +190,6 @@ class _FeedListState extends State<FeedList> {
       if (!mounted) return;
       setState(() {});
     });
-    super.initState();
   }
 
   Widget buildIndicator() {
@@ -224,46 +230,80 @@ class _FeedListState extends State<FeedList> {
 
   @override
   Widget build(BuildContext context) {
-    return SwipeRefresh(
-      enabled: widget.swipeRefreshEnabled,
-      onRefresh: () async => await widget.onPullToRefresh(),
-      child: NotificationListener<ScrollNotification>(
-        onNotification: (scrollNotification) {
-          if (scrollNotification is ScrollStartNotification) {
-            // Scrolling has started.
-            if (widget.onScrollChange != null) {
-              widget.onScrollChange!(true);
+    return LayoutBuilder(builder: (context, constraints) {
+      return SwipeRefresh(
+        enabled: widget.swipeRefreshEnabled,
+        onRefresh: () async => await widget.onPullToRefresh(),
+        child: NotificationListener<ScrollNotification>(
+          onNotification: (scrollNotification) {
+            if (scrollNotification is ScrollStartNotification) {
+              // Scrolling has started.
+              if (widget.onScrollChange != null) {
+                widget.onScrollChange!(true);
+              }
+            } else if (scrollNotification is ScrollEndNotification) {
+              // Scrolling has stopped.
+              if (widget.onScrollChange != null) widget.onScrollChange!(false);
             }
-          } else if (scrollNotification is ScrollEndNotification) {
-            // Scrolling has stopped.
-            if (widget.onScrollChange != null) {
-              widget.onScrollChange!(false);
-            }
-          }
-          return false; // Returning false means the notification will continue to be dispatched to further ancestors.
-        },
-        child: ScrollablePositionedList.builder(
-          shrinkWrap: widget.shrinkWrap,
-          physics: widget.isScrollable
-              ? const AlwaysScrollableScrollPhysics(parent: ClampingScrollPhysics())
-              : const NeverScrollableScrollPhysics(),
-          itemBuilder: (context, index) {
-            if (index == 0) {
-              return widget.header ?? const SizedBox();
-            } else if (index == widget.controller.items.length + 1) {
-              return AnimatedSwitcher(
-                duration: const Duration(milliseconds: 250),
-                child: buildIndicator(),
-              );
-            } else {
-              return widget.controller.items[index - 1].child;
-            }
+            return false; // Returning false means the notification will continue to be dispatched to further ancestors.
           },
-          itemCount: widget.controller.items.length + 2,
-          itemPositionsListener: widget.controller.itemPositionsListener,
-          itemScrollController: widget.controller.itemScrollController,
+          child: ScrollablePositionedList.builder(
+            shrinkWrap: widget.shrinkWrap,
+            physics: widget.isScrollable
+                ? const AlwaysScrollableScrollPhysics(parent: ClampingScrollPhysics())
+                : const NeverScrollableScrollPhysics(),
+            itemBuilder: (context, index) {
+              if (index == 0) {
+                return widget.header ?? const SizedBox();
+              }
+
+              if (!widget.hasError && widget.controller.items.isEmpty && !isCurrentlyLoadingMore) {
+                if (index == 1) {
+                  return Container(
+                    height: widget.centeredEmptyIndicator ? constraints.maxHeight : null,
+                    margin: EdgeInsets.symmetric(vertical: widget.centeredEmptyIndicator ? 0 : 30),
+                    child: Center(
+                      child: FractionallySizedBox(
+                        widthFactor: 2 / 3,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              constraints: const BoxConstraints(maxWidth: 150),
+                              child: Image.asset(walrusFullBodyImgPath),
+                            ),
+                            const SizedBox(height: 20),
+                            Text(
+                              "Nothing found. Swipe to refresh.",
+                              style: kBody.copyWith(
+                                color: Theme.of(context).colorScheme.onSurface,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                }
+                return const SizedBox();
+              }
+
+              if (index == widget.controller.items.length + 1) {
+                return AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 250),
+                  child: buildIndicator(),
+                );
+              }
+
+              return Center(child: widget.controller.items[index - 1].child);
+            },
+            itemCount: widget.controller.items.length + 2,
+            itemPositionsListener: widget.controller.itemPositionsListener,
+            itemScrollController: widget.controller.itemScrollController,
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 }

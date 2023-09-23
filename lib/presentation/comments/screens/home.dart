@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:confesi/application/comments/cubit/comment_section_cubit.dart';
 import 'package:confesi/application/comments/cubit/create_comment_cubit.dart';
 import 'package:confesi/application/posts/cubit/individual_post_cubit.dart';
+import 'package:confesi/constants/feed/general.dart';
 import 'package:confesi/core/services/create_comment_service/create_comment_service.dart';
 import 'package:confesi/core/services/global_content/global_content.dart';
 import 'package:confesi/core/utils/numbers/large_number_formatter.dart';
@@ -20,7 +21,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_native_splash/cli_commands.dart';
 import 'package:keyboard_attachable/keyboard_attachable.dart';
 import 'package:provider/provider.dart';
 import 'package:screenshot_callback/screenshot_callback.dart';
@@ -154,6 +154,50 @@ class _CommentsHomeState extends State<CommentsHome> {
     }
   }
 
+  Widget _highlightText(String content, int? lastChar, TextStyle baseStyle, int limit) {
+    if (lastChar != null && lastChar < content.length && content.length >= limit) {
+      final startIndex = content.lastIndexOf(' ', lastChar);
+      final endIndex = content.indexOf(' ', lastChar);
+
+      final beforeHighlightEnd = startIndex == -1 ? 0 : startIndex + 1;
+      final highlightedWordStart = beforeHighlightEnd;
+      final highlightedWordEnd = (endIndex == -1 || endIndex > content.length) ? content.length : endIndex;
+      final afterHighlightStart = highlightedWordEnd;
+
+      final beforeHighlight = content.substring(0, beforeHighlightEnd);
+      final highlightedWord = content.substring(highlightedWordStart, highlightedWordEnd);
+      final afterHighlight = afterHighlightStart < content.length ? content.substring(afterHighlightStart) : "";
+
+      return RichText(
+        text: TextSpan(
+          children: [
+            TextSpan(
+              text: beforeHighlight,
+              style: baseStyle,
+            ),
+            TextSpan(
+              text: highlightedWord,
+              style: baseStyle.copyWith(
+                decoration: TextDecoration.underline, // This adds the underline
+                decorationColor: Theme.of(context).colorScheme.tertiary,
+              ),
+            ),
+            TextSpan(
+              text: afterHighlight,
+              style: baseStyle,
+            ),
+          ],
+        ),
+      );
+    } else {
+      return Text(
+        content,
+        style: baseStyle,
+        textAlign: TextAlign.left,
+      );
+    }
+  }
+
   Widget buildHeader(BuildContext context, CommentSectionData commentData, IndividualPostData postState) {
     final post = Provider.of<GlobalContentService>(context).posts[postState.post.post.id]!;
     return Column(
@@ -162,7 +206,6 @@ class _CommentsHomeState extends State<CommentsHome> {
         GestureDetector(
           child: Container(
             width: double.infinity,
-            // transparent container to make the whole header clickable
             color: Colors.transparent,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -174,13 +217,15 @@ class _CommentsHomeState extends State<CommentsHome> {
                     child: Column(
                       children: [
                         const SizedBox(height: 15),
-                        Text(
+                        _highlightText(
                           post.post.title,
-                          style: kDisplay1.copyWith(
+                          widget.props.titleLastChar,
+                          kDisplay1.copyWith(
                             color: Theme.of(context).colorScheme.primary,
                             fontSize:
                                 kDisplay1.fontSize! * Provider.of<UserAuthService>(context).data().textSize.multiplier,
                           ),
+                          postTitlePreviewLength,
                         ),
                       ],
                     ),
@@ -193,7 +238,7 @@ class _CommentsHomeState extends State<CommentsHome> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "${post.post.school.name}${buildFaculty(post)}${buildYear(post)} • ${post.post.category.category.capitalize()}",
+                        "${post.post.school.name}${buildFaculty(post)}${buildYear(post)} • ${post.post.category.category}",
                         style: kDetail.copyWith(
                           color: Theme.of(context).colorScheme.secondary,
                         ),
@@ -231,14 +276,15 @@ class _CommentsHomeState extends State<CommentsHome> {
                     child: Column(
                       children: [
                         const SizedBox(height: 10),
-                        Text(
+                        _highlightText(
                           post.post.content,
-                          style: kBody.copyWith(
+                          widget.props.bodyLastChar,
+                          kBody.copyWith(
                             color: Theme.of(context).colorScheme.primary,
                             fontSize:
                                 kBody.fontSize! * Provider.of<UserAuthService>(context).data().textSize.multiplier,
                           ),
-                          textAlign: TextAlign.left,
+                          postBodyPreviewLength,
                         ),
                       ],
                     ),
@@ -333,10 +379,16 @@ class _CommentsHomeState extends State<CommentsHome> {
             builder: (newContext, commentState) {
               if (commentState is CommentSectionData) {
                 return FooterLayout(
-                  footer: SafeArea(
-                    top: false,
-                    child: Container(
-                      padding: const EdgeInsets.all(10),
+                  footer: Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.background,
+                      border: Border(
+                        top: BorderSide(color: Theme.of(context).colorScheme.onBackground, width: borderSize),
+                      ),
+                    ),
+                    padding: const EdgeInsets.all(10),
+                    child: SafeArea(
+                      top: false,
                       child: CommentSheet(
                         controller: commentSheetController,
                         onSubmit: (value) async {
@@ -455,6 +507,7 @@ class _CommentsHomeState extends State<CommentsHome> {
                         ),
                         Expanded(
                           child: FeedList(
+                            centeredEmptyIndicator: false,
                             onScrollChange: (start) => WidgetsBinding.instance.addPostFrameCallback((_) {
                               setState(() {
                                 isScrolling = start;

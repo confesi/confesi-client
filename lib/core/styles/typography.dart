@@ -13,17 +13,17 @@ var kFunkyDisplay = gf.GoogleFonts.inter(
 
 /// Large text style - meant for display, but with sans serif style.
 var kDisplay1 = gf.GoogleFonts.inter(
-  textStyle: const f.TextStyle(fontWeight: f.FontWeight.w800, fontSize: 26),
+  textStyle: const f.TextStyle(fontWeight: f.FontWeight.w900, fontSize: 26),
 );
 
 /// Very big text style.
 var kDisplay2 = gf.GoogleFonts.inter(
-  textStyle: const f.TextStyle(fontWeight: f.FontWeight.w800, fontSize: 34),
+  textStyle: const f.TextStyle(fontWeight: f.FontWeight.w900, fontSize: 34),
 );
 
 /// Big text style.
 var kTitle = gf.GoogleFonts.inter(
-  textStyle: const f.TextStyle(fontSize: 17, fontWeight: f.FontWeight.w600),
+  textStyle: const f.TextStyle(fontSize: 17, fontWeight: f.FontWeight.w800),
 );
 
 /// Normal text style.
