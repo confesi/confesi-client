@@ -200,7 +200,10 @@ class _ChatScreenState extends State<ChatScreen> {
                               [
                                 if (isYou)
                                   OptionButton(
-                                    onTap: () => print("todo: delete"),
+                                    onTap: () async =>
+                                        (await Provider.of<RoomsService>(context, listen: false).deleteChat(chat.id))
+                                            .fold((_) => null,
+                                                (errMsg) => context.read<NotificationsCubit>().showErr(errMsg)),
                                     text: "Delete chat",
                                     icon: CupertinoIcons.trash,
                                     isRed: true,

@@ -197,6 +197,18 @@ class RoomsService extends ChangeNotifier {
     );
   }
 
+  Future<Either<ApiSuccess, String>> deleteChat(String chatId) async {
+    _deleteChatApi.cancelCurrReq();
+    return (await _deleteChatApi.req(Verb.delete, true, "/api/v1/dms/chat?id=$chatId", {}))
+        .fold((failureWithMsg) => Right(failureWithMsg.msg()), (response) {
+      if (response.statusCode.toString()[0] == "2") {
+        return Left(ApiSuccess());
+      } else {
+        return const Right("todo: error");
+      }
+    });
+  }
+
   Future<Either<ApiSuccess, String>> updateRoomReadTime(String roomId) async {
     _readApi.cancelCurrReq();
     return (await _readApi.req(Verb.put, true, "/api/v1/dms/read", {

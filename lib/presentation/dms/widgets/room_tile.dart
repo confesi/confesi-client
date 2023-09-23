@@ -15,6 +15,13 @@ class RoomTile extends StatelessWidget {
   final VoidCallback onTap;
   final bool read;
 
+  Stream<DateTime> tick() async* {
+    while (true) {
+      yield DateTime.now();
+      await Future.delayed(Duration(seconds: 1));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return TouchableOpacity(
@@ -43,17 +50,21 @@ class RoomTile extends StatelessWidget {
                     textAlign: TextAlign.left,
                   ),
                 ),
-                Flexible(
-                  // Wrap this Text widget with a Flexible widget
-                  child: Text(
-                    timeAgo(lastMsg),
-                    style: kDetail.copyWith(color: Theme.of(context).colorScheme.onSurface),
-                    textAlign: TextAlign.left,
-                  ),
+                StreamBuilder<DateTime>(
+                  stream: tick(),
+                  builder: (context, snapshot) {
+                    return Flexible(
+                      child: Text(
+                        timeAgo(lastMsg),
+                        style: kDetail.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                        textAlign: TextAlign.left,
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
-            const SizedBox(height: 5), // Change width to height
+            const SizedBox(height: 5),
             Row(
               children: [
                 if (!read)
@@ -67,7 +78,6 @@ class RoomTile extends StatelessWidget {
                     ),
                   ),
                 Flexible(
-                  // Wrap this Text widget with a Flexible widget
                   child: Text(
                     lastChat ?? "No messages yet",
                     style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
