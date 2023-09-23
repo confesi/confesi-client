@@ -6,7 +6,7 @@ import '../../application/create_post/cubit/post_categories_cubit.dart';
 ///
 /// UVIC: 134.87.37.86 (ephemeral)
 /// SHERIDAN: 10.0.0.173 (ephemeral)
-const String domain = "http://134.87.35.15:8080";
+const String domain = "http://10.0.0.173:8080";
 
 const Duration apiDefaultTimeout = Duration(seconds: 5);
 
@@ -37,7 +37,7 @@ const int dailyHottestPreviewLength = 50;
 const int postTitlePreviewLength = 100;
 const int postBodyPreviewLength = 200;
 
-const int chatMessagePreviewLength = 50;
+// const int chatMessagePreviewLength = 50;
 
 const int kPostTitleMaxLength = 500;
 const int kPostBodyMaxLength = 10000;

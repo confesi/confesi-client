@@ -104,10 +104,10 @@ class RoomWithChatState extends State<RoomWithChat> {
 
   Future<void> _loadChat() async {
     final roomsService = Provider.of<RoomsService>(context, listen: false);
+    // Provider.of<RoomsService>(context, listen: false).updateRoomReadTime(widget.room.roomId);
 
-    // Ensuring the chat is added to roomsService's chats OrderedSet on the very first time it is loaded
     if (!roomsService.rooms.containsKey(widget.room.roomId)) {
-      await roomsService.addRoomAndLoadChat(widget.room);
+      // await roomsService.addRoomAndLoadChat(widget.room);
     }
   }
 
@@ -133,6 +133,7 @@ class RoomWithChatState extends State<RoomWithChat> {
             onTap: () {
               router.push("/home/rooms/chat", extra: ChatProps(updatedRoom.roomId));
               Provider.of<RoomsService>(context, listen: false).updateRoomReadTime(updatedRoom.roomId);
+              Provider.of<RoomsService>(context, listen: false).setCurrentlyViewingRoomId(updatedRoom.roomId);
             },
           );
         }

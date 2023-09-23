@@ -112,7 +112,10 @@ class _ChatScreenState extends State<ChatScreen> {
                       child: Row(
                         children: [
                           TouchableOpacity(
-                            onTap: () => router.pop(),
+                            onTap: () {
+                              router.pop();
+                              Provider.of<RoomsService>(context, listen: false).clearCurrentlyViewingRoomId();
+                            },
                             child: Container(
                               padding: const EdgeInsets.all(5),
                               color: Colors.transparent,

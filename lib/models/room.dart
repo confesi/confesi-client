@@ -27,6 +27,12 @@ class Room extends Equatable {
     required this.read,
   });
 
+  // toString
+  @override
+  String toString() {
+    return 'Room(userId: $userId, name: $name, roomId: $roomId, lastMsg: $lastMsg, postId: $postId, userNumber: $userNumber, recentChat: $recentChat, read: $read)';
+  }
+
   factory Room.fromJson(Map<String, dynamic> json) => Room(
         userId: json["user_id"],
         name: json["name"],
@@ -52,6 +58,17 @@ class Room extends Equatable {
   @override
   List<Object?> get props => [userId, name, roomId, lastMsg, postId, userNumber, recentChat, read];
 
+  bool onlyDifferByRead(Room other) {
+    return this.userId == other.userId &&
+        this.name == other.name &&
+        this.roomId == other.roomId &&
+        this.lastMsg == other.lastMsg &&
+        this.postId == other.postId &&
+        this.userNumber == other.userNumber &&
+        this.recentChat == other.recentChat &&
+        this.read != other.read; // Ensure only 'read' is different
+  }
+
   Room copyWith({
     String? userId,
     String? name,
@@ -62,7 +79,6 @@ class Room extends Equatable {
     Chat? recentChat,
     Either<Empty, DateTime>? read, // added this new field
   }) {
-    print(read);
     return Room(
       userId: userId ?? this.userId,
       name: name ?? this.name,
@@ -71,7 +87,7 @@ class Room extends Equatable {
       postId: postId ?? this.postId,
       userNumber: userNumber ?? this.userNumber,
       recentChat: recentChat ?? this.recentChat,
-      read: read?.fold((empty) => null, (dateTime) => dateTime), // updated this line
+      read: read is Either ? read?.fold((e) => null, (dt) => dt) : this.read, // updated this line
     );
   }
 }

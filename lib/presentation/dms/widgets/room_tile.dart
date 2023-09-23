@@ -69,7 +69,7 @@ class RoomTile extends StatelessWidget {
                 Flexible(
                   // Wrap this Text widget with a Flexible widget
                   child: Text(
-                    truncateText(lastChat ?? "No messages yet", chatMessagePreviewLength),
+                    lastChat ?? "No messages yet",
                     style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
                     textAlign: TextAlign.left,
                     maxLines: 1,
