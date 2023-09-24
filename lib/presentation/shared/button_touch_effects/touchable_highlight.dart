@@ -73,19 +73,12 @@ class TouchableHighlightState extends State<TouchableHighlight> with SingleTicke
       child: AnimatedBuilder(
         animation: anim,
         builder: (context, child) {
-          return ShakeWidget(
-            duration: const Duration(milliseconds: 500), // Fixed duration
-            shakeConstant:
-                ShakeLittleConstant1(), // Constants are usually not callable, remove parentheses if it's a property
-            autoPlay: isAnimating,
-            enableWebMouseHover: true,
-            child: Transform.scale(
-              scale: (1 - anim.value * 0.125)
-                  .clamp(0.0, 1.0), // Clamping the scale value to prevent it from going negative
-              child: Opacity(
-                opacity: 1 - anim.value * 0.75,
-                child: widget.child,
-              ),
+          return Transform.scale(
+            scale:
+                (1 - anim.value * 0.125).clamp(0.0, 1.0), // Clamping the scale value to prevent it from going negative
+            child: Opacity(
+              opacity: 1 - anim.value * 0.75,
+              child: widget.child,
             ),
           );
         },

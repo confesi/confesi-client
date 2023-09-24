@@ -139,6 +139,20 @@ class RoomsService extends ChangeNotifier {
     }
   }
 
+  Future<void> refreshRooms() async {
+    try {
+      _lastDocument = null;
+      // Clear any error flags.
+      roomsError = false;
+      notifyListeners();
+      loadRooms();
+    } catch (e) {
+      roomsError = true;
+      notifyListeners();
+      print('Failed to refresh rooms: $e');
+    }
+  }
+
   void startListenerForRooms() {
     _chatsInRoomSubscription?.cancel();
     _chatsInRoomSubscription = _firestore
@@ -197,11 +211,27 @@ class RoomsService extends ChangeNotifier {
     );
   }
 
-  Future<Either<ApiSuccess, String>> deleteChat(String chatId) async {
+  Future<Either<ApiSuccess, String>> deleteChat(String chatId, String roomId) async {
     _deleteChatApi.cancelCurrReq();
     return (await _deleteChatApi.req(Verb.delete, true, "/api/v1/dms/chat?id=$chatId", {}))
         .fold((failureWithMsg) => Right(failureWithMsg.msg()), (response) {
       if (response.statusCode.toString()[0] == "2") {
+        // load initial room data again
+        loadInitialRoomData(roomId, sl.get<UserAuthService>().uid);
+        return Left(ApiSuccess());
+      } else {
+        return const Right("todo: error");
+      }
+    });
+  }
+
+  Future<Either<ApiSuccess, String>> clearAllRoomChats(String roomId) async {
+    _deleteChatApi.cancelCurrReq();
+    return (await _deleteChatApi.req(Verb.delete, true, "/api/v1/dms/room/clear-chats?room-id=$roomId", {}))
+        .fold((failureWithMsg) => Right(failureWithMsg.msg()), (response) {
+      if (response.statusCode.toString()[0] == "2") {
+        // load initial room data again
+        loadInitialRoomData(roomId, sl.get<UserAuthService>().uid);
         return Left(ApiSuccess());
       } else {
         return const Right("todo: error");

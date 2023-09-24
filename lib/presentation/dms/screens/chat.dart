@@ -1,6 +1,7 @@
 import 'package:confesi/application/user/cubit/notifications_cubit.dart';
 import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/router/go_router.dart';
+import 'package:confesi/core/services/haptics/haptics.dart';
 import 'package:confesi/core/services/rooms/rooms_service.dart';
 import 'package:confesi/core/styles/typography.dart';
 import 'package:confesi/models/chat.dart';
@@ -113,6 +114,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         children: [
                           TouchableOpacity(
                             onTap: () {
+                              Haptics.f(H.regular);
                               router.pop();
                               Provider.of<RoomsService>(context, listen: false).clearCurrentlyViewingRoomId();
                             },
@@ -152,23 +154,29 @@ class _ChatScreenState extends State<ChatScreen> {
                           ),
                           const SizedBox(width: 10),
                           TouchableOpacity(
-                            onTap: () => showButtonOptionsSheet(
-                              context,
-                              [
-                                OptionButton(
-                                  onTap: () => print("todo"),
-                                  text: "Clear all room messages",
-                                  icon: CupertinoIcons.trash,
-                                  isRed: true,
-                                ),
-                                OptionButton(
-                                  onTap: () => print("todo"),
-                                  text: "Delete room",
-                                  icon: CupertinoIcons.trash,
-                                  isRed: true,
-                                ),
-                              ],
-                            ),
+                            onTap: () {
+                              Haptics.f(H.regular);
+                              showButtonOptionsSheet(
+                                context,
+                                [
+                                  OptionButton(
+                                    onTap: () async => (await Provider.of<RoomsService>(context, listen: false)
+                                            .clearAllRoomChats(widget.props.roomId))
+                                        .fold((_) => null,
+                                            (errMsg) => context.read<NotificationsCubit>().showErr(errMsg)),
+                                    text: "Clear all room messages",
+                                    icon: CupertinoIcons.trash,
+                                    isRed: true,
+                                  ),
+                                  OptionButton(
+                                    onTap: () => print("todo"),
+                                    text: "Delete room",
+                                    icon: CupertinoIcons.trash,
+                                    isRed: true,
+                                  ),
+                                ],
+                              );
+                            },
                             child: Container(
                               padding: const EdgeInsets.all(5),
                               color: Colors.transparent,
@@ -200,10 +208,10 @@ class _ChatScreenState extends State<ChatScreen> {
                               [
                                 if (isYou)
                                   OptionButton(
-                                    onTap: () async =>
-                                        (await Provider.of<RoomsService>(context, listen: false).deleteChat(chat.id))
-                                            .fold((_) => null,
-                                                (errMsg) => context.read<NotificationsCubit>().showErr(errMsg)),
+                                    onTap: () async => (await Provider.of<RoomsService>(context, listen: false)
+                                            .deleteChat(chat.id, widget.props.roomId))
+                                        .fold((_) => null,
+                                            (errMsg) => context.read<NotificationsCubit>().showErr(errMsg)),
                                     text: "Delete chat",
                                     icon: CupertinoIcons.trash,
                                     isRed: true,

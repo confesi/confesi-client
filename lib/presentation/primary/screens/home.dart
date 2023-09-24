@@ -4,6 +4,7 @@ import 'package:confesi/application/user/cubit/notifications_cubit.dart';
 import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/services/fcm_notifications/notification_service.dart';
 import 'package:confesi/core/services/fcm_notifications/notification_table.dart';
+import 'package:confesi/core/services/haptics/haptics.dart';
 import 'package:confesi/core/services/primary_tab_service/primary_tab_service.dart';
 import 'package:confesi/core/services/user_auth/user_auth_service.dart';
 import 'package:home_widget/home_widget.dart';
@@ -112,6 +113,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   top: false,
                   child: TabBar(
                     onTap: (int newIndex) {
+                      Haptics.f(H.regular);
                       if (newIndex == 0) {
                         // explore
                         if (Provider.of<PrimaryTabControllerService>(context, listen: false).tabIdx == 0) {

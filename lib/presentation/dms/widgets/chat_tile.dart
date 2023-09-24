@@ -53,7 +53,7 @@ class ChatTileState extends State<ChatTile> {
         double maxWidth = constraints.maxWidth * 0.67;
 
         return Container(
-          margin: const EdgeInsets.symmetric(vertical: 3),
+          margin: const EdgeInsets.symmetric(vertical: 5),
           child: Row(
             mainAxisAlignment: widget.isYou ? MainAxisAlignment.end : MainAxisAlignment.start,
             children: [
@@ -73,21 +73,21 @@ class ChatTileState extends State<ChatTile> {
                 },
                 child: Container(
                   constraints: BoxConstraints(maxWidth: maxWidth),
-                  padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                  padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
                   decoration: BoxDecoration(
                     color:
                         widget.isYou ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.secondary,
                     borderRadius: !widget.isYou
                         ? const BorderRadius.only(
-                            topLeft: Radius.circular(15),
+                            topLeft: Radius.circular(20),
                             bottomLeft: Radius.circular(2),
-                            topRight: Radius.circular(15),
-                            bottomRight: Radius.circular(15),
+                            topRight: Radius.circular(20),
+                            bottomRight: Radius.circular(20),
                           )
                         : const BorderRadius.only(
-                            topLeft: Radius.circular(15),
-                            bottomLeft: Radius.circular(15),
-                            topRight: Radius.circular(15),
+                            topLeft: Radius.circular(20),
+                            bottomLeft: Radius.circular(20),
+                            topRight: Radius.circular(20),
                             bottomRight: Radius.circular(2),
                           ),
                   ),

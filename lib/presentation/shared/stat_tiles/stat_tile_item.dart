@@ -1,3 +1,4 @@
+import 'package:confesi/core/services/haptics/haptics.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:flutter/services.dart';
 
@@ -26,6 +27,7 @@ class StatTileItem extends StatelessWidget {
     return Expanded(
       child: TouchableScale(
         onTap: () {
+          Haptics.f(H.regular);
           onTap();
         },
         child: Container(

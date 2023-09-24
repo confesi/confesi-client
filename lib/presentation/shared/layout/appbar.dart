@@ -1,4 +1,5 @@
 import 'package:confesi/constants/shared/constants.dart';
+import 'package:confesi/core/services/haptics/haptics.dart';
 
 import '../../../core/router/go_router.dart';
 import 'package:flutter/cupertino.dart';
@@ -50,6 +51,7 @@ class _AppbarLayoutState extends State<AppbarLayout> {
           onTap: () {
             if (widget.leftIconOnPress != null) {
               FocusScope.of(context).unfocus();
+              Haptics.f(H.regular);
               widget.leftIconOnPress!();
             } else {
               FocusScope.of(context).unfocus();
@@ -86,6 +88,7 @@ class _AppbarLayoutState extends State<AppbarLayout> {
         onTap: () {
           if (widget.rightIconOnPress != null) {
             FocusScope.of(context).unfocus();
+            Haptics.f(H.regular);
             widget.rightIconOnPress!();
           }
         },

@@ -35,7 +35,7 @@ class _DatePickerState extends State<DatePicker> {
                 },
                 icon: CupertinoIcons.chevron_right,
                 backgroundColor: Theme.of(context).colorScheme.tertiary,
-                textColor: Theme.of(context).colorScheme.onPrimary,
+                textColor: Theme.of(context).colorScheme.onSecondary,
                 text: "Newest",
               ),
             ),

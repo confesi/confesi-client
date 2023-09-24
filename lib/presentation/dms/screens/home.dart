@@ -1,5 +1,6 @@
 import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/router/go_router.dart';
+import 'package:confesi/core/services/haptics/haptics.dart';
 import 'package:confesi/core/services/rooms/rooms_service.dart';
 import 'package:confesi/core/services/user_auth/user_auth_service.dart';
 import 'package:confesi/core/styles/typography.dart';
@@ -62,8 +63,7 @@ class RoomsScreen extends StatelessWidget {
                     child: Container(
                       constraints: const BoxConstraints(maxWidth: maxStandardSizeOfContent),
                       child: SwipeRefresh(
-                        onRefresh: () async =>
-                            await Future.delayed(const Duration(milliseconds: 1000)), // todo: reloader
+                        onRefresh: () async => await Provider.of<RoomsService>(context, listen: false).refreshRooms(),
                         child: FirestoreListView(
                           query: query,
                           itemBuilder: (context, item) {
@@ -131,6 +131,7 @@ class RoomWithChatState extends State<RoomWithChat> {
             name: updatedRoom.name,
             lastChat: updatedRoom.recentChat?.msg,
             onTap: () {
+              Haptics.f(H.regular);
               router.push("/home/rooms/chat", extra: ChatProps(updatedRoom.roomId));
               Provider.of<RoomsService>(context, listen: false).updateRoomReadTime(updatedRoom.roomId);
               Provider.of<RoomsService>(context, listen: false).setCurrentlyViewingRoomId(updatedRoom.roomId);

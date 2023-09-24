@@ -1,4 +1,5 @@
 import 'package:confesi/constants/shared/constants.dart';
+import 'package:confesi/core/services/haptics/haptics.dart';
 import 'package:confesi/core/utils/strings/truncate_text.dart';
 import 'package:confesi/models/post.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
@@ -47,6 +48,7 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
   }
 
   void handlePostTap(PostWithMetadata post) {
+    Haptics.f(H.regular);
     // Ensure dailyHottestPreviewLength does not exceed the length of the text
     int bodyTruncationIndex =
         dailyHottestPreviewLength < post.post.content.length ? dailyHottestPreviewLength : post.post.content.length;

@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/router/go_router.dart';
+import 'package:confesi/core/services/haptics/haptics.dart';
 import 'package:confesi/core/utils/sizing/height_fraction.dart';
 import 'package:confesi/presentation/primary/widgets/scroll_dots.dart';
 import 'package:confesi/presentation/shared/behaviours/init_scale.dart';
@@ -81,10 +82,13 @@ class _ImgViewerState extends State<ImgViewer> {
                 alignment: Alignment.bottomCenter,
                 children: [
                   GestureDetector(
-                    onTap: () => !isBlurred
-                        ? router.push("/img",
-                            extra: ImgProps(widget.imgUrls[currentIdx], isBlurred, "$heroTag$currentIdx"))
-                        : null,
+                    onTap: () {
+                      Haptics.f(H.regular);
+                      !isBlurred
+                          ? router.push("/img",
+                              extra: ImgProps(widget.imgUrls[currentIdx], isBlurred, "$heroTag$currentIdx"))
+                          : null;
+                    },
                     child: PageView(
                       physics: const ClampingScrollPhysics(),
                       onPageChanged: (v) => setState(() => currentIdx = v),

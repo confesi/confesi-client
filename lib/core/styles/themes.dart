@@ -15,7 +15,7 @@ class AppTheme {
       onSecondary: Color.fromARGB(255, 255, 255, 255),
       tertiary: Color.fromARGB(255, 117, 67, 255),
       surfaceTint: Color(0xff90A17D),
-      error: Color.fromARGB(255, 231, 104, 104),
+      error: Color(0xffFF6F6F),
       onError: Colors.white,
       background: Color.fromARGB(255, 30, 34, 43),
       onBackground: Color.fromARGB(255, 58, 63, 79),

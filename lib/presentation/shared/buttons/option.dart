@@ -1,4 +1,5 @@
 import 'package:confesi/constants/shared/constants.dart';
+import 'package:confesi/core/services/haptics/haptics.dart';
 
 import '../button_touch_effects/touchable_scale.dart';
 import 'package:flutter/material.dart';
@@ -32,6 +33,7 @@ class OptionButton extends StatelessWidget {
     return TouchableScale(
       onTap: () {
         popContext ? Navigator.pop(context) : null;
+        Haptics.f(H.regular);
         onTap();
       },
       child: Container(

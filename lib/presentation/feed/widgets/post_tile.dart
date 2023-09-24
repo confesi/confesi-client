@@ -1,6 +1,7 @@
 import 'package:confesi/application/user/cubit/notifications_cubit.dart';
 import 'package:confesi/application/user/cubit/quick_actions_cubit.dart';
 import 'package:confesi/core/services/global_content/global_content.dart';
+import 'package:confesi/core/services/haptics/haptics.dart';
 import 'package:confesi/core/utils/sizing/width_fraction.dart';
 import 'package:confesi/core/utils/strings/truncate_text.dart';
 import 'package:confesi/core/utils/verified_students/verified_user_only.dart';
@@ -54,9 +55,14 @@ class PostTileState extends State<PostTile> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => router.push("/home/posts/comments",
+      onTap: () {
+        Haptics.f(H.regular);
+        router.push(
+          "/home/posts/comments",
           extra: HomePostsCommentsProps(PreloadedPost(widget.post, false),
-              titleLastChar: titleLastIndex, bodyLastChar: bodyLastIndex)),
+              titleLastChar: titleLastIndex, bodyLastChar: bodyLastIndex),
+        );
+      },
       child: Container(
         width: double.infinity,
         constraints: const BoxConstraints(maxWidth: maxStandardSizeOfContent),
@@ -206,23 +212,25 @@ class PostTileState extends State<PostTile> {
                               children: [
                                 Expanded(
                                   child: ReactionTile(
-                                    simpleView: false,
-                                    amount: widget.post.post.commentCount,
-                                    icon: CupertinoIcons.chat_bubble,
-                                    iconColor: Theme.of(context).colorScheme.tertiary,
-                                    isSelected: true,
-                                    onTap: () => verifiedUserOnly(
-                                      context,
-                                      () => router.push(
-                                        "/home/posts/comments",
-                                        extra: HomePostsCommentsProps(
-                                          PreloadedPost(widget.post, true),
-                                          titleLastChar: titleLastIndex,
-                                          bodyLastChar: bodyLastIndex,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
+                                      simpleView: false,
+                                      amount: widget.post.post.commentCount,
+                                      icon: CupertinoIcons.chat_bubble,
+                                      iconColor: Theme.of(context).colorScheme.tertiary,
+                                      isSelected: true,
+                                      onTap: () {
+                                        Haptics.f(H.regular);
+                                        verifiedUserOnly(
+                                          context,
+                                          () => router.push(
+                                            "/home/posts/comments",
+                                            extra: HomePostsCommentsProps(
+                                              PreloadedPost(widget.post, true),
+                                              titleLastChar: titleLastIndex,
+                                              bodyLastChar: bodyLastIndex,
+                                            ),
+                                          ),
+                                        );
+                                      }),
                                 ),
                                 const SizedBox(width: 15),
                                 Expanded(
