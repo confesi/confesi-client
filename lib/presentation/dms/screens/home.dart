@@ -55,6 +55,7 @@ class RoomsScreen extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
               ),
+              // if there is nothing from firestore listview (empty)
               Expanded(
                 child: Container(
                   color: Theme.of(context).colorScheme.shadow,
@@ -69,6 +70,39 @@ class RoomsScreen extends StatelessWidget {
                           itemBuilder: (context, item) {
                             final room = item.data();
                             return RoomWithChat(room: room);
+                          },
+                          errorBuilder: (BuildContext context, _, __) {
+                            return LoadingOrAlert(
+                              message: StateMessage("Something went wrong. Ouch.",
+                                  () async => await Provider.of<RoomsService>(context, listen: false).refreshRooms()),
+                              isLoading: false,
+                            );
+                          },
+                          emptyBuilder: (BuildContext context) {
+                            return Center(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 15),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      constraints: const BoxConstraints(maxWidth: 100),
+                                      child: Image.asset(walrusHeadImgPath),
+                                    ),
+                                    const SizedBox(height: 15),
+                                    FractionallySizedBox(
+                                      widthFactor: 2 / 3,
+                                      child: Text(
+                                        "You have no messages yet. That's awkward.",
+                                        style: kDetail.copyWith(color: Theme.of(context).colorScheme.primary),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
                           },
                         ),
                       ),

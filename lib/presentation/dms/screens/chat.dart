@@ -2,6 +2,7 @@ import 'package:confesi/application/user/cubit/notifications_cubit.dart';
 import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/router/go_router.dart';
 import 'package:confesi/core/services/haptics/haptics.dart';
+import 'package:confesi/core/services/primary_tab_service/primary_tab_service.dart';
 import 'package:confesi/core/services/rooms/rooms_service.dart';
 import 'package:confesi/core/styles/typography.dart';
 import 'package:confesi/models/chat.dart';
@@ -169,7 +170,17 @@ class _ChatScreenState extends State<ChatScreen> {
                                     isRed: true,
                                   ),
                                   OptionButton(
-                                    onTap: () => print("todo"),
+                                    onTap: () async => (await Provider.of<RoomsService>(context, listen: false)
+                                            .deleteRoom(widget.props.roomId))
+                                        .fold(
+                                      (_) {
+                                        // success, so push to home and show success notification
+                                        Provider.of<PrimaryTabControllerService>(context, listen: false).setTabIdx(4);
+                                        router.go("/home");
+                                        context.read<NotificationsCubit>().showSuccess("Room deleted");
+                                      },
+                                      (errMsg) => context.read<NotificationsCubit>().showErr(errMsg),
+                                    ),
                                     text: "Delete room",
                                     icon: CupertinoIcons.trash,
                                     isRed: true,

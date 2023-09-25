@@ -36,7 +36,7 @@ class _RoomRequestsWidgetState extends State<RoomRequestsWidget> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Open DMs",
+                            "Allow DMs",
                             style: kTitle.copyWith(
                               color: Theme.of(context).colorScheme.primary,
                             ),
