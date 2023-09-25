@@ -92,10 +92,10 @@ class RoomsScreen extends StatelessWidget {
                                     ),
                                     const SizedBox(height: 15),
                                     FractionallySizedBox(
-                                      widthFactor: 2 / 3,
+                                      widthFactor: 3 / 4,
                                       child: Text(
-                                        "You have no messages yet. That's awkward.",
-                                        style: kDetail.copyWith(color: Theme.of(context).colorScheme.primary),
+                                        "The walrus usually doesn't judge, but you got nobody to talk to!",
+                                        style: kDetail.copyWith(color: Theme.of(context).colorScheme.onSurface),
                                         textAlign: TextAlign.center,
                                       ),
                                     )
@@ -158,9 +158,10 @@ class RoomWithChatState extends State<RoomWithChat> {
         } else {
           final updatedRoom = Provider.of<RoomsService>(context).rooms[widget.room.roomId]!;
           return RoomTile(
-            read: updatedRoom.recentChat != null &&
-                updatedRoom.read != null &&
-                updatedRoom.read!.isAfter(updatedRoom.recentChat!.date),
+            read: (updatedRoom.recentChat != null &&
+                    updatedRoom.read != null &&
+                    updatedRoom.read!.isAfter(updatedRoom.recentChat!.date)) ||
+                updatedRoom.recentChat == null,
             lastMsg: updatedRoom.lastMsg,
             name: updatedRoom.name,
             lastChat: updatedRoom.recentChat?.msg,

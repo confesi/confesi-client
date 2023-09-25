@@ -14,26 +14,6 @@ import '../../../core/router/go_router.dart';
 import '../../../core/utils/sizing/bottom_safe_area.dart';
 import '../layout/swipebar.dart';
 
-// static function to return a random ShakeConstant from a list of classes that extend from it
-ShakeConstant _randomShakeConstant() {
-  List<ShakeConstant> shakes = [
-    ShakeCrazyConstant1(),
-    ShakeCrazyConstant2(),
-    ShakeDefaultConstant1(),
-    ShakeDefaultConstant2(),
-    ShakeHardConstant1(),
-    ShakeHardConstant2(),
-    ShakeHorizontalConstant1(),
-    ShakeHorizontalConstant2(),
-    ShakeOpacityConstant(),
-    ShakeSlowConstant1(),
-    ShakeCrazyConstant2(),
-    ShakeVerticalConstant1(),
-    ShakeVerticalConstant2(),
-  ];
-  return shakes[Random().nextInt(shakes.length)];
-}
-
 Future<dynamic> showRegisteredUserOnlySheet(BuildContext context, {VoidCallback? onComplete}) {
   return showModalBottomSheet(
     isScrollControlled: true,
@@ -45,7 +25,7 @@ Future<dynamic> showRegisteredUserOnlySheet(BuildContext context, {VoidCallback?
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
-          borderRadius: const BorderRadius.only(topLeft: Radius.circular(0), topRight: Radius.circular(0)),
+          borderRadius: const BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
           color: Theme.of(context).colorScheme.background,
         ),
         child: Column(

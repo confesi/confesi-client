@@ -8,6 +8,7 @@ import 'package:confesi/core/styles/typography.dart';
 import 'package:confesi/models/chat.dart';
 import 'package:confesi/presentation/dms/widgets/chat_tile.dart';
 import 'package:confesi/presentation/shared/edited_source_widgets/swipe_refresh.dart';
+import 'package:confesi/presentation/shared/overlays/confirmation_sheet.dart';
 import 'package:flutter/services.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_highlight.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
@@ -148,7 +149,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                   hintText: "Your editable chat name",
                                   border: InputBorder.none,
                                   contentPadding: const EdgeInsets.all(0),
-                                  hintStyle: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
+                                  hintStyle: kTitle.copyWith(color: Theme.of(context).colorScheme.onSurface),
                                 ),
                               ),
                             ),
@@ -161,26 +162,34 @@ class _ChatScreenState extends State<ChatScreen> {
                                 context,
                                 [
                                   OptionButton(
-                                    onTap: () async => (await Provider.of<RoomsService>(context, listen: false)
-                                            .clearAllRoomChats(widget.props.roomId))
-                                        .fold((_) => null,
-                                            (errMsg) => context.read<NotificationsCubit>().showErr(errMsg)),
+                                    onTap: () => showConfirmationSheet(
+                                      context,
+                                      () async => (await Provider.of<RoomsService>(context, listen: false)
+                                              .clearAllRoomChats(widget.props.roomId))
+                                          .fold((_) => context.read<NotificationsCubit>().showSuccess("Room cleared"),
+                                              (errMsg) => context.read<NotificationsCubit>().showErr(errMsg)),
+                                      "Are you sure you want to clear all chats?",
+                                    ),
                                     text: "Clear all room messages",
                                     icon: CupertinoIcons.trash,
                                     isRed: true,
                                   ),
                                   OptionButton(
-                                    onTap: () async => (await Provider.of<RoomsService>(context, listen: false)
-                                            .deleteRoom(widget.props.roomId))
-                                        .fold(
-                                      (_) {
-                                        // success, so push to home and show success notification
-                                        Provider.of<PrimaryTabControllerService>(context, listen: false).setTabIdx(4);
-                                        router.go("/home");
-                                        context.read<NotificationsCubit>().showSuccess("Room deleted");
-                                      },
-                                      (errMsg) => context.read<NotificationsCubit>().showErr(errMsg),
-                                    ),
+                                    onTap: () => showConfirmationSheet(
+                                        context,
+                                        () async => (await Provider.of<RoomsService>(context, listen: false)
+                                                    .deleteRoom(widget.props.roomId))
+                                                .fold(
+                                              (_) {
+                                                // success, so push to home and show success notification
+                                                Provider.of<PrimaryTabControllerService>(context, listen: false)
+                                                    .setTabIdx(4);
+                                                router.go("/home");
+                                                context.read<NotificationsCubit>().showSuccess("Room deleted");
+                                              },
+                                              (errMsg) => context.read<NotificationsCubit>().showErr(errMsg),
+                                            ),
+                                        "Are you sure you want to delete this room?"),
                                     text: "Delete room",
                                     icon: CupertinoIcons.trash,
                                     isRed: true,

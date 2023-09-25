@@ -23,7 +23,7 @@ Future<dynamic> showInfoSheetWithAction(
       constraints: BoxConstraints(maxHeight: heightFraction(context, .75)),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.background,
-        borderRadius: const BorderRadius.only(topLeft: Radius.circular(0), topRight: Radius.circular(0)),
+        borderRadius: const BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
