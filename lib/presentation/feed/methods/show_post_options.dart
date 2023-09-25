@@ -2,6 +2,8 @@ import 'package:confesi/application/user/cubit/notifications_cubit.dart';
 import 'package:confesi/application/user/cubit/quick_actions_cubit.dart';
 import 'package:confesi/core/services/global_content/global_content.dart';
 import 'package:confesi/core/services/posts_service/posts_service.dart';
+import 'package:confesi/core/services/primary_tab_service/primary_tab_service.dart';
+import 'package:confesi/core/services/rooms/rooms_service.dart';
 import 'package:confesi/core/styles/typography.dart';
 import 'package:confesi/core/utils/verified_students/verified_user_only.dart';
 import 'package:confesi/models/post.dart';
@@ -30,7 +32,11 @@ void buildOptionsSheet(BuildContext context, PostWithMetadata post, {bool showSa
           text: "Open anonymous DM",
           primaryColor: Theme.of(context).colorScheme.secondary,
           icon: CupertinoIcons.chat_bubble_2_fill,
-          onTap: () => print("todo: room"),
+          onTap: () async =>
+              (await Provider.of<RoomsService>(context, listen: false).createNewRoom(post.post.id.mid)).fold(
+            (_) => Provider.of<PrimaryTabControllerService>(context, listen: false).setTabIdx(4),
+            (errMsg) => context.read<NotificationsCubit>().showErr(errMsg),
+          ),
         ),
       ),
     if (post.owner)

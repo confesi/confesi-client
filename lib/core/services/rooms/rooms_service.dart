@@ -31,6 +31,7 @@ class RoomsService extends ChangeNotifier {
   final Api _roomNameChangeApi;
   final Api _deleteChatApi; // todo: implement
   final Api _readApi;
+  final Api _createNewRoomApi;
   bool roomsError = false;
   bool chatsError = false;
   DocumentSnapshot? _lastDocument;
@@ -42,7 +43,7 @@ class RoomsService extends ChangeNotifier {
 
   UserAuthService get userAuthService => sl.get<UserAuthService>();
 
-  RoomsService(this._readApi, this._msgApi, this._roomNameChangeApi, this._deleteChatApi) {
+  RoomsService(this._readApi, this._msgApi, this._roomNameChangeApi, this._deleteChatApi, this._createNewRoomApi) {
     // loadRooms();
     startListenerForRooms();
   }
@@ -218,6 +219,19 @@ class RoomsService extends ChangeNotifier {
       if (response.statusCode.toString()[0] == "2") {
         // load initial room data again
         loadInitialRoomData(roomId, sl.get<UserAuthService>().uid);
+        return Left(ApiSuccess());
+      } else {
+        return const Right("todo: error");
+      }
+    });
+  }
+
+  // todo: create a new room
+  Future<Either<ApiSuccess, String>> createNewRoom(String postId) async {
+    _createNewRoomApi.cancelCurrReq();
+    return (await _createNewRoomApi.req(Verb.post, true, "/api/v1/dms/rooms?post-id=$postId", {}))
+        .fold((failureWithMsg) => Right(failureWithMsg.msg()), (response) {
+      if (response.statusCode.toString()[0] == "2") {
         return Left(ApiSuccess());
       } else {
         return const Right("todo: error");
