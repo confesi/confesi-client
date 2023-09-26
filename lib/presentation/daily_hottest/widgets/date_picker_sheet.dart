@@ -16,6 +16,7 @@ Future<dynamic> showDatePickerSheet(BuildContext context) async {
           child: Container(
             padding: EdgeInsets.only(bottom: bottomSafeArea(context), left: 15, right: 15),
             decoration: BoxDecoration(
+              borderRadius: const BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
               color: Theme.of(context).colorScheme.background,
             ),
             child: Builder(builder: (context) {

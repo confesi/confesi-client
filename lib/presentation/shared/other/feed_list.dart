@@ -290,9 +290,12 @@ class _FeedListState extends State<FeedList> {
               }
 
               if (index == widget.controller.items.length + 1) {
-                return AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 250),
-                  child: buildIndicator(),
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: floatingBottomNavOffset), // extra space on bottom
+                  child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 250),
+                    child: buildIndicator(),
+                  ),
                 );
               }
 

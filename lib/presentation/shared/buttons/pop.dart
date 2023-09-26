@@ -1,3 +1,4 @@
+import 'package:confesi/core/services/haptics/haptics.dart';
 
 import '../button_touch_effects/touchable_scale.dart';
 
@@ -40,7 +41,10 @@ class PopButton extends StatelessWidget {
       child: IgnorePointer(
         ignoring: loading,
         child: TouchableScale(
-          onTap: () => onPress(),
+          onTap: () {
+            Haptics.f(H.regular);
+            onPress();
+          },
           child: Container(
             width: double.infinity,
             decoration: BoxDecoration(

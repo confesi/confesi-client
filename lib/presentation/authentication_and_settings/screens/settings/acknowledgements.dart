@@ -1,5 +1,7 @@
+import 'package:confesi/application/user/cubit/quick_actions_cubit.dart';
 import 'package:confesi/presentation/shared/selection_groups/text_stat_tile.dart';
 import 'package:confesi/presentation/shared/selection_groups/tile_group.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../shared/behaviours/simulated_bottom_safe_area.dart';
@@ -55,6 +57,20 @@ class _AcknowledgementsScreenState extends State<AcknowledgementsScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        TileGroup(
+                          text: "Developers",
+                          tiles: [
+                            TextStatTile(
+                              leftText: "Matthew Trent",
+                              onTap: () => context.read<QuickActionsCubit>().launchWebsite("https://matthewtrent.me"),
+                            ),
+                            TextStatTile(
+                              leftText: "Chris Huk",
+                              onTap: () =>
+                                  context.read<QuickActionsCubit>().launchWebsite("https://github.com/TalentedB"),
+                            ),
+                          ],
+                        ),
                         const TileGroup(
                           text: "Alpha testers",
                           tiles: [
@@ -69,10 +85,11 @@ class _AcknowledgementsScreenState extends State<AcknowledgementsScreen> {
                           ],
                         ),
                         TileGroup(
-                          text: "Attribution",
+                          text: "Tool attribution",
                           tiles: [
                             TextStatTile(
-                                onTap: () => launchUrl(Uri.parse("https://lite.ip2location.com")),
+                                onTap: () =>
+                                    context.read<QuickActionsCubit>().launchWebsite("https://lite.ip2location.com"),
                                 leftText:
                                     'This site or product includes IP2Location LITE available data. Tap to view the website.'),
                           ],

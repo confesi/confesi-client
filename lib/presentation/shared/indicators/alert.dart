@@ -61,13 +61,17 @@ class AlertIndicator extends StatelessWidget {
                       children: [
                         Text(
                           message,
-                          style: kBody.copyWith(
+                          style: kTitle.copyWith(
                             color: Theme.of(context).colorScheme.primary,
                           ),
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 10),
-                        SimpleTextButton(onTap: () => onPress(), text: btnMsg),
+                        SimpleTextButton(
+                          onTap: () => onPress(),
+                          text: btnMsg,
+                          bgColor: Theme.of(context).colorScheme.background,
+                        ),
                       ],
                     ),
             ),

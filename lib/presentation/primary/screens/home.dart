@@ -1,18 +1,14 @@
 import 'package:confesi/application/create_post/cubit/post_categories_cubit.dart';
 import 'package:confesi/application/feed/cubit/schools_drawer_cubit.dart';
-import 'package:confesi/application/user/cubit/notifications_cubit.dart';
 import 'package:confesi/constants/shared/constants.dart';
-import 'package:confesi/core/services/fcm_notifications/notification_service.dart';
-import 'package:confesi/core/services/fcm_notifications/notification_table.dart';
 import 'package:confesi/core/services/haptics/haptics.dart';
 import 'package:confesi/core/services/primary_tab_service/primary_tab_service.dart';
 import 'package:confesi/core/services/user_auth/user_auth_service.dart';
-import 'package:home_widget/home_widget.dart';
+import 'package:confesi/core/utils/sizing/width_fraction.dart';
 import 'package:confesi/init.dart';
-import 'package:confesi/presentation/dms/screens/chat.dart';
 import 'package:confesi/presentation/dms/screens/home.dart';
-import 'package:drift/drift.dart' as drift;
 import 'package:provider/provider.dart';
+import 'dart:ui';
 
 import '../../../core/router/go_router.dart';
 import '../../../core/utils/verified_students/verified_user_only.dart';
@@ -83,104 +79,121 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           drawer: const FeedDrawer(), // Reference to the "watched_universities" feature drawer (feed_drawer).
           resizeToAvoidBottomInset: false,
           key: scaffoldKey,
-          body: Center(
-            child: Scaffold(
-              body: IndexedStack(
-                index: Provider.of<PrimaryTabControllerService>(context).tabIdx,
-                children: [
-                  ExploreHome(
-                    scaffoldKey: scaffoldKey,
-                    recentsFeedListController: recentsFeedListController,
-                    trendingFeedListController: trendingFeedListController,
-                    sentimentFeedListController: sentimentFeedListController,
-                  ),
-                  const HottestHome(),
-                  const SettingsHome(),
-                  const LeaderboardScreen(),
-                  const RoomsScreen(),
-                  const AccountProfileStats(),
-                  // const NotificationsScreen(),
-                ],
-              ),
-              bottomNavigationBar: Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.background,
-                  border: Border(
-                    top: BorderSide(color: Theme.of(context).colorScheme.onBackground, width: borderSize),
-                  ),
-                ),
-                child: SafeArea(
-                  top: false,
-                  child: TabBar(
-                    onTap: (int newIndex) {
-                      Haptics.f(H.regular);
-                      if (newIndex == 0) {
-                        // explore
-                        if (Provider.of<PrimaryTabControllerService>(context, listen: false).tabIdx == 0) {
-                          // if already on explore, scroll to top
-                          // todo: scroll-to-top but it only works... sometimes??
-                          // trendingFeedListController.scrollToTop();
-                          // recentsFeedListController.scrollToTop();
-                          // sentimentFeedListController.scrollToTop();
-                        } else {
-                          // if not on explore, go to explore
-                          Provider.of<PrimaryTabControllerService>(context, listen: false).setTabIdx(newIndex);
-                        }
-                      } else if (newIndex == 1) {
-                        // hottest
-                        Provider.of<PrimaryTabControllerService>(context, listen: false).setTabIdx(newIndex);
-                      } else if (newIndex == 2) {
-                        // create post
-                        verifiedUserOnly(context, () {
-                          router.push("/create", extra: CreatingNewPost());
-                          context.read<PostCategoriesCubit>().resetCategoryAndText();
-                        });
-                      } else {
-                        Provider.of<PrimaryTabControllerService>(context, listen: false).setTabIdx(newIndex);
-                      }
-                    },
-                    labelColor: Theme.of(context).colorScheme.secondary,
-                    indicatorSize: TabBarIndicatorSize.label,
-                    indicatorColor: Colors.transparent,
-                    controller: tabController,
-                    tabs: [
-                      _BottomTab(
-                        indexMatcher: 0,
-                        currentIndex: Provider.of<PrimaryTabControllerService>(context).tabIdx,
-                        icon: CupertinoIcons.compass,
-                      ),
-                      _BottomTab(
-                        indexMatcher: 1,
-                        currentIndex: Provider.of<PrimaryTabControllerService>(context).tabIdx,
-                        icon: CupertinoIcons.flame,
-                      ),
-                      _BottomTab(
-                        indexMatcher: 2,
-                        currentIndex: Provider.of<PrimaryTabControllerService>(context).tabIdx,
-                        icon: CupertinoIcons.add_circled,
-                      ),
-                      _BottomTab(
-                        indexMatcher: 3,
-                        currentIndex: Provider.of<PrimaryTabControllerService>(context).tabIdx,
-                        icon: CupertinoIcons.chart_bar_alt_fill,
-                      ),
-                      _BottomTab(
-                        hasNotification: false,
-                        indexMatcher: 4,
-                        currentIndex: Provider.of<PrimaryTabControllerService>(context).tabIdx,
-                        icon: CupertinoIcons.paperplane,
-                      ),
-                      _BottomTab(
-                        hasNotification: false,
-                        indexMatcher: 5,
-                        currentIndex: Provider.of<PrimaryTabControllerService>(context).tabIdx,
-                        icon: CupertinoIcons.profile_circled,
-                      ),
-                    ],
-                  ),
+          body: Stack(
+            children: [
+              Positioned.fill(
+                child: IndexedStack(
+                  index: Provider.of<PrimaryTabControllerService>(context).tabIdx,
+                  children: [
+                    ExploreHome(
+                      scaffoldKey: scaffoldKey,
+                      recentsFeedListController: recentsFeedListController,
+                      trendingFeedListController: trendingFeedListController,
+                      sentimentFeedListController: sentimentFeedListController,
+                    ),
+                    const HottestHome(),
+                    const SettingsHome(),
+                    const LeaderboardScreen(),
+                    const RoomsScreen(),
+                    const AccountProfileStats(),
+                  ],
                 ),
               ),
-            ),
+              Positioned(
+                bottom: 25,
+                child: SizedBox(
+                  width: widthFraction(context, 1),
+                  child: Center(
+                    child: Container(
+                      alignment: Alignment.bottomCenter,
+                      margin: const EdgeInsets.symmetric(horizontal: 15),
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Theme.of(context).colorScheme.shadow.withOpacity(0.9),
+                            blurRadius: 30,
+                          ),
+                        ],
+                      ),
+                      child: ClipRRect(
+                        borderRadius: const BorderRadius.all(Radius.circular(50)),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.background,
+                            borderRadius: const BorderRadius.all(Radius.circular(50)),
+                            border: Border.all(
+                              color: Theme.of(context).colorScheme.tertiary,
+                              width: borderSize * 4,
+                              strokeAlign: BorderSide.strokeAlignInside,
+                            ),
+                            // shadow
+                          ),
+                          child: TabBar(
+                            onTap: (int newIndex) {
+                              Haptics.f(H.regular);
+                              if (newIndex == 0) {
+                                if (Provider.of<PrimaryTabControllerService>(context, listen: false).tabIdx == 0) {
+                                  // todo: scroll-to-top logic
+                                } else {
+                                  Provider.of<PrimaryTabControllerService>(context, listen: false).setTabIdx(newIndex);
+                                }
+                              } else if (newIndex == 1) {
+                                Provider.of<PrimaryTabControllerService>(context, listen: false).setTabIdx(newIndex);
+                              } else if (newIndex == 2) {
+                                verifiedUserOnly(context, () {
+                                  router.push("/create", extra: CreatingNewPost());
+                                  context.read<PostCategoriesCubit>().resetCategoryAndText();
+                                });
+                              } else {
+                                Provider.of<PrimaryTabControllerService>(context, listen: false).setTabIdx(newIndex);
+                              }
+                            },
+                            labelColor: Theme.of(context).colorScheme.secondary,
+                            indicatorSize: TabBarIndicatorSize.label,
+                            indicatorColor: Colors.transparent,
+                            controller: tabController,
+                            tabs: [
+                              _BottomTab(
+                                indexMatcher: 0,
+                                currentIndex: Provider.of<PrimaryTabControllerService>(context).tabIdx,
+                                icon: CupertinoIcons.compass,
+                              ),
+                              _BottomTab(
+                                indexMatcher: 1,
+                                currentIndex: Provider.of<PrimaryTabControllerService>(context).tabIdx,
+                                icon: CupertinoIcons.flame,
+                              ),
+                              _BottomTab(
+                                indexMatcher: 2,
+                                currentIndex: Provider.of<PrimaryTabControllerService>(context).tabIdx,
+                                icon: CupertinoIcons.add_circled,
+                              ),
+                              _BottomTab(
+                                indexMatcher: 3,
+                                currentIndex: Provider.of<PrimaryTabControllerService>(context).tabIdx,
+                                icon: CupertinoIcons.chart_bar_alt_fill,
+                              ),
+                              _BottomTab(
+                                hasNotification: false,
+                                indexMatcher: 4,
+                                currentIndex: Provider.of<PrimaryTabControllerService>(context).tabIdx,
+                                icon: CupertinoIcons.paperplane,
+                              ),
+                              _BottomTab(
+                                hasNotification: false,
+                                indexMatcher: 5,
+                                currentIndex: Provider.of<PrimaryTabControllerService>(context).tabIdx,
+                                icon: CupertinoIcons.profile_circled,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -205,14 +218,14 @@ class _BottomTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Tab(
       icon: Padding(
-        padding: const EdgeInsets.only(top: 10),
+        padding: const EdgeInsets.only(top: 11),
         child: Column(
           children: [
             Icon(
               icon,
               size: 24,
               color: currentIndex == indexMatcher
-                  ? Theme.of(context).colorScheme.tertiary
+                  ? Theme.of(context).colorScheme.secondary
                   : Theme.of(context).colorScheme.onSurface,
             ),
             WidgetOrNothing(
@@ -230,7 +243,6 @@ class _BottomTab extends StatelessWidget {
           ],
         ),
       ),
-      iconMargin: const EdgeInsets.only(top: 5, bottom: 2),
     );
   }
 }

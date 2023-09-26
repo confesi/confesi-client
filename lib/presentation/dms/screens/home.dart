@@ -94,8 +94,8 @@ class RoomsScreen extends StatelessWidget {
                                     FractionallySizedBox(
                                       widthFactor: 3 / 4,
                                       child: Text(
-                                        "The walrus usually doesn't judge, but you got nobody to talk to!",
-                                        style: kDetail.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                                        "You have no messages, absolute L.",
+                                        style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
                                         textAlign: TextAlign.center,
                                       ),
                                     )

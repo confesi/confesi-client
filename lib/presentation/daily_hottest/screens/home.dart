@@ -78,7 +78,7 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
           key: const ValueKey('alert'),
           child: AlertIndicator(
             btnMsg: "Load the most recent",
-            message: "There are no confessions for this day",
+            message: "Nothing found for this day",
             onPress: () => context.read<HottestCubit>().loadMostRecent(),
           ),
         );
@@ -145,51 +145,59 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
         },
         child: Scaffold(
           resizeToAvoidBottomInset: false,
-          backgroundColor: Theme.of(context).colorScheme.background,
-          body: SafeArea(
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                return Container(
-                    color: Theme.of(context).colorScheme.shadow,
-                    child: SingleChildScrollView(
-                      child: SizedBox(
-                        height: constraints.maxHeight,
-                        child: Column(
-                          children: [
-                            BlocBuilder<HottestCubit, HottestState>(
-                              builder: (context, state) {
-                                return AppbarLayout(
-                                  rightIcon: CupertinoIcons.smiley,
-                                  rightIconVisible: true,
-                                  rightIconOnPress: () => router.push("/home/emojis"),
-                                  bottomBorder: true,
-                                  centerWidget: Text(
-                                    headerText,
-                                    style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
-                                    overflow: TextOverflow.ellipsis,
-                                    textAlign: TextAlign.center,
+          backgroundColor: Theme.of(context).colorScheme.shadow,
+          body: Container(
+            color: Theme.of(context).colorScheme.background,
+            child: SafeArea(
+              bottom: false,
+              child: Container(
+                color: Theme.of(context).colorScheme.shadow,
+                padding: const EdgeInsets.only(bottom: floatingBottomNavOffset),
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    return Container(
+                        color: Theme.of(context).colorScheme.shadow,
+                        child: SingleChildScrollView(
+                          child: SizedBox(
+                            height: constraints.maxHeight,
+                            child: Column(
+                              children: [
+                                BlocBuilder<HottestCubit, HottestState>(
+                                  builder: (context, state) {
+                                    return AppbarLayout(
+                                      rightIcon: CupertinoIcons.smiley,
+                                      rightIconVisible: true,
+                                      rightIconOnPress: () => router.push("/home/emojis"),
+                                      bottomBorder: true,
+                                      centerWidget: Text(
+                                        headerText,
+                                        style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
+                                        overflow: TextOverflow.ellipsis,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      leftIconVisible: true,
+                                      leftIcon: CupertinoIcons.calendar,
+                                      leftIconOnPress: () => showDatePickerSheet(context),
+                                    );
+                                  },
+                                ),
+                                Expanded(
+                                  child: BlocBuilder<HottestCubit, HottestState>(
+                                    builder: (context, state) {
+                                      return AnimatedSwitcher(
+                                        duration: const Duration(milliseconds: 250),
+                                        child: buildChild(context, state),
+                                      );
+                                    },
                                   ),
-                                  leftIconVisible: true,
-                                  leftIcon: CupertinoIcons.calendar,
-                                  leftIconOnPress: () => showDatePickerSheet(context),
-                                );
-                              },
+                                ),
+                              ],
                             ),
-                            Expanded(
-                              child: BlocBuilder<HottestCubit, HottestState>(
-                                builder: (context, state) {
-                                  return AnimatedSwitcher(
-                                    duration: const Duration(milliseconds: 250),
-                                    child: buildChild(context, state),
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ));
-              },
+                          ),
+                        ));
+                  },
+                ),
+              ),
             ),
           ),
         ),

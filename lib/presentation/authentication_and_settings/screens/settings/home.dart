@@ -216,7 +216,7 @@ class SettingsHome extends StatelessWidget {
                             SettingTile(
                               rightIcon: CupertinoIcons.link,
                               leftIcon: CupertinoIcons.doc,
-                              text: "Term of service",
+                              text: "Terms of service",
                               onTap: () => context
                                   .read<QuickActionsCubit>()
                                   .launchWebsite("https://confesi.com/terms-of-service.html"),

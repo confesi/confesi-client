@@ -1,5 +1,6 @@
 import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/router/go_router.dart';
+import 'package:confesi/core/services/haptics/haptics.dart';
 import 'package:confesi/models/school_with_metadata.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:confesi/presentation/shared/other/widget_or_nothing.dart';
@@ -42,10 +43,13 @@ class LeaderboardItemTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TouchableScale(
-      onTap: () => router.push(
-        "/home/leaderboard/school",
-        extra: HomeLeaderboardSchoolProps(school),
-      ),
+      onTap: () {
+        Haptics.f(H.regular);
+        router.push(
+          "/home/leaderboard/school",
+          extra: HomeLeaderboardSchoolProps(school),
+        );
+      },
       child: Container(
         margin: const EdgeInsets.only(left: 15, right: 15, top: 10),
         decoration: BoxDecoration(

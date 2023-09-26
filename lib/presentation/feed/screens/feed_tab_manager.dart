@@ -66,6 +66,7 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: SafeArea(
+        bottom: false,
         child: Container(
           color: Theme.of(context).colorScheme.shadow,
           child: Column(

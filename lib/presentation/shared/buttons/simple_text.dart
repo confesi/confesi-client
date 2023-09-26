@@ -1,4 +1,5 @@
 import 'package:confesi/constants/shared/constants.dart';
+import 'package:confesi/core/services/haptics/haptics.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/services/user_auth/user_auth_service.dart';
@@ -47,13 +48,16 @@ class SimpleTextButton extends StatelessWidget {
         opacity: disabled ? 0.4 : 1,
         child: TouchableScale(
           tapType: tapType,
-          onTap: () => onTap(),
+          onTap: () {
+            Haptics.f(H.regular);
+            onTap();
+          },
           child: AnimatedContainer(
             key: UniqueKey(),
             margin: EdgeInsets.symmetric(horizontal: horizontalPadding),
             duration: const Duration(milliseconds: 175),
             width: infiniteWidth ? double.infinity : null,
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10, top: 7),
             decoration: BoxDecoration(
                 border: Border.all(
                     color: Theme.of(context).colorScheme.onBackground,
@@ -72,7 +76,7 @@ class SimpleTextButton extends StatelessWidget {
               textAlign: TextAlign.center,
               overflow: TextOverflow.ellipsis,
               maxLines: maxLines,
-              style: kTitle.copyWith(
+              style: kBody.copyWith(
                 color: textColor ??
                     (isErrorText
                         ? Theme.of(context).colorScheme.error

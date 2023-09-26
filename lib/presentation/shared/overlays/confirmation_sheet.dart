@@ -48,7 +48,7 @@ Future<dynamic> showConfirmationSheet(BuildContext context, VoidCallback action,
                       OptionButton(
                         onTap:
                             () async {}, // does nothing, because by default it pops the go router context (putting sheet down)
-                        text: "Nope 😬",
+                        text: "Nope",
                         icon: CupertinoIcons.xmark,
                       ),
                     ],

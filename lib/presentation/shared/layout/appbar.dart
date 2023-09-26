@@ -54,6 +54,7 @@ class _AppbarLayoutState extends State<AppbarLayout> {
               Haptics.f(H.regular);
               widget.leftIconOnPress!();
             } else {
+              Haptics.f(H.regular);
               FocusScope.of(context).unfocus();
               router.pop();
             }

@@ -113,6 +113,7 @@ dependencies:
   geolocator: ^9.0.2
   ordered_set: ^5.0.1
   app_links: ^3.4.3
+  home_indicator: ^2.0.2
   image_picker: ^1.0.2
   isar: *isar_version
   isar_flutter_libs: *isar_version # contains Isar Core

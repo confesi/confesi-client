@@ -153,7 +153,10 @@ class PostTileState extends State<PostTile> {
                                 ),
                               ),
                               TouchableOpacity(
-                                onTap: () => buildOptionsSheet(context, widget.post),
+                                onTap: () {
+                                  Haptics.f(H.regular);
+                                  buildOptionsSheet(context, widget.post);
+                                },
                                 child: Container(
                                   color: Colors.transparent,
                                   child: Icon(

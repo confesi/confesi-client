@@ -6,11 +6,13 @@ import '../../application/create_post/cubit/post_categories_cubit.dart';
 ///
 /// UVIC: 134.87.37.86 (ephemeral)
 /// SHERIDAN: 10.0.0.173 (ephemeral)
-const String domain = "http://134.87.32.29:8080";
+const String domain = "http://10.0.0.173:8080";
 
 const Duration apiDefaultTimeout = Duration(seconds: 5);
 
 const int chatPageSize = 15;
+
+const double floatingBottomNavOffset = 78;
 
 /// If debug mode is enabled. OFF for prod.
 const bool debugMode = false;

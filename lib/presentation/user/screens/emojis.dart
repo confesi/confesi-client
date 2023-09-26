@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../../core/services/haptics/haptics.dart';
 import '../../../core/styles/typography.dart';
 import '../../../core/utils/sizing/bottom_safe_area.dart';
 import '../../shared/layout/appbar.dart';
@@ -60,6 +61,7 @@ class _EmojisScreenState extends State<EmojisScreen> {
                 width: double.infinity,
                 color: Theme.of(context).colorScheme.shadow,
                 child: ListWheelScrollView.useDelegate(
+                  onSelectedItemChanged: (_) => Haptics.f(H.select),
                   physics: const FixedExtentScrollPhysics(),
                   controller: controller,
                   perspective: 0.006,

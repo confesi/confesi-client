@@ -1,4 +1,5 @@
 import 'package:confesi/application/user/cubit/notifications_cubit.dart';
+import 'package:confesi/core/services/haptics/haptics.dart';
 import 'package:confesi/core/services/rooms/rooms_service.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:flutter/cupertino.dart';
@@ -99,6 +100,7 @@ class _ChatInputState extends State<ChatInput> {
             absorbing: isLoading,
             child: TouchableScale(
               onTap: () {
+                Haptics.f(H.regular);
                 final oldVal = widget.controller.text;
                 setState(() {
                   widget.controller.clear();
@@ -106,7 +108,7 @@ class _ChatInputState extends State<ChatInput> {
                 sendMsg(oldVal);
               },
               child: Container(
-                padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.all(13),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.secondary,
                   shape: BoxShape.circle,
