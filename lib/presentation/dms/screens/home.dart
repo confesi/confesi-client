@@ -7,6 +7,7 @@ import 'package:confesi/core/styles/typography.dart';
 import 'package:confesi/init.dart';
 import 'package:confesi/models/room.dart';
 import 'package:confesi/presentation/dms/widgets/room_tile.dart';
+import 'package:confesi/presentation/shared/behaviours/init_scale.dart';
 import 'package:confesi/presentation/shared/edited_source_widgets/swipe_refresh.dart';
 import 'package:confesi/presentation/shared/indicators/loading_or_alert.dart';
 import 'package:confesi/presentation/shared/layout/appbar.dart';
@@ -89,7 +90,7 @@ class RoomsScreen extends StatelessWidget {
                                   children: [
                                     Container(
                                       constraints: const BoxConstraints(maxWidth: 100),
-                                      child: Image.asset(walrusHeadImgPath),
+                                      child: InitScale(child: Image.asset(walrusHeadImgPath)),
                                     ),
                                     const SizedBox(height: 15),
                                     FractionallySizedBox(

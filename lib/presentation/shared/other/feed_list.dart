@@ -1,4 +1,5 @@
 import 'package:confesi/application/user/cubit/notifications_cubit.dart';
+import 'package:confesi/presentation/shared/behaviours/init_scale.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -268,11 +269,6 @@ class _FeedListState extends State<FeedList> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Container(
-                              constraints: const BoxConstraints(maxWidth: 150),
-                              child: Image.asset(walrusFullBodyImgPath),
-                            ),
-                            const SizedBox(height: 20),
                             Text(
                               "Nothing found. Swipe to refresh.",
                               style: kBody.copyWith(
@@ -292,10 +288,7 @@ class _FeedListState extends State<FeedList> {
               if (index == widget.controller.items.length + 1) {
                 return Padding(
                   padding: const EdgeInsets.only(bottom: floatingBottomNavOffset), // extra space on bottom
-                  child: AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 250),
-                    child: buildIndicator(),
-                  ),
+                  child: buildIndicator(),
                 );
               }
 

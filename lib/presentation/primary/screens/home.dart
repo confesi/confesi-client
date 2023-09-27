@@ -122,7 +122,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                             color: Theme.of(context).colorScheme.background,
                             borderRadius: const BorderRadius.all(Radius.circular(50)),
                             border: Border.all(
-                              color: Theme.of(context).colorScheme.tertiary,
+                              color: Theme.of(context).colorScheme.secondary,
                               width: borderSize * 4,
                               strokeAlign: BorderSide.strokeAlignInside,
                             ),

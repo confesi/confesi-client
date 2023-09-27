@@ -37,9 +37,12 @@ class SearchedSchoolTile extends StatelessWidget {
       margin: const EdgeInsets.only(top: 10),
       decoration: BoxDecoration(
         border: Border.all(
-            color: Theme.of(context).colorScheme.onBackground, width: borderSize, strokeAlign: BorderSide.strokeAlignInside),
+            color: Theme.of(context).colorScheme.onBackground,
+            width: borderSize,
+            strokeAlign: BorderSide.strokeAlignInside),
         color: Theme.of(context).colorScheme.background,
-        borderRadius:  BorderRadius.all(Radius.circular(Provider.of<UserAuthService>(context).data().componentCurviness.borderRadius)),
+        borderRadius: BorderRadius.all(
+            Radius.circular(Provider.of<UserAuthService>(context).data().componentCurviness.borderRadius)),
       ),
       child: Padding(
         padding: const EdgeInsets.all(15),

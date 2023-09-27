@@ -57,29 +57,18 @@ class _HottestTileState extends State<HottestTile> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.secondary,
-                              borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(20),
-                              ),
-                            ),
-                            padding: const EdgeInsets.all(10),
-                            child: Text(
-                              widget.post.post.school.name,
-                              style: kTitle.copyWith(color: Theme.of(context).colorScheme.onSecondary),
-                              textAlign: TextAlign.center,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
                           Expanded(
                             flex: 3,
                             child: AnimatedContainer(
                               duration: const Duration(milliseconds: 250),
                               width: double.infinity,
-                              child: CachedOnlineImage(url: widget.post.post.school.imgUrl),
+                              child: ClipRRect(
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(20),
+                                  topRight: Radius.circular(20),
+                                ),
+                                child: CachedOnlineImage(url: widget.post.post.school.imgUrl),
+                              ),
                             ),
                           ),
                           Expanded(
@@ -101,18 +90,31 @@ class _HottestTileState extends State<HottestTile> {
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.all(15),
-                                  child: HeaderGroupText(
-                                    small: true,
-                                    expandsTopText: true,
-                                    onSecondaryColors: false,
-                                    multiLine: true,
-                                    spaceBetween: 15,
-                                    left: true,
-                                    header: widget.post.post.title.isEmpty
-                                        ? widget.post.post.content
-                                        : widget.post.post.title,
-                                    body:
-                                        '${widget.post.emojis.join('  ')}${widget.post.post.yearOfStudy.type != null ? "\nYear ${widget.post.post.yearOfStudy.type}" : ''}${widget.post.post.faculty.faculty != null ? "\n${widget.post.post.faculty.faculty}" : ''}',
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        widget.post.post.school.name,
+                                        style: kTitle.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                                        textAlign: TextAlign.center,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      Expanded(
+                                        child: HeaderGroupText(
+                                          small: true,
+                                          expandsTopText: true,
+                                          onSecondaryColors: false,
+                                          multiLine: true,
+                                          spaceBetween: 15,
+                                          left: true,
+                                          header: widget.post.post.title.isEmpty
+                                              ? widget.post.post.content
+                                              : widget.post.post.title,
+                                          body:
+                                              '${widget.post.emojis.join('  ')}${widget.post.post.yearOfStudy.type != null ? "\nYear ${widget.post.post.yearOfStudy.type}" : ''}${widget.post.post.faculty.faculty != null ? "\n${widget.post.post.faculty.faculty}" : ''}',
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],
