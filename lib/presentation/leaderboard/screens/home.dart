@@ -110,7 +110,6 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
               .values
               .whereType<InfiniteScrollIndexable>()
               .toList()),
-
         loadMore: (_) async =>
             await context.read<LeaderboardCubit>().loadRankings(forceRefresh: state.schoolIds.isEmpty),
         onPullToRefresh: () async => await context.read<LeaderboardCubit>().loadRankings(forceRefresh: true),
@@ -127,13 +126,16 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
             await context.read<LeaderboardCubit>().loadRankings(forceRefresh: state.schoolIds.isEmpty),
       );
     } else {
-      return LoadingOrAlert(
-        message: StateMessage(state is LeaderboardError ? state.message : null,
-            () => context.read<LeaderboardCubit>().loadRankings(forceRefresh: true)),
-        isLoading: (state is! LeaderboardError &&
-                (state is LeaderboardData && state.feedState == LeaderboardFeedState.errorLoadingMore)) ||
-            (state is LeaderboardData && state.schoolIds.isEmpty) ||
-            (state is LeaderboardLoading),
+      return Padding(
+        padding: const EdgeInsets.only(bottom: floatingBottomNavOffset),
+        child: LoadingOrAlert(
+          message: StateMessage(state is LeaderboardError ? state.message : null,
+              () => context.read<LeaderboardCubit>().loadRankings(forceRefresh: true)),
+          isLoading: (state is! LeaderboardError &&
+                  (state is LeaderboardData && state.feedState == LeaderboardFeedState.errorLoadingMore)) ||
+              (state is LeaderboardData && state.schoolIds.isEmpty) ||
+              (state is LeaderboardLoading),
+        ),
       );
     }
   }

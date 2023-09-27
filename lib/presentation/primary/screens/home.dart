@@ -110,8 +110,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       decoration: BoxDecoration(
                         boxShadow: [
                           BoxShadow(
-                            color: Theme.of(context).colorScheme.shadow.withOpacity(0.9),
-                            blurRadius: 30,
+                            color: Theme.of(context).colorScheme.shadow,
+                            blurRadius: 50,
                           ),
                         ],
                       ),
@@ -126,7 +126,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                               width: borderSize * 4,
                               strokeAlign: BorderSide.strokeAlignInside,
                             ),
-                            // shadow
                           ),
                           child: TabBar(
                             onTap: (int newIndex) {

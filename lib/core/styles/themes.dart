@@ -46,10 +46,10 @@ class AppTheme {
       error: Color.fromARGB(255, 231, 104, 104), // Keeping error color consistent
       onError: Colors.white, // White text/icons for error background
       background: Color.fromARGB(255, 255, 255, 255), // Pure white background
-      onBackground: Color.fromARGB(255, 180, 180, 180), // Darker text on white background
-      surface: Color.fromARGB(255, 253, 253, 253), // Almost white surface
+      onBackground: Colors.transparent, // Darker text on white background
+      surface: Color.fromARGB(255, 241, 241, 241), // Almost white surface
       onSurface: Color.fromARGB(255, 0, 0, 0), // Dark text/icons for almost white surface
-      shadow: Color.fromARGB(255, 240, 240, 240), // Light shadow
+      shadow: Color.fromARGB(255, 243, 243, 243), // Light shadow
       primaryContainer: Color(0xff555555), // Dark primary container for contrast
       secondaryContainer: Color(0xfffde5b6), // Keeping the secondary container consistent
       onErrorContainer: Color(0xff59CE8F), // Keeping it consistent

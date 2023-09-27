@@ -52,7 +52,7 @@ class _HottestTileState extends State<HottestTile> {
                           width: borderSize,
                           strokeAlign: BorderSide.strokeAlignInside,
                         ),
-                        borderRadius: BorderRadius.circular(10.0), // Added rounded corners
+                        borderRadius: BorderRadius.circular(20.0), // Added rounded corners
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,8 +62,8 @@ class _HottestTileState extends State<HottestTile> {
                             decoration: BoxDecoration(
                               color: Theme.of(context).colorScheme.secondary,
                               borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(10),
-                                topRight: Radius.circular(10),
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(20),
                               ),
                             ),
                             padding: const EdgeInsets.all(10),
@@ -75,7 +75,7 @@ class _HottestTileState extends State<HottestTile> {
                             ),
                           ),
                           Expanded(
-                            flex: 2,
+                            flex: 3,
                             child: AnimatedContainer(
                               duration: const Duration(milliseconds: 250),
                               width: double.infinity,

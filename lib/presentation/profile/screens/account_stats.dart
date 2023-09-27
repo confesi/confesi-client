@@ -99,7 +99,7 @@ class _AccountProfileStatsState extends State<AccountProfileStats> {
                       physics: const BouncingScrollPhysics(),
                       controller: ScrollController(),
                       scrollBarVisible: false,
-                      inlineBottomOrRightPadding: 15,
+                      inlineBottomOrRightPadding: 15 + floatingBottomNavOffset,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 15),
                         child: Column(

@@ -58,6 +58,7 @@ class RoomsScreen extends StatelessWidget {
               // if there is nothing from firestore listview (empty)
               Expanded(
                 child: Container(
+                  padding: const EdgeInsets.only(bottom: floatingBottomNavOffset),
                   color: Theme.of(context).colorScheme.shadow,
                   width: double.infinity,
                   child: Center(
