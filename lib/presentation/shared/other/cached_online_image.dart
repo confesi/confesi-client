@@ -121,6 +121,7 @@ class CachedOnlineImageState extends State<CachedOnlineImage> with TickerProvide
 
     try {
       cachedNetworkImageWidget = CachedNetworkImage(
+        cacheKey: widget.url,
         fadeInDuration: Duration.zero,
         fit: widget.fit,
         imageUrl: _ensureHttpsUrl(widget.url),

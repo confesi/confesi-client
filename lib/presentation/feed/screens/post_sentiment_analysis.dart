@@ -43,6 +43,7 @@ class _SentimentAnalysisScreenState extends State<SentimentAnalysisScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 15),
         controller: ScrollController(),
         child: InitScale(
+          hapticEnlarge: true,
           child: PieChart(
             chartRadius: heightFraction(context, .4),
             ringStrokeWidth: 10,

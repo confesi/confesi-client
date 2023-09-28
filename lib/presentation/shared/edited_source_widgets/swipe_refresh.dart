@@ -577,13 +577,6 @@ class SwipeRefreshState extends State<SwipeRefresh> with TickerProviderStateMixi
                               decoration: BoxDecoration(
                                 color: Theme.of(context).colorScheme.secondary,
                                 shape: BoxShape.circle,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Theme.of(context).colorScheme.secondary,
-                                    blurRadius: 10,
-                                    offset: const Offset(0, 0),
-                                  ),
-                                ],
                               ),
                               child: AspectRatio(
                                 aspectRatio: 1,

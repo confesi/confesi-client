@@ -1,25 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class InitScale extends StatefulWidget {
   /// On [initState], makes the widget animate to its full size.
   const InitScale({
-    super.key,
+    Key? key,
     required this.child,
     this.durationOfScaleInMilliseconds = 450,
     this.delayDurationInMilliseconds = 0,
     this.addedToScale = 0,
-  });
+    this.hapticEnlarge = false,
+  }) : super(key: key);
 
   final Widget child;
   final int durationOfScaleInMilliseconds;
   final int delayDurationInMilliseconds;
   final double addedToScale;
+  final bool hapticEnlarge;
 
   @override
-  State<InitScale> createState() => InitScaleState();
+  State<InitScale> createState() => _InitScaleState();
 }
 
-class InitScaleState extends State<InitScale> with SingleTickerProviderStateMixin {
+class _InitScaleState extends State<InitScale> with SingleTickerProviderStateMixin {
   late AnimationController _animController;
   late Animation _anim;
   bool _isDisposed = false;
@@ -49,6 +52,9 @@ class InitScaleState extends State<InitScale> with SingleTickerProviderStateMixi
 
     _animController.forward();
     _animController.addListener(() {
+      if (widget.hapticEnlarge && _anim.value > 0.5) {
+        HapticFeedback.selectionClick();
+      }
       if (mounted) {
         setState(() {});
       }
