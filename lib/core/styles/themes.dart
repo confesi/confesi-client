@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+// tertiary: Color(0xff9EDDFF),
+
 class AppTheme {
   static ThemeData dark = ThemeData(
     brightness: Brightness.dark,
@@ -13,7 +15,7 @@ class AppTheme {
       onPrimary: Color(0xff333333),
       secondary: Color.fromARGB(255, 255, 111, 111),
       onSecondary: Color.fromARGB(255, 255, 255, 255),
-      tertiary: Color.fromARGB(255, 117, 67, 255),
+      tertiary: Color.fromARGB(255, 99, 200, 255),
       surfaceTint: Color(0xff90A17D),
       error: Color(0xffFF6F6F),
       onError: Colors.white,

@@ -171,7 +171,7 @@ class FeedDrawer extends StatelessWidget {
                 begin: Alignment.bottomLeft,
                 end: Alignment.topRight,
                 colors: [
-                  Theme.of(context).colorScheme.secondary,
+                  Theme.of(context).colorScheme.tertiary,
                   Theme.of(context).colorScheme.tertiary,
                 ],
               ),

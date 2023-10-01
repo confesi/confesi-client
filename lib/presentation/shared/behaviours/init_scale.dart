@@ -52,8 +52,10 @@ class _InitScaleState extends State<InitScale> with SingleTickerProviderStateMix
 
     _animController.forward();
     _animController.addListener(() {
-      if (widget.hapticEnlarge && _anim.value > 0.5) {
+      if (widget.hapticEnlarge && _anim.value > 0.5 && _anim.value < 0.8) {
         HapticFeedback.selectionClick();
+      } else if (widget.hapticEnlarge && _anim.value > 0.8) {
+        HapticFeedback.mediumImpact();
       }
       if (mounted) {
         setState(() {});

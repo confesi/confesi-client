@@ -72,55 +72,61 @@ class _ImgViewerState extends State<ImgViewer> {
   Widget build(BuildContext context) {
     return widget.imgUrls.isEmpty
         ? const SizedBox()
-        : AspectRatio(
-            aspectRatio: 1,
-            child: Container(
-              color: Theme.of(context).colorScheme.surface,
-              width: MediaQuery.of(context).size.width,
-              child: Stack(
-                clipBehavior: Clip.hardEdge,
-                alignment: Alignment.bottomCenter,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Haptics.f(H.regular);
-                      !isBlurred
-                          ? router.push("/img",
-                              extra: ImgProps(widget.imgUrls[currentIdx], isBlurred, "$heroTag$currentIdx"))
-                          : null;
-                    },
-                    child: PageView(
-                      physics: const ClampingScrollPhysics(),
-                      onPageChanged: (v) => setState(() => currentIdx = v),
-                      children: widget.imgUrls.map((imgUrl) {
-                        if (heroCounter == widget.imgUrls.length) heroCounter = 0;
-                        return KeepWidgetAlive(
-                          child: Hero(
-                            tag: "$heroTag${heroCounter++}",
-                            child: CachedOnlineImage(
-                              url: imgUrl,
-                              isBlurred: isBlurred,
-                              fit: BoxFit.fitWidth,
-                              onBlur: (blur) => setState(() => isBlurred = blur),
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                    ),
+        : LayoutBuilder(
+            builder: (context, constraints) {
+              final double aspectRatio =
+                  constraints.maxHeight < constraints.maxWidth ? constraints.maxHeight / constraints.maxWidth : 1;
+              return AspectRatio(
+                aspectRatio: aspectRatio,
+                child: Container(
+                  color: Theme.of(context).colorScheme.surface,
+                  width: MediaQuery.of(context).size.width,
+                  child: Stack(
+                    clipBehavior: Clip.hardEdge,
+                    alignment: Alignment.bottomCenter,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Haptics.f(H.regular);
+                          !isBlurred
+                              ? router.push("/img",
+                                  extra: ImgProps(widget.imgUrls[currentIdx], isBlurred, "$heroTag$currentIdx"))
+                              : null;
+                        },
+                        child: PageView(
+                          physics: const ClampingScrollPhysics(),
+                          onPageChanged: (v) => setState(() => currentIdx = v),
+                          children: widget.imgUrls.map((imgUrl) {
+                            if (heroCounter == widget.imgUrls.length) heroCounter = 0;
+                            return KeepWidgetAlive(
+                              child: Hero(
+                                tag: "$heroTag${heroCounter++}",
+                                child: CachedOnlineImage(
+                                  url: imgUrl,
+                                  isBlurred: isBlurred,
+                                  fit: BoxFit.fitWidth,
+                                  onBlur: (blur) => setState(() => isBlurred = blur),
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(15),
+                        child: ScrollDots(
+                          pageLength: widget.imgUrls.length,
+                          pageIndex: currentIdx,
+                          activeColor: Theme.of(context).colorScheme.tertiary,
+                          borderColor: Theme.of(context).colorScheme.primary,
+                          bgColor: Colors.transparent,
+                        ),
+                      ),
+                    ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(15),
-                    child: ScrollDots(
-                      pageLength: widget.imgUrls.length,
-                      pageIndex: currentIdx,
-                      activeColor: Theme.of(context).colorScheme.tertiary,
-                      borderColor: Theme.of(context).colorScheme.primary,
-                      bgColor: Colors.transparent,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+                ),
+              );
+            },
           );
   }
 }
