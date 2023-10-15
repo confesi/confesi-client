@@ -58,7 +58,7 @@ class LoadingOrAlert extends StatelessWidget {
                                       constraints: const BoxConstraints(maxHeight: 20),
                                       padding: const EdgeInsets.all(10),
                                       decoration: BoxDecoration(
-                                        color: Theme.of(context).colorScheme.secondary,
+                                        color: Theme.of(context).colorScheme.tertiary,
                                         shape: BoxShape.circle,
                                       ),
                                       child: Image.asset(

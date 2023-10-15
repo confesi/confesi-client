@@ -32,3 +32,7 @@ int truncateTextLastIndex(String text, int maxLength, {String ellipsis = '...'})
     return maxLength - 1; // returning the last index before truncation
   }
 }
+
+String removeSubsequentNewLines(String text) {
+  return text.replaceAll(RegExp(r'\n{2,}'), '\n');
+}

@@ -34,6 +34,7 @@ import '../../../core/styles/typography.dart';
 import '../../../core/types/infinite_scrollable_indexable.dart';
 import '../../../core/utils/funcs/links_from_text.dart';
 import '../../../core/utils/numbers/add_commas_to_number.dart';
+import '../../../core/utils/strings/truncate_text.dart';
 import '../../../core/utils/verified_students/verified_user_only.dart';
 import '../../../init.dart';
 import '../../../models/comment.dart';
@@ -218,7 +219,7 @@ class _CommentsHomeState extends State<CommentsHome> {
                       children: [
                         const SizedBox(height: 15),
                         _highlightText(
-                          post.post.title,
+                          removeSubsequentNewLines(post.post.title),
                           widget.props.titleLastChar,
                           kDisplay1.copyWith(
                             color: Theme.of(context).colorScheme.primary,
@@ -277,7 +278,7 @@ class _CommentsHomeState extends State<CommentsHome> {
                       children: [
                         const SizedBox(height: 10),
                         _highlightText(
-                          post.post.content,
+                          removeSubsequentNewLines(post.post.content),
                           widget.props.bodyLastChar,
                           kBody.copyWith(
                             color: Theme.of(context).colorScheme.primary,

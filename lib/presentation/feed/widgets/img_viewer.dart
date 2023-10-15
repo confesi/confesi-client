@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/router/go_router.dart';
@@ -74,8 +75,10 @@ class _ImgViewerState extends State<ImgViewer> {
         ? const SizedBox()
         : LayoutBuilder(
             builder: (context, constraints) {
-              final double aspectRatio =
-                  constraints.maxHeight < constraints.maxWidth ? constraints.maxHeight / constraints.maxWidth : 1;
+              final double aspectRatio = min(
+                constraints.maxHeight / constraints.maxWidth,
+                1.0,
+              );
               return AspectRatio(
                 aspectRatio: aspectRatio,
                 child: Container(
@@ -170,7 +173,6 @@ class ImgViewState extends State<ImgView> {
                         isBlurred: blur,
                         fit: BoxFit.fitWidth,
                         url: widget.props.url,
-                        // onBlur: (b) => setState(() => blur = b),
                       ),
                     ),
                   ),
