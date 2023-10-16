@@ -97,7 +97,7 @@ dependencies:
   path: ^1.8.2
   path_provider: ^2.0.14
   desktop_window: ^0.4.0
-  firebase_analytics: ^10.4.4
+  firebase_analytics: ^10.5.1
   screenshot: ^2.1.0
   screenshot_callback: ^2.0.3
   hive_generator: ^2.0.0
