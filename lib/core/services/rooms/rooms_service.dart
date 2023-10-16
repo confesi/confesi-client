@@ -44,7 +44,8 @@ class RoomsService extends ChangeNotifier {
 
   UserAuthService get userAuthService => sl.get<UserAuthService>();
 
-  RoomsService(this._readApi, this._msgApi, this._roomNameChangeApi, this._deleteChatApi, this._createNewRoomApi, this._deleteRoomApi) {
+  RoomsService(this._readApi, this._msgApi, this._roomNameChangeApi, this._deleteChatApi, this._createNewRoomApi,
+      this._deleteRoomApi) {
     // loadRooms();
     startListenerForRooms();
   }
@@ -101,21 +102,21 @@ class RoomsService extends ChangeNotifier {
     }
   }
 
-  // Future<void> addRoomAndLoadChat(Room room) async {
-  //   try {
-  //     if (!_rooms.containsKey(room.roomId)) {
-  //       _rooms[room.roomId] = room;
-  //       await loadInitialRoomData(room.roomId, sl.get<UserAuthService>().uid);
+  Future<void> addRoomAndLoadChat(Room room) async {
+    try {
+      if (!_rooms.containsKey(room.roomId)) {
+        _rooms[room.roomId] = room;
+        await loadInitialRoomData(room.roomId, sl.get<UserAuthService>().uid);
 
-  //       notifyListeners();
-  //     } else {
-  //       print("Room already exists, not adding it again");
-  //     }
-  //   } catch (e) {
-  //     roomsError = true;
-  //     notifyListeners();
-  //   }
-  // }
+        notifyListeners();
+      } else {
+        print("Room already exists, not adding it again");
+      }
+    } catch (e) {
+      roomsError = true;
+      notifyListeners();
+    }
+  }
 
   Future<Either<ApiSuccess, String>> addChat(String roomId, String msg) async {
     try {

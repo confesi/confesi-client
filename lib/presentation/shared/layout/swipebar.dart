@@ -14,7 +14,7 @@ class SwipebarLayout extends StatelessWidget {
           width: 40,
           height: 4,
           decoration: BoxDecoration(
-            color: color ?? Theme.of(context).colorScheme.surface,
+            color: color ?? Theme.of(context).colorScheme.onBackground,
             borderRadius: const BorderRadius.all(
               Radius.circular(20),
             ),

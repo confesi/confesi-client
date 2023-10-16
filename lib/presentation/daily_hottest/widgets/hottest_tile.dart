@@ -3,6 +3,7 @@ import 'package:confesi/models/post.dart';
 import 'package:confesi/presentation/shared/other/cached_online_image.dart';
 import '../../../core/styles/typography.dart';
 import 'package:flutter/material.dart';
+import '../../shared/edited_source_widgets/text.dart';
 import '../../shared/text/header_group.dart';
 
 class HottestTile extends StatefulWidget {
@@ -93,7 +94,7 @@ class _HottestTileState extends State<HottestTile> {
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text(
+                                      TextNoVertOverflow(
                                         widget.post.post.school.name,
                                         style: kTitle.copyWith(color: Theme.of(context).colorScheme.onSurface),
                                         textAlign: TextAlign.center,

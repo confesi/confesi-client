@@ -143,7 +143,7 @@ class RoomWithChatState extends State<RoomWithChat> {
     // Provider.of<RoomsService>(context, listen: false).updateRoomReadTime(widget.room.roomId);
 
     if (!roomsService.rooms.containsKey(widget.room.roomId)) {
-      // await roomsService.addRoomAndLoadChat(widget.room);
+      await roomsService.addRoomAndLoadChat(widget.room);
     }
   }
 

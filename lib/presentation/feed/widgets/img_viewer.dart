@@ -4,6 +4,7 @@ import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/router/go_router.dart';
 import 'package:confesi/core/services/haptics/haptics.dart';
 import 'package:confesi/core/utils/sizing/height_fraction.dart';
+import 'package:confesi/core/utils/sizing/width_fraction.dart';
 import 'package:confesi/presentation/primary/widgets/scroll_dots.dart';
 import 'package:confesi/presentation/shared/behaviours/init_scale.dart';
 import 'package:confesi/presentation/shared/buttons/circle_icon_btn.dart';
@@ -75,58 +76,62 @@ class _ImgViewerState extends State<ImgViewer> {
         ? const SizedBox()
         : LayoutBuilder(
             builder: (context, constraints) {
-              final double aspectRatio = min(
-                constraints.maxHeight / constraints.maxWidth,
-                1.0,
-              );
-              return AspectRatio(
-                aspectRatio: aspectRatio,
-                child: Container(
-                  color: Theme.of(context).colorScheme.surface,
-                  width: MediaQuery.of(context).size.width,
-                  child: Stack(
-                    clipBehavior: Clip.hardEdge,
-                    alignment: Alignment.bottomCenter,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Haptics.f(H.regular);
-                          !isBlurred
-                              ? router.push("/img",
-                                  extra: ImgProps(widget.imgUrls[currentIdx], isBlurred, "$heroTag$currentIdx"))
-                              : null;
-                        },
-                        child: PageView(
-                          physics: const ClampingScrollPhysics(),
-                          onPageChanged: (v) => setState(() => currentIdx = v),
-                          children: widget.imgUrls.map((imgUrl) {
-                            if (heroCounter == widget.imgUrls.length) heroCounter = 0;
-                            return KeepWidgetAlive(
-                              child: Hero(
-                                tag: "$heroTag${heroCounter++}",
-                                child: CachedOnlineImage(
-                                  url: imgUrl,
-                                  isBlurred: isBlurred,
-                                  fit: BoxFit.fitWidth,
-                                  onBlur: (blur) => setState(() => isBlurred = blur),
-                                ),
+              print("found height: ${constraints.minHeight}");
+              // final double aspectRatio = min(
+              //   constraints.maxHeight / constraints.maxWidth,
+              //   1.0,
+              // );
+              return Container(
+                // use constraints field to replace the aspectratio, but instead have the MAX ratio 1:1, but if the height is < 1:1 (height < width), accept that
+                constraints: BoxConstraints(
+                  // todo: maxHeight: image height if it's smaller than width, else, width,
+                  maxHeight: constraints.maxWidth,
+                  maxWidth: constraints.maxWidth,
+                ),
+                color: Theme.of(context).colorScheme.surface,
+                width: MediaQuery.of(context).size.width,
+                child: Stack(
+                  clipBehavior: Clip.hardEdge,
+                  alignment: Alignment.bottomCenter,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Haptics.f(H.regular);
+                        !isBlurred
+                            ? router.push("/img",
+                                extra: ImgProps(widget.imgUrls[currentIdx], isBlurred, "$heroTag$currentIdx"))
+                            : null;
+                      },
+                      child: PageView(
+                        physics: const ClampingScrollPhysics(),
+                        onPageChanged: (v) => setState(() => currentIdx = v),
+                        children: widget.imgUrls.map((imgUrl) {
+                          if (heroCounter == widget.imgUrls.length) heroCounter = 0;
+                          return KeepWidgetAlive(
+                            child: Hero(
+                              tag: "$heroTag${heroCounter++}",
+                              child: CachedOnlineImage(
+                                url: imgUrl,
+                                isBlurred: isBlurred,
+                                fit: BoxFit.fitWidth,
+                                onBlur: (blur) => setState(() => isBlurred = blur),
                               ),
-                            );
-                          }).toList(),
-                        ),
+                            ),
+                          );
+                        }).toList(),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(15),
-                        child: ScrollDots(
-                          pageLength: widget.imgUrls.length,
-                          pageIndex: currentIdx,
-                          activeColor: Theme.of(context).colorScheme.tertiary,
-                          borderColor: Theme.of(context).colorScheme.primary,
-                          bgColor: Colors.transparent,
-                        ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(15),
+                      child: ScrollDots(
+                        pageLength: widget.imgUrls.length,
+                        pageIndex: currentIdx,
+                        activeColor: Theme.of(context).colorScheme.tertiary,
+                        borderColor: Theme.of(context).colorScheme.primary,
+                        bgColor: Colors.transparent,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               );
             },

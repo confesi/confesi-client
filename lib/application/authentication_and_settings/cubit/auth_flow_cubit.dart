@@ -125,6 +125,7 @@ class AuthFlowCubit extends Cubit<AuthFlowState> {
 
       // catch all firebase auth exceptions
     } on FirebaseAuthException catch (e) {
+      print("caught some exception here!!!!!!!!!!");
       if (e.code == 'user-not-found') {
         emit(const AuthFlowNotification("User not found", NotificationType.failure));
       } else if (e.code == 'wrong-password') {

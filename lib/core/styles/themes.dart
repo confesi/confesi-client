@@ -22,12 +22,13 @@ class AppTheme {
       background: Color.fromARGB(255, 30, 34, 43),
       onBackground: Color.fromARGB(255, 58, 63, 79),
       surface: Color.fromARGB(255, 38, 44, 58),
-      onSurface: Color.fromARGB(255, 78, 102, 128),
+      onSurface: Color.fromARGB(255, 105, 133, 163),
       shadow: Color.fromARGB(255, 26, 27, 36), // Color.fromARGB(255, 26, 27, 36)
       primaryContainer: Color(0xff333333),
       secondaryContainer: Color(0xfffde5b6),
       onErrorContainer: Color(0xff59CE8F),
       onSecondaryContainer: Color(0xffEB4747),
+      onTertiaryContainer: Color.fromARGB(255, 38, 44, 58),
     ),
   );
 
@@ -41,9 +42,9 @@ class AppTheme {
       brightness: Brightness.light,
       primary: Color.fromARGB(255, 0, 0, 0), // Darker shade for primary text/actions
       onPrimary: Color(0xffFAFAFA), // Almost white for content on primary
-      tertiary: Color.fromARGB(255, 0, 0, 0),
+      tertiary: Color.fromARGB(255, 37, 36, 36),
       onSecondary: Color.fromARGB(255, 255, 255, 255), // White for content on secondary color
-      secondary: Color.fromARGB(255, 0, 0, 0),
+      secondary: Color.fromARGB(255, 37, 36, 36),
       surfaceTint: Color(0xffA1B19C), // A slightly brighter surface tint
       error: Color.fromARGB(255, 231, 104, 104), // Keeping error color consistent
       onError: Colors.white, // White text/icons for error background
@@ -56,6 +57,7 @@ class AppTheme {
       secondaryContainer: Color(0xfffde5b6), // Keeping the secondary container consistent
       onErrorContainer: Color(0xff59CE8F), // Keeping it consistent
       onSecondaryContainer: Color(0xffEB4747), // Keeping it consistent
+      onTertiaryContainer: Color.fromARGB(255, 227, 224, 224),
     ),
   );
 }

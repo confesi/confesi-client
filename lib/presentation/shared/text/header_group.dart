@@ -3,6 +3,7 @@ import 'package:confesi/core/utils/strings/truncate_text.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/styles/typography.dart';
+import '../edited_source_widgets/text.dart';
 
 class HeaderGroupText extends StatelessWidget {
   const HeaderGroupText({
@@ -26,7 +27,7 @@ class HeaderGroupText extends StatelessWidget {
   final bool onSecondaryColors;
   final double spaceBetween;
 
-  Widget buildTopText(BuildContext context) => Text(
+  Widget buildTopText(BuildContext context) => TextNoVertOverflow(
         truncateText(header, dailyHottestPreviewLength),
         style: kFunkyDisplay.copyWith(color: Theme.of(context).colorScheme.primary),
         textAlign: left ? TextAlign.left : TextAlign.center,
@@ -43,7 +44,7 @@ class HeaderGroupText extends StatelessWidget {
       children: [
         expandsTopText ? Expanded(child: buildTopText(context)) : Flexible(child: buildTopText(context)),
         SizedBox(height: spaceBetween),
-        Text(
+        TextNoVertOverflow(
           body,
           style: kTitle.copyWith(
             color:

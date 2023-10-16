@@ -15,6 +15,7 @@ import 'package:confesi/presentation/feed/widgets/img_viewer.dart';
 import 'package:confesi/presentation/shared/behaviours/nav_blocker.dart';
 import 'package:confesi/presentation/shared/behaviours/one_theme_status_bar.dart';
 import 'package:confesi/presentation/shared/behaviours/themed_status_bar.dart';
+import 'package:confesi/presentation/shared/edited_source_widgets/text.dart';
 import 'package:confesi/presentation/shared/indicators/loading_or_alert.dart';
 import 'package:confesi/presentation/shared/other/widget_or_nothing.dart';
 import 'package:flutter/material.dart';
@@ -169,29 +170,31 @@ class _CommentsHomeState extends State<CommentsHome> {
       final highlightedWord = content.substring(highlightedWordStart, highlightedWordEnd);
       final afterHighlight = afterHighlightStart < content.length ? content.substring(afterHighlightStart) : "";
 
-      return RichText(
-        text: TextSpan(
-          children: [
-            TextSpan(
-              text: beforeHighlight,
-              style: baseStyle,
-            ),
-            TextSpan(
-              text: highlightedWord,
-              style: baseStyle.copyWith(
-                decoration: TextDecoration.underline, // This adds the underline
-                decorationColor: Theme.of(context).colorScheme.tertiary,
+      return ClipRRect(
+        child: RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: beforeHighlight,
+                style: baseStyle,
               ),
-            ),
-            TextSpan(
-              text: afterHighlight,
-              style: baseStyle,
-            ),
-          ],
+              TextSpan(
+                text: highlightedWord,
+                style: baseStyle.copyWith(
+                  decoration: TextDecoration.underline, // This adds the underline
+                  decorationColor: Theme.of(context).colorScheme.tertiary,
+                ),
+              ),
+              TextSpan(
+                text: afterHighlight,
+                style: baseStyle,
+              ),
+            ],
+          ),
         ),
       );
     } else {
-      return Text(
+      return TextNoVertOverflow(
         content,
         style: baseStyle,
         textAlign: TextAlign.left,
@@ -238,7 +241,7 @@ class _CommentsHomeState extends State<CommentsHome> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      TextNoVertOverflow(
                         "${post.post.school.name}${buildFaculty(post)}${buildYear(post)} • ${post.post.category.category}",
                         style: kDetail.copyWith(
                           color: Theme.of(context).colorScheme.secondary,
@@ -249,7 +252,7 @@ class _CommentsHomeState extends State<CommentsHome> {
                         mainAxisAlignment: MainAxisAlignment.start, // adjust this as per your alignment preference
                         crossAxisAlignment: CrossAxisAlignment.center, // adjust this too as per your needs
                         children: <Widget>[
-                          Text(
+                          TextNoVertOverflow(
                             "${timeAgoFromMicroSecondUnixTime(post.post.createdAt)}${post.emojis.isNotEmpty ? " • ${post.emojis.map((e) => e).join("")}" : ""}",
                             style: kDetail.copyWith(
                               color: Theme.of(context).colorScheme.tertiary,
@@ -258,7 +261,7 @@ class _CommentsHomeState extends State<CommentsHome> {
                           if (post.post.edited) ...[
                             // using spread operator to conditionally render widgets
                             const SizedBox(width: 5), // add some space between text widgets
-                            Text(
+                            TextNoVertOverflow(
                               "Edited",
                               style: kDetail.copyWith(
                                 color: Theme.of(context).colorScheme.onSurface,
@@ -571,7 +574,8 @@ class _CommentsHomeState extends State<CommentsHome> {
 
   @override
   Widget build(BuildContext ogContext) {
-    return ThemeStatusBar(
+    return OneThemeStatusBar(
+      brightness: Brightness.dark,
       child: KeyboardDismiss(
         child: Scaffold(
           resizeToAvoidBottomInset: true,
