@@ -70,7 +70,7 @@ class AlertIndicator extends StatelessWidget {
                         SimpleTextButton(
                           onTap: () => onPress(),
                           text: btnMsg,
-                          bgColor: Theme.of(context).colorScheme.background,
+                          bgColor: Theme.of(context).colorScheme.surface,
                         ),
                       ],
                     ),

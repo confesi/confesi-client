@@ -107,14 +107,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     child: Container(
                       alignment: Alignment.bottomCenter,
                       margin: const EdgeInsets.symmetric(horizontal: 15),
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Theme.of(context).colorScheme.shadow,
-                            blurRadius: 50,
-                          ),
-                        ],
-                      ),
                       child: ClipRRect(
                         borderRadius: const BorderRadius.all(Radius.circular(50)),
                         child: Container(

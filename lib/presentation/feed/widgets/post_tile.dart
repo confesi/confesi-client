@@ -19,6 +19,7 @@ import '../../../constants/shared/constants.dart';
 import '../../../core/router/go_router.dart';
 import '../../../core/services/user_auth/user_auth_service.dart';
 import '../../../core/styles/typography.dart';
+import '../../shared/edited_source_widgets/text.dart';
 import '../methods/show_post_options.dart';
 import '../utils/post_metadata_formatters.dart';
 
@@ -120,7 +121,7 @@ class PostTileState extends State<PostTile> {
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text(
+                                      TextNoVertOverflow(
                                         "${widget.post.post.school.name}${buildFaculty(widget.post)}${buildYear(widget.post)}",
                                         style: kDetail.copyWith(
                                           color: Theme.of(context).colorScheme.secondary,
@@ -133,7 +134,7 @@ class PostTileState extends State<PostTile> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center, // adjust this too as per your needs
                                         children: <Widget>[
-                                          Text(
+                                          TextNoVertOverflow(
                                             "${timeAgoFromMicroSecondUnixTime(widget.post.post.createdAt)}${widget.post.emojis.isNotEmpty ? " • ${widget.post.emojis.map((e) => e).join("")}" : ""}",
                                             style: kDetail.copyWith(
                                               color: Theme.of(context).colorScheme.tertiary,
@@ -142,7 +143,7 @@ class PostTileState extends State<PostTile> {
                                           if (widget.post.post.edited) ...[
                                             // using spread operator to conditionally render widgets
                                             const SizedBox(width: 5), // add some space between text widgets
-                                            Text(
+                                            TextNoVertOverflow(
                                               "Edited",
                                               style: kDetail.copyWith(
                                                 color: Theme.of(context).colorScheme.onSurface,
@@ -172,7 +173,7 @@ class PostTileState extends State<PostTile> {
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
-                            child: Text(
+                            child: TextNoVertOverflow(
                               truncateText(
                                   widget.post.post.title.isEmpty ? widget.post.post.content : widget.post.post.title,
                                   postTitlePreviewLength),
@@ -187,7 +188,7 @@ class PostTileState extends State<PostTile> {
                             showWidget: widget.post.post.title.isNotEmpty && widget.post.post.content.isNotEmpty,
                             child: Padding(
                               padding: const EdgeInsets.only(left: 15, right: 15, top: 5),
-                              child: Text(
+                              child: TextNoVertOverflow(
                                 truncateText(widget.post.post.content, postBodyPreviewLength),
                                 style: kBody.copyWith(
                                   color: Theme.of(context).colorScheme.primary,

@@ -41,14 +41,14 @@ class AppTheme {
       brightness: Brightness.light,
       primary: Color.fromARGB(255, 0, 0, 0), // Darker shade for primary text/actions
       onPrimary: Color(0xffFAFAFA), // Almost white for content on primary
-      tertiary: Color.fromARGB(255, 124, 68, 253), // Using tertiary color from dark theme
+      tertiary: Color.fromARGB(255, 0, 0, 0),
       onSecondary: Color.fromARGB(255, 255, 255, 255), // White for content on secondary color
-      secondary: Color.fromARGB(255, 124, 68, 253), // Using secondary color from dark theme
+      secondary: Color.fromARGB(255, 0, 0, 0),
       surfaceTint: Color(0xffA1B19C), // A slightly brighter surface tint
       error: Color.fromARGB(255, 231, 104, 104), // Keeping error color consistent
       onError: Colors.white, // White text/icons for error background
       background: Color.fromARGB(255, 255, 255, 255), // Pure white background
-      onBackground: Colors.transparent, // Darker text on white background
+      onBackground: Color.fromARGB(255, 229, 222, 222), // Darker text on white background
       surface: Color.fromARGB(255, 241, 241, 241), // Almost white surface
       onSurface: Color.fromARGB(255, 0, 0, 0), // Dark text/icons for almost white surface
       shadow: Color.fromARGB(255, 243, 243, 243), // Light shadow

@@ -12,6 +12,7 @@ import 'package:confesi/presentation/shared/behaviours/init_scale.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:confesi/presentation/shared/buttons/simple_text.dart';
+import 'package:confesi/presentation/shared/edited_source_widgets/text.dart';
 import 'package:confesi/presentation/shared/other/feed_list.dart';
 import 'package:confesi/presentation/shared/other/widget_or_nothing.dart';
 import 'package:confesi/presentation/shared/overlays/button_options_sheet.dart';
@@ -238,7 +239,7 @@ class _CommentTileState extends State<CommentTile> {
                                 textAlign: TextAlign.left,
                               ),
                               const SizedBox(height: 10),
-                              Text(
+                              TextNoVertOverflow(
                                 truncating
                                     ? truncateText(widget.commentType.comment.comment.content, commentPreviewLength,
                                         ellipsis: "... (tap for more)")

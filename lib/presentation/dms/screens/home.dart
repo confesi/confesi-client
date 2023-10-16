@@ -89,12 +89,12 @@ class RoomsScreen extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Container(
-                                      constraints: const BoxConstraints(maxWidth: 100),
+                                      constraints: const BoxConstraints(maxWidth: 50),
                                       child: InitScale(child: Image.asset(walrusHeadImgPath)),
                                     ),
                                     const SizedBox(height: 15),
                                     FractionallySizedBox(
-                                      widthFactor: 3 / 4,
+                                      widthFactor: 1 / 2,
                                       child: Text(
                                         "You have no messages, absolute L.",
                                         style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
