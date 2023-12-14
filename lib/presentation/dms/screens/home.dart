@@ -94,9 +94,9 @@ class RoomsScreen extends StatelessWidget {
                                     ),
                                     const SizedBox(height: 15),
                                     FractionallySizedBox(
-                                      widthFactor: 1 / 2,
+                                      widthFactor: 2 / 3,
                                       child: Text(
-                                        "You have no messages, absolute L.",
+                                        "You have no messages.",
                                         style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
                                         textAlign: TextAlign.center,
                                       ),

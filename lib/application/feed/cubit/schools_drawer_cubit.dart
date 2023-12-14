@@ -51,6 +51,7 @@ class SchoolsDrawerCubit extends Cubit<SchoolsDrawerState> {
       final newState = s.copyWith(isLoadingRandomSchool: true);
       emit(newState);
       _api.cancelCurrReq();
+      print("HERE!!");
       (await _api.req(Verb.get, true,
               "/api/v1/schools/random${withoutSchoolId != null ? "?without-school=${withoutSchoolId.mid}" : ''}", {}))
           .fold(

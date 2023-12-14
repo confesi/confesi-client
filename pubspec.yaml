@@ -76,7 +76,10 @@ dependencies:
   url_launcher: ^6.1.6
   permission_handler: ^10.2.0
   share_plus: ^6.3.0
-  cached_network_image: ^3.2.2
+  cached_network_image:
+      git:
+        url: https://github.com/gauravmehta13/flutter_cached_network_image.git
+        path: cached_network_image
   map_launcher: ^2.5.0+1
   animated_text_kit: ^4.2.2
   link_preview_generator: ^1.2.0
