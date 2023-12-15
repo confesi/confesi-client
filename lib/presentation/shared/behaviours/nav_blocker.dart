@@ -34,8 +34,8 @@ class _NavBlockerState extends State<NavBlocker> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: widget.blocking ? () => Future.value(false) : null,
+    return PopScope(
+      canPop: !widget.blocking,
       child: widget.child,
     );
   }

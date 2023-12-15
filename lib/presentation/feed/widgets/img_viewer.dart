@@ -76,7 +76,6 @@ class _ImgViewerState extends State<ImgViewer> {
         ? const SizedBox()
         : LayoutBuilder(
             builder: (context, constraints) {
-              print("found height: ${constraints.minHeight}");
               // final double aspectRatio = min(
               //   constraints.maxHeight / constraints.maxWidth,
               //   1.0,
@@ -84,7 +83,7 @@ class _ImgViewerState extends State<ImgViewer> {
               return Container(
                 // use constraints field to replace the aspectratio, but instead have the MAX ratio 1:1, but if the height is < 1:1 (height < width), accept that
                 constraints: BoxConstraints(
-                  // todo: maxHeight: image height if it's smaller than width, else, width,
+                  // todo: maxHeight: image height if it's smaller than width, else, width
                   maxHeight: constraints.maxWidth,
                   maxWidth: constraints.maxWidth,
                 ),

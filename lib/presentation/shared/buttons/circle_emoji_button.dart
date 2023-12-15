@@ -28,13 +28,13 @@ class CircleEmojiButton extends StatelessWidget {
         child: Container(
           // transparent hitbox trick
           color: Colors.transparent,
-          padding: const EdgeInsets.all(10),
+          padding: const EdgeInsets.only(left: 10, right: 10, bottom: 7, top: 10),
           child: Center(
             child: Text(
               text,
               textAlign: TextAlign.center,
               overflow: TextOverflow.ellipsis,
-              style: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
+              style: kBody.copyWith(color: Theme.of(context).colorScheme.tertiary),
             ),
           ),
         ),

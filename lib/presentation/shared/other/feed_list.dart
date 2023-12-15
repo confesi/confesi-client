@@ -1,8 +1,5 @@
-import 'package:confesi/application/user/cubit/notifications_cubit.dart';
-import 'package:confesi/presentation/shared/behaviours/init_scale.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../constants/shared/constants.dart';
 import '../../../core/results/failures.dart';
 import 'package:dartz/dartz.dart' as dartz;
@@ -10,7 +7,6 @@ import '../../../core/styles/typography.dart';
 import '../../../core/types/infinite_scrollable_indexable.dart';
 import '../indicators/loading_or_alert.dart';
 import '../edited_source_widgets/swipe_refresh.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class FeedListController extends ChangeNotifier {
@@ -130,8 +126,10 @@ class FeedList extends StatefulWidget {
     this.debug = false,
     this.onScrollChange,
     this.centeredEmptyIndicator = true,
+    this.onScroll,
   });
 
+  final Function(ScrollNotification scrollNotification)? onScroll;
   final bool centeredEmptyIndicator;
   final bool swipeRefreshEnabled;
   final bool debug;
@@ -237,6 +235,7 @@ class _FeedListState extends State<FeedList> {
         onRefresh: () async => await widget.onPullToRefresh(),
         child: NotificationListener<ScrollNotification>(
           onNotification: (scrollNotification) {
+            if (widget.onScroll != null) widget.onScroll!(scrollNotification);
             if (scrollNotification is ScrollStartNotification) {
               // Scrolling has started.
               if (widget.onScrollChange != null) {
