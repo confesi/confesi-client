@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import '../../../constants/shared/constants.dart';
 import '../../../core/results/failures.dart';
@@ -8,6 +11,13 @@ import '../../../core/types/infinite_scrollable_indexable.dart';
 import '../indicators/loading_or_alert.dart';
 import '../edited_source_widgets/swipe_refresh.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+
+class StickyHeader {
+  final double height;
+  final Widget child;
+
+  StickyHeader({required this.height, required this.child});
+}
 
 class FeedListController extends ChangeNotifier {
   bool _isDisposed = false;
@@ -127,8 +137,10 @@ class FeedList extends StatefulWidget {
     this.onScrollChange,
     this.centeredEmptyIndicator = true,
     this.onScroll,
+    this.stickyHeader,
   });
 
+  final StickyHeader? stickyHeader;
   final Function(ScrollNotification scrollNotification)? onScroll;
   final bool centeredEmptyIndicator;
   final bool swipeRefreshEnabled;
@@ -189,6 +201,7 @@ class _FeedListState extends State<FeedList> {
       if (!mounted) return;
       setState(() {});
     });
+    stickyOffset = widget.stickyHeader?.height ?? 0;
   }
 
   Widget buildIndicator() {
@@ -227,78 +240,111 @@ class _FeedListState extends State<FeedList> {
     }
   }
 
+  double currentDy = 0.0;
+  late double stickyOffset;
+  double offsetBuildback = 0.0;
+
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
-      return SwipeRefresh(
-        enabled: widget.swipeRefreshEnabled,
-        onRefresh: () async => await widget.onPullToRefresh(),
-        child: NotificationListener<ScrollNotification>(
-          onNotification: (scrollNotification) {
-            if (widget.onScroll != null) widget.onScroll!(scrollNotification);
-            if (scrollNotification is ScrollStartNotification) {
-              // Scrolling has started.
-              if (widget.onScrollChange != null) {
-                widget.onScrollChange!(true);
-              }
-            } else if (scrollNotification is ScrollEndNotification) {
-              // Scrolling has stopped.
-              if (widget.onScrollChange != null) widget.onScrollChange!(false);
-            }
-            return false; // Returning false means the notification will continue to be dispatched to further ancestors.
-          },
-          child: ScrollablePositionedList.builder(
-            shrinkWrap: widget.shrinkWrap,
-            physics: widget.isScrollable
-                ? const AlwaysScrollableScrollPhysics(parent: ClampingScrollPhysics())
-                : const NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) {
-              if (index == 0) {
-                return widget.header ?? const SizedBox();
-              }
-
-              if (!widget.hasError && widget.controller.items.isEmpty && !isCurrentlyLoadingMore) {
-                if (index == 1) {
-                  return Container(
-                    height: widget.centeredEmptyIndicator ? constraints.maxHeight : null,
-                    margin: EdgeInsets.symmetric(vertical: widget.centeredEmptyIndicator ? 0 : 30),
-                    child: Center(
-                      child: FractionallySizedBox(
-                        widthFactor: 2 / 3,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Nothing found. Swipe to refresh.",
-                              style: kBody.copyWith(
-                                color: Theme.of(context).colorScheme.onSurface,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
+    return Stack(
+      children: [
+        LayoutBuilder(builder: (context, constraints) {
+          return SwipeRefresh(
+            enabled: widget.swipeRefreshEnabled,
+            onRefresh: () async => await widget.onPullToRefresh(),
+            child: NotificationListener<ScrollNotification>(
+              onNotification: (scrollNotification) {
+                if (scrollNotification is ScrollUpdateNotification) {
+                  // User scrolls down
+                  if (scrollNotification.scrollDelta! > 0) {
+                    if (offsetBuildback > 0) {
+                      offsetBuildback = max(0, offsetBuildback - scrollNotification.scrollDelta!);
+                    }
+                  }
+                  // User scrolls up
+                  else {
+                    if (offsetBuildback < widget.stickyHeader!.height) {
+                      offsetBuildback =
+                          min(widget.stickyHeader!.height, offsetBuildback - scrollNotification.scrollDelta!);
+                    }
+                  }
+                  stickyOffset = widget.stickyHeader!.height - offsetBuildback;
                 }
-                return const SizedBox();
-              }
 
-              if (index == widget.controller.items.length + 1) {
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: floatingBottomNavOffset), // extra space on bottom
-                  child: buildIndicator(),
-                );
-              }
+                if (widget.onScroll != null) widget.onScroll!(scrollNotification);
+                if (scrollNotification is ScrollStartNotification) {
+                  // Scrolling has started.
+                  if (widget.onScrollChange != null) {
+                    widget.onScrollChange!(true);
+                  }
+                } else if (scrollNotification is ScrollEndNotification) {
+                  // Scrolling has stopped.
+                  if (widget.onScrollChange != null) widget.onScrollChange!(false);
+                }
+                return false; // Returning false means the notification will continue to be dispatched to further ancestors.
+              },
+              child: ScrollablePositionedList.builder(
+                shrinkWrap: widget.shrinkWrap,
+                physics: widget.isScrollable
+                    ? const AlwaysScrollableScrollPhysics(parent: ClampingScrollPhysics())
+                    : const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  if (index == 0) {
+                    return Padding(
+                      padding: EdgeInsets.only(bottom: widget.stickyHeader?.height ?? 0),
+                      child: widget.header ?? const SizedBox(),
+                    );
+                  }
 
-              return Center(child: widget.controller.items[index - 1].child);
-            },
-            itemCount: widget.controller.items.length + 2,
-            itemPositionsListener: widget.controller.itemPositionsListener,
-            itemScrollController: widget.controller.itemScrollController,
+                  if (!widget.hasError && widget.controller.items.isEmpty && !isCurrentlyLoadingMore) {
+                    if (index == 1) {
+                      return Container(
+                        height: widget.centeredEmptyIndicator ? constraints.maxHeight : null,
+                        margin: EdgeInsets.symmetric(vertical: widget.centeredEmptyIndicator ? 0 : 30),
+                        child: Center(
+                          child: FractionallySizedBox(
+                            widthFactor: 2 / 3,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Nothing found. Swipe to refresh.",
+                                  style: kBody.copyWith(
+                                    color: Theme.of(context).colorScheme.onSurface,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+                    return const SizedBox();
+                  }
+
+                  if (index == widget.controller.items.length + 1) {
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: floatingBottomNavOffset), // extra space on bottom
+                      child: buildIndicator(),
+                    );
+                  }
+
+                  return Center(child: widget.controller.items[index - 1].child);
+                },
+                itemCount: widget.controller.items.length + 2,
+                itemPositionsListener: widget.controller.itemPositionsListener,
+                itemScrollController: widget.controller.itemScrollController,
+              ),
+            ),
+          );
+        }),
+        if (widget.stickyHeader != null)
+          Transform.translate(
+            offset: Offset(0, -stickyOffset),
+            child: SizedBox(height: widget.stickyHeader!.height, child: widget.stickyHeader!.child),
           ),
-        ),
-      );
-    });
+      ],
+    );
   }
 }

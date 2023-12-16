@@ -28,6 +28,11 @@ class _ExploreRecentsState extends State<ExploreRecents> with AutomaticKeepAlive
   Widget buildBody(PostsService service) {
     final PaginationState pState = service.recentsPaginationState;
     return FeedList(
+      stickyHeader: StickyHeader(
+          height: 100,
+          child: Container(
+            color: Colors.green,
+          )),
       controller: widget.feedController
         ..items = (service.recentsPostIds
             .map((postId) {

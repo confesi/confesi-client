@@ -78,106 +78,82 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
           color: Theme.of(context).colorScheme.shadow,
           child: Column(
             children: [
-              AnimatedContainer(
-                duration: const Duration(milliseconds: 125),
-                height: min(appbarDynamicHeight, appbarHeight),
-                child: AppbarLayout(
-                  bottomBorder: true,
-                  backgroundColor: Theme.of(context).colorScheme.background,
-                  rightIconOnPress: () => router.push('/home/notifications'),
-                  rightIconVisible: true,
-                  rightIcon: CupertinoIcons.bell,
-                  centerWidget: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      TouchableOpacity(
-                        onTap: () => previousPage(),
-                        child: Container(
-                          color: Colors.transparent,
-                          padding: const EdgeInsets.all(5),
-                          child: Icon(
-                            CupertinoIcons.chevron_back,
-                            color: Theme.of(context).colorScheme.onSurface,
-                            size: 20,
-                          ),
+              AppbarLayout(
+                bottomBorder: true,
+                backgroundColor: Theme.of(context).colorScheme.background,
+                rightIconOnPress: () => router.push('/home/notifications'),
+                rightIconVisible: true,
+                rightIcon: CupertinoIcons.bell,
+                centerWidget: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TouchableOpacity(
+                      onTap: () => previousPage(),
+                      child: Container(
+                        color: Colors.transparent,
+                        padding: const EdgeInsets.all(5),
+                        child: Icon(
+                          CupertinoIcons.chevron_back,
+                          color: Theme.of(context).colorScheme.onSurface,
+                          size: 20,
                         ),
                       ),
-                      const SizedBox(width: 7),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 5),
-                        child: GestureDetector(
-                          // swipe left & right to switch forward/back
-                          onHorizontalDragEnd: (details) {
-                            if (details.primaryVelocity! > 0) {
-                              previousPage();
-                            } else if (details.primaryVelocity! < 0) {
-                              nextPage();
-                            }
-                          },
-                          child: CircleEmojiButton(
-                            onTap: () => nextPage(),
-                            text: context.watch<PostsService>().currentlySelectedFeed == FeedType.sentiment
-                                ? 'Positivity'
-                                : context.watch<PostsService>().currentlySelectedFeed == FeedType.trending
-                                    ? 'Trending'
-                                    : 'Recents',
-                          ),
+                    ),
+                    const SizedBox(width: 7),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 5),
+                      child: GestureDetector(
+                        // swipe left & right to switch forward/back
+                        onHorizontalDragEnd: (details) {
+                          if (details.primaryVelocity! > 0) {
+                            previousPage();
+                          } else if (details.primaryVelocity! < 0) {
+                            nextPage();
+                          }
+                        },
+                        child: CircleEmojiButton(
+                          onTap: () => nextPage(),
+                          text: context.watch<PostsService>().currentlySelectedFeed == FeedType.sentiment
+                              ? 'Positivity'
+                              : context.watch<PostsService>().currentlySelectedFeed == FeedType.trending
+                                  ? 'Trending'
+                                  : 'Recents',
                         ),
                       ),
-                      TouchableOpacity(
-                        onTap: () => nextPage(),
-                        child: Container(
-                          color: Colors.transparent,
-                          padding: const EdgeInsets.all(5),
-                          child: Icon(
-                            CupertinoIcons.chevron_forward,
-                            color: Theme.of(context).colorScheme.onSurface,
-                            size: 20,
-                          ),
+                    ),
+                    TouchableOpacity(
+                      onTap: () => nextPage(),
+                      child: Container(
+                        color: Colors.transparent,
+                        padding: const EdgeInsets.all(5),
+                        child: Icon(
+                          CupertinoIcons.chevron_forward,
+                          color: Theme.of(context).colorScheme.onSurface,
+                          size: 20,
                         ),
                       ),
-                    ],
-                  ),
-                  leftIconVisible: true,
-                  leftIcon: CupertinoIcons.slider_horizontal_3,
-                  leftIconOnPress: () => widget.scaffoldKey.currentState!.openDrawer(),
+                    ),
+                  ],
                 ),
+                leftIconVisible: true,
+                leftIcon: CupertinoIcons.slider_horizontal_3,
+                leftIconOnPress: () => widget.scaffoldKey.currentState!.openDrawer(),
               ),
               Expanded(
-                child: NotificationListener<ScrollNotification>(
-                  onNotification: (notification) {
-                    // if is vertical noti
-                    if (notification is ScrollUpdateNotification) {
-                      // if is scrolling down
-                      if (notification.metrics.axis == Axis.vertical &&
-                          notification.scrollDelta != null &&
-                          notification.scrollDelta! < 0) {
-                        setState(() {
-                          appbarDynamicHeight = appbarHeight;
-                        });
-                      } else {
-                        setState(() {
-                          appbarDynamicHeight = 0;
-                        });
-                      }
-                    }
-                    return false;
+                child: PageView(
+                  // hide scroll notifications
+                  physics: const BouncingScrollPhysics(), // Add this line
+                  onPageChanged: (value) {
+                    context
+                        .read<PostsService>()
+                        .setCurrentlySelectedFeedAndReloadIfNeeded(context, FeedType.values[value]);
                   },
-                  child: PageView(
-                    // hide scroll notifications
-                    physics: const BouncingScrollPhysics(), // Add this line
-                    onPageChanged: (value) {
-                      context
-                          .read<PostsService>()
-                          .setCurrentlySelectedFeedAndReloadIfNeeded(context, FeedType.values[value]);
-                    },
-                    controller: _pageController,
-                    children: [
-                      ExploreRecents(feedController: widget.recentsFeedListController),
-                      ExploreTrending(feedController: widget.trendingFeedListController),
-                      ExploreSentiment(feedController: widget.sentimentFeedListController),
-                    ],
-                  ),
+                  controller: _pageController,
+                  children: [
+                    ExploreRecents(feedController: widget.recentsFeedListController),
+                    ExploreTrending(feedController: widget.trendingFeedListController),
+                    ExploreSentiment(feedController: widget.sentimentFeedListController),
+                  ],
                 ),
               ),
             ],
