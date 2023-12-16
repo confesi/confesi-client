@@ -138,8 +138,10 @@ class FeedList extends StatefulWidget {
     this.centeredEmptyIndicator = true,
     this.onScroll,
     this.stickyHeader,
+    this.topPushdownOffset = 0,
   });
 
+  final double topPushdownOffset;
   final StickyHeader? stickyHeader;
   final Function(ScrollNotification scrollNotification)? onScroll;
   final bool centeredEmptyIndicator;
@@ -253,6 +255,9 @@ class _FeedListState extends State<FeedList> {
       children: [
         LayoutBuilder(builder: (context, constraints) {
           return SwipeRefresh(
+            edgeOffset: widget.stickyHeader != null
+                ? widget.stickyHeader!.height + widget.topPushdownOffset
+                : widget.topPushdownOffset,
             enabled: widget.swipeRefreshEnabled,
             onRefresh: () async => await widget.onPullToRefresh(),
             child: NotificationListener<ScrollNotification>(
@@ -294,7 +299,10 @@ class _FeedListState extends State<FeedList> {
                 itemBuilder: (context, index) {
                   if (index == 0) {
                     return Padding(
-                      padding: EdgeInsets.only(bottom: widget.stickyHeader?.height ?? 0),
+                      padding: EdgeInsets.only(
+                          bottom: widget.stickyHeader != null
+                              ? widget.stickyHeader!.height + widget.topPushdownOffset
+                              : widget.topPushdownOffset),
                       child: widget.header ?? const SizedBox(),
                     );
                   }
@@ -343,9 +351,12 @@ class _FeedListState extends State<FeedList> {
           );
         }),
         if (widget.stickyHeader != null)
-          Transform.translate(
-            offset: Offset(0, -stickyOffset),
-            child: SizedBox(height: widget.stickyHeader!.height, child: widget.stickyHeader!.child),
+          Opacity(
+            opacity: offsetBuildback / widget.stickyHeader!.height,
+            child: Transform.translate(
+              offset: Offset(0, -stickyOffset),
+              child: SizedBox(height: widget.stickyHeader!.height, child: widget.stickyHeader!.child),
+            ),
           ),
       ],
     );

@@ -10,9 +10,9 @@ import '../../shared/other/feed_list.dart';
 import '../widgets/post_tile.dart';
 
 class ExploreTrending extends StatefulWidget {
-  const ExploreTrending({Key? key, required this.feedController}) : super(key: key);
+  const ExploreTrending({Key? key, required this.topOffset}) : super(key: key);
 
-  final FeedListController feedController;
+  final double topOffset;
 
   @override
   State<ExploreTrending> createState() => _ExploreTrendingState();
@@ -25,10 +25,20 @@ class _ExploreTrendingState extends State<ExploreTrending> with AutomaticKeepAli
     super.initState();
   }
 
+  final FeedListController feedListController = FeedListController();
+
+  @override
+  void dispose() {
+    feedListController.dispose();
+    super.dispose();
+  }
+
   Widget buildBody(PostsService service) {
     final PaginationState pState = service.trendingPaginationState;
     return FeedList(
-      controller: widget.feedController
+      topPushdownOffset: widget.topOffset,
+
+      controller: feedListController
         ..items = (service.trendingPostIds
             .map((postId) {
               final post = Provider.of<GlobalContentService>(context).posts[postId];

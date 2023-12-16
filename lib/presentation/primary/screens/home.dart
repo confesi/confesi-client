@@ -85,12 +85,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 child: IndexedStack(
                   index: Provider.of<PrimaryTabControllerService>(context).tabIdx,
                   children: [
-                    ExploreHome(
-                      scaffoldKey: scaffoldKey,
-                      recentsFeedListController: recentsFeedListController,
-                      trendingFeedListController: trendingFeedListController,
-                      sentimentFeedListController: sentimentFeedListController,
-                    ),
+                    ExploreHome(scaffoldKey: scaffoldKey),
                     const HottestHome(),
                     const SettingsHome(),
                     const LeaderboardScreen(),

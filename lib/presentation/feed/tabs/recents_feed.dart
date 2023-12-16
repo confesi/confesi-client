@@ -10,9 +10,9 @@ import '../../shared/other/feed_list.dart';
 import '../widgets/post_tile.dart';
 
 class ExploreRecents extends StatefulWidget {
-  const ExploreRecents({Key? key, required this.feedController}) : super(key: key);
+  const ExploreRecents({Key? key, required this.topOffset}) : super(key: key);
 
-  final FeedListController feedController;
+  final double topOffset;
 
   @override
   State<ExploreRecents> createState() => _ExploreRecentsState();
@@ -25,15 +25,25 @@ class _ExploreRecentsState extends State<ExploreRecents> with AutomaticKeepAlive
     super.initState();
   }
 
+  final FeedListController feedListController = FeedListController();
+
+  @override
+  void dispose() {
+    feedListController.dispose();
+    super.dispose();
+  }
+
   Widget buildBody(PostsService service) {
     final PaginationState pState = service.recentsPaginationState;
     return FeedList(
-      stickyHeader: StickyHeader(
-          height: 100,
-          child: Container(
-            color: Colors.green,
-          )),
-      controller: widget.feedController
+      // stickyHeader: StickyHeader(
+      //   height: 100,
+      //   child: Container(
+      //     color: Colors.green,
+      //   ),
+      // ),
+      topPushdownOffset: widget.topOffset,
+      controller: feedListController
         ..items = (service.recentsPostIds
             .map((postId) {
               final post = Provider.of<GlobalContentService>(context).posts[postId];

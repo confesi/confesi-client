@@ -15,9 +15,9 @@ import '../../shared/layout/appbar.dart';
 import '../widgets/post_tile.dart';
 
 class ExploreSentiment extends StatefulWidget {
-  const ExploreSentiment({Key? key, required this.feedController}) : super(key: key);
+  const ExploreSentiment({Key? key, required this.topOffset}) : super(key: key);
 
-  final FeedListController feedController;
+  final double topOffset;
 
   @override
   State<ExploreSentiment> createState() => _ExploreSentimentState();
@@ -30,10 +30,20 @@ class _ExploreSentimentState extends State<ExploreSentiment> with AutomaticKeepA
     super.initState();
   }
 
+  final FeedListController feedListController = FeedListController();
+
+  @override
+  void dispose() {
+    feedListController.dispose();
+    super.dispose();
+  }
+
   Widget buildBody(PostsService service) {
     final PaginationState pState = service.sentimentPaginationState;
     return FeedList(
-      controller: widget.feedController
+            topPushdownOffset: widget.topOffset,
+
+      controller: feedListController
         ..items = (service.sentimentPostIds
             .map((postId) {
               final post = Provider.of<GlobalContentService>(context).posts[postId];

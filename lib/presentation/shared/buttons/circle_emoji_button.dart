@@ -1,4 +1,5 @@
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_burst.dart';
+import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
 
 import 'package:flutter/material.dart';
@@ -18,7 +19,7 @@ class CircleEmojiButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TouchableScale(
+    return TouchableOpacity(
       onTap: () {
         HapticFeedback.lightImpact();
         onTap();
@@ -34,7 +35,7 @@ class CircleEmojiButton extends StatelessWidget {
               text,
               textAlign: TextAlign.center,
               overflow: TextOverflow.ellipsis,
-              style: kBody.copyWith(color: Theme.of(context).colorScheme.tertiary),
+              style: kBody.copyWith(color: Theme.of(context).colorScheme.onSecondary),
             ),
           ),
         ),
