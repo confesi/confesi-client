@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:confesi/presentation/shared/indicators/alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -258,7 +259,7 @@ class _FeedListState extends State<FeedList> {
             edgeOffset: widget.stickyHeader != null
                 ? widget.stickyHeader!.height + widget.topPushdownOffset
                 : widget.topPushdownOffset,
-            enabled: widget.swipeRefreshEnabled,
+            enabled: widget.swipeRefreshEnabled && widget.controller.items.isNotEmpty,
             onRefresh: () async => await widget.onPullToRefresh(),
             child: NotificationListener<ScrollNotification>(
               onNotification: (scrollNotification) {
@@ -318,12 +319,10 @@ class _FeedListState extends State<FeedList> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text(
-                                  "Nothing found. Swipe to refresh.",
-                                  style: kBody.copyWith(
-                                    color: Theme.of(context).colorScheme.onSurface,
-                                  ),
-                                  textAlign: TextAlign.center,
+                                AlertIndicator(
+                                  isLogo: false,
+                                  message: "Nothing found.",
+                                  onPress: () async => await widget.onPullToRefresh(),
                                 ),
                               ],
                             ),

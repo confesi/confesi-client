@@ -52,6 +52,7 @@ class LoadingOrAlert extends StatelessWidget {
                           width: 60,
                           child: isLogo
                               ? Bobbing(
+                                  bobbing: false,
                                   child: AspectRatio(
                                     aspectRatio: 1,
                                     child: Container(

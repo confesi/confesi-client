@@ -19,6 +19,7 @@ import '../../../constants/shared/constants.dart';
 import '../../../core/router/go_router.dart';
 import '../../../core/services/user_auth/user_auth_service.dart';
 import '../../../core/styles/typography.dart';
+import '../../dms/utils/time_ago.dart';
 import '../../shared/edited_source_widgets/text.dart';
 import '../methods/show_post_options.dart';
 import '../utils/post_metadata_formatters.dart';
@@ -116,44 +117,15 @@ class PostTileState extends State<PostTile> {
                               color: Theme.of(context).colorScheme.background,
                             ),
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      TextNoVertOverflow(
-                                        "${widget.post.post.school.name}${buildFaculty(widget.post)}${buildYear(widget.post)}",
-                                        style: kDetail.copyWith(
-                                          color: Theme.of(context).colorScheme.secondary,
-                                        ),
-                                        textAlign: TextAlign.left,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start, // adjust this as per your alignment preference
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center, // adjust this too as per your needs
-                                        children: <Widget>[
-                                          TextNoVertOverflow(
-                                            "${timeAgoFromMicroSecondUnixTime(widget.post.post.createdAt)}${widget.post.emojis.isNotEmpty ? " • ${widget.post.emojis.map((e) => e).join("")}" : ""}",
-                                            style: kDetail.copyWith(
-                                              color: Theme.of(context).colorScheme.tertiary,
-                                            ),
-                                          ),
-                                          if (widget.post.post.edited) ...[
-                                            // using spread operator to conditionally render widgets
-                                            const SizedBox(width: 5), // add some space between text widgets
-                                            TextNoVertOverflow(
-                                              "Edited",
-                                              style: kDetail.copyWith(
-                                                color: Theme.of(context).colorScheme.onSurface,
-                                              ),
-                                            ),
-                                          ],
-                                        ],
-                                      ),
-                                    ],
+                                TextNoVertOverflow(
+                                  "${widget.post.post.school.name}${buildFaculty(widget.post)}${buildYear(widget.post)} • ${timeAgo(DateTime.fromMicrosecondsSinceEpoch(widget.post.post.createdAt))}${widget.post.emojis.isNotEmpty ? " • ${widget.post.emojis.map((e) => e).join("")}" : ""}",
+                                  style: kDetail.copyWith(
+                                    color: Theme.of(context).colorScheme.secondary,
                                   ),
+                                  textAlign: TextAlign.left,
                                 ),
                                 TouchableOpacity(
                                   onTap: () {

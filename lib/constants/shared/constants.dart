@@ -8,11 +8,11 @@ import '../../application/create_post/cubit/post_categories_cubit.dart';
 /// SHERIDAN: 10.0.0.173 (ephemeral)
 const String domain = "http://192.168.1.96:8080";
 
-const Duration apiDefaultTimeout = Duration(seconds: 5);
+const Duration apiDefaultTimeout = Duration(seconds: 8);
 
 const int chatPageSize = 15;
 
-const double floatingBottomNavOffset = 78;
+const double floatingBottomNavOffset = 0; // 78
 
 /// If debug mode is enabled. OFF for prod.
 const bool debugMode = false;

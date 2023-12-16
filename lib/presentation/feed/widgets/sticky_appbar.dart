@@ -75,7 +75,7 @@ class _StickyAppbarState extends State<StickyAppbar> with SingleTickerProviderSt
           left: 0,
           right: 0,
           child: Opacity(
-            opacity: offsetBuildback / widget.stickyHeader.height,
+            opacity: min((2 * offsetBuildback) / widget.stickyHeader.height, 1),
             child: SizedBox(
               height: widget.stickyHeader.height,
               child: widget.stickyHeader.child,

@@ -156,51 +156,51 @@ class _CommentsHomeState extends State<CommentsHome> {
     }
   }
 
-  Widget _highlightText(String content, int? lastChar, TextStyle baseStyle, int limit) {
-    if (lastChar != null && lastChar < content.length && content.length >= limit) {
-      final startIndex = content.lastIndexOf(' ', lastChar);
-      final endIndex = content.indexOf(' ', lastChar);
+  // Widget _highlightText(String content, int? lastChar, TextStyle baseStyle, int limit) {
+  //   if (lastChar != null && lastChar < content.length && content.length >= limit) {
+  //     final startIndex = content.lastIndexOf(' ', lastChar);
+  //     final endIndex = content.indexOf(' ', lastChar);
 
-      final beforeHighlightEnd = startIndex == -1 ? 0 : startIndex + 1;
-      final highlightedWordStart = beforeHighlightEnd;
-      final highlightedWordEnd = (endIndex == -1 || endIndex > content.length) ? content.length : endIndex;
-      final afterHighlightStart = highlightedWordEnd;
+  //     final beforeHighlightEnd = startIndex == -1 ? 0 : startIndex + 1;
+  //     final highlightedWordStart = beforeHighlightEnd;
+  //     final highlightedWordEnd = (endIndex == -1 || endIndex > content.length) ? content.length : endIndex;
+  //     final afterHighlightStart = highlightedWordEnd;
 
-      final beforeHighlight = content.substring(0, beforeHighlightEnd);
-      final highlightedWord = content.substring(highlightedWordStart, highlightedWordEnd);
-      final afterHighlight = afterHighlightStart < content.length ? content.substring(afterHighlightStart) : "";
+  //     final beforeHighlight = content.substring(0, beforeHighlightEnd);
+  //     final highlightedWord = content.substring(highlightedWordStart, highlightedWordEnd);
+  //     final afterHighlight = afterHighlightStart < content.length ? content.substring(afterHighlightStart) : "";
 
-      return ClipRRect(
-        child: RichText(
-          text: TextSpan(
-            children: [
-              TextSpan(
-                text: beforeHighlight,
-                style: baseStyle,
-              ),
-              TextSpan(
-                text: highlightedWord,
-                style: baseStyle.copyWith(
-                  decoration: TextDecoration.underline, // This adds the underline
-                  decorationColor: Theme.of(context).colorScheme.tertiary,
-                ),
-              ),
-              TextSpan(
-                text: afterHighlight,
-                style: baseStyle,
-              ),
-            ],
-          ),
-        ),
-      );
-    } else {
-      return TextNoVertOverflow(
-        content,
-        style: baseStyle,
-        textAlign: TextAlign.left,
-      );
-    }
-  }
+  //     return ClipRRect(
+  //       child: RichText(
+  //         text: TextSpan(
+  //           children: [
+  //             TextSpan(
+  //               text: beforeHighlight,
+  //               style: baseStyle,
+  //             ),
+  //             TextSpan(
+  //               text: highlightedWord,
+  //               style: baseStyle.copyWith(
+  //                 decoration: TextDecoration.underline, // This adds the underline
+  //                 decorationColor: Theme.of(context).colorScheme.tertiary,
+  //               ),
+  //             ),
+  //             TextSpan(
+  //               text: afterHighlight,
+  //               style: baseStyle,
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //     );
+  //   } else {
+  //     return TextNoVertOverflow(
+  //       content,
+  //       style: baseStyle,
+  //       textAlign: TextAlign.left,
+  //     );
+  //   }
+  // }
 
   Widget buildHeader(BuildContext context, CommentSectionData commentData, IndividualPostData postState) {
     final post = Provider.of<GlobalContentService>(context).posts[postState.post.post.id]!;
@@ -221,16 +221,14 @@ class _CommentsHomeState extends State<CommentsHome> {
                     child: Column(
                       children: [
                         const SizedBox(height: 15),
-                        _highlightText(
+                        TextNoVertOverflow(
                           removeSubsequentNewLines(post.post.title),
-                          widget.props.titleLastChar,
-                          kDisplay1.copyWith(
+                          style: kDisplay1.copyWith(
                             color: Theme.of(context).colorScheme.primary,
                             fontSize:
                                 kDisplay1.fontSize! * Provider.of<UserAuthService>(context).data().textSize.multiplier,
                           ),
-                          postTitlePreviewLength,
-                        ),
+                        )
                       ],
                     ),
                   ),
@@ -280,15 +278,13 @@ class _CommentsHomeState extends State<CommentsHome> {
                     child: Column(
                       children: [
                         const SizedBox(height: 10),
-                        _highlightText(
+                        TextNoVertOverflow(
                           removeSubsequentNewLines(post.post.content),
-                          widget.props.bodyLastChar,
-                          kBody.copyWith(
+                          style: kBody.copyWith(
                             color: Theme.of(context).colorScheme.primary,
                             fontSize:
                                 kBody.fontSize! * Provider.of<UserAuthService>(context).data().textSize.multiplier,
                           ),
-                          postBodyPreviewLength,
                         ),
                       ],
                     ),

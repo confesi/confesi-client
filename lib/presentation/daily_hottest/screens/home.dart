@@ -84,6 +84,7 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
         );
       }
       return GestureDetector(
+        key: const ValueKey('pageView'),
         onTap: () => handlePostTap(state.posts[currentIndex]),
         child: PageView(
           controller: pageController,
@@ -116,6 +117,7 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
       );
     } else {
       return LoadingOrAlert(
+        key: const ValueKey('loadingOrAlert'),
         message: StateMessage(
             state is DailyHottestError ? state.message : null, () => context.read<HottestCubit>().loadMostRecent()),
         isLoading: state is! DailyHottestError,

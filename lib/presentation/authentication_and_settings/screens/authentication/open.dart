@@ -31,8 +31,8 @@ class _OpenScreenState extends State<OpenScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => false, // disables back button
+    return PopScope(
+      canPop: false, // disables back button
       child: ThemeStatusBar(
         child: Scaffold(
           resizeToAvoidBottomInset: false,

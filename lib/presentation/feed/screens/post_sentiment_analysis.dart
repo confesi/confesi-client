@@ -57,7 +57,7 @@ class _SentimentAnalysisScreenState extends State<SentimentAnalysisScreen> {
             colorList: [
               Theme.of(context).colorScheme.surfaceTint,
               Theme.of(context).colorScheme.error,
-              Theme.of(context).colorScheme.secondary
+              Theme.of(context).colorScheme.tertiary
             ],
             chartType: ChartType.ring,
             legendOptions: LegendOptions(

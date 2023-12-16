@@ -23,8 +23,8 @@ class _CriticalErrorScreenState extends State<CriticalErrorScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => false,
+    return PopScope(
+     canPop: false,
       child: ThemeStatusBar(
         child: Scaffold(
           backgroundColor: appearanceBrightness(context) == Brightness.light

@@ -38,7 +38,7 @@ class StatTileGroup extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       child: Container(
-        color: Theme.of(context).colorScheme.secondary,
+        color: Theme.of(context).colorScheme.tertiary,
         width: double.infinity,
         child: SafeArea(
           bottom: false,

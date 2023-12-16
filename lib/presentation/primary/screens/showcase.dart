@@ -77,8 +77,8 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => false, // disables back button
+    return PopScope(
+      canPop: false, // disables back button
       child: OneThemeStatusBar(
         brightness: Brightness.light,
         child: Scaffold(

@@ -63,8 +63,8 @@ class _SimpleCommentSortState extends State<SimpleCommentSort> {
     return Container(
       decoration: BoxDecoration(
         border: Border(
-          top: BorderSide(
-            color: Theme.of(context).colorScheme.secondary,
+          bottom: BorderSide(
+            color: Theme.of(context).colorScheme.onBackground,
             width: borderSize,
           ),
         ),
@@ -93,7 +93,7 @@ class _SimpleCommentSortState extends State<SimpleCommentSort> {
             children: [
               Text(
                 "Sort comments by",
-                style: kDetail.copyWith(
+                style: kBody.copyWith(
                   color: Theme.of(context).colorScheme.onSurface,
                 ),
                 textAlign: TextAlign.left,
@@ -101,7 +101,7 @@ class _SimpleCommentSortState extends State<SimpleCommentSort> {
               const SizedBox(width: 5),
               Text(
                 commentSortTypeToString(commentSortType),
-                style: kDetail.copyWith(
+                style: kBody.copyWith(
                   color: Theme.of(context).colorScheme.onSurface,
                 ),
                 textAlign: TextAlign.right,

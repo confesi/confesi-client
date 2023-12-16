@@ -20,8 +20,15 @@ import '../widgets/section_accordian.dart';
 import '../../shared/buttons/simple_text.dart';
 import 'package:confesi/presentation/shared/edited_source_widgets/swipe_refresh.dart';
 
-class FeedDrawer extends StatelessWidget {
+class FeedDrawer extends StatefulWidget {
   const FeedDrawer({Key? key}) : super(key: key);
+
+  @override
+  State<FeedDrawer> createState() => _FeedDrawerState();
+}
+
+class _FeedDrawerState extends State<FeedDrawer> {
+  bool isSwipeRefreshLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -147,13 +154,15 @@ class FeedDrawer extends StatelessWidget {
         );
       } else {
         return Padding(
-          padding: EdgeInsets.only(bottom: bottomSafeArea(context) * 2),
-          child: LoadingOrAlert(
-            message: StateMessage(state is SchoolDrawerError ? state.message : "Error loading",
-                () => context.read<SchoolsDrawerCubit>().loadSchools()),
-            isLoading: state is SchoolsDrawerLoading,
-          ),
-        );
+            padding: EdgeInsets.only(bottom: bottomSafeArea(context) * 2),
+            child: WidgetOrNothing(
+              showWidget: !isSwipeRefreshLoading,
+              child: LoadingOrAlert(
+                message: StateMessage(state is SchoolDrawerError ? state.message : "Error loading",
+                    () => context.read<SchoolsDrawerCubit>().loadSchools()),
+                isLoading: state is SchoolsDrawerLoading,
+              ),
+            ));
       }
     }
 
@@ -224,7 +233,13 @@ class FeedDrawer extends StatelessWidget {
           ),
           Expanded(
             child: SwipeRefresh(
-              onRefresh: () async => await context.read<SchoolsDrawerCubit>().loadSchools(),
+              onRefresh: () async {
+                setState(() {
+                  isSwipeRefreshLoading = true;
+                });
+                await context.read<SchoolsDrawerCubit>().loadSchools();
+                if (mounted) setState(() => isSwipeRefreshLoading = false);
+              },
               child: BlocConsumer<SchoolsDrawerCubit, SchoolsDrawerState>(
                 listener: (context, state) async {
                   // if (state is SchoolsDrawerData) {

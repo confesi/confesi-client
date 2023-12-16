@@ -46,7 +46,7 @@ class BobbingState extends State<Bobbing> with SingleTickerProviderStateMixin {
       bobbingScale = 0.6 + 0.3 * (1 - (curvedValue * 2 - 1).abs());
     }
 
-    Widget content = widget.child; // Default to original child
+    Widget content = widget.child; // default to original child
 
     if (widget.bobbing) {
       content = Transform.scale(
@@ -56,9 +56,12 @@ class BobbingState extends State<Bobbing> with SingleTickerProviderStateMixin {
     }
 
     if (widget.rotate && rotationValue != 0) {
-      content = Transform.rotate(
-        angle: rotationValue,
-        child: content,
+      content = Transform.scale(
+        scale: 0.85,
+        child: Transform.rotate(
+          angle: rotationValue,
+          child: content,
+        ),
       );
     }
 

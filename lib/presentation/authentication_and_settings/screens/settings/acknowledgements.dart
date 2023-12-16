@@ -61,13 +61,13 @@ class _AcknowledgementsScreenState extends State<AcknowledgementsScreen> {
                           text: "Developers",
                           tiles: [
                             TextStatTile(
-                              leftText: "Matthew Trent (founder)",
+                              leftText: "Matthew Trent",
+                              rightText: "Founder",
                               onTap: () => context.read<QuickActionsCubit>().launchWebsite("https://matthewtrent.me"),
                             ),
                             TextStatTile(
                               leftText: "Chris Huk",
-                              onTap: () =>
-                                  context.read<QuickActionsCubit>().launchWebsite("https://github.com/TalentedB"),
+                              onTap: () => context.read<QuickActionsCubit>().launchWebsite("https://chrishuk.dev"),
                             ),
                           ],
                         ),

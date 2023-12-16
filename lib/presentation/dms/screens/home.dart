@@ -84,24 +84,13 @@ class RoomsScreen extends StatelessWidget {
                             return Center(
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 15),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      constraints: const BoxConstraints(maxWidth: 50),
-                                      child: InitScale(child: Image.asset(walrusHeadImgPath)),
-                                    ),
-                                    const SizedBox(height: 15),
-                                    FractionallySizedBox(
-                                      widthFactor: 2 / 3,
-                                      child: Text(
-                                        "You have no messages.",
-                                        style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    )
-                                  ],
+                                child: FractionallySizedBox(
+                                  widthFactor: 2 / 3,
+                                  child: Text(
+                                    "You have no messages.",
+                                    style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                                    textAlign: TextAlign.center,
+                                  ),
                                 ),
                               ),
                             );

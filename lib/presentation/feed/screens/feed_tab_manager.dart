@@ -1,4 +1,3 @@
-import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/services/posts_service/posts_service.dart';
 import 'package:confesi/presentation/feed/tabs/sentiment_feed.dart';
 import 'package:confesi/presentation/feed/widgets/sticky_appbar.dart';
@@ -14,7 +13,7 @@ import '../../../core/router/go_router.dart';
 import '../tabs/recents_feed.dart';
 import '../tabs/trending_feed.dart';
 
-const double appbarHeight = 55;
+const double appbarHeight = 54;
 
 class ExploreHome extends StatefulWidget {
   const ExploreHome({
