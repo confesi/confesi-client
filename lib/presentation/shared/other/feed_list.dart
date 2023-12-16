@@ -201,7 +201,10 @@ class _FeedListState extends State<FeedList> {
       if (!mounted) return;
       setState(() {});
     });
-    stickyOffset = widget.stickyHeader?.height ?? 0;
+    if (widget.stickyHeader != null) {
+      stickyOffset = 0;
+      offsetBuildback = widget.stickyHeader!.height;
+    }
   }
 
   Widget buildIndicator() {
@@ -254,7 +257,7 @@ class _FeedListState extends State<FeedList> {
             onRefresh: () async => await widget.onPullToRefresh(),
             child: NotificationListener<ScrollNotification>(
               onNotification: (scrollNotification) {
-                if (scrollNotification is ScrollUpdateNotification) {
+                if (scrollNotification is ScrollUpdateNotification && widget.stickyHeader != null) {
                   // User scrolls down
                   if (scrollNotification.scrollDelta! > 0) {
                     if (offsetBuildback > 0) {
