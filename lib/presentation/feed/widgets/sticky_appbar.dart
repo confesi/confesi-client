@@ -1,6 +1,95 @@
 import 'dart:math';
 
+import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+
+import 'package:flutter/material.dart';
+
+import 'package:flutter/material.dart';
+
+class StickyAppbarController extends ChangeNotifier {
+  // Making these variables private
+  double offsetBuildback = 0.0;
+  double stickyOffset = 0.0;
+  late double stickyHeight;
+
+  late AnimationController _animationController;
+  Animation<double>? _offsetBuildbackAnimation;
+  Animation<double>? _stickyOffsetAnimation;
+
+  // Public getter for isAnimating
+  bool isAnimating = false;
+
+  StickyAppbarController(TickerProvider vsync) {
+    _animationController = AnimationController(
+      vsync: vsync,
+      duration: const Duration(milliseconds: 350),
+    )..addStatusListener((status) {
+        if (status == AnimationStatus.forward || status == AnimationStatus.reverse) {
+          isAnimating = true;
+        } else {
+          isAnimating = false;
+        }
+        notifyListeners();
+      });
+
+    _animationController.addListener(_notifyListeners);
+  }
+
+  void cancelCurrentAnimation() {
+    _animationController.stop();
+  }
+
+  void _initializeAnimation(double offsetStart, double offsetEnd, double stickyStart, double stickyEnd) {
+    final curvedAnimation = CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.linear, // linearToEaseOut
+    );
+
+    _offsetBuildbackAnimation = Tween<double>(begin: offsetStart, end: offsetEnd).animate(curvedAnimation)
+      ..addListener(_notifyListeners);
+
+    _stickyOffsetAnimation = Tween<double>(begin: stickyStart, end: stickyEnd).animate(curvedAnimation)
+      ..addListener(_notifyListeners);
+  }
+
+  void _changeAnimationDuration(bool speedy) {
+    Duration newDuration = speedy ? const Duration(milliseconds: 250) : const Duration(milliseconds: 250);
+    _animationController.duration = newDuration;
+  }
+
+  void bringDownAppbar({bool speedy = false}) {
+    _changeAnimationDuration(speedy);
+    _initializeAnimation(offsetBuildback, stickyHeight, stickyOffset, 0);
+    _animationController
+      ..reset()
+      ..forward();
+  }
+
+  void bringUpAppbar({bool speedy = false}) {
+    _changeAnimationDuration(speedy);
+    _initializeAnimation(offsetBuildback, 0, stickyOffset, stickyHeight);
+    _animationController
+      ..reset()
+      ..forward();
+  }
+
+  void _notifyListeners() {
+    if (_offsetBuildbackAnimation != null && _stickyOffsetAnimation != null) {
+      offsetBuildback = _offsetBuildbackAnimation!.value;
+      stickyOffset = _stickyOffsetAnimation!.value;
+      notifyListeners();
+    }
+  }
+
+  @override
+  void dispose() {
+    _animationController.removeListener(_notifyListeners);
+    _animationController.dispose();
+    super.dispose();
+  }
+}
 
 class StickyAppbarProps {
   final double height;
@@ -10,27 +99,28 @@ class StickyAppbarProps {
 }
 
 class StickyAppbar extends StatefulWidget {
-  const StickyAppbar({super.key, required this.stickyHeader, required this.child});
+  const StickyAppbar({super.key, required this.stickyHeader, required this.child, required this.controller});
 
   final StickyAppbarProps stickyHeader;
   final Widget child;
+  final StickyAppbarController controller;
 
   @override
   State<StickyAppbar> createState() => _StickyAppbarState();
 }
 
 class _StickyAppbarState extends State<StickyAppbar> with SingleTickerProviderStateMixin {
-  double offsetBuildback = 0.0;
-  double stickyOffset = 0.0;
-
   @override
   void initState() {
     super.initState();
-    offsetBuildback = widget.stickyHeader.height; // Initial value
-    stickyOffset = 0; // Initial value
+    widget.controller.offsetBuildback = widget.stickyHeader.height; // Initial value
+    widget.controller.stickyOffset = 0; // Initial value
+    widget.controller.stickyHeight = widget.stickyHeader.height;
+    widget.controller.addListener(() => setState(() {}));
   }
 
   bool currentlyScrolling = true;
+  double lastScrollDelta = 0.0; // track the last scroll delta
 
   @override
   Widget build(BuildContext context) {
@@ -43,25 +133,32 @@ class _StickyAppbarState extends State<StickyAppbar> with SingleTickerProviderSt
                 if (scrollNotification is ScrollStartNotification) {
                   currentlyScrolling = true;
                 }
-                if (scrollNotification is ScrollUpdateNotification) {
-                  if (scrollNotification.scrollDelta! > 0 && offsetBuildback > 0) {
-                    offsetBuildback = max(0, offsetBuildback - scrollNotification.scrollDelta!);
-                  } else if (scrollNotification.scrollDelta! <= 0 && offsetBuildback < widget.stickyHeader.height) {
-                    offsetBuildback =
-                        min(widget.stickyHeader.height, offsetBuildback - scrollNotification.scrollDelta!);
+                if (scrollNotification is ScrollEndNotification) {
+                  widget.controller.cancelCurrentAnimation();
+                  if (widget.controller.offsetBuildback > widget.stickyHeader.height) return;
+                  // Check if the scroll is not at the very top
+                  if (lastScrollDelta < 0) {
+                    // Scrolling down
+                    widget.controller.bringDownAppbar(speedy: true);
+                  } else {
+                    // Scrolling up
+                    if (widget.controller.offsetBuildback > widget.stickyHeader.height) {
+                      widget.controller.bringUpAppbar(speedy: true);
+                    }
                   }
-                  stickyOffset = widget.stickyHeader.height - offsetBuildback;
-                }
-              });
-            } else if (scrollNotification.metrics.axis == Axis.horizontal) {
-              setState(() {
-                if (scrollNotification is ScrollStartNotification) {
-                  currentlyScrolling = true;
                 }
                 if (scrollNotification is ScrollUpdateNotification) {
-                  double newOffsetBuildback = offsetBuildback + scrollNotification.scrollDelta!.abs();
-                  offsetBuildback = min(widget.stickyHeader.height, max(0, newOffsetBuildback));
-                  stickyOffset = widget.stickyHeader.height - offsetBuildback;
+                  if (widget.controller.isAnimating) return;
+                  lastScrollDelta = scrollNotification.scrollDelta ?? 0.0;
+                  if (scrollNotification.scrollDelta! > 0 && widget.controller.offsetBuildback > 0) {
+                    widget.controller.offsetBuildback =
+                        max(0, widget.controller.offsetBuildback - scrollNotification.scrollDelta!);
+                  } else if (scrollNotification.scrollDelta! <= 0 &&
+                      widget.controller.offsetBuildback < widget.stickyHeader.height) {
+                    widget.controller.offsetBuildback = min(widget.stickyHeader.height,
+                        widget.controller.offsetBuildback - scrollNotification.scrollDelta!);
+                  }
+                  widget.controller.stickyOffset = widget.stickyHeader.height - widget.controller.offsetBuildback;
                 }
               });
             }
@@ -71,11 +168,11 @@ class _StickyAppbarState extends State<StickyAppbar> with SingleTickerProviderSt
         ),
         AnimatedPositioned(
           duration: Duration(milliseconds: currentlyScrolling ? 0 : 125),
-          top: -stickyOffset, // Use stickyOffset for positioning
+          top: -widget.controller.stickyOffset, // Use stickyOffset for positioning
           left: 0,
           right: 0,
           child: Opacity(
-            opacity: min((2 * offsetBuildback) / widget.stickyHeader.height, 1),
+            opacity: min((2 * widget.controller.offsetBuildback) / widget.stickyHeader.height, 1),
             child: SizedBox(
               height: widget.stickyHeader.height,
               child: widget.stickyHeader.child,

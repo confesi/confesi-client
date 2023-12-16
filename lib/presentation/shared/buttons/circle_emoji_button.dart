@@ -19,7 +19,7 @@ class CircleEmojiButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TouchableOpacity(
+    return TouchableScale(
       onTap: () {
         HapticFeedback.lightImpact();
         onTap();
@@ -35,7 +35,7 @@ class CircleEmojiButton extends StatelessWidget {
               text,
               textAlign: TextAlign.center,
               overflow: TextOverflow.ellipsis,
-              style: kBody.copyWith(color: Theme.of(context).colorScheme.onSecondary),
+              style: kTitle.copyWith(color: Theme.of(context).colorScheme.onSecondary),
             ),
           ),
         ),

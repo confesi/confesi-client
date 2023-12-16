@@ -27,8 +27,21 @@ class ExploreHome extends StatefulWidget {
   State<ExploreHome> createState() => _ExploreHomeState();
 }
 
-class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClientMixin {
+class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
   final PageController _pageController = PageController(initialPage: 0);
+  late StickyAppbarController _stickyAppbarController;
+
+  @override
+  initState() {
+    super.initState();
+    _stickyAppbarController = StickyAppbarController(this);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _stickyAppbarController.dispose();
+  }
 
   @override
   bool get wantKeepAlive => true;
@@ -72,6 +85,7 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
             children: [
               Expanded(
                 child: StickyAppbar(
+                  controller: _stickyAppbarController,
                   stickyHeader: StickyAppbarProps(
                     height: appbarHeight + MediaQuery.of(context).padding.top,
                     child: Container(
@@ -113,10 +127,10 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
                                 child: CircleEmojiButton(
                                   onTap: () => nextPage(),
                                   text: context.watch<PostsService>().currentlySelectedFeed == FeedType.sentiment
-                                      ? 'Positivity'
+                                      ? 'Positivity (3/3)'
                                       : context.watch<PostsService>().currentlySelectedFeed == FeedType.trending
-                                          ? 'Trending'
-                                          : 'Recents',
+                                          ? 'Trending (2/3)'
+                                          : 'Recents (1/3)',
                                 ),
                               ),
                             ),
@@ -148,6 +162,7 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
                       // hide scroll notifications
                       physics: const ClampingScrollPhysics(),
                       onPageChanged: (value) {
+                        _stickyAppbarController.bringDownAppbar();
                         context
                             .read<PostsService>()
                             .setCurrentlySelectedFeedAndReloadIfNeeded(context, FeedType.values[value]);
