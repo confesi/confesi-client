@@ -55,7 +55,7 @@ class StickyAppbarController extends ChangeNotifier {
   }
 
   void _changeAnimationDuration(bool speedy) {
-    Duration newDuration = speedy ? const Duration(milliseconds: 125) : const Duration(milliseconds: 250);
+    Duration newDuration = speedy ? const Duration(milliseconds: 125) : const Duration(milliseconds: 350);
     _animationController.duration = newDuration;
   }
 
@@ -122,6 +122,7 @@ class _StickyAppbarState extends State<StickyAppbar> with SingleTickerProviderSt
   bool currentlyScrolling = true;
   double lastScrollDelta = 0.0; // track the last scroll delta
   double offset = 0.0;
+  double currScrollDelta = 0.0;
 
   @override
   Widget build(BuildContext context) {
@@ -132,9 +133,12 @@ class _StickyAppbarState extends State<StickyAppbar> with SingleTickerProviderSt
             if (scrollNotification.metrics.axis == Axis.vertical) {
               setState(() {
                 if (scrollNotification is ScrollStartNotification) {
+                  currScrollDelta = 0;
                   currentlyScrolling = true;
                 }
                 if (scrollNotification is ScrollEndNotification) {
+                  currentlyScrolling = false;
+                  print("lastScrollDelta: $lastScrollDelta");
                   widget.controller.cancelCurrentAnimation();
                   if (widget.controller.offsetBuildback > widget.stickyHeader.height) return;
                   // Check if the scroll is not at the very top
@@ -143,7 +147,7 @@ class _StickyAppbarState extends State<StickyAppbar> with SingleTickerProviderSt
                     widget.controller.bringDownAppbar(speedy: true);
                   } else {
                     // Scrolling up
-                    if (offset > widget.stickyHeader.height) {
+                    if (offset > widget.stickyHeader.height || currScrollDelta > 0) {
                       widget.controller.bringUpAppbar(speedy: true);
                     } else {
                       widget.controller.bringDownAppbar(speedy: true);
@@ -151,6 +155,7 @@ class _StickyAppbarState extends State<StickyAppbar> with SingleTickerProviderSt
                   }
                 }
                 if (scrollNotification is ScrollUpdateNotification) {
+                  currScrollDelta += scrollNotification.scrollDelta!;
                   offset = scrollNotification.metrics.pixels;
                   if (widget.controller.isAnimating) return;
                   lastScrollDelta = scrollNotification.scrollDelta ?? 0.0;

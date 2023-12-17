@@ -12,6 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/router/go_router.dart';
+import '../../../core/services/user_auth/user_auth_service.dart';
+import '../../../init.dart';
 import '../../shared/buttons/option.dart';
 import '../../shared/overlays/button_options_sheet.dart';
 
@@ -32,10 +34,12 @@ void buildOptionsSheet(BuildContext context, PostWithMetadata post, {bool showSa
           text: "Open anonymous DM",
           primaryColor: Theme.of(context).colorScheme.secondary,
           icon: CupertinoIcons.chat_bubble_2_fill,
-          onTap: () async =>
-              (await Provider.of<RoomsService>(context, listen: false).createNewRoom(post.post.id.mid)).fold(
-            (_) => Provider.of<PrimaryTabControllerService>(context, listen: false).setTabIdx(4),
-            (errMsg) => context.read<NotificationsCubit>().showErr(errMsg),
+          onTap: () async => verifiedUserOnly(
+            context,
+            () async => (await Provider.of<RoomsService>(context, listen: false).createNewRoom(post.post.id.mid)).fold(
+              (_) => Provider.of<PrimaryTabControllerService>(context, listen: false).setTabIdx(4),
+              (errMsg) => context.read<NotificationsCubit>().showErr(errMsg),
+            ),
           ),
         ),
       ),

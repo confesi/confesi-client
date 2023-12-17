@@ -153,8 +153,8 @@ void main() async {
   await startAuthListener();
   await init();
 
-  // disable iOS bottom bar
-  await HomeIndicator.hide();
+  // disable iOS bottom bar (WE WANT IT NOW!)
+  // await HomeIndicator.hide();
 
   runApp(
     MultiProvider(

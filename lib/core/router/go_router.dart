@@ -187,29 +187,6 @@ final GoRouter router = GoRouter(
     ),
 
     GoRoute(
-      path: '/home/leaderboard',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const LeaderboardScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            var begin = const Offset(0.0, 1.0);
-            var end = Offset.zero;
-            var curve = Curves.easeInOut;
-
-            var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-            var offsetAnimation = animation.drive(tween);
-
-            return SlideTransition(
-              position: offsetAnimation,
-              child: child,
-            );
-          },
-        );
-      },
-    ),
-
-    GoRoute(
       path: '/home/leaderboard/school',
       pageBuilder: (context, state) {
         HomeLeaderboardSchoolProps props = state.extra as HomeLeaderboardSchoolProps;
@@ -272,28 +249,9 @@ final GoRouter router = GoRouter(
     GoRoute(path: '/settings/filters', builder: (BuildContext context, GoRouterState state) => const FiltersScreen()),
 
     GoRoute(
-      path: '/home/profile',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const AccountProfileStats(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            // Create an offset animation that slides the page up from below the screen
-            var begin = const Offset(0.0, 1.0); // Start from the bottom of the screen
-            var end = Offset.zero; // End at the current position
-            var curve = Curves.easeInOut;
+        path: '/home/leaderboard', builder: (BuildContext context, GoRouterState state) => const LeaderboardScreen()),
 
-            var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-            var offsetAnimation = animation.drive(tween);
-
-            return SlideTransition(
-              position: offsetAnimation,
-              child: child,
-            );
-          },
-        );
-      },
-    ),
+    GoRoute(path: '/home/profile', builder: (BuildContext context, GoRouterState state) => const AccountProfileStats()),
 
     GoRoute(
         path: '/settings/notifications',

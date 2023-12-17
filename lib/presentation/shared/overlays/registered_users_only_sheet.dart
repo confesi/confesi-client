@@ -59,7 +59,7 @@ Future<dynamic> showRegisteredUserOnlySheet(BuildContext context, {VoidCallback?
                       ),
                       const SizedBox(height: 15),
                       Text(
-                        "Guests have read-only access. Registered users can do everything.",
+                        "Guests have read-only access. Registered users can do everything, including messaging.",
                         style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
                         textAlign: TextAlign.center,
                       ),

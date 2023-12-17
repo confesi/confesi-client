@@ -315,6 +315,10 @@ class _FeedListState extends State<FeedList> {
                     if (index == 1) {
                       return Container(
                         height: widget.centeredEmptyIndicator ? constraints.maxHeight : null,
+                        padding: EdgeInsets.only(
+                            bottom: widget.stickyHeader != null
+                                ? widget.stickyHeader!.height + widget.topPushdownOffset
+                                : widget.topPushdownOffset),
                         margin: EdgeInsets.symmetric(vertical: widget.centeredEmptyIndicator ? 0 : 30),
                         child: Center(
                           child: FractionallySizedBox(
@@ -324,7 +328,7 @@ class _FeedListState extends State<FeedList> {
                               children: [
                                 AlertIndicator(
                                   isLogo: false,
-                                  message: "Nothing found.",
+                                  message: "Nothing found",
                                   onPress: () async => await widget.onPullToRefresh(),
                                 ),
                               ],

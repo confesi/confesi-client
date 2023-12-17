@@ -7,6 +7,7 @@ import 'package:confesi/core/services/user_auth/user_auth_service.dart';
 import 'package:confesi/core/utils/sizing/width_fraction.dart';
 import 'package:confesi/init.dart';
 import 'package:confesi/presentation/dms/screens/home.dart';
+import 'package:confesi/presentation/shared/overlays/registered_users_only_sheet.dart';
 import 'package:provider/provider.dart';
 import 'dart:ui';
 
@@ -128,6 +129,12 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       router.push("/create", extra: CreatingNewPost());
                       context.read<PostCategoriesCubit>().resetCategoryAndText();
                     });
+                  } else if (newIndex == 3) {
+                    if (sl.get<UserAuthService>().isAnon) {
+                      showRegisteredUserOnlySheet(context);
+                    } else {
+                      Provider.of<PrimaryTabControllerService>(context, listen: false).setTabIdx(newIndex);
+                    }
                   } else {
                     Provider.of<PrimaryTabControllerService>(context, listen: false).setTabIdx(newIndex);
                   }

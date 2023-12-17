@@ -54,160 +54,156 @@ class _AccountProfileStatsState extends State<AccountProfileStats> {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: false,
-      child: ThemeStatusBar(
-        child: Scaffold(
-          backgroundColor: Theme.of(context).colorScheme.background,
-          body: SafeArea(
-            bottom: false,
-            child: Container(
-              color: Theme.of(context).colorScheme.shadow,
-              child: Column(
-                children: [
-                  AppbarLayout(
-                    bottomBorder: true,
-                    centerWidget: Text(
-                      "Your Private Account",
-                      style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.center,
-                    ),
-                    rightIconVisible: true,
-                    rightIcon: CupertinoIcons.gear,
-                    rightIconOnPress: () => router.push("/settings"),
-                    // leftIconVisible: context.watch<StatsCubit>().state is StatsData,
-                    leftIcon: CupertinoIcons.xmark,
+    return ThemeStatusBar(
+      child: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.background,
+        body: SafeArea(
+          bottom: false,
+          child: Container(
+            color: Theme.of(context).colorScheme.shadow,
+            child: Column(
+              children: [
+                AppbarLayout(
+                  bottomBorder: true,
+                  centerWidget: Text(
+                    "Your Private Account",
+                    style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
                   ),
-                  Expanded(
-                    child: ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: maxStandardSizeOfContent),
-                      child: ScrollableView(
-                        hapticsEnabled: false,
-                        physics: const BouncingScrollPhysics(),
-                        controller: ScrollController(),
-                        scrollBarVisible: false,
-                        inlineBottomOrRightPadding: 15 + floatingBottomNavOffset,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              TileGroup(
-                                text: "Account",
-                                tiles: [
-                                  SettingTile(
-                                    leftIcon: CupertinoIcons.pencil,
-                                    text: "School, faculty, and year",
-                                    onTap: () => verifiedUserOnly(context, () => router.push("/home/profile/account")),
-                                  ),
-                                  RectangleTile(
-                                    onLeftTap: () => router.push('/home/profile/saved/comments'),
-                                    onRightTap: () => router.push('/home/profile/saved/posts'),
-                                    leftIcon: CupertinoIcons.chat_bubble_2,
-                                    rightIcon: CupertinoIcons.cube_box,
-                                    leftText: "Saved comments",
-                                    rightText: "Saved confessions",
-                                  ),
-                                  RectangleTile(
-                                    onLeftTap: () => router.push('/home/profile/comments'),
-                                    onRightTap: () => router.push('/home/profile/posts'),
-                                    leftIcon: CupertinoIcons.chat_bubble_2,
-                                    rightIcon: CupertinoIcons.cube_box,
-                                    leftText: "Your comments",
-                                    rightText: "Your confessions",
-                                  ),
-                                ],
-                              ),
-                              BlocBuilder<StatsCubit, StatsState>(
-                                builder: (context, state) {
-                                  if (state is StatsData) {
-                                    return Column(
-                                      children: [
-                                        TileGroup(
-                                          text: "How you compare to others",
-                                          tiles: [
-                                            StatTile(
-                                              leftNumber: state.stats.likes,
-                                              leftDescription: "Likes",
-                                              centerNumber: state.stats.hottest,
-                                              centerDescription: "Hottests",
-                                              rightNumber: state.stats.dislikes,
-                                              rightDescription: "Dislikes",
-                                            ),
-                                            TextStatTile(
-                                              leftText: "Likes 🎉",
-                                              rightText: percentToRelativeMsg(state.stats.likesPerc),
-                                            ),
-                                            TextStatTile(
-                                              leftText: "Hottests 🔥",
-                                              rightText: percentToRelativeMsg(state.stats.hottestPerc),
-                                            ),
-                                            TextStatTile(
-                                              leftText: "Dislikes 🤮",
-                                              rightText: percentToRelativeMsg(state.stats.dislikesPerc),
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              "Share your stats",
-                                              style: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
-                                              textAlign: TextAlign.left,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                            const SizedBox(width: 10),
-                                            IconButton(
-                                              onPressed: () {
-                                                final statsState = context.read<StatsCubit>().state;
-                                                if (statsState is StatsData) {
-                                                  final data = statsState;
-                                                  sl.get<Sharing>().shareStats(
-                                                        context,
-                                                        data.stats.likes,
-                                                        data.stats.hottest,
-                                                        data.stats.dislikes,
-                                                        data.stats.likesPerc,
-                                                        data.stats.hottestPerc,
-                                                        data.stats.dislikesPerc,
-                                                      );
-                                                }
-                                              },
-                                              icon: Icon(
-                                                CupertinoIcons.share,
-                                                color: Theme.of(context).colorScheme.primary,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    );
-                                  } else if (state is StatsGuest) {
-                                    return DisclaimerText(
-                                      text: "To see your unique account statistics, create an account.",
-                                      onTap: () => router.push("/register", extra: const RegistrationPops(true)),
-                                      btnText: "Create account ->",
-                                    );
-                                  } else {
-                                    return LoadingOrAlert(
-                                      message: StateMessage(
-                                        state is StatsError ? state.message : null,
-                                        () => context.read<StatsCubit>().loadStats(),
+                  rightIconVisible: true,
+                  rightIcon: CupertinoIcons.gear,
+                  rightIconOnPress: () => router.push("/settings"),
+                  // leftIconVisible: context.watch<StatsCubit>().state is StatsData,
+                ),
+                Expanded(
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: maxStandardSizeOfContent),
+                    child: ScrollableView(
+                      hapticsEnabled: false,
+                      physics: const BouncingScrollPhysics(),
+                      controller: ScrollController(),
+                      scrollBarVisible: false,
+                      inlineBottomOrRightPadding: 15 + floatingBottomNavOffset,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            TileGroup(
+                              text: "Account",
+                              tiles: [
+                                SettingTile(
+                                  leftIcon: CupertinoIcons.pencil,
+                                  text: "School, faculty, and year",
+                                  onTap: () => verifiedUserOnly(context, () => router.push("/home/profile/account")),
+                                ),
+                                RectangleTile(
+                                  onLeftTap: () => router.push('/home/profile/saved/comments'),
+                                  onRightTap: () => router.push('/home/profile/saved/posts'),
+                                  leftIcon: CupertinoIcons.chat_bubble_2,
+                                  rightIcon: CupertinoIcons.cube_box,
+                                  leftText: "Saved comments",
+                                  rightText: "Saved confessions",
+                                ),
+                                RectangleTile(
+                                  onLeftTap: () => router.push('/home/profile/comments'),
+                                  onRightTap: () => router.push('/home/profile/posts'),
+                                  leftIcon: CupertinoIcons.chat_bubble_2,
+                                  rightIcon: CupertinoIcons.cube_box,
+                                  leftText: "Your comments",
+                                  rightText: "Your confessions",
+                                ),
+                              ],
+                            ),
+                            BlocBuilder<StatsCubit, StatsState>(
+                              builder: (context, state) {
+                                if (state is StatsData) {
+                                  return Column(
+                                    children: [
+                                      TileGroup(
+                                        text: "How you compare to others",
+                                        tiles: [
+                                          StatTile(
+                                            leftNumber: state.stats.likes,
+                                            leftDescription: "Likes",
+                                            centerNumber: state.stats.hottest,
+                                            centerDescription: "Hottests",
+                                            rightNumber: state.stats.dislikes,
+                                            rightDescription: "Dislikes",
+                                          ),
+                                          TextStatTile(
+                                            leftText: "Likes 🎉",
+                                            rightText: percentToRelativeMsg(state.stats.likesPerc),
+                                          ),
+                                          TextStatTile(
+                                            leftText: "Hottests 🔥",
+                                            rightText: percentToRelativeMsg(state.stats.hottestPerc),
+                                          ),
+                                          TextStatTile(
+                                            leftText: "Dislikes 🤮",
+                                            rightText: percentToRelativeMsg(state.stats.dislikesPerc),
+                                          ),
+                                        ],
                                       ),
-                                      isLoading: state is StatsLoading,
-                                    );
-                                  }
-                                },
-                              ),
-                            ],
-                          ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            "Share your stats",
+                                            style: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
+                                            textAlign: TextAlign.left,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          const SizedBox(width: 10),
+                                          IconButton(
+                                            onPressed: () {
+                                              final statsState = context.read<StatsCubit>().state;
+                                              if (statsState is StatsData) {
+                                                final data = statsState;
+                                                sl.get<Sharing>().shareStats(
+                                                      context,
+                                                      data.stats.likes,
+                                                      data.stats.hottest,
+                                                      data.stats.dislikes,
+                                                      data.stats.likesPerc,
+                                                      data.stats.hottestPerc,
+                                                      data.stats.dislikesPerc,
+                                                    );
+                                              }
+                                            },
+                                            icon: Icon(
+                                              CupertinoIcons.share,
+                                              color: Theme.of(context).colorScheme.primary,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  );
+                                } else if (state is StatsGuest) {
+                                  return DisclaimerText(
+                                    text: "To see your unique account statistics, create an account.",
+                                    onTap: () => router.push("/register", extra: const RegistrationPops(true)),
+                                    btnText: "Create account ->",
+                                  );
+                                } else {
+                                  return LoadingOrAlert(
+                                    message: StateMessage(
+                                      state is StatsError ? state.message : null,
+                                      () => context.read<StatsCubit>().loadStats(),
+                                    ),
+                                    isLoading: state is StatsLoading,
+                                  );
+                                }
+                              },
+                            ),
+                          ],
                         ),
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
