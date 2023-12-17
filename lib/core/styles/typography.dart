@@ -2,12 +2,12 @@ import 'package:flutter/cupertino.dart' as f;
 import 'package:google_fonts/google_fonts.dart' as gf;
 
 /// Faded text style - meant for decorative background numbers or display values. Not for primary reading.
-var kFaded = gf.GoogleFonts.montserrat(
+var kFaded = gf.GoogleFonts.playfairDisplay(
   textStyle: const f.TextStyle(fontSize: 105, fontWeight: f.FontWeight.bold),
 );
 
 /// Faded text style - meant for decorative background numbers or display values. Not for primary reading.
-var kFunkyDisplay = gf.GoogleFonts.inter(
+var kFunkyDisplay = gf.GoogleFonts.poppins(
   textStyle: const f.TextStyle(fontSize: 35, fontWeight: f.FontWeight.w800),
 );
 
@@ -19,6 +19,11 @@ var kDisplay1 = gf.GoogleFonts.poppins(
 /// Very big text style.
 var kDisplay2 = gf.GoogleFonts.poppins(
   textStyle: const f.TextStyle(fontWeight: f.FontWeight.w900, fontSize: 34),
+);
+
+/// Large text style - meant for display, but with sans serif style.
+var kDisplay3 = gf.GoogleFonts.bebasNeue(
+  textStyle: const f.TextStyle(fontWeight: f.FontWeight.w900, fontSize: 26),
 );
 
 /// Big text style.

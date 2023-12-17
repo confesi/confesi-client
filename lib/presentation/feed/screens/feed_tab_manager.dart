@@ -19,7 +19,7 @@ import '../../../core/router/go_router.dart';
 import '../tabs/recents_feed.dart';
 import '../tabs/trending_feed.dart';
 
-const double appbarHeight = 84;
+const double appbarHeight = 85;
 
 class ExploreHome extends StatefulWidget {
   const ExploreHome({
@@ -120,7 +120,7 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
                                 },
                                 child: Text(
                                   "Confesi $emoji",
-                                  style: kDisplay1.copyWith(color: Theme.of(context).colorScheme.onSecondary),
+                                  style: kDisplay3.copyWith(color: Theme.of(context).colorScheme.onSecondary),
                                   textAlign: TextAlign.center,
                                   overflow: TextOverflow.ellipsis,
                                 ),
@@ -251,8 +251,7 @@ class _FeedTab extends StatelessWidget {
         Haptics.f(H.regular);
         onTap();
       },
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 350),
+      child: Container(
         padding: const EdgeInsets.only(bottom: 5),
         decoration: BoxDecoration(
           color: Colors.transparent, // hitbox trick

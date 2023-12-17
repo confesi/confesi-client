@@ -55,7 +55,7 @@ class StickyAppbarController extends ChangeNotifier {
   }
 
   void _changeAnimationDuration(bool speedy) {
-    Duration newDuration = speedy ? const Duration(milliseconds: 250) : const Duration(milliseconds: 250);
+    Duration newDuration = speedy ? const Duration(milliseconds: 125) : const Duration(milliseconds: 250);
     _animationController.duration = newDuration;
   }
 

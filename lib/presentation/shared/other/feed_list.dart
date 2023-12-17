@@ -215,7 +215,7 @@ class _FeedListState extends State<FeedList> {
       return LoadingOrAlert(
         key: const ValueKey("has_error"),
         isLoading: errorLoadingMoreIsLoading,
-        message: StateMessage("Error loading more", () async {
+        message: StateMessage("Error loading", () async {
           if (!mounted) return;
           setState(() {
             errorLoadingMoreIsLoading = true;
