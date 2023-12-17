@@ -123,12 +123,10 @@ IconData postCategoryToIcon(String category) {
   return CupertinoIcons.cube_box; // default
 }
 
-String genRandomEmoji() {
-  final emojis = [
-    '🔥',
-    '👀',
-    '❤️',
-    '🚀',
-  ];
+String genRandomEmoji(String? notThisOne) {
+  List<String> emojis = ['🔥', '👀', '❤️', '🚀', '✨', '😈', '🥂'];
+  if (notThisOne != null) {
+    emojis.remove(notThisOne);
+  }
   return emojis[Random().nextInt(emojis.length)];
 }

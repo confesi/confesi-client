@@ -138,9 +138,11 @@ class FeedList extends StatefulWidget {
     this.onScroll,
     this.stickyHeader,
     this.topPushdownOffset = 0,
+    this.topPushdownOffsetAboveHeader = 0,
   });
 
   final double topPushdownOffset;
+  final double topPushdownOffsetAboveHeader;
   final StickyHeader? stickyHeader;
   final Function(ScrollNotification scrollNotification)? onScroll;
   final bool centeredEmptyIndicator;
@@ -302,7 +304,10 @@ class _FeedListState extends State<FeedList> {
                           bottom: widget.stickyHeader != null
                               ? widget.stickyHeader!.height + widget.topPushdownOffset
                               : widget.topPushdownOffset),
-                      child: widget.header ?? const SizedBox(),
+                      child: Padding(
+                        padding: EdgeInsets.only(top: widget.topPushdownOffsetAboveHeader),
+                        child: widget.header ?? const SizedBox(),
+                      ),
                     );
                   }
 

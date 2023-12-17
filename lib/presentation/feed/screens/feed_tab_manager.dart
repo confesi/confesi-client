@@ -37,11 +37,12 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
   final PageController _pageController = PageController(initialPage: 0);
   late StickyAppbarController _stickyAppbarController;
 
-  String emoji = genRandomEmoji();
+  late String emoji;
 
   @override
   initState() {
     super.initState();
+    emoji = genRandomEmoji(null);
     _stickyAppbarController = StickyAppbarController(this);
   }
 
@@ -99,7 +100,7 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
                     height: appbarHeight + MediaQuery.of(context).padding.top,
                     child: Container(
                       color: Theme.of(context).colorScheme.secondary,
-                      padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top, left: 15, right: 15),
+                      padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top, left: 12, right: 12),
                       child: Column(
                         children: [
                           Row(
@@ -110,11 +111,19 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
                                 icon: CupertinoIcons.slider_horizontal_3,
                               ),
                               const SizedBox(width: 10),
-                              Text(
-                                "Confesi $emoji",
-                                style: kDisplay1.copyWith(color: Theme.of(context).colorScheme.onSecondary),
-                                textAlign: TextAlign.center,
-                                overflow: TextOverflow.ellipsis,
+                              TouchableOpacity(
+                                onTap: () {
+                                  Haptics.f(H.regular);
+                                  setState(() {
+                                    emoji = genRandomEmoji(emoji);
+                                  });
+                                },
+                                child: Text(
+                                  "Confesi $emoji",
+                                  style: kDisplay1.copyWith(color: Theme.of(context).colorScheme.onSecondary),
+                                  textAlign: TextAlign.center,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
                               const Spacer(),
                               _TabIconBtn(
@@ -125,43 +134,46 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
                             ],
                           ),
                           const SizedBox(height: 15),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                  child: _FeedTab(
-                                isSelected: context.watch<PostsService>().currentlySelectedFeed == FeedType.recents,
-                                title: "Recents",
-                                onTap: () {
-                                  context
-                                      .read<PostsService>()
-                                      .setCurrentlySelectedFeedAndReloadIfNeeded(context, FeedType.recents);
-                                  _pageController.jumpToPage(0);
-                                },
-                              )),
-                              Expanded(
-                                  child: _FeedTab(
-                                isSelected: context.watch<PostsService>().currentlySelectedFeed == FeedType.trending,
-                                title: "Trending",
-                                onTap: () {
-                                  context
-                                      .read<PostsService>()
-                                      .setCurrentlySelectedFeedAndReloadIfNeeded(context, FeedType.trending);
-                                  _pageController.jumpToPage(1);
-                                },
-                              )),
-                              Expanded(
-                                  child: _FeedTab(
-                                isSelected: context.watch<PostsService>().currentlySelectedFeed == FeedType.sentiment,
-                                title: "Positivity",
-                                onTap: () {
-                                  context
-                                      .read<PostsService>()
-                                      .setCurrentlySelectedFeedAndReloadIfNeeded(context, FeedType.sentiment);
-                                  _pageController.jumpToPage(2);
-                                },
-                              )),
-                            ],
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 3),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                    child: _FeedTab(
+                                  isSelected: context.watch<PostsService>().currentlySelectedFeed == FeedType.recents,
+                                  title: "Recents",
+                                  onTap: () {
+                                    context
+                                        .read<PostsService>()
+                                        .setCurrentlySelectedFeedAndReloadIfNeeded(context, FeedType.recents);
+                                    _pageController.jumpToPage(0);
+                                  },
+                                )),
+                                Expanded(
+                                    child: _FeedTab(
+                                  isSelected: context.watch<PostsService>().currentlySelectedFeed == FeedType.trending,
+                                  title: "Trending",
+                                  onTap: () {
+                                    context
+                                        .read<PostsService>()
+                                        .setCurrentlySelectedFeedAndReloadIfNeeded(context, FeedType.trending);
+                                    _pageController.jumpToPage(1);
+                                  },
+                                )),
+                                Expanded(
+                                    child: _FeedTab(
+                                  isSelected: context.watch<PostsService>().currentlySelectedFeed == FeedType.sentiment,
+                                  title: "Positivity",
+                                  onTap: () {
+                                    context
+                                        .read<PostsService>()
+                                        .setCurrentlySelectedFeedAndReloadIfNeeded(context, FeedType.sentiment);
+                                    _pageController.jumpToPage(2);
+                                  },
+                                )),
+                              ],
+                            ),
                           ),
                         ],
                       ),
@@ -210,7 +222,11 @@ class _TabIconBtn extends StatelessWidget {
         Haptics.f(H.regular);
         onTap();
       },
-      child: Icon(icon, size: 28),
+      child: Container(
+        padding: const EdgeInsets.all(3),
+        color: Colors.transparent, // hitbox trick
+        child: Icon(icon, size: 28),
+      ),
     );
   }
 }
@@ -236,7 +252,7 @@ class _FeedTab extends StatelessWidget {
         onTap();
       },
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 250),
+        duration: const Duration(milliseconds: 350),
         padding: const EdgeInsets.only(bottom: 5),
         decoration: BoxDecoration(
           color: Colors.transparent, // hitbox trick

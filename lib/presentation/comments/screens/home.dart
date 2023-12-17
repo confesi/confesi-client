@@ -11,7 +11,9 @@ import 'package:confesi/models/encrypted_id.dart';
 import 'package:confesi/models/post.dart';
 import 'package:confesi/presentation/comments/widgets/sheet.dart';
 import 'package:confesi/presentation/comments/widgets/simple_comment_sort.dart';
+import 'package:confesi/presentation/feed/screens/feed_tab_manager.dart';
 import 'package:confesi/presentation/feed/widgets/img_viewer.dart';
+import 'package:confesi/presentation/feed/widgets/sticky_appbar.dart';
 import 'package:confesi/presentation/shared/behaviours/nav_blocker.dart';
 import 'package:confesi/presentation/shared/behaviours/one_theme_status_bar.dart';
 import 'package:confesi/presentation/shared/behaviours/themed_status_bar.dart';
@@ -42,12 +44,13 @@ import '../../../models/comment.dart';
 import '../../create_post/overlays/confetti_blaster.dart';
 import '../../feed/methods/show_post_options.dart';
 import '../../feed/utils/post_metadata_formatters.dart';
-import '../../shared/behaviours/url_preview.dart';
 import '../../shared/indicators/alert.dart';
 import '../widgets/comment_tile.dart';
 import '../../shared/other/feed_list.dart';
 import '../../shared/overlays/screen_overlay.dart';
 import '../../shared/stat_tiles/stat_tile_group.dart';
+
+const double stickyAppbarHeight = 115;
 
 class CommentsHome extends StatefulWidget {
   const CommentsHome({super.key, required this.props});
@@ -58,10 +61,11 @@ class CommentsHome extends StatefulWidget {
   State<CommentsHome> createState() => _CommentsHomeState();
 }
 
-class _CommentsHomeState extends State<CommentsHome> {
+class _CommentsHomeState extends State<CommentsHome> with TickerProviderStateMixin {
   final FeedListController feedListController = FeedListController();
   late CommentSheetController commentSheetController;
   final ScreenshotCallback screenshotCallback = ScreenshotCallback();
+  late StickyAppbarController _stickyAppbarController;
   bool isScrolling = false;
 
   Future<void> delegateInitialLoad(BuildContext context, {bool refresh = false}) async {
@@ -156,52 +160,6 @@ class _CommentsHomeState extends State<CommentsHome> {
     }
   }
 
-  // Widget _highlightText(String content, int? lastChar, TextStyle baseStyle, int limit) {
-  //   if (lastChar != null && lastChar < content.length && content.length >= limit) {
-  //     final startIndex = content.lastIndexOf(' ', lastChar);
-  //     final endIndex = content.indexOf(' ', lastChar);
-
-  //     final beforeHighlightEnd = startIndex == -1 ? 0 : startIndex + 1;
-  //     final highlightedWordStart = beforeHighlightEnd;
-  //     final highlightedWordEnd = (endIndex == -1 || endIndex > content.length) ? content.length : endIndex;
-  //     final afterHighlightStart = highlightedWordEnd;
-
-  //     final beforeHighlight = content.substring(0, beforeHighlightEnd);
-  //     final highlightedWord = content.substring(highlightedWordStart, highlightedWordEnd);
-  //     final afterHighlight = afterHighlightStart < content.length ? content.substring(afterHighlightStart) : "";
-
-  //     return ClipRRect(
-  //       child: RichText(
-  //         text: TextSpan(
-  //           children: [
-  //             TextSpan(
-  //               text: beforeHighlight,
-  //               style: baseStyle,
-  //             ),
-  //             TextSpan(
-  //               text: highlightedWord,
-  //               style: baseStyle.copyWith(
-  //                 decoration: TextDecoration.underline, // This adds the underline
-  //                 decorationColor: Theme.of(context).colorScheme.tertiary,
-  //               ),
-  //             ),
-  //             TextSpan(
-  //               text: afterHighlight,
-  //               style: baseStyle,
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //     );
-  //   } else {
-  //     return TextNoVertOverflow(
-  //       content,
-  //       style: baseStyle,
-  //       textAlign: TextAlign.left,
-  //     );
-  //   }
-  // }
-
   Widget buildHeader(BuildContext context, CommentSectionData commentData, IndividualPostData postState) {
     final post = Provider.of<GlobalContentService>(context).posts[postState.post.post.id]!;
     return Column(
@@ -214,23 +172,19 @@ class _CommentsHomeState extends State<CommentsHome> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                WidgetOrNothing(
-                  showWidget: post.post.title.isNotEmpty,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 15),
-                        TextNoVertOverflow(
-                          removeSubsequentNewLines(post.post.title),
-                          style: kDisplay1.copyWith(
-                            color: Theme.of(context).colorScheme.primary,
-                            fontSize:
-                                kDisplay1.fontSize! * Provider.of<UserAuthService>(context).data().textSize.multiplier,
-                          ),
-                        )
-                      ],
-                    ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Column(
+                    children: [
+                      TextNoVertOverflow(
+                        post.post.title.isEmpty ? "[no title]" : removeSubsequentNewLines(post.post.title),
+                        style: kDisplay1.copyWith(
+                          color: Theme.of(context).colorScheme.primary,
+                          fontSize:
+                              kDisplay1.fontSize! * Provider.of<UserAuthService>(context).data().textSize.multiplier,
+                        ),
+                      )
+                    ],
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -346,6 +300,7 @@ class _CommentsHomeState extends State<CommentsHome> {
 
   @override
   void initState() {
+    _stickyAppbarController = StickyAppbarController(this);
     commentSheetController = CommentSheetController();
     tryOpenKeyboard();
     startScreenshotListener();
@@ -356,6 +311,7 @@ class _CommentsHomeState extends State<CommentsHome> {
 
   @override
   void dispose() {
+    _stickyAppbarController.dispose();
     feedListController.dispose();
     screenshotCallback.dispose();
     super.dispose();
@@ -477,70 +433,66 @@ class _CommentsHomeState extends State<CommentsHome> {
                       ),
                     ),
                   ),
-                  child: Align(
-                    alignment: Alignment.topCenter,
-                    child: Column(
-                      children: [
-                        StatTileGroup(
-                          icon1Text: "Back",
-                          icon2Text: addCommasToNumber(postState.post.post.commentCount),
-                          icon3Text: "More",
-                          icon4Text: largeNumberFormatter(postState.post.post.upvote),
-                          icon5Text: largeNumberFormatter(postState.post.post.downvote),
-                          icon1OnPress: () => router.pop(ogContext),
-                          icon2OnPress: () => commentSheetController.isFocused()
-                              ? verifiedUserOnly(ogContext, () => commentSheetController.unfocus())
-                              : verifiedUserOnly(ogContext, () => commentSheetController.focus()),
-                          icon3OnPress: () => buildOptionsSheet(ogContext, postState.post),
-                          icon4OnPress: () async => upvote(postState.post),
-                          icon5OnPress: () async => verifiedUserOnly(
-                              ogContext,
-                              () async => await Provider.of<GlobalContentService>(ogContext, listen: false)
-                                  .voteOnPost(postState.post, postState.post.userVote != -1 ? -1 : 0)
-                                  .then((value) => value.fold(
-                                      (err) => ogContext.read<NotificationsCubit>().showErr(err), (_) => null))),
-                          icon4Selected:
-                              Provider.of<GlobalContentService>(ogContext).posts[postState.post.post.id]!.userVote == 1,
-                          icon5Selected:
-                              Provider.of<GlobalContentService>(ogContext).posts[postState.post.post.id]!.userVote ==
-                                  -1,
-                        ),
-                        Expanded(
-                          child: FeedList(
-                            centeredEmptyIndicator: false,
-                            onScrollChange: (start) => WidgetsBinding.instance.addPostFrameCallback((_) {
-                              setState(() {
-                                isScrolling = start;
-                              });
-                            }),
-                            header: buildHeader(ogContext, commentState, postState),
-                            isScrollable: true,
-                            shrinkWrap: true,
-                            controller: feedListController
-                              ..items = generateComments(ogContext, commentState, feedListController, postState.post),
-                            loadMore: (_) async => await ogContext.read<CommentSectionCubit>().loadInitial(
-                                postState.post.post.id.mid, CommentSortType.recent,
-                                refresh: feedListController.items.isEmpty),
-                            hasError: commentState.paginationState == CommentFeedState.error,
-                            onErrorButtonPressed: () async => await ogContext
-                                .read<CommentSectionCubit>()
-                                .loadInitial(postState.post.post.id.mid, CommentSortType.recent),
-                            onPullToRefresh: () async {
-                              Provider.of<GlobalContentService>(ogContext, listen: false).clearComments();
-                              ogContext.read<CreateCommentCubit>().clear();
-                              ogContext.read<CommentSectionCubit>().clear();
-                              ogContext.read<IndividualPostCubit>().setLoading();
-                              await delegateInitialLoad(ogContext, refresh: true);
-                            },
-                            onWontLoadMoreButtonPressed: () async => await ogContext
-                                .read<CommentSectionCubit>()
-                                .loadInitial(postState.post.post.id.mid, CommentSortType.recent,
-                                    refresh: commentState.commentIds.isEmpty),
-                            wontLoadMore: commentState.paginationState == CommentFeedState.end,
-                            wontLoadMoreMessage: "You've reached the end",
-                          ),
-                        ),
-                      ],
+                  child: StickyAppbar(
+                    controller: _stickyAppbarController,
+                    stickyHeader: StickyAppbarProps(
+                      height: stickyAppbarHeight,
+                      child: StatTileGroup(
+                        icon1Text: "Back",
+                        icon2Text: addCommasToNumber(postState.post.post.commentCount),
+                        icon3Text: "More",
+                        icon4Text: largeNumberFormatter(postState.post.post.upvote),
+                        icon5Text: largeNumberFormatter(postState.post.post.downvote),
+                        icon1OnPress: () => router.pop(ogContext),
+                        icon2OnPress: () => commentSheetController.isFocused()
+                            ? verifiedUserOnly(ogContext, () => commentSheetController.unfocus())
+                            : verifiedUserOnly(ogContext, () => commentSheetController.focus()),
+                        icon3OnPress: () => buildOptionsSheet(ogContext, postState.post),
+                        icon4OnPress: () async => upvote(postState.post),
+                        icon5OnPress: () async => verifiedUserOnly(
+                            ogContext,
+                            () async => await Provider.of<GlobalContentService>(ogContext, listen: false)
+                                .voteOnPost(postState.post, postState.post.userVote != -1 ? -1 : 0)
+                                .then((value) => value.fold(
+                                    (err) => ogContext.read<NotificationsCubit>().showErr(err), (_) => null))),
+                        icon4Selected:
+                            Provider.of<GlobalContentService>(ogContext).posts[postState.post.post.id]!.userVote == 1,
+                        icon5Selected:
+                            Provider.of<GlobalContentService>(ogContext).posts[postState.post.post.id]!.userVote == -1,
+                      ),
+                    ),
+                    child: FeedList(
+                      topPushdownOffsetAboveHeader: appbarHeight + MediaQuery.of(context).padding.top,
+                      centeredEmptyIndicator: false,
+                      onScrollChange: (start) => WidgetsBinding.instance.addPostFrameCallback((_) {
+                        setState(() {
+                          isScrolling = start;
+                        });
+                      }),
+                      header: buildHeader(ogContext, commentState, postState),
+                      isScrollable: true,
+                      shrinkWrap: true,
+                      controller: feedListController
+                        ..items = generateComments(ogContext, commentState, feedListController, postState.post),
+                      loadMore: (_) async => await ogContext.read<CommentSectionCubit>().loadInitial(
+                          postState.post.post.id.mid, CommentSortType.recent,
+                          refresh: feedListController.items.isEmpty),
+                      hasError: commentState.paginationState == CommentFeedState.error,
+                      onErrorButtonPressed: () async => await ogContext
+                          .read<CommentSectionCubit>()
+                          .loadInitial(postState.post.post.id.mid, CommentSortType.recent),
+                      onPullToRefresh: () async {
+                        Provider.of<GlobalContentService>(ogContext, listen: false).clearComments();
+                        ogContext.read<CreateCommentCubit>().clear();
+                        ogContext.read<CommentSectionCubit>().clear();
+                        ogContext.read<IndividualPostCubit>().setLoading();
+                        await delegateInitialLoad(ogContext, refresh: true);
+                      },
+                      onWontLoadMoreButtonPressed: () async => await ogContext.read<CommentSectionCubit>().loadInitial(
+                          postState.post.post.id.mid, CommentSortType.recent,
+                          refresh: commentState.commentIds.isEmpty),
+                      wontLoadMore: commentState.paginationState == CommentFeedState.end,
+                      wontLoadMoreMessage: "You've reached the end",
                     ),
                   ),
                 );

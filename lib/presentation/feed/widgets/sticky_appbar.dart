@@ -171,12 +171,12 @@ class _StickyAppbarState extends State<StickyAppbar> with SingleTickerProviderSt
           child: widget.child,
         ),
         AnimatedPositioned(
-          duration: Duration(milliseconds: currentlyScrolling ? 0 : 125),
+          duration: Duration(milliseconds: currentlyScrolling ? 0 : 210),
           top: -widget.controller.stickyOffset, // Use stickyOffset for positioning
           left: 0,
           right: 0,
           child: Opacity(
-            opacity: min((2 * widget.controller.offsetBuildback) / widget.stickyHeader.height, 1),
+            opacity: min((3 * widget.controller.offsetBuildback) / widget.stickyHeader.height, 1),
             child: SizedBox(
               height: widget.stickyHeader.height,
               child: widget.stickyHeader.child,
