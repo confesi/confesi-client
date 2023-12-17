@@ -142,45 +142,47 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return ThemeStatusBar(
-      child: Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.background,
-        body: SafeArea(
-          bottom: false,
-          child: Container(
-            color: Theme.of(context).colorScheme.shadow,
-            child: Column(
-              children: [
-                AppbarLayout(
-                  leftIconDisabled: true,
-                  leftIconVisible: false,
-                  bottomBorder: true,
-                  centerWidget: Text(
-                    "School Leaderboard",
-                    style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.center,
+    return PopScope(
+      canPop: false,
+      child: ThemeStatusBar(
+        child: Scaffold(
+          backgroundColor: Theme.of(context).colorScheme.background,
+          body: SafeArea(
+            bottom: false,
+            child: Container(
+              color: Theme.of(context).colorScheme.shadow,
+              child: Column(
+                children: [
+                  AppbarLayout(
+                    bottomBorder: true,
+                    leftIcon: CupertinoIcons.xmark,
+                    centerWidget: Text(
+                      "School Leaderboard",
+                      style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
+                    ),
+                    rightIcon: scrolledDownFromTop ? CupertinoIcons.arrow_up_to_line : CupertinoIcons.info,
+                    rightIconVisible: true,
+                    rightIconOnPress: () => scrolledDownFromTop
+                        ? controller.scrollToTop()
+                        : showInfoSheet(context, kLeaderboardInfoHeader, kLeaderboardInfoBody),
                   ),
-                  rightIcon: scrolledDownFromTop ? CupertinoIcons.arrow_up_to_line : CupertinoIcons.info,
-                  rightIconVisible: true,
-                  rightIconOnPress: () => scrolledDownFromTop
-                      ? controller.scrollToTop()
-                      : showInfoSheet(context, kLeaderboardInfoHeader, kLeaderboardInfoBody),
-                ),
-                Expanded(
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: maxStandardSizeOfContent),
-                    child: BlocBuilder<LeaderboardCubit, LeaderboardState>(
-                      builder: (context, state) {
-                        return AnimatedSwitcher(
-                          duration: const Duration(milliseconds: 200),
-                          child: buildChild(context, state),
-                        );
-                      },
+                  Expanded(
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: maxStandardSizeOfContent),
+                      child: BlocBuilder<LeaderboardCubit, LeaderboardState>(
+                        builder: (context, state) {
+                          return AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 200),
+                            child: buildChild(context, state),
+                          );
+                        },
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

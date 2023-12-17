@@ -12,6 +12,7 @@ import 'dart:ui';
 
 import '../../../core/router/go_router.dart';
 import '../../../core/utils/verified_students/verified_user_only.dart';
+import '../../notifications/screens/home.dart';
 import '../../profile/screens/account_stats.dart';
 import '../../shared/other/feed_list.dart';
 import '../../shared/other/widget_or_nothing.dart';
@@ -49,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     } else {
       context.read<SchoolsDrawerCubit>().setSchoolsGuest();
     }
-    tabController = TabController(vsync: this, length: 6);
+    tabController = TabController(vsync: this, length: 5);
     Future.delayed(const Duration(milliseconds: 500)).then((value) {
       if (mounted && widget.props != null && widget.props!.executeAfterHomeLoad != null) {
         widget.props!.executeAfterHomeLoad!();
@@ -87,10 +88,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   children: [
                     ExploreHome(scaffoldKey: scaffoldKey),
                     const HottestHome(),
-                    const SettingsHome(),
-                    const LeaderboardScreen(),
+                    Container(), // blank, never will be called
                     const RoomsScreen(),
-                    const AccountProfileStats(),
+                    const NotificationsScreen(),
                   ],
                 ),
               ),
@@ -155,21 +155,16 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     icon: CupertinoIcons.add_circled,
                   ),
                   _BottomTab(
-                    indexMatcher: 3,
-                    currentIndex: Provider.of<PrimaryTabControllerService>(context).tabIdx,
-                    icon: CupertinoIcons.chart_bar_alt_fill,
-                  ),
-                  _BottomTab(
                     hasNotification: false,
-                    indexMatcher: 4,
+                    indexMatcher: 3,
                     currentIndex: Provider.of<PrimaryTabControllerService>(context).tabIdx,
                     icon: CupertinoIcons.paperplane,
                   ),
                   _BottomTab(
-                    hasNotification: false,
-                    indexMatcher: 5,
+                    hasNotification: true,
+                    indexMatcher: 4,
                     currentIndex: Provider.of<PrimaryTabControllerService>(context).tabIdx,
-                    icon: CupertinoIcons.profile_circled,
+                    icon: CupertinoIcons.bell,
                   ),
                 ],
               ),

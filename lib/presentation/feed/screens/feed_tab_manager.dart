@@ -1,7 +1,13 @@
+import 'dart:math';
+
+import 'package:confesi/constants/shared/constants.dart';
+import 'package:confesi/core/services/haptics/haptics.dart';
 import 'package:confesi/core/services/posts_service/posts_service.dart';
+import 'package:confesi/core/styles/typography.dart';
 import 'package:confesi/presentation/feed/tabs/sentiment_feed.dart';
 import 'package:confesi/presentation/feed/widgets/sticky_appbar.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
+import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:confesi/presentation/shared/buttons/circle_emoji_button.dart';
 import 'package:confesi/presentation/shared/layout/appbar.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,7 +19,7 @@ import '../../../core/router/go_router.dart';
 import '../tabs/recents_feed.dart';
 import '../tabs/trending_feed.dart';
 
-const double appbarHeight = 54;
+const double appbarHeight = 84;
 
 class ExploreHome extends StatefulWidget {
   const ExploreHome({
@@ -27,9 +33,11 @@ class ExploreHome extends StatefulWidget {
   State<ExploreHome> createState() => _ExploreHomeState();
 }
 
-class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
+class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
   final PageController _pageController = PageController(initialPage: 0);
   late StickyAppbarController _stickyAppbarController;
+
+  String emoji = genRandomEmoji();
 
   @override
   initState() {
@@ -40,6 +48,7 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
   @override
   void dispose() {
     super.dispose();
+    _pageController.dispose();
     _stickyAppbarController.dispose();
   }
 
@@ -90,68 +99,71 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
                     height: appbarHeight + MediaQuery.of(context).padding.top,
                     child: Container(
                       color: Theme.of(context).colorScheme.secondary,
-                      padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-                      child: AppbarLayout(
-                        bottomBorder: false,
-                        backgroundColor: Theme.of(context).colorScheme.secondary,
-                        rightIconOnPress: () => router.push('/home/notifications'),
-                        rightIconVisible: true,
-                        rightIcon: CupertinoIcons.bell,
-                        centerWidget: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            TouchableOpacity(
-                              onTap: () => previousPage(),
-                              child: Container(
-                                color: Colors.transparent,
-                                padding: const EdgeInsets.all(5),
-                                child: Icon(
-                                  CupertinoIcons.chevron_back,
-                                  color: Theme.of(context).colorScheme.onSecondary,
-                                  size: 20,
-                                ),
+                      padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top, left: 15, right: 15),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              _TabIconBtn(
+                                onTap: () => widget.scaffoldKey.currentState!.openDrawer(),
+                                icon: CupertinoIcons.slider_horizontal_3,
                               ),
-                            ),
-                            const SizedBox(width: 7),
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 5),
-                              child: GestureDetector(
-                                // swipe left & right to switch forward/back
-                                onHorizontalDragEnd: (details) {
-                                  if (details.primaryVelocity! > 0) {
-                                    previousPage();
-                                  } else if (details.primaryVelocity! < 0) {
-                                    nextPage();
-                                  }
+                              const SizedBox(width: 10),
+                              Text(
+                                "Confesi $emoji",
+                                style: kDisplay1.copyWith(color: Theme.of(context).colorScheme.onSecondary),
+                                textAlign: TextAlign.center,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              const Spacer(),
+                              _TabIconBtn(
+                                  onTap: () => router.push("/home/profile"), icon: CupertinoIcons.profile_circled),
+                              const SizedBox(width: 10),
+                              _TabIconBtn(
+                                  onTap: () => router.push("/home/leaderboard"), icon: CupertinoIcons.chart_bar_circle),
+                            ],
+                          ),
+                          const SizedBox(height: 15),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                  child: _FeedTab(
+                                isSelected: context.watch<PostsService>().currentlySelectedFeed == FeedType.recents,
+                                title: "Recents",
+                                onTap: () {
+                                  context
+                                      .read<PostsService>()
+                                      .setCurrentlySelectedFeedAndReloadIfNeeded(context, FeedType.recents);
+                                  _pageController.jumpToPage(0);
                                 },
-                                child: CircleEmojiButton(
-                                  onTap: () => nextPage(),
-                                  text: context.watch<PostsService>().currentlySelectedFeed == FeedType.sentiment
-                                      ? 'Positivity (3/3)'
-                                      : context.watch<PostsService>().currentlySelectedFeed == FeedType.trending
-                                          ? 'Trending (2/3)'
-                                          : 'Recents (1/3)',
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 7),
-                            TouchableOpacity(
-                              onTap: () => nextPage(),
-                              child: Container(
-                                color: Colors.transparent,
-                                padding: const EdgeInsets.all(5),
-                                child: Icon(
-                                  CupertinoIcons.chevron_forward,
-                                  color: Theme.of(context).colorScheme.onSecondary,
-                                  size: 20,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        leftIconVisible: true,
-                        leftIcon: CupertinoIcons.slider_horizontal_3,
-                        leftIconOnPress: () => widget.scaffoldKey.currentState!.openDrawer(),
+                              )),
+                              Expanded(
+                                  child: _FeedTab(
+                                isSelected: context.watch<PostsService>().currentlySelectedFeed == FeedType.trending,
+                                title: "Trending",
+                                onTap: () {
+                                  context
+                                      .read<PostsService>()
+                                      .setCurrentlySelectedFeedAndReloadIfNeeded(context, FeedType.trending);
+                                  _pageController.jumpToPage(1);
+                                },
+                              )),
+                              Expanded(
+                                  child: _FeedTab(
+                                isSelected: context.watch<PostsService>().currentlySelectedFeed == FeedType.sentiment,
+                                title: "Positivity",
+                                onTap: () {
+                                  context
+                                      .read<PostsService>()
+                                      .setCurrentlySelectedFeedAndReloadIfNeeded(context, FeedType.sentiment);
+                                  _pageController.jumpToPage(2);
+                                },
+                              )),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -160,7 +172,7 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
                     child: PageView(
                       pageSnapping: true,
                       // hide scroll notifications
-                      physics: const ClampingScrollPhysics(),
+                      physics: const BouncingScrollPhysics(),
                       onPageChanged: (value) {
                         _stickyAppbarController.bringDownAppbar();
                         context
@@ -179,6 +191,70 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _TabIconBtn extends StatelessWidget {
+  const _TabIconBtn({super.key, required this.onTap, required this.icon});
+
+  final VoidCallback onTap;
+  final IconData icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return TouchableScale(
+      onTap: () {
+        Haptics.f(H.regular);
+        onTap();
+      },
+      child: Icon(icon, size: 28),
+    );
+  }
+}
+
+class _FeedTab extends StatelessWidget {
+  const _FeedTab(
+      {super.key,
+      required this.isSelected,
+      required this.title,
+      this.textAlign = TextAlign.center,
+      required this.onTap});
+
+  final bool isSelected;
+  final String title;
+  final TextAlign textAlign;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return TouchableOpacity(
+      onTap: () {
+        Haptics.f(H.regular);
+        onTap();
+      },
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 250),
+        padding: const EdgeInsets.only(bottom: 5),
+        decoration: BoxDecoration(
+          color: Colors.transparent, // hitbox trick
+          // bottom border
+          border: Border(
+            bottom: BorderSide(
+              color: isSelected ? Theme.of(context).colorScheme.onSecondary : Colors.transparent,
+              width: 2,
+            ),
+          ),
+        ),
+        child: Text(
+          title,
+          textAlign: textAlign,
+          style: kBody.copyWith(
+              color: isSelected
+                  ? Theme.of(context).colorScheme.onSecondary
+                  : Theme.of(context).colorScheme.onSurfaceVariant),
         ),
       ),
     );

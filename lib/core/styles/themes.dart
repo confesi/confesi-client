@@ -8,7 +8,7 @@ class AppTheme {
     highlightColor: Colors.transparent,
     splashColor: Colors.transparent,
     colorScheme: const ColorScheme(
-      onSurfaceVariant: Colors.white,
+      onSurfaceVariant: Color.fromARGB(220, 239, 239, 239),
       surfaceVariant: Color.fromARGB(255, 23, 23, 23),
       brightness: Brightness.dark,
       primary: Color.fromARGB(255, 238, 239, 240),

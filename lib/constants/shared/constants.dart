@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 
 import '../../application/create_post/cubit/post_categories_cubit.dart';
@@ -119,4 +121,14 @@ IconData postCategoryToIcon(String category) {
     }
   }
   return CupertinoIcons.cube_box; // default
+}
+
+String genRandomEmoji() {
+  final emojis = [
+    '🔥',
+    '👀',
+    '❤️',
+    '🚀',
+  ];
+  return emojis[Random().nextInt(emojis.length)];
 }

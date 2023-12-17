@@ -23,6 +23,7 @@ import '../../presentation/create_post/screens/details.dart';
 import '../../presentation/create_post/screens/home.dart';
 import '../../presentation/feed/screens/post_sentiment_analysis.dart';
 import '../../presentation/feedback/screens/home.dart';
+import '../../presentation/leaderboard/screens/home.dart';
 import '../../presentation/leaderboard/screens/school_detail.dart';
 import '../../presentation/primary/screens/critical_error.dart';
 import '../../presentation/primary/screens/home.dart';
@@ -186,6 +187,29 @@ final GoRouter router = GoRouter(
     ),
 
     GoRoute(
+      path: '/home/leaderboard',
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: const LeaderboardScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            var begin = const Offset(0.0, 1.0);
+            var end = Offset.zero;
+            var curve = Curves.easeInOut;
+
+            var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            var offsetAnimation = animation.drive(tween);
+
+            return SlideTransition(
+              position: offsetAnimation,
+              child: child,
+            );
+          },
+        );
+      },
+    ),
+
+    GoRoute(
       path: '/home/leaderboard/school',
       pageBuilder: (context, state) {
         HomeLeaderboardSchoolProps props = state.extra as HomeLeaderboardSchoolProps;
@@ -193,17 +217,22 @@ final GoRouter router = GoRouter(
           key: state.pageKey,
           child: SchoolDetail(props: props),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            // Change the opacity of the screen using a Curve based on the animation's value
-            var tween = CurveTween(curve: Curves.easeInOut);
-            var curvedAnimation = tween.animate(animation);
-            return ScaleTransition(
-              scale: curvedAnimation,
+            var begin = const Offset(0.0, 1.0);
+            var end = Offset.zero;
+            var curve = Curves.easeInOut;
+
+            var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            var offsetAnimation = animation.drive(tween);
+
+            return SlideTransition(
+              position: offsetAnimation,
               child: child,
             );
           },
         );
       },
     ),
+
     GoRoute(
       path: '/home/leaderboard/school',
       builder: (BuildContext context, GoRouterState state) {
@@ -243,8 +272,29 @@ final GoRouter router = GoRouter(
     GoRoute(path: '/settings/filters', builder: (BuildContext context, GoRouterState state) => const FiltersScreen()),
 
     GoRoute(
-        path: '/home/notifications',
-        builder: (BuildContext context, GoRouterState state) => const NotificationsScreen()),
+      path: '/home/profile',
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: const AccountProfileStats(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            // Create an offset animation that slides the page up from below the screen
+            var begin = const Offset(0.0, 1.0); // Start from the bottom of the screen
+            var end = Offset.zero; // End at the current position
+            var curve = Curves.easeInOut;
+
+            var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            var offsetAnimation = animation.drive(tween);
+
+            return SlideTransition(
+              position: offsetAnimation,
+              child: child,
+            );
+          },
+        );
+      },
+    ),
+
     GoRoute(
         path: '/settings/notifications',
         builder: (BuildContext context, GoRouterState state) => const NotificationsSettingScreen()),
