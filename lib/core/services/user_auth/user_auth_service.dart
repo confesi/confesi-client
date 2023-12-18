@@ -106,22 +106,23 @@ class UserAuthService extends ChangeNotifier {
     sl.get<PostsService>().clearTrendingPosts();
     sl.get<PrimaryTabControllerService>().setTabIdx(0);
     sl.get<CreatingEditingPostsService>().clear();
-    // sl.get<RoomsService>().clear();
-    context.read<HottestCubit>().clear();
-    context.read<LeaderboardCubit>().clear();
-    context.read<AuthFlowCubit>().clear();
-    context.read<AccountDetailsCubit>().clear();
-    context.read<FeedbackCubit>().clear();
-    context.read<FeedbackCategoriesCubit>().clear();
-    context.read<StatsCubit>().clear();
-    context.read<SearchSchoolsCubit>().clear();
-    context.read<SavedPostsCubit>().clear();
-    context.read<SchoolsDrawerCubit>().clear();
-    context.read<QuickActionsCubit>().clear();
-    context.read<NotificationsCubit>().clear();
-    context.read<CommentSectionCubit>().clear();
-    context.read<CreateCommentCubit>().clear();
-    context.read<IndividualPostCubit>().clear();
+    // Assuming sl is your service locator and all these Cubits are registered within it
+    sl.get<RoomsService>().clear();
+    sl.get<HottestCubit>().clear();
+    sl.get<LeaderboardCubit>().clear();
+    sl.get<AuthFlowCubit>().clear();
+    sl.get<AccountDetailsCubit>().clear();
+    sl.get<FeedbackCubit>().clear();
+    sl.get<FeedbackCategoriesCubit>().clear();
+    sl.get<StatsCubit>().clear();
+    sl.get<SearchSchoolsCubit>().clear();
+    sl.get<SavedPostsCubit>().clear();
+    sl.get<SchoolsDrawerCubit>().clear();
+    sl.get<QuickActionsCubit>().clear();
+    sl.get<NotificationsCubit>().clear();
+    sl.get<CommentSectionCubit>().clear();
+    sl.get<CreateCommentCubit>().clear();
+    sl.get<IndividualPostCubit>().clear();
   }
 
   void loadAllAppState(BuildContext context) {

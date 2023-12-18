@@ -2,12 +2,12 @@ import 'package:flutter/cupertino.dart' as f;
 import 'package:google_fonts/google_fonts.dart' as gf;
 
 /// Faded text style - meant for decorative background numbers or display values. Not for primary reading.
-var kFaded = gf.GoogleFonts.playfairDisplay(
+var kFaded = gf.GoogleFonts.poppins(
   textStyle: const f.TextStyle(fontSize: 105, fontWeight: f.FontWeight.bold),
 );
 
 /// Faded text style - meant for decorative background numbers or display values. Not for primary reading.
-var kFunkyDisplay = gf.GoogleFonts.poppins(
+var kFunkyDisplay = gf.GoogleFonts.zenMaruGothic(
   textStyle: const f.TextStyle(fontSize: 35, fontWeight: f.FontWeight.w800),
 );
 
@@ -22,7 +22,7 @@ var kDisplay2 = gf.GoogleFonts.poppins(
 );
 
 /// Large text style - meant for display, but with sans serif style.
-var kDisplay3 = gf.GoogleFonts.bebasNeue(
+var kDisplay3 = gf.GoogleFonts.zenMaruGothic(
   textStyle: const f.TextStyle(fontWeight: f.FontWeight.w900, fontSize: 26),
 );
 

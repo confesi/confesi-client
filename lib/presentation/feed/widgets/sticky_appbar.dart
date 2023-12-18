@@ -138,7 +138,6 @@ class _StickyAppbarState extends State<StickyAppbar> with SingleTickerProviderSt
                 }
                 if (scrollNotification is ScrollEndNotification) {
                   currentlyScrolling = false;
-                  print("lastScrollDelta: $lastScrollDelta");
                   widget.controller.cancelCurrentAnimation();
                   if (widget.controller.offsetBuildback > widget.stickyHeader.height) return;
                   // Check if the scroll is not at the very top
@@ -148,7 +147,7 @@ class _StickyAppbarState extends State<StickyAppbar> with SingleTickerProviderSt
                   } else {
                     // Scrolling up
                     if (offset > widget.stickyHeader.height || currScrollDelta > 0) {
-                      widget.controller.bringUpAppbar(speedy: true);
+                      // widget.controller.bringUpAppbar(speedy: true);
                     } else {
                       widget.controller.bringDownAppbar(speedy: true);
                     }

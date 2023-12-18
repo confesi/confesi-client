@@ -19,7 +19,7 @@ import '../../../core/router/go_router.dart';
 import '../tabs/recents_feed.dart';
 import '../tabs/trending_feed.dart';
 
-const double appbarHeight = 85;
+const double appbarHeight = 87;
 
 class ExploreHome extends StatefulWidget {
   const ExploreHome({

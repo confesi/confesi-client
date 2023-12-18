@@ -50,6 +50,15 @@ class RoomsService extends ChangeNotifier {
     startListenerForRooms();
   }
 
+  void clear() {
+    _rooms.clear();
+    _lastDocument = null;
+    _hasMoreData = true;
+    roomsError = false;
+    chatsError = false;
+    notifyListeners();
+  }
+
   String? currentlyViewingRoomId;
 
   void setCurrentlyViewingRoomId(String? roomId) {

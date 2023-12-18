@@ -314,7 +314,7 @@ class _FeedListState extends State<FeedList> {
                   if (!widget.hasError && widget.controller.items.isEmpty && !isCurrentlyLoadingMore) {
                     if (index == 1) {
                       return Container(
-                        height: widget.centeredEmptyIndicator ? constraints.maxHeight : null,
+                        height: constraints.maxHeight,
                         padding: EdgeInsets.only(
                             bottom: widget.stickyHeader != null
                                 ? widget.stickyHeader!.height + widget.topPushdownOffset

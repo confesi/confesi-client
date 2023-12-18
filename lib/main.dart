@@ -117,6 +117,8 @@ Future<UserAuthService> startAuthListener() async {
               if (user.emailVerified) {
                 router.go("/home");
               } else {
+                // reset auth state so that the "verify email"-type buttons don't ALREADY have loading indicators spinning upon load
+                sl.get<AuthFlowCubit>().clear();
                 router.go("/verify-email");
               }
             }

@@ -13,21 +13,8 @@ import 'package:flutter/material.dart';
 
 import '../../../shared/buttons/pop.dart';
 
-class OpenScreen extends StatefulWidget {
+class OpenScreen extends StatelessWidget {
   const OpenScreen({Key? key}) : super(key: key);
-
-  @override
-  State<OpenScreen> createState() => _OpenScreenState();
-}
-
-class _OpenScreenState extends State<OpenScreen> {
-  final ValueNotifier<bool> _animationNotifier = ValueNotifier<bool>(true);
-
-  @override
-  void dispose() {
-    _animationNotifier.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,26 +36,8 @@ class _OpenScreenState extends State<OpenScreen> {
                     child: GestureDetector(
                       onTap: () {
                         HapticFeedback.lightImpact();
-                        _animationNotifier.value = !_animationNotifier.value;
                       },
-                      child: ValueListenableBuilder<bool>(
-                        valueListenable: _animationNotifier,
-                        builder: (context, trigger, __) {
-                          return TweenAnimationBuilder<double>(
-                            key: ValueKey(trigger),
-                            duration: const Duration(milliseconds: 800),
-                            tween: Tween<double>(begin: 0, end: 1),
-                            curve: Curves.bounceOut,
-                            builder: (BuildContext context, double value, Widget? child) {
-                              return Transform.scale(
-                                scale: value,
-                                child: child,
-                              );
-                            },
-                            child: Image.asset(walrusFullBodyImgPath),
-                          );
-                        },
-                      ),
+                      child: Image.asset(walrusFullBodyImgPath),
                     ),
                   ),
                   const Spacer(),
