@@ -98,6 +98,11 @@ class _AccountProfileStatsState extends State<AccountProfileStats> {
                                   text: "School, faculty, and year",
                                   onTap: () => verifiedUserOnly(context, () => router.push("/home/profile/account")),
                                 ),
+                                SettingTile(
+                                  leftIcon: CupertinoIcons.star,
+                                  text: "Your achievements",
+                                  onTap: () => verifiedUserOnly(context, () => router.push("/home/profile/awards")),
+                                ),
                                 RectangleTile(
                                   onLeftTap: () => router.push('/home/profile/saved/comments'),
                                   onRightTap: () => router.push('/home/profile/saved/posts'),
@@ -146,37 +151,34 @@ class _AccountProfileStatsState extends State<AccountProfileStats> {
                                           ),
                                         ],
                                       ),
-                                      Row(
-                                        children: [
-                                          Text(
-                                            "Share your stats",
-                                            style: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
-                                            textAlign: TextAlign.left,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                          const SizedBox(width: 10),
-                                          IconButton(
-                                            onPressed: () {
-                                              final statsState = context.read<StatsCubit>().state;
-                                              if (statsState is StatsData) {
-                                                final data = statsState;
-                                                sl.get<Sharing>().shareStats(
-                                                      context,
-                                                      data.stats.likes,
-                                                      data.stats.hottest,
-                                                      data.stats.dislikes,
-                                                      data.stats.likesPerc,
-                                                      data.stats.hottestPerc,
-                                                      data.stats.dislikesPerc,
-                                                    );
-                                              }
-                                            },
-                                            icon: Icon(
-                                              CupertinoIcons.share,
-                                              color: Theme.of(context).colorScheme.primary,
+                                      Center(
+                                        child: TouchableOpacity(
+                                          onTap: () {
+                                            final statsState = context.read<StatsCubit>().state;
+                                            if (statsState is StatsData) {
+                                              final data = statsState;
+                                              sl.get<Sharing>().shareStats(
+                                                    context,
+                                                    data.stats.likes,
+                                                    data.stats.hottest,
+                                                    data.stats.dislikes,
+                                                    data.stats.likesPerc,
+                                                    data.stats.hottestPerc,
+                                                    data.stats.dislikesPerc,
+                                                  );
+                                            }
+                                          },
+                                          child: Container(
+                                            padding: const EdgeInsets.all(15),
+                                            color: Colors.transparent, // hitbox trick
+                                            child: Text(
+                                              "Share your stats",
+                                              style: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
+                                              textAlign: TextAlign.left,
+                                              overflow: TextOverflow.ellipsis,
                                             ),
                                           ),
-                                        ],
+                                        ),
                                       ),
                                     ],
                                   );
@@ -197,6 +199,7 @@ class _AccountProfileStatsState extends State<AccountProfileStats> {
                                 }
                               },
                             ),
+                            const SizedBox(height: 30),
                           ],
                         ),
                       ),

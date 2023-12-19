@@ -342,7 +342,7 @@ class _FeedListState extends State<FeedList> {
 
                   if (index == widget.controller.items.length + 1) {
                     return Padding(
-                      padding: const EdgeInsets.only(bottom: floatingBottomNavOffset), // extra space on bottom
+                      padding: const EdgeInsets.only(bottom: 30), // extra space on bottom
                       child: buildIndicator(),
                     );
                   }
