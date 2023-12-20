@@ -6,10 +6,9 @@ import 'package:confesi/core/services/posts_service/posts_service.dart';
 import 'package:confesi/core/styles/typography.dart';
 import 'package:confesi/presentation/feed/tabs/sentiment_feed.dart';
 import 'package:confesi/presentation/feed/widgets/sticky_appbar.dart';
+import 'package:confesi/presentation/shared/behaviours/off.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
-import 'package:confesi/presentation/shared/buttons/circle_emoji_button.dart';
-import 'package:confesi/presentation/shared/layout/appbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -104,7 +103,7 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
                       child: Column(
                         children: [
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               _TabIconBtn(
                                 onTap: () => widget.scaffoldKey.currentState!.openDrawer(),
@@ -113,24 +112,25 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
                               const SizedBox(width: 10),
                               TouchableOpacity(
                                 onTap: () {
-                                  Haptics.f(H.regular);
+                                  // Haptics.f(H.regular);
                                   setState(() {
                                     emoji = genRandomEmoji(emoji);
                                   });
                                 },
                                 child: Text(
-                                  "Confesi $emoji",
+                                  "confesi $emoji",
                                   style: kDisplay3.copyWith(color: Theme.of(context).colorScheme.onSecondary),
                                   textAlign: TextAlign.center,
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ),
-                              const Spacer(),
-                              _TabIconBtn(
-                                  onTap: () => router.push("/home/profile"), icon: CupertinoIcons.profile_circled),
                               const SizedBox(width: 10),
-                              _TabIconBtn(
-                                  onTap: () => router.push("/home/leaderboard"), icon: CupertinoIcons.chart_bar_circle),
+                              Off(
+                                child: _TabIconBtn(
+                                  onTap: () => widget.scaffoldKey.currentState!.openDrawer(),
+                                  icon: CupertinoIcons.slider_horizontal_3,
+                                ),
+                              )
                             ],
                           ),
                           const SizedBox(height: 15),

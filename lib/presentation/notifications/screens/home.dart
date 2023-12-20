@@ -95,9 +95,9 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
             child: Column(
               children: [
                 AppbarLayout(
-                  bottomBorder: true,
                   leftIconDisabled: true,
                   leftIconVisible: false,
+                  bottomBorder: true,
                   centerWidget: Text(
                     "Notifications",
                     style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),

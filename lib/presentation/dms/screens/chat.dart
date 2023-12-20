@@ -183,7 +183,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                               (_) {
                                                 // success, so push to home and show success notification
                                                 Provider.of<PrimaryTabControllerService>(context, listen: false)
-                                                    .setTabIdx(4);
+                                                    .setTabIdx(5);
                                                 router.go("/home");
                                                 context.read<NotificationsCubit>().showSuccess("Room deleted");
                                               },

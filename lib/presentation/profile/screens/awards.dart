@@ -64,7 +64,8 @@ class _AwardsScreenState extends State<AwardsScreen> {
           childAspectRatio: 1,
         ),
         delegate: SliverChildBuilderDelegate(
-          (BuildContext context, int index) => InitTransform(child: InitOpacity(child: tiles[index])),
+          (BuildContext context, int index) =>
+              InitOpacity(child: InitTransform(child: InitOpacity(child: tiles[index]))),
           childCount: tiles.length,
         ),
       );
@@ -91,6 +92,9 @@ class _AwardsScreenState extends State<AwardsScreen> {
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: CustomScrollView(
+              physics: context.watch<AwardsCubit>().state is AwardsData
+                  ? const BouncingScrollPhysics()
+                  : const NeverScrollableScrollPhysics(),
               slivers: [
                 SliverToBoxAdapter(
                   child: Padding(

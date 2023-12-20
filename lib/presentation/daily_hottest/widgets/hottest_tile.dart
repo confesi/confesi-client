@@ -112,7 +112,7 @@ class _HottestTileState extends State<HottestTile> {
                                               ? widget.post.post.content
                                               : widget.post.post.title,
                                           body:
-                                              '${widget.post.emojis.join('  ')}${widget.post.post.yearOfStudy.type != null ? "\nYear ${widget.post.post.yearOfStudy.type}" : ''}${widget.post.post.faculty.faculty != null ? "\n${widget.post.post.faculty.faculty}" : ''}',
+                                              '${widget.post.post.yearOfStudy.type != null ? "\nYear ${widget.post.post.yearOfStudy.type}" : ''}${widget.post.post.faculty.faculty != null ? "\n${widget.post.post.faculty.faculty}" : ''}',
                                         ),
                                       ),
                                     ],

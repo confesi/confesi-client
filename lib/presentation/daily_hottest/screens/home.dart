@@ -167,9 +167,6 @@ class _HottestHomeState extends State<HottestHome> with AutomaticKeepAliveClient
                                 BlocBuilder<HottestCubit, HottestState>(
                                   builder: (context, state) {
                                     return AppbarLayout(
-                                      rightIcon: CupertinoIcons.smiley,
-                                      rightIconVisible: true,
-                                      rightIconOnPress: () => router.push("/home/emojis"),
                                       bottomBorder: true,
                                       centerWidget: Text(
                                         headerText,

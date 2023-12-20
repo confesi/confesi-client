@@ -1,6 +1,7 @@
 import 'package:confesi/application/dms/cubit/room_requests_cubit.dart';
 import 'package:confesi/application/user/cubit/notifications_cubit.dart';
 import 'package:confesi/core/styles/typography.dart';
+import 'package:confesi/presentation/shared/behaviours/init_opacity.dart';
 import 'package:confesi/presentation/shared/indicators/loading_or_alert.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -30,28 +31,30 @@ class _RoomRequestsWidgetState extends State<RoomRequestsWidget> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
-                  child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Allow DMs",
-                            style: kTitle.copyWith(
-                              color: Theme.of(context).colorScheme.primary,
+                  child: InitOpacity(
+                    child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Allow DMs",
+                              style: kTitle.copyWith(
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                              textAlign: TextAlign.left,
                             ),
-                            textAlign: TextAlign.left,
-                          ),
-                          const SizedBox(height: 5),
-                          Text(
-                            "Allow new messages from users sent from your chattable confessions",
-                            style: kBody.copyWith(
-                              color: Theme.of(context).colorScheme.onSurface,
+                            const SizedBox(height: 5),
+                            Text(
+                              "Allow new messages from users sent from your chattable confessions",
+                              style: kBody.copyWith(
+                                color: Theme.of(context).colorScheme.onSurface,
+                              ),
+                              textAlign: TextAlign.left,
                             ),
-                            textAlign: TextAlign.left,
-                          ),
-                        ],
-                      )),
+                          ],
+                        )),
+                  ),
                 ),
                 const SizedBox(width: 30),
                 Align(

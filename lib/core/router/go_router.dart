@@ -30,7 +30,6 @@ import '../../presentation/primary/screens/critical_error.dart';
 import '../../presentation/primary/screens/home.dart';
 import '../../presentation/primary/screens/showcase.dart';
 import '../../presentation/profile/screens/account_details.dart';
-import '../../presentation/user/screens/emojis.dart';
 import '../../presentation/user/screens/your_posts.dart';
 import '../../presentation/user/screens/saved_posts.dart';
 import '../../presentation/watched_universities/screens/search_schools.dart';
@@ -52,6 +51,8 @@ final GoRouter router = GoRouter(
     GoRoute(path: '/error', builder: (BuildContext context, GoRouterState state) => const CriticalErrorScreen()),
     GoRoute(path: '/login', builder: (BuildContext context, GoRouterState state) => const LoginScreen()),
     GoRoute(path: '/verify-email', builder: (BuildContext context, GoRouterState state) => const VerifyEmailScreen()),
+    GoRoute(
+        path: '/notifications', builder: (BuildContext context, GoRouterState state) => const NotificationsScreen()),
 
     GoRoute(path: '/open', builder: (BuildContext context, GoRouterState state) => const OpenScreen()),
     GoRoute(
@@ -219,7 +220,6 @@ final GoRouter router = GoRouter(
       },
     ),
 
-    GoRoute(path: "/home/emojis", builder: (BuildContext context, GoRouterState state) => const EmojisScreen()),
     GoRoute(path: "/home/rooms", builder: (BuildContext context, GoRouterState state) => const RoomsScreen()),
     GoRoute(
         path: "/home/rooms/chat",

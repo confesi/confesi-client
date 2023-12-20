@@ -152,6 +152,8 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
             child: Column(
               children: [
                 AppbarLayout(
+                  leftIconDisabled: true,
+                  leftIconVisible: false,
                   bottomBorder: true,
                   centerWidget: Text(
                     "School Leaderboard",

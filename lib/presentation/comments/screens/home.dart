@@ -50,7 +50,7 @@ import '../../shared/other/feed_list.dart';
 import '../../shared/overlays/screen_overlay.dart';
 import '../../shared/stat_tiles/stat_tile_group.dart';
 
-const double stickyAppbarHeight = 115;
+const double stickyAppbarHeight = 120;
 
 class CommentsHome extends StatefulWidget {
   const CommentsHome({super.key, required this.props});
@@ -205,7 +205,7 @@ class _CommentsHomeState extends State<CommentsHome> with TickerProviderStateMix
                         crossAxisAlignment: CrossAxisAlignment.center, // adjust this too as per your needs
                         children: <Widget>[
                           TextNoVertOverflow(
-                            "${timeAgoFromMicroSecondUnixTime(post.post.createdAt)}${post.emojis.isNotEmpty ? " • ${post.emojis.map((e) => e).join("")}" : ""}",
+                            timeAgoFromMicroSecondUnixTime(post.post.createdAt),
                             style: kDetail.copyWith(
                               color: Theme.of(context).colorScheme.tertiary,
                             ),
@@ -214,7 +214,7 @@ class _CommentsHomeState extends State<CommentsHome> with TickerProviderStateMix
                             // using spread operator to conditionally render widgets
                             const SizedBox(width: 5), // add some space between text widgets
                             TextNoVertOverflow(
-                              "Edited",
+                              "• Edited",
                               style: kDetail.copyWith(
                                 color: Theme.of(context).colorScheme.onSurface,
                               ),

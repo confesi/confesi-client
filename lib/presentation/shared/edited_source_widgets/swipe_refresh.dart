@@ -570,6 +570,7 @@ class SwipeRefreshState extends State<SwipeRefresh> with TickerProviderStateMixi
                         padding: const EdgeInsets.only(bottom: 15),
                         child: InitScale(
                           child: Bobbing(
+                            bobbing: false,
                             child: Container(
                               width: 60,
                               height: 60,

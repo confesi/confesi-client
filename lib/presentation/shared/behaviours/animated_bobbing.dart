@@ -20,13 +20,15 @@ class Bobbing extends StatefulWidget {
 
 class BobbingState extends State<Bobbing> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-  late Animation<double> _animation;
+  late Animation<double> _rotationAnimation;
+  late Animation<double> _bobbingAnimation;
 
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(vsync: this, duration: widget.duration)..repeat();
-    _animation = CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
+    _rotationAnimation = CurvedAnimation(parent: _controller, curve: Curves.linear);
+    _bobbingAnimation = CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
   }
 
   @override
@@ -38,35 +40,18 @@ class BobbingState extends State<Bobbing> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: _animation,
+      animation: Listenable.merge([_rotationAnimation, _bobbingAnimation]),
       builder: (context, child) {
-        final double rotationValue = _animation.value * 2 * 3.141592653589793;
+        final double rotationValue = widget.rotate ? _rotationAnimation.value * 2 * 3.141592653589793 : 0;
+        final double bobbingScale = widget.bobbing ? (0.6 + 0.3 * (1 - (_bobbingAnimation.value * 2 - 1).abs())) : 1.0;
 
-        double bobbingScale = 1.0;
-        if (widget.bobbing) {
-          bobbingScale = 0.6 + 0.3 * (1 - (_animation.value * 2 - 1).abs());
-        }
-
-        Widget content = widget.child; // default to original child
-
-        if (widget.bobbing) {
-          content = Transform.scale(
-            scale: bobbingScale,
-            child: content,
-          );
-        }
-
-        if (widget.rotate && rotationValue != 0) {
-          content = Transform.rotate(
-            angle: rotationValue,
-            child: Transform.scale(
-              scale: 0.70,
-              child: content,
-            ),
-          );
-        }
-
-        return content;
+        return Transform.rotate(
+          angle: rotationValue,
+          child: Transform.scale(
+            scale: bobbingScale - 0.2,
+            child: widget.child,
+          ),
+        );
       },
     );
   }

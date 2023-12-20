@@ -95,11 +95,11 @@ class ReactionTileState extends State<ReactionTile> with SingleTickerProviderSta
         },
         child: AnimatedContainer(
           width: widget.infiniteWidth ? double.infinity : null,
-          height: 50,
+          height: widget.simpleView ? null : 50,
           duration: const Duration(milliseconds: 250),
           padding: EdgeInsets.only(
-            top: 11,
-            bottom: 10,
+            top: widget.simpleView ? 0 : 11,
+            bottom: widget.simpleView ? 0 : 10,
             left: widget.simpleView ? 0 : 15,
             right: widget.simpleView ? 0 : 15,
           ),
@@ -111,17 +111,23 @@ class ReactionTileState extends State<ReactionTile> with SingleTickerProviderSta
                     width: borderSize,
                   ),
             color: widget.simpleView ? Colors.transparent : Theme.of(context).colorScheme.surface,
-            borderRadius: BorderRadius.all(Radius.circular(
-              Provider.of<UserAuthService>(context).data().componentCurviness.borderRadius,
-            )),
+            borderRadius: BorderRadius.all(
+              Radius.circular(
+                Provider.of<UserAuthService>(context).data().componentCurviness.borderRadius,
+              ),
+            ),
           ),
           child: content,
         ),
       );
     }
 
-    return Padding(
-      padding: EdgeInsets.only(left: widget.extraLeftPadding ? 10 : 0),
+    return Container(
+      padding: EdgeInsets.only(left: 4 + (widget.extraLeftPadding ? 10 : 0), right: 8, top: 4, bottom: 4),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: Theme.of(context).colorScheme.surface,
+      ),
       child: content,
     );
   }

@@ -313,38 +313,19 @@ class _FeedListState extends State<FeedList> {
 
                   if (!widget.hasError && widget.controller.items.isEmpty && !isCurrentlyLoadingMore) {
                     if (index == 1) {
-                      return Container(
-                        height: constraints.maxHeight,
-                        padding: EdgeInsets.only(
-                            bottom: widget.stickyHeader != null
-                                ? widget.stickyHeader!.height + widget.topPushdownOffset
-                                : widget.topPushdownOffset),
-                        margin: EdgeInsets.symmetric(vertical: widget.centeredEmptyIndicator ? 0 : 30),
-                        child: Center(
-                          child: FractionallySizedBox(
-                            widthFactor: 2 / 3,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                AlertIndicator(
-                                  isLogo: false,
-                                  message: "Nothing found",
-                                  onPress: () async => await widget.onPullToRefresh(),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                      return LoadingOrAlert(
+                        key: const ValueKey("is_empty"),
+                        isLoading: errorLoadingMoreIsLoading,
+                        message: StateMessage("Nothing found", () async {
+                          await widget.onPullToRefresh();
+                        }),
                       );
                     }
                     return const SizedBox();
                   }
 
                   if (index == widget.controller.items.length + 1) {
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 30), // extra space on bottom
-                      child: buildIndicator(),
-                    );
+                    return buildIndicator();
                   }
 
                   return Center(child: widget.controller.items[index - 1].child);

@@ -88,7 +88,7 @@ class AccountDetailsCubit extends Cubit<AccountDetailsState> {
         faculty: ephemeralState.data.faculty,
       );
       emit(ephemeralState);
-      await _deleteValueInternal("/api/v1/user/year-of-studyd", oldData, (_) {
+      await _deleteValueInternal("/api/v1/user/year-of-study", oldData, (_) {
         emit(AccountDetailsTrueData(
           err: NoErr(),
           data: AccData(school: originalState.school, yearOfStudy: null, faculty: originalState.faculty),

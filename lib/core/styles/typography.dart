@@ -7,7 +7,7 @@ var kFaded = gf.GoogleFonts.poppins(
 );
 
 /// Faded text style - meant for decorative background numbers or display values. Not for primary reading.
-var kFunkyDisplay = gf.GoogleFonts.zenMaruGothic(
+var kFunkyDisplay = gf.GoogleFonts.poppins(
   textStyle: const f.TextStyle(fontSize: 35, fontWeight: f.FontWeight.w800),
 );
 

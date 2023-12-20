@@ -51,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     } else {
       context.read<SchoolsDrawerCubit>().setSchoolsGuest();
     }
-    tabController = TabController(vsync: this, length: 5);
+    tabController = TabController(vsync: this, length: 7);
     Future.delayed(const Duration(milliseconds: 500)).then((value) {
       if (mounted && widget.props != null && widget.props!.executeAfterHomeLoad != null) {
         widget.props!.executeAfterHomeLoad!();
@@ -89,9 +89,12 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   children: [
                     ExploreHome(scaffoldKey: scaffoldKey),
                     const HottestHome(),
-                    Container(), // blank, never will be called
-                    const RoomsScreen(),
                     const NotificationsScreen(),
+                    Container(), // blank, never will be called (create post)
+                    const LeaderboardScreen(),
+                    const RoomsScreen(),
+                    // const NotificationsScreen(),
+                    const AccountProfileStats(),
                   ],
                 ),
               ),
@@ -124,12 +127,12 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     }
                   } else if (newIndex == 1) {
                     Provider.of<PrimaryTabControllerService>(context, listen: false).setTabIdx(newIndex);
-                  } else if (newIndex == 2) {
+                  } else if (newIndex == 3) {
                     verifiedUserOnly(context, () {
                       router.push("/create", extra: CreatingNewPost());
                       context.read<PostCategoriesCubit>().resetCategoryAndText();
                     });
-                  } else if (newIndex == 3) {
+                  } else if (newIndex == 4) {
                     if (sl.get<UserAuthService>().isAnon) {
                       showRegisteredUserOnlySheet(context);
                     } else {
@@ -149,7 +152,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   _BottomTab(
                     indexMatcher: 0,
                     currentIndex: Provider.of<PrimaryTabControllerService>(context).tabIdx,
-                    icon: CupertinoIcons.compass,
+                    icon: CupertinoIcons.home,
                   ),
                   _BottomTab(
                     indexMatcher: 1,
@@ -157,21 +160,33 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     icon: CupertinoIcons.flame,
                   ),
                   _BottomTab(
+                    hasNotification: true,
                     indexMatcher: 2,
+                    currentIndex: Provider.of<PrimaryTabControllerService>(context).tabIdx,
+                    icon: CupertinoIcons.bell,
+                  ),
+                  _BottomTab(
+                    indexMatcher: 3,
                     currentIndex: Provider.of<PrimaryTabControllerService>(context).tabIdx,
                     icon: CupertinoIcons.add_circled,
                   ),
                   _BottomTab(
                     hasNotification: false,
-                    indexMatcher: 3,
+                    indexMatcher: 4,
+                    currentIndex: Provider.of<PrimaryTabControllerService>(context).tabIdx,
+                    icon: CupertinoIcons.graph_circle,
+                  ),
+                  _BottomTab(
+                    hasNotification: false,
+                    indexMatcher: 5,
                     currentIndex: Provider.of<PrimaryTabControllerService>(context).tabIdx,
                     icon: CupertinoIcons.paperplane,
                   ),
                   _BottomTab(
-                    hasNotification: true,
-                    indexMatcher: 4,
+                    hasNotification: false,
+                    indexMatcher: 6,
                     currentIndex: Provider.of<PrimaryTabControllerService>(context).tabIdx,
-                    icon: CupertinoIcons.bell,
+                    icon: CupertinoIcons.profile_circled,
                   ),
                 ],
               ),

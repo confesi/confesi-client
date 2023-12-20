@@ -72,6 +72,8 @@ class _AccountProfileStatsState extends State<AccountProfileStats> {
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
                   ),
+                  leftIconVisible: false,
+                  leftIconDisabled: true,
                   rightIconVisible: true,
                   rightIcon: CupertinoIcons.gear,
                   rightIconOnPress: () => router.push("/settings"),
@@ -174,7 +176,7 @@ class _AccountProfileStatsState extends State<AccountProfileStats> {
                                               padding: const EdgeInsets.all(15),
                                               color: Colors.transparent, // hitbox trick
                                               child: Text(
-                                                "Share ->",
+                                                "Share stats ->",
                                                 style: kDetail.copyWith(color: Theme.of(context).colorScheme.onSurface),
                                                 textAlign: TextAlign.left,
                                                 overflow: TextOverflow.ellipsis,

@@ -51,10 +51,10 @@ class _AppbarLayoutState extends State<AppbarLayout> {
           onTap: () {
             if (widget.leftIconOnPress != null) {
               FocusScope.of(context).unfocus();
-              Haptics.f(H.regular);
+              // Haptics.f(H.regular);
               widget.leftIconOnPress!();
             } else {
-              Haptics.f(H.regular);
+              // Haptics.f(H.regular);
               FocusScope.of(context).unfocus();
               router.pop();
             }
@@ -89,7 +89,7 @@ class _AppbarLayoutState extends State<AppbarLayout> {
         onTap: () {
           if (widget.rightIconOnPress != null) {
             FocusScope.of(context).unfocus();
-            Haptics.f(H.regular);
+            // Haptics.f(H.regular);
             widget.rightIconOnPress!();
           }
         },

@@ -26,7 +26,7 @@ void buildOptionsSheet(BuildContext context, PostWithMetadata post, {bool showSa
   final quickActionsCubit = context.read<QuickActionsCubit>();
 
   showButtonOptionsSheet(context, [
-    if (post.post.chatPost)
+    if (post.post.chatPost && !post.owner)
       Padding(
         padding: const EdgeInsets.only(bottom: 15),
         child: OptionButton(
@@ -37,7 +37,7 @@ void buildOptionsSheet(BuildContext context, PostWithMetadata post, {bool showSa
           onTap: () async => verifiedUserOnly(
             context,
             () async => (await Provider.of<RoomsService>(context, listen: false).createNewRoom(post.post.id.mid)).fold(
-              (_) => Provider.of<PrimaryTabControllerService>(context, listen: false).setTabIdx(4),
+              (_) => Provider.of<PrimaryTabControllerService>(context, listen: false).setTabIdx(3),
               (errMsg) => context.read<NotificationsCubit>().showErr(errMsg),
             ),
           ),

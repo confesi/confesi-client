@@ -58,7 +58,11 @@ class PostTileState extends State<PostTile> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 15),
-      child: GestureDetector(
+      child: TouchableOpacity(
+        onLongPress: () {
+          Haptics.f(H.regular);
+          buildOptionsSheet(context, widget.post);
+        },
         onTap: () {
           Haptics.f(H.regular);
           router.push(
@@ -72,17 +76,11 @@ class PostTileState extends State<PostTile> {
           constraints: const BoxConstraints(maxWidth: maxStandardSizeOfContent),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.background,
-            border: Border(
-              top: BorderSide(
-                color: Theme.of(context).colorScheme.onBackground,
-                width: borderSize,
-                style: BorderStyle.solid,
-              ),
-              bottom: BorderSide(
-                color: Theme.of(context).colorScheme.onBackground,
-                width: borderSize,
-                style: BorderStyle.solid,
-              ),
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              color: Theme.of(context).colorScheme.onBackground,
+              width: borderSize,
+              style: BorderStyle.solid,
             ),
           ),
           child: ClipRRect(
@@ -121,7 +119,7 @@ class PostTileState extends State<PostTile> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 TextNoVertOverflow(
-                                  "${widget.post.post.school.name}${buildFaculty(widget.post)}${buildYear(widget.post)} • ${timeAgo(DateTime.fromMicrosecondsSinceEpoch(widget.post.post.createdAt))}${widget.post.emojis.isNotEmpty ? " • ${widget.post.emojis.map((e) => e).join("")}" : ""}",
+                                  "${widget.post.post.school.name}${buildFaculty(widget.post)}${buildYear(widget.post)} • ${timeAgo(DateTime.fromMicrosecondsSinceEpoch(widget.post.post.createdAt))} ${widget.post.post.edited ? "• Edited" : ""}",
                                   style: kDetail.copyWith(
                                     color: Theme.of(context).colorScheme.secondary,
                                   ),
@@ -159,7 +157,7 @@ class PostTileState extends State<PostTile> {
                           WidgetOrNothing(
                             showWidget: widget.post.post.title.isNotEmpty && widget.post.post.content.isNotEmpty,
                             child: Padding(
-                              padding: const EdgeInsets.only(left: 15, right: 15, top: 5),
+                              padding: const EdgeInsets.only(left: 15, right: 15, top: 0),
                               child: TextNoVertOverflow(
                                 truncateText(widget.post.post.content, postBodyPreviewLength),
                                 style: kBody.copyWith(
@@ -183,88 +181,73 @@ class PostTileState extends State<PostTile> {
                               ),
                             ),
                           ),
-                          Padding(
+                          Container(
                             padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
-                            child: IntrinsicHeight(
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: ReactionTile(
-                                        simpleView: false,
-                                        amount: widget.post.post.commentCount,
-                                        icon: CupertinoIcons.chat_bubble,
-                                        iconColor: Theme.of(context).colorScheme.tertiary,
-                                        isSelected: true,
-                                        onTap: () {
-                                          Haptics.f(H.regular);
-                                          verifiedUserOnly(
-                                            context,
-                                            () => router.push(
-                                              "/home/posts/comments",
-                                              extra: HomePostsCommentsProps(
-                                                PreloadedPost(widget.post, true),
-                                                titleLastChar: titleLastIndex,
-                                                bodyLastChar: bodyLastIndex,
-                                              ),
-                                            ),
-                                          );
-                                        }),
-                                  ),
-                                  const SizedBox(width: 15),
-                                  Expanded(
-                                    child: ReactionTile(
-                                      onTap: () async => verifiedUserOnly(
-                                          context,
-                                          () async => await Provider.of<GlobalContentService>(context, listen: false)
-                                              .updatePostSaved(widget.post.post.id, !widget.post.saved)
-                                              .then(
-                                                (value) => value.fold(
-                                                  (_) => null,
-                                                  (err) => context.read<NotificationsCubit>().showErr(err),
-                                                ),
-                                              )),
-                                      icon: widget.post.saved ? CupertinoIcons.bookmark_fill : CupertinoIcons.bookmark,
-                                      iconColor: Theme.of(context).colorScheme.secondary,
-                                      isSelected: widget.post.saved,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 15),
-                                  Expanded(
-                                    child: ReactionTile(
-                                      onTap: () async => verifiedUserOnly(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                ReactionTile(
+                                    simpleView: true,
+                                    amount: widget.post.post.commentCount,
+                                    icon: CupertinoIcons.chat_bubble_2_fill,
+                                    iconColor: Theme.of(context).colorScheme.tertiary,
+                                    isSelected: true,
+                                    onTap: () {
+                                      Haptics.f(H.regular);
+                                      verifiedUserOnly(
                                         context,
-                                        () async => await Provider.of<GlobalContentService>(context, listen: false)
-                                            .voteOnPost(widget.post, widget.post.userVote != 1 ? 1 : 0)
-                                            .then(
-                                              (value) => value.fold(
-                                                  (err) => context.read<NotificationsCubit>().showErr(err),
-                                                  (_) => null),
-                                            ),
-                                      ),
-                                      isSelected: widget.post.userVote == 1,
-                                      amount: widget.post.post.upvote,
-                                      icon: CupertinoIcons.up_arrow,
-                                      iconColor: Theme.of(context).colorScheme.onErrorContainer,
+                                        () => router.push(
+                                          "/home/posts/comments",
+                                          extra: HomePostsCommentsProps(
+                                            PreloadedPost(widget.post, true),
+                                            titleLastChar: titleLastIndex,
+                                            bodyLastChar: bodyLastIndex,
+                                          ),
+                                        ),
+                                      );
+                                    }),
+                                // if chat post
+                                if (widget.post.post.chatPost && !widget.post.owner)
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                                    child: Icon(
+                                      CupertinoIcons.paperplane,
+                                      color: Theme.of(context).colorScheme.primary,
+                                      size: 16,
                                     ),
                                   ),
-                                  const SizedBox(width: 15),
-                                  Expanded(
-                                    child: ReactionTile(
-                                      onTap: () async => verifiedUserOnly(
-                                          context,
-                                          () async => await Provider.of<GlobalContentService>(context, listen: false)
-                                              .voteOnPost(widget.post, widget.post.userVote != -1 ? -1 : 0)
-                                              .then((value) => value.fold(
-                                                  (err) => context.read<NotificationsCubit>().showErr(err),
-                                                  (_) => null))),
-                                      amount: widget.post.post.downvote,
-                                      icon: CupertinoIcons.down_arrow,
-                                      iconColor: Theme.of(context).colorScheme.onSecondaryContainer,
-                                      isSelected: widget.post.userVote == -1,
-                                    ),
+                                const Spacer(),
+                                ReactionTile(
+                                  simpleView: true,
+                                  onTap: () async => verifiedUserOnly(
+                                      context,
+                                      () async => await Provider.of<GlobalContentService>(context, listen: false)
+                                          .voteOnPost(widget.post, widget.post.userVote != -1 ? -1 : 0)
+                                          .then((value) => value.fold(
+                                              (err) => context.read<NotificationsCubit>().showErr(err), (_) => null))),
+                                  amount: widget.post.post.downvote,
+                                  icon: CupertinoIcons.down_arrow,
+                                  iconColor: Theme.of(context).colorScheme.onSecondaryContainer,
+                                  isSelected: widget.post.userVote == -1,
+                                ),
+                                const SizedBox(width: 15),
+                                ReactionTile(
+                                  simpleView: true,
+                                  onTap: () async => verifiedUserOnly(
+                                    context,
+                                    () async => await Provider.of<GlobalContentService>(context, listen: false)
+                                        .voteOnPost(widget.post, widget.post.userVote != 1 ? 1 : 0)
+                                        .then(
+                                          (value) => value.fold(
+                                              (err) => context.read<NotificationsCubit>().showErr(err), (_) => null),
+                                        ),
                                   ),
-                                ],
-                              ),
+                                  isSelected: widget.post.userVote == 1,
+                                  amount: widget.post.post.upvote,
+                                  icon: CupertinoIcons.up_arrow,
+                                  iconColor: Theme.of(context).colorScheme.onErrorContainer,
+                                ),
+                              ],
                             ),
                           ),
                         ],
