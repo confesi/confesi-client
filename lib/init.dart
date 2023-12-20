@@ -5,6 +5,7 @@ import 'package:confesi/application/create_post/cubit/post_categories_cubit.dart
 import 'package:confesi/application/dms/cubit/room_requests_cubit.dart';
 import 'package:confesi/application/notifications/cubit/noti_server_cubit.dart';
 import 'package:confesi/application/user/cubit/account_details_cubit.dart';
+import 'package:confesi/application/user/cubit/awards_cubit.dart';
 import 'package:confesi/application/user/cubit/feedback_categories_cubit.dart';
 import 'package:confesi/application/user/cubit/feedback_cubit.dart';
 import 'package:confesi/application/user/cubit/notifications_cubit.dart';
@@ -172,6 +173,7 @@ Future<void> init() async {
   sl.registerFactory(() => CommentSectionCubit(Api(), Api(), Api()));
   sl.registerFactory(() => CreateCommentCubit());
   sl.registerFactory(() => IndividualPostCubit(Api()));
+  sl.registerFactory(() => AwardsCubit(Api()));
 
   //! Firebase
   await initFirebase();

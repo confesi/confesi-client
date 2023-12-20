@@ -7,6 +7,7 @@ import 'package:confesi/application/dms/cubit/room_requests_cubit.dart';
 import 'package:confesi/application/feed/cubit/schools_drawer_cubit.dart';
 import 'package:confesi/application/feed/cubit/sentiment_analysis_cubit.dart';
 import 'package:confesi/application/notifications/cubit/noti_server_cubit.dart';
+import 'package:confesi/application/user/cubit/awards_cubit.dart';
 import 'package:confesi/application/user/cubit/feedback_categories_cubit.dart';
 import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/results/failures.dart';
@@ -190,6 +191,7 @@ void main() async {
           BlocProvider(lazy: false, create: (context) => sl<CommentSectionCubit>()),
           BlocProvider(lazy: false, create: (context) => sl<CreateCommentCubit>()),
           BlocProvider(lazy: false, create: (context) => sl<IndividualPostCubit>()),
+          BlocProvider(lazy: false, create: (context) => sl<AwardsCubit>()),
         ],
         child:
             debugMode && devicePreview ? DevicePreview(builder: (context) => const ShrinkView()) : const ShrinkView(),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/animation.dart';
 
 class Bobbing extends StatefulWidget {
   final Widget child;
@@ -21,13 +20,13 @@ class Bobbing extends StatefulWidget {
 
 class BobbingState extends State<Bobbing> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
+  late Animation<double> _animation;
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(vsync: this, duration: widget.duration);
-    _controller.addListener(() => setState(() {}));
-    _controller.repeat();
+    _controller = AnimationController(vsync: this, duration: widget.duration)..repeat();
+    _animation = CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
   }
 
   @override
@@ -38,33 +37,37 @@ class BobbingState extends State<Bobbing> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final double curvedValue = Curves.easeInOut.transform(_controller.value);
-    final double rotationValue = curvedValue * 2 * 3.141592653589793;
+    return AnimatedBuilder(
+      animation: _animation,
+      builder: (context, child) {
+        final double rotationValue = _animation.value * 2 * 3.141592653589793;
 
-    double bobbingScale = 1.0;
-    if (widget.bobbing) {
-      bobbingScale = 0.6 + 0.3 * (1 - (curvedValue * 2 - 1).abs());
-    }
+        double bobbingScale = 1.0;
+        if (widget.bobbing) {
+          bobbingScale = 0.6 + 0.3 * (1 - (_animation.value * 2 - 1).abs());
+        }
 
-    Widget content = widget.child; // default to original child
+        Widget content = widget.child; // default to original child
 
-    if (widget.bobbing) {
-      content = Transform.scale(
-        scale: bobbingScale,
-        child: content,
-      );
-    }
+        if (widget.bobbing) {
+          content = Transform.scale(
+            scale: bobbingScale,
+            child: content,
+          );
+        }
 
-    if (widget.rotate && rotationValue != 0) {
-      content = Transform.scale(
-        scale: 0.70,
-        child: Transform.rotate(
-          angle: rotationValue,
-          child: content,
-        ),
-      );
-    }
+        if (widget.rotate && rotationValue != 0) {
+          content = Transform.rotate(
+            angle: rotationValue,
+            child: Transform.scale(
+              scale: 0.70,
+              child: content,
+            ),
+          );
+        }
 
-    return content;
+        return content;
+      },
+    );
   }
 }

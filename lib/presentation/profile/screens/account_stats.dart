@@ -2,6 +2,7 @@ import 'package:confesi/application/user/cubit/account_details_cubit.dart';
 import 'package:confesi/application/user/cubit/stats_cubit.dart';
 import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/services/sharing/sharing.dart';
+import 'package:confesi/presentation/shared/behaviours/init_opacity.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:confesi/presentation/shared/indicators/loading_or_alert.dart';
 import 'package:confesi/presentation/shared/selection_groups/tile_group.dart';
@@ -124,63 +125,65 @@ class _AccountProfileStatsState extends State<AccountProfileStats> {
                             BlocBuilder<StatsCubit, StatsState>(
                               builder: (context, state) {
                                 if (state is StatsData) {
-                                  return Column(
-                                    children: [
-                                      TileGroup(
-                                        text: "How you compare to others",
-                                        tiles: [
-                                          StatTile(
-                                            leftNumber: state.stats.likes,
-                                            leftDescription: "Likes",
-                                            centerNumber: state.stats.hottest,
-                                            centerDescription: "Hottests",
-                                            rightNumber: state.stats.dislikes,
-                                            rightDescription: "Dislikes",
-                                          ),
-                                          TextStatTile(
-                                            leftText: "Likes 🎉",
-                                            rightText: percentToRelativeMsg(state.stats.likesPerc),
-                                          ),
-                                          TextStatTile(
-                                            leftText: "Hottests 🔥",
-                                            rightText: percentToRelativeMsg(state.stats.hottestPerc),
-                                          ),
-                                          TextStatTile(
-                                            leftText: "Dislikes 🤮",
-                                            rightText: percentToRelativeMsg(state.stats.dislikesPerc),
-                                          ),
-                                        ],
-                                      ),
-                                      Center(
-                                        child: TouchableOpacity(
-                                          onTap: () {
-                                            final statsState = context.read<StatsCubit>().state;
-                                            if (statsState is StatsData) {
-                                              final data = statsState;
-                                              sl.get<Sharing>().shareStats(
-                                                    context,
-                                                    data.stats.likes,
-                                                    data.stats.hottest,
-                                                    data.stats.dislikes,
-                                                    data.stats.likesPerc,
-                                                    data.stats.hottestPerc,
-                                                    data.stats.dislikesPerc,
-                                                  );
-                                            }
-                                          },
-                                          child: Container(
-                                            padding: const EdgeInsets.all(15),
-                                            color: Colors.transparent, // hitbox trick
-                                            child: Text(
-                                              "Share your stats",
-                                              style: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
-                                              textAlign: TextAlign.left,
-                                              overflow: TextOverflow.ellipsis,
+                                  return InitOpacity(
+                                    child: Column(
+                                      children: [
+                                        TileGroup(
+                                          text: "How you compare to others",
+                                          tiles: [
+                                            StatTile(
+                                              leftNumber: state.stats.likes,
+                                              leftDescription: "Likes",
+                                              centerNumber: state.stats.hottest,
+                                              centerDescription: "Hottests",
+                                              rightNumber: state.stats.dislikes,
+                                              rightDescription: "Dislikes",
+                                            ),
+                                            TextStatTile(
+                                              leftText: "Likes 🎉",
+                                              rightText: percentToRelativeMsg(state.stats.likesPerc),
+                                            ),
+                                            TextStatTile(
+                                              leftText: "Hottests 🔥",
+                                              rightText: percentToRelativeMsg(state.stats.hottestPerc),
+                                            ),
+                                            TextStatTile(
+                                              leftText: "Dislikes 🤮",
+                                              rightText: percentToRelativeMsg(state.stats.dislikesPerc),
+                                            ),
+                                          ],
+                                        ),
+                                        Center(
+                                          child: TouchableOpacity(
+                                            onTap: () {
+                                              final statsState = context.read<StatsCubit>().state;
+                                              if (statsState is StatsData) {
+                                                final data = statsState;
+                                                sl.get<Sharing>().shareStats(
+                                                      context,
+                                                      data.stats.likes,
+                                                      data.stats.hottest,
+                                                      data.stats.dislikes,
+                                                      data.stats.likesPerc,
+                                                      data.stats.hottestPerc,
+                                                      data.stats.dislikesPerc,
+                                                    );
+                                              }
+                                            },
+                                            child: Container(
+                                              padding: const EdgeInsets.all(15),
+                                              color: Colors.transparent, // hitbox trick
+                                              child: Text(
+                                                "Share ->",
+                                                style: kDetail.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                                                textAlign: TextAlign.left,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   );
                                 } else if (state is StatsGuest) {
                                   return DisclaimerText(

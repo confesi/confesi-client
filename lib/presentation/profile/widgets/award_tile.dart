@@ -1,4 +1,6 @@
+import 'package:confesi/core/services/haptics/haptics.dart';
 import 'package:confesi/core/styles/typography.dart';
+import 'package:confesi/presentation/profile/overlays/award_sheet.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:flutter/material.dart';
 
@@ -10,22 +12,25 @@ class AwardTile extends StatelessWidget {
   final String desc;
   final String emoji;
   final int count;
-  final double? fontSize; // Optional fontSize parameter
+  final double? fontSize; // optional fontSize parameter
 
   @override
   Widget build(BuildContext context) {
     TextStyle emojiStyle = kTitle.copyWith(
       color: Theme.of(context).colorScheme.primary,
-      fontSize: fontSize ?? 24, // Use provided fontSize or default to 24
+      fontSize: fontSize ?? 24, // use provided fontSize or default to X
     );
 
     return TouchableOpacity(
-      onTap: () {},
+      onTap: () {
+        Haptics.f(H.regular);
+        showAwardSheet(context, title, desc, emoji, count);
+      },
       child: Stack(
         alignment: Alignment.center,
         children: [
           Container(
-            padding: const EdgeInsets.only(left: 1.5, top: 1),
+            padding: const EdgeInsets.only(left: 1, top: 1),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.background,
               borderRadius: BorderRadius.circular(10),

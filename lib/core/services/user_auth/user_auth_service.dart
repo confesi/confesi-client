@@ -1,3 +1,4 @@
+import 'package:confesi/application/user/cubit/awards_cubit.dart';
 import 'package:confesi/core/services/create_comment_service/create_comment_service.dart';
 import 'package:confesi/core/services/global_content/global_content.dart';
 import 'package:confesi/core/services/rooms/rooms_service.dart';
@@ -123,6 +124,7 @@ class UserAuthService extends ChangeNotifier {
     sl.get<CommentSectionCubit>().clear();
     sl.get<CreateCommentCubit>().clear();
     sl.get<IndividualPostCubit>().clear();
+    sl.get<AwardsCubit>().clear();
   }
 
   void loadAllAppState(BuildContext context) {
