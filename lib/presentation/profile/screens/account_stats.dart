@@ -66,14 +66,15 @@ class _AccountProfileStatsState extends State<AccountProfileStats> {
               children: [
                 AppbarLayout(
                   bottomBorder: true,
+                  leftIcon: CupertinoIcons.bell,
+
+                  leftIconOnPress: () => router.push("/notifications"),
                   centerWidget: Text(
                     "Your Private Account",
                     style: kTitle.copyWith(color: Theme.of(context).colorScheme.primary),
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
                   ),
-                  leftIconVisible: false,
-                  leftIconDisabled: true,
                   rightIconVisible: true,
                   rightIcon: CupertinoIcons.gear,
                   rightIconOnPress: () => router.push("/settings"),

@@ -277,12 +277,12 @@ final GoRouter router = GoRouter(
   ],
 );
 
-class ImgProps {
-  final String url;
-  final bool isBlurred;
-  final String heroTag;
-  const ImgProps(this.url, this.isBlurred, this.heroTag);
-}
+// class ImgViewProps {
+//   final String url;
+//   final bool isBlurred;
+//   final String heroTag;
+//   const ImgViewProps(this.url, this.isBlurred, this.heroTag);
+// }
 
 class HomePostsSentimentProps {
   final EncryptedId postId;

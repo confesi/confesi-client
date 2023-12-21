@@ -125,11 +125,9 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
                                 ),
                               ),
                               const SizedBox(width: 10),
-                              Off(
-                                child: _TabIconBtn(
-                                  onTap: () => widget.scaffoldKey.currentState!.openDrawer(),
-                                  icon: CupertinoIcons.slider_horizontal_3,
-                                ),
+                              _TabIconBtn(
+                                onTap: () => router.push("/home/rooms"),
+                                icon: CupertinoIcons.paperplane,
                               )
                             ],
                           ),

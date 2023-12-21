@@ -246,7 +246,7 @@ class _CommentsHomeState extends State<CommentsHome> with TickerProviderStateMix
                 ),
                 const SizedBox(height: 15),
                 ImgViewer(
-                    imgUrls: post.post.imgUrls,
+                    imageSources: post.post.imgUrls.map((e) => MyImageSource(url: e)).toList(),
                     isBlurred: Provider.of<UserAuthService>(context, listen: true).data().blurImages,
                     heroAnimPrefix: "comments_view"),
               ],

@@ -22,7 +22,6 @@ import '../../shared/other/text_limit_tracker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/services/create_post_hint_text/create_post_hint_text.dart';
 import '../../../core/styles/typography.dart';

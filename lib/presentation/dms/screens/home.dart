@@ -46,8 +46,6 @@ class RoomsScreen extends StatelessWidget {
                 rightIconOnPress: () => showRoomRequestsSheet(context),
                 rightIconVisible: true,
                 rightIcon: CupertinoIcons.archivebox,
-                leftIconVisible: false,
-                leftIconDisabled: true,
                 bottomBorder: true,
                 centerWidget: Text(
                   "Anonymous Messages",

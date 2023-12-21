@@ -175,7 +175,7 @@ class PostTileState extends State<PostTile> {
                             child: Padding(
                               padding: const EdgeInsets.symmetric(vertical: 15),
                               child: ImgViewer(
-                                imgUrls: widget.post.post.imgUrls,
+                                imageSources: widget.post.post.imgUrls.map((e) => MyImageSource(url: e)).toList(),
                                 isBlurred: Provider.of<UserAuthService>(context, listen: true).data().blurImages,
                                 heroAnimPrefix: "post_tile",
                               ),

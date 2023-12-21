@@ -24,16 +24,6 @@ import '../api_client/api.dart';
 
 class EditorState implements Comparable<EditorState> {
   final File editingFile;
-  final List<TextEntry> textEntries;
-  final Map<TextEntry, Tuple4<TextEditingController, FocusNode, double, Offset>> textControllers;
-  final HashSet<TextEntry> currentDraggingEntries;
-  final List<
-      Tuple3<List<TextEntry>, Map<TextEntry, Tuple4<TextEditingController, FocusNode, double, Offset>>,
-          List<List<Line>>>> undoStack;
-  final List<
-      Tuple3<List<TextEntry>, Map<TextEntry, Tuple4<TextEditingController, FocusNode, double, Offset>>,
-          List<List<Line>>>> redoStack;
-  final List<List<Line>> lines;
 
   @override
   int compareTo(EditorState other) {
@@ -42,22 +32,9 @@ class EditorState implements Comparable<EditorState> {
 
   EditorState({
     required this.editingFile,
-    required this.textEntries,
-    required this.textControllers,
-    required this.currentDraggingEntries,
-    required this.undoStack,
-    required this.redoStack,
-    required this.lines,
   });
 
-  EditorState.empty(File file)
-      : editingFile = file,
-        textEntries = [],
-        textControllers = {},
-        currentDraggingEntries = HashSet(),
-        undoStack = [],
-        redoStack = [],
-        lines = [];
+  EditorState.empty(File file) : editingFile = file;
 }
 
 //! Meta state
