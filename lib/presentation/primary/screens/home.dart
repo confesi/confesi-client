@@ -46,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   @override
   void initState() {
-    if (!sl.get<UserAuthService>().isAnon) {
+    if (!sl.get<UserAuthService>().isUserAnon) {
       context.read<SchoolsDrawerCubit>().loadSchools();
     } else {
       context.read<SchoolsDrawerCubit>().setSchoolsGuest();

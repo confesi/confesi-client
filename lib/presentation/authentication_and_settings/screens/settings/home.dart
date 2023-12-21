@@ -29,7 +29,7 @@ class SettingsHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isAnon = Provider.of<UserAuthService>(context, listen: true).isAnon;
+    final isAnon = Provider.of<UserAuthService>(context, listen: true).isUserAnon;
     return ThemeStatusBar(
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,

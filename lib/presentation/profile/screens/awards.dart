@@ -68,7 +68,10 @@ class _AwardsScreenState extends State<AwardsScreen> {
     if (state is AwardsData) {
       List<AwardTile> tiles = genAwardTiles(context, state);
       return SliverPadding(
-        padding: EdgeInsets.symmetric(horizontal: (constraints.maxWidth - maxStandardSizeOfContent) / 2),
+        padding: EdgeInsets.symmetric(
+            horizontal: constraints.maxWidth < maxStandardSizeOfContent
+                ? 0
+                : (constraints.maxWidth - maxStandardSizeOfContent) / 2),
         sliver: SliverGrid(
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,

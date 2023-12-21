@@ -182,7 +182,7 @@ class SchoolDetail extends StatelessWidget {
                                 props.school.school.name),
                             text: "Locate on map",
                           ),
-                          if (!sl.get<UserAuthService>().isAnon)
+                          if (!sl.get<UserAuthService>().isUserAnon)
                             IgnorePointer(
                               ignoring:
                                   Provider.of<GlobalContentService>(context).schools[props.school.school.id]!.home,
@@ -208,7 +208,7 @@ class SchoolDetail extends StatelessWidget {
                           ),
                         ],
                       ),
-                      if (!sl.get<UserAuthService>().isAnon) buildBottomBtn(context, false), // for sizing reasons
+                      if (!sl.get<UserAuthService>().isUserAnon) buildBottomBtn(context, false), // for sizing reasons
                       const SimulatedBottomSafeArea(),
                     ],
                   ),
@@ -216,7 +216,7 @@ class SchoolDetail extends StatelessWidget {
               ],
             ),
           ),
-          if (!sl.get<UserAuthService>().isAnon) buildBottomBtn(context, true)
+          if (!sl.get<UserAuthService>().isUserAnon) buildBottomBtn(context, true)
         ],
       ),
     );

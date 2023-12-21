@@ -33,12 +33,7 @@ class OpenScreen extends StatelessWidget {
                 children: [
                   const SizedBox(height: 15),
                   Expanded(
-                    child: GestureDetector(
-                      onTap: () {
-                        HapticFeedback.lightImpact();
-                      },
-                      child: Image.asset(walrusFullBodyImgPath),
-                    ),
+                    child: Image.asset(walrusFullBodyImgPath),
                   ),
                   const Spacer(),
                   PopButton(

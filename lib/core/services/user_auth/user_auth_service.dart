@@ -35,7 +35,7 @@ import '../../../init.dart';
 
 class UserAuthService extends ChangeNotifier {
   UserAuthState state = UserAuthLoading();
-  bool isAnon = true;
+  bool isUserAnon = true;
   String email = "";
   String uid = "";
   String baseSessionKey = "";
@@ -82,7 +82,7 @@ class UserAuthService extends ChangeNotifier {
   }
 
   void clearCurrentExtraData() {
-    isAnon = true;
+    isUserAnon = true;
     email = "";
     uid = "";
     baseSessionKey = "";

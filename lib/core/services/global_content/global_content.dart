@@ -167,7 +167,7 @@ class GlobalContentService extends ChangeNotifier {
   }
 
   Future<Either<ApiSuccess, String>> updateWatched(SchoolWithMetadata school, bool watch) async {
-    if (sl.get<UserAuthService>().isAnon) {
+    if (sl.get<UserAuthService>().isUserAnon) {
       return const Right("Cannot watch school as guest");
     }
 

@@ -65,6 +65,20 @@ flutter pub get
 flutter run
 ```
 
-## Todo for prod
+### Todo for release
 
 - Ensure the home widget has correct url endpoint. This is in the Swift code.
+
+### Release (Apple)
+
+Ensure the proper settings via checking them in the project's `Runner` in XCode:
+
+```sh
+xed ios
+```
+
+To compile the Apple IPA file, run:
+
+```sh
+flutter build ipa --obfuscate --split-debug-info=build/app/outputs/symbols
+```

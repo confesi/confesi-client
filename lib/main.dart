@@ -106,12 +106,12 @@ Future<UserAuthService> startAuthListener() async {
               return;
             }
             if (user.isAnonymous) {
-              sl.get<UserAuthService>().isAnon = true;
+              sl.get<UserAuthService>().isUserAnon = true;
               sl.get<UserAuthService>().uid = user.uid;
               sl.get<UserAuthService>().setSessionKeys();
               router.go("/home");
             } else {
-              sl.get<UserAuthService>().isAnon = false;
+              sl.get<UserAuthService>().isUserAnon = false;
               sl.get<UserAuthService>().email = user.email!;
               sl.get<UserAuthService>().uid = user.uid;
               sl.get<UserAuthService>().setSessionKeys();
