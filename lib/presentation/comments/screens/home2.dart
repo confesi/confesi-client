@@ -190,6 +190,9 @@ class _CommentScreenState extends State<CommentScreen> {
 
   @override
   Widget build(BuildContext context) {
+    PostWithMetadata? post = context.watch<IndividualPostCubit>().state is IndividualPostData
+        ? (context.watch<IndividualPostCubit>().state as IndividualPostData).post
+        : null;
     return ThemeStatusBar(
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.shadow,
@@ -201,16 +204,20 @@ class _CommentScreenState extends State<CommentScreen> {
                 top: BorderSide(color: Theme.of(context).colorScheme.onBackground, width: borderSize),
               ),
             ),
-            padding: const EdgeInsets.all(10),
+            padding: EdgeInsets.all(post != null ? 10 : 0),
             child: SafeArea(
               top: false,
-              child: CommentSheet(
-                controller: commentSheetController,
-                onSubmit: (value) async {},
-                maxCharacters: maxCommentLength,
-                feedController: feedController,
-                postCreatedAtTime: 123, // todo: postState.post.post.createdAt,
-              ),
+              child: post != null
+                  ? CommentSheet(
+                      controller: commentSheetController,
+                      onSubmit: (value) async {
+                        print(value);
+                      },
+                      maxCharacters: maxCommentLength,
+                      feedController: feedController,
+                      postCreatedAtTime: 123, // todo: postState.post.post.createdAt,
+                    )
+                  : const SizedBox(),
             ),
           ),
           child: Stack(

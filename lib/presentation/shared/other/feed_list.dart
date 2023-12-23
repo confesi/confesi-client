@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:confesi/presentation/shared/behaviours/init_opacity.dart';
+import 'package:confesi/presentation/shared/behaviours/init_scale.dart';
 import 'package:confesi/presentation/shared/indicators/alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -307,19 +309,21 @@ class _FeedListState extends State<FeedList> {
 
                   if (!widget.hasError && widget.controller.items.isEmpty && !isCurrentlyLoadingMore) {
                     if (index == 1) {
-                      return LoadingOrAlert(
-                        key: const ValueKey("is_empty"),
-                        isLoading: errorLoadingMoreIsLoading,
-                        message: StateMessage("Nothing found", () async {
-                          await widget.onPullToRefresh();
-                        }),
+                      return InitOpacity(
+                        child: LoadingOrAlert(
+                          key: const ValueKey("is_empty"),
+                          isLoading: errorLoadingMoreIsLoading,
+                          message: StateMessage("Nothing found", () async {
+                            await widget.onPullToRefresh();
+                          }),
+                        ),
                       );
                     }
                     return const SizedBox();
                   }
 
                   if (index == widget.controller.items.length + 1) {
-                    return buildIndicator();
+                    return InitOpacity(child: buildIndicator());
                   }
 
                   return Center(child: widget.controller.items[index - 1].child);

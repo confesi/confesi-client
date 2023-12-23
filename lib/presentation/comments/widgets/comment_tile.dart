@@ -364,7 +364,7 @@ class _CommentTileState extends State<CommentTile> {
                                         ),
                                       ),
                                     ),
-                                    const SizedBox(width: 5),
+                                    const SizedBox(width: 15),
                                     ReactionTile(
                                       simpleView: true,
                                       onTap: () async {
@@ -385,7 +385,7 @@ class _CommentTileState extends State<CommentTile> {
                                       icon: CupertinoIcons.up_arrow,
                                       iconColor: Theme.of(context).colorScheme.onErrorContainer,
                                     ),
-                                    const SizedBox(width: 5),
+                                    const SizedBox(width: 15),
                                     ReactionTile(
                                       simpleView: true,
                                       onTap: () async {
