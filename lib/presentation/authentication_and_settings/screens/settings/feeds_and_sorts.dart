@@ -1,3 +1,7 @@
+import 'package:confesi/core/services/user_auth/user_auth_data.dart';
+import 'package:confesi/core/services/user_auth/user_auth_service.dart';
+import 'package:provider/provider.dart';
+
 import '../../../shared/selection_groups/tile_group.dart';
 import '../../../shared/selection_groups/bool_selection_tile.dart';
 import '../../../shared/behaviours/themed_status_bar.dart';
@@ -45,22 +49,37 @@ class FeedsAndSortsScreen extends StatelessWidget {
                             text: "Default feed view",
                             tiles: [
                               BoolSelectionTile(
-                                isActive: true,
+                                isActive: Provider.of<UserAuthService>(context).data().defaultPostFeed ==
+                                    DefaultPostFeed.trending,
                                 icon: CupertinoIcons.sparkles,
                                 text: "Trending 🔥",
-                                onTap: () => {},
+                                onTap: () => Provider.of<UserAuthService>(context, listen: false).saveData(
+                                  Provider.of<UserAuthService>(context, listen: false)
+                                      .data()
+                                      .copyWith(defaultPostFeed: DefaultPostFeed.trending),
+                                ),
                               ),
                               BoolSelectionTile(
-                                isActive: true,
+                                isActive: Provider.of<UserAuthService>(context).data().defaultPostFeed ==
+                                    DefaultPostFeed.recents,
                                 icon: CupertinoIcons.sparkles,
                                 text: "Recents ⏳",
-                                onTap: () => {},
+                                onTap: () => Provider.of<UserAuthService>(context, listen: false).saveData(
+                                  Provider.of<UserAuthService>(context, listen: false)
+                                      .data()
+                                      .copyWith(defaultPostFeed: DefaultPostFeed.recents),
+                                ),
                               ),
                               BoolSelectionTile(
-                                isActive: true,
+                                isActive: Provider.of<UserAuthService>(context).data().defaultPostFeed ==
+                                    DefaultPostFeed.sentiment,
                                 icon: CupertinoIcons.sparkles,
                                 text: "Positivity ✨",
-                                onTap: () => {},
+                                onTap: () => Provider.of<UserAuthService>(context, listen: false).saveData(
+                                  Provider.of<UserAuthService>(context, listen: false)
+                                      .data()
+                                      .copyWith(defaultPostFeed: DefaultPostFeed.sentiment),
+                                ),
                               ),
                             ],
                           ),
@@ -68,16 +87,26 @@ class FeedsAndSortsScreen extends StatelessWidget {
                             text: "Default comment sort",
                             tiles: [
                               BoolSelectionTile(
-                                isActive: true,
+                                isActive: Provider.of<UserAuthService>(context).data().defaultCommentSort ==
+                                    DefaultCommentSort.trending,
                                 icon: CupertinoIcons.sparkles,
                                 text: "Trending 🔥",
-                                onTap: () => {},
+                                onTap: () => Provider.of<UserAuthService>(context, listen: false).saveData(
+                                  Provider.of<UserAuthService>(context, listen: false)
+                                      .data()
+                                      .copyWith(defaultCommentSort: DefaultCommentSort.trending),
+                                ),
                               ),
                               BoolSelectionTile(
-                                isActive: true,
+                                isActive: Provider.of<UserAuthService>(context).data().defaultCommentSort ==
+                                    DefaultCommentSort.recents,
                                 icon: CupertinoIcons.sparkles,
                                 text: "Recents ⏳",
-                                onTap: () => {},
+                                onTap: () => Provider.of<UserAuthService>(context, listen: false).saveData(
+                                  Provider.of<UserAuthService>(context, listen: false)
+                                      .data()
+                                      .copyWith(defaultCommentSort: DefaultCommentSort.recents),
+                                ),
                               ),
                             ],
                           ),

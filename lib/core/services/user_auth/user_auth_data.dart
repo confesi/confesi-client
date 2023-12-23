@@ -1,5 +1,7 @@
+import 'package:confesi/core/services/posts_service/posts_service.dart';
 import 'package:hive/hive.dart';
 
+import '../posts_service/posts_service.dart';
 import 'user_auth_service.dart';
 
 part 'user_auth_data.g.dart';
@@ -15,6 +17,24 @@ enum ProfanityFilter { on, off }
 enum UnitSystem { metric, imperial }
 
 enum DefaultPostFeed { trending, recents, sentiment }
+
+// extension on DefaultPostFeed that maps value to the tab index
+extension TabIdx on DefaultPostFeed {
+  int get tabIdx => this == DefaultPostFeed.recents
+      ? 0
+      : this == DefaultPostFeed.trending
+          ? 1
+          : 2;
+}
+
+// extension that maps to enum FeedType { recents, trending, sentiment }, returning FeedType enum
+extension GetFeedType on DefaultPostFeed {
+  FeedType get convertToFeedType => this == DefaultPostFeed.recents
+      ? FeedType.recents
+      : this == DefaultPostFeed.trending
+          ? FeedType.trending
+          : FeedType.sentiment;
+}
 
 enum DefaultCommentSort { trending, recents }
 

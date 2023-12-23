@@ -3,10 +3,10 @@ import 'dart:math';
 import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/services/haptics/haptics.dart';
 import 'package:confesi/core/services/posts_service/posts_service.dart';
+import 'package:confesi/core/services/user_auth/user_auth_data.dart';
 import 'package:confesi/core/styles/typography.dart';
 import 'package:confesi/presentation/feed/tabs/sentiment_feed.dart';
 import 'package:confesi/presentation/feed/widgets/sticky_appbar.dart';
-import 'package:confesi/presentation/shared/behaviours/off.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,6 +15,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/router/go_router.dart';
+import '../../../core/services/user_auth/user_auth_service.dart';
 import '../tabs/recents_feed.dart';
 import '../tabs/trending_feed.dart';
 
@@ -33,7 +34,7 @@ class ExploreHome extends StatefulWidget {
 }
 
 class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
-  final PageController _pageController = PageController(initialPage: 0);
+  late PageController _pageController;
   late StickyAppbarController _stickyAppbarController;
 
   late String emoji;
@@ -41,6 +42,12 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
   @override
   initState() {
     super.initState();
+    DefaultPostFeed defaultFeed = Provider.of<UserAuthService>(context, listen: false).data().defaultPostFeed;
+    _pageController = PageController(initialPage: defaultFeed.tabIdx);
+    // post frame callback
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      context.read<PostsService>().setCurrentlySelectedFeedAndReloadIfNeeded(context, defaultFeed.convertToFeedType);
+    });
     emoji = genRandomEmoji(null);
     _stickyAppbarController = StickyAppbarController(this);
   }
