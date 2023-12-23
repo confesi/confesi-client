@@ -17,7 +17,7 @@ const int chatPageSize = 15;
 const double floatingBottomNavOffset = 0; // 78
 
 /// If debug mode is enabled. OFF for prod.
-const bool debugMode = false;
+const bool debugMode = true;
 
 const int maxImagesPerPost = 5;
 

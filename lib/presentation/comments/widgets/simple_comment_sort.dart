@@ -8,12 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 /// The type of sort that the comment section is doing.
-enum CommentSortType {
-  best,
-  recent,
-  liked,
-  hated,
-}
+enum CommentSortType { trending, recent }
 
 // method on enum to convert it to exactly its name in string form
 extension CommentSortTypeExtension on CommentSortType {
@@ -27,9 +22,11 @@ class SimpleCommentSort extends StatefulWidget {
   const SimpleCommentSort({
     super.key,
     required this.onSwitch,
+    required this.commentSortType,
   });
 
   final Function(CommentSortType) onSwitch;
+  final CommentSortType commentSortType;
 
   @override
   State<SimpleCommentSort> createState() => _SimpleCommentSortState();
@@ -38,76 +35,69 @@ class SimpleCommentSort extends StatefulWidget {
 class _SimpleCommentSortState extends State<SimpleCommentSort> {
   String commentSortTypeToString(CommentSortType commentSortType) {
     switch (commentSortType) {
-      case CommentSortType.best:
-        return "best";
+      case CommentSortType.trending:
+        return "trending";
       case CommentSortType.recent:
         return "recent";
-      case CommentSortType.liked:
-        return "liked";
-      case CommentSortType.hated:
-        return "hated";
     }
   }
 
-  void updateCommentType(CommentSortType newCommentSortType) {
-    setState(() {
-      commentSortType = newCommentSortType;
-    });
-    widget.onSwitch(commentSortType);
-  }
-
-  CommentSortType commentSortType = CommentSortType.best;
-
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            color: Theme.of(context).colorScheme.onBackground,
-            width: borderSize,
+    return TouchableOpacity(
+      onTap: () => showButtonOptionsSheet(
+        context,
+        [
+          OptionButton(
+            onTap: () => widget.onSwitch(CommentSortType.trending),
+            text: "Trending",
+            icon: CupertinoIcons.flame,
           ),
-        ),
+          OptionButton(
+            onTap: () => widget.onSwitch(CommentSortType.recent),
+            text: "Recent",
+            icon: CupertinoIcons.clock,
+          ),
+        ],
       ),
-      child: TouchableOpacity(
-        onTap: () => showButtonOptionsSheet(
-          context,
-          [
-            OptionButton(
-              onTap: () => updateCommentType(CommentSortType.best),
-              text: "Trending",
-              icon: CupertinoIcons.flame,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        width: double.infinity,
+        color: Colors.transparent,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 3),
+              child: Icon(
+                CupertinoIcons.chat_bubble_2,
+                color: Theme.of(context).colorScheme.onSurface,
+                size: 18,
+              ),
             ),
-            OptionButton(
-              onTap: () => updateCommentType(CommentSortType.recent),
-              text: "Recent",
-              icon: CupertinoIcons.clock,
+            const SizedBox(width: 5),
+            RichText(
+              text: TextSpan(
+                style: kDetail.copyWith(
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+                children: [
+                  TextSpan(
+                    text: "Sorting comments by ",
+                    style: kDetail.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                  ),
+                  TextSpan(
+                    text: commentSortTypeToString(widget.commentSortType),
+                    style: kDetail.copyWith(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                ],
+              ),
+              textAlign: TextAlign.left,
             ),
           ],
-        ),
-        child: Container(
-          padding: const EdgeInsets.only(top: 10, bottom: 12, left: 15, right: 15),
-          width: double.infinity,
-          color: Colors.transparent,
-          child: Row(
-            children: [
-              Text(
-                "Sort comments by",
-                style: kBody.copyWith(
-                  color: Theme.of(context).colorScheme.onSurface,
-                ),
-                textAlign: TextAlign.left,
-              ),
-              const SizedBox(width: 5),
-              Text(
-                commentSortTypeToString(commentSortType),
-                style: kBody.copyWith(
-                  color: Theme.of(context).colorScheme.onSurface,
-                ),
-                textAlign: TextAlign.right,
-              ),
-            ],
-          ),
         ),
       ),
     );
