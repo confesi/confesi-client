@@ -17,6 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../../../core/utils/verified_students/verified_user_only.dart';
 import '../overlays/room_request_sheet.dart';
 
 class RoomsScreen extends StatelessWidget {
@@ -43,7 +44,10 @@ class RoomsScreen extends StatelessWidget {
           child: Column(
             children: [
               AppbarLayout(
-                rightIconOnPress: () => showRoomRequestsSheet(context),
+                rightIconOnPress: () => verifiedUserOnly(
+                  context,
+                  () => showRoomRequestsSheet(context),
+                ),
                 rightIconVisible: true,
                 rightIcon: CupertinoIcons.archivebox,
                 bottomBorder: true,

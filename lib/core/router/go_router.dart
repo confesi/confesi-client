@@ -20,6 +20,7 @@ import '../../presentation/authentication_and_settings/screens/settings/faq.dart
 import '../../presentation/authentication_and_settings/screens/settings/feedback.dart';
 import '../../presentation/authentication_and_settings/screens/settings/feeds_and_sorts.dart';
 import '../../presentation/authentication_and_settings/screens/settings/home.dart';
+import '../../presentation/comments/screens/home2.dart';
 import '../../presentation/create_post/screens/details.dart';
 import '../../presentation/create_post/screens/home.dart';
 import '../../presentation/feed/screens/post_sentiment_analysis.dart';
@@ -158,11 +159,19 @@ final GoRouter router = GoRouter(
     ),
 
     GoRoute(path: '/onboarding', builder: (BuildContext context, GoRouterState state) => const ShowcaseScreen()),
+
+    // GoRoute(
+    //     path: '/home/posts/comments',
+    //     builder: (BuildContext context, GoRouterState state) {
+    //       HomePostsCommentsProps props = state.extra as HomePostsCommentsProps;
+    //       return CommentsHome(props: props);
+    //     }),
+
     GoRoute(
         path: '/home/posts/comments',
         builder: (BuildContext context, GoRouterState state) {
           HomePostsCommentsProps props = state.extra as HomePostsCommentsProps;
-          return CommentsHome(props: props);
+          return CommentScreen(props: props);
         }),
 
     GoRoute(
@@ -276,13 +285,6 @@ final GoRouter router = GoRouter(
         builder: (BuildContext context, GoRouterState state) => const FeedsAndSortsScreen()),
   ],
 );
-
-// class ImgViewProps {
-//   final String url;
-//   final bool isBlurred;
-//   final String heroTag;
-//   const ImgViewProps(this.url, this.isBlurred, this.heroTag);
-// }
 
 class HomePostsSentimentProps {
   final EncryptedId postId;

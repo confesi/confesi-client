@@ -17,7 +17,6 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 version: 0.0.1+1
 
-isar_version: &isar_version 3.1.0
 
 environment:
   sdk: ">=3.0.0 <=3.13.5"
@@ -118,8 +117,9 @@ dependencies:
   app_links: ^3.4.3
   home_indicator: ^2.0.2
   image_picker: ^1.0.2
-  isar: *isar_version
-  isar_flutter_libs: *isar_version # contains Isar Core
+  isar: 3.1.0
+  isar_flutter_libs: 3.1.0 # contains Isar Core
+  shimmer: ^3.0.0
   # shimmer: ^2.0.0
   # open_settings: ^2.0.2
   # animated_text_kit: ^4.2.2
@@ -127,7 +127,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  isar_generator: *isar_version
+  isar_generator: 3.1.0
   drift_dev: ^2.6.0
   build_runner: any
   # hive_generator: ^1.1.3

@@ -470,17 +470,16 @@ class _CommentsHomeState extends State<CommentsHome> with TickerProviderStateMix
                         });
                       }),
                       header: buildHeader(ogContext, commentState, postState),
-                      isScrollable: true,
                       shrinkWrap: true,
                       controller: feedListController
                         ..items = generateComments(ogContext, commentState, feedListController, postState.post),
-                      loadMore: (_) async => await ogContext.read<CommentSectionCubit>().loadInitial(
+                      loadMore: (_) async => await ogContext.read<CommentSectionCubit>().loadComments(
                           postState.post.post.id.mid, CommentSortType.recent,
                           refresh: feedListController.items.isEmpty),
                       hasError: commentState.paginationState == CommentFeedState.error,
                       onErrorButtonPressed: () async => await ogContext
                           .read<CommentSectionCubit>()
-                          .loadInitial(postState.post.post.id.mid, CommentSortType.recent),
+                          .loadComments(postState.post.post.id.mid, CommentSortType.recent),
                       onPullToRefresh: () async {
                         Provider.of<GlobalContentService>(ogContext, listen: false).clearComments();
                         ogContext.read<CreateCommentCubit>().clear();
@@ -488,7 +487,7 @@ class _CommentsHomeState extends State<CommentsHome> with TickerProviderStateMix
                         ogContext.read<IndividualPostCubit>().setLoading();
                         await delegateInitialLoad(ogContext, refresh: true);
                       },
-                      onWontLoadMoreButtonPressed: () async => await ogContext.read<CommentSectionCubit>().loadInitial(
+                      onWontLoadMoreButtonPressed: () async => await ogContext.read<CommentSectionCubit>().loadComments(
                           postState.post.post.id.mid, CommentSortType.recent,
                           refresh: commentState.commentIds.isEmpty),
                       wontLoadMore: commentState.paginationState == CommentFeedState.end,
@@ -502,7 +501,7 @@ class _CommentsHomeState extends State<CommentsHome> with TickerProviderStateMix
                         commentState is CommentSectionError ? commentState.message : "Unknown error",
                         () => ogContext
                             .read<CommentSectionCubit>()
-                            .loadInitial(postState.post.post.id.mid, CommentSortType.recent)),
+                            .loadComments(postState.post.post.id.mid, CommentSortType.recent)),
                     isLoading: false);
               }
             },
@@ -535,7 +534,7 @@ class _CommentsHomeState extends State<CommentsHome> with TickerProviderStateMix
                 if (state is IndividualPostData) {
                   ogContext
                       .read<CommentSectionCubit>()
-                      .loadInitial(state.post.post.id.mid, CommentSortType.recent, refresh: true);
+                      .loadComments(state.post.post.id.mid, CommentSortType.recent, refresh: true);
                 }
               },
               builder: (context, postState) => AnimatedSwitcher(

@@ -53,13 +53,13 @@ class _HottestTileState extends State<HottestTile> {
                           width: borderSize,
                           strokeAlign: BorderSide.strokeAlignInside,
                         ),
-                        borderRadius: BorderRadius.circular(20.0), // Added rounded corners
+                        borderRadius: BorderRadius.circular(20.0),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Expanded(
-                            flex: 3,
+                            flex: 2,
                             child: AnimatedContainer(
                               duration: const Duration(milliseconds: 250),
                               width: double.infinity,
@@ -79,6 +79,7 @@ class _HottestTileState extends State<HottestTile> {
                               children: [
                                 Positioned.fill(
                                   right: 15,
+                                  bottom: -15,
                                   child: Align(
                                     alignment: Alignment.bottomRight,
                                     child: Text(

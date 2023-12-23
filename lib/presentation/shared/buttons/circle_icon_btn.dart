@@ -39,7 +39,7 @@ class CircleIconBtn extends StatelessWidget {
         border: hasBorder
             ? Border.all(
                 color: Theme.of(context).colorScheme.onBackground,
-                width:borderSize,
+                width: borderSize,
                 strokeAlign: BorderSide.strokeAlignInside,
               )
             : null,

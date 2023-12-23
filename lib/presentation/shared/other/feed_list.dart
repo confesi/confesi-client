@@ -7,16 +7,10 @@ import '../../../constants/shared/constants.dart';
 import '../../../core/results/failures.dart';
 import 'package:dartz/dartz.dart' as dartz;
 import '../../../core/types/infinite_scrollable_indexable.dart';
+import '../../feed/widgets/sticky_appbar.dart';
 import '../indicators/loading_or_alert.dart';
 import '../edited_source_widgets/swipe_refresh.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-
-class StickyHeader {
-  final double height;
-  final Widget child;
-
-  StickyHeader({required this.height, required this.child});
-}
 
 class FeedListController extends ChangeNotifier {
   bool _isDisposed = false;
@@ -143,7 +137,7 @@ class FeedList extends StatefulWidget {
 
   final double topPushdownOffset;
   final double topPushdownOffsetAboveHeader;
-  final StickyHeader? stickyHeader;
+  final StickyAppbarProps? stickyHeader;
   final Function(ScrollNotification scrollNotification)? onScroll;
   final bool centeredEmptyIndicator;
   final bool swipeRefreshEnabled;

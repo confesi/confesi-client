@@ -1,4 +1,6 @@
-String truncateText(String text, int maxLength, {int maxNewlines = 5, String ellipsis = '...'}) {
+String truncateText(String text, int maxLength,
+    {int maxNewlines = 5, String ellipsis = '...', bool truncating = true}) {
+  if (!truncating) return text;
   int charCount = 0;
   int numOfNewlines = 0;
   StringBuffer buffer = StringBuffer();

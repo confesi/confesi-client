@@ -223,7 +223,7 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
     emit(CommentSectionData.empty());
   }
 
-  Future<void> loadInitial(
+  Future<void> loadComments(
     String postId,
     CommentSortType sort, {
     bool refresh = false,
