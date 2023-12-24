@@ -41,7 +41,7 @@ class _ExploreSentimentState extends State<ExploreSentiment> with AutomaticKeepA
   Widget buildBody(PostsService service) {
     final PaginationState pState = service.sentimentPaginationState;
     return FeedList(
-            topPushdownOffset: widget.topOffset,
+      topPushdownOffset: widget.topOffset,
 
       controller: feedListController
         ..items = (service.sentimentPostIds
@@ -76,6 +76,7 @@ class _ExploreSentimentState extends State<ExploreSentiment> with AutomaticKeepA
               .get<PostsService>()
               .loadMore(FeedType.sentiment, context.read<SchoolsDrawerCubit>().selectedSchoolFeed), // todo: school id,
       wontLoadMore: pState == PaginationState.end,
+      nothingFoundMessage: "No more posts found",
       wontLoadMoreMessage: "You've reached the end",
     );
   }

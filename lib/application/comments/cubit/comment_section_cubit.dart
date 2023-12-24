@@ -233,7 +233,6 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
     _rootsApi.cancelCurrReq();
     if (state is CommentSectionError) {
       refresh = true;
-      emit(CommentSectionData.empty());
     }
     if (state is CommentSectionData) {
       emit((state as CommentSectionData).copyWith(paginationState: CommentFeedState.loading));
@@ -300,9 +299,7 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
                 [],
                 (List<CommentWithMetadata> acc, group) {
                   acc.add(group.root);
-                  if (group.replies != null) {
-                    acc.addAll(group.replies.map((reply) => reply));
-                  }
+                  acc.addAll(group.replies.map((reply) => reply));
                   return acc;
                 },
               );

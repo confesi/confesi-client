@@ -135,6 +135,7 @@ class FeedList extends StatefulWidget {
     this.stickyHeader,
     this.topPushdownOffset = 0,
     this.topPushdownOffsetAboveHeader = 0,
+    this.nothingFoundMessage,
   });
 
   final double topPushdownOffset;
@@ -156,6 +157,7 @@ class FeedList extends StatefulWidget {
   final Function onWontLoadMoreButtonPressed;
   final Function onPullToRefresh;
   final Function(bool start)? onScrollChange;
+  final String? nothingFoundMessage;
 
   @override
   State<FeedList> createState() => _FeedListState();
@@ -250,91 +252,97 @@ class _FeedListState extends State<FeedList> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        LayoutBuilder(builder: (context, constraints) {
-          return SwipeRefresh(
-            edgeOffset: widget.stickyHeader != null
-                ? widget.stickyHeader!.height + widget.topPushdownOffset
-                : widget.topPushdownOffset,
-            enabled: widget.swipeRefreshEnabled && widget.controller.items.isNotEmpty,
-            onRefresh: () async => await widget.onPullToRefresh(),
-            child: NotificationListener<ScrollNotification>(
-              onNotification: (scrollNotification) {
-                if (scrollNotification is ScrollUpdateNotification && widget.stickyHeader != null) {
-                  // User scrolls down
-                  if (scrollNotification.scrollDelta! > 0) {
-                    if (offsetBuildback > 0) {
-                      offsetBuildback = max(0, offsetBuildback - scrollNotification.scrollDelta!);
+        Positioned.fill(
+          child: LayoutBuilder(builder: (context, constraints) {
+            return SwipeRefresh(
+              edgeOffset: widget.stickyHeader != null
+                  ? widget.stickyHeader!.height + widget.topPushdownOffset
+                  : widget.topPushdownOffset,
+              enabled: widget.swipeRefreshEnabled && widget.controller.items.isNotEmpty,
+              onRefresh: () async => await widget.onPullToRefresh(),
+              child: NotificationListener<ScrollNotification>(
+                onNotification: (scrollNotification) {
+                  if (scrollNotification is ScrollUpdateNotification && widget.stickyHeader != null) {
+                    // User scrolls down
+                    if (scrollNotification.scrollDelta! > 0) {
+                      if (offsetBuildback > 0) {
+                        offsetBuildback = max(0, offsetBuildback - scrollNotification.scrollDelta!);
+                      }
                     }
-                  }
-                  // User scrolls up
-                  else {
-                    if (offsetBuildback < widget.stickyHeader!.height) {
-                      offsetBuildback =
-                          min(widget.stickyHeader!.height, offsetBuildback - scrollNotification.scrollDelta!);
+                    // User scrolls up
+                    else {
+                      if (offsetBuildback < widget.stickyHeader!.height) {
+                        offsetBuildback =
+                            min(widget.stickyHeader!.height, offsetBuildback - scrollNotification.scrollDelta!);
+                      }
                     }
-                  }
-                  stickyOffset = widget.stickyHeader!.height - offsetBuildback;
-                }
-
-                if (widget.onScroll != null) widget.onScroll!(scrollNotification);
-                if (scrollNotification is ScrollStartNotification) {
-                  // Scrolling has started.
-                  if (widget.onScrollChange != null) {
-                    widget.onScrollChange!(true);
-                  }
-                } else if (scrollNotification is ScrollEndNotification) {
-                  // Scrolling has stopped.
-                  if (widget.onScrollChange != null) widget.onScrollChange!(false);
-                }
-                return false; // Returning false means the notification will continue to be dispatched to further ancestors.
-              },
-              child: ScrollablePositionedList.builder(
-                shrinkWrap: widget.shrinkWrap,
-                physics: widget.isScrollable
-                    ? const AlwaysScrollableScrollPhysics(parent: ClampingScrollPhysics())
-                    : const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  if (index == 0) {
-                    return Padding(
-                      padding: EdgeInsets.only(
-                          bottom: widget.stickyHeader != null
-                              ? widget.stickyHeader!.height + widget.topPushdownOffset
-                              : widget.topPushdownOffset),
-                      child: Padding(
-                        padding: EdgeInsets.only(top: widget.topPushdownOffsetAboveHeader),
-                        child: widget.header ?? const SizedBox(),
-                      ),
-                    );
+                    stickyOffset = widget.stickyHeader!.height - offsetBuildback;
                   }
 
-                  if (!widget.hasError && widget.controller.items.isEmpty && !isCurrentlyLoadingMore) {
-                    if (index == 1) {
-                      return InitOpacity(
-                        child: LoadingOrAlert(
-                          key: const ValueKey("is_empty"),
-                          isLoading: errorLoadingMoreIsLoading,
-                          message: StateMessage("Nothing found", () async {
-                            await widget.onPullToRefresh();
-                          }),
+                  if (widget.onScroll != null) widget.onScroll!(scrollNotification);
+                  if (scrollNotification is ScrollStartNotification) {
+                    // Scrolling has started.
+                    if (widget.onScrollChange != null) {
+                      widget.onScrollChange!(true);
+                    }
+                  } else if (scrollNotification is ScrollEndNotification) {
+                    // Scrolling has stopped.
+                    if (widget.onScrollChange != null) widget.onScrollChange!(false);
+                  }
+                  return false; // Returning false means the notification will continue to be dispatched to further ancestors.
+                },
+                child: ScrollablePositionedList.builder(
+                  shrinkWrap: widget.shrinkWrap,
+                  physics: widget.isScrollable
+                      ? const AlwaysScrollableScrollPhysics(parent: ClampingScrollPhysics())
+                      : const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    if (index == 0) {
+                      return Padding(
+                        padding: EdgeInsets.only(
+                            bottom: widget.stickyHeader != null
+                                ? widget.stickyHeader!.height + widget.topPushdownOffset
+                                : widget.topPushdownOffset),
+                        child: Padding(
+                          padding: EdgeInsets.only(top: widget.topPushdownOffsetAboveHeader),
+                          child: widget.header ?? const SizedBox(),
                         ),
                       );
                     }
-                    return const SizedBox();
-                  }
 
-                  if (index == widget.controller.items.length + 1) {
-                    return InitOpacity(child: buildIndicator());
-                  }
+                    if (!widget.hasError && widget.controller.items.isEmpty && !isCurrentlyLoadingMore) {
+                      if (index == 1) {
+                        return InitOpacity(
+                          child: LoadingOrAlert(
+                            key: const ValueKey("is_empty"),
+                            isLoading: errorLoadingMoreIsLoading,
+                            message: StateMessage(widget.nothingFoundMessage ?? "Nothing found", () async {
+                              await widget.loadMore(
+                                widget.controller.items.isNotEmpty
+                                    ? dartz.Right(widget.controller.items.last.key)
+                                    : dartz.Left(NoneFailure()),
+                              );
+                            }),
+                          ),
+                        );
+                      }
+                      return const SizedBox();
+                    }
 
-                  return Center(child: widget.controller.items[index - 1].child);
-                },
-                itemCount: widget.controller.items.length + 2,
-                itemPositionsListener: widget.controller.itemPositionsListener,
-                itemScrollController: widget.controller.itemScrollController,
+                    if (index == widget.controller.items.length + 1) {
+                      return InitOpacity(child: buildIndicator());
+                    }
+
+                    return Center(child: widget.controller.items[index - 1].child);
+                  },
+                  itemCount: widget.controller.items.length + 2,
+                  itemPositionsListener: widget.controller.itemPositionsListener,
+                  itemScrollController: widget.controller.itemScrollController,
+                ),
               ),
-            ),
-          );
-        }),
+            );
+          }),
+        ),
         if (widget.stickyHeader != null)
           Opacity(
             opacity: offsetBuildback / widget.stickyHeader!.height,

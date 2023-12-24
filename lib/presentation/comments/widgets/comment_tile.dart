@@ -96,6 +96,37 @@ class CommentTile extends StatefulWidget {
 }
 
 class _CommentTileState extends State<CommentTile> {
+  void showOptions(BuildContext context, int totalReplies) {
+    showButtonOptionsSheet(context, [
+      OptionButton(
+        text: "Save",
+        icon: CupertinoIcons.bookmark,
+        onTap: () => print("tap"),
+      ),
+      OptionButton(
+        text: "Share",
+        icon: CupertinoIcons.share,
+        onTap: () => print("tap"),
+      ),
+      OptionButton(
+        text: "Report",
+        icon: CupertinoIcons.flag,
+        onTap: () => print("tap"),
+      ),
+      if ((totalReplies > widget.commentType.totalRetrievedReplies ||
+              ((widget.commentType is RootComment && widget.commentType.totalRetrievedReplies == 0))) ||
+          isLoading ||
+          (widget.commentType is ReplyComment &&
+              (widget.commentType as ReplyComment)._totalRetrievedReplies ==
+                  (widget.commentType as ReplyComment).currentReplyNum))
+        OptionButton(
+          text: "Try loading more replies",
+          icon: CupertinoIcons.chat_bubble,
+          onTap: () async => await loadMore(),
+        )
+    ]);
+  }
+
   String get buildUserIdentifier => widget.commentType.comment.comment.numericalUserIsOp
       ? "OP"
       : "#${widget.commentType.comment.comment.numericalUser.toString()}";
@@ -190,6 +221,7 @@ class _CommentTileState extends State<CommentTile> {
     final state = context.watch<CreateCommentCubit>().state;
     return GestureDetector(
       onTap: () => setState(() => truncating = !truncating),
+      onLongPress: () => showOptions(context, totalReplies),
       child: Padding(
         padding: EdgeInsets.only(left: widget.commentType is! RootComment ? 15 : 0),
         child: IntrinsicHeight(
@@ -221,7 +253,7 @@ class _CommentTileState extends State<CommentTile> {
                     children: [
                       Expanded(
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -252,35 +284,7 @@ class _CommentTileState extends State<CommentTile> {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     TouchableOpacity(
-                                      onTap: () => showButtonOptionsSheet(context, [
-                                        OptionButton(
-                                          text: "Save",
-                                          icon: CupertinoIcons.bookmark,
-                                          onTap: () => print("tap"),
-                                        ),
-                                        OptionButton(
-                                          text: "Share",
-                                          icon: CupertinoIcons.share,
-                                          onTap: () => print("tap"),
-                                        ),
-                                        OptionButton(
-                                          text: "Report",
-                                          icon: CupertinoIcons.flag,
-                                          onTap: () => print("tap"),
-                                        ),
-                                        if ((totalReplies > widget.commentType.totalRetrievedReplies ||
-                                                ((widget.commentType is RootComment &&
-                                                    widget.commentType.totalRetrievedReplies == 0))) ||
-                                            isLoading ||
-                                            (widget.commentType is ReplyComment &&
-                                                (widget.commentType as ReplyComment)._totalRetrievedReplies ==
-                                                    (widget.commentType as ReplyComment).currentReplyNum))
-                                          OptionButton(
-                                            text: "Try loading more replies",
-                                            icon: CupertinoIcons.chat_bubble,
-                                            onTap: () async => await loadMore(),
-                                          )
-                                      ]),
+                                      onTap: () => showOptions(context, totalReplies),
                                       child: Container(
                                         padding: const EdgeInsets.only(right: 5, top: 5, bottom: 5),
                                         color: Colors.transparent, // transparent hitbox trick
@@ -364,7 +368,7 @@ class _CommentTileState extends State<CommentTile> {
                                         ),
                                       ),
                                     ),
-                                    const SizedBox(width: 15),
+                                    const SizedBox(width: 10),
                                     ReactionTile(
                                       simpleView: true,
                                       onTap: () async {
@@ -385,7 +389,7 @@ class _CommentTileState extends State<CommentTile> {
                                       icon: CupertinoIcons.up_arrow,
                                       iconColor: Theme.of(context).colorScheme.onErrorContainer,
                                     ),
-                                    const SizedBox(width: 15),
+                                    const SizedBox(width: 10),
                                     ReactionTile(
                                       simpleView: true,
                                       onTap: () async {

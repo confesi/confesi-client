@@ -76,6 +76,7 @@ class _ExploreRecentsState extends State<ExploreRecents> with AutomaticKeepAlive
               .loadMore(FeedType.recents, context.read<SchoolsDrawerCubit>().selectedSchoolFeed), // todo: school id,
       wontLoadMore: pState == PaginationState.end,
       wontLoadMoreMessage: "You've reached the end",
+      nothingFoundMessage: "No more posts found",
     );
   }
 

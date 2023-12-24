@@ -79,7 +79,6 @@ class _CommentScreenState extends State<CommentScreen> {
         Container(
           alignment: Alignment.center,
           width: double.infinity,
-          padding: const EdgeInsets.symmetric(vertical: 15),
           decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(
@@ -186,11 +185,15 @@ class _CommentScreenState extends State<CommentScreen> {
     return commentWidgets;
   }
 
+  PostWithMetadata? post;
+
   @override
   Widget build(BuildContext context) {
-    PostWithMetadata? post = context.watch<IndividualPostCubit>().state is IndividualPostData
-        ? (context.watch<IndividualPostCubit>().state as IndividualPostData).post
-        : null;
+    if (mounted) {
+      post = context.watch<IndividualPostCubit>().state is IndividualPostData
+          ? (context.watch<IndividualPostCubit>().state as IndividualPostData).post
+          : null;
+    }
     return ThemeStatusBar(
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.shadow,
@@ -202,7 +205,7 @@ class _CommentScreenState extends State<CommentScreen> {
                 top: BorderSide(color: Theme.of(context).colorScheme.onBackground, width: borderSize),
               ),
             ),
-            padding: EdgeInsets.all(post != null ? 10 : 0),
+            padding: post != null ? const EdgeInsets.all(10) : null,
             child: SafeArea(
               top: false,
               child: post != null
@@ -223,12 +226,12 @@ class _CommentScreenState extends State<CommentScreen> {
             children: [
               Positioned.fill(
                 child: BlocConsumer<IndividualPostCubit, IndividualPostState>(
-                  listener: (context, state) {
+                  listener: (contextL, state) {
                     if (state is IndividualPostData) {
-                      context.read<CommentSectionCubit>().loadComments(state.post.post.id.mid, currentSortType);
+                      contextL.read<CommentSectionCubit>().loadComments(state.post.post.id.mid, currentSortType);
                     }
                   },
-                  builder: (context, state) {
+                  builder: (context1, state) {
                     if (state is IndividualPostData) {
                       return BlocConsumer<CommentSectionCubit, CommentSectionState>(
                         listener: (context2, state2) {
@@ -241,26 +244,31 @@ class _CommentScreenState extends State<CommentScreen> {
                             return FeedList(
                               // topPushdownOffset: MediaQuery.of(context2).padding.top + 67.5 + 15,
                               topPushdownOffsetAboveHeader: MediaQuery.of(context2).padding.top + 67.5,
+                              nothingFoundMessage: "No comments found",
                               header: buildPost(context2),
                               controller: feedController
-                                ..items = genComments(context, state2, feedController, state.post),
-                              loadMore: (_) async => await context2.read<CommentSectionCubit>().loadComments(
-                                  state.post.post.id.mid, currentSortType,
-                                  refresh: feedController.items.isEmpty),
+                                ..items = genComments(context1, state2, feedController, state.post),
+                              loadMore: (_) async {
+                                // ensure I won't need to look up deactivated widget's ancestor
+                                if (mounted) {
+                                  await context.read<CommentSectionCubit>().loadComments(
+                                      state.post.post.id.mid, currentSortType,
+                                      refresh: feedController.items.isEmpty);
+                                }
+                              },
                               onPullToRefresh: () async {
                                 Provider.of<GlobalContentService>(context2, listen: false).clearComments();
                                 context2.read<CreateCommentCubit>().clear();
                                 context2.read<CommentSectionCubit>().clear();
                                 context2.read<IndividualPostCubit>().setLoading();
-                                await delegateInitialLoad(context, refresh: true);
+                                await delegateInitialLoad(context1, refresh: true);
                               },
                               hasError: state2.paginationState == CommentFeedState.error,
                               wontLoadMore: state2.paginationState == CommentFeedState.end,
-                              onWontLoadMoreButtonPressed: () async => await context2
+                              onWontLoadMoreButtonPressed: () async => await context1
                                   .read<CommentSectionCubit>()
-                                  .loadComments(state.post.post.id.mid, currentSortType,
-                                      refresh: feedController.items.isEmpty),
-                              onErrorButtonPressed: () async => await context2
+                                  .loadComments(state.post.post.id.mid, currentSortType, refresh: false),
+                              onErrorButtonPressed: () async => await context1
                                   .read<CommentSectionCubit>()
                                   .loadComments(state.post.post.id.mid, currentSortType),
                               wontLoadMoreMessage: "You've reached the end",
@@ -269,7 +277,7 @@ class _CommentScreenState extends State<CommentScreen> {
                             return LoadingOrAlert(
                               message: StateMessage(
                                 state2 is CommentSectionError ? state2.message : "Unknown error",
-                                () => delegateInitialLoad(context, refresh: false),
+                                () => delegateInitialLoad(context1, refresh: false),
                               ),
                               isLoading: false, // never loading, always either "data" or "error"
                             );
@@ -281,7 +289,7 @@ class _CommentScreenState extends State<CommentScreen> {
                       return LoadingOrAlert(
                         message: StateMessage(
                           state is IndividualPostError ? state.message : "Unknown error",
-                          () => delegateInitialLoad(context, refresh: false),
+                          () => delegateInitialLoad(context1, refresh: false),
                         ),
                         isLoading: state is IndividualPostLoading,
                       );

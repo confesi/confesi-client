@@ -71,6 +71,7 @@ class _ExploreTrendingState extends State<ExploreTrending> with AutomaticKeepAli
               .loadMore(FeedType.trending, context.read<SchoolsDrawerCubit>().selectedSchoolFeed), // todo: school id,
       wontLoadMore: pState == PaginationState.end,
       wontLoadMoreMessage: "You've reached the end",
+      nothingFoundMessage: "No more posts found",
     );
   }
 
