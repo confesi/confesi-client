@@ -1,6 +1,7 @@
 import 'package:confesi/application/comments/cubit/comment_section_cubit.dart';
 import 'package:confesi/application/posts/cubit/individual_post_cubit.dart';
 import 'package:confesi/constants/shared/constants.dart';
+import 'package:confesi/core/services/haptics/haptics.dart';
 import 'package:confesi/core/services/user_auth/user_auth_data.dart';
 import 'package:confesi/core/services/user_auth/user_auth_service.dart';
 import 'package:confesi/core/styles/typography.dart';
@@ -90,6 +91,7 @@ class _CommentScreenState extends State<CommentScreen> {
           child: SimpleCommentSort(
             commentSortType: currentSortType,
             onSwitch: (newSort) {
+              Haptics.f(H.regular);
               context.read<CommentSectionCubit>().clear();
               setState(() => currentSortType = newSort);
               context.read<CommentSectionCubit>().loadComments(
@@ -242,6 +244,7 @@ class _CommentScreenState extends State<CommentScreen> {
                         builder: (context2, state2) {
                           if (state2 is CommentSectionData) {
                             return FeedList(
+                              swipeRefreshLockedToEnable: true,
                               // topPushdownOffset: MediaQuery.of(context2).padding.top + 67.5 + 15,
                               topPushdownOffsetAboveHeader: MediaQuery.of(context2).padding.top + 67.5,
                               nothingFoundMessage: "No comments found",

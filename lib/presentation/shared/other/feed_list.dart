@@ -136,8 +136,10 @@ class FeedList extends StatefulWidget {
     this.topPushdownOffset = 0,
     this.topPushdownOffsetAboveHeader = 0,
     this.nothingFoundMessage,
+    this.swipeRefreshLockedToEnable = false,
   });
 
+  final bool swipeRefreshLockedToEnable;
   final double topPushdownOffset;
   final double topPushdownOffsetAboveHeader;
   final StickyAppbarProps? stickyHeader;
@@ -258,7 +260,8 @@ class _FeedListState extends State<FeedList> {
               edgeOffset: widget.stickyHeader != null
                   ? widget.stickyHeader!.height + widget.topPushdownOffset
                   : widget.topPushdownOffset,
-              enabled: widget.swipeRefreshEnabled && widget.controller.items.isNotEmpty,
+              enabled: (widget.swipeRefreshEnabled && widget.controller.items.isNotEmpty) ||
+                  widget.swipeRefreshLockedToEnable,
               onRefresh: () async => await widget.onPullToRefresh(),
               child: NotificationListener<ScrollNotification>(
                 onNotification: (scrollNotification) {
