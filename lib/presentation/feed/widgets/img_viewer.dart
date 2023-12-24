@@ -78,13 +78,10 @@ class _ImgViewerState extends State<ImgViewer> {
         ? const SizedBox()
         : LayoutBuilder(
             builder: (context, constraints) {
+              double height = MediaQuery.of(context).size.width;
               return Container(
-                constraints: BoxConstraints(
-                  maxHeight: constraints.maxWidth,
-                  maxWidth: constraints.maxWidth,
-                ),
+                height: height, // Use the height
                 color: Theme.of(context).colorScheme.surface,
-                width: MediaQuery.of(context).size.width,
                 child: Stack(
                   clipBehavior: Clip.hardEdge,
                   alignment: Alignment.bottomCenter,
@@ -108,11 +105,11 @@ class _ImgViewerState extends State<ImgViewer> {
                               child: imageSource.isNetworkImage
                                   ? CachedNetworkImage(
                                       imageUrl: imageSource.url!,
-                                      fit: BoxFit.fitWidth,
+                                      fit: BoxFit.cover,
                                     )
                                   : Image.file(
                                       imageSource.file!,
-                                      fit: BoxFit.fitWidth,
+                                      fit: BoxFit.cover,
                                     ),
                             ),
                           );
@@ -183,11 +180,11 @@ class ImgViewState extends State<ImgView> {
                       child: widget.props.imageSource.isNetworkImage
                           ? CachedNetworkImage(
                               imageUrl: widget.props.imageSource.url!,
-                              fit: BoxFit.fitWidth,
+                              fit: BoxFit.cover,
                             )
                           : Image.file(
                               widget.props.imageSource.file!,
-                              fit: BoxFit.fitWidth,
+                              fit: BoxFit.cover,
                             ),
                     ),
                   ),
