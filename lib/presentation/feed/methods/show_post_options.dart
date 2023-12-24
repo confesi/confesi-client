@@ -27,19 +27,17 @@ void buildOptionsSheet(BuildContext context, PostWithMetadata post, {bool showSa
 
   showButtonOptionsSheet(context, [
     if (post.post.chatPost && !post.owner)
-      Padding(
-        padding: const EdgeInsets.only(bottom: 15),
-        child: OptionButton(
-          borderColor: Theme.of(context).colorScheme.secondary,
-          text: "Open anonymous DM",
-          primaryColor: Theme.of(context).colorScheme.secondary,
-          icon: CupertinoIcons.chat_bubble_2_fill,
-          onTap: () async => verifiedUserOnly(
-            context,
-            () async => (await Provider.of<RoomsService>(context, listen: false).createNewRoom(post.post.id.mid)).fold(
-              (_) => Provider.of<PrimaryTabControllerService>(context, listen: false).setTabIdx(3),
-              (errMsg) => context.read<NotificationsCubit>().showErr(errMsg),
-            ),
+      OptionButton(
+        bottomPadding: true,
+        borderColor: Theme.of(context).colorScheme.secondary,
+        text: "Open anonymous DM",
+        primaryColor: Theme.of(context).colorScheme.secondary,
+        icon: CupertinoIcons.chat_bubble_2_fill,
+        onTap: () async => verifiedUserOnly(
+          context,
+          () async => (await Provider.of<RoomsService>(context, listen: false).createNewRoom(post.post.id.mid)).fold(
+            (_) => Provider.of<PrimaryTabControllerService>(context, listen: false).setTabIdx(3),
+            (errMsg) => context.read<NotificationsCubit>().showErr(errMsg),
           ),
         ),
       ),

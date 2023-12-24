@@ -71,7 +71,7 @@ flutter run
 
 ### Release (Apple)
 
-Ensure the proper settings via checking them in the project's `Runner` in XCode:
+Ensure the proper settings via checking them in the project's `Runner` in XCode (build number, version, signing, etc.):
 
 ```sh
 xed ios
@@ -82,3 +82,5 @@ To compile the Apple IPA file, run:
 ```sh
 flutter build ipa --obfuscate --split-debug-info=build/app/outputs/symbols
 ```
+
+The output IPA file will appear in `/build/ios/ipa/<SOMETHING>.ipa`. It can be transferred to App Store Connect via [Apple's Transporter](https://apps.apple.com/ca/app/transporter/id1450874784?mt=12).

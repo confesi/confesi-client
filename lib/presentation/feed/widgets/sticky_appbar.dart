@@ -123,6 +123,7 @@ class _StickyAppbarState extends State<StickyAppbar> with SingleTickerProviderSt
   double lastScrollDelta = 0.0; // track the last scroll delta
   double offset = 0.0;
   double currScrollDelta = 0.0;
+  double o = 0.0;
 
   @override
   Widget build(BuildContext context) {
@@ -141,7 +142,7 @@ class _StickyAppbarState extends State<StickyAppbar> with SingleTickerProviderSt
                   widget.controller.cancelCurrentAnimation();
                   if (widget.controller.offsetBuildback > widget.stickyHeader.height) return;
                   // Check if the scroll is not at the very top
-                  if (lastScrollDelta < 0) {
+                  if (lastScrollDelta < 0 && lastScrollDelta.abs() > 5) {
                     // Scrolling down
                     widget.controller.bringDownAppbar(speedy: true);
                   } else {
@@ -176,7 +177,7 @@ class _StickyAppbarState extends State<StickyAppbar> with SingleTickerProviderSt
         ),
         AnimatedPositioned(
           duration: Duration(milliseconds: currentlyScrolling ? 0 : 210),
-          top: -widget.controller.stickyOffset, // Use stickyOffset for positioning
+          top: min(-widget.controller.stickyOffset, o), // Use stickyOffset for positioning
           left: 0,
           right: 0,
           child: Opacity(

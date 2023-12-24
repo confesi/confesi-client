@@ -5,9 +5,11 @@ import 'package:confesi/presentation/shared/behaviours/init_scale.dart';
 import 'package:confesi/presentation/shared/indicators/alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:scrollable/exports.dart';
 import '../../../constants/shared/constants.dart';
 import '../../../core/results/failures.dart';
 import 'package:dartz/dartz.dart' as dartz;
+import '../../../core/services/haptics/haptics.dart';
 import '../../../core/types/infinite_scrollable_indexable.dart';
 import '../../feed/widgets/sticky_appbar.dart';
 import '../indicators/loading_or_alert.dart';
@@ -59,7 +61,7 @@ class FeedListController extends ChangeNotifier {
     if (!itemScrollController.isAttached) return;
     itemScrollController
         .scrollTo(index: 0, duration: const Duration(milliseconds: 250), curve: Curves.easeInOut)
-        .then((value) => HapticFeedback.lightImpact())
+        .then((value) => Haptics.f(H.regular))
         .then((value) => isCurrentlyScrolling = false);
     notifyListeners();
   }
@@ -256,91 +258,95 @@ class _FeedListState extends State<FeedList> {
       children: [
         Positioned.fill(
           child: LayoutBuilder(builder: (context, constraints) {
-            return SwipeRefresh(
-              edgeOffset: widget.stickyHeader != null
-                  ? widget.stickyHeader!.height + widget.topPushdownOffset
-                  : widget.topPushdownOffset,
-              enabled: (widget.swipeRefreshEnabled && widget.controller.items.isNotEmpty) ||
-                  widget.swipeRefreshLockedToEnable,
-              onRefresh: () async => await widget.onPullToRefresh(),
-              child: NotificationListener<ScrollNotification>(
-                onNotification: (scrollNotification) {
-                  if (scrollNotification is ScrollUpdateNotification && widget.stickyHeader != null) {
-                    // User scrolls down
-                    if (scrollNotification.scrollDelta! > 0) {
-                      if (offsetBuildback > 0) {
-                        offsetBuildback = max(0, offsetBuildback - scrollNotification.scrollDelta!);
+            return KeyboardDismiss(
+              child: SwipeRefresh(
+                edgeOffset: widget.stickyHeader != null
+                    ? widget.stickyHeader!.height + widget.topPushdownOffset
+                    : widget.topPushdownOffset,
+                enabled: (widget.swipeRefreshEnabled && widget.controller.items.isNotEmpty) ||
+                    widget.swipeRefreshLockedToEnable,
+                onRefresh: () async => await widget.onPullToRefresh(),
+                child: NotificationListener<ScrollNotification>(
+                  onNotification: (scrollNotification) {
+                    if (scrollNotification is ScrollUpdateNotification && widget.stickyHeader != null) {
+                      // User scrolls down
+                      if (scrollNotification.scrollDelta! > 0) {
+                        if (offsetBuildback > 0) {
+                          offsetBuildback = max(0, offsetBuildback - scrollNotification.scrollDelta!);
+                        }
                       }
-                    }
-                    // User scrolls up
-                    else {
-                      if (offsetBuildback < widget.stickyHeader!.height) {
-                        offsetBuildback =
-                            min(widget.stickyHeader!.height, offsetBuildback - scrollNotification.scrollDelta!);
+                      // User scrolls up
+                      else {
+                        if (offsetBuildback < widget.stickyHeader!.height) {
+                          offsetBuildback =
+                              min(widget.stickyHeader!.height, offsetBuildback - scrollNotification.scrollDelta!);
+                        }
                       }
-                    }
-                    stickyOffset = widget.stickyHeader!.height - offsetBuildback;
-                  }
-
-                  if (widget.onScroll != null) widget.onScroll!(scrollNotification);
-                  if (scrollNotification is ScrollStartNotification) {
-                    // Scrolling has started.
-                    if (widget.onScrollChange != null) {
-                      widget.onScrollChange!(true);
-                    }
-                  } else if (scrollNotification is ScrollEndNotification) {
-                    // Scrolling has stopped.
-                    if (widget.onScrollChange != null) widget.onScrollChange!(false);
-                  }
-                  return false; // Returning false means the notification will continue to be dispatched to further ancestors.
-                },
-                child: ScrollablePositionedList.builder(
-                  shrinkWrap: widget.shrinkWrap,
-                  physics: widget.isScrollable
-                      ? const AlwaysScrollableScrollPhysics(parent: ClampingScrollPhysics())
-                      : const NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    if (index == 0) {
-                      return Padding(
-                        padding: EdgeInsets.only(
-                            bottom: widget.stickyHeader != null
-                                ? widget.stickyHeader!.height + widget.topPushdownOffset
-                                : widget.topPushdownOffset),
-                        child: Padding(
-                          padding: EdgeInsets.only(top: widget.topPushdownOffsetAboveHeader),
-                          child: widget.header ?? const SizedBox(),
-                        ),
-                      );
+                      stickyOffset = widget.stickyHeader!.height - offsetBuildback;
                     }
 
-                    if (!widget.hasError && widget.controller.items.isEmpty && !isCurrentlyLoadingMore) {
-                      if (index == 1) {
-                        return InitOpacity(
-                          child: LoadingOrAlert(
-                            key: const ValueKey("is_empty"),
-                            isLoading: errorLoadingMoreIsLoading,
-                            message: StateMessage(widget.nothingFoundMessage ?? "Nothing found", () async {
-                              await widget.loadMore(
-                                widget.controller.items.isNotEmpty
-                                    ? dartz.Right(widget.controller.items.last.key)
-                                    : dartz.Left(NoneFailure()),
-                              );
-                            }),
+                    if (widget.onScroll != null) widget.onScroll!(scrollNotification);
+                    if (scrollNotification is ScrollStartNotification) {
+                      // Scrolling has started.
+                      if (widget.onScrollChange != null) {
+                        widget.onScrollChange!(true);
+                      }
+                    } else if (scrollNotification is ScrollEndNotification) {
+                      // Scrolling has stopped.
+                      if (widget.onScrollChange != null) widget.onScrollChange!(false);
+                    }
+                    return false; // Returning false means the notification will continue to be dispatched to further ancestors.
+                  },
+                  child: ScrollablePositionedList.builder(
+                    shrinkWrap: widget.shrinkWrap,
+                    physics: widget.isScrollable
+                        ? const AlwaysScrollableScrollPhysics(parent: ClampingScrollPhysics())
+                        : const NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      if (index == 0) {
+                        return Padding(
+                          padding: EdgeInsets.only(
+                              bottom:
+                                  widget.stickyHeader != null ? widget.topPushdownOffset : widget.topPushdownOffset),
+                          child: Padding(
+                            padding: EdgeInsets.only(top: widget.topPushdownOffsetAboveHeader),
+                            child: widget.header ?? const SizedBox(),
                           ),
                         );
                       }
-                      return const SizedBox();
-                    }
 
-                    if (index == widget.controller.items.length + 1) {
-                      return InitOpacity(child: buildIndicator());
-                    }
+                      if (!widget.hasError &&
+                          widget.controller.items.isEmpty &&
+                          !isCurrentlyLoadingMore &&
+                          !endOfFeedReachedIsLoading) {
+                        if (index == 1) {
+                          return InitOpacity(
+                            child: LoadingOrAlert(
+                              key: const ValueKey("is_empty"),
+                              isLoading: errorLoadingMoreIsLoading,
+                              message: StateMessage(widget.nothingFoundMessage ?? "Nothing found", () async {
+                                await widget.loadMore(
+                                  widget.controller.items.isNotEmpty
+                                      ? dartz.Right(widget.controller.items.last.key)
+                                      : dartz.Left(NoneFailure()),
+                                );
+                              }),
+                            ),
+                          );
+                        }
+                        return const SizedBox();
+                      }
 
-                    return Center(child: widget.controller.items[index - 1].child);
-                  },
-                  itemCount: widget.controller.items.length + 2,
-                  itemPositionsListener: widget.controller.itemPositionsListener,
-                  itemScrollController: widget.controller.itemScrollController,
+                      if (index == widget.controller.items.length + 1) {
+                        return InitOpacity(child: buildIndicator());
+                      }
+
+                      return Center(child: widget.controller.items[index - 1].child);
+                    },
+                    itemCount: widget.controller.items.length + 2,
+                    itemPositionsListener: widget.controller.itemPositionsListener,
+                    itemScrollController: widget.controller.itemScrollController,
+                  ),
                 ),
               ),
             );

@@ -1,4 +1,7 @@
 import 'package:confesi/constants/shared/constants.dart';
+import 'package:confesi/core/router/go_router.dart';
+import 'package:confesi/core/services/haptics/haptics.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../core/styles/typography.dart';
 import '../../shared/button_touch_effects/touchable_opacity.dart';
@@ -45,21 +48,30 @@ class _SimpleCommentSortState extends State<SimpleCommentSort> {
   @override
   Widget build(BuildContext context) {
     return TouchableOpacity(
-      onTap: () => showButtonOptionsSheet(
-        context,
-        [
-          OptionButton(
-            onTap: () => widget.onSwitch(CommentSortType.trending),
-            text: "Trending",
-            icon: CupertinoIcons.flame,
-          ),
-          OptionButton(
-            onTap: () => widget.onSwitch(CommentSortType.recent),
-            text: "Recent",
-            icon: CupertinoIcons.clock,
-          ),
-        ],
-      ),
+      onTap: () {
+        Haptics.f(H.regular);
+        showButtonOptionsSheet(
+          context,
+          [
+            OptionButton(
+              onTap: () => widget.onSwitch(CommentSortType.trending),
+              text: "Trending",
+              icon: CupertinoIcons.flame,
+            ),
+            OptionButton(
+              onTap: () => widget.onSwitch(CommentSortType.recent),
+              text: "Recent",
+              icon: CupertinoIcons.clock,
+            ),
+            OptionButton(
+              topPadding: true,
+              onTap: () => router.push("/settings/feeds-and-sorts"),
+              text: "Edit default sort",
+              icon: CupertinoIcons.pen,
+            ),
+          ],
+        );
+      },
       child: Container(
         padding: const EdgeInsets.all(15),
         width: double.infinity,

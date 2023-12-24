@@ -80,7 +80,7 @@ class _ImgViewerState extends State<ImgViewer> {
             builder: (context, constraints) {
               double height = MediaQuery.of(context).size.width;
               return Container(
-                height: height, // Use the height
+                height: height, // use the height
                 color: Theme.of(context).colorScheme.surface,
                 child: Stack(
                   clipBehavior: Clip.hardEdge,

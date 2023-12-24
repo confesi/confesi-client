@@ -16,9 +16,13 @@ class OptionButton extends StatelessWidget {
     this.noBottomPadding = false,
     this.primaryColor,
     this.borderColor,
+    this.topPadding = false,
+    this.bottomPadding = false,
     Key? key,
   }) : super(key: key);
 
+  final bool topPadding;
+  final bool bottomPadding;
   final bool popContext;
   final String text;
   final IconData icon;
@@ -30,51 +34,54 @@ class OptionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TouchableScale(
-      onTap: () {
-        popContext ? Navigator.pop(context) : null;
-        Haptics.f(H.regular);
-        onTap();
-      },
-      child: Container(
-        margin: EdgeInsets.only(bottom: noBottomPadding ? 0 : 5),
-        width: double.infinity,
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: borderColor ?? Theme.of(context).colorScheme.onBackground,
-            width: borderSize + 0.4,
-          ),
-          borderRadius: const BorderRadius.all(
-            Radius.circular(15),
-          ),
-          color: Theme.of(context).colorScheme.surface,
-        ),
+    return Padding(
+      padding: EdgeInsets.only(top: topPadding ? 15 : 0, bottom: bottomPadding ? 15 : 0),
+      child: TouchableScale(
+        onTap: () {
+          popContext ? Navigator.pop(context) : null;
+          Haptics.f(H.regular);
+          onTap();
+        },
         child: Container(
-          // Transparent hitbox trick.
-          color: Colors.transparent,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Icon(
-                  icon,
-                  color: primaryColor ??
-                      (isRed ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.primary),
-                ),
-                const SizedBox(width: 15),
-                Expanded(
-                  child: Text(
-                    text,
-                    style: kTitle.copyWith(
-                      color: primaryColor ??
-                          (isRed ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.primary),
-                    ),
-                    textAlign: TextAlign.left,
+          margin: EdgeInsets.only(bottom: noBottomPadding ? 0 : 5),
+          width: double.infinity,
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: borderColor ?? Theme.of(context).colorScheme.onBackground,
+              width: borderSize + 0.4,
+            ),
+            borderRadius: const BorderRadius.all(
+              Radius.circular(15),
+            ),
+            color: Theme.of(context).colorScheme.surface,
+          ),
+          child: Container(
+            // Transparent hitbox trick.
+            color: Colors.transparent,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Icon(
+                    icon,
+                    color: primaryColor ??
+                        (isRed ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.primary),
                   ),
-                ),
-              ],
+                  const SizedBox(width: 15),
+                  Expanded(
+                    child: Text(
+                      text,
+                      style: kTitle.copyWith(
+                        color: primaryColor ??
+                            (isRed ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.primary),
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

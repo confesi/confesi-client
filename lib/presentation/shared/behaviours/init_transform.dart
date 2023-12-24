@@ -14,6 +14,7 @@ class InitTransform extends StatefulWidget {
     this.transformDirection = TransformDirection.vertical,
     this.curve = Curves.decelerate,
     this.durationInMilliseconds = 450,
+    this.delayDurationInMilliseconds = 0,
   });
 
   final Curve curve;
@@ -21,6 +22,7 @@ class InitTransform extends StatefulWidget {
   final double magnitudeOfTransform;
   final TransformDirection transformDirection;
   final int durationInMilliseconds;
+  final int delayDurationInMilliseconds;
 
   @override
   State<InitTransform> createState() => InitTransformState();
@@ -45,6 +47,8 @@ class InitTransformState extends State<InitTransform> with SingleTickerProviderS
   }
 
   void startAnim() async {
+    await Future.delayed(Duration(milliseconds: widget.delayDurationInMilliseconds));
+    if (!mounted) return;
     _animController.forward();
     _animController.addListener(() {
       setState(() {});

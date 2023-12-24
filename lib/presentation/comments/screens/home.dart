@@ -4,12 +4,15 @@ import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/services/haptics/haptics.dart';
 import 'package:confesi/core/services/user_auth/user_auth_data.dart';
 import 'package:confesi/core/services/user_auth/user_auth_service.dart';
-import 'package:confesi/core/styles/typography.dart';
+import 'package:confesi/core/utils/sizing/width_fraction.dart';
 import 'package:confesi/init.dart';
 import 'package:confesi/models/encrypted_id.dart';
 import 'package:confesi/presentation/comments/widgets/comment_tile.dart';
 import 'package:confesi/presentation/comments/widgets/simple_comment_sort.dart';
 import 'package:confesi/presentation/feed/widgets/post_tile.dart';
+import 'package:confesi/presentation/feed/widgets/sticky_appbar.dart';
+import 'package:confesi/presentation/shared/behaviours/init_opacity.dart';
+import 'package:confesi/presentation/shared/behaviours/init_transform.dart';
 import 'package:confesi/presentation/shared/behaviours/themed_status_bar.dart';
 import 'package:confesi/presentation/shared/indicators/loading_or_alert.dart';
 import 'package:confesi/presentation/shared/other/feed_list.dart';
@@ -28,6 +31,8 @@ import '../../../models/post.dart';
 import '../../shared/buttons/circle_icon_btn.dart';
 import '../widgets/sheet.dart';
 
+const double stickyHeaderHeight = 146;
+
 class CommentScreen extends StatefulWidget {
   const CommentScreen({super.key, required this.props});
 
@@ -39,6 +44,7 @@ class CommentScreen extends StatefulWidget {
 
 class _CommentScreenState extends State<CommentScreen> {
   Future<void> delegateInitialLoad(BuildContext context, {bool refresh = false}) async {
+    if (!mounted) return;
     if (widget.props.postLoadType is PreloadedPost && !refresh) {
       // preloaded
       context.read<IndividualPostCubit>().setPost((widget.props.postLoadType as PreloadedPost).post);
@@ -107,6 +113,7 @@ class _CommentScreenState extends State<CommentScreen> {
   @override
   void initState() {
     super.initState();
+    context.read<CreateCommentCubit>().clear();
     context.read<CommentSectionCubit>().clear();
     currentSortType =
         Provider.of<UserAuthService>(context, listen: false).data().defaultCommentSort.convertToCommentSortType;
@@ -218,7 +225,7 @@ class _CommentScreenState extends State<CommentScreen> {
                       },
                       maxCharacters: maxCommentLength,
                       feedController: feedController,
-                      postCreatedAtTime: 123, // todo: postState.post.post.createdAt,
+                      postCreatedAtTime: post!.post.createdAt,
                     )
                   : const SizedBox(),
             ),
@@ -246,7 +253,7 @@ class _CommentScreenState extends State<CommentScreen> {
                             return FeedList(
                               swipeRefreshLockedToEnable: true,
                               // topPushdownOffset: MediaQuery.of(context2).padding.top + 67.5 + 15,
-                              topPushdownOffsetAboveHeader: MediaQuery.of(context2).padding.top + 67.5,
+                              topPushdownOffsetAboveHeader: stickyHeaderHeight,
                               nothingFoundMessage: "No comments found",
                               header: buildPost(context2),
                               controller: feedController
@@ -275,6 +282,45 @@ class _CommentScreenState extends State<CommentScreen> {
                                   .read<CommentSectionCubit>()
                                   .loadComments(state.post.post.id.mid, currentSortType),
                               wontLoadMoreMessage: "You've reached the end",
+
+                              stickyHeader: StickyAppbarProps(
+                                height: stickyHeaderHeight,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).colorScheme.background,
+                                    border: Border(
+                                      bottom: BorderSide(
+                                        color: Theme.of(context).colorScheme.onBackground,
+                                        width: borderSize,
+                                      ),
+                                    ),
+                                  ),
+                                  width: widthFraction(context, 1),
+                                  padding: const EdgeInsets.all(15),
+                                  child: Align(
+                                    alignment: Alignment.bottomCenter,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        CircleIconBtn(
+                                            bgColor: Theme.of(context).colorScheme.surface,
+                                            icon: CupertinoIcons.arrow_left,
+                                            onTap: () {
+                                              Haptics.f(H.regular);
+                                              router.pop(context);
+                                            }),
+                                        const SizedBox(width: 15),
+                                        CircleIconBtn(
+                                            bgColor: Theme.of(context).colorScheme.surface,
+                                            icon: CupertinoIcons.arrow_up_to_line_alt,
+                                            onTap: () {
+                                              feedController.scrollToTop();
+                                            }),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
                             );
                           } else {
                             return LoadingOrAlert(
@@ -299,15 +345,6 @@ class _CommentScreenState extends State<CommentScreen> {
                     }
                   },
                 ),
-              ),
-              Positioned(
-                top: MediaQuery.of(context).padding.top + 15,
-                left: 15,
-                child: CircleIconBtn(
-                    icon: CupertinoIcons.arrow_left,
-                    onTap: () {
-                      router.pop(context);
-                    }),
               ),
             ],
           ),
