@@ -117,7 +117,7 @@ class _CommentSheetState extends State<CommentSheet> {
               onTap: () => context
                   .read<CommentSectionCubit>()
                   .indexFromCommentId((state.possibleReply as ReplyingToUser).replyingToCommentId)
-                  .fold((idx) => widget.feedController.scrollToIndex(idx + 1),
+                  .fold((idx) => widget.feedController.scrollToIndex(context, idx + 1),
                       (_) => context.read<NotificationsCubit>().showErr("Error jumping to comment")),
               child: Container(
                 padding: const EdgeInsets.all(5),
@@ -183,7 +183,8 @@ class _CommentSheetState extends State<CommentSheet> {
                       } else {
                         scrollToIndex = idx + 2;
                       }
-                      widget.feedController.scrollToIndex(scrollToIndex, hapticFeedback: false);
+                      widget.feedController.scrollToIndex(context, scrollToIndex,
+                          hapticFeedback: false, offset: MediaQuery.of(context).padding.top);
                     },
                     (_) => context.read<NotificationsCubit>().showErr("Error jumping to comment"), // do nothing
                   );

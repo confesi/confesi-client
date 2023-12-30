@@ -3,7 +3,7 @@ import 'package:confesi/application/comments/cubit/create_comment_cubit.dart';
 import 'package:confesi/application/user/cubit/notifications_cubit.dart';
 import 'package:confesi/core/utils/strings/truncate_text.dart';
 import 'package:confesi/core/utils/verified_students/verified_user_only.dart';
-import 'package:confesi/presentation/comments/widgets/sheet.dart';
+import 'package:confesi/presentation/comments/widgets/comment_sheet.dart';
 import 'package:confesi/presentation/feed/widgets/reaction_tile.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
@@ -326,6 +326,7 @@ class _CommentTileState extends State<CommentTile> {
                                                       .replyingToCommentId)
                                                   .fold(
                                                     (idx) => widget.feedController.scrollToIndex(
+                                                        context,
                                                         idx +
                                                             (widget.commentType.comment.comment.parentRootId == null
                                                                 ? 1

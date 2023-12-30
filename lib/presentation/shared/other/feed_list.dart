@@ -72,14 +72,20 @@ class FeedListController extends ChangeNotifier {
     return itemPositionsListener.itemPositions.value.last.index;
   }
 
-  void scrollToIndex(int index, {bool hapticFeedback = true}) {
+  void scrollToIndex(BuildContext context, int index, {bool hapticFeedback = true, double offset = 0.0}) {
     if (_isDisposed) return;
     if (isCurrentlyScrolling) return;
     isCurrentlyScrolling = true;
     if (!itemScrollController.isAttached) return;
+
+    // Calculate the alignment based on the desired offset.
+    // This calculation might need adjustment depending on your layout.
+    double alignment = offset / MediaQuery.of(context).size.height;
+
     itemScrollController
-        .scrollTo(index: index, duration: const Duration(milliseconds: 250), curve: Curves.easeInOut)
-        .then((value) => hapticFeedback ? HapticFeedback.lightImpact() : null)
+        .scrollTo(
+            index: index, duration: const Duration(milliseconds: 250), curve: Curves.easeInOut, alignment: alignment)
+        .then((value) => hapticFeedback ? Haptics.f(H.select) : null)
         .then((value) => isCurrentlyScrolling = false);
   }
 

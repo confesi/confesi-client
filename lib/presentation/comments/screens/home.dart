@@ -11,8 +11,6 @@ import 'package:confesi/presentation/comments/widgets/comment_tile.dart';
 import 'package:confesi/presentation/comments/widgets/simple_comment_sort.dart';
 import 'package:confesi/presentation/feed/widgets/post_tile.dart';
 import 'package:confesi/presentation/feed/widgets/sticky_appbar.dart';
-import 'package:confesi/presentation/shared/behaviours/init_opacity.dart';
-import 'package:confesi/presentation/shared/behaviours/init_transform.dart';
 import 'package:confesi/presentation/shared/behaviours/themed_status_bar.dart';
 import 'package:confesi/presentation/shared/indicators/loading_or_alert.dart';
 import 'package:confesi/presentation/shared/other/feed_list.dart';
@@ -29,7 +27,7 @@ import '../../../core/services/global_content/global_content.dart';
 import '../../../core/types/infinite_scrollable_indexable.dart';
 import '../../../models/post.dart';
 import '../../shared/buttons/circle_icon_btn.dart';
-import '../widgets/sheet.dart';
+import '../widgets/comment_sheet.dart';
 
 const double stickyHeaderHeight = 146;
 
@@ -287,7 +285,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                 height: stickyHeaderHeight,
                                 child: Container(
                                   decoration: BoxDecoration(
-                                    color: Theme.of(context).colorScheme.background,
+                                    color: Theme.of(context).colorScheme.shadow,
                                     border: Border(
                                       bottom: BorderSide(
                                         color: Theme.of(context).colorScheme.onBackground,
@@ -303,6 +301,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         CircleIconBtn(
+                                            color: Theme.of(context).colorScheme.primary,
                                             bgColor: Theme.of(context).colorScheme.surface,
                                             icon: CupertinoIcons.arrow_left,
                                             onTap: () {
@@ -311,6 +310,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                             }),
                                         const SizedBox(width: 15),
                                         CircleIconBtn(
+                                            color: Theme.of(context).colorScheme.primary,
                                             bgColor: Theme.of(context).colorScheme.surface,
                                             icon: CupertinoIcons.arrow_up_to_line_alt,
                                             onTap: () {
