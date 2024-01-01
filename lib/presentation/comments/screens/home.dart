@@ -2,9 +2,11 @@ import 'package:confesi/application/comments/cubit/comment_section_cubit.dart';
 import 'package:confesi/application/posts/cubit/individual_post_cubit.dart';
 import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/services/haptics/haptics.dart';
+import 'package:confesi/core/services/rooms/rooms_service.dart';
 import 'package:confesi/core/services/user_auth/user_auth_data.dart';
 import 'package:confesi/core/services/user_auth/user_auth_service.dart';
 import 'package:confesi/core/utils/sizing/width_fraction.dart';
+import 'package:confesi/core/utils/verified_students/verified_user_only.dart';
 import 'package:confesi/init.dart';
 import 'package:confesi/models/encrypted_id.dart';
 import 'package:confesi/presentation/comments/widgets/comment_tile.dart';
@@ -14,6 +16,7 @@ import 'package:confesi/presentation/feed/widgets/sticky_appbar.dart';
 import 'package:confesi/presentation/shared/behaviours/themed_status_bar.dart';
 import 'package:confesi/presentation/shared/indicators/loading_or_alert.dart';
 import 'package:confesi/presentation/shared/other/feed_list.dart';
+import 'package:confesi/presentation/shared/other/widget_or_nothing.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -298,6 +301,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                   child: Align(
                                     alignment: Alignment.bottomCenter,
                                     child: Row(
+                                      crossAxisAlignment: CrossAxisAlignment.end,
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         CircleIconBtn(
@@ -309,14 +313,31 @@ class _CommentScreenState extends State<CommentScreen> {
                                               router.pop(context);
                                             }),
                                         const Spacer(),
-                                        const SizedBox(width: 15),
-                                        CircleIconBtn(
-                                          color: Theme.of(context).colorScheme.tertiary,
-                                          bgColor: Theme.of(context).colorScheme.surface,
-                                          icon: CupertinoIcons.chat_bubble_2,
-                                          onTap: () {
-                                            print("DM");
-                                          },
+                                        WidgetOrNothing(
+                                          showWidget: state.post.post.chatPost && !state.post.owner,
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              const SizedBox(width: 15),
+                                              CircleIconBtn(
+                                                color: Theme.of(context).colorScheme.tertiary,
+                                                bgColor: Theme.of(context).colorScheme.surface,
+                                                icon: CupertinoIcons.chat_bubble_2,
+                                                onTap: () {
+                                                  Haptics.f(H.regular);
+                                                  verifiedUserOnly(
+                                                    context,
+                                                    () async => (await Provider.of<RoomsService>(context, listen: false)
+                                                            .createNewRoom(state.post.post.id.mid))
+                                                        .fold(
+                                                      (_) => router.push("/home/rooms"),
+                                                      (errMsg) => context.read<NotificationsCubit>().showErr(errMsg),
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                         const SizedBox(width: 15),
                                         CircleIconBtn(

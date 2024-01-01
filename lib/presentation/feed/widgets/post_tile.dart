@@ -1,5 +1,6 @@
 import 'package:confesi/application/user/cubit/notifications_cubit.dart';
 import 'package:confesi/application/user/cubit/quick_actions_cubit.dart';
+import 'package:confesi/core/extensions/strings/new_lines.dart';
 import 'package:confesi/core/services/global_content/global_content.dart';
 import 'package:confesi/core/services/haptics/haptics.dart';
 import 'package:confesi/core/utils/sizing/width_fraction.dart';
@@ -145,7 +146,10 @@ class PostTileState extends State<PostTile> {
                             Padding(
                               padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
                               child: TextNoVertOverflow(
-                                truncateText(widget.post.post.title.isEmpty ? "[empty]" : widget.post.post.title,
+                                truncateText(
+                                    widget.post.post.title.isEmpty
+                                        ? "[empty]"
+                                        : widget.post.post.title.removeManyNewLines,
                                     postTitlePreviewLength,
                                     truncating: !widget.detailView),
                                 style: kDisplay1.copyWith(
@@ -158,7 +162,10 @@ class PostTileState extends State<PostTile> {
                             Padding(
                               padding: const EdgeInsets.only(left: 15, right: 15),
                               child: TextNoVertOverflow(
-                                truncateText(widget.post.post.content.isEmpty ? "[empty]" : widget.post.post.content,
+                                truncateText(
+                                    widget.post.post.content.isEmpty
+                                        ? "[empty]"
+                                        : widget.post.post.content.removeManyNewLines,
                                     postBodyPreviewLength,
                                     truncating: !widget.detailView),
                                 style: kBody.copyWith(

@@ -243,7 +243,10 @@ class RoomsService extends ChangeNotifier {
     _createNewRoomApi.cancelCurrReq();
     return (await _createNewRoomApi.req(Verb.post, true, "/api/v1/dms/rooms?post-id=$postId", {}))
         .fold((failureWithMsg) => Right(failureWithMsg.msg()), (response) {
+      print(response.body);
       if (response.statusCode.toString()[0] == "2") {
+        return Left(ApiSuccess());
+      } else if (ApiErrors.errCode(response).fold((code) => code == 1, (empty) => false)) {
         return Left(ApiSuccess());
       } else {
         return Right(ApiErrors.err(response));
