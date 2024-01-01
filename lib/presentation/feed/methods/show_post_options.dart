@@ -36,7 +36,7 @@ void buildOptionsSheet(BuildContext context, PostWithMetadata post, {bool showSa
         onTap: () async => verifiedUserOnly(
           context,
           () async => (await Provider.of<RoomsService>(context, listen: false).createNewRoom(post.post.id.mid)).fold(
-            (_) => Provider.of<PrimaryTabControllerService>(context, listen: false).setTabIdx(3),
+            (_) => router.push("/home/rooms"),
             (errMsg) => context.read<NotificationsCubit>().showErr(errMsg),
           ),
         ),

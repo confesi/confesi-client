@@ -134,7 +134,7 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
                               const SizedBox(width: 10),
                               _TabIconBtn(
                                 onTap: () => router.push("/home/rooms"),
-                                icon: CupertinoIcons.paperplane,
+                                icon: CupertinoIcons.chat_bubble_2,
                               )
                             ],
                           ),

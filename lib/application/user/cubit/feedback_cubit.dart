@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:confesi/core/services/api_client/api_errors.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../core/services/api_client/api.dart';
@@ -26,7 +27,7 @@ class FeedbackCubit extends Cubit<FeedbackState> {
       (failureWithMsg) => emit(FeedbackError(failureWithMsg.msg())),
       (response) async {
         if (response.statusCode.toString()[0] == "4") {
-          emit(FeedbackError("TODO: 4XX"));
+          emit(FeedbackError(ApiErrors.err(response)));
         } else if (response.statusCode.toString()[0] == "2") {
           emit(FeedbackSuccess("Feedback sent successfully"));
         } else {

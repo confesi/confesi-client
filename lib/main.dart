@@ -419,7 +419,7 @@ class _MyAppState extends State<MyApp> {
                               // Force the text
                               //leFactor that's loaded from the device
                               // to lock to 1 (you can change it in-app independent of the inherited scale).
-                              data: data.copyWith(textScaleFactor: 1),
+                              data: data.copyWith(textScaler: TextScaler.noScaling),
                               child: child!,
                             );
                           },

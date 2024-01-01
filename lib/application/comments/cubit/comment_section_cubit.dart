@@ -5,6 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:confesi/application/comments/cubit/create_comment_cubit.dart';
 import 'package:confesi/core/results/successes.dart';
+import 'package:confesi/core/services/api_client/api_errors.dart';
 import 'package:confesi/models/encrypted_id.dart';
 import 'package:ordered_set/ordered_set.dart';
 
@@ -112,7 +113,7 @@ class CommentSectionCubit extends Cubit<CommentSectionState> {
       },
       (response) async {
         if (response.statusCode.toString()[0] != "2") {
-          return const Left("todo: ~200");
+          return Left(ApiErrors.err(response));
         } else {
           try {
             final comment = CommentWithMetadata.fromJson(json.decode(response.body)["value"]);

@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:confesi/core/results/successes.dart';
+import 'package:confesi/core/services/api_client/api_errors.dart';
 import 'package:confesi/models/encrypted_id.dart';
 import 'package:confesi/models/school_with_metadata.dart';
 import 'package:dartz/dartz.dart';
@@ -117,7 +118,7 @@ class GlobalContentService extends ChangeNotifier {
       (response) {
         if (response.statusCode.toString()[0] != "2") {
           _setSavedStatus(contentType, contentId, oldSavedStatus);
-          return const Right("TODO: error");
+          return const Right("");
         } else {
           return Left(ApiSuccess());
         }
@@ -158,7 +159,7 @@ class GlobalContentService extends ChangeNotifier {
           sl.get<GlobalContentService>().setSchool(oldHome..home = true);
           // unset new home
           sl.get<GlobalContentService>().setSchool(school..home = false);
-          return const Right("TODO: error");
+          return Right(ApiErrors.err(response));
         } else {
           return Left(ApiSuccess());
         }
@@ -192,7 +193,7 @@ class GlobalContentService extends ChangeNotifier {
       (response) {
         if (response.statusCode.toString()[0] != "2") {
           sl.get<GlobalContentService>().setSchool(school.copyWith(watched: !watch));
-          return const Right("TODO: error");
+          return Right(ApiErrors.err(response));
         } else {
           return Left(ApiSuccess());
         }

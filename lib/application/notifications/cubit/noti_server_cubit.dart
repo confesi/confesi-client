@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
+import 'package:confesi/core/services/api_client/api_errors.dart';
 import 'package:confesi/core/services/global_content/global_content.dart';
 import 'package:confesi/models/encrypted_id.dart';
 import 'package:confesi/models/notification_log.dart';
@@ -67,7 +68,7 @@ class NotiServerCubit extends Cubit<NotiServerState> {
             if (state is NotiServerData) {
               emit((state as NotiServerData).copyWith(feedState: NotiServerFeedState.errorLoadingMore));
             } else {
-              emit(const NotiServerError(message: "todo: error"));
+              emit(NotiServerError(message: ApiErrors.err(response)));
             }
           }
         }

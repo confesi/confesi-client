@@ -101,7 +101,7 @@ class _CreatePostDetailsState extends State<CreatePostDetails> with AutomaticKee
                                                       isActive:
                                                           Provider.of<CreatingEditingPostsService>(context).isChatPost,
                                                       backgroundColor: Theme.of(context).colorScheme.surface,
-                                                      icon: CupertinoIcons.paperplane,
+                                                      icon: CupertinoIcons.chat_bubble_2,
                                                       text: "Chat post",
                                                       onTap: () => Provider.of<CreatingEditingPostsService>(context,
                                                               listen: false)

@@ -1,6 +1,10 @@
 import 'package:confesi/constants/shared/constants.dart';
+import 'package:confesi/core/services/user_auth/user_auth_service.dart';
+import 'package:confesi/core/styles/themes.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
+import '../../../core/services/user_auth/user_auth_data.dart';
 import '../button_touch_effects/touchable_scale.dart';
 
 import '../../../core/utils/sizing/width_fraction.dart';
@@ -144,6 +148,12 @@ class __OverlayItemState extends State<_OverlayItem> with TickerProviderStateMix
 
   @override
   Widget build(BuildContext context) {
+    final data = Provider.of<UserAuthService>(context, listen: true).data();
+    final ThemeData theme = data.themePref == ThemePref.system
+        ? AppTheme.dark
+        : data.themePref == ThemePref.light
+            ? AppTheme.light
+            : AppTheme.dark;
     return Transform.translate(
       offset: Offset(0, translateAnim.value * -heightFraction(context, 1) + (totalSwipe <= 0 ? totalSwipe : 0)),
       child: GestureDetector(
@@ -173,36 +183,30 @@ class __OverlayItemState extends State<_OverlayItem> with TickerProviderStateMix
               reverseAnimEarly();
               if (widget.onTap != null) widget.onTap!();
             },
-            child: Container(
-              width: double.infinity,
-              margin: const EdgeInsets.only(top: 10),
-              constraints: BoxConstraints(maxWidth: widthFraction(context, .95)),
-              decoration: BoxDecoration(
-                // boxShadow: [
-                //   BoxShadow(
-                //     color: Theme.of(context).colorScheme.secondary.withOpacity(.25),
-                //     blurRadius: 15,
-                //   ),
-                // ],
-                color: widget.notificationChipType == NotificationType.failure
-                    ? Theme.of(context).colorScheme.error
-                    : Theme.of(context).colorScheme.surface,
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(5),
+            child: Material(
+              color: Colors.transparent,
+              child: Container(
+                width: double.infinity,
+                margin: const EdgeInsets.only(top: 10),
+                constraints: BoxConstraints(maxWidth: widthFraction(context, .95)),
+                decoration: BoxDecoration(
+                  color: widget.notificationChipType == NotificationType.failure
+                      ? theme.colorScheme.error
+                      : theme.colorScheme.surface,
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(5),
+                  ),
+                  // border: Border.all(
+                  //   color: theme.colorScheme.onBackground,
+                  //   width: borderSize,
+                  // ),
                 ),
-                // border: Border.all(
-                //   color: Theme.of(context).colorScheme.secondary,
-                //   width: borderSize,
-                // ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(15),
-                child: Material(
-                  color: Colors.transparent,
+                child: Padding(
+                  padding: const EdgeInsets.all(15),
                   child: Text(
                     widget.text,
                     style: kTitle.copyWith(
-                      color: Theme.of(context).colorScheme.onError,
+                      color: theme.colorScheme.onError,
                     ),
                     maxLines: widget.maxLines,
                     overflow: TextOverflow.ellipsis,

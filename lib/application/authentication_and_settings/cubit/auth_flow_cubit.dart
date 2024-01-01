@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:confesi/core/services/api_client/api_errors.dart';
 import 'package:confesi/core/services/fcm_notifications/notification_service.dart';
 import 'package:confesi/core/services/hive_client/hive_client.dart';
 import 'package:confesi/core/services/user_auth/user_auth_service.dart';
@@ -42,7 +43,7 @@ class AuthFlowCubit extends Cubit<AuthFlowState> {
     (await _api.req(Verb.post, false, "/api/v1/auth/send-password-reset-email", {"email": email}))
         .fold((failure) => emit(AuthFlowNotification(failure.msg(), NotificationType.failure)), (response) async {
       if (response.statusCode.toString()[0] == "4") {
-        emit(const AuthFlowNotification("TODO: 4XX", NotificationType.failure));
+        emit(AuthFlowNotification(ApiErrors.err(response), NotificationType.failure));
       } else if (response.statusCode.toString()[0] == "2") {
         emit(const AuthFlowNotification("Password reset email sent", NotificationType.success));
       } else {
@@ -58,7 +59,7 @@ class AuthFlowCubit extends Cubit<AuthFlowState> {
     (await _api.req(Verb.post, true, "/api/v1/auth/resend-verification-email", {}))
         .fold((failure) => emit(AuthFlowNotification(failure.msg(), NotificationType.failure)), (response) async {
       if (response.statusCode.toString()[0] == "4") {
-        emit(const AuthFlowNotification("TODO: 4XX", NotificationType.failure));
+        emit(AuthFlowNotification(ApiErrors.err(response), NotificationType.failure));
       } else if (response.statusCode.toString()[0] == "2") {
         emit(const AuthFlowNotification("Verification email sent", NotificationType.success));
       } else {
@@ -208,7 +209,7 @@ class AuthFlowCubit extends Cubit<AuthFlowState> {
       (failure) => emit(AuthFlowNotification(failure.msg(), NotificationType.failure)),
       (response) async {
         if (response.statusCode.toString()[0] == "4") {
-          emit(const AuthFlowNotification("TODO: 4XX", NotificationType.failure));
+          emit(AuthFlowNotification(ApiErrors.err(response), NotificationType.failure));
         } else {
           try {
             if (upgradingToFullAcc) {

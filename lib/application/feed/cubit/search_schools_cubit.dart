@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:confesi/core/services/api_client/api.dart';
+import 'package:confesi/core/services/api_client/api_errors.dart';
 import 'package:confesi/models/school_with_metadata.dart';
 import 'package:equatable/equatable.dart';
 
@@ -33,7 +34,7 @@ class SearchSchoolsCubit extends Cubit<SearchSchoolsState> {
       (failureWithMsg) => emit(SearchSchoolsError(failureWithMsg.msg())),
       (response) async {
         if (response.statusCode.toString()[0] == "4") {
-          emit(const SearchSchoolsError("TODO: 4XX"));
+          emit(SearchSchoolsError(ApiErrors.err(response)));
         } else {
           try {
             final schools = (json.decode(response.body)["value"]["schools"] as List)
@@ -47,7 +48,7 @@ class SearchSchoolsCubit extends Cubit<SearchSchoolsState> {
               ),
             );
           } catch (_) {
-            emit(const SearchSchoolsError("Unknown error"));
+            emit(SearchSchoolsError(ApiErrors.err(response)));
           }
         }
       },
@@ -67,7 +68,7 @@ class SearchSchoolsCubit extends Cubit<SearchSchoolsState> {
       (failureWithMsg) => emit(SearchSchoolsError(failureWithMsg.msg())),
       (response) async {
         if (response.statusCode.toString()[0] == "4") {
-          emit(const SearchSchoolsError("TODO: 4XX"));
+          emit(SearchSchoolsError(ApiErrors.err(response)));
         } else {
           try {
             final schools =
@@ -79,7 +80,7 @@ class SearchSchoolsCubit extends Cubit<SearchSchoolsState> {
               SearchSchoolsNoErr(),
             ));
           } catch (_) {
-            emit(const SearchSchoolsError("Unknown error"));
+            emit(SearchSchoolsError(ApiErrors.err(response)));
           }
         }
       },

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:confesi/core/results/successes.dart';
 import 'package:confesi/core/services/api_client/api.dart';
+import 'package:confesi/core/services/api_client/api_errors.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
@@ -24,10 +25,10 @@ class RoomRequestsCubit extends Cubit<RoomRequestsState> {
             final allowsRequests = json.decode(response.body)["value"] as bool;
             emit(RoomRequestsData(allowsRequests));
           } catch (_) {
-            emit(const RoomRequestsError("todo: error"));
+            emit(RoomRequestsError(ApiErrors.err(response)));
           }
         } else {
-          emit(const RoomRequestsError("todo: error"));
+          emit(RoomRequestsError(ApiErrors.err(response)));
         }
       },
     );
@@ -56,12 +57,12 @@ class RoomRequestsCubit extends Cubit<RoomRequestsState> {
             } catch (_) {
               // restore the old value
               emit(RoomRequestsData(oldAllowsRequests));
-              return const Right("Unknown error");
+              return Right(ApiErrors.err(response));
             }
           } else {
             // restore the old value
             emit(RoomRequestsData(oldAllowsRequests));
-            return const Right("Unknown error");
+            return Right(ApiErrors.err(response));
           }
         },
       );

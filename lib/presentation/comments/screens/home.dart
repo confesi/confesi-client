@@ -308,14 +308,25 @@ class _CommentScreenState extends State<CommentScreen> {
                                               Haptics.f(H.regular);
                                               router.pop(context);
                                             }),
+                                        const Spacer(),
                                         const SizedBox(width: 15),
                                         CircleIconBtn(
-                                            color: Theme.of(context).colorScheme.primary,
-                                            bgColor: Theme.of(context).colorScheme.surface,
-                                            icon: CupertinoIcons.arrow_up_to_line_alt,
-                                            onTap: () {
-                                              feedController.scrollToTop();
-                                            }),
+                                          color: Theme.of(context).colorScheme.tertiary,
+                                          bgColor: Theme.of(context).colorScheme.surface,
+                                          icon: CupertinoIcons.chat_bubble_2,
+                                          onTap: () {
+                                            print("DM");
+                                          },
+                                        ),
+                                        const SizedBox(width: 15),
+                                        CircleIconBtn(
+                                          color: Theme.of(context).colorScheme.primary,
+                                          bgColor: Theme.of(context).colorScheme.surface,
+                                          icon: CupertinoIcons.arrow_up_to_line_alt,
+                                          onTap: () {
+                                            feedController.scrollToTop();
+                                          },
+                                        ),
                                       ],
                                     ),
                                   ),

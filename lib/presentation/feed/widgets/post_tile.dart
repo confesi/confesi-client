@@ -199,7 +199,16 @@ class PostTileState extends State<PostTile> {
                                     Padding(
                                       padding: const EdgeInsets.symmetric(horizontal: 5),
                                       child: Icon(
-                                        CupertinoIcons.paperplane,
+                                        CupertinoIcons.chat_bubble_2,
+                                        color: Theme.of(context).colorScheme.primary,
+                                        size: 16,
+                                      ),
+                                    ),
+                                  if (widget.post.owner)
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                                      child: Icon(
+                                        CupertinoIcons.profile_circled,
                                         color: Theme.of(context).colorScheme.primary,
                                         size: 16,
                                       ),

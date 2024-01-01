@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
+import 'package:confesi/core/services/api_client/api_errors.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../core/services/api_client/api.dart';
@@ -29,15 +30,15 @@ class StatsCubit extends Cubit<StatsState> {
             if (response.statusCode == 401) {
               emit(StatsGuest());
             } else {
-              emit(const StatsError("TODO: 4XX"));
+              emit(StatsError(ApiErrors.err(response)));
             }
           } else if (response.statusCode.toString()[0] == "2") {
             emit(StatsData(Stats.fromJson(json.decode(response.body)["value"])));
           } else {
-            emit(const StatsError("Unknown error"));
+            emit(StatsError(ApiErrors.err(response)));
           }
         } catch (_) {
-          emit(const StatsError("Unknown error"));
+          emit(StatsError(ApiErrors.err(response)));
         }
       },
     );

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:confesi/application/user/cubit/stats_cubit.dart';
 import 'package:confesi/core/results/failures.dart';
+import 'package:confesi/core/services/api_client/api_errors.dart';
 import 'package:confesi/init.dart';
 import 'package:confesi/models/user.dart';
 import 'package:equatable/equatable.dart';
@@ -30,7 +31,7 @@ class AccountDetailsCubit extends Cubit<AccountDetailsState> {
       (response) async {
         try {
           if (response.statusCode.toString()[0] == "4") {
-            emit(const AccountDetailsError("TODO: 4XX"));
+            emit(AccountDetailsError(ApiErrors.err(response)));
           } else if (response.statusCode.toString()[0] == "2") {
             final posts = User.fromJson((json.decode(response.body)["value"]));
             emit(
@@ -44,10 +45,10 @@ class AccountDetailsCubit extends Cubit<AccountDetailsState> {
               ),
             );
           } else {
-            emit(const AccountDetailsError("Unknown error"));
+            emit(AccountDetailsError(ApiErrors.err(response)));
           }
         } catch (_) {
-          emit(const AccountDetailsError("Unknown error"));
+          emit(AccountDetailsError(ApiErrors.err(response)));
         }
       },
     );
@@ -111,14 +112,14 @@ class AccountDetailsCubit extends Cubit<AccountDetailsState> {
       (response) async {
         try {
           if (response.statusCode.toString()[0] == "4") {
-            emit(AccountDetailsTrueData(err: Err("todo: 4XX"), data: oldData));
+            emit(AccountDetailsTrueData(err: Err(ApiErrors.err(response)), data: oldData));
           } else if (response.statusCode.toString()[0] == "2") {
             onSuccess(oldData);
           } else {
-            emit(AccountDetailsTrueData(err: Err("Failure loading"), data: oldData));
+            emit(AccountDetailsTrueData(err: Err(ApiErrors.err(response)), data: oldData));
           }
         } catch (_) {
-          emit(AccountDetailsTrueData(err: Err("Failure loading"), data: oldData));
+          emit(AccountDetailsTrueData(err: Err(ApiErrors.err(response)), data: oldData));
         }
       },
     );
@@ -227,14 +228,14 @@ class AccountDetailsCubit extends Cubit<AccountDetailsState> {
       (response) async {
         try {
           if (response.statusCode.toString()[0] == "4") {
-            emit(AccountDetailsTrueData(err: Err("todo: 4XX"), data: oldData));
+            emit(AccountDetailsTrueData(err: Err(ApiErrors.err(response)), data: oldData));
           } else if (response.statusCode.toString()[0] == "2") {
             onSuccess(oldData);
           } else {
-            emit(AccountDetailsTrueData(err: Err("Failure loading"), data: oldData));
+            emit(AccountDetailsTrueData(err: Err(ApiErrors.err(response)), data: oldData));
           }
         } catch (_) {
-          emit(AccountDetailsTrueData(err: Err("Failure loading"), data: oldData));
+          emit(AccountDetailsTrueData(err: Err(ApiErrors.err(response)), data: oldData));
         }
       },
     );

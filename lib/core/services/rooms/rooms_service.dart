@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:confesi/core/results/failures.dart';
 import 'package:confesi/core/results/successes.dart';
 import 'package:confesi/core/services/api_client/api.dart';
+import 'package:confesi/core/services/api_client/api_errors.dart';
 import 'package:confesi/core/services/user_auth/user_auth_service.dart';
 import 'package:confesi/core/types/data.dart';
 import 'package:confesi/models/chat.dart';
@@ -97,7 +98,7 @@ class RoomsService extends ChangeNotifier {
             } else {
               _rooms[roomId] = oldRoom;
               notifyListeners();
-              return Right("todo: error");
+              return Right(ApiErrors.err(response));
             }
           },
         );
@@ -140,7 +141,7 @@ class RoomsService extends ChangeNotifier {
           if (response.statusCode.toString()[0] == "2") {
             return Left(ApiSuccess());
           } else {
-            return const Right("todo: error");
+            return Right(ApiErrors.err(response));
           }
         },
       );
@@ -232,7 +233,7 @@ class RoomsService extends ChangeNotifier {
         loadInitialRoomData(roomId, sl.get<UserAuthService>().uid);
         return Left(ApiSuccess());
       } else {
-        return const Right("todo: error");
+        return Right(ApiErrors.err(response));
       }
     });
   }
@@ -245,7 +246,7 @@ class RoomsService extends ChangeNotifier {
       if (response.statusCode.toString()[0] == "2") {
         return Left(ApiSuccess());
       } else {
-        return const Right("todo: error");
+        return Right(ApiErrors.err(response));
       }
     });
   }
@@ -258,7 +259,7 @@ class RoomsService extends ChangeNotifier {
       if (response.statusCode.toString()[0] == "2") {
         return Left(ApiSuccess());
       } else {
-        return const Right("todo: error");
+        return Right(ApiErrors.err(response));
       }
     });
   }
@@ -272,7 +273,7 @@ class RoomsService extends ChangeNotifier {
         loadInitialRoomData(roomId, sl.get<UserAuthService>().uid);
         return Left(ApiSuccess());
       } else {
-        return const Right("todo: error");
+        return Right(ApiErrors.err(response));
       }
     });
   }
@@ -286,7 +287,7 @@ class RoomsService extends ChangeNotifier {
       if (response.statusCode.toString()[0] == "2") {
         return Left(ApiSuccess());
       } else {
-        return const Right("todo: error");
+        return Right(ApiErrors.err(response));
       }
     });
   }
