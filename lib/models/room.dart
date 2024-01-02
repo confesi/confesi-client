@@ -4,7 +4,6 @@ import 'package:confesi/core/types/data.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:confesi/models/chat.dart';
-import 'package:ordered_set/ordered_set.dart';
 
 class Room extends Equatable {
   final String userId;
@@ -59,14 +58,14 @@ class Room extends Equatable {
   List<Object?> get props => [userId, name, roomId, lastMsg, postId, userNumber, recentChat, read];
 
   bool onlyDifferByRead(Room other) {
-    return this.userId == other.userId &&
-        this.name == other.name &&
-        this.roomId == other.roomId &&
-        this.lastMsg == other.lastMsg &&
-        this.postId == other.postId &&
-        this.userNumber == other.userNumber &&
-        this.recentChat == other.recentChat &&
-        this.read != other.read; // Ensure only 'read' is different
+    return userId == other.userId &&
+        name == other.name &&
+        roomId == other.roomId &&
+        lastMsg == other.lastMsg &&
+        postId == other.postId &&
+        userNumber == other.userNumber &&
+        recentChat == other.recentChat &&
+        read != other.read; // Ensure only 'read' is different
   }
 
   Room copyWith({

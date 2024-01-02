@@ -2,17 +2,14 @@ import 'package:confesi/application/user/cubit/awards_cubit.dart';
 import 'package:confesi/core/services/create_comment_service/create_comment_service.dart';
 import 'package:confesi/core/services/global_content/global_content.dart';
 import 'package:confesi/core/services/rooms/rooms_service.dart';
-import 'package:confesi/presentation/dms/screens/home.dart';
 import 'package:provider/provider.dart';
 
 import '../../../application/authentication_and_settings/cubit/auth_flow_cubit.dart';
 import '../../../application/comments/cubit/comment_section_cubit.dart';
 import '../../../application/comments/cubit/create_comment_cubit.dart';
-import '../../../application/create_post/cubit/post_categories_cubit.dart';
 import '../../../application/daily_hottest/cubit/hottest_cubit.dart';
 import '../../../application/feed/cubit/schools_drawer_cubit.dart';
 import '../../../application/feed/cubit/search_schools_cubit.dart';
-import '../../../application/feed/cubit/sentiment_analysis_cubit.dart';
 import '../../../application/leaderboard/cubit/leaderboard_cubit.dart';
 import '../../../application/posts/cubit/individual_post_cubit.dart';
 import '../../../application/user/cubit/account_details_cubit.dart';

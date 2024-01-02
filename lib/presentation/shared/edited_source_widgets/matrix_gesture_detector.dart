@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/widgets.dart';
-import 'package:vector_math/vector_math_64.dart';
 
 typedef MatrixGestureDetectorCallback = void Function(
     Matrix4 matrix, Matrix4 translationDeltaMatrix, Matrix4 scaleDeltaMatrix, Matrix4 rotationDeltaMatrix);
@@ -85,7 +84,7 @@ class MatrixGestureDetector extends StatefulWidget {
   /// to that [matrix], otherwise the identity matrix will be used.
   ///
   static Matrix4 compose(Matrix4? matrix, Matrix4? translationMatrix, Matrix4? scaleMatrix, Matrix4? rotationMatrix) {
-    if (matrix == null) matrix = Matrix4.identity();
+    matrix ??= Matrix4.identity();
     if (translationMatrix != null) matrix = translationMatrix * matrix;
     if (scaleMatrix != null) matrix = scaleMatrix * matrix;
     if (rotationMatrix != null) matrix = rotationMatrix * matrix;

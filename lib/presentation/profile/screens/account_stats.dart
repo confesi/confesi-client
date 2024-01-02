@@ -1,4 +1,3 @@
-import 'package:confesi/application/user/cubit/account_details_cubit.dart';
 import 'package:confesi/application/user/cubit/stats_cubit.dart';
 import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/services/sharing/sharing.dart';
@@ -11,10 +10,8 @@ import 'package:confesi/presentation/shared/selection_groups/tile_group.dart';
 import 'package:confesi/presentation/shared/text/disclaimer_text.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../core/services/user_auth/user_auth_service.dart';
 import '../../../core/utils/verified_students/verified_user_only.dart';
 import '../../../init.dart';
-import '../../shared/overlays/registered_users_only_sheet.dart';
 import '../../shared/selection_groups/setting_tile.dart';
 import '../widgets/stat_tile.dart';
 import 'package:flutter/cupertino.dart';
@@ -129,7 +126,7 @@ class _AccountProfileStatsState extends State<AccountProfileStats> {
                                     child: Column(
                                       children: [
                                         TileGroup(
-                                          text: "Your stats & achievements",
+                                          text: "Statistics & achievements",
                                           tiles: [
                                             StatTile(
                                               leftNumber: state.stats.likes,

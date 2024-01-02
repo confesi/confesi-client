@@ -1,5 +1,4 @@
 import 'package:confesi/constants/shared/constants.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../button_touch_effects/touchable_scale.dart';

@@ -1,9 +1,7 @@
-import 'package:flutter/services.dart';
 
 import '../../../../application/authentication_and_settings/cubit/auth_flow_cubit.dart';
 import '../../../../constants/shared/constants.dart';
 import '../../../../core/router/go_router.dart';
-import '../../../../core/utils/sizing/width_fraction.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/utils/sizing/height_fraction.dart';

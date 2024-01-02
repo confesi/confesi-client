@@ -1,4 +1,3 @@
-import 'package:confesi/application/feed/cubit/schools_drawer_cubit.dart';
 import 'package:confesi/application/feed/cubit/search_schools_cubit.dart';
 import 'package:confesi/application/user/cubit/notifications_cubit.dart';
 import 'package:confesi/constants/shared/constants.dart';
@@ -36,7 +35,7 @@ class _SearchSchoolsScreenState extends State<SearchSchoolsScreen> {
   @override
   void initState() {
     _textEditingController = TextEditingController();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _textEditingController.addListener(() {
         if (!mounted) return;
         setState(() {});

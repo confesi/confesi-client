@@ -1,17 +1,12 @@
 import 'package:confesi/application/user/cubit/saved_posts_cubit.dart';
 import 'package:confesi/core/services/posts_service/posts_service.dart';
-import 'package:confesi/presentation/shared/edited_source_widgets/swipe_refresh.dart';
 import 'package:flutter/material.dart';
 import 'package:confesi/core/services/global_content/global_content.dart';
 import 'package:provider/provider.dart';
 import '../../../application/feed/cubit/schools_drawer_cubit.dart';
-import '../../../core/styles/typography.dart';
 import '../../../core/types/infinite_scrollable_indexable.dart';
 import '../../../init.dart';
 import '../../shared/other/feed_list.dart';
-import '../../shared/indicators/loading_or_alert.dart';
-import '../../shared/behaviours/themed_status_bar.dart';
-import '../../shared/layout/appbar.dart';
 import '../widgets/post_tile.dart';
 
 class ExploreSentiment extends StatefulWidget {

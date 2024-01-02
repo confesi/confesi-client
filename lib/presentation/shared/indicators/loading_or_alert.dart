@@ -1,4 +1,3 @@
-import 'package:confesi/presentation/shared/behaviours/init_scale.dart';
 import 'package:confesi/presentation/shared/other/widget_or_nothing.dart';
 import 'package:flutter/material.dart';
 

@@ -1,4 +1,3 @@
-import 'package:confesi/core/services/fcm_notifications/notification_table.dart';
 import 'package:confesi/core/styles/typography.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_highlight.dart';
 import 'package:flutter/material.dart';

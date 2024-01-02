@@ -1,14 +1,11 @@
 import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/services/haptics/haptics.dart';
-import 'package:confesi/core/utils/strings/truncate_text.dart';
 import 'package:confesi/models/post.dart';
-import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import '../../../core/router/go_router.dart';
 import 'package:flutter/services.dart';
 import '../../shared/indicators/loading_or_alert.dart';
 import '../../../application/daily_hottest/cubit/hottest_cubit.dart';
 import '../../../constants/leaderboard/general.dart';
-import '../../../core/utils/dates/two_dates_same.dart';
 import '../../../core/utils/dates/readable_date_format.dart';
 import '../widgets/hottest_tile.dart';
 import '../widgets/date_picker_sheet.dart';

@@ -3,7 +3,6 @@ import 'package:confesi/core/services/haptics/haptics.dart';
 import 'package:confesi/core/services/rooms/rooms_service.dart';
 import 'package:confesi/core/styles/typography.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';

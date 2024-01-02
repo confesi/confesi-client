@@ -2,7 +2,6 @@ import 'package:confesi/application/user/cubit/notifications_cubit.dart';
 import 'package:confesi/application/user/cubit/quick_actions_cubit.dart';
 import 'package:confesi/core/services/global_content/global_content.dart';
 import 'package:confesi/core/services/posts_service/posts_service.dart';
-import 'package:confesi/core/services/primary_tab_service/primary_tab_service.dart';
 import 'package:confesi/core/services/rooms/rooms_service.dart';
 import 'package:confesi/core/styles/typography.dart';
 import 'package:confesi/core/utils/verified_students/verified_user_only.dart';
@@ -12,8 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/router/go_router.dart';
-import '../../../core/services/user_auth/user_auth_service.dart';
-import '../../../init.dart';
 import '../../shared/buttons/option.dart';
 import '../../shared/overlays/button_options_sheet.dart';
 

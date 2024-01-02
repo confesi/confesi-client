@@ -1,7 +1,6 @@
 import 'package:confesi/application/user/cubit/account_details_cubit.dart';
 import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/router/go_router.dart';
-import 'package:confesi/presentation/shared/behaviours/simulated_bottom_safe_area.dart';
 import 'package:confesi/presentation/shared/indicators/loading_or_alert.dart';
 import 'package:confesi/presentation/shared/selection_groups/tile_group.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

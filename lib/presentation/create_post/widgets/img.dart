@@ -1,7 +1,4 @@
-import 'dart:collection';
 import 'dart:io';
-import 'dart:math';
-import 'dart:ui' as ui;
 
 import 'package:confesi/application/user/cubit/notifications_cubit.dart';
 import 'package:confesi/constants/shared/constants.dart';
@@ -9,24 +6,15 @@ import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/router/go_router.dart';
 import 'package:confesi/core/services/creating_and_editing_posts_service/create_edit_posts_service.dart';
 import 'package:confesi/core/styles/typography.dart';
-import 'package:confesi/core/utils/sizing/height_fraction.dart';
-import 'package:confesi/core/utils/sizing/width_fraction.dart';
 import 'package:confesi/presentation/feed/widgets/img_viewer.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
-import 'package:confesi/presentation/shared/buttons/circle_icon_btn.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:image_cropper/image_cropper.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:tuple/tuple.dart';
 import 'package:vector_math/vector_math_64.dart' as v;
-import 'package:image_gallery_saver/image_gallery_saver.dart';
 
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:scrollable/exports.dart';
 
 import '../../shared/edited_source_widgets/matrix_gesture_detector.dart';
 

@@ -4,21 +4,15 @@ import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/services/haptics/haptics.dart';
 import 'package:confesi/core/services/primary_tab_service/primary_tab_service.dart';
 import 'package:confesi/core/services/user_auth/user_auth_service.dart';
-import 'package:confesi/core/utils/sizing/width_fraction.dart';
 import 'package:confesi/init.dart';
-import 'package:confesi/presentation/dms/screens/home.dart';
-import 'package:confesi/presentation/shared/overlays/registered_users_only_sheet.dart';
 import 'package:provider/provider.dart';
-import 'dart:ui';
 
 import '../../../core/router/go_router.dart';
 import '../../../core/utils/verified_students/verified_user_only.dart';
-import '../../notifications/screens/home.dart';
 import '../../profile/screens/account_stats.dart';
 import '../../shared/other/feed_list.dart';
 import '../../shared/other/widget_or_nothing.dart';
 
-import '../../authentication_and_settings/screens/settings/home.dart';
 import '../../leaderboard/screens/home.dart';
 import '../../daily_hottest/screens/home.dart';
 import '../../shared/behaviours/themed_status_bar.dart';

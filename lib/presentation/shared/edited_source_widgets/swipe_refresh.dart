@@ -466,16 +466,6 @@ class SwipeRefreshState extends State<SwipeRefresh> with TickerProviderStateMixi
         final Future<void> refreshResult = widget.onRefresh();
         HapticFeedback.lightImpact();
         assert(() {
-          if (refreshResult == null) {
-            FlutterError.reportError(FlutterErrorDetails(
-              exception: FlutterError(
-                'The onRefresh callback returned null.\n'
-                'The RefreshIndicator onRefresh callback must return a Future.',
-              ),
-              context: ErrorDescription('when calling onRefresh'),
-              library: 'material library',
-            ));
-          }
           return true;
         }());
         refreshResult.whenComplete(() {

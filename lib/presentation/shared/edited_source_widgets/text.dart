@@ -603,8 +603,7 @@ class TextNoVertOverflow extends StatelessWidget {
         locale: locale, // RichText uses Localizations.localeOf to obtain a default if this is null
         softWrap: softWrap ?? defaultTextStyle.softWrap,
         overflow: overflow ?? effectiveTextStyle?.overflow ?? defaultTextStyle.overflow,
-        textScaleFactor: textScaleFactor ?? MediaQuery.textScaleFactorOf(context),
-        maxLines: maxLines ?? defaultTextStyle.maxLines,
+        maxLines: maxLines ?? defaultTextStyle.maxLines, textScaler: TextScaler.linear(textScaleFactor ?? MediaQuery.textScaleFactorOf(context)),
         strutStyle: strutStyle,
         textWidthBasis: textWidthBasis ?? defaultTextStyle.textWidthBasis,
         textHeightBehavior:

@@ -1,4 +1,3 @@
-import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/services/haptics/haptics.dart';
 import 'package:confesi/core/styles/typography.dart';
 import 'package:confesi/presentation/profile/overlays/award_sheet.dart';

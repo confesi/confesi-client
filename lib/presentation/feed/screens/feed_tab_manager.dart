@@ -1,10 +1,9 @@
-import 'dart:math';
-
 import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/services/haptics/haptics.dart';
 import 'package:confesi/core/services/posts_service/posts_service.dart';
 import 'package:confesi/core/services/user_auth/user_auth_data.dart';
 import 'package:confesi/core/styles/typography.dart';
+import 'package:confesi/core/utils/verified_students/verified_user_only.dart';
 import 'package:confesi/presentation/feed/tabs/sentiment_feed.dart';
 import 'package:confesi/presentation/feed/widgets/sticky_appbar.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
@@ -45,7 +44,7 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
     DefaultPostFeed defaultFeed = Provider.of<UserAuthService>(context, listen: false).data().defaultPostFeed;
     _pageController = PageController(initialPage: defaultFeed.tabIdx);
     // post frame callback
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<PostsService>().setCurrentlySelectedFeedAndReloadIfNeeded(context, defaultFeed.convertToFeedType);
     });
     emoji = genRandomEmoji(null);
@@ -133,7 +132,7 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
                               ),
                               const SizedBox(width: 10),
                               _TabIconBtn(
-                                onTap: () => router.push("/home/rooms"),
+                                onTap: () => verifiedUserOnly(context, () => router.push("/home/rooms")),
                                 icon: CupertinoIcons.chat_bubble_2,
                               )
                             ],
@@ -148,6 +147,7 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
                                     child: _FeedTab(
                                   isSelected: context.watch<PostsService>().currentlySelectedFeed == FeedType.recents,
                                   title: "Recents",
+                                  textAlign: TextAlign.center,
                                   onTap: () {
                                     context
                                         .read<PostsService>()
@@ -157,6 +157,7 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
                                 )),
                                 Expanded(
                                     child: _FeedTab(
+                                  textAlign: TextAlign.center,
                                   isSelected: context.watch<PostsService>().currentlySelectedFeed == FeedType.trending,
                                   title: "Trending",
                                   onTap: () {
@@ -168,6 +169,7 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
                                 )),
                                 Expanded(
                                     child: _FeedTab(
+                                  textAlign: TextAlign.center,
                                   isSelected: context.watch<PostsService>().currentlySelectedFeed == FeedType.sentiment,
                                   title: "Positivity",
                                   onTap: () {
@@ -215,7 +217,7 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
 }
 
 class _TabIconBtn extends StatelessWidget {
-  const _TabIconBtn({super.key, required this.onTap, required this.icon});
+  const _TabIconBtn({required this.onTap, required this.icon});
 
   final VoidCallback onTap;
   final IconData icon;
@@ -238,11 +240,7 @@ class _TabIconBtn extends StatelessWidget {
 
 class _FeedTab extends StatelessWidget {
   const _FeedTab(
-      {super.key,
-      required this.isSelected,
-      required this.title,
-      this.textAlign = TextAlign.center,
-      required this.onTap});
+      {required this.isSelected, required this.title, required this.onTap, this.textAlign = TextAlign.center});
 
   final bool isSelected;
   final String title;

@@ -1,6 +1,5 @@
 import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/styles/typography.dart';
-import 'package:confesi/core/utils/strings/truncate_text.dart';
 import 'package:confesi/presentation/dms/utils/time_ago.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +17,7 @@ class RoomTile extends StatelessWidget {
   Stream<DateTime> tick() async* {
     while (true) {
       yield DateTime.now();
-      await Future.delayed(Duration(seconds: 1));
+      await Future.delayed(const Duration(seconds: 1));
     }
   }
 

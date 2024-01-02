@@ -8,7 +8,6 @@ import 'package:confesi/core/services/fcm_notifications/token_data.dart';
 import 'package:confesi/core/services/hive_client/hive_client.dart';
 import 'package:confesi/init.dart';
 import 'package:dartz/dartz.dart';
-import 'package:drift/drift.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 

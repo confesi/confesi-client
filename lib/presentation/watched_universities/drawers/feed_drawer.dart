@@ -15,7 +15,6 @@ import '../../../core/router/go_router.dart';
 import '../../../core/styles/typography.dart';
 import '../../../core/utils/sizing/bottom_safe_area.dart';
 import '../../../core/utils/verified_students/verified_user_only.dart';
-import '../../../init.dart';
 import '../widgets/section_accordian.dart';
 import '../../shared/buttons/simple_text.dart';
 import 'package:confesi/presentation/shared/edited_source_widgets/swipe_refresh.dart';

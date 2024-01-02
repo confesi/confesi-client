@@ -1,12 +1,8 @@
 import 'dart:math';
 
 import 'package:confesi/presentation/shared/behaviours/init_opacity.dart';
-import 'package:confesi/presentation/shared/behaviours/init_scale.dart';
-import 'package:confesi/presentation/shared/indicators/alert.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:scrollable/exports.dart';
-import '../../../constants/shared/constants.dart';
 import '../../../core/results/failures.dart';
 import 'package:dartz/dartz.dart' as dartz;
 import '../../../core/services/haptics/haptics.dart';

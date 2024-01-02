@@ -2,7 +2,6 @@ import 'package:confesi/core/services/posts_service/posts_service.dart';
 import 'package:confesi/presentation/comments/widgets/simple_comment_sort.dart';
 import 'package:hive/hive.dart';
 
-import '../posts_service/posts_service.dart';
 import 'user_auth_service.dart';
 
 part 'user_auth_data.g.dart';

@@ -1,15 +1,12 @@
 import 'package:confesi/application/user/cubit/notifications_cubit.dart';
-import 'package:confesi/application/user/cubit/quick_actions_cubit.dart';
 import 'package:confesi/core/extensions/strings/new_lines.dart';
 import 'package:confesi/core/services/global_content/global_content.dart';
 import 'package:confesi/core/services/haptics/haptics.dart';
-import 'package:confesi/core/utils/sizing/width_fraction.dart';
 import 'package:confesi/core/utils/strings/truncate_text.dart';
 import 'package:confesi/core/utils/verified_students/verified_user_only.dart';
 import 'package:confesi/models/post.dart';
 import 'package:confesi/presentation/feed/widgets/img_viewer.dart';
 import 'package:confesi/presentation/feed/widgets/reaction_tile.dart';
-import 'package:confesi/presentation/shared/buttons/pop.dart';
 import 'package:confesi/presentation/shared/other/widget_or_nothing.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:flutter/cupertino.dart';
@@ -44,7 +41,7 @@ class PostTileState extends State<PostTile> {
     return Material(
       color: Colors.transparent,
       child: Padding(
-        padding: const EdgeInsets.only(top: 15),
+        padding: EdgeInsets.only(top: widget.detailView ? 15 : 15),
         child: GestureDetector(
           onLongPress: () {
             Haptics.f(H.regular);
@@ -66,24 +63,20 @@ class PostTileState extends State<PostTile> {
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.background,
               borderRadius: widget.detailView ? null : BorderRadius.circular(10),
-              border: widget.detailView
-                  ? Border(
-                      top: BorderSide(
+              border: Border(
+                top: widget.detailView
+                    ? BorderSide.none
+                    : BorderSide(
                         color: Theme.of(context).colorScheme.onBackground,
                         width: borderSize,
                         style: BorderStyle.solid,
                       ),
-                      bottom: BorderSide(
-                        color: Theme.of(context).colorScheme.onBackground,
-                        width: borderSize,
-                        style: BorderStyle.solid,
-                      ),
-                    )
-                  : Border.all(
-                      color: Theme.of(context).colorScheme.onBackground,
-                      width: borderSize,
-                      style: BorderStyle.solid,
-                    ),
+                bottom: BorderSide(
+                  color: Theme.of(context).colorScheme.onBackground,
+                  width: borderSize,
+                  style: BorderStyle.solid,
+                ),
+              ),
             ),
             child: ClipRRect(
               borderRadius: const BorderRadius.all(Radius.circular(15)),

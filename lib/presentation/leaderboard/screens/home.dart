@@ -1,6 +1,4 @@
 import 'package:confesi/constants/shared/constants.dart';
-import 'package:confesi/core/router/go_router.dart';
-import 'package:confesi/models/encrypted_id.dart';
 import 'package:confesi/models/school_with_metadata.dart';
 import 'package:confesi/presentation/shared/other/widget_or_nothing.dart';
 import 'package:provider/provider.dart';

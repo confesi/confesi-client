@@ -4,7 +4,6 @@ import 'package:confesi/presentation/shared/selection_groups/switch_selection_ti
 import 'package:provider/provider.dart';
 
 import '../../../shared/selection_groups/tile_group.dart';
-import '../../../shared/selection_groups/bool_selection_tile.dart';
 import '../../../shared/behaviours/themed_status_bar.dart';
 import '../../../shared/layout/scrollable_area.dart';
 import '../../../shared/text/disclaimer_text.dart';

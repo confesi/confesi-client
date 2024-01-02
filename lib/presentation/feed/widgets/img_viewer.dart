@@ -1,17 +1,11 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:uuid/uuid.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/router/go_router.dart';
 import 'package:confesi/core/services/haptics/haptics.dart';
-import 'package:confesi/presentation/shared/behaviours/init_scale.dart';
-import 'package:confesi/presentation/shared/buttons/circle_icon_btn.dart';
 import 'package:confesi/presentation/shared/buttons/pop.dart';
 import 'package:confesi/presentation/shared/other/zoomable.dart';
-import 'package:confesi/presentation/shared/overlays/screen_overlay.dart';
-import 'dart:ui' as ui;
 
 import '../../primary/widgets/scroll_dots.dart';
 

@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:confesi/core/results/failures.dart';
 import 'package:confesi/core/results/successes.dart';
 import 'package:confesi/core/services/api_client/api.dart';
 import 'package:confesi/core/services/api_client/api_errors.dart';
@@ -10,7 +9,6 @@ import 'package:confesi/models/chat.dart';
 import 'package:confesi/models/room.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
-import 'package:ordered_set/ordered_set.dart';
 
 import '../../../constants/shared/constants.dart';
 import '../../../init.dart';
@@ -103,12 +101,12 @@ class RoomsService extends ChangeNotifier {
           },
         );
       } else {
-        return Right("Room not found");
+        return const Right("Room not found");
       }
     } catch (e) {
       roomsError = true;
       notifyListeners();
-      return Right('Failed to update room name due to an unexpected error.');
+      return const Right('Failed to update room name due to an unexpected error.');
     }
   }
 

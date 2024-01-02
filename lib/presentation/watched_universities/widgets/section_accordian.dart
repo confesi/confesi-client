@@ -1,14 +1,9 @@
 import 'package:confesi/constants/shared/constants.dart';
-import 'package:confesi/presentation/shared/behaviours/init_scale.dart';
-import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import '../../../core/styles/typography.dart';
 import '../../shared/behaviours/animated_cliprrect.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 
 import '../../shared/button_touch_effects/touchable_scale.dart';
 

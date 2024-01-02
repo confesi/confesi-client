@@ -1,13 +1,9 @@
-import 'dart:math';
 
 import 'package:confesi/core/styles/typography.dart';
-import 'package:confesi/core/utils/sizing/width_fraction.dart';
-import 'package:confesi/presentation/shared/behaviours/animated_bobbing.dart';
 import 'package:confesi/presentation/shared/behaviours/simulated_bottom_safe_area.dart';
 import 'package:confesi/presentation/shared/buttons/pop.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_shake_animated/flutter_shake_animated.dart';
 
 import '../../../constants/shared/constants.dart';
 import '../../../core/router/go_router.dart';

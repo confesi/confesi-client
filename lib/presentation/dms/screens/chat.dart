@@ -7,12 +7,9 @@ import 'package:confesi/core/services/rooms/rooms_service.dart';
 import 'package:confesi/core/styles/typography.dart';
 import 'package:confesi/models/chat.dart';
 import 'package:confesi/presentation/dms/widgets/chat_tile.dart';
-import 'package:confesi/presentation/shared/edited_source_widgets/swipe_refresh.dart';
 import 'package:confesi/presentation/shared/overlays/confirmation_sheet.dart';
 import 'package:flutter/services.dart';
-import 'package:confesi/presentation/shared/button_touch_effects/touchable_highlight.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
-import 'package:confesi/presentation/shared/button_touch_effects/touchable_shrink.dart';
 import 'package:confesi/presentation/shared/buttons/option.dart';
 import 'package:confesi/presentation/shared/overlays/button_options_sheet.dart';
 import 'package:flutter/cupertino.dart';
@@ -21,8 +18,6 @@ import 'package:keyboard_attachable/keyboard_attachable.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:provider/provider.dart';
-import 'package:provider/provider.dart';
 import 'package:scrollable/exports.dart';
 
 import '../widgets/chat_input.dart';
@@ -49,7 +44,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
     roomsService = Provider.of<RoomsService>(context, listen: false);
 
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       chatNameController.text = roomsService.rooms[widget.props.roomId]!.name;
     });
   }

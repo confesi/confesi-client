@@ -1,21 +1,13 @@
-import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:confesi/core/results/successes.dart';
 import 'package:confesi/core/services/global_content/global_content.dart';
-import 'package:confesi/core/services/posts_service/posts_service.dart';
 import 'package:confesi/init.dart';
 import 'package:confesi/models/encrypted_id.dart';
 import 'package:confesi/models/post.dart';
-import 'package:confesi/presentation/create_post/widgets/img.dart';
 import 'package:dartz/dartz.dart' as d;
 import 'package:flutter/cupertino.dart';
-import 'package:http/http.dart';
-import 'package:http/http.dart';
-import 'package:http/http.dart';
-import 'package:ordered_set/ordered_set.dart';
-import 'package:tuple/tuple.dart';
 
 import '../../utils/validators/either_not_empty_validator.dart';
 import '../api_client/api.dart';

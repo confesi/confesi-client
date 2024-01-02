@@ -1,10 +1,8 @@
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
-import 'package:confesi/application/user/cubit/stats_cubit.dart';
 import 'package:confesi/core/results/failures.dart';
 import 'package:confesi/core/services/api_client/api_errors.dart';
-import 'package:confesi/init.dart';
 import 'package:confesi/models/user.dart';
 import 'package:equatable/equatable.dart';
 

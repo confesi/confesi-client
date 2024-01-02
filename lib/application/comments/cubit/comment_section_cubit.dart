@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:confesi/application/comments/cubit/create_comment_cubit.dart';
-import 'package:confesi/core/results/successes.dart';
 import 'package:confesi/core/services/api_client/api_errors.dart';
 import 'package:confesi/models/encrypted_id.dart';
 import 'package:ordered_set/ordered_set.dart';

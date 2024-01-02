@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_shake_animated/flutter_shake_animated.dart';
 
 class TouchableHighlight extends StatefulWidget {
   const TouchableHighlight({

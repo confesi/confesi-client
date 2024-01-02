@@ -3,12 +3,10 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:confesi/core/services/api_client/api.dart';
 import 'package:confesi/core/services/api_client/api_errors.dart';
-import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/results/successes.dart';
 import '../../../core/services/global_content/global_content.dart';
 import '../../../init.dart';
 import '../../../models/encrypted_id.dart';

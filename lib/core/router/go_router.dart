@@ -1,5 +1,4 @@
 import 'package:confesi/models/post.dart';
-import 'package:confesi/models/room.dart';
 import 'package:confesi/models/school_with_metadata.dart';
 import 'package:confesi/presentation/authentication_and_settings/screens/settings/acknowledgements.dart';
 import 'package:confesi/presentation/authentication_and_settings/screens/settings/filters.dart';
@@ -10,7 +9,6 @@ import 'package:confesi/presentation/feed/widgets/img_viewer.dart';
 import 'package:confesi/presentation/notifications/screens/home.dart';
 
 import 'package:confesi/presentation/authentication_and_settings/screens/authentication/open.dart';
-import 'package:confesi/presentation/profile/widgets/awards.dart';
 import 'package:confesi/presentation/user/screens/saved_comments.dart';
 import 'package:confesi/presentation/user/screens/your_comments.dart';
 import '../../models/encrypted_id.dart';

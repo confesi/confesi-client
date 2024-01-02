@@ -7,7 +7,6 @@ import 'package:confesi/core/styles/typography.dart';
 import 'package:confesi/init.dart';
 import 'package:confesi/models/room.dart';
 import 'package:confesi/presentation/dms/widgets/room_tile.dart';
-import 'package:confesi/presentation/shared/behaviours/init_scale.dart';
 import 'package:confesi/presentation/shared/edited_source_widgets/swipe_refresh.dart';
 import 'package:confesi/presentation/shared/indicators/loading_or_alert.dart';
 import 'package:confesi/presentation/shared/layout/appbar.dart';
@@ -89,7 +88,7 @@ class RoomsScreen extends StatelessWidget {
                                 child: FractionallySizedBox(
                                   widthFactor: 2 / 3,
                                   child: Text(
-                                    "You have no messages.",
+                                    "You have no messages",
                                     style: kBody.copyWith(color: Theme.of(context).colorScheme.onSurface),
                                     textAlign: TextAlign.center,
                                   ),

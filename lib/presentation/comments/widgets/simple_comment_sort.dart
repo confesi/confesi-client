@@ -1,7 +1,5 @@
-import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/router/go_router.dart';
 import 'package:confesi/core/services/haptics/haptics.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../core/styles/typography.dart';
 import '../../shared/button_touch_effects/touchable_opacity.dart';

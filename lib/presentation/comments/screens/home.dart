@@ -16,7 +16,6 @@ import 'package:confesi/presentation/feed/widgets/sticky_appbar.dart';
 import 'package:confesi/presentation/shared/behaviours/themed_status_bar.dart';
 import 'package:confesi/presentation/shared/indicators/loading_or_alert.dart';
 import 'package:confesi/presentation/shared/other/feed_list.dart';
-import 'package:confesi/presentation/shared/other/widget_or_nothing.dart';
 import 'package:confesi/presentation/shared/overlays/registered_users_only_sheet.dart';
 import 'package:confesi/presentation/shared/overlays/screen_overlay.dart';
 import 'package:flutter/cupertino.dart';
@@ -121,6 +120,13 @@ class _CommentScreenState extends State<CommentScreen> {
     currentSortType =
         Provider.of<UserAuthService>(context, listen: false).data().defaultCommentSort.convertToCommentSortType;
     delegateInitialLoad(context);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    feedController = FeedListController();
+    commentSheetController = CommentSheetController();
   }
 
   @override
@@ -264,9 +270,11 @@ class _CommentScreenState extends State<CommentScreen> {
                         builder: (context2, state2) {
                           if (state2 is CommentSectionData) {
                             return FeedList(
+                              isScrollable: true,
                               swipeRefreshLockedToEnable: true,
                               // topPushdownOffset: MediaQuery.of(context2).padding.top + 67.5 + 15,
-                              topPushdownOffsetAboveHeader: stickyHeaderHeight,
+                              topPushdownOffsetAboveHeader: stickyHeaderHeight -
+                                  15, // subtracts top padding on each post tile so that it forces it to be "scrollable" by default
                               nothingFoundMessage: "No comments found",
                               header: buildPost(context2),
                               controller: feedController

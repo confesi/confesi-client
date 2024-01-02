@@ -2,7 +2,6 @@ import 'package:confesi/application/user/cubit/quick_actions_cubit.dart';
 import 'package:confesi/presentation/shared/selection_groups/text_stat_tile.dart';
 import 'package:confesi/presentation/shared/selection_groups/tile_group.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../../shared/behaviours/simulated_bottom_safe_area.dart';
 import '../../../shared/behaviours/themed_status_bar.dart';

@@ -1,12 +1,8 @@
 import 'dart:math';
 
-import 'package:flutter/animation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 
-import 'package:flutter/material.dart';
 
-import 'package:flutter/material.dart';
 
 class StickyAppbarController extends ChangeNotifier {
   // Making these variables private

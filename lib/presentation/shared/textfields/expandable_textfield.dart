@@ -2,7 +2,6 @@ import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/utils/verified_students/verified_user_only.dart';
 import 'package:flutter/services.dart';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
