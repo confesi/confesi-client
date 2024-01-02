@@ -1,3 +1,4 @@
+import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/services/haptics/haptics.dart';
 import 'package:confesi/core/styles/typography.dart';
 import 'package:confesi/presentation/profile/overlays/award_sheet.dart';
@@ -34,6 +35,7 @@ class AwardTile extends StatelessWidget {
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.background,
               borderRadius: BorderRadius.circular(10),
+              // border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: borderSize),
             ),
             child: Center(
               child: Text(
@@ -51,7 +53,7 @@ class AwardTile extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.secondary,
                   borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: Theme.of(context).colorScheme.background, width: 2),
+                  // border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: borderSize),
                 ),
                 child: Text(
                   '$count',
@@ -67,6 +69,7 @@ class AwardTile extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.shadow.withOpacity(0.75),
                   borderRadius: BorderRadius.circular(10),
+                  // border: Border.all(color: Theme.of(context).colorScheme.onBackground, width: borderSize),
                 ),
               ),
             ),

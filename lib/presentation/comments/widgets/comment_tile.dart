@@ -1,6 +1,7 @@
 import 'package:confesi/application/comments/cubit/comment_section_cubit.dart';
 import 'package:confesi/application/comments/cubit/create_comment_cubit.dart';
 import 'package:confesi/application/user/cubit/notifications_cubit.dart';
+import 'package:confesi/core/extensions/strings/new_lines.dart';
 import 'package:confesi/core/utils/strings/truncate_text.dart';
 import 'package:confesi/core/utils/verified_students/verified_user_only.dart';
 import 'package:confesi/presentation/comments/widgets/comment_sheet.dart';
@@ -267,9 +268,10 @@ class _CommentTileState extends State<CommentTile> {
                               const SizedBox(height: 10),
                               TextNoVertOverflow(
                                 truncating
-                                    ? truncateText(widget.commentType.comment.comment.content, commentPreviewLength,
+                                    ? truncateText(widget.commentType.comment.comment.content.removeExtraNewLines,
+                                        commentPreviewLength,
                                         ellipsis: "... (tap for more)")
-                                    : widget.commentType.comment.comment.content,
+                                    : widget.commentType.comment.comment.content.removeExtraNewLines,
                                 style: kBody.copyWith(
                                   color: Theme.of(context).colorScheme.primary,
                                   height: 1.2,

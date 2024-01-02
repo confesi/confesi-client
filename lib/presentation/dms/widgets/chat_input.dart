@@ -1,6 +1,7 @@
 import 'package:confesi/application/user/cubit/notifications_cubit.dart';
 import 'package:confesi/core/services/haptics/haptics.dart';
 import 'package:confesi/core/services/rooms/rooms_service.dart';
+import 'package:confesi/core/styles/typography.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -82,6 +83,7 @@ class _ChatInputState extends State<ChatInput> {
                 controller: widget.controller,
                 maxLines: 4,
                 minLines: 1,
+                style: kBody.copyWith(color: Theme.of(context).colorScheme.primary),
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
                   hintText: "Type a message",

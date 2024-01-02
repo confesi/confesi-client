@@ -17,6 +17,8 @@ import 'package:confesi/presentation/shared/behaviours/themed_status_bar.dart';
 import 'package:confesi/presentation/shared/indicators/loading_or_alert.dart';
 import 'package:confesi/presentation/shared/other/feed_list.dart';
 import 'package:confesi/presentation/shared/other/widget_or_nothing.dart';
+import 'package:confesi/presentation/shared/overlays/registered_users_only_sheet.dart';
+import 'package:confesi/presentation/shared/overlays/screen_overlay.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -208,27 +210,37 @@ class _CommentScreenState extends State<CommentScreen> {
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.shadow,
         body: FooterLayout(
-          footer: Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.background,
-              border: Border(
-                top: BorderSide(color: Theme.of(context).colorScheme.onBackground, width: borderSize),
+          footer: GestureDetector(
+            onTap: () {
+              if (sl.get<UserAuthService>().isUserAnon) {
+                showRegisteredUserOnlySheet(context);
+              }
+            },
+            child: AbsorbPointer(
+              absorbing: sl.get<UserAuthService>().isUserAnon,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.background,
+                  border: Border(
+                    top: BorderSide(color: Theme.of(context).colorScheme.onBackground, width: borderSize),
+                  ),
+                ),
+                padding: post != null ? const EdgeInsets.all(10) : null,
+                child: SafeArea(
+                  top: false,
+                  child: post != null
+                      ? CommentSheet(
+                          controller: commentSheetController,
+                          onSubmit: (value) async {
+                            print(value);
+                          },
+                          maxCharacters: maxCommentLength,
+                          feedController: feedController,
+                          postCreatedAtTime: post!.post.createdAt,
+                        )
+                      : const SizedBox(),
+                ),
               ),
-            ),
-            padding: post != null ? const EdgeInsets.all(10) : null,
-            child: SafeArea(
-              top: false,
-              child: post != null
-                  ? CommentSheet(
-                      controller: commentSheetController,
-                      onSubmit: (value) async {
-                        print(value);
-                      },
-                      maxCharacters: maxCommentLength,
-                      feedController: feedController,
-                      postCreatedAtTime: post!.post.createdAt,
-                    )
-                  : const SizedBox(),
             ),
           ),
           child: Stack(
@@ -313,30 +325,30 @@ class _CommentScreenState extends State<CommentScreen> {
                                               router.pop(context);
                                             }),
                                         const Spacer(),
-                                        WidgetOrNothing(
-                                          showWidget: state.post.post.chatPost && !state.post.owner,
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              const SizedBox(width: 15),
-                                              CircleIconBtn(
-                                                color: Theme.of(context).colorScheme.tertiary,
-                                                bgColor: Theme.of(context).colorScheme.surface,
-                                                icon: CupertinoIcons.chat_bubble_2,
-                                                onTap: () {
-                                                  Haptics.f(H.regular);
-                                                  verifiedUserOnly(
-                                                    context,
-                                                    () async => (await Provider.of<RoomsService>(context, listen: false)
-                                                            .createNewRoom(state.post.post.id.mid))
-                                                        .fold(
-                                                      (_) => router.push("/home/rooms"),
-                                                      (errMsg) => context.read<NotificationsCubit>().showErr(errMsg),
-                                                    ),
-                                                  );
-                                                },
-                                              ),
-                                            ],
+                                        const SizedBox(width: 15),
+                                        Opacity(
+                                          opacity: state.post.post.chatPost && !state.post.owner ? 1 : 0.25,
+                                          child: CircleIconBtn(
+                                            color: Theme.of(context).colorScheme.tertiary,
+                                            bgColor: Theme.of(context).colorScheme.surface,
+                                            icon: CupertinoIcons.chat_bubble_2,
+                                            onTap: () {
+                                              if (!state.post.post.chatPost || state.post.owner) {
+                                                showNotificationChip(context,
+                                                    "You can't DM yourself, or, this isn't a DM-able confession");
+                                                return;
+                                              }
+                                              Haptics.f(H.regular);
+                                              verifiedUserOnly(
+                                                context,
+                                                () async => (await Provider.of<RoomsService>(context, listen: false)
+                                                        .createNewRoom(state.post.post.id.mid))
+                                                    .fold(
+                                                  (_) => router.push("/home/rooms"),
+                                                  (errMsg) => context.read<NotificationsCubit>().showErr(errMsg),
+                                                ),
+                                              );
+                                            },
                                           ),
                                         ),
                                         const SizedBox(width: 15),

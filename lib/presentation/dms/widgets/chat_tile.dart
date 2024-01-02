@@ -50,8 +50,7 @@ class ChatTileState extends State<ChatTile> {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
-        double maxWidth = constraints.maxWidth * 0.67;
-
+        double maxWidth = constraints.maxWidth * (2 / 3);
         return Container(
           margin: const EdgeInsets.symmetric(vertical: 5),
           child: Row(
@@ -76,27 +75,25 @@ class ChatTileState extends State<ChatTile> {
                   padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
                   decoration: BoxDecoration(
                     color:
-                        widget.isYou ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.secondary,
+                        widget.isYou ? Theme.of(context).colorScheme.secondary : Theme.of(context).colorScheme.surface,
                     borderRadius: !widget.isYou
                         ? const BorderRadius.only(
-                            topLeft: Radius.circular(20),
+                            topLeft: Radius.circular(15),
                             bottomLeft: Radius.circular(2),
-                            topRight: Radius.circular(20),
-                            bottomRight: Radius.circular(20),
+                            topRight: Radius.circular(15),
+                            bottomRight: Radius.circular(15),
                           )
                         : const BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                            bottomLeft: Radius.circular(20),
-                            topRight: Radius.circular(20),
+                            topLeft: Radius.circular(15),
+                            bottomLeft: Radius.circular(15),
+                            topRight: Radius.circular(15),
                             bottomRight: Radius.circular(2),
                           ),
                   ),
                   child: Text(
                     widget.text,
                     style: kBody.copyWith(
-                      color: widget.isYou
-                          ? Theme.of(context).colorScheme.onPrimary
-                          : Theme.of(context).colorScheme.primary,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
                   ),
                 ),

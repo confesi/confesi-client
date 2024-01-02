@@ -2,9 +2,11 @@ import 'package:confesi/application/user/cubit/account_details_cubit.dart';
 import 'package:confesi/application/user/cubit/stats_cubit.dart';
 import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/services/sharing/sharing.dart';
+import 'package:confesi/presentation/profile/widgets/awards.dart';
 import 'package:confesi/presentation/shared/behaviours/init_opacity.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:confesi/presentation/shared/indicators/loading_or_alert.dart';
+import 'package:confesi/presentation/shared/other/widget_or_nothing.dart';
 import 'package:confesi/presentation/shared/selection_groups/tile_group.dart';
 import 'package:confesi/presentation/shared/text/disclaimer_text.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -102,11 +104,6 @@ class _AccountProfileStatsState extends State<AccountProfileStats> {
                                   text: "School, faculty, and year",
                                   onTap: () => verifiedUserOnly(context, () => router.push("/home/profile/account")),
                                 ),
-                                SettingTile(
-                                  leftIcon: CupertinoIcons.star,
-                                  text: "Your achievements",
-                                  onTap: () => verifiedUserOnly(context, () => router.push("/home/profile/awards")),
-                                ),
                                 RectangleTile(
                                   onLeftTap: () => router.push('/home/profile/saved/comments'),
                                   onRightTap: () => router.push('/home/profile/saved/posts'),
@@ -132,7 +129,7 @@ class _AccountProfileStatsState extends State<AccountProfileStats> {
                                     child: Column(
                                       children: [
                                         TileGroup(
-                                          text: "How you compare to others",
+                                          text: "Your stats & achievements",
                                           tiles: [
                                             StatTile(
                                               leftNumber: state.stats.likes,
@@ -154,36 +151,44 @@ class _AccountProfileStatsState extends State<AccountProfileStats> {
                                               leftText: "Dislikes 🤮",
                                               rightText: percentToRelativeMsg(state.stats.dislikesPerc),
                                             ),
-                                          ],
-                                        ),
-                                        Center(
-                                          child: TouchableOpacity(
-                                            onTap: () {
-                                              final statsState = context.read<StatsCubit>().state;
-                                              if (statsState is StatsData) {
-                                                final data = statsState;
-                                                sl.get<Sharing>().shareStats(
-                                                      context,
-                                                      data.stats.likes,
-                                                      data.stats.hottest,
-                                                      data.stats.dislikes,
-                                                      data.stats.likesPerc,
-                                                      data.stats.hottestPerc,
-                                                      data.stats.dislikesPerc,
-                                                    );
-                                              }
-                                            },
-                                            child: Container(
-                                              padding: const EdgeInsets.all(15),
-                                              color: Colors.transparent, // hitbox trick
-                                              child: Text(
-                                                "Share stats ->",
-                                                style: kDetail.copyWith(color: Theme.of(context).colorScheme.onSurface),
-                                                textAlign: TextAlign.left,
-                                                overflow: TextOverflow.ellipsis,
+                                            const SizedBox(height: 10),
+                                            const AwardsScreen(),
+                                            const SizedBox(height: 10),
+                                            WidgetOrNothing(
+                                              showWidget: context.watch<StatsCubit>().state is StatsData,
+                                              child: Center(
+                                                child: TouchableOpacity(
+                                                  onTap: () {
+                                                    final statsState = context.read<StatsCubit>().state;
+                                                    if (statsState is StatsData) {
+                                                      final data = statsState;
+                                                      sl.get<Sharing>().shareStats(
+                                                            context,
+                                                            data.stats.likes,
+                                                            data.stats.hottest,
+                                                            data.stats.dislikes,
+                                                            data.stats.likesPerc,
+                                                            data.stats.hottestPerc,
+                                                            data.stats.dislikesPerc,
+                                                          );
+                                                    }
+                                                  },
+                                                  child: Container(
+                                                    padding:
+                                                        const EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 15),
+                                                    color: Colors.transparent, // hitbox trick
+                                                    child: Text(
+                                                      "Share stats ->",
+                                                      style: kDetail.copyWith(
+                                                          color: Theme.of(context).colorScheme.onSurface),
+                                                      textAlign: TextAlign.left,
+                                                      overflow: TextOverflow.ellipsis,
+                                                    ),
+                                                  ),
+                                                ),
                                               ),
                                             ),
-                                          ),
+                                          ],
                                         ),
                                       ],
                                     ),
@@ -205,7 +210,6 @@ class _AccountProfileStatsState extends State<AccountProfileStats> {
                                 }
                               },
                             ),
-                            const SizedBox(height: 30),
                           ],
                         ),
                       ),

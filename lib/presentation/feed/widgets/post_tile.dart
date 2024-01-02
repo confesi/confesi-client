@@ -149,7 +149,7 @@ class PostTileState extends State<PostTile> {
                                 truncateText(
                                     widget.post.post.title.isEmpty
                                         ? "[empty]"
-                                        : widget.post.post.title.removeManyNewLines,
+                                        : widget.post.post.title.removeExtraNewLines,
                                     postTitlePreviewLength,
                                     truncating: !widget.detailView),
                                 style: kDisplay1.copyWith(
@@ -165,7 +165,7 @@ class PostTileState extends State<PostTile> {
                                 truncateText(
                                     widget.post.post.content.isEmpty
                                         ? "[empty]"
-                                        : widget.post.post.content.removeManyNewLines,
+                                        : widget.post.post.content.removeExtraNewLines,
                                     postBodyPreviewLength,
                                     truncating: !widget.detailView),
                                 style: kBody.copyWith(

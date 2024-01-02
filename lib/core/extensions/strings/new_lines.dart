@@ -1,3 +1,3 @@
 extension NewLines on String {
-  String get removeManyNewLines => replaceAll(RegExp(r'\n{2,}'), ' ');
+  String get removeExtraNewLines => replaceAll(RegExp(r'\n{2,}'), ' ');
 }
