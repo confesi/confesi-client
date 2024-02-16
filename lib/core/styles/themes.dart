@@ -11,14 +11,14 @@ class AppTheme {
       onSurfaceVariant: Color.fromARGB(220, 239, 239, 239),
       surfaceVariant: Color.fromARGB(255, 23, 23, 23),
       brightness: Brightness.dark,
-      primary: Color.fromARGB(255, 238, 239, 240),
+      primary: Color.fromARGB(255, 181, 191, 217),
       onPrimary: Color(0xff333333),
       secondary: Color.fromARGB(255, 247, 95, 95),
-      onSecondary: Color.fromARGB(255, 255, 255, 255),
+      onSecondary: Color.fromARGB(255, 247, 230, 230),
       tertiary: Color.fromARGB(255, 99, 200, 255),
       surfaceTint: Color(0xff90A17D),
       error: Color(0xffFF6F6F),
-      onError: Colors.white,
+      onError: Color.fromARGB(255, 247, 230, 230),
       background: Color.fromARGB(255, 30, 34, 43),
       onBackground: Color.fromARGB(255, 58, 63, 79),
       surface: Color.fromARGB(255, 38, 44, 58),
@@ -42,17 +42,17 @@ class AppTheme {
       brightness: Brightness.light,
       primary: Color.fromARGB(255, 0, 0, 0), // Darker shade for primary text/actions
       onPrimary: Color(0xffFAFAFA), // Almost white for content on primary
-      tertiary: Color.fromARGB(255, 37, 36, 36),
+      tertiary: Color.fromARGB(255, 247, 95, 95),
       onSecondary: Color.fromARGB(255, 255, 255, 255), // White for content on secondary color
-      secondary: Color.fromARGB(255, 37, 36, 36),
+      secondary: Color.fromARGB(255, 247, 95, 95),
       surfaceTint: Color(0xffA1B19C), // A slightly brighter surface tint
       error: Color.fromARGB(255, 231, 104, 104), // Keeping error color consistent
       onError: Colors.white, // White text/icons for error background
       background: Color.fromARGB(255, 255, 255, 255), // Pure white background
-      onBackground: Color.fromARGB(255, 229, 222, 222), // Darker text on white background
+      onBackground: Color.fromARGB(255, 212, 212, 212), // Darker text on white background
       surface: Color.fromARGB(255, 241, 241, 241), // Almost white surface
       onSurface: Color.fromARGB(255, 0, 0, 0), // Dark text/icons for almost white surface
-      shadow: Color.fromARGB(255, 243, 243, 243), // Light shadow
+      shadow: Color.fromARGB(255, 236, 236, 236), // Light shadow
       primaryContainer: Color(0xff555555), // Dark primary container for contrast
       secondaryContainer: Color(0xfffde5b6), // Keeping the secondary container consistent
       onErrorContainer: Color(0xff59CE8F), // Keeping it consistent
