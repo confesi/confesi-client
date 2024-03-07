@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:confesi/core/results/successes.dart';
 import 'package:confesi/core/services/global_content/global_content.dart';
 import 'package:confesi/init.dart';
-import 'package:confesi/models/encrypted_id.dart';
 import 'package:confesi/models/post.dart';
 import 'package:dartz/dartz.dart' as d;
 import 'package:flutter/cupertino.dart';
@@ -89,13 +88,13 @@ class CreatingEditingPostsService extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<d.Either<ApiSuccess, String>> editPost(String title, String body, EncryptedId id) async {
+  Future<d.Either<ApiSuccess, String>> editPost(String title, String body, String id) async {
     _api.cancelCurrReq();
     metaState = CreatingEditingPostMetaStateLoading();
     notifyListeners();
     _api.setMultipart(false);
     final response = await _api.req(Verb.patch, true, "/api/v1/posts/edit", {
-      "post_id": id.eid,
+      "post_id": id,
       "title": title,
       "body": body,
     });

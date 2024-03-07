@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:confesi/core/services/api_client/api_errors.dart';
 import 'package:confesi/core/services/global_content/global_content.dart';
-import 'package:confesi/models/encrypted_id.dart';
 import 'package:confesi/models/notification_log.dart';
 import 'package:equatable/equatable.dart';
 

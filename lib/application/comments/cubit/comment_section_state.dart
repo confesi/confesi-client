@@ -19,15 +19,15 @@ class CommentSectionError extends CommentSectionState {
 }
 
 class CommentSectionData extends CommentSectionState {
-  final List<LinkedHashMap<String, List<EncryptedId>>> commentIds;
-  final LinkedHashMap<EncryptedId, int> commentIdToListIdx;
+  final List<LinkedHashMap<String, List<String>>> commentIds;
+  final LinkedHashMap<String, int> commentIdToListIdx;
   final OrderedSet<int> indicesOfRootComments; // Store the indices of root comments
 
   final CommentFeedState paginationState;
 
   CommentSectionData.empty()
       : commentIds = [], // Empty list of commentIds
-        commentIdToListIdx = LinkedHashMap<EncryptedId, int>(), // Empty map of commentIdToListIdx
+        commentIdToListIdx = LinkedHashMap<String, int>(), // Empty map of commentIdToListIdx
         paginationState =
             CommentFeedState.loading, // Set the default pagination state (you can change it to another state if needed)
         indicesOfRootComments = OrderedSet<int>();
@@ -35,15 +35,15 @@ class CommentSectionData extends CommentSectionState {
   CommentSectionData(
     this.commentIds,
     this.paginationState, {
-    LinkedHashMap<EncryptedId, int>? commentIdToListIdx,
+    LinkedHashMap<String, int>? commentIdToListIdx,
     OrderedSet<int>? indicesOfRootComments,
-  })  : commentIdToListIdx = commentIdToListIdx ?? LinkedHashMap<EncryptedId, int>(),
+  })  : commentIdToListIdx = commentIdToListIdx ?? LinkedHashMap<String, int>(),
         indicesOfRootComments = indicesOfRootComments ?? OrderedSet<int>();
 
   // copyWith
   CommentSectionData copyWith({
-    List<LinkedHashMap<String, List<EncryptedId>>>? commentIds,
-    LinkedHashMap<EncryptedId, int>? commentIdToListIdx,
+    List<LinkedHashMap<String, List<String>>>? commentIds,
+    LinkedHashMap<String, int>? commentIdToListIdx,
     OrderedSet<int>? indicesOfRootComments,
     CommentFeedState? paginationState,
   }) {

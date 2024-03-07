@@ -8,7 +8,6 @@ import 'package:confesi/models/school_with_metadata.dart';
 import 'package:confesi/models/year_of_study.dart';
 
 import 'category.dart';
-import 'encrypted_id.dart';
 import 'faculty.dart';
 
 PostWithMetadata postFromJson(String str) => PostWithMetadata.fromJson(json.decode(str));
@@ -60,7 +59,7 @@ class PostWithMetadata {
 }
 
 class Post {
-  EncryptedId id;
+  String id;
   int createdAt;
   int updatedAt;
   School school;
@@ -104,7 +103,7 @@ class Post {
 
   factory Post.fromJson(Map<String, dynamic> json) {
     return Post(
-      id: EncryptedId.fromJson(json["id"]),
+      id: json["id"],
       createdAt: json["created_at"],
       updatedAt: json["updated_at"],
       school: School.fromJson(json["school"]),

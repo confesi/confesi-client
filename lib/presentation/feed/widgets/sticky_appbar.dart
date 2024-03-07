@@ -2,8 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-
-
 class StickyAppbarController extends ChangeNotifier {
   // Making these variables private
   double offsetBuildback = 0.0;

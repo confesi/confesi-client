@@ -2,7 +2,6 @@ import 'dart:collection';
 
 import 'package:confesi/core/results/successes.dart';
 import 'package:confesi/core/services/api_client/api_errors.dart';
-import 'package:confesi/models/encrypted_id.dart';
 import 'package:confesi/models/school_with_metadata.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
@@ -23,13 +22,13 @@ class GlobalContentService extends ChangeNotifier {
   GlobalContentService(this._voteApi, this._watchedSchoolApi, this._setHomeApi, this._saveApi);
 
   // LinkedHashMap of int id key to Post type value
-  LinkedHashMap<EncryptedId, PostWithMetadata> posts = LinkedHashMap<EncryptedId, PostWithMetadata>();
-  LinkedHashMap<EncryptedId, CommentWithMetadata> comments = LinkedHashMap<EncryptedId, CommentWithMetadata>();
-  LinkedHashMap<EncryptedId, SchoolWithMetadata> schools = LinkedHashMap<EncryptedId, SchoolWithMetadata>();
-  LinkedHashMap<EncryptedId, int> repliesPerCommentThread = LinkedHashMap<EncryptedId, int>();
-  LinkedHashMap<EncryptedId, ServerNoti> notificationLogs = LinkedHashMap<EncryptedId, ServerNoti>();
+  LinkedHashMap<String, PostWithMetadata> posts = LinkedHashMap<String, PostWithMetadata>();
+  LinkedHashMap<String, CommentWithMetadata> comments = LinkedHashMap<String, CommentWithMetadata>();
+  LinkedHashMap<String, SchoolWithMetadata> schools = LinkedHashMap<String, SchoolWithMetadata>();
+  LinkedHashMap<String, int> repliesPerCommentThread = LinkedHashMap<String, int>();
+  LinkedHashMap<String, ServerNoti> notificationLogs = LinkedHashMap<String, ServerNoti>();
 
-  void setRepliesPerSchool(EncryptedId rootComment, int replies) {
+  void setRepliesPerSchool(String rootComment, int replies) {
     repliesPerCommentThread[rootComment] = replies;
   }
 
@@ -63,7 +62,7 @@ class GlobalContentService extends ChangeNotifier {
     notifyListeners();
   }
 
-  int getRepliesPerSchool(EncryptedId rootComment) {
+  int getRepliesPerSchool(String rootComment) {
     if (repliesPerCommentThread.containsKey(rootComment) && repliesPerCommentThread[rootComment] != null) {
       return repliesPerCommentThread[rootComment]!;
     } else {
@@ -71,12 +70,12 @@ class GlobalContentService extends ChangeNotifier {
     }
   }
 
-  void removePost(EncryptedId id) {
+  void removePost(String id) {
     posts.remove(id);
     notifyListeners();
   }
 
-  void addToRepliesPerSchool(EncryptedId rootComment, int replies) {
+  void addToRepliesPerSchool(String rootComment, int replies) {
     if (repliesPerCommentThread.containsKey(rootComment)) {
       repliesPerCommentThread[rootComment] = repliesPerCommentThread[rootComment]! + replies;
     } else {
@@ -85,7 +84,7 @@ class GlobalContentService extends ChangeNotifier {
     notifyListeners();
   }
 
-  void _setSavedStatus(String contentType, EncryptedId contentId, bool saved) {
+  void _setSavedStatus(String contentType, String contentId, bool saved) {
     if (contentType == "post") {
       sl.get<GlobalContentService>().setPost(posts[contentId]!..saved = saved);
     } else if (contentType == "comment") {
@@ -93,13 +92,13 @@ class GlobalContentService extends ChangeNotifier {
     }
   }
 
-  Future<Either<ApiSuccess, String>> updatePostSaved(EncryptedId postId, bool save) async =>
+  Future<Either<ApiSuccess, String>> updatePostSaved(String postId, bool save) async =>
       await _saveInternal("post", postId, save);
 
-  Future<Either<ApiSuccess, String>> updateCommentSaved(EncryptedId commentId, bool save) async =>
+  Future<Either<ApiSuccess, String>> updateCommentSaved(String commentId, bool save) async =>
       await _saveInternal("comment", commentId, save);
 
-  Future<Either<ApiSuccess, String>> _saveInternal(String contentType, EncryptedId contentId, bool save) async {
+  Future<Either<ApiSuccess, String>> _saveInternal(String contentType, String contentId, bool save) async {
     final oldSavedStatus = !save;
     _saveApi.cancelCurrReq();
     // eargerly set saved
@@ -108,7 +107,7 @@ class GlobalContentService extends ChangeNotifier {
       save ? Verb.post : Verb.delete,
       true,
       "/api/v1/saves/${save ? "save" : "unsave"}",
-      {"content_id": contentId.eid, "content_type": contentType},
+      {"content_id": contentId, "content_type": contentType},
     );
     return response.fold(
       (failureWithMsg) {
@@ -143,7 +142,7 @@ class GlobalContentService extends ChangeNotifier {
       Verb.patch,
       true,
       "/api/v1/user/school",
-      {"school_id": school.school.id.eid},
+      {"school_id": school.school.id},
     ))
         .fold(
       (failureWithMsg) {
@@ -181,7 +180,7 @@ class GlobalContentService extends ChangeNotifier {
       watch ? Verb.post : Verb.delete,
       true,
       "/api/v1/schools/${watch ? "watch" : "unwatch"}",
-      {"school_id": school.school.id.eid},
+      {"school_id": school.school.id},
     );
 
     return response.fold(
@@ -229,7 +228,7 @@ class GlobalContentService extends ChangeNotifier {
     notifyListeners();
   }
 
-  void plusOneChildToComment(EncryptedId id) {
+  void plusOneChildToComment(String id) {
     if (comments.containsKey(id)) {
       comments[id]!.comment.childrenCount++;
       notifyListeners();
@@ -258,14 +257,14 @@ class GlobalContentService extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updatePostCommentCount(EncryptedId postId, int delta) {
+  void updatePostCommentCount(String postId, int delta) {
     if (posts.containsKey(postId)) {
       posts[postId]!.post.commentCount += delta;
       notifyListeners();
     }
   }
 
-  void addOneToRootCommentCount(EncryptedId commentId) {
+  void addOneToRootCommentCount(String commentId) {
     if (comments.containsKey(commentId)) {
       comments[commentId]!.comment.childrenCount++;
       notifyListeners();
@@ -304,7 +303,7 @@ class GlobalContentService extends ChangeNotifier {
 
     // Prepare the request body
     final Map<String, dynamic> requestBody = {
-      'content_id': comment.comment.id.eid,
+      'content_id': comment.comment.id,
       'value': newVote,
       'content_type': 'comment',
     };
@@ -387,7 +386,7 @@ class GlobalContentService extends ChangeNotifier {
 
     // Prepare the request body
     final Map<String, dynamic> requestBody = {
-      'content_id': post.post.id.eid,
+      'content_id': post.post.id,
       'value': newVote,
       'content_type': 'post',
     };

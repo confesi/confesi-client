@@ -4,8 +4,6 @@
 
 import 'dart:convert';
 
-import 'package:confesi/models/encrypted_id.dart';
-
 SchoolWithMetadata schoolFromJson(String str) => SchoolWithMetadata.fromJson(json.decode(str));
 
 String schoolToJson(SchoolWithMetadata data) => json.encode(data.toJson());
@@ -54,7 +52,7 @@ class SchoolWithMetadata {
 }
 
 class School {
-  EncryptedId id;
+  String id;
   int createdAt;
   int updatedAt;
   String name;
@@ -81,7 +79,7 @@ class School {
   });
 
   factory School.fromJson(Map<String, dynamic> json) => School(
-        id: EncryptedId.fromJson(json["id"]),
+        id: json["id"],
         createdAt: json["created_at"],
         updatedAt: json["updated_at"],
         name: json["name"],
@@ -95,7 +93,7 @@ class School {
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id.toJson(),
+        "id": id,
         "created_at": createdAt,
         "updated_at": updatedAt,
         "name": name,

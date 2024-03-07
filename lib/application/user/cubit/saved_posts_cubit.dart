@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
-import 'package:confesi/models/encrypted_id.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../constants/shared/constants.dart';
@@ -57,7 +56,7 @@ class SavedPostsCubit extends Cubit<SavedPostsState> {
               next = (state as SavedPostsData).next;
             }
             final posts = (body["posts"] as List).map((i) => PostWithMetadata.fromJson(i)).toList();
-            final List<EncryptedId> combinedPosts;
+            final List<String> combinedPosts;
             if (state is SavedPostsData) {
               if (refresh) {
                 combinedPosts = posts.map((e) => e.post.id).toList();

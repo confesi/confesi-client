@@ -6,12 +6,10 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 
-import 'encrypted_id.dart';
-
 Faculty facultyFromJson(String str) => Faculty.fromJson(json.decode(str));
 
 class Faculty extends Equatable {
-  EncryptedId id;
+  String id;
   String? faculty;
 
   Faculty({
@@ -20,7 +18,7 @@ class Faculty extends Equatable {
   });
 
   factory Faculty.fromJson(Map<String, dynamic> json) => Faculty(
-        id: EncryptedId.fromJson(json["id"]),
+        id: json["id"],
         faculty: json["faculty"],
       );
 

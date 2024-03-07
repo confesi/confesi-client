@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:confesi/constants/shared/constants.dart';
 import 'package:confesi/core/services/user_auth/user_auth_service.dart';
-import 'package:confesi/models/encrypted_id.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:ordered_set/ordered_set.dart';
@@ -25,9 +24,9 @@ class PostsService extends ChangeNotifier {
 
   PostsService(this._trendingApi, this._recentsApi, this._sentimentApi);
 
-  List<EncryptedId> trendingPostIds = [];
-  List<EncryptedId> recentsPostIds = [];
-  List<EncryptedId> sentimentPostIds = [];
+  List<String> trendingPostIds = [];
+  List<String> recentsPostIds = [];
+  List<String> sentimentPostIds = [];
   PaginationState trendingPaginationState = PaginationState.loading;
   PaginationState recentsPaginationState = PaginationState.loading;
   PaginationState sentimentPaginationState = PaginationState.loading;
@@ -35,7 +34,7 @@ class PostsService extends ChangeNotifier {
   Future<Either<ApiSuccess, String>> deletePost(PostWithMetadata post) async {
     final oldPost = post;
     sl.get<GlobalContentService>().removePost(oldPost.post.id);
-    return (await Api().req(Verb.patch, true, "/api/v1/posts/hide", {"post_id": post.post.id.eid})).fold(
+    return (await Api().req(Verb.patch, true, "/api/v1/posts/hide", {"post_id": post.post.id})).fold(
       (failureWithMsg) {
         sl.get<GlobalContentService>().setPost(oldPost);
         return Right(failureWithMsg.msg());
@@ -107,8 +106,8 @@ class PostsService extends ChangeNotifier {
     }
   }
 
-  void _addIdsToList(FeedType feedType, List<EncryptedId> postIds) {
-    OrderedSet<EncryptedId> ids = OrderedSet<EncryptedId>(); // Convert List to OrderedSet
+  void _addIdsToList(FeedType feedType, List<String> postIds) {
+    OrderedSet<String> ids = OrderedSet<String>(); // Convert List to OrderedSet
     ids.addAll(postIds.reversed);
 
     switch (feedType) {
@@ -199,7 +198,7 @@ class PostsService extends ChangeNotifier {
       {
         "purge_cache": refresh,
         "sort": _sort(feedType),
-        "school_id": selectedType is SelectedSchool ? selectedType.id.eid : null,
+        "school_id": selectedType is SelectedSchool ? selectedType.id : null,
         "session_key": _sessionKey(feedType),
         "all_schools": selectedType is SelectedAll,
       },

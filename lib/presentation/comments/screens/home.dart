@@ -8,7 +8,6 @@ import 'package:confesi/core/services/user_auth/user_auth_service.dart';
 import 'package:confesi/core/utils/sizing/width_fraction.dart';
 import 'package:confesi/core/utils/verified_students/verified_user_only.dart';
 import 'package:confesi/init.dart';
-import 'package:confesi/models/encrypted_id.dart';
 import 'package:confesi/presentation/comments/widgets/comment_tile.dart';
 import 'package:confesi/presentation/comments/widgets/simple_comment_sort.dart';
 import 'package:confesi/presentation/feed/widgets/post_tile.dart';
@@ -56,12 +55,12 @@ class _CommentScreenState extends State<CommentScreen> {
     } else if (widget.props.postLoadType is PreloadedPost && refresh) {
       await context
           .read<IndividualPostCubit>()
-          .loadPost((widget.props.postLoadType as PreloadedPost).post.post.id.eid)
+          .loadPost((widget.props.postLoadType as PreloadedPost).post.post.id)
           .then((value) {
         // load comments
-        context.read<CommentSectionCubit>().loadComments(
-            (widget.props.postLoadType as PreloadedPost).post.post.id.eid, currentSortType,
-            refresh: true);
+        context
+            .read<CommentSectionCubit>()
+            .loadComments((widget.props.postLoadType as PreloadedPost).post.post.id, currentSortType, refresh: true);
       });
     } else {
       context.read<NotificationsCubit>().showErr("Error loading content");
@@ -103,7 +102,7 @@ class _CommentScreenState extends State<CommentScreen> {
               context.read<CommentSectionCubit>().clear();
               setState(() => currentSortType = newSort);
               context.read<CommentSectionCubit>().loadComments(
-                  (context.read<IndividualPostCubit>().state as IndividualPostData).post.post.id.eid, newSort,
+                  (context.read<IndividualPostCubit>().state as IndividualPostData).post.post.id, newSort,
                   refresh: true);
             },
           ),
@@ -153,7 +152,7 @@ class _CommentScreenState extends State<CommentScreen> {
       final rootCommentId = commentIds.keys.first;
       final rootCommentIdsList = commentIds[rootCommentId]!;
 
-      final rootCommentIdEncrypted = EncryptedId(eid: rootCommentId);
+      final rootCommentIdEncrypted = rootCommentId;
       final rootComment = commentSet[rootCommentIdEncrypted];
 
       if (rootComment == null) continue;
@@ -183,7 +182,7 @@ class _CommentScreenState extends State<CommentScreen> {
 
           commentWidgets.add(
             InfiniteScrollIndexable(
-              commentId.eid,
+              commentId,
               CommentTile(
                 postCreatedAtTime: post.post.createdAt,
                 commentSheetController: commentSheetController,
@@ -256,7 +255,7 @@ class _CommentScreenState extends State<CommentScreen> {
                 child: BlocConsumer<IndividualPostCubit, IndividualPostState>(
                   listener: (contextL, state) {
                     if (state is IndividualPostData) {
-                      contextL.read<CommentSectionCubit>().loadComments(state.post.post.id.eid, currentSortType);
+                      contextL.read<CommentSectionCubit>().loadComments(state.post.post.id, currentSortType);
                     }
                   },
                   builder: (context1, state) {
@@ -283,7 +282,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                 // ensure I won't need to look up deactivated widget's ancestor
                                 if (mounted) {
                                   await context.read<CommentSectionCubit>().loadComments(
-                                      state.post.post.id.eid, currentSortType,
+                                      state.post.post.id, currentSortType,
                                       refresh: feedController.items.isEmpty);
                                 }
                               },
@@ -298,10 +297,10 @@ class _CommentScreenState extends State<CommentScreen> {
                               wontLoadMore: state2.paginationState == CommentFeedState.end,
                               onWontLoadMoreButtonPressed: () async => await context1
                                   .read<CommentSectionCubit>()
-                                  .loadComments(state.post.post.id.eid, currentSortType, refresh: false),
+                                  .loadComments(state.post.post.id, currentSortType, refresh: false),
                               onErrorButtonPressed: () async => await context1
                                   .read<CommentSectionCubit>()
-                                  .loadComments(state.post.post.id.eid, currentSortType),
+                                  .loadComments(state.post.post.id, currentSortType),
                               wontLoadMoreMessage: "You've reached the end",
 
                               stickyHeader: StickyAppbarProps(
@@ -350,7 +349,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                               verifiedUserOnly(
                                                 context,
                                                 () async => (await Provider.of<RoomsService>(context, listen: false)
-                                                        .createNewRoom(state.post.post.id.eid))
+                                                        .createNewRoom(state.post.post.id))
                                                     .fold(
                                                   (_) => router.push("/home/rooms"),
                                                   (errMsg) => context.read<NotificationsCubit>().showErr(errMsg),

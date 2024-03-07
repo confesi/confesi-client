@@ -4,8 +4,6 @@
 
 import 'dart:convert';
 
-import 'package:confesi/models/encrypted_id.dart';
-
 NotificationLog notificationLogFromJson(String str) => NotificationLog.fromJson(json.decode(str));
 
 String notificationLogToJson(NotificationLog data) => json.encode(data.toJson());
@@ -31,7 +29,7 @@ class NotificationLog {
 }
 
 class ServerNoti {
-  EncryptedId id;
+  String id;
   String title;
   String body;
   Map<String, dynamic> data;
@@ -48,7 +46,7 @@ class ServerNoti {
   });
 
   factory ServerNoti.fromJson(Map<String, dynamic> j) => ServerNoti(
-        id: EncryptedId.fromJson(j["id"]),
+        id: j["id"],
         title: j["title"],
         body: j["body"],
         data: Map.fromEntries(

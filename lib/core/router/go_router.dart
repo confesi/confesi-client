@@ -11,7 +11,6 @@ import 'package:confesi/presentation/notifications/screens/home.dart';
 import 'package:confesi/presentation/authentication_and_settings/screens/authentication/open.dart';
 import 'package:confesi/presentation/user/screens/saved_comments.dart';
 import 'package:confesi/presentation/user/screens/your_comments.dart';
-import '../../models/encrypted_id.dart';
 import '../../presentation/authentication_and_settings/screens/authentication/reset_password.dart';
 import '../../presentation/authentication_and_settings/screens/settings/contact.dart';
 import '../../presentation/authentication_and_settings/screens/settings/faq.dart';
@@ -283,7 +282,7 @@ final GoRouter router = GoRouter(
 );
 
 class HomePostsSentimentProps {
-  final EncryptedId postId;
+  final String postId;
   const HomePostsSentimentProps(this.postId);
 }
 
@@ -347,7 +346,7 @@ class GenericPost {}
 class EditedPost extends GenericPost {
   final String title;
   final String body;
-  final EncryptedId id;
+  final String id;
 
   EditedPost(this.title, this.body, this.id);
 }

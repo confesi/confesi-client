@@ -9,7 +9,6 @@ import 'package:provider/provider.dart';
 
 import '../../../core/services/global_content/global_content.dart';
 import '../../../init.dart';
-import '../../../models/encrypted_id.dart';
 import '../../../models/school_with_metadata.dart';
 
 part 'schools_drawer_state.dart';
@@ -44,18 +43,15 @@ class SchoolsDrawerCubit extends Cubit<SchoolsDrawerState> {
     }
   }
 
-  Future<void> getAndSetRandomSchool(EncryptedId? withoutSchoolId) async {
+  Future<void> getAndSetRandomSchool(String? withoutSchoolId) async {
     if (state is SchoolsDrawerData) {
       final s = state as SchoolsDrawerData;
       final newState = s.copyWith(isLoadingRandomSchool: true);
       emit(newState);
       _api.cancelCurrReq();
       print("HERE!!");
-      (await _api.req(
-              Verb.get,
-              true,
-              "/api/v1/schools/random${withoutSchoolId != null ? "?without-school=${withoutSchoolId.eid}" : ''}",
-              {}))
+      (await _api.req(Verb.get, true,
+              "/api/v1/schools/random${withoutSchoolId != null ? "?without-school=$withoutSchoolId" : ''}", {}))
           .fold(
         (failureWithMsg) =>
             emit(s.copyWith(possibleErr: SchoolsDrawerErr(failureWithMsg.msg()), isLoadingRandomSchool: false)),

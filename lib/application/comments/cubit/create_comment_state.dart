@@ -3,8 +3,8 @@ part of 'create_comment_cubit.dart';
 abstract class PossibleReply extends Equatable {}
 
 class ReplyingToUser extends PossibleReply {
-  final EncryptedId replyingToCommentId;
-  final EncryptedId rootCommentIdReplyingUnder;
+  final String replyingToCommentId;
+  final String rootCommentIdReplyingUnder;
   final String identifier;
   final bool currentlyFocusingRoot;
 

@@ -11,7 +11,6 @@ import 'package:flutter/cupertino.dart';
 import '../../../constants/shared/constants.dart';
 import '../../../core/services/api_client/api.dart';
 import '../../../init.dart';
-import '../../../models/encrypted_id.dart';
 
 part 'leaderboard_state.dart';
 

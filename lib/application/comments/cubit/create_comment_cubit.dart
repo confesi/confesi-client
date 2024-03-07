@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:confesi/models/encrypted_id.dart';
 import 'package:equatable/equatable.dart';
 
 part 'create_comment_state.dart';

@@ -18,7 +18,7 @@ final class NotiServerError extends NotiServerState {
 }
 
 final class NotiServerData extends NotiServerState {
-  final List<EncryptedId> notificationIds;
+  final List<String> notificationIds;
   final NotiServerFeedState feedState;
   final int? next;
 
@@ -28,7 +28,7 @@ final class NotiServerData extends NotiServerState {
 
   // copyWith method
   NotiServerData copyWith({
-    List<EncryptedId>? notificationIds,
+    List<String>? notificationIds,
     NotiServerFeedState? feedState,
     int? next,
   }) {

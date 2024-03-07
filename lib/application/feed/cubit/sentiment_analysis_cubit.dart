@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
-import 'package:confesi/models/encrypted_id.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../core/services/api_client/api.dart';
@@ -12,9 +11,9 @@ part 'sentiment_analysis_state.dart';
 class SentimentAnalysisCubit extends Cubit<SentimentAnalysisState> {
   SentimentAnalysisCubit() : super(SentimentAnalysisLoading());
 
-  Future<void> loadSentimentAnalysis(EncryptedId postId) async {
+  Future<void> loadSentimentAnalysis(String postId) async {
     emit(SentimentAnalysisLoading());
-    (await Api().req(Verb.get, true, "/api/v1/posts/sentiment?id=${postId.eid}", {})).fold(
+    (await Api().req(Verb.get, true, "/api/v1/posts/sentiment?id=$postId", {})).fold(
       (failure) => emit(SentimentAnalysisError(failure.msg())),
       (response) {
         try {

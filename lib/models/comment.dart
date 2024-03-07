@@ -4,8 +4,6 @@
 
 import 'dart:convert';
 
-import 'encrypted_id.dart';
-
 List<CommentGroup> commentFromJson(String str) =>
     List<CommentGroup>.from(json.decode(str).map((x) => CommentGroup.fromJson(x)));
 
@@ -89,15 +87,15 @@ class CommentWithMetadata {
 }
 
 class Comment {
-  EncryptedId id;
+  String id;
   int createdAt;
   int updatedAt;
-  EncryptedId postId;
+  String postId;
   int? numericalUser;
   int? numericalReplyingUser;
   bool numericalUserIsOp;
   bool numericalReplyingUserIsOp;
-  EncryptedId? parentRootId;
+  String? parentRootId;
   int childrenCount;
   String content;
   int downvote;
@@ -126,15 +124,15 @@ class Comment {
   });
 
   factory Comment.fromJson(Map<String, dynamic> json) => Comment(
-        id: EncryptedId.fromJson(json["id"]),
+        id: json["id"],
         createdAt: json["created_at"],
         updatedAt: json["updated_at"],
-        postId: EncryptedId.fromJson(json["post_id"]),
+        postId: json["post_id"],
         numericalUser: json["numerical_user"],
         numericalReplyingUser: json["numerical_replying_user"],
         numericalUserIsOp: json["numerical_user_is_op"],
         numericalReplyingUserIsOp: json["numerical_replying_user_is_op"],
-        parentRootId: json["parent_root_id"] == null ? null : EncryptedId.fromJson(json["parent_root_id"]),
+        parentRootId: json["parent_root_id"],
         childrenCount: json["children_count"],
         content: json["content"],
         downvote: json["downvote"],
@@ -145,15 +143,15 @@ class Comment {
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id.toJson(),
+        "id": id,
         "created_at": createdAt,
         "updated_at": updatedAt,
-        "post_id": postId.toJson(),
+        "post_id": postId,
         "numerical_user": numericalUser,
         "numerical_replying_user": numericalReplyingUser,
         "numerical_user_is_op": numericalUserIsOp,
         "numerical_replying_user_is_op": numericalReplyingUserIsOp,
-        "parent_root_id": parentRootId?.toJson(),
+        "parent_root_id": parentRootId,
         "children_count": childrenCount,
         "content": content,
         "downvote": downvote,
@@ -165,15 +163,15 @@ class Comment {
 
   // copyWith method
   Comment copyWith({
-    EncryptedId? id,
+    String? id,
     int? createdAt,
     int? updatedAt,
-    EncryptedId? postId,
+    String? postId,
     int? numericalUser,
     int? numericalReplyingUser,
     bool? numericalUserIsOp,
     bool? numericalReplyingUserIsOp,
-    EncryptedId? parentRootId,
+    String? parentRootId,
     int? childrenCount,
     String? content,
     int? downvote,
