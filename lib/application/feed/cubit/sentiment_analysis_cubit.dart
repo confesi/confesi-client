@@ -14,7 +14,7 @@ class SentimentAnalysisCubit extends Cubit<SentimentAnalysisState> {
 
   Future<void> loadSentimentAnalysis(EncryptedId postId) async {
     emit(SentimentAnalysisLoading());
-    (await Api().req(Verb.get, true, "/api/v1/posts/sentiment?id=${postId.mid}", {})).fold(
+    (await Api().req(Verb.get, true, "/api/v1/posts/sentiment?id=${postId.eid}", {})).fold(
       (failure) => emit(SentimentAnalysisError(failure.msg())),
       (response) {
         try {

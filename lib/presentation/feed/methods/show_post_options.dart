@@ -32,7 +32,7 @@ void buildOptionsSheet(BuildContext context, PostWithMetadata post, {bool showSa
         icon: CupertinoIcons.chat_bubble_2_fill,
         onTap: () async => verifiedUserOnly(
           context,
-          () async => (await Provider.of<RoomsService>(context, listen: false).createNewRoom(post.post.id.mid)).fold(
+          () async => (await Provider.of<RoomsService>(context, listen: false).createNewRoom(post.post.id.eid)).fold(
             (_) => router.push("/home/rooms"),
             (errMsg) => context.read<NotificationsCubit>().showErr(errMsg),
           ),

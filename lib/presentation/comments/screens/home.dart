@@ -56,11 +56,11 @@ class _CommentScreenState extends State<CommentScreen> {
     } else if (widget.props.postLoadType is PreloadedPost && refresh) {
       await context
           .read<IndividualPostCubit>()
-          .loadPost((widget.props.postLoadType as PreloadedPost).post.post.id.mid)
+          .loadPost((widget.props.postLoadType as PreloadedPost).post.post.id.eid)
           .then((value) {
         // load comments
         context.read<CommentSectionCubit>().loadComments(
-            (widget.props.postLoadType as PreloadedPost).post.post.id.mid, currentSortType,
+            (widget.props.postLoadType as PreloadedPost).post.post.id.eid, currentSortType,
             refresh: true);
       });
     } else {
@@ -103,7 +103,7 @@ class _CommentScreenState extends State<CommentScreen> {
               context.read<CommentSectionCubit>().clear();
               setState(() => currentSortType = newSort);
               context.read<CommentSectionCubit>().loadComments(
-                  (context.read<IndividualPostCubit>().state as IndividualPostData).post.post.id.mid, newSort,
+                  (context.read<IndividualPostCubit>().state as IndividualPostData).post.post.id.eid, newSort,
                   refresh: true);
             },
           ),
@@ -153,7 +153,7 @@ class _CommentScreenState extends State<CommentScreen> {
       final rootCommentId = commentIds.keys.first;
       final rootCommentIdsList = commentIds[rootCommentId]!;
 
-      final rootCommentIdEncrypted = EncryptedId(uid: rootCommentId, mid: '');
+      final rootCommentIdEncrypted = EncryptedId(eid: rootCommentId);
       final rootComment = commentSet[rootCommentIdEncrypted];
 
       if (rootComment == null) continue;
@@ -183,7 +183,7 @@ class _CommentScreenState extends State<CommentScreen> {
 
           commentWidgets.add(
             InfiniteScrollIndexable(
-              commentId.uid,
+              commentId.eid,
               CommentTile(
                 postCreatedAtTime: post.post.createdAt,
                 commentSheetController: commentSheetController,
@@ -256,7 +256,7 @@ class _CommentScreenState extends State<CommentScreen> {
                 child: BlocConsumer<IndividualPostCubit, IndividualPostState>(
                   listener: (contextL, state) {
                     if (state is IndividualPostData) {
-                      contextL.read<CommentSectionCubit>().loadComments(state.post.post.id.mid, currentSortType);
+                      contextL.read<CommentSectionCubit>().loadComments(state.post.post.id.eid, currentSortType);
                     }
                   },
                   builder: (context1, state) {
@@ -283,7 +283,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                 // ensure I won't need to look up deactivated widget's ancestor
                                 if (mounted) {
                                   await context.read<CommentSectionCubit>().loadComments(
-                                      state.post.post.id.mid, currentSortType,
+                                      state.post.post.id.eid, currentSortType,
                                       refresh: feedController.items.isEmpty);
                                 }
                               },
@@ -298,10 +298,10 @@ class _CommentScreenState extends State<CommentScreen> {
                               wontLoadMore: state2.paginationState == CommentFeedState.end,
                               onWontLoadMoreButtonPressed: () async => await context1
                                   .read<CommentSectionCubit>()
-                                  .loadComments(state.post.post.id.mid, currentSortType, refresh: false),
+                                  .loadComments(state.post.post.id.eid, currentSortType, refresh: false),
                               onErrorButtonPressed: () async => await context1
                                   .read<CommentSectionCubit>()
-                                  .loadComments(state.post.post.id.mid, currentSortType),
+                                  .loadComments(state.post.post.id.eid, currentSortType),
                               wontLoadMoreMessage: "You've reached the end",
 
                               stickyHeader: StickyAppbarProps(
@@ -350,7 +350,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                               verifiedUserOnly(
                                                 context,
                                                 () async => (await Provider.of<RoomsService>(context, listen: false)
-                                                        .createNewRoom(state.post.post.id.mid))
+                                                        .createNewRoom(state.post.post.id.eid))
                                                     .fold(
                                                   (_) => router.push("/home/rooms"),
                                                   (errMsg) => context.read<NotificationsCubit>().showErr(errMsg),

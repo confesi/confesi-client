@@ -95,7 +95,7 @@ class CreatingEditingPostsService extends ChangeNotifier {
     notifyListeners();
     _api.setMultipart(false);
     final response = await _api.req(Verb.patch, true, "/api/v1/posts/edit", {
-      "post_id": id.mid,
+      "post_id": id.eid,
       "title": title,
       "body": body,
     });

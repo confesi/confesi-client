@@ -102,28 +102,30 @@ class Post {
     required this.imgUrls,
   });
 
-  factory Post.fromJson(Map<String, dynamic> json) => Post(
-        id: EncryptedId.fromJson(json["id"]),
-        createdAt: json["created_at"],
-        updatedAt: json["updated_at"],
-        school: School.fromJson(json["school"]),
-        faculty: Faculty.fromJson(json["faculty"]),
-        yearOfStudy: YearOfStudy.fromJson(json["year_of_study"]),
-        title: json["title"],
-        content: json["content"],
-        downvote: json["downvote"],
-        chatPost: json["chat_post"],
-        upvote: json["upvote"],
-        trendingScore: json["trending_score"],
-        // hottestOn is dateTime, or null
-        hottestOn: json["hottest_on"] == null ? null : DateTime.parse(json["hottest_on"]).toLocal(),
-        hidden: json["hidden"],
-        sentiment: json["sentiment"],
-        edited: json["edited"],
-        category: Category.fromJson(json["category"]),
-        commentCount: json["comment_count"],
-        imgUrls: json.containsKey("img_urls") && json["img_urls"] != null
-            ? List<String>.from(json["img_urls"].map((x) => x.toString()))
-            : [],
-      );
+  factory Post.fromJson(Map<String, dynamic> json) {
+    return Post(
+      id: EncryptedId.fromJson(json["id"]),
+      createdAt: json["created_at"],
+      updatedAt: json["updated_at"],
+      school: School.fromJson(json["school"]),
+      faculty: Faculty.fromJson(json["faculty"]),
+      yearOfStudy: YearOfStudy.fromJson(json["year_of_study"]),
+      title: json["title"],
+      content: json["content"],
+      downvote: json["downvote"],
+      chatPost: json["chat_post"],
+      upvote: json["upvote"],
+      trendingScore: json["trending_score"],
+      // hottestOn is dateTime, or null
+      hottestOn: json["hottest_on"] == null ? null : DateTime.parse(json["hottest_on"]).toLocal(),
+      hidden: json["hidden"],
+      sentiment: json["sentiment"],
+      edited: json["edited"],
+      category: Category.fromJson(json["category"]),
+      commentCount: json["comment_count"],
+      imgUrls: json.containsKey("img_urls") && json["img_urls"] != null
+          ? List<String>.from(json["img_urls"].map((x) => x.toString()))
+          : [],
+    );
+  }
 }

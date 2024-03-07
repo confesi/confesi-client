@@ -51,8 +51,11 @@ class SchoolsDrawerCubit extends Cubit<SchoolsDrawerState> {
       emit(newState);
       _api.cancelCurrReq();
       print("HERE!!");
-      (await _api.req(Verb.get, true,
-              "/api/v1/schools/random${withoutSchoolId != null ? "?without-school=${withoutSchoolId.mid}" : ''}", {}))
+      (await _api.req(
+              Verb.get,
+              true,
+              "/api/v1/schools/random${withoutSchoolId != null ? "?without-school=${withoutSchoolId.eid}" : ''}",
+              {}))
           .fold(
         (failureWithMsg) =>
             emit(s.copyWith(possibleErr: SchoolsDrawerErr(failureWithMsg.msg()), isLoadingRandomSchool: false)),

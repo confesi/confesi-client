@@ -8,46 +8,23 @@ EncryptedId encryptedIdFromJson(String str) => EncryptedId.fromJson(json.decode(
 
 String encryptedIdToJson(EncryptedId data) => json.encode(data.toJson());
 
-class EncryptedId implements Comparable<EncryptedId> {
-  /// unique id (used for CLIENT unique checking)
-  String uid;
-
-  /// masked id (this is for SERVER communication)
-  String mid;
+class EncryptedId {
+  String eid;
 
   EncryptedId({
-    required this.uid,
-    required this.mid,
+    required this.eid,
   });
 
-  factory EncryptedId.fromJson(Map<String, dynamic> json) => EncryptedId(
-        uid: json["hash"],
-        mid: json["masked"],
+  factory EncryptedId.fromJson(String json) => EncryptedId(
+        eid: json,
       );
 
   Map<String, dynamic> toJson() => {
-        "hash": uid,
-        "masked": mid,
+        "id": eid,
       };
 
   @override
-  int get hashCode => uid.hashCode;
-
-  @override
-  bool operator ==(Object other) {
-    if (other is EncryptedId) {
-      return uid == other.uid;
-    }
-    return false;
-  }
-
-  @override
-  int compareTo(EncryptedId other) {
-    return uid.compareTo(other.uid);
-  }
-
-  @override
   String toString() {
-    return 'EncryptedId{uid: $uid, mid: $mid}';
+    return eid;
   }
 }

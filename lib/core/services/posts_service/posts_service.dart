@@ -35,7 +35,7 @@ class PostsService extends ChangeNotifier {
   Future<Either<ApiSuccess, String>> deletePost(PostWithMetadata post) async {
     final oldPost = post;
     sl.get<GlobalContentService>().removePost(oldPost.post.id);
-    return (await Api().req(Verb.patch, true, "/api/v1/posts/hide", {"post_id": post.post.id.mid})).fold(
+    return (await Api().req(Verb.patch, true, "/api/v1/posts/hide", {"post_id": post.post.id.eid})).fold(
       (failureWithMsg) {
         sl.get<GlobalContentService>().setPost(oldPost);
         return Right(failureWithMsg.msg());
@@ -199,7 +199,7 @@ class PostsService extends ChangeNotifier {
       {
         "purge_cache": refresh,
         "sort": _sort(feedType),
-        "school_id": selectedType is SelectedSchool ? selectedType.id.mid : null,
+        "school_id": selectedType is SelectedSchool ? selectedType.id.eid : null,
         "session_key": _sessionKey(feedType),
         "all_schools": selectedType is SelectedAll,
       },
@@ -216,7 +216,6 @@ class PostsService extends ChangeNotifier {
             final posts =
                 (json.decode(response.body)["value"] as List).map((i) => PostWithMetadata.fromJson(i)).toList();
             _addIdsToList(feedType, posts.map((e) => e.post.id).toList());
-
             sl.get<GlobalContentService>().setPosts(posts);
 
             if (posts.length < postsPageSize) {
@@ -228,9 +227,11 @@ class PostsService extends ChangeNotifier {
             }
           } else {
             // failure
+            print("Error1: ${response.body}");
             _updateFeedState(feedType, PaginationState.error);
           }
         } catch (e) {
+          print("Error2: $e");
           _updateFeedState(feedType, PaginationState.error);
         }
         notifyListeners();

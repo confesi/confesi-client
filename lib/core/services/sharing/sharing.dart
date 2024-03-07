@@ -27,7 +27,7 @@ class Sharing {
     try {
       File file = await _screenshotPost(context, post);
       Share.shareXFiles([XFile(file.path)],
-          text: "🚀 Check out this confession! https://confesi.com/p/${post.post.id.mid}",
+          text: "🚀 Check out this confession! https://confesi.com/p/${post.post.id.eid}",
           subject: "Confesi"); // todo: make dynamic
       return Right(ApiSuccess());
     } catch (_) {
