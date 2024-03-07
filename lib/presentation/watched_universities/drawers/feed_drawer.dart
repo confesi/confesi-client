@@ -179,8 +179,8 @@ class _FeedDrawerState extends State<FeedDrawer> {
                 begin: Alignment.bottomLeft,
                 end: Alignment.topRight,
                 colors: [
-                  Theme.of(context).colorScheme.tertiary,
-                  Theme.of(context).colorScheme.tertiary,
+                  Theme.of(context).colorScheme.secondary,
+                  Theme.of(context).colorScheme.secondary,
                 ],
               ),
             ),

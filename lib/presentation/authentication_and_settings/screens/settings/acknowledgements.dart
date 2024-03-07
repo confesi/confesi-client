@@ -57,12 +57,20 @@ class _AcknowledgementsScreenState extends State<AcknowledgementsScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         TileGroup(
-                          text: "Developers",
+                          text: "Developers (past & present)",
                           tiles: [
                             TextStatTile(
                               leftText: "Matthew Trent",
-                              rightText: "Founder",
                               onTap: () => context.read<QuickActionsCubit>().launchWebsite("https://matthewtrent.me"),
+                            ),
+                            TextStatTile(
+                              leftText: "Ryan O'Hara",
+                              onTap: () =>
+                                  context.read<QuickActionsCubit>().launchWebsite("https://github.com/minitech"),
+                            ),
+                            TextStatTile(
+                              leftText: "Hal Nguyen",
+                              onTap: () => context.read<QuickActionsCubit>().launchWebsite("https://haln.dev/"),
                             ),
                             TextStatTile(
                               leftText: "Chris Huk",

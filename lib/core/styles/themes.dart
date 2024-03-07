@@ -11,7 +11,7 @@ class AppTheme {
       onSurfaceVariant: Color.fromARGB(220, 239, 239, 239),
       surfaceVariant: Color.fromARGB(255, 23, 23, 23),
       brightness: Brightness.dark,
-      primary: Color.fromARGB(255, 181, 191, 217),
+      primary: Color.fromARGB(255, 229, 233, 243),
       onPrimary: Color(0xff333333),
       secondary: Color.fromARGB(255, 247, 95, 95),
       onSecondary: Color.fromARGB(255, 247, 230, 230),

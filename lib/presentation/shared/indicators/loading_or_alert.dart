@@ -47,22 +47,24 @@ class LoadingOrAlert extends StatelessWidget {
                         duration: const Duration(milliseconds: 250),
                         scale: isLoading ? 1 : 0,
                         child: SizedBox(
-                          height: 60,
-                          width: 60,
+                          height: 45,
+                          width: 45,
                           child: isLogo
                               ? Bobbing(
-                                  bobbing: false,
                                   child: AspectRatio(
                                     aspectRatio: 1,
-                                    child: Container(
-                                      constraints: const BoxConstraints(maxHeight: 20),
-                                      padding: const EdgeInsets.all(10),
-                                      decoration: BoxDecoration(
-                                        color: Theme.of(context).colorScheme.tertiary,
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: Image.asset(
-                                        walrusHeadImgPath,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(300.0),
+                                      child: Container(
+                                        constraints: const BoxConstraints(maxHeight: 20),
+                                        padding: const EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                          color: Theme.of(context).colorScheme.tertiary,
+                                        ),
+                                        child: Image.asset(
+                                          walrusHeadImgPath,
+                                          fit: BoxFit.contain,
+                                        ),
                                       ),
                                     ),
                                   ),

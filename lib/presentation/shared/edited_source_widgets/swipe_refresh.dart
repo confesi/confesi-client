@@ -560,11 +560,10 @@ class SwipeRefreshState extends State<SwipeRefresh> with TickerProviderStateMixi
                         padding: const EdgeInsets.only(bottom: 15),
                         child: InitScale(
                           child: Bobbing(
-                            bobbing: false,
                             child: Container(
-                              width: 60,
-                              height: 60,
-                              padding: const EdgeInsets.all(10),
+                              width: 45,
+                              height: 45,
+                              padding: const EdgeInsets.all(8),
                               decoration: BoxDecoration(
                                 color: Theme.of(context).colorScheme.tertiary,
                                 shape: BoxShape.circle,

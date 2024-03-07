@@ -11,18 +11,12 @@ class LoadingCupertinoIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FittedBox(
-      // TODO: Wrap with an initScale?
-      fit: BoxFit.scaleDown,
-      child: Container(
-        width: 20,
-        height: 20,
-        decoration: const BoxDecoration(
-          shape: BoxShape.circle,
-        ),
-        child: CupertinoActivityIndicator(
-          color: color ?? Theme.of(context).colorScheme.primary,
-        ),
+    return Container(
+      width: 10,
+      height: 10,
+      decoration: const BoxDecoration(shape: BoxShape.circle),
+      child: CupertinoActivityIndicator(
+        color: color ?? Theme.of(context).colorScheme.primary,
       ),
     );
   }

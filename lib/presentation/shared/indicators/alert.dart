@@ -37,14 +37,14 @@ class AlertIndicator extends StatelessWidget {
               child: isLoading
                   ? isLogo
                       ? SizedBox(
-                          width: 60,
-                          height: 60,
+                          width: 45,
+                          height: 45,
                           child: Bobbing(
                             child: AspectRatio(
                               aspectRatio: 1,
                               child: Container(
                                 constraints: const BoxConstraints(maxHeight: 20),
-                                padding: const EdgeInsets.all(10),
+                                padding: const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
                                   color: Theme.of(context).colorScheme.tertiary,
                                   shape: BoxShape.circle,

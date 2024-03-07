@@ -124,7 +124,7 @@ IconData postCategoryToIcon(String category) {
 }
 
 String genRandomEmoji(String? notThisOne) {
-  List<String> emojis = ['🔥', '👀', '❤️', '🚀', '✨', '😈', '🥂'];
+  List<String> emojis = ['👀', '❤️', '🚀', '😈', '💀'];
   if (notThisOne != null) {
     emojis.remove(notThisOne);
   }

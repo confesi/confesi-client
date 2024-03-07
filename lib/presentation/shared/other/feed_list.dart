@@ -297,6 +297,7 @@ class _FeedListState extends State<FeedList> {
                       // Scrolling has stopped.
                       if (widget.onScrollChange != null) widget.onScrollChange!(false);
                     }
+                    setState(() {});
                     return false; // Returning false means the notification will continue to be dispatched to further ancestors.
                   },
                   child: ScrollablePositionedList.builder(
@@ -308,15 +309,12 @@ class _FeedListState extends State<FeedList> {
                       if (index == 0) {
                         return Padding(
                           padding: EdgeInsets.only(
+                              top: widget.topPushdownOffsetAboveHeader,
                               bottom:
                                   widget.stickyHeader != null ? widget.topPushdownOffset : widget.topPushdownOffset),
-                          child: Padding(
-                            padding: EdgeInsets.only(top: widget.topPushdownOffsetAboveHeader),
-                            child: widget.header ?? const SizedBox(),
-                          ),
+                          child: widget.header ?? const SizedBox(),
                         );
                       }
-
                       if (!widget.hasError &&
                           widget.controller.items.isEmpty &&
                           !isCurrentlyLoadingMore &&
@@ -359,7 +357,10 @@ class _FeedListState extends State<FeedList> {
             opacity: offsetBuildback / widget.stickyHeader!.height,
             child: Transform.translate(
               offset: Offset(0, -stickyOffset),
-              child: SizedBox(height: widget.stickyHeader!.height, child: widget.stickyHeader!.child),
+              child: SizedBox(
+                height: widget.stickyHeader!.height,
+                child: widget.stickyHeader!.child,
+              ),
             ),
           ),
       ],
