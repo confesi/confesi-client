@@ -38,6 +38,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   final FeedListController trendingFeedListController = FeedListController();
   final FeedListController sentimentFeedListController = FeedListController();
 
+  bool navHidden = false; // todo: revisit
+
   @override
   void initState() {
     if (!sl.get<UserAuthService>().isUserAnon) {
@@ -94,7 +96,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           ),
           bottomNavigationBar: SafeArea(
             top: false,
+            bottom: !navHidden,
             child: Container(
+              height: navHidden ? 0 : null,
               decoration: BoxDecoration(
                 border: Border(
                   top: BorderSide(

@@ -1,4 +1,4 @@
-<?xml version="1.0" ?>
+<?xml version='1.0' encoding='utf-8'?>
 <!--
  * Copyright (C) 2009 The Android Open Source Project
  *
@@ -15,20 +15,19 @@
  * limitations under the License.
 -->
 <addon:sdk-addon xmlns:addon="http://schemas.android.com/sdk/android/repo/addon2/03" xmlns:sdk="http://schemas.android.com/repository/android/common/02" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<!--Generated on 2023-10-03 18:31:22.512082 with ADRT.-->
-	<license id="android-sdk-license" type="text">Terms and Conditions
+  <license id="android-sdk-license" type="text">Terms and Conditions
 
 This is the Android Software Development Kit License Agreement
 
 1. Introduction
 
-1.1 The Android Software Development Kit (referred to in the License Agreement as the &quot;SDK&quot; and specifically including the Android system files, packaged APIs, and Google APIs add-ons) is licensed to you subject to the terms of the License Agreement. The License Agreement forms a legally binding contract between you and Google in relation to your use of the SDK.
+1.1 The Android Software Development Kit (referred to in the License Agreement as the "SDK" and specifically including the Android system files, packaged APIs, and Google APIs add-ons) is licensed to you subject to the terms of the License Agreement. The License Agreement forms a legally binding contract between you and Google in relation to your use of the SDK.
 
-1.2 &quot;Android&quot; means the Android software stack for devices, as made available under the Android Open Source Project, which is located at the following URL: http://source.android.com/, as updated from time to time.
+1.2 "Android" means the Android software stack for devices, as made available under the Android Open Source Project, which is located at the following URL: http://source.android.com/, as updated from time to time.
 
-1.3 A &quot;compatible implementation&quot; means any Android device that (i) complies with the Android Compatibility Definition document, which can be found at the Android compatibility website (http://source.android.com/compatibility) and which may be updated from time to time; and (ii) successfully passes the Android Compatibility Test Suite (CTS).
+1.3 A "compatible implementation" means any Android device that (i) complies with the Android Compatibility Definition document, which can be found at the Android compatibility website (http://source.android.com/compatibility) and which may be updated from time to time; and (ii) successfully passes the Android Compatibility Test Suite (CTS).
 
-1.4 &quot;Google&quot; means Google Inc., a Delaware corporation with principal place of business at 1600 Amphitheatre Parkway, Mountain View, CA 94043, United States.
+1.4 "Google" means Google Inc., a Delaware corporation with principal place of business at 1600 Amphitheatre Parkway, Mountain View, CA 94043, United States.
 
 
 2. Accepting the License Agreement
@@ -48,7 +47,7 @@ This is the Android Software Development Kit License Agreement
 
 3.2 You may not use this SDK to develop applications for other platforms (including non-compatible implementations of Android) or to develop another SDK. You are of course free to develop applications for other platforms, including non-compatible implementations of Android, provided that this SDK is not used for that purpose.
 
-3.3 You agree that Google or third parties own all legal right, title and interest in and to the SDK, including any Intellectual Property Rights that subsist in the SDK. &quot;Intellectual Property Rights&quot; means any and all rights under patent law, copyright law, trade secret law, trademark law, and any and all other proprietary rights. Google reserves all rights not expressly granted to you.
+3.3 You agree that Google or third parties own all legal right, title and interest in and to the SDK, including any Intellectual Property Rights that subsist in the SDK. "Intellectual Property Rights" means any and all rights under patent law, copyright law, trade secret law, trademark law, and any and all other proprietary rights. Google reserves all rights not expressly granted to you.
 
 3.4 You may not use the SDK for any purpose not expressly permitted by the License Agreement.  Except to the extent required by applicable third party licenses, you may not copy (except for backup purposes), modify, adapt, redistribute, decompile, reverse engineer, disassemble, or create derivative works of the SDK or any part of the SDK.
 
@@ -121,7 +120,7 @@ This is the Android Software Development Kit License Agreement
 
 10. DISCLAIMER OF WARRANTIES
 
-10.1 YOU EXPRESSLY UNDERSTAND AND AGREE THAT YOUR USE OF THE SDK IS AT YOUR SOLE RISK AND THAT THE SDK IS PROVIDED &quot;AS IS&quot; AND &quot;AS AVAILABLE&quot; WITHOUT WARRANTY OF ANY KIND FROM GOOGLE.
+10.1 YOU EXPRESSLY UNDERSTAND AND AGREE THAT YOUR USE OF THE SDK IS AT YOUR SOLE RISK AND THAT THE SDK IS PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTY OF ANY KIND FROM GOOGLE.
 
 10.2 YOUR USE OF THE SDK AND ANY MATERIAL DOWNLOADED OR OTHERWISE OBTAINED THROUGH THE USE OF THE SDK IS AT YOUR OWN DISCRETION AND RISK AND YOU ARE SOLELY RESPONSIBLE FOR ANY DAMAGE TO YOUR COMPUTER SYSTEM OR OTHER DEVICE OR LOSS OF DATA THAT RESULTS FROM SUCH USE.
 
@@ -160,19 +159,20 @@ This is the Android Software Development Kit License Agreement
 14.7 The License Agreement, and your relationship with Google under the License Agreement, shall be governed by the laws of the State of California without regard to its conflict of laws provisions. You and Google agree to submit to the exclusive jurisdiction of the courts located within the county of Santa Clara, California to resolve any legal matter arising from the License Agreement. Notwithstanding this, you agree that Google shall still be allowed to apply for injunctive remedies (or an equivalent type of urgent legal relief) in any jurisdiction.
 
 
-January 16, 2019</license>
-	<license id="android-sdk-preview-license" type="text">To get started with the Android SDK Preview, you must agree to the following terms and conditions.
+January 16, 2019
+</license>
+  <license id="android-sdk-preview-license" type="text">To get started with the Android SDK Preview, you must agree to the following terms and conditions.
 As described below, please note that this is a preview version of the Android SDK, subject to change, that you use at your own risk.  The Android SDK Preview is not a stable release, and may contain errors and defects that can result in serious damage to your computer systems, devices and data.
 
-This is the Android SDK Preview License Agreement (the &quot;License Agreement&quot;).
+This is the Android SDK Preview License Agreement (the "License Agreement").
 
 1. Introduction
 
 1.1 The Android SDK Preview (referred to in the License Agreement as the “Preview” and specifically including the Android system files, packaged APIs, and Preview library files, if and when they are made available) is licensed to you subject to the terms of the License Agreement. The License Agreement forms a legally binding contract between you and Google in relation to your use of the Preview.
 
-1.2 &quot;Android&quot; means the Android software stack for devices, as made available under the Android Open Source Project, which is located at the following URL: http://source.android.com/, as updated from time to time.
+1.2 "Android" means the Android software stack for devices, as made available under the Android Open Source Project, which is located at the following URL: http://source.android.com/, as updated from time to time.
 
-1.3 &quot;Google&quot; means Google Inc., a Delaware corporation with principal place of business at 1600 Amphitheatre Parkway, Mountain View, CA 94043, United States.
+1.3 "Google" means Google Inc., a Delaware corporation with principal place of business at 1600 Amphitheatre Parkway, Mountain View, CA 94043, United States.
 
 2. Accepting the License Agreement
 
@@ -188,7 +188,7 @@ This is the Android SDK Preview License Agreement (the &quot;License Agreement&q
 
 3.1 Subject to the terms of the License Agreement, Google grants you a royalty-free, non-assignable, non-exclusive, non-sublicensable, limited, revocable license to use the Preview, personally or internally within your company or organization, solely to develop applications to run on the Android platform.
 
-3.2 You agree that Google or third parties owns all legal right, title and interest in and to the Preview, including any Intellectual Property Rights that subsist in the Preview. &quot;Intellectual Property Rights&quot; means any and all rights under patent law, copyright law, trade secret law, trademark law, and any and all other proprietary rights. Google reserves all rights not expressly granted to you.
+3.2 You agree that Google or third parties owns all legal right, title and interest in and to the Preview, including any Intellectual Property Rights that subsist in the Preview. "Intellectual Property Rights" means any and all rights under patent law, copyright law, trade secret law, trademark law, and any and all other proprietary rights. Google reserves all rights not expressly granted to you.
 
 3.3 You may not use the Preview for any purpose not expressly permitted by the License Agreement. Except to the extent required by applicable third party licenses, you may not: (a) copy (except for backup purposes), modify, adapt, redistribute, decompile, reverse engineer, disassemble, or create derivative works of the Preview or any part of the Preview; or (b) load any part of the Preview onto a mobile handset or any other hardware device except a personal computer, combine any part of the Preview with other software, or distribute any software or device incorporating a part of the Preview.
 
@@ -260,7 +260,7 @@ This is the Android SDK Preview License Agreement (the &quot;License Agreement&q
 
 10. DISCLAIMERS
 
-10.1 YOU EXPRESSLY UNDERSTAND AND AGREE THAT YOUR USE OF THE PREVIEW IS AT YOUR SOLE RISK AND THAT THE PREVIEW IS PROVIDED &quot;AS IS&quot; AND &quot;AS AVAILABLE&quot; WITHOUT WARRANTY OF ANY KIND FROM GOOGLE.
+10.1 YOU EXPRESSLY UNDERSTAND AND AGREE THAT YOUR USE OF THE PREVIEW IS AT YOUR SOLE RISK AND THAT THE PREVIEW IS PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTY OF ANY KIND FROM GOOGLE.
 
 10.2 YOUR USE OF THE PREVIEW AND ANY MATERIAL DOWNLOADED OR OTHERWISE OBTAINED THROUGH THE USE OF THE PREVIEW IS AT YOUR OWN DISCRETION AND RISK AND YOU ARE SOLELY RESPONSIBLE FOR ANY DAMAGE TO YOUR COMPUTER SYSTEM OR OTHER DEVICE OR LOSS OF DATA THAT RESULTS FROM SUCH USE. WITHOUT LIMITING THE FOREGOING, YOU UNDERSTAND THAT THE PREVIEW IS NOT A STABLE RELEASE AND MAY CONTAIN ERRORS, DEFECTS AND SECURITY VULNERABILITIES THAT CAN RESULT IN SIGNIFICANT DAMAGE, INCLUDING THE COMPLETE, IRRECOVERABLE LOSS OF USE OF YOUR COMPUTER SYSTEM OR OTHER DEVICE.
 
@@ -294,16 +294,17 @@ This is the Android SDK Preview License Agreement (the &quot;License Agreement&q
 
 14.7 The License Agreement, and your relationship with Google under the License Agreement, shall be governed by the laws of the State of California without regard to its conflict of laws provisions. You and Google agree to submit to the exclusive jurisdiction of the courts located within the county of Santa Clara, California to resolve any legal matter arising from the License Agreement. Notwithstanding this, you agree that Google shall still be allowed to apply for injunctive remedies (or an equivalent type of urgent legal relief) in any jurisdiction.
 
-June 2014.</license>
-	<license id="android-googletv-license" type="text">Terms and Conditions
+June 2014.
+</license>
+  <license id="android-googletv-license" type="text">Terms and Conditions
 
 This is the Google TV Add-on for the Android Software Development Kit License Agreement.
 
 1. Introduction
 
-1.1 The Google TV Add-on for the Android Software Development Kit (referred to in this License Agreement as the &quot;Google TV Add-on&quot; and specifically including the Android system files, packaged APIs, and Google APIs add-ons) is licensed to you subject to the terms of this License Agreement. This License Agreement forms a legally binding contract between you and Google in relation to your use of the Google TV Add-on.
+1.1 The Google TV Add-on for the Android Software Development Kit (referred to in this License Agreement as the "Google TV Add-on" and specifically including the Android system files, packaged APIs, and Google APIs add-ons) is licensed to you subject to the terms of this License Agreement. This License Agreement forms a legally binding contract between you and Google in relation to your use of the Google TV Add-on.
 
-1.2 &quot;Google&quot; means Google Inc., a Delaware corporation with principal place of business at 1600 Amphitheatre Parkway, Mountain View, CA 94043, United States.
+1.2 "Google" means Google Inc., a Delaware corporation with principal place of business at 1600 Amphitheatre Parkway, Mountain View, CA 94043, United States.
 
 2. Accepting this License Agreement
 
@@ -323,7 +324,7 @@ This is the Google TV Add-on for the Android Software Development Kit License Ag
 
 3.1 Subject to the terms of this License Agreement, Google grants you a limited, worldwide, royalty-free, non- assignable and non-exclusive license to use the Google TV Add-on solely to develop applications to run on the Google TV platform.
 
-3.2 You agree that Google or third parties own all legal right, title and interest in and to the Google TV Add-on, including any Intellectual Property Rights that subsist in the Google TV Add-on. &quot;Intellectual Property Rights&quot; means any and all rights under patent law, copyright law, trade secret law, trademark law, and any and all other proprietary rights. Google reserves all rights not expressly granted to you.
+3.2 You agree that Google or third parties own all legal right, title and interest in and to the Google TV Add-on, including any Intellectual Property Rights that subsist in the Google TV Add-on. "Intellectual Property Rights" means any and all rights under patent law, copyright law, trade secret law, trademark law, and any and all other proprietary rights. Google reserves all rights not expressly granted to you.
 
 3.3 Except to the extent required by applicable third party licenses, you may not copy (except for backup purposes), modify, adapt, redistribute, decompile, reverse engineer, disassemble, or create derivative works of the Google TV Add-on or any part of the Google TV Add-on. Except to the extent required by applicable third party licenses, you may not load any part of the Google TV Add-on onto a mobile handset, television, or any other hardware device except a personal computer, combine any part of the Google TV Add-on with other software, or distribute any software or device incorporating a part of the Google TV Add-on.
 
@@ -401,7 +402,7 @@ This is the Google TV Add-on for the Android Software Development Kit License Ag
 
 10. DISCLAIMER OF WARRANTIES
 
-10.1 YOU EXPRESSLY UNDERSTAND AND AGREE THAT YOUR USE OF THE GOOGLE TV ADD-ON IS AT YOUR SOLE RISK AND THAT THE GOOGLE TV ADD-ON IS PROVIDED &quot;AS IS&quot; AND &quot;AS AVAILABLE&quot; WITHOUT WARRANTY OF ANY KIND FROM GOOGLE.
+10.1 YOU EXPRESSLY UNDERSTAND AND AGREE THAT YOUR USE OF THE GOOGLE TV ADD-ON IS AT YOUR SOLE RISK AND THAT THE GOOGLE TV ADD-ON IS PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTY OF ANY KIND FROM GOOGLE.
 
 10.2 YOUR USE OF THE GOOGLE TV ADD-ON AND ANY MATERIAL DOWNLOADED OR OTHERWISE OBTAINED THROUGH THE USE OF THE GOOGLE TV ADD-ON IS AT YOUR OWN DISCRETION AND RISK AND YOU ARE SOLELY RESPONSIBLE FOR ANY DAMAGE TO YOUR COMPUTER SYSTEM OR OTHER DEVICE OR LOSS OF DATA THAT RESULTS FROM SUCH USE.
 
@@ -436,8 +437,9 @@ This is the Google TV Add-on for the Android Software Development Kit License Ag
 14.7 This License Agreement, and your relationship with Google under this License Agreement, shall be governed by the laws of the State of California without regard to its conflict of laws provisions. You and Google agree to submit to the exclusive jurisdiction of the courts located within the county of Santa Clara, California to resolve any legal matter arising from this License Agreement. Notwithstanding this, you agree that Google shall still be allowed to apply for injunctive remedies (or an equivalent type of urgent legal relief) in any jurisdiction.
 
 
-August 15, 2011</license>
-	<license id="google-gdk-license" type="text">This is a Developer Preview of the GDK that is subject to change.
+August 15, 2011
+</license>
+  <license id="google-gdk-license" type="text">This is a Developer Preview of the GDK that is subject to change.
 
 Terms and Conditions
 
@@ -445,14 +447,14 @@ This is the Glass Development Kit License Agreement.
 
 1. Introduction
 
-1.1 The Glass Development Kit (referred to in this License Agreement as the &quot;GDK&quot; and specifically including the Android system files, packaged APIs, and GDK library files, if and when they are made available) is licensed to you subject to the terms of this License Agreement. This License Agreement forms a legally binding contract between you and Google in relation to your use of the GDK.
+1.1 The Glass Development Kit (referred to in this License Agreement as the "GDK" and specifically including the Android system files, packaged APIs, and GDK library files, if and when they are made available) is licensed to you subject to the terms of this License Agreement. This License Agreement forms a legally binding contract between you and Google in relation to your use of the GDK.
 
-1.2 &quot;Glass&quot; means Glass devices and the Glass software stack for use on Glass devices.
+1.2 "Glass" means Glass devices and the Glass software stack for use on Glass devices.
 
 
-1.3 &quot;Android&quot; means the Android software stack for devices, as made available under the Android Open Source Project, which is located at the following URL: http://source.android.com/, as updated from time to time.
+1.3 "Android" means the Android software stack for devices, as made available under the Android Open Source Project, which is located at the following URL: http://source.android.com/, as updated from time to time.
 
-1.4 &quot;Google&quot; means Google Inc., a Delaware corporation with principal place of business at 1600 Amphitheatre Parkway, Mountain View, CA 94043, United States.
+1.4 "Google" means Google Inc., a Delaware corporation with principal place of business at 1600 Amphitheatre Parkway, Mountain View, CA 94043, United States.
 
 2. Accepting this License Agreement
 
@@ -468,7 +470,7 @@ This is the Glass Development Kit License Agreement.
 
 3.1 Subject to the terms of this License Agreement, Google grants you a limited, worldwide, royalty-free, non-assignable and non-exclusive license to use the GDK solely to develop applications to run on the Glass platform for Glass devices.
 
-3.2 You agree that Google or third parties own all legal right, title and interest in and to the GDK, including any Intellectual Property Rights that subsist in the GDK. &quot;Intellectual Property Rights&quot; means any and all rights under patent law, copyright law, trade secret law, trademark law, and any and all other proprietary rights. Google reserves all rights not expressly granted to you.
+3.2 You agree that Google or third parties own all legal right, title and interest in and to the GDK, including any Intellectual Property Rights that subsist in the GDK. "Intellectual Property Rights" means any and all rights under patent law, copyright law, trade secret law, trademark law, and any and all other proprietary rights. Google reserves all rights not expressly granted to you.
 
 3.3 You may not use the GDK for any purpose not expressly permitted by this License Agreement.  Except to the extent required by applicable third party licenses, you may not: (a) copy (except for backup purposes), modify, adapt, redistribute, decompile, reverse engineer, disassemble, or create derivative works of the GDK or any part of the GDK; or (b) load any part of the GDK onto a mobile handset or wearable computing device or any other hardware device except a Glass device personal computer, combine any part of the GDK with other software, or distribute any software or device incorporating a part of the GDK.
 
@@ -545,7 +547,7 @@ This is the Glass Development Kit License Agreement.
 
 10. DISCLAIMER OF WARRANTIES
 
-10.1 YOU EXPRESSLY UNDERSTAND AND AGREE THAT YOUR USE OF THE GDK IS AT YOUR SOLE RISK AND THAT THE GDK IS PROVIDED &quot;AS IS&quot; AND &quot;AS AVAILABLE&quot; WITHOUT WARRANTY OF ANY KIND FROM GOOGLE.
+10.1 YOU EXPRESSLY UNDERSTAND AND AGREE THAT YOUR USE OF THE GDK IS AT YOUR SOLE RISK AND THAT THE GDK IS PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTY OF ANY KIND FROM GOOGLE.
 
 10.2 YOUR USE OF THE GDK AND ANY MATERIAL DOWNLOADED OR OTHERWISE OBTAINED THROUGH THE USE OF THE GDK IS AT YOUR OWN DISCRETION AND RISK AND YOU ARE SOLELY RESPONSIBLE FOR ANY DAMAGE TO YOUR COMPUTER SYSTEM OR OTHER DEVICE OR LOSS OF DATA THAT RESULTS FROM SUCH USE.
 
@@ -579,8 +581,9 @@ This is the Glass Development Kit License Agreement.
 
 14.7 This License Agreement, and your relationship with Google under this License Agreement, shall be governed by the laws of the State of California without regard to its conflict of laws provisions. You and Google agree to submit to the exclusive jurisdiction of the courts located within the county of Santa Clara, California to resolve any legal matter arising from this License Agreement. Notwithstanding this, you agree that Google shall still be allowed to apply for injunctive remedies (or an equivalent type of urgent legal relief) in any jurisdiction.
 
-November 19, 2013</license>
-	<license id="intel-android-extra-license" type="text">Intel (R) Hardware Accelerated Execution Manager
+November 19, 2013
+</license>
+  <license id="intel-android-extra-license" type="text">Intel (R) Hardware Accelerated Execution Manager
 End-User License Agreement
 
 Copyright (c) 2012 Intel Corporation.
@@ -592,2364 +595,1957 @@ Redistribution. Redistribution and use in binary form, without modification, are
 
 2.Neither the name of Intel Corporation nor the names of its suppliers may be used to endorse or promote  products derived from this software without specific prior written permission.
 
-3.No reverse engineering, de-compilation, or disassembly of this software is permitted. Limited patent license. Intel Corporation grants a world-wide, royalty-free, non-exclusive license under  patents it now or hereafter owns or controls to make, have made, use, import, offer to sell and sell (&quot;Utilize&quot;) this software, but solely to the extent that any such patent is necessary to Utilize the  software alone. The patent license shall not apply to any combinations which include this software. No  hardware per se is licensed hereunder.
+3.No reverse engineering, de-compilation, or disassembly of this software is permitted. Limited patent license. Intel Corporation grants a world-wide, royalty-free, non-exclusive license under  patents it now or hereafter owns or controls to make, have made, use, import, offer to sell and sell ("Utilize") this software, but solely to the extent that any such patent is necessary to Utilize the  software alone. The patent license shall not apply to any combinations which include this software. No  hardware per se is licensed hereunder.
 
 DISCLAIMER.
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND ANY EXPRESS OR  IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY  DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)  HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE  POSSIBILITY OF SUCH DAMAGE.</license>
-	<channel id="channel-0">stable</channel>
-	<channel id="channel-1">beta</channel>
-	<channel id="channel-2">dev</channel>
-	<channel id="channel-3">canary</channel>
-	<remotePackage path="add-ons;addon-google_apis-google-19">
-		<!--Generated from bid:2884604, branch:git_klp-emu-release-->
-		<type-details xsi:type="addon:addonDetailsType">
-			<api-level>19</api-level>
-			<codename></codename>
-			<base-extension>true</base-extension>
-			<vendor>
-				<id>google</id>
-				<display>Google Inc.</display>
-			</vendor>
-			<tag>
-				<id>google_apis</id>
-				<display>Google APIs</display>
-			</tag>
-			<libraries>
-				<library name="com.google.android.maps" localJarPath="maps.jar">
-					<description>API for Google Maps</description>
-				</library>
-				<library name="com.android.future.usb.accessory" localJarPath="usb.jar">
-					<description>API for USB Accessories</description>
-				</library>
-				<library name="com.google.android.media.effects" localJarPath="effects.jar">
-					<description>Collection of video effects</description>
-				</library>
-			</libraries>
-		</type-details>
-		<revision>
-			<major>20</major>
-		</revision>
-		<display-name>Google APIs</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Sat Jun  2 21:21:02 2018.-->
-				<complete>
-					<size>147081</size>
-					<checksum type="sha1">5b933abe830b2f25b4c0f171d45e9e0651e56311</checksum>
-					<url>google_apis-19_r20.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="add-ons;addon-google_apis-google-24">
-		<!--Generated from bid:3249234, branch:git_nyc-emu-release-->
-		<type-details xsi:type="addon:addonDetailsType">
-			<api-level>24</api-level>
-			<codename></codename>
-			<base-extension>true</base-extension>
-			<vendor>
-				<id>google</id>
-				<display>Google Inc.</display>
-			</vendor>
-			<tag>
-				<id>google_apis</id>
-				<display>Google APIs</display>
-			</tag>
-			<libraries>
-				<library name="com.google.android.maps" localJarPath="maps.jar">
-					<description>API for Google Maps</description>
-				</library>
-				<library name="com.android.future.usb.accessory" localJarPath="usb.jar">
-					<description>API for USB Accessories</description>
-				</library>
-				<library name="com.google.android.media.effects" localJarPath="effects.jar">
-					<description>Collection of video effects</description>
-				</library>
-			</libraries>
-		</type-details>
-		<revision>
-			<major>1</major>
-		</revision>
-		<display-name>Google APIs</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Fri Jun  1 11:12:18 2018.-->
-				<complete>
-					<size>154865</size>
-					<checksum type="sha1">31361c2868f27343ee917fbd259c1463821b6145</checksum>
-					<url>google_apis-24_r1.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="add-ons;addon-google_apis-google-23">
-		<!--Generated from bid:3756122, branch:git_nyc-mr1-emu-release-->
-		<type-details xsi:type="addon:addonDetailsType">
-			<api-level>23</api-level>
-			<codename></codename>
-			<base-extension>true</base-extension>
-			<vendor>
-				<id>google</id>
-				<display>Google Inc.</display>
-			</vendor>
-			<tag>
-				<id>google_apis</id>
-				<display>Google APIs</display>
-			</tag>
-			<libraries>
-				<library name="com.google.android.maps" localJarPath="maps.jar">
-					<description>API for Google Maps</description>
-				</library>
-				<library name="com.android.future.usb.accessory" localJarPath="usb.jar">
-					<description>API for USB Accessories</description>
-				</library>
-				<library name="com.google.android.media.effects" localJarPath="effects.jar">
-					<description>Collection of video effects</description>
-				</library>
-			</libraries>
-		</type-details>
-		<revision>
-			<major>1</major>
-		</revision>
-		<display-name>Google APIs</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Wed Jun 13 03:09:06 2018.-->
-				<complete>
-					<size>154871</size>
-					<checksum type="sha1">550e83eea9513ab11c44919ac6da54b36084a9f3</checksum>
-					<url>google_apis-25_r1.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage obsolete="true" path="add-ons;addon-google_apis-google-3">
-		<!--Generated from p4 cl:12617722-->
-		<type-details xsi:type="addon:addonDetailsType">
-			<api-level>3</api-level>
-			<codename></codename>
-			<base-extension>true</base-extension>
-			<vendor>
-				<id>google</id>
-				<display>Google Inc.</display>
-			</vendor>
-			<tag>
-				<id>google_apis</id>
-				<display>Google APIs</display>
-			</tag>
-			<libraries>
-				<library name="com.google.android.maps" localJarPath="maps.jar">
-					<description>API for Google Maps</description>
-				</library>
-			</libraries>
-		</type-details>
-		<revision>
-			<major>3</major>
-		</revision>
-		<display-name>Google APIs</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Aug 17 23:48:14 2021.-->
-				<complete>
-					<size>34908058</size>
-					<checksum type="sha1">1f92abf3a76be66ae8032257fc7620acbd2b2e3a</checksum>
-					<url>google_apis-3-r03.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage obsolete="true" path="add-ons;addon-google_apis-google-4">
-		<!--Generated from p4 cl:13752552-->
-		<type-details xsi:type="addon:addonDetailsType">
-			<api-level>4</api-level>
-			<codename></codename>
-			<base-extension>true</base-extension>
-			<vendor>
-				<id>google</id>
-				<display>Google Inc.</display>
-			</vendor>
-			<tag>
-				<id>google_apis</id>
-				<display>Google APIs</display>
-			</tag>
-			<libraries>
-				<library name="com.google.android.maps" localJarPath="maps.jar">
-					<description>API for Google Maps</description>
-				</library>
-			</libraries>
-		</type-details>
-		<revision>
-			<major>2</major>
-		</revision>
-		<display-name>Google APIs</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Aug 17 23:48:17 2021.-->
-				<complete>
-					<size>42435735</size>
-					<checksum type="sha1">9b6e86d8568558de4d606a7debc4f6049608dbd0</checksum>
-					<url>google_apis-4_r02.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage obsolete="true" path="add-ons;addon-google_apis-google-5">
-		<!--Generated from p4 cl:13245770-->
-		<type-details xsi:type="addon:addonDetailsType">
-			<api-level>5</api-level>
-			<codename></codename>
-			<base-extension>true</base-extension>
-			<vendor>
-				<id>google</id>
-				<display>Google Inc.</display>
-			</vendor>
-			<tag>
-				<id>google_apis</id>
-				<display>Google APIs</display>
-			</tag>
-			<libraries>
-				<library name="com.google.android.maps" localJarPath="maps.jar">
-					<description>API for Google Maps</description>
-				</library>
-			</libraries>
-		</type-details>
-		<revision>
-			<major>1</major>
-		</revision>
-		<display-name>Google APIs</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Aug 17 23:48:19 2021.-->
-				<complete>
-					<size>49123776</size>
-					<checksum type="sha1">46eaeb56b645ee7ffa24ede8fa17f3df70db0503</checksum>
-					<url>google_apis-5_r01.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage obsolete="true" path="add-ons;addon-google_apis-google-6">
-		<!--Generated from p4 cl:13752552-->
-		<type-details xsi:type="addon:addonDetailsType">
-			<api-level>6</api-level>
-			<codename></codename>
-			<base-extension>true</base-extension>
-			<vendor>
-				<id>google</id>
-				<display>Google Inc.</display>
-			</vendor>
-			<tag>
-				<id>google_apis</id>
-				<display>Google APIs</display>
-			</tag>
-			<libraries>
-				<library name="com.google.android.maps" localJarPath="maps.jar">
-					<description>API for Google Maps</description>
-				</library>
-			</libraries>
-		</type-details>
-		<revision>
-			<major>1</major>
-		</revision>
-		<display-name>Google APIs</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Aug 17 23:48:22 2021.-->
-				<complete>
-					<size>53382941</size>
-					<checksum type="sha1">5ff545d96e031e09580a6cf55713015c7d4936b2</checksum>
-					<url>google_apis-6_r01.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage obsolete="true" path="add-ons;addon-google_apis-google-7">
-		<!--Generated from p4 cl:14140606-->
-		<type-details xsi:type="addon:addonDetailsType">
-			<api-level>7</api-level>
-			<codename></codename>
-			<base-extension>true</base-extension>
-			<vendor>
-				<id>google</id>
-				<display>Google Inc.</display>
-			</vendor>
-			<tag>
-				<id>google_apis</id>
-				<display>Google APIs</display>
-			</tag>
-			<libraries>
-				<library name="com.google.android.maps" localJarPath="maps.jar">
-					<description>API for Google Maps</description>
-				</library>
-			</libraries>
-		</type-details>
-		<revision>
-			<major>1</major>
-		</revision>
-		<display-name>Google APIs</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Aug 17 23:48:24 2021.-->
-				<complete>
-					<size>53691339</size>
-					<checksum type="sha1">2e7f91e0fe34fef7f58aeced973c6ae52361b5ac</checksum>
-					<url>google_apis-7_r01.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage obsolete="true" path="add-ons;addon-google_apis-google-8">
-		<!--Generated from p4 cl:16286500-->
-		<type-details xsi:type="addon:addonDetailsType">
-			<api-level>8</api-level>
-			<codename></codename>
-			<base-extension>true</base-extension>
-			<vendor>
-				<id>google</id>
-				<display>Google Inc.</display>
-			</vendor>
-			<tag>
-				<id>google_apis</id>
-				<display>Google APIs</display>
-			</tag>
-			<libraries>
-				<library name="com.google.android.maps" localJarPath="maps.jar">
-					<description>API for Google Maps</description>
-				</library>
-			</libraries>
-		</type-details>
-		<revision>
-			<major>2</major>
-		</revision>
-		<display-name>Google APIs</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Aug 17 23:48:27 2021.-->
-				<complete>
-					<size>59505020</size>
-					<checksum type="sha1">3079958e7ec87222cac1e6b27bc471b27bf2c352</checksum>
-					<url>google_apis-8_r02.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage obsolete="true" path="add-ons;addon-google_apis-google-9">
-		<!--Generated from p4 cl:19092731-->
-		<type-details xsi:type="addon:addonDetailsType">
-			<api-level>9</api-level>
-			<codename></codename>
-			<base-extension>true</base-extension>
-			<vendor>
-				<id>google</id>
-				<display>Google Inc.</display>
-			</vendor>
-			<tag>
-				<id>google_apis</id>
-				<display>Google APIs</display>
-			</tag>
-			<libraries>
-				<library name="com.google.android.maps" localJarPath="maps.jar">
-					<description>API for Google Maps</description>
-				</library>
-			</libraries>
-		</type-details>
-		<revision>
-			<major>2</major>
-		</revision>
-		<display-name>Google APIs</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Aug 17 23:48:30 2021.-->
-				<complete>
-					<size>63401546</size>
-					<checksum type="sha1">78664645a1e9accea4430814f8694291a7f1ea5d</checksum>
-					<url>google_apis-9_r02.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage obsolete="true" path="add-ons;addon-google_apis-google-10">
-		<!--Generated from p4 cl:21121559-->
-		<type-details xsi:type="addon:addonDetailsType">
-			<api-level>10</api-level>
-			<codename></codename>
-			<base-extension>true</base-extension>
-			<vendor>
-				<id>google</id>
-				<display>Google Inc.</display>
-			</vendor>
-			<tag>
-				<id>google_apis</id>
-				<display>Google APIs</display>
-			</tag>
-			<libraries>
-				<library name="com.google.android.maps" localJarPath="maps.jar">
-					<description>API for Google Maps</description>
-				</library>
-				<library name="com.android.future.usb.accessory" localJarPath="usb.jar">
-					<description>API for USB Accessories</description>
-				</library>
-			</libraries>
-		</type-details>
-		<revision>
-			<major>2</major>
-		</revision>
-		<display-name>Google APIs</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Aug 17 23:48:33 2021.-->
-				<complete>
-					<size>65781578</size>
-					<checksum type="sha1">cc0711857c881fa7534f90cf8cc09b8fe985484d</checksum>
-					<url>google_apis-10_r02.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage obsolete="true" path="add-ons;addon-google_apis-google-11">
-		<!--Generated from p4 cl:19633933-->
-		<type-details xsi:type="addon:addonDetailsType">
-			<api-level>11</api-level>
-			<codename></codename>
-			<base-extension>true</base-extension>
-			<vendor>
-				<id>google</id>
-				<display>Google Inc.</display>
-			</vendor>
-			<tag>
-				<id>google_apis</id>
-				<display>Google APIs</display>
-			</tag>
-			<libraries>
-				<library name="com.google.android.maps" localJarPath="maps.jar">
-					<description>API for Google Maps</description>
-				</library>
-			</libraries>
-		</type-details>
-		<revision>
-			<major>1</major>
-		</revision>
-		<display-name>Google APIs</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Aug 17 23:48:35 2021.-->
-				<complete>
-					<size>83477179</size>
-					<checksum type="sha1">5eab5e81addee9f3576d456d205208314b5146a5</checksum>
-					<url>google_apis-11_r01.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage obsolete="true" path="add-ons;addon-google_apis-google-12">
-		<!--Generated from p4 cl:21121559-->
-		<type-details xsi:type="addon:addonDetailsType">
-			<api-level>12</api-level>
-			<codename></codename>
-			<base-extension>true</base-extension>
-			<vendor>
-				<id>google</id>
-				<display>Google Inc.</display>
-			</vendor>
-			<tag>
-				<id>google_apis</id>
-				<display>Google APIs</display>
-			</tag>
-			<libraries>
-				<library name="com.google.android.maps" localJarPath="maps.jar">
-					<description>API for Google Maps</description>
-				</library>
-				<library name="com.android.future.usb.accessory" localJarPath="usb.jar">
-					<description>API for USB Accessories</description>
-				</library>
-			</libraries>
-		</type-details>
-		<revision>
-			<major>1</major>
-		</revision>
-		<display-name>Google APIs</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Aug 17 23:48:38 2021.-->
-				<complete>
-					<size>86099835</size>
-					<checksum type="sha1">e9999f4fa978812174dfeceec0721c793a636e5d</checksum>
-					<url>google_apis-12_r01.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage obsolete="true" path="add-ons;addon-google_apis-google-13">
-		<!--Generated from p4 cl:22531000-->
-		<type-details xsi:type="addon:addonDetailsType">
-			<api-level>13</api-level>
-			<codename></codename>
-			<base-extension>true</base-extension>
-			<vendor>
-				<id>google</id>
-				<display>Google Inc.</display>
-			</vendor>
-			<tag>
-				<id>google_apis</id>
-				<display>Google APIs</display>
-			</tag>
-			<libraries>
-				<library name="com.google.android.maps" localJarPath="maps.jar">
-					<description>API for Google Maps</description>
-				</library>
-				<library name="com.android.future.usb.accessory" localJarPath="usb.jar">
-					<description>API for USB Accessories</description>
-				</library>
-			</libraries>
-		</type-details>
-		<revision>
-			<major>1</major>
-		</revision>
-		<display-name>Google APIs</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Aug 17 23:48:41 2021.-->
-				<complete>
-					<size>88615525</size>
-					<checksum type="sha1">3b153edd211c27dc736c893c658418a4f9041417</checksum>
-					<url>google_apis-13_r01.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage obsolete="true" path="add-ons;addon-google_apis-google-14">
-		<!--Generated from p4 cl:26085354-->
-		<type-details xsi:type="addon:addonDetailsType">
-			<api-level>14</api-level>
-			<codename></codename>
-			<base-extension>true</base-extension>
-			<vendor>
-				<id>google</id>
-				<display>Google Inc.</display>
-			</vendor>
-			<tag>
-				<id>google_apis</id>
-				<display>Google APIs</display>
-			</tag>
-			<libraries>
-				<library name="com.google.android.maps" localJarPath="maps.jar">
-					<description>API for Google Maps</description>
-				</library>
-				<library name="com.android.future.usb.accessory" localJarPath="usb.jar">
-					<description>API for USB Accessories</description>
-				</library>
-			</libraries>
-		</type-details>
-		<revision>
-			<major>2</major>
-		</revision>
-		<display-name>Google APIs</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Aug 17 23:48:45 2021.-->
-				<complete>
-					<size>106533714</size>
-					<checksum type="sha1">f8eb4d96ad0492b4c0db2d7e4f1a1a3836664d39</checksum>
-					<url>google_apis-14_r02.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="add-ons;addon-google_apis-google-15">
-		<!--Generated from p4 cl:95160078-->
-		<type-details xsi:type="addon:addonDetailsType">
-			<api-level>15</api-level>
-			<codename></codename>
-			<base-extension>true</base-extension>
-			<vendor>
-				<id>google</id>
-				<display>Google Inc.</display>
-			</vendor>
-			<tag>
-				<id>google_apis</id>
-				<display>Google APIs</display>
-			</tag>
-			<libraries>
-				<library name="com.google.android.maps" localJarPath="maps.jar">
-					<description>API for Google Maps</description>
-				</library>
-				<library name="com.android.future.usb.accessory" localJarPath="usb.jar">
-					<description>API for USB Accessories</description>
-				</library>
-				<library name="com.google.android.media.effects" localJarPath="effects.jar">
-					<description>Collection of video effects</description>
-				</library>
-			</libraries>
-		</type-details>
-		<revision>
-			<major>3</major>
-		</revision>
-		<display-name>Google APIs</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Aug 17 23:48:48 2021.-->
-				<complete>
-					<size>106624396</size>
-					<checksum type="sha1">d0d2bf26805eb271693570a1aaec33e7dc3f45e9</checksum>
-					<url>google_apis-15_r03.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="add-ons;addon-google_apis-google-16">
-		<!--Generated from p4 cl:95160078-->
-		<type-details xsi:type="addon:addonDetailsType">
-			<api-level>16</api-level>
-			<codename></codename>
-			<base-extension>true</base-extension>
-			<vendor>
-				<id>google</id>
-				<display>Google Inc.</display>
-			</vendor>
-			<tag>
-				<id>google_apis</id>
-				<display>Google APIs</display>
-			</tag>
-			<libraries>
-				<library name="com.google.android.maps" localJarPath="maps.jar">
-					<description>API for Google Maps</description>
-				</library>
-				<library name="com.android.future.usb.accessory" localJarPath="usb.jar">
-					<description>API for USB Accessories</description>
-				</library>
-				<library name="com.google.android.media.effects" localJarPath="effects.jar">
-					<description>Collection of video effects</description>
-				</library>
-			</libraries>
-		</type-details>
-		<revision>
-			<major>4</major>
-		</revision>
-		<display-name>Google APIs</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Aug 17 23:48:51 2021.-->
-				<complete>
-					<size>127341982</size>
-					<checksum type="sha1">ee6acf1b01020bfa8a8e24725dbc4478bee5e792</checksum>
-					<url>google_apis-16_r04.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="add-ons;addon-google_apis-google-17">
-		<!--Generated from p4 cl:94805340-->
-		<type-details xsi:type="addon:addonDetailsType">
-			<api-level>17</api-level>
-			<codename></codename>
-			<base-extension>true</base-extension>
-			<vendor>
-				<id>google</id>
-				<display>Google Inc.</display>
-			</vendor>
-			<tag>
-				<id>google_apis</id>
-				<display>Google APIs</display>
-			</tag>
-			<libraries>
-				<library name="com.google.android.maps" localJarPath="maps.jar">
-					<description>API for Google Maps</description>
-				</library>
-				<library name="com.android.future.usb.accessory" localJarPath="usb.jar">
-					<description>API for USB Accessories</description>
-				</library>
-				<library name="com.google.android.media.effects" localJarPath="effects.jar">
-					<description>Collection of video effects</description>
-				</library>
-			</libraries>
-		</type-details>
-		<revision>
-			<major>4</major>
-		</revision>
-		<display-name>Google APIs</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Aug 17 23:48:55 2021.-->
-				<complete>
-					<size>137231243</size>
-					<checksum type="sha1">a076be0677f38df8ca5536b44dfb411a0c808c4f</checksum>
-					<url>google_apis-17_r04.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="add-ons;addon-google_apis-google-18">
-		<!--Generated from p4 cl:94805340-->
-		<type-details xsi:type="addon:addonDetailsType">
-			<api-level>18</api-level>
-			<codename></codename>
-			<base-extension>true</base-extension>
-			<vendor>
-				<id>google</id>
-				<display>Google Inc.</display>
-			</vendor>
-			<tag>
-				<id>google_apis</id>
-				<display>Google APIs</display>
-			</tag>
-			<libraries>
-				<library name="com.google.android.maps" localJarPath="maps.jar">
-					<description>API for Google Maps</description>
-				</library>
-				<library name="com.android.future.usb.accessory" localJarPath="usb.jar">
-					<description>API for USB Accessories</description>
-				</library>
-				<library name="com.google.android.media.effects" localJarPath="effects.jar">
-					<description>Collection of video effects</description>
-				</library>
-			</libraries>
-		</type-details>
-		<revision>
-			<major>4</major>
-		</revision>
-		<display-name>Google APIs</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Aug 17 23:48:58 2021.-->
-				<complete>
-					<size>143195183</size>
-					<checksum type="sha1">6109603409debdd40854d4d4a92eaf8481462c8b</checksum>
-					<url>google_apis-18_r04.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="add-ons;addon-google_apis-google-21">
-		<!--Generated from p4 cl:77907680-->
-		<type-details xsi:type="addon:addonDetailsType">
-			<api-level>21</api-level>
-			<codename></codename>
-			<base-extension>true</base-extension>
-			<vendor>
-				<id>google</id>
-				<display>Google Inc.</display>
-			</vendor>
-			<tag>
-				<id>google_apis</id>
-				<display>Google APIs</display>
-			</tag>
-			<libraries>
-				<library name="com.google.android.maps" localJarPath="maps.jar">
-					<description>API for Google Maps</description>
-				</library>
-				<library name="com.android.future.usb.accessory" localJarPath="usb.jar">
-					<description>API for USB Accessories</description>
-				</library>
-				<library name="com.google.android.media.effects" localJarPath="effects.jar">
-					<description>Collection of video effects</description>
-				</library>
-			</libraries>
-		</type-details>
-		<revision>
-			<major>1</major>
-		</revision>
-		<display-name>Google APIs</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Aug 17 23:49:00 2021.-->
-				<complete>
-					<size>179499</size>
-					<checksum type="sha1">66a754efb24e9bb07cc51648426443c7586c9d4a</checksum>
-					<url>google_apis-21_r01.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="add-ons;addon-google_apis-google-22">
-		<!--Generated from p4 cl:87569863-->
-		<type-details xsi:type="addon:addonDetailsType">
-			<api-level>22</api-level>
-			<codename></codename>
-			<base-extension>true</base-extension>
-			<vendor>
-				<id>google</id>
-				<display>Google Inc.</display>
-			</vendor>
-			<tag>
-				<id>google_apis</id>
-				<display>Google APIs</display>
-			</tag>
-			<libraries>
-				<library name="com.google.android.maps" localJarPath="maps.jar">
-					<description>API for Google Maps</description>
-				</library>
-				<library name="com.android.future.usb.accessory" localJarPath="usb.jar">
-					<description>API for USB Accessories</description>
-				</library>
-				<library name="com.google.android.media.effects" localJarPath="effects.jar">
-					<description>Collection of video effects</description>
-				</library>
-			</libraries>
-		</type-details>
-		<revision>
-			<major>1</major>
-		</revision>
-		<display-name>Google APIs</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Aug 17 23:49:02 2021.-->
-				<complete>
-					<size>179259</size>
-					<checksum type="sha1">5def0f42160cba8acff51b9c0c7e8be313de84f5</checksum>
-					<url>google_apis-22_r01.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="add-ons;addon-google_apis-google-23">
-		<!--Generated from p4 cl:100722913-->
-		<type-details xsi:type="addon:addonDetailsType">
-			<api-level>23</api-level>
-			<codename></codename>
-			<base-extension>true</base-extension>
-			<vendor>
-				<id>google</id>
-				<display>Google Inc.</display>
-			</vendor>
-			<tag>
-				<id>google_apis</id>
-				<display>Google APIs</display>
-			</tag>
-			<libraries>
-				<library name="com.google.android.maps" localJarPath="maps.jar">
-					<description>API for Google Maps</description>
-				</library>
-				<library name="com.android.future.usb.accessory" localJarPath="usb.jar">
-					<description>API for USB Accessories</description>
-				</library>
-				<library name="com.google.android.media.effects" localJarPath="effects.jar">
-					<description>Collection of video effects</description>
-				</library>
-			</libraries>
-		</type-details>
-		<revision>
-			<major>1</major>
-		</revision>
-		<display-name>Google APIs</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Aug 17 23:49:04 2021.-->
-				<complete>
-					<size>179900</size>
-					<checksum type="sha1">04c5cc1a7c88967250ebba9561d81e24104167db</checksum>
-					<url>google_apis-23_r01.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage obsolete="true" path="add-ons;addon-google_tv_addon-google-12">
-		<!--Generated from p4 cl:24379226-->
-		<type-details xsi:type="addon:addonDetailsType">
-			<api-level>12</api-level>
-			<codename></codename>
-			<base-extension>true</base-extension>
-			<vendor>
-				<id>google</id>
-				<display>Google Inc.</display>
-			</vendor>
-			<tag>
-				<id>google_tv_addon</id>
-				<display>Google TV Addon</display>
-			</tag>
-		</type-details>
-		<revision>
-			<major>2</major>
-		</revision>
-		<display-name>Google TV Addon</display-name>
-		<uses-license ref="android-googletv-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Aug 17 23:49:07 2021.-->
-				<complete>
-					<size>78266751</size>
-					<checksum type="sha1">92128a12e7e8b0fb5bac59153d7779b717e7b840</checksum>
-					<url>google_tv-12_r02.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage obsolete="true" path="add-ons;addon-google_tv_addon-google-13">
-		<!--Generated from p4 cl:41196280-->
-		<type-details xsi:type="addon:addonDetailsType">
-			<api-level>13</api-level>
-			<codename></codename>
-			<base-extension>true</base-extension>
-			<vendor>
-				<id>google</id>
-				<display>Google Inc.</display>
-			</vendor>
-			<tag>
-				<id>google_tv_addon</id>
-				<display>Google TV Addon</display>
-			</tag>
-		</type-details>
-		<revision>
-			<major>1</major>
-		</revision>
-		<display-name>Google TV Addon</display-name>
-		<uses-license ref="android-googletv-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Aug 17 23:49:10 2021.-->
-				<complete>
-					<size>87721879</size>
-					<checksum type="sha1">b73f7c66011ac8180b44aa4e83b8d78c66ea9a09</checksum>
-					<url>google_tv-13_r01.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="extras;android;m2repository">
-		<!--Generated from bid:3841166, branch:git_nyc-support-release-->
-		<type-details xsi:type="addon:extraDetailsType">
-			<vendor>
-				<id>android</id>
-				<display>Android</display>
-			</vendor>
-		</type-details>
-		<revision>
-			<major>47</major>
-			<minor>0</minor>
-			<micro>0</micro>
-		</revision>
-		<display-name>Android Support Repository</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Mon Jun 11 11:51:54 2018.-->
-				<complete>
-					<size>355529608</size>
-					<checksum type="sha1">a0d22beacc106a6977321f2b07d692ce4979e96a</checksum>
-					<url>android_m2repository_r47.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="extras;google;m2repository">
-		<!--Generated from p4 cl:167710051-->
-		<type-details xsi:type="addon:extraDetailsType">
-			<vendor>
-				<id>google</id>
-				<display>Google Inc.</display>
-			</vendor>
-		</type-details>
-		<revision>
-			<major>58</major>
-		</revision>
-		<display-name>Google Repository</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<dependencies>
-			<dependency path="patcher;v4"/>
-		</dependencies>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Aug 17 23:46:49 2021.-->
-				<complete>
-					<size>215426029</size>
-					<checksum type="sha1">05086add9e3a0eb1b67111108d7757a4337c3f10</checksum>
-					<url>google_m2repository_gms_v11_3_rc05_wear_2_0_5.zip</url>
-				</complete>
-				<patches>
-					<patch>
-						<based-on>
-							<major>32</major>
-						</based-on>
-						<size>100269519</size>
-						<checksum type="sha1">411d82c35613fc7f9d3b11d591e6cf82343ad27b</checksum>
-						<url>extra_p4-4380906bcba94bb75b4dfdac6e10a540798aa3f2-0b75abe6e0a4b821cf8dccd8c700c33e4e6fca19-patch.jar</url>
-					</patch>
-					<patch>
-						<based-on>
-							<major>34</major>
-						</based-on>
-						<size>92680093</size>
-						<checksum type="sha1">f4946d3a1a4d79c74c9a5045da6fec96a19776fa</checksum>
-						<url>extra_p4-e55246b5e5d8a89e0804fd9cbee182784c0a433a-0b75abe6e0a4b821cf8dccd8c700c33e4e6fca19-patch.jar</url>
-					</patch>
-					<patch>
-						<based-on>
-							<major>35</major>
-						</based-on>
-						<size>85080676</size>
-						<checksum type="sha1">68791361828f78a6da8d6a07c83257bf8cd21abe</checksum>
-						<url>extra_p4-76dfc05c1a392fc320721825468fdc97efcadf81-0b75abe6e0a4b821cf8dccd8c700c33e4e6fca19-patch.jar</url>
-					</patch>
-					<patch>
-						<based-on>
-							<major>36</major>
-						</based-on>
-						<size>84645041</size>
-						<checksum type="sha1">246891fdc4ce4304499e99478db4c1bdc9e32892</checksum>
-						<url>extra_p4-1e2610c4f428a765829f3468ae77455f196793a0-0b75abe6e0a4b821cf8dccd8c700c33e4e6fca19-patch.jar</url>
-					</patch>
-					<patch>
-						<based-on>
-							<major>38</major>
-						</based-on>
-						<size>77070343</size>
-						<checksum type="sha1">30ddc1f584b9ac79858c66b0a92a59a01c9568c9</checksum>
-						<url>extra_p4-4a9553bfb3059e02ddb0c21ddcba7128dccea402-0b75abe6e0a4b821cf8dccd8c700c33e4e6fca19-patch.jar</url>
-					</patch>
-					<patch>
-						<based-on>
-							<major>40</major>
-						</based-on>
-						<size>61915401</size>
-						<checksum type="sha1">2915ee93cb87914497be32c9e3043f89568beea7</checksum>
-						<url>extra_p4-916703b353f2a7710e25264b41eef206d56794a3-0b75abe6e0a4b821cf8dccd8c700c33e4e6fca19-patch.jar</url>
-					</patch>
-					<patch>
-						<based-on>
-							<major>41</major>
-						</based-on>
-						<size>61417268</size>
-						<checksum type="sha1">5980729b745d9f6366a7b595982ed0012fd597c8</checksum>
-						<url>extra_p4-ec09c5fd0faa01427d3c5a3dbb5e5d226a873ba0-0b75abe6e0a4b821cf8dccd8c700c33e4e6fca19-patch.jar</url>
-					</patch>
-					<patch>
-						<based-on>
-							<major>42</major>
-						</based-on>
-						<size>60891677</size>
-						<checksum type="sha1">ecdd4f2d5d72d0274b8ec9438d4b3262b1c0e735</checksum>
-						<url>extra_p4-1c24f57926cbdbcb0ae2ad5b3b9e0825a889da4f-0b75abe6e0a4b821cf8dccd8c700c33e4e6fca19-patch.jar</url>
-					</patch>
-					<patch>
-						<based-on>
-							<major>43</major>
-						</based-on>
-						<size>60360615</size>
-						<checksum type="sha1">0f749251a3b10f36e90a1d6ebb933952ed6efe14</checksum>
-						<url>extra_p4-8f5f225653fe9ed68ef321bef78b1f34c69a6db3-0b75abe6e0a4b821cf8dccd8c700c33e4e6fca19-patch.jar</url>
-					</patch>
-					<patch>
-						<based-on>
-							<major>44</major>
-						</based-on>
-						<size>52650932</size>
-						<checksum type="sha1">32a029cff3cdf114457cb6a4239c7cb8a13df726</checksum>
-						<url>extra_p4-4c4899f92d74b8814966b1660882fb9f6a854def-0b75abe6e0a4b821cf8dccd8c700c33e4e6fca19-patch.jar</url>
-					</patch>
-					<patch>
-						<based-on>
-							<major>45</major>
-						</based-on>
-						<size>44943780</size>
-						<checksum type="sha1">616cf9a3430b83d9ef0d86f38475d3418de7d029</checksum>
-						<url>extra_p4-02cf8d8c41ed955ba8e5057c56b734db341bf84c-0b75abe6e0a4b821cf8dccd8c700c33e4e6fca19-patch.jar</url>
-					</patch>
-					<patch>
-						<based-on>
-							<major>46</major>
-						</based-on>
-						<size>44405673</size>
-						<checksum type="sha1">87b87efe70e75e51de91e1603bdbac0fe046ff2f</checksum>
-						<url>extra_p4-649705d7703acfcd1682d02d1e519c65fa0d33a4-0b75abe6e0a4b821cf8dccd8c700c33e4e6fca19-patch.jar</url>
-					</patch>
-					<patch>
-						<based-on>
-							<major>47</major>
-						</based-on>
-						<size>36736897</size>
-						<checksum type="sha1">ff33f8936e6f4e9c40a5c074330f21a0a283a968</checksum>
-						<url>extra_p4-1048b0e0a588f2457d528ddde1d51c2aff69ac6a-0b75abe6e0a4b821cf8dccd8c700c33e4e6fca19-patch.jar</url>
-					</patch>
-					<patch>
-						<based-on>
-							<major>51</major>
-						</based-on>
-						<size>28369080</size>
-						<checksum type="sha1">4ca4362d8b9fecd8efb3bae60380e7d69132a8ad</checksum>
-						<url>extra_p4-3381c181c3350f58f97c864522e4e77ca1fe615e-0b75abe6e0a4b821cf8dccd8c700c33e4e6fca19-patch.jar</url>
-					</patch>
-					<patch>
-						<based-on>
-							<major>52</major>
-						</based-on>
-						<size>21665279</size>
-						<checksum type="sha1">6345aa448b5173c763e052734ebfc7ecd2c3b707</checksum>
-						<url>extra_p4-51a1256856f75a680ffa93912e445121652c0809-0b75abe6e0a4b821cf8dccd8c700c33e4e6fca19-patch.jar</url>
-					</patch>
-					<patch>
-						<based-on>
-							<major>53</major>
-						</based-on>
-						<size>21077079</size>
-						<checksum type="sha1">0d9e187650431466702caa69ffe73aaa33cf7491</checksum>
-						<url>extra_p4-a54cf73babf8f07430b1293992649760ad59d41d-0b75abe6e0a4b821cf8dccd8c700c33e4e6fca19-patch.jar</url>
-					</patch>
-					<patch>
-						<based-on>
-							<major>54</major>
-						</based-on>
-						<size>14412441</size>
-						<checksum type="sha1">df40470ab7f6ee2cfeec2d3a0c1b3600317c31ad</checksum>
-						<url>extra_p4-2d2dd3d5e0c50b8604c1563818f030d5dd240c6f-0b75abe6e0a4b821cf8dccd8c700c33e4e6fca19-patch.jar</url>
-					</patch>
-					<patch>
-						<based-on>
-							<major>55</major>
-						</based-on>
-						<size>7894617</size>
-						<checksum type="sha1">38fdee94e354bf7d8a89e469bc61eb6d52f382c7</checksum>
-						<url>extra_p4-26859cc6b7a243c801517f536221e8fb911cbf52-0b75abe6e0a4b821cf8dccd8c700c33e4e6fca19-patch.jar</url>
-					</patch>
-					<patch>
-						<based-on>
-							<major>56</major>
-						</based-on>
-						<size>7309256</size>
-						<checksum type="sha1">029fc404ce0d01722606ab544c19de5624eea5a9</checksum>
-						<url>extra_p4-b46ca19c715da987db88fbcb466580de873de384-0b75abe6e0a4b821cf8dccd8c700c33e4e6fca19-patch.jar</url>
-					</patch>
-					<patch>
-						<based-on>
-							<major>57</major>
-						</based-on>
-						<size>695154</size>
-						<checksum type="sha1">ab91f4025baa41b2fd18c9bd2b8859f289dd0745</checksum>
-						<url>extra_p4-80baaa2668d05993ee2f61d7b7d8b43c89083d91-0b75abe6e0a4b821cf8dccd8c700c33e4e6fca19-patch.jar</url>
-					</patch>
-				</patches>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="extras;google;market_licensing">
-		<!--Generated from p4 cl:28113395-->
-		<type-details xsi:type="addon:extraDetailsType">
-			<vendor>
-				<id>google</id>
-				<display></display>
-			</vendor>
-		</type-details>
-		<revision>
-			<major>1</major>
-		</revision>
-		<display-name>Google Play Licensing Library</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Aug 17 23:47:39 2021.-->
-				<complete>
-					<size>75109</size>
-					<checksum type="sha1">355e8dc304a92a5616db235af8ee7bd554356254</checksum>
-					<url>market_licensing-r02.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="extras;google;market_apk_expansion">
-		<!--Generated from p4 cl:42096985-->
-		<type-details xsi:type="addon:extraDetailsType">
-			<vendor>
-				<id>google</id>
-				<display>Google Inc.</display>
-			</vendor>
-		</type-details>
-		<revision>
-			<major>1</major>
-		</revision>
-		<display-name>Google Play APK Expansion library</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Aug 17 23:47:41 2021.-->
-				<complete>
-					<size>110201</size>
-					<checksum type="sha1">5305399dc1a56814e86b8459ce24871916f78b8c</checksum>
-					<url>market_apk_expansion-r03.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage obsolete="true" path="extras;google;google_play_services_froyo">
-		<!--Generated from p4 cl:52571120-->
-		<type-details xsi:type="addon:extraDetailsType">
-			<vendor>
-				<id>google</id>
-				<display>Google Inc.</display>
-			</vendor>
-		</type-details>
-		<revision>
-			<major>12</major>
-		</revision>
-		<display-name>Google Play services for Froyo</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Aug 17 23:47:43 2021.-->
-				<complete>
-					<size>5265389</size>
-					<checksum type="sha1">92558dbc380bba3d55d0ec181167fb05ce7c79d9</checksum>
-					<url>google_play_services_3265130_r12.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="extras;google;google_play_services">
-		<!--Generated from p4 cl:189640690-->
-		<type-details xsi:type="addon:extraDetailsType">
-			<vendor>
-				<id>google</id>
-				<display>Google Inc.</display>
-			</vendor>
-		</type-details>
-		<revision>
-			<major>49</major>
-		</revision>
-		<display-name>Google Play services</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<dependencies>
-			<dependency path="patcher;v4"/>
-		</dependencies>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Aug 17 23:47:45 2021.-->
-				<complete>
-					<size>15456884</size>
-					<checksum type="sha1">f95bf19634e2ab0430923247fe2c50246432d2e9</checksum>
-					<url>google_play_services_v16_1_rc09.zip</url>
-				</complete>
-				<patches>
-					<patch>
-						<based-on>
-							<major>32</major>
-						</based-on>
-						<size>5198163</size>
-						<checksum type="sha1">eb821d90788f5ab1b75d6b8293af1719460ad2eb</checksum>
-						<url>extra_p4-0bfce877600e1f4276c0df55e6f4524b036c4054-966f166480e8981fa8121344b818eed260a695f6-patch.jar</url>
-					</patch>
-					<patch>
-						<based-on>
-							<major>33</major>
-						</based-on>
-						<size>4878115</size>
-						<checksum type="sha1">4bfa0da971dd116a0b890c89f6507e35adc3938f</checksum>
-						<url>extra_p4-5fcdc9152ed795674bce0f7ed63074c21ce4b13e-966f166480e8981fa8121344b818eed260a695f6-patch.jar</url>
-					</patch>
-					<patch>
-						<based-on>
-							<major>37</major>
-						</based-on>
-						<size>4784185</size>
-						<checksum type="sha1">8d238f9e761f456af0381052bf89e3736b445c5c</checksum>
-						<url>extra_p4-50b5c7e443fe3eeb19ee6aa8c5b16fd7a9efe5fb-966f166480e8981fa8121344b818eed260a695f6-patch.jar</url>
-					</patch>
-					<patch>
-						<based-on>
-							<major>38</major>
-						</based-on>
-						<size>4735173</size>
-						<checksum type="sha1">6111d62e45a031d8d70546922dce214ddb11c8a3</checksum>
-						<url>extra_p4-50ffd7fb9c0f8d503bd1bc85688fa24a88ac9016-966f166480e8981fa8121344b818eed260a695f6-patch.jar</url>
-					</patch>
-					<patch>
-						<based-on>
-							<major>39</major>
-						</based-on>
-						<size>4572458</size>
-						<checksum type="sha1">35824335a6ad6fbe60c9ef9f3855f1b25e50b7b5</checksum>
-						<url>extra_p4-970f96a9a0668869fa7edc3821ce805938837c62-966f166480e8981fa8121344b818eed260a695f6-patch.jar</url>
-					</patch>
-					<patch>
-						<based-on>
-							<major>40</major>
-						</based-on>
-						<size>4510974</size>
-						<checksum type="sha1">29cb0c1ef244fbaea1f682049ffecf662a9220df</checksum>
-						<url>extra_p4-8a966d6235ff550da063a16fed15d9678612a624-966f166480e8981fa8121344b818eed260a695f6-patch.jar</url>
-					</patch>
-					<patch>
-						<based-on>
-							<major>41</major>
-						</based-on>
-						<size>3223034</size>
-						<checksum type="sha1">81e5b459cdf550ea858f4746337e94685345106d</checksum>
-						<url>extra_p4-d58583db4aa5acd406106552941aa3792b25fe82-966f166480e8981fa8121344b818eed260a695f6-patch.jar</url>
-					</patch>
-					<patch>
-						<based-on>
-							<major>42</major>
-						</based-on>
-						<size>3222697</size>
-						<checksum type="sha1">095938933f732d87f4da27e91c1963d2572ec118</checksum>
-						<url>extra_p4-8590f454ab9dea0b1ac2f376c3890c7d3720f98a-966f166480e8981fa8121344b818eed260a695f6-patch.jar</url>
-					</patch>
-					<patch>
-						<based-on>
-							<major>43</major>
-						</based-on>
-						<size>3224397</size>
-						<checksum type="sha1">875f7ac25bd0281034020964d39076ae53ad9ac1</checksum>
-						<url>extra_p4-76bd958db7e07014829423000356a616715d4e65-966f166480e8981fa8121344b818eed260a695f6-patch.jar</url>
-					</patch>
-					<patch>
-						<based-on>
-							<major>44</major>
-						</based-on>
-						<size>2131334</size>
-						<checksum type="sha1">4c60827dbf00f88f4816e37d8926529faaa33306</checksum>
-						<url>extra_p4-cc478947c3fc3d8cceb6d42739670c886103cd99-966f166480e8981fa8121344b818eed260a695f6-patch.jar</url>
-					</patch>
-					<patch>
-						<based-on>
-							<major>45</major>
-						</based-on>
-						<size>1795511</size>
-						<checksum type="sha1">f212367c978971c2c650c58ae9973109680bbfc9</checksum>
-						<url>extra_p4-2ec117abf3de251f62caefc78111fc80c4d8502a-966f166480e8981fa8121344b818eed260a695f6-patch.jar</url>
-					</patch>
-					<patch>
-						<based-on>
-							<major>46</major>
-						</based-on>
-						<size>1638158</size>
-						<checksum type="sha1">e9802af352315f49f25e41db5f7a35e234cce238</checksum>
-						<url>extra_p4-85f63a66feb75b12e0312fe87ef25edb85b7dd19-966f166480e8981fa8121344b818eed260a695f6-patch.jar</url>
-					</patch>
-					<patch>
-						<based-on>
-							<major>48</major>
-						</based-on>
-						<size>672260</size>
-						<checksum type="sha1">9a4b1543f310956fcb55442ff64f1148389c99c4</checksum>
-						<url>extra_p4-452b3f01ef4c82f5949e05ec86d3635ad6bf5458-966f166480e8981fa8121344b818eed260a695f6-patch.jar</url>
-					</patch>
-				</patches>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="extras;google;usb_driver">
-		<!--Generated from p4 cl:324702079-->
-		<type-details xsi:type="addon:extraDetailsType">
-			<vendor>
-				<id>google</id>
-				<display>Google Inc.</display>
-			</vendor>
-		</type-details>
-		<revision>
-			<major>13</major>
-		</revision>
-		<display-name>Google USB Driver</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Aug 17 23:47:58 2021.-->
-				<complete>
-					<size>8682039</size>
-					<checksum type="sha1">08a48c39084e9443f6146c239cbd3be6f91e681b</checksum>
-					<url>usb_driver_r13-windows.zip</url>
-				</complete>
-				<host-os>windows</host-os>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage obsolete="true" path="extras;google;admob_ads_sdk">
-		<!--Generated from p4 cl:45484492-->
-		<type-details xsi:type="addon:extraDetailsType">
-			<vendor>
-				<id>google</id>
-				<display>Google Inc.</display>
-			</vendor>
-		</type-details>
-		<revision>
-			<major>11</major>
-		</revision>
-		<display-name>Google AdMob Ads SDK</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Aug 17 23:48:00 2021.-->
-				<complete>
-					<size>704512</size>
-					<checksum type="sha1">0102859d9575baa0bf4fd5eb422af2ad0fe6cb82</checksum>
-					<url>GoogleAdMobAdsSdkAndroid-6.4.1.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage obsolete="true" path="extras;google;analytics_sdk_v2">
-		<!--Generated from p4 cl:44867123-->
-		<type-details xsi:type="addon:extraDetailsType">
-			<vendor>
-				<id>google</id>
-				<display>Google Inc.</display>
-			</vendor>
-		</type-details>
-		<revision>
-			<major>3</major>
-		</revision>
-		<display-name>Google Analytics App Tracking SDK</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Aug 17 23:48:02 2021.-->
-				<complete>
-					<size>211432</size>
-					<checksum type="sha1">dc14026bf0ce78315cb5dd00552607de0894de83</checksum>
-					<url>GoogleAnalyticsAndroid_2.0beta5.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="extras;google;webdriver">
-		<!--Generated from p4 cl:25118237-->
-		<type-details xsi:type="addon:extraDetailsType">
-			<vendor>
-				<id>google</id>
-				<display>Google Inc.</display>
-			</vendor>
-		</type-details>
-		<revision>
-			<major>2</major>
-		</revision>
-		<display-name>Google Web Driver</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Aug 17 23:48:03 2021.-->
-				<complete>
-					<size>4055193</size>
-					<checksum type="sha1">13f3a3b2670a5fc04a7342861644be9a01b07e38</checksum>
-					<url>webdriver_r02.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage obsolete="true" path="extras;google;gcm">
-		<!--Generated from p4 cl:32432700-->
-		<type-details xsi:type="addon:extraDetailsType">
-			<vendor>
-				<id>google</id>
-				<display>Google Inc.</display>
-			</vendor>
-		</type-details>
-		<revision>
-			<major>3</major>
-		</revision>
-		<display-name>Google Cloud Messaging for Android Library</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Aug 17 23:48:05 2021.-->
-				<complete>
-					<size>5901400</size>
-					<checksum type="sha1">ad066fd0dc7fc99d8aadac09c65a3c2519fbc7bf</checksum>
-					<url>gcm_r03.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="extras;google;simulators">
-		<!--Generated from p4 cl:80165500-->
-		<type-details xsi:type="addon:extraDetailsType">
-			<vendor>
-				<id>google</id>
-				<display>Google Inc.</display>
-			</vendor>
-		</type-details>
-		<revision>
-			<major>1</major>
-		</revision>
-		<display-name>Android Auto API Simulators</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Aug 17 23:48:07 2021.-->
-				<complete>
-					<size>2167286</size>
-					<checksum type="sha1">4fb5344e34e8faab4db18af07dace44c50db26a7</checksum>
-					<url>simulator_r01.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="extras;google;instantapps">
-		<!--Generated from p4 cl:264940023-->
-		<type-details xsi:type="addon:extraDetailsType">
-			<vendor>
-				<id>google</id>
-				<display>Google Inc.</display>
-			</vendor>
-		</type-details>
-		<revision>
-			<major>1</major>
-			<minor>9</minor>
-			<micro>0</micro>
-		</revision>
-		<display-name>Google Play Instant Development SDK</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Aug 17 23:48:10 2021.-->
-				<complete>
-					<size>39524850</size>
-					<checksum type="sha1">c498367dcd7db30154b3e70c4ddbb1b0ea4b8d20</checksum>
-					<url>iasdk-1.9.0-1566514721.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="extras;google;Android_Emulator_Hypervisor_Driver">
-		<!--Generated from p4 cl:489022941-->
-		<type-details xsi:type="addon:extraDetailsType">
-			<vendor>
-				<id>google</id>
-				<display>Google LLC.</display>
-			</vendor>
-		</type-details>
-		<revision>
-			<major>1</major>
-			<minor>8</minor>
-			<micro>0</micro>
-		</revision>
-		<display-name>Android Emulator Hypervisor Driver for AMD Processors (installer: Deprecated)</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Dec 13 17:30:42 2022.-->
-				<complete>
-					<size>166974</size>
-					<checksum type="sha1">8dce54354ea589d840bab4f5cd71382c26fccb62</checksum>
-					<url>gvm-windows_v1_8_0.zip</url>
-				</complete>
-				<host-os>windows</host-os>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="extras;google;Android_Emulator_Hypervisor_Driver">
-		<!--Generated from p4 cl:494260115-->
-		<type-details xsi:type="addon:extraDetailsType">
-			<vendor>
-				<id>google</id>
-				<display>Google LLC.</display>
-			</vendor>
-		</type-details>
-		<revision>
-			<major>2</major>
-			<minor>0</minor>
-			<micro>0</micro>
-		</revision>
-		<display-name>Android Emulator hypervisor driver (installer)</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Fri Mar 24 16:25:31 2023.-->
-				<complete>
-					<size>168741</size>
-					<checksum type="sha1">1a4ef9875cb0adfe5500632ad7140027cfb080d9</checksum>
-					<url>gvm-windows_v2_0_0.zip</url>
-				</complete>
-				<host-os>windows</host-os>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout;1.0.0-alpha4">
-		<!--Generated from bid:9630, branch:constraint_2.2-release-->
-		<type-details xsi:type="addon:mavenType">
-			<vendor>
-				<id>android</id>
-				<display>Android</display>
-			</vendor>
-		</type-details>
-		<revision>
-			<major>1</major>
-		</revision>
-		<display-name>com.android.support.constraint:constraint-layout:1.0.0-alpha4</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<dependencies>
-			<dependency path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0-alpha4"/>
-		</dependencies>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Apr  2 01:51:29 2019.-->
-				<complete>
-					<size>15554</size>
-					<checksum type="sha1">645a9be1f0c1177301e71cd0ddccf1dd67c554fe</checksum>
-					<url>com.android.support.constraint-constraint-layout-1.0.0-alpha4.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0-alpha4">
-		<!--Generated from bid:9630, branch:constraint_2.2-release-->
-		<type-details xsi:type="addon:mavenType">
-			<vendor>
-				<id>android</id>
-				<display>Android</display>
-			</vendor>
-		</type-details>
-		<revision>
-			<major>1</major>
-		</revision>
-		<display-name>com.android.support.constraint:constraint-layout-solver:1.0.0-alpha4</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Apr  2 01:51:40 2019.-->
-				<complete>
-					<size>95406</size>
-					<checksum type="sha1">2aa2aceecc6ba172742d0af0b43f11d03924eeb8</checksum>
-					<url>com.android.support.constraint-constraint-layout-solver-1.0.0-alpha4.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout;1.0.0-alpha4">
-		<!--Generated from bid:9745, branch:constraint_2.2-release-->
-		<type-details xsi:type="addon:mavenType">
-			<vendor>
-				<id>android</id>
-				<display>Android</display>
-			</vendor>
-		</type-details>
-		<revision>
-			<major>1</major>
-		</revision>
-		<display-name>com.android.support.constraint:constraint-layout:1.0.0-alpha4</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<dependencies>
-			<dependency path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0-alpha4"/>
-		</dependencies>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Apr  2 01:51:46 2019.-->
-				<complete>
-					<size>15554</size>
-					<checksum type="sha1">645a9be1f0c1177301e71cd0ddccf1dd67c554fe</checksum>
-					<url>com.android.support.constraint-constraint-layout-1.0.0-alpha4.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0-alpha4">
-		<!--Generated from bid:9745, branch:constraint_2.2-release-->
-		<type-details xsi:type="addon:mavenType">
-			<vendor>
-				<id>android</id>
-				<display>Android</display>
-			</vendor>
-		</type-details>
-		<revision>
-			<major>1</major>
-		</revision>
-		<display-name>com.android.support.constraint:constraint-layout-solver:1.0.0-alpha4</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Apr  2 01:51:52 2019.-->
-				<complete>
-					<size>95406</size>
-					<checksum type="sha1">2aa2aceecc6ba172742d0af0b43f11d03924eeb8</checksum>
-					<url>com.android.support.constraint-constraint-layout-solver-1.0.0-alpha4.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout;1.0.0-alpha4">
-		<!--Generated from bid:9762, branch:constraint_2.2-release-->
-		<type-details xsi:type="addon:mavenType">
-			<vendor>
-				<id>android</id>
-				<display>Android</display>
-			</vendor>
-		</type-details>
-		<revision>
-			<major>1</major>
-		</revision>
-		<display-name>com.android.support.constraint:constraint-layout:1.0.0-alpha4</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<dependencies>
-			<dependency path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0-alpha4"/>
-		</dependencies>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Apr  2 01:51:59 2019.-->
-				<complete>
-					<size>15554</size>
-					<checksum type="sha1">645a9be1f0c1177301e71cd0ddccf1dd67c554fe</checksum>
-					<url>com.android.support.constraint-constraint-layout-1.0.0-alpha4.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0-alpha4">
-		<!--Generated from bid:9762, branch:constraint_2.2-release-->
-		<type-details xsi:type="addon:mavenType">
-			<vendor>
-				<id>android</id>
-				<display>Android</display>
-			</vendor>
-		</type-details>
-		<revision>
-			<major>1</major>
-		</revision>
-		<display-name>com.android.support.constraint:constraint-layout-solver:1.0.0-alpha4</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Apr  2 01:52:07 2019.-->
-				<complete>
-					<size>95406</size>
-					<checksum type="sha1">2aa2aceecc6ba172742d0af0b43f11d03924eeb8</checksum>
-					<url>com.android.support.constraint-constraint-layout-solver-1.0.0-alpha4.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout;1.0.0-alpha4">
-		<!--Generated from bid:9780, branch:constraint_2.2-release-->
-		<type-details xsi:type="addon:mavenType">
-			<vendor>
-				<id>android</id>
-				<display>Android</display>
-			</vendor>
-		</type-details>
-		<revision>
-			<major>1</major>
-		</revision>
-		<display-name>com.android.support.constraint:constraint-layout:1.0.0-alpha4</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<dependencies>
-			<dependency path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0-alpha4"/>
-		</dependencies>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Apr  2 01:52:14 2019.-->
-				<complete>
-					<size>15554</size>
-					<checksum type="sha1">645a9be1f0c1177301e71cd0ddccf1dd67c554fe</checksum>
-					<url>com.android.support.constraint-constraint-layout-1.0.0-alpha4.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0-alpha4">
-		<!--Generated from bid:9780, branch:constraint_2.2-release-->
-		<type-details xsi:type="addon:mavenType">
-			<vendor>
-				<id>android</id>
-				<display>Android</display>
-			</vendor>
-		</type-details>
-		<revision>
-			<major>1</major>
-		</revision>
-		<display-name>com.android.support.constraint:constraint-layout-solver:1.0.0-alpha4</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Apr  2 01:52:23 2019.-->
-				<complete>
-					<size>95406</size>
-					<checksum type="sha1">2aa2aceecc6ba172742d0af0b43f11d03924eeb8</checksum>
-					<url>com.android.support.constraint-constraint-layout-solver-1.0.0-alpha4.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout;1.0.0-alpha8">
-		<!--Generated from bid:4552, branch:studio_master-dev-->
-		<type-details xsi:type="addon:mavenType">
-			<vendor>
-				<id>android</id>
-				<display>Android</display>
-			</vendor>
-		</type-details>
-		<revision>
-			<major>1</major>
-		</revision>
-		<display-name>ConstraintLayout for Android 1.0.0-alpha8</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<dependencies>
-			<dependency path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0-alpha8"/>
-		</dependencies>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Apr  2 01:52:30 2019.-->
-				<complete>
-					<size>24797</size>
-					<checksum type="sha1">7912ba03b04831f918f523648f118c4ee4da7604</checksum>
-					<url>com.android.support.constraint-constraint-layout-1.0.0-alpha8.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0-alpha8">
-		<!--Generated from bid:4552, branch:studio_master-dev-->
-		<type-details xsi:type="addon:mavenType">
-			<vendor>
-				<id>android</id>
-				<display>Android</display>
-			</vendor>
-		</type-details>
-		<revision>
-			<major>1</major>
-		</revision>
-		<display-name>Solver for ConstraintLayout 1.0.0-alpha8</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Apr  2 01:52:40 2019.-->
-				<complete>
-					<size>97549</size>
-					<checksum type="sha1">cd13d16a8f0198c1d6040ec8b1d0d4e5bb7feb6a</checksum>
-					<url>com.android.support.constraint-constraint-layout-solver-1.0.0-alpha8.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout;1.0.0-alpha8">
-		<!--Generated from bid:4942, branch:studio_master-dev-->
-		<type-details xsi:type="addon:mavenType">
-			<vendor>
-				<id>android</id>
-				<display>Android</display>
-			</vendor>
-		</type-details>
-		<revision>
-			<major>1</major>
-		</revision>
-		<display-name>ConstraintLayout for Android 1.0.0-alpha8</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<dependencies>
-			<dependency path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0-alpha8"/>
-		</dependencies>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Apr  2 01:52:45 2019.-->
-				<complete>
-					<size>24797</size>
-					<checksum type="sha1">7912ba03b04831f918f523648f118c4ee4da7604</checksum>
-					<url>com.android.support.constraint-constraint-layout-1.0.0-alpha8.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0-alpha8">
-		<!--Generated from bid:4942, branch:studio_master-dev-->
-		<type-details xsi:type="addon:mavenType">
-			<vendor>
-				<id>android</id>
-				<display>Android</display>
-			</vendor>
-		</type-details>
-		<revision>
-			<major>1</major>
-		</revision>
-		<display-name>Solver for ConstraintLayout 1.0.0-alpha8</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Apr  2 01:52:54 2019.-->
-				<complete>
-					<size>97549</size>
-					<checksum type="sha1">cd13d16a8f0198c1d6040ec8b1d0d4e5bb7feb6a</checksum>
-					<url>com.android.support.constraint-constraint-layout-solver-1.0.0-alpha8.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout;1.0.0-beta1">
-		<!--Generated from bid:3367812, branch:constraintlayout-1.0-release-->
-		<type-details xsi:type="addon:mavenType">
-			<vendor>
-				<id>android</id>
-				<display>Android</display>
-			</vendor>
-		</type-details>
-		<revision>
-			<major>1</major>
-		</revision>
-		<display-name>ConstraintLayout for Android 1.0.0-beta1</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<dependencies>
-			<dependency path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0-beta1"/>
-		</dependencies>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Apr  2 01:53:15 2019.-->
-				<complete>
-					<size>31750</size>
-					<checksum type="sha1">11f2f5cec4ff02986bad75435e5be77b704b4c64</checksum>
-					<url>com.android.support.constraint-constraint-layout-1.0.0-beta1.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0-beta1">
-		<!--Generated from bid:3367812, branch:constraintlayout-1.0-release-->
-		<type-details xsi:type="addon:mavenType">
-			<vendor>
-				<id>android</id>
-				<display>Android</display>
-			</vendor>
-		</type-details>
-		<revision>
-			<major>1</major>
-		</revision>
-		<display-name>Solver for ConstraintLayout 1.0.0-beta1</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Apr  2 01:53:27 2019.-->
-				<complete>
-					<size>104706</size>
-					<checksum type="sha1">042c25575e7650e96f0f5f5d1d3c54ed38eb821a</checksum>
-					<url>com.android.support.constraint-constraint-layout-solver-1.0.0-beta1.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout;1.0.0-beta2">
-		<!--Generated from bid:3408861, branch:constraintlayout-1.0-release-->
-		<type-details xsi:type="addon:mavenType">
-			<vendor>
-				<id>android</id>
-				<display>Android</display>
-			</vendor>
-		</type-details>
-		<revision>
-			<major>1</major>
-		</revision>
-		<display-name>ConstraintLayout for Android 1.0.0-beta2</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<dependencies>
-			<dependency path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0-beta2"/>
-		</dependencies>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Apr  2 01:53:39 2019.-->
-				<complete>
-					<size>31812</size>
-					<checksum type="sha1">623939865ede2e5c2c975dc55963e0d182bcce95</checksum>
-					<url>com.android.support.constraint-constraint-layout-1.0.0-beta2.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0-beta2">
-		<!--Generated from bid:3408861, branch:constraintlayout-1.0-release-->
-		<type-details xsi:type="addon:mavenType">
-			<vendor>
-				<id>android</id>
-				<display>Android</display>
-			</vendor>
-		</type-details>
-		<revision>
-			<major>1</major>
-		</revision>
-		<display-name>Solver for ConstraintLayout 1.0.0-beta2</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Apr  2 01:54:03 2019.-->
-				<complete>
-					<size>107335</size>
-					<checksum type="sha1">28492fd42b20ae1586591ff906556d459cfdaae8</checksum>
-					<url>com.android.support.constraint-constraint-layout-solver-1.0.0-beta2.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout;1.0.0-beta3">
-		<!--Generated from bid:3433553, branch:constraintlayout-1.0-release-->
-		<type-details xsi:type="addon:mavenType">
-			<vendor>
-				<id>android</id>
-				<display>Android</display>
-			</vendor>
-		</type-details>
-		<revision>
-			<major>1</major>
-		</revision>
-		<display-name>ConstraintLayout for Android 1.0.0-beta3</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<dependencies>
-			<dependency path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0-beta3"/>
-		</dependencies>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Apr  2 01:54:13 2019.-->
-				<complete>
-					<size>32622</size>
-					<checksum type="sha1">d78bb6a8ce92005fb1e4ed55d892a65b4258c60b</checksum>
-					<url>com.android.support.constraint-constraint-layout-1.0.0-beta3.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0-beta3">
-		<!--Generated from bid:3433553, branch:constraintlayout-1.0-release-->
-		<type-details xsi:type="addon:mavenType">
-			<vendor>
-				<id>android</id>
-				<display>Android</display>
-			</vendor>
-		</type-details>
-		<revision>
-			<major>1</major>
-		</revision>
-		<display-name>Solver for ConstraintLayout 1.0.0-beta3</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Apr  2 01:54:27 2019.-->
-				<complete>
-					<size>107593</size>
-					<checksum type="sha1">268e763fa64bd217d8d830e59ce76be19aaba631</checksum>
-					<url>com.android.support.constraint-constraint-layout-solver-1.0.0-beta3.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout;1.0.0-beta4">
-		<!--Generated from bid:3490876, branch:constraintlayout-1.0-release-->
-		<type-details xsi:type="addon:mavenType">
-			<vendor>
-				<id>android</id>
-				<display>Android</display>
-			</vendor>
-		</type-details>
-		<revision>
-			<major>1</major>
-		</revision>
-		<display-name>ConstraintLayout for Android 1.0.0-beta4</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<dependencies>
-			<dependency path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0-beta4"/>
-		</dependencies>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Apr  2 01:54:40 2019.-->
-				<complete>
-					<size>32687</size>
-					<checksum type="sha1">dc60844aab93a09a54a3c107685a77b18d7c1c39</checksum>
-					<url>com.android.support.constraint-constraint-layout-1.0.0-beta4.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0-beta4">
-		<!--Generated from bid:3490876, branch:constraintlayout-1.0-release-->
-		<type-details xsi:type="addon:mavenType">
-			<vendor>
-				<id>android</id>
-				<display>Android</display>
-			</vendor>
-		</type-details>
-		<revision>
-			<major>1</major>
-		</revision>
-		<display-name>Solver for ConstraintLayout 1.0.0-beta4</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Apr  2 01:54:51 2019.-->
-				<complete>
-					<size>109361</size>
-					<checksum type="sha1">2213bf37e7a2869db2635895b8e90ca6841e79d2</checksum>
-					<url>com.android.support.constraint-constraint-layout-solver-1.0.0-beta4.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout;1.0.0-beta5">
-		<!--Generated from bid:3720770, branch:constraintlayout-1.0-release-->
-		<type-details xsi:type="addon:mavenType">
-			<vendor>
-				<id>android</id>
-				<display>Android</display>
-			</vendor>
-		</type-details>
-		<revision>
-			<major>1</major>
-		</revision>
-		<display-name>ConstraintLayout for Android 1.0.0-beta5</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<dependencies>
-			<dependency path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0-beta5"/>
-		</dependencies>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Apr  2 01:55:04 2019.-->
-				<complete>
-					<size>39266</size>
-					<checksum type="sha1">4660f6c7a576ea1364f0c3225db71c29ca660d9a</checksum>
-					<url>com.android.support.constraint-constraint-layout-1.0.0-beta5.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0-beta5">
-		<!--Generated from bid:3720770, branch:constraintlayout-1.0-release-->
-		<type-details xsi:type="addon:mavenType">
-			<vendor>
-				<id>android</id>
-				<display>Android</display>
-			</vendor>
-		</type-details>
-		<revision>
-			<major>1</major>
-		</revision>
-		<display-name>Solver for ConstraintLayout 1.0.0-beta5</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Apr  2 01:55:16 2019.-->
-				<complete>
-					<size>92284</size>
-					<checksum type="sha1">3918cfef73e64048d0b3e048068e208b414e7e91</checksum>
-					<url>com.android.support.constraint-constraint-layout-solver-1.0.0-beta5.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout;1.0.0">
-		<!--Generated from bid:3756563, branch:constraintlayout-1.0-release-->
-		<type-details xsi:type="addon:mavenType">
-			<vendor>
-				<id>android</id>
-				<display>Android</display>
-			</vendor>
-		</type-details>
-		<revision>
-			<major>1</major>
-		</revision>
-		<display-name>ConstraintLayout for Android 1.0.0</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<dependencies>
-			<dependency path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0"/>
-		</dependencies>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Apr  2 01:55:27 2019.-->
-				<complete>
-					<size>39153</size>
-					<checksum type="sha1">70acf99689b933bc6735645d5c3d92b91954b6cb</checksum>
-					<url>com.android.support.constraint-constraint-layout-1.0.0.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0">
-		<!--Generated from bid:3756563, branch:constraintlayout-1.0-release-->
-		<type-details xsi:type="addon:mavenType">
-			<vendor>
-				<id>android</id>
-				<display>Android</display>
-			</vendor>
-		</type-details>
-		<revision>
-			<major>1</major>
-		</revision>
-		<display-name>Solver for ConstraintLayout 1.0.0</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Apr  2 01:55:41 2019.-->
-				<complete>
-					<size>91207</size>
-					<checksum type="sha1">b621b9d5adf273bb0725948589863e60e96eeaf1</checksum>
-					<url>com.android.support.constraint-constraint-layout-solver-1.0.0.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout;1.0.1">
-		<!--Generated from bid:3775610, branch:constraintlayout-1.0-release-->
-		<type-details xsi:type="addon:mavenType">
-			<vendor>
-				<id>android</id>
-				<display>Android</display>
-			</vendor>
-		</type-details>
-		<revision>
-			<major>1</major>
-		</revision>
-		<display-name>ConstraintLayout for Android 1.0.1</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<dependencies>
-			<dependency path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.1"/>
-		</dependencies>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Apr  2 01:55:52 2019.-->
-				<complete>
-					<size>39547</size>
-					<checksum type="sha1">342b0894b8651fff37586f80f383733e97aba9f9</checksum>
-					<url>com.android.support.constraint-constraint-layout-1.0.1.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.1">
-		<!--Generated from bid:3775610, branch:constraintlayout-1.0-release-->
-		<type-details xsi:type="addon:mavenType">
-			<vendor>
-				<id>android</id>
-				<display>Android</display>
-			</vendor>
-		</type-details>
-		<revision>
-			<major>1</major>
-		</revision>
-		<display-name>Solver for ConstraintLayout 1.0.1</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Apr  2 01:56:06 2019.-->
-				<complete>
-					<size>91823</size>
-					<checksum type="sha1">76f8823def9a6da8954a54737762a6820bc1d043</checksum>
-					<url>com.android.support.constraint-constraint-layout-solver-1.0.1.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout;1.0.2">
-		<!--Generated from bid:3788585, branch:constraintlayout-1.0-release-->
-		<type-details xsi:type="addon:mavenType">
-			<vendor>
-				<id>android</id>
-				<display>Android</display>
-			</vendor>
-		</type-details>
-		<revision>
-			<major>1</major>
-		</revision>
-		<display-name>ConstraintLayout for Android 1.0.2</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<dependencies>
-			<dependency path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.2"/>
-		</dependencies>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Apr  2 01:56:18 2019.-->
-				<complete>
-					<size>39625</size>
-					<checksum type="sha1">3d9688a50fe0ed7348275f85d1b02278f616d8a4</checksum>
-					<url>com.android.support.constraint-constraint-layout-1.0.2.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
-	<remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.2">
-		<!--Generated from bid:3788585, branch:constraintlayout-1.0-release-->
-		<type-details xsi:type="addon:mavenType">
-			<vendor>
-				<id>android</id>
-				<display>Android</display>
-			</vendor>
-		</type-details>
-		<revision>
-			<major>1</major>
-		</revision>
-		<display-name>Solver for ConstraintLayout 1.0.2</display-name>
-		<uses-license ref="android-sdk-license"/>
-		<channelRef ref="channel-0"/>
-		<archives>
-			<archive>
-				<!--Built on: Tue Apr  2 01:56:29 2019.-->
-				<complete>
-					<size>91961</size>
-					<checksum type="sha1">96d7ff669f0e808e9833b2c2e320702826ccc8be</checksum>
-					<url>com.android.support.constraint-constraint-layout-solver-1.0.2.zip</url>
-				</complete>
-			</archive>
-		</archives>
-	</remotePackage>
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR  IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY  DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)  HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE  POSSIBILITY OF SUCH DAMAGE.
+</license>
+  <channel id="channel-0">stable</channel>
+  <channel id="channel-1">beta</channel>
+  <channel id="channel-2">dev</channel>
+  <channel id="channel-3">canary</channel>
+  <remotePackage path="add-ons;addon-google_apis-google-19">
+    <type-details xsi:type="addon:addonDetailsType">
+      <api-level>19</api-level>
+      <codename></codename>
+      <base-extension>true</base-extension>
+      <vendor>
+        <id>google</id>
+        <display>Google Inc.</display>
+      </vendor>
+      <tag>
+        <id>google_apis</id>
+        <display>Google APIs</display>
+      </tag>
+      <libraries>
+        <library name="com.google.android.maps" localJarPath="maps.jar">
+          <description>API for Google Maps</description>
+        </library>
+        <library name="com.android.future.usb.accessory" localJarPath="usb.jar">
+          <description>API for USB Accessories</description>
+        </library>
+        <library name="com.google.android.media.effects" localJarPath="effects.jar">
+          <description>Collection of video effects</description>
+        </library>
+      </libraries>
+    </type-details>
+    <revision>
+      <major>20</major>
+    </revision>
+    <display-name>Google APIs</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>147081</size>
+          <checksum type="sha1">5b933abe830b2f25b4c0f171d45e9e0651e56311</checksum>
+          <url>google_apis-19_r20.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="add-ons;addon-google_apis-google-24">
+    <type-details xsi:type="addon:addonDetailsType">
+      <api-level>24</api-level>
+      <codename></codename>
+      <base-extension>true</base-extension>
+      <vendor>
+        <id>google</id>
+        <display>Google Inc.</display>
+      </vendor>
+      <tag>
+        <id>google_apis</id>
+        <display>Google APIs</display>
+      </tag>
+      <libraries>
+        <library name="com.google.android.maps" localJarPath="maps.jar">
+          <description>API for Google Maps</description>
+        </library>
+        <library name="com.android.future.usb.accessory" localJarPath="usb.jar">
+          <description>API for USB Accessories</description>
+        </library>
+        <library name="com.google.android.media.effects" localJarPath="effects.jar">
+          <description>Collection of video effects</description>
+        </library>
+      </libraries>
+    </type-details>
+    <revision>
+      <major>1</major>
+    </revision>
+    <display-name>Google APIs</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>154865</size>
+          <checksum type="sha1">31361c2868f27343ee917fbd259c1463821b6145</checksum>
+          <url>google_apis-24_r1.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="add-ons;addon-google_apis-google-23">
+    <type-details xsi:type="addon:addonDetailsType">
+      <api-level>23</api-level>
+      <codename></codename>
+      <base-extension>true</base-extension>
+      <vendor>
+        <id>google</id>
+        <display>Google Inc.</display>
+      </vendor>
+      <tag>
+        <id>google_apis</id>
+        <display>Google APIs</display>
+      </tag>
+      <libraries>
+        <library name="com.google.android.maps" localJarPath="maps.jar">
+          <description>API for Google Maps</description>
+        </library>
+        <library name="com.android.future.usb.accessory" localJarPath="usb.jar">
+          <description>API for USB Accessories</description>
+        </library>
+        <library name="com.google.android.media.effects" localJarPath="effects.jar">
+          <description>Collection of video effects</description>
+        </library>
+      </libraries>
+    </type-details>
+    <revision>
+      <major>1</major>
+    </revision>
+    <display-name>Google APIs</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>154871</size>
+          <checksum type="sha1">550e83eea9513ab11c44919ac6da54b36084a9f3</checksum>
+          <url>google_apis-25_r1.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage obsolete="true" path="add-ons;addon-google_apis-google-3">
+    <type-details xsi:type="addon:addonDetailsType">
+      <api-level>3</api-level>
+      <codename></codename>
+      <base-extension>true</base-extension>
+      <vendor>
+        <id>google</id>
+        <display>Google Inc.</display>
+      </vendor>
+      <tag>
+        <id>google_apis</id>
+        <display>Google APIs</display>
+      </tag>
+      <libraries>
+        <library name="com.google.android.maps" localJarPath="maps.jar">
+          <description>API for Google Maps</description>
+        </library>
+      </libraries>
+    </type-details>
+    <revision>
+      <major>3</major>
+    </revision>
+    <display-name>Google APIs</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>34908058</size>
+          <checksum type="sha1">1f92abf3a76be66ae8032257fc7620acbd2b2e3a</checksum>
+          <url>google_apis-3-r03.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage obsolete="true" path="add-ons;addon-google_apis-google-4">
+    <type-details xsi:type="addon:addonDetailsType">
+      <api-level>4</api-level>
+      <codename></codename>
+      <base-extension>true</base-extension>
+      <vendor>
+        <id>google</id>
+        <display>Google Inc.</display>
+      </vendor>
+      <tag>
+        <id>google_apis</id>
+        <display>Google APIs</display>
+      </tag>
+      <libraries>
+        <library name="com.google.android.maps" localJarPath="maps.jar">
+          <description>API for Google Maps</description>
+        </library>
+      </libraries>
+    </type-details>
+    <revision>
+      <major>2</major>
+    </revision>
+    <display-name>Google APIs</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>42435735</size>
+          <checksum type="sha1">9b6e86d8568558de4d606a7debc4f6049608dbd0</checksum>
+          <url>google_apis-4_r02.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage obsolete="true" path="add-ons;addon-google_apis-google-5">
+    <type-details xsi:type="addon:addonDetailsType">
+      <api-level>5</api-level>
+      <codename></codename>
+      <base-extension>true</base-extension>
+      <vendor>
+        <id>google</id>
+        <display>Google Inc.</display>
+      </vendor>
+      <tag>
+        <id>google_apis</id>
+        <display>Google APIs</display>
+      </tag>
+      <libraries>
+        <library name="com.google.android.maps" localJarPath="maps.jar">
+          <description>API for Google Maps</description>
+        </library>
+      </libraries>
+    </type-details>
+    <revision>
+      <major>1</major>
+    </revision>
+    <display-name>Google APIs</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>49123776</size>
+          <checksum type="sha1">46eaeb56b645ee7ffa24ede8fa17f3df70db0503</checksum>
+          <url>google_apis-5_r01.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage obsolete="true" path="add-ons;addon-google_apis-google-6">
+    <type-details xsi:type="addon:addonDetailsType">
+      <api-level>6</api-level>
+      <codename></codename>
+      <base-extension>true</base-extension>
+      <vendor>
+        <id>google</id>
+        <display>Google Inc.</display>
+      </vendor>
+      <tag>
+        <id>google_apis</id>
+        <display>Google APIs</display>
+      </tag>
+      <libraries>
+        <library name="com.google.android.maps" localJarPath="maps.jar">
+          <description>API for Google Maps</description>
+        </library>
+      </libraries>
+    </type-details>
+    <revision>
+      <major>1</major>
+    </revision>
+    <display-name>Google APIs</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>53382941</size>
+          <checksum type="sha1">5ff545d96e031e09580a6cf55713015c7d4936b2</checksum>
+          <url>google_apis-6_r01.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage obsolete="true" path="add-ons;addon-google_apis-google-7">
+    <type-details xsi:type="addon:addonDetailsType">
+      <api-level>7</api-level>
+      <codename></codename>
+      <base-extension>true</base-extension>
+      <vendor>
+        <id>google</id>
+        <display>Google Inc.</display>
+      </vendor>
+      <tag>
+        <id>google_apis</id>
+        <display>Google APIs</display>
+      </tag>
+      <libraries>
+        <library name="com.google.android.maps" localJarPath="maps.jar">
+          <description>API for Google Maps</description>
+        </library>
+      </libraries>
+    </type-details>
+    <revision>
+      <major>1</major>
+    </revision>
+    <display-name>Google APIs</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>53691339</size>
+          <checksum type="sha1">2e7f91e0fe34fef7f58aeced973c6ae52361b5ac</checksum>
+          <url>google_apis-7_r01.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage obsolete="true" path="add-ons;addon-google_apis-google-8">
+    <type-details xsi:type="addon:addonDetailsType">
+      <api-level>8</api-level>
+      <codename></codename>
+      <base-extension>true</base-extension>
+      <vendor>
+        <id>google</id>
+        <display>Google Inc.</display>
+      </vendor>
+      <tag>
+        <id>google_apis</id>
+        <display>Google APIs</display>
+      </tag>
+      <libraries>
+        <library name="com.google.android.maps" localJarPath="maps.jar">
+          <description>API for Google Maps</description>
+        </library>
+      </libraries>
+    </type-details>
+    <revision>
+      <major>2</major>
+    </revision>
+    <display-name>Google APIs</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>59505020</size>
+          <checksum type="sha1">3079958e7ec87222cac1e6b27bc471b27bf2c352</checksum>
+          <url>google_apis-8_r02.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage obsolete="true" path="add-ons;addon-google_apis-google-9">
+    <type-details xsi:type="addon:addonDetailsType">
+      <api-level>9</api-level>
+      <codename></codename>
+      <base-extension>true</base-extension>
+      <vendor>
+        <id>google</id>
+        <display>Google Inc.</display>
+      </vendor>
+      <tag>
+        <id>google_apis</id>
+        <display>Google APIs</display>
+      </tag>
+      <libraries>
+        <library name="com.google.android.maps" localJarPath="maps.jar">
+          <description>API for Google Maps</description>
+        </library>
+      </libraries>
+    </type-details>
+    <revision>
+      <major>2</major>
+    </revision>
+    <display-name>Google APIs</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>63401546</size>
+          <checksum type="sha1">78664645a1e9accea4430814f8694291a7f1ea5d</checksum>
+          <url>google_apis-9_r02.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage obsolete="true" path="add-ons;addon-google_apis-google-10">
+    <type-details xsi:type="addon:addonDetailsType">
+      <api-level>10</api-level>
+      <codename></codename>
+      <base-extension>true</base-extension>
+      <vendor>
+        <id>google</id>
+        <display>Google Inc.</display>
+      </vendor>
+      <tag>
+        <id>google_apis</id>
+        <display>Google APIs</display>
+      </tag>
+      <libraries>
+        <library name="com.google.android.maps" localJarPath="maps.jar">
+          <description>API for Google Maps</description>
+        </library>
+        <library name="com.android.future.usb.accessory" localJarPath="usb.jar">
+          <description>API for USB Accessories</description>
+        </library>
+      </libraries>
+    </type-details>
+    <revision>
+      <major>2</major>
+    </revision>
+    <display-name>Google APIs</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>65781578</size>
+          <checksum type="sha1">cc0711857c881fa7534f90cf8cc09b8fe985484d</checksum>
+          <url>google_apis-10_r02.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage obsolete="true" path="add-ons;addon-google_apis-google-11">
+    <type-details xsi:type="addon:addonDetailsType">
+      <api-level>11</api-level>
+      <codename></codename>
+      <base-extension>true</base-extension>
+      <vendor>
+        <id>google</id>
+        <display>Google Inc.</display>
+      </vendor>
+      <tag>
+        <id>google_apis</id>
+        <display>Google APIs</display>
+      </tag>
+      <libraries>
+        <library name="com.google.android.maps" localJarPath="maps.jar">
+          <description>API for Google Maps</description>
+        </library>
+      </libraries>
+    </type-details>
+    <revision>
+      <major>1</major>
+    </revision>
+    <display-name>Google APIs</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>83477179</size>
+          <checksum type="sha1">5eab5e81addee9f3576d456d205208314b5146a5</checksum>
+          <url>google_apis-11_r01.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage obsolete="true" path="add-ons;addon-google_apis-google-12">
+    <type-details xsi:type="addon:addonDetailsType">
+      <api-level>12</api-level>
+      <codename></codename>
+      <base-extension>true</base-extension>
+      <vendor>
+        <id>google</id>
+        <display>Google Inc.</display>
+      </vendor>
+      <tag>
+        <id>google_apis</id>
+        <display>Google APIs</display>
+      </tag>
+      <libraries>
+        <library name="com.google.android.maps" localJarPath="maps.jar">
+          <description>API for Google Maps</description>
+        </library>
+        <library name="com.android.future.usb.accessory" localJarPath="usb.jar">
+          <description>API for USB Accessories</description>
+        </library>
+      </libraries>
+    </type-details>
+    <revision>
+      <major>1</major>
+    </revision>
+    <display-name>Google APIs</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>86099835</size>
+          <checksum type="sha1">e9999f4fa978812174dfeceec0721c793a636e5d</checksum>
+          <url>google_apis-12_r01.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage obsolete="true" path="add-ons;addon-google_apis-google-13">
+    <type-details xsi:type="addon:addonDetailsType">
+      <api-level>13</api-level>
+      <codename></codename>
+      <base-extension>true</base-extension>
+      <vendor>
+        <id>google</id>
+        <display>Google Inc.</display>
+      </vendor>
+      <tag>
+        <id>google_apis</id>
+        <display>Google APIs</display>
+      </tag>
+      <libraries>
+        <library name="com.google.android.maps" localJarPath="maps.jar">
+          <description>API for Google Maps</description>
+        </library>
+        <library name="com.android.future.usb.accessory" localJarPath="usb.jar">
+          <description>API for USB Accessories</description>
+        </library>
+      </libraries>
+    </type-details>
+    <revision>
+      <major>1</major>
+    </revision>
+    <display-name>Google APIs</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>88615525</size>
+          <checksum type="sha1">3b153edd211c27dc736c893c658418a4f9041417</checksum>
+          <url>google_apis-13_r01.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage obsolete="true" path="add-ons;addon-google_apis-google-14">
+    <type-details xsi:type="addon:addonDetailsType">
+      <api-level>14</api-level>
+      <codename></codename>
+      <base-extension>true</base-extension>
+      <vendor>
+        <id>google</id>
+        <display>Google Inc.</display>
+      </vendor>
+      <tag>
+        <id>google_apis</id>
+        <display>Google APIs</display>
+      </tag>
+      <libraries>
+        <library name="com.google.android.maps" localJarPath="maps.jar">
+          <description>API for Google Maps</description>
+        </library>
+        <library name="com.android.future.usb.accessory" localJarPath="usb.jar">
+          <description>API for USB Accessories</description>
+        </library>
+      </libraries>
+    </type-details>
+    <revision>
+      <major>2</major>
+    </revision>
+    <display-name>Google APIs</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>106533714</size>
+          <checksum type="sha1">f8eb4d96ad0492b4c0db2d7e4f1a1a3836664d39</checksum>
+          <url>google_apis-14_r02.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="add-ons;addon-google_apis-google-15">
+    <type-details xsi:type="addon:addonDetailsType">
+      <api-level>15</api-level>
+      <codename></codename>
+      <base-extension>true</base-extension>
+      <vendor>
+        <id>google</id>
+        <display>Google Inc.</display>
+      </vendor>
+      <tag>
+        <id>google_apis</id>
+        <display>Google APIs</display>
+      </tag>
+      <libraries>
+        <library name="com.google.android.maps" localJarPath="maps.jar">
+          <description>API for Google Maps</description>
+        </library>
+        <library name="com.android.future.usb.accessory" localJarPath="usb.jar">
+          <description>API for USB Accessories</description>
+        </library>
+        <library name="com.google.android.media.effects" localJarPath="effects.jar">
+          <description>Collection of video effects</description>
+        </library>
+      </libraries>
+    </type-details>
+    <revision>
+      <major>3</major>
+    </revision>
+    <display-name>Google APIs</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>106624396</size>
+          <checksum type="sha1">d0d2bf26805eb271693570a1aaec33e7dc3f45e9</checksum>
+          <url>google_apis-15_r03.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="add-ons;addon-google_apis-google-16">
+    <type-details xsi:type="addon:addonDetailsType">
+      <api-level>16</api-level>
+      <codename></codename>
+      <base-extension>true</base-extension>
+      <vendor>
+        <id>google</id>
+        <display>Google Inc.</display>
+      </vendor>
+      <tag>
+        <id>google_apis</id>
+        <display>Google APIs</display>
+      </tag>
+      <libraries>
+        <library name="com.google.android.maps" localJarPath="maps.jar">
+          <description>API for Google Maps</description>
+        </library>
+        <library name="com.android.future.usb.accessory" localJarPath="usb.jar">
+          <description>API for USB Accessories</description>
+        </library>
+        <library name="com.google.android.media.effects" localJarPath="effects.jar">
+          <description>Collection of video effects</description>
+        </library>
+      </libraries>
+    </type-details>
+    <revision>
+      <major>4</major>
+    </revision>
+    <display-name>Google APIs</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>127341982</size>
+          <checksum type="sha1">ee6acf1b01020bfa8a8e24725dbc4478bee5e792</checksum>
+          <url>google_apis-16_r04.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="add-ons;addon-google_apis-google-17">
+    <type-details xsi:type="addon:addonDetailsType">
+      <api-level>17</api-level>
+      <codename></codename>
+      <base-extension>true</base-extension>
+      <vendor>
+        <id>google</id>
+        <display>Google Inc.</display>
+      </vendor>
+      <tag>
+        <id>google_apis</id>
+        <display>Google APIs</display>
+      </tag>
+      <libraries>
+        <library name="com.google.android.maps" localJarPath="maps.jar">
+          <description>API for Google Maps</description>
+        </library>
+        <library name="com.android.future.usb.accessory" localJarPath="usb.jar">
+          <description>API for USB Accessories</description>
+        </library>
+        <library name="com.google.android.media.effects" localJarPath="effects.jar">
+          <description>Collection of video effects</description>
+        </library>
+      </libraries>
+    </type-details>
+    <revision>
+      <major>4</major>
+    </revision>
+    <display-name>Google APIs</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>137231243</size>
+          <checksum type="sha1">a076be0677f38df8ca5536b44dfb411a0c808c4f</checksum>
+          <url>google_apis-17_r04.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="add-ons;addon-google_apis-google-18">
+    <type-details xsi:type="addon:addonDetailsType">
+      <api-level>18</api-level>
+      <codename></codename>
+      <base-extension>true</base-extension>
+      <vendor>
+        <id>google</id>
+        <display>Google Inc.</display>
+      </vendor>
+      <tag>
+        <id>google_apis</id>
+        <display>Google APIs</display>
+      </tag>
+      <libraries>
+        <library name="com.google.android.maps" localJarPath="maps.jar">
+          <description>API for Google Maps</description>
+        </library>
+        <library name="com.android.future.usb.accessory" localJarPath="usb.jar">
+          <description>API for USB Accessories</description>
+        </library>
+        <library name="com.google.android.media.effects" localJarPath="effects.jar">
+          <description>Collection of video effects</description>
+        </library>
+      </libraries>
+    </type-details>
+    <revision>
+      <major>4</major>
+    </revision>
+    <display-name>Google APIs</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>143195183</size>
+          <checksum type="sha1">6109603409debdd40854d4d4a92eaf8481462c8b</checksum>
+          <url>google_apis-18_r04.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="add-ons;addon-google_apis-google-21">
+    <type-details xsi:type="addon:addonDetailsType">
+      <api-level>21</api-level>
+      <codename></codename>
+      <base-extension>true</base-extension>
+      <vendor>
+        <id>google</id>
+        <display>Google Inc.</display>
+      </vendor>
+      <tag>
+        <id>google_apis</id>
+        <display>Google APIs</display>
+      </tag>
+      <libraries>
+        <library name="com.google.android.maps" localJarPath="maps.jar">
+          <description>API for Google Maps</description>
+        </library>
+        <library name="com.android.future.usb.accessory" localJarPath="usb.jar">
+          <description>API for USB Accessories</description>
+        </library>
+        <library name="com.google.android.media.effects" localJarPath="effects.jar">
+          <description>Collection of video effects</description>
+        </library>
+      </libraries>
+    </type-details>
+    <revision>
+      <major>1</major>
+    </revision>
+    <display-name>Google APIs</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>179499</size>
+          <checksum type="sha1">66a754efb24e9bb07cc51648426443c7586c9d4a</checksum>
+          <url>google_apis-21_r01.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="add-ons;addon-google_apis-google-22">
+    <type-details xsi:type="addon:addonDetailsType">
+      <api-level>22</api-level>
+      <codename></codename>
+      <base-extension>true</base-extension>
+      <vendor>
+        <id>google</id>
+        <display>Google Inc.</display>
+      </vendor>
+      <tag>
+        <id>google_apis</id>
+        <display>Google APIs</display>
+      </tag>
+      <libraries>
+        <library name="com.google.android.maps" localJarPath="maps.jar">
+          <description>API for Google Maps</description>
+        </library>
+        <library name="com.android.future.usb.accessory" localJarPath="usb.jar">
+          <description>API for USB Accessories</description>
+        </library>
+        <library name="com.google.android.media.effects" localJarPath="effects.jar">
+          <description>Collection of video effects</description>
+        </library>
+      </libraries>
+    </type-details>
+    <revision>
+      <major>1</major>
+    </revision>
+    <display-name>Google APIs</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>179259</size>
+          <checksum type="sha1">5def0f42160cba8acff51b9c0c7e8be313de84f5</checksum>
+          <url>google_apis-22_r01.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="add-ons;addon-google_apis-google-23">
+    <type-details xsi:type="addon:addonDetailsType">
+      <api-level>23</api-level>
+      <codename></codename>
+      <base-extension>true</base-extension>
+      <vendor>
+        <id>google</id>
+        <display>Google Inc.</display>
+      </vendor>
+      <tag>
+        <id>google_apis</id>
+        <display>Google APIs</display>
+      </tag>
+      <libraries>
+        <library name="com.google.android.maps" localJarPath="maps.jar">
+          <description>API for Google Maps</description>
+        </library>
+        <library name="com.android.future.usb.accessory" localJarPath="usb.jar">
+          <description>API for USB Accessories</description>
+        </library>
+        <library name="com.google.android.media.effects" localJarPath="effects.jar">
+          <description>Collection of video effects</description>
+        </library>
+      </libraries>
+    </type-details>
+    <revision>
+      <major>1</major>
+    </revision>
+    <display-name>Google APIs</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>179900</size>
+          <checksum type="sha1">04c5cc1a7c88967250ebba9561d81e24104167db</checksum>
+          <url>google_apis-23_r01.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage obsolete="true" path="add-ons;addon-google_tv_addon-google-12">
+    <type-details xsi:type="addon:addonDetailsType">
+      <api-level>12</api-level>
+      <codename></codename>
+      <base-extension>true</base-extension>
+      <vendor>
+        <id>google</id>
+        <display>Google Inc.</display>
+      </vendor>
+      <tag>
+        <id>google_tv_addon</id>
+        <display>Google TV Addon</display>
+      </tag>
+    </type-details>
+    <revision>
+      <major>2</major>
+    </revision>
+    <display-name>Google TV Addon</display-name>
+    <uses-license ref="android-googletv-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>78266751</size>
+          <checksum type="sha1">92128a12e7e8b0fb5bac59153d7779b717e7b840</checksum>
+          <url>google_tv-12_r02.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage obsolete="true" path="add-ons;addon-google_tv_addon-google-13">
+    <type-details xsi:type="addon:addonDetailsType">
+      <api-level>13</api-level>
+      <codename></codename>
+      <base-extension>true</base-extension>
+      <vendor>
+        <id>google</id>
+        <display>Google Inc.</display>
+      </vendor>
+      <tag>
+        <id>google_tv_addon</id>
+        <display>Google TV Addon</display>
+      </tag>
+    </type-details>
+    <revision>
+      <major>1</major>
+    </revision>
+    <display-name>Google TV Addon</display-name>
+    <uses-license ref="android-googletv-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>87721879</size>
+          <checksum type="sha1">b73f7c66011ac8180b44aa4e83b8d78c66ea9a09</checksum>
+          <url>google_tv-13_r01.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="extras;android;m2repository">
+    <type-details xsi:type="addon:extraDetailsType">
+      <vendor>
+        <id>android</id>
+        <display>Android</display>
+      </vendor>
+    </type-details>
+    <revision>
+      <major>47</major>
+      <minor>0</minor>
+      <micro>0</micro>
+    </revision>
+    <display-name>Android Support Repository</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>355529608</size>
+          <checksum type="sha1">a0d22beacc106a6977321f2b07d692ce4979e96a</checksum>
+          <url>android_m2repository_r47.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="extras;google;m2repository">
+    <type-details xsi:type="addon:extraDetailsType">
+      <vendor>
+        <id>google</id>
+        <display>Google Inc.</display>
+      </vendor>
+    </type-details>
+    <revision>
+      <major>58</major>
+    </revision>
+    <display-name>Google Repository</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>215426029</size>
+          <checksum type="sha1">05086add9e3a0eb1b67111108d7757a4337c3f10</checksum>
+          <url>google_m2repository_gms_v11_3_rc05_wear_2_0_5.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="extras;google;market_licensing">
+    <type-details xsi:type="addon:extraDetailsType">
+      <vendor>
+        <id>google</id>
+        <display></display>
+      </vendor>
+    </type-details>
+    <revision>
+      <major>1</major>
+    </revision>
+    <display-name>Google Play Licensing Library</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>75109</size>
+          <checksum type="sha1">355e8dc304a92a5616db235af8ee7bd554356254</checksum>
+          <url>market_licensing-r02.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="extras;google;market_apk_expansion">
+    <type-details xsi:type="addon:extraDetailsType">
+      <vendor>
+        <id>google</id>
+        <display>Google Inc.</display>
+      </vendor>
+    </type-details>
+    <revision>
+      <major>1</major>
+    </revision>
+    <display-name>Google Play APK Expansion library</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>110201</size>
+          <checksum type="sha1">5305399dc1a56814e86b8459ce24871916f78b8c</checksum>
+          <url>market_apk_expansion-r03.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage obsolete="true" path="extras;google;google_play_services_froyo">
+    <type-details xsi:type="addon:extraDetailsType">
+      <vendor>
+        <id>google</id>
+        <display>Google Inc.</display>
+      </vendor>
+    </type-details>
+    <revision>
+      <major>12</major>
+    </revision>
+    <display-name>Google Play services for Froyo</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>5265389</size>
+          <checksum type="sha1">92558dbc380bba3d55d0ec181167fb05ce7c79d9</checksum>
+          <url>google_play_services_3265130_r12.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="extras;google;google_play_services">
+    <type-details xsi:type="addon:extraDetailsType">
+      <vendor>
+        <id>google</id>
+        <display>Google Inc.</display>
+      </vendor>
+    </type-details>
+    <revision>
+      <major>49</major>
+    </revision>
+    <display-name>Google Play services</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>15456884</size>
+          <checksum type="sha1">f95bf19634e2ab0430923247fe2c50246432d2e9</checksum>
+          <url>google_play_services_v16_1_rc09.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="extras;google;usb_driver">
+    <type-details xsi:type="addon:extraDetailsType">
+      <vendor>
+        <id>google</id>
+        <display>Google Inc.</display>
+      </vendor>
+    </type-details>
+    <revision>
+      <major>13</major>
+    </revision>
+    <display-name>Google USB Driver</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>8682039</size>
+          <checksum type="sha1">08a48c39084e9443f6146c239cbd3be6f91e681b</checksum>
+          <url>usb_driver_r13-windows.zip</url>
+        </complete>
+        <host-os>windows</host-os>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage obsolete="true" path="extras;google;admob_ads_sdk">
+    <type-details xsi:type="addon:extraDetailsType">
+      <vendor>
+        <id>google</id>
+        <display>Google Inc.</display>
+      </vendor>
+    </type-details>
+    <revision>
+      <major>11</major>
+    </revision>
+    <display-name>Google AdMob Ads SDK</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>704512</size>
+          <checksum type="sha1">0102859d9575baa0bf4fd5eb422af2ad0fe6cb82</checksum>
+          <url>GoogleAdMobAdsSdkAndroid-6.4.1.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage obsolete="true" path="extras;google;analytics_sdk_v2">
+    <type-details xsi:type="addon:extraDetailsType">
+      <vendor>
+        <id>google</id>
+        <display>Google Inc.</display>
+      </vendor>
+    </type-details>
+    <revision>
+      <major>3</major>
+    </revision>
+    <display-name>Google Analytics App Tracking SDK</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>211432</size>
+          <checksum type="sha1">dc14026bf0ce78315cb5dd00552607de0894de83</checksum>
+          <url>GoogleAnalyticsAndroid_2.0beta5.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="extras;google;webdriver">
+    <type-details xsi:type="addon:extraDetailsType">
+      <vendor>
+        <id>google</id>
+        <display>Google Inc.</display>
+      </vendor>
+    </type-details>
+    <revision>
+      <major>2</major>
+    </revision>
+    <display-name>Google Web Driver</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>4055193</size>
+          <checksum type="sha1">13f3a3b2670a5fc04a7342861644be9a01b07e38</checksum>
+          <url>webdriver_r02.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage obsolete="true" path="extras;google;gcm">
+    <type-details xsi:type="addon:extraDetailsType">
+      <vendor>
+        <id>google</id>
+        <display>Google Inc.</display>
+      </vendor>
+    </type-details>
+    <revision>
+      <major>3</major>
+    </revision>
+    <display-name>Google Cloud Messaging for Android Library</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>5901400</size>
+          <checksum type="sha1">ad066fd0dc7fc99d8aadac09c65a3c2519fbc7bf</checksum>
+          <url>gcm_r03.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="extras;google;simulators">
+    <type-details xsi:type="addon:extraDetailsType">
+      <vendor>
+        <id>google</id>
+        <display>Google Inc.</display>
+      </vendor>
+    </type-details>
+    <revision>
+      <major>1</major>
+    </revision>
+    <display-name>Android Auto API Simulators</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>2167286</size>
+          <checksum type="sha1">4fb5344e34e8faab4db18af07dace44c50db26a7</checksum>
+          <url>simulator_r01.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="extras;google;instantapps">
+    <type-details xsi:type="addon:extraDetailsType">
+      <vendor>
+        <id>google</id>
+        <display>Google Inc.</display>
+      </vendor>
+    </type-details>
+    <revision>
+      <major>1</major>
+      <minor>9</minor>
+      <micro>0</micro>
+    </revision>
+    <display-name>Google Play Instant Development SDK</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>39524850</size>
+          <checksum type="sha1">c498367dcd7db30154b3e70c4ddbb1b0ea4b8d20</checksum>
+          <url>iasdk-1.9.0-1566514721.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="extras;google;Android_Emulator_Hypervisor_Driver">
+    <type-details xsi:type="addon:extraDetailsType">
+      <vendor>
+        <id>google</id>
+        <display>Google LLC.</display>
+      </vendor>
+    </type-details>
+    <revision>
+      <major>1</major>
+      <minor>8</minor>
+      <micro>0</micro>
+    </revision>
+    <display-name>Android Emulator Hypervisor Driver for AMD Processors (installer: Deprecated)</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>166974</size>
+          <checksum type="sha1">8dce54354ea589d840bab4f5cd71382c26fccb62</checksum>
+          <url>gvm-windows_v1_8_0.zip</url>
+        </complete>
+        <host-os>windows</host-os>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="extras;google;Android_Emulator_Hypervisor_Driver">
+    <type-details xsi:type="addon:extraDetailsType">
+      <vendor>
+        <id>google</id>
+        <display>Google LLC.</display>
+      </vendor>
+    </type-details>
+    <revision>
+      <major>2</major>
+      <minor>0</minor>
+      <micro>0</micro>
+    </revision>
+    <display-name>Android Emulator hypervisor driver (installer)</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>168741</size>
+          <checksum type="sha1">1a4ef9875cb0adfe5500632ad7140027cfb080d9</checksum>
+          <url>gvm-windows_v2_0_0.zip</url>
+        </complete>
+        <host-os>windows</host-os>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout;1.0.0-alpha4">
+    <type-details xsi:type="addon:mavenType">
+      <vendor>
+        <id>android</id>
+        <display>Android</display>
+      </vendor>
+    </type-details>
+    <revision>
+      <major>1</major>
+    </revision>
+    <display-name>com.android.support.constraint:constraint-layout:1.0.0-alpha4</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <dependencies>
+      <dependency path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0-alpha4"/>
+    </dependencies>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>15554</size>
+          <checksum type="sha1">645a9be1f0c1177301e71cd0ddccf1dd67c554fe</checksum>
+          <url>com.android.support.constraint-constraint-layout-1.0.0-alpha4.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0-alpha4">
+    <type-details xsi:type="addon:mavenType">
+      <vendor>
+        <id>android</id>
+        <display>Android</display>
+      </vendor>
+    </type-details>
+    <revision>
+      <major>1</major>
+    </revision>
+    <display-name>com.android.support.constraint:constraint-layout-solver:1.0.0-alpha4</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>95406</size>
+          <checksum type="sha1">2aa2aceecc6ba172742d0af0b43f11d03924eeb8</checksum>
+          <url>com.android.support.constraint-constraint-layout-solver-1.0.0-alpha4.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout;1.0.0-alpha4">
+    <type-details xsi:type="addon:mavenType">
+      <vendor>
+        <id>android</id>
+        <display>Android</display>
+      </vendor>
+    </type-details>
+    <revision>
+      <major>1</major>
+    </revision>
+    <display-name>com.android.support.constraint:constraint-layout:1.0.0-alpha4</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <dependencies>
+      <dependency path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0-alpha4"/>
+    </dependencies>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>15554</size>
+          <checksum type="sha1">645a9be1f0c1177301e71cd0ddccf1dd67c554fe</checksum>
+          <url>com.android.support.constraint-constraint-layout-1.0.0-alpha4.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0-alpha4">
+    <type-details xsi:type="addon:mavenType">
+      <vendor>
+        <id>android</id>
+        <display>Android</display>
+      </vendor>
+    </type-details>
+    <revision>
+      <major>1</major>
+    </revision>
+    <display-name>com.android.support.constraint:constraint-layout-solver:1.0.0-alpha4</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>95406</size>
+          <checksum type="sha1">2aa2aceecc6ba172742d0af0b43f11d03924eeb8</checksum>
+          <url>com.android.support.constraint-constraint-layout-solver-1.0.0-alpha4.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout;1.0.0-alpha4">
+    <type-details xsi:type="addon:mavenType">
+      <vendor>
+        <id>android</id>
+        <display>Android</display>
+      </vendor>
+    </type-details>
+    <revision>
+      <major>1</major>
+    </revision>
+    <display-name>com.android.support.constraint:constraint-layout:1.0.0-alpha4</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <dependencies>
+      <dependency path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0-alpha4"/>
+    </dependencies>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>15554</size>
+          <checksum type="sha1">645a9be1f0c1177301e71cd0ddccf1dd67c554fe</checksum>
+          <url>com.android.support.constraint-constraint-layout-1.0.0-alpha4.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0-alpha4">
+    <type-details xsi:type="addon:mavenType">
+      <vendor>
+        <id>android</id>
+        <display>Android</display>
+      </vendor>
+    </type-details>
+    <revision>
+      <major>1</major>
+    </revision>
+    <display-name>com.android.support.constraint:constraint-layout-solver:1.0.0-alpha4</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>95406</size>
+          <checksum type="sha1">2aa2aceecc6ba172742d0af0b43f11d03924eeb8</checksum>
+          <url>com.android.support.constraint-constraint-layout-solver-1.0.0-alpha4.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout;1.0.0-alpha4">
+    <type-details xsi:type="addon:mavenType">
+      <vendor>
+        <id>android</id>
+        <display>Android</display>
+      </vendor>
+    </type-details>
+    <revision>
+      <major>1</major>
+    </revision>
+    <display-name>com.android.support.constraint:constraint-layout:1.0.0-alpha4</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <dependencies>
+      <dependency path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0-alpha4"/>
+    </dependencies>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>15554</size>
+          <checksum type="sha1">645a9be1f0c1177301e71cd0ddccf1dd67c554fe</checksum>
+          <url>com.android.support.constraint-constraint-layout-1.0.0-alpha4.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0-alpha4">
+    <type-details xsi:type="addon:mavenType">
+      <vendor>
+        <id>android</id>
+        <display>Android</display>
+      </vendor>
+    </type-details>
+    <revision>
+      <major>1</major>
+    </revision>
+    <display-name>com.android.support.constraint:constraint-layout-solver:1.0.0-alpha4</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>95406</size>
+          <checksum type="sha1">2aa2aceecc6ba172742d0af0b43f11d03924eeb8</checksum>
+          <url>com.android.support.constraint-constraint-layout-solver-1.0.0-alpha4.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout;1.0.0-alpha8">
+    <type-details xsi:type="addon:mavenType">
+      <vendor>
+        <id>android</id>
+        <display>Android</display>
+      </vendor>
+    </type-details>
+    <revision>
+      <major>1</major>
+    </revision>
+    <display-name>ConstraintLayout for Android 1.0.0-alpha8</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <dependencies>
+      <dependency path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0-alpha8"/>
+    </dependencies>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>24797</size>
+          <checksum type="sha1">7912ba03b04831f918f523648f118c4ee4da7604</checksum>
+          <url>com.android.support.constraint-constraint-layout-1.0.0-alpha8.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0-alpha8">
+    <type-details xsi:type="addon:mavenType">
+      <vendor>
+        <id>android</id>
+        <display>Android</display>
+      </vendor>
+    </type-details>
+    <revision>
+      <major>1</major>
+    </revision>
+    <display-name>Solver for ConstraintLayout 1.0.0-alpha8</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>97549</size>
+          <checksum type="sha1">cd13d16a8f0198c1d6040ec8b1d0d4e5bb7feb6a</checksum>
+          <url>com.android.support.constraint-constraint-layout-solver-1.0.0-alpha8.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout;1.0.0-alpha8">
+    <type-details xsi:type="addon:mavenType">
+      <vendor>
+        <id>android</id>
+        <display>Android</display>
+      </vendor>
+    </type-details>
+    <revision>
+      <major>1</major>
+    </revision>
+    <display-name>ConstraintLayout for Android 1.0.0-alpha8</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <dependencies>
+      <dependency path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0-alpha8"/>
+    </dependencies>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>24797</size>
+          <checksum type="sha1">7912ba03b04831f918f523648f118c4ee4da7604</checksum>
+          <url>com.android.support.constraint-constraint-layout-1.0.0-alpha8.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0-alpha8">
+    <type-details xsi:type="addon:mavenType">
+      <vendor>
+        <id>android</id>
+        <display>Android</display>
+      </vendor>
+    </type-details>
+    <revision>
+      <major>1</major>
+    </revision>
+    <display-name>Solver for ConstraintLayout 1.0.0-alpha8</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>97549</size>
+          <checksum type="sha1">cd13d16a8f0198c1d6040ec8b1d0d4e5bb7feb6a</checksum>
+          <url>com.android.support.constraint-constraint-layout-solver-1.0.0-alpha8.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout;1.0.0-beta1">
+    <type-details xsi:type="addon:mavenType">
+      <vendor>
+        <id>android</id>
+        <display>Android</display>
+      </vendor>
+    </type-details>
+    <revision>
+      <major>1</major>
+    </revision>
+    <display-name>ConstraintLayout for Android 1.0.0-beta1</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <dependencies>
+      <dependency path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0-beta1"/>
+    </dependencies>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>31750</size>
+          <checksum type="sha1">11f2f5cec4ff02986bad75435e5be77b704b4c64</checksum>
+          <url>com.android.support.constraint-constraint-layout-1.0.0-beta1.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0-beta1">
+    <type-details xsi:type="addon:mavenType">
+      <vendor>
+        <id>android</id>
+        <display>Android</display>
+      </vendor>
+    </type-details>
+    <revision>
+      <major>1</major>
+    </revision>
+    <display-name>Solver for ConstraintLayout 1.0.0-beta1</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>104706</size>
+          <checksum type="sha1">042c25575e7650e96f0f5f5d1d3c54ed38eb821a</checksum>
+          <url>com.android.support.constraint-constraint-layout-solver-1.0.0-beta1.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout;1.0.0-beta2">
+    <type-details xsi:type="addon:mavenType">
+      <vendor>
+        <id>android</id>
+        <display>Android</display>
+      </vendor>
+    </type-details>
+    <revision>
+      <major>1</major>
+    </revision>
+    <display-name>ConstraintLayout for Android 1.0.0-beta2</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <dependencies>
+      <dependency path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0-beta2"/>
+    </dependencies>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>31812</size>
+          <checksum type="sha1">623939865ede2e5c2c975dc55963e0d182bcce95</checksum>
+          <url>com.android.support.constraint-constraint-layout-1.0.0-beta2.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0-beta2">
+    <type-details xsi:type="addon:mavenType">
+      <vendor>
+        <id>android</id>
+        <display>Android</display>
+      </vendor>
+    </type-details>
+    <revision>
+      <major>1</major>
+    </revision>
+    <display-name>Solver for ConstraintLayout 1.0.0-beta2</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>107335</size>
+          <checksum type="sha1">28492fd42b20ae1586591ff906556d459cfdaae8</checksum>
+          <url>com.android.support.constraint-constraint-layout-solver-1.0.0-beta2.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout;1.0.0-beta3">
+    <type-details xsi:type="addon:mavenType">
+      <vendor>
+        <id>android</id>
+        <display>Android</display>
+      </vendor>
+    </type-details>
+    <revision>
+      <major>1</major>
+    </revision>
+    <display-name>ConstraintLayout for Android 1.0.0-beta3</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <dependencies>
+      <dependency path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0-beta3"/>
+    </dependencies>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>32622</size>
+          <checksum type="sha1">d78bb6a8ce92005fb1e4ed55d892a65b4258c60b</checksum>
+          <url>com.android.support.constraint-constraint-layout-1.0.0-beta3.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0-beta3">
+    <type-details xsi:type="addon:mavenType">
+      <vendor>
+        <id>android</id>
+        <display>Android</display>
+      </vendor>
+    </type-details>
+    <revision>
+      <major>1</major>
+    </revision>
+    <display-name>Solver for ConstraintLayout 1.0.0-beta3</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>107593</size>
+          <checksum type="sha1">268e763fa64bd217d8d830e59ce76be19aaba631</checksum>
+          <url>com.android.support.constraint-constraint-layout-solver-1.0.0-beta3.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout;1.0.0-beta4">
+    <type-details xsi:type="addon:mavenType">
+      <vendor>
+        <id>android</id>
+        <display>Android</display>
+      </vendor>
+    </type-details>
+    <revision>
+      <major>1</major>
+    </revision>
+    <display-name>ConstraintLayout for Android 1.0.0-beta4</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <dependencies>
+      <dependency path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0-beta4"/>
+    </dependencies>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>32687</size>
+          <checksum type="sha1">dc60844aab93a09a54a3c107685a77b18d7c1c39</checksum>
+          <url>com.android.support.constraint-constraint-layout-1.0.0-beta4.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0-beta4">
+    <type-details xsi:type="addon:mavenType">
+      <vendor>
+        <id>android</id>
+        <display>Android</display>
+      </vendor>
+    </type-details>
+    <revision>
+      <major>1</major>
+    </revision>
+    <display-name>Solver for ConstraintLayout 1.0.0-beta4</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>109361</size>
+          <checksum type="sha1">2213bf37e7a2869db2635895b8e90ca6841e79d2</checksum>
+          <url>com.android.support.constraint-constraint-layout-solver-1.0.0-beta4.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout;1.0.0-beta5">
+    <type-details xsi:type="addon:mavenType">
+      <vendor>
+        <id>android</id>
+        <display>Android</display>
+      </vendor>
+    </type-details>
+    <revision>
+      <major>1</major>
+    </revision>
+    <display-name>ConstraintLayout for Android 1.0.0-beta5</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <dependencies>
+      <dependency path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0-beta5"/>
+    </dependencies>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>39266</size>
+          <checksum type="sha1">4660f6c7a576ea1364f0c3225db71c29ca660d9a</checksum>
+          <url>com.android.support.constraint-constraint-layout-1.0.0-beta5.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0-beta5">
+    <type-details xsi:type="addon:mavenType">
+      <vendor>
+        <id>android</id>
+        <display>Android</display>
+      </vendor>
+    </type-details>
+    <revision>
+      <major>1</major>
+    </revision>
+    <display-name>Solver for ConstraintLayout 1.0.0-beta5</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>92284</size>
+          <checksum type="sha1">3918cfef73e64048d0b3e048068e208b414e7e91</checksum>
+          <url>com.android.support.constraint-constraint-layout-solver-1.0.0-beta5.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout;1.0.0">
+    <type-details xsi:type="addon:mavenType">
+      <vendor>
+        <id>android</id>
+        <display>Android</display>
+      </vendor>
+    </type-details>
+    <revision>
+      <major>1</major>
+    </revision>
+    <display-name>ConstraintLayout for Android 1.0.0</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <dependencies>
+      <dependency path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0"/>
+    </dependencies>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>39153</size>
+          <checksum type="sha1">70acf99689b933bc6735645d5c3d92b91954b6cb</checksum>
+          <url>com.android.support.constraint-constraint-layout-1.0.0.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.0">
+    <type-details xsi:type="addon:mavenType">
+      <vendor>
+        <id>android</id>
+        <display>Android</display>
+      </vendor>
+    </type-details>
+    <revision>
+      <major>1</major>
+    </revision>
+    <display-name>Solver for ConstraintLayout 1.0.0</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>91207</size>
+          <checksum type="sha1">b621b9d5adf273bb0725948589863e60e96eeaf1</checksum>
+          <url>com.android.support.constraint-constraint-layout-solver-1.0.0.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout;1.0.1">
+    <type-details xsi:type="addon:mavenType">
+      <vendor>
+        <id>android</id>
+        <display>Android</display>
+      </vendor>
+    </type-details>
+    <revision>
+      <major>1</major>
+    </revision>
+    <display-name>ConstraintLayout for Android 1.0.1</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <dependencies>
+      <dependency path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.1"/>
+    </dependencies>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>39547</size>
+          <checksum type="sha1">342b0894b8651fff37586f80f383733e97aba9f9</checksum>
+          <url>com.android.support.constraint-constraint-layout-1.0.1.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.1">
+    <type-details xsi:type="addon:mavenType">
+      <vendor>
+        <id>android</id>
+        <display>Android</display>
+      </vendor>
+    </type-details>
+    <revision>
+      <major>1</major>
+    </revision>
+    <display-name>Solver for ConstraintLayout 1.0.1</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>91823</size>
+          <checksum type="sha1">76f8823def9a6da8954a54737762a6820bc1d043</checksum>
+          <url>com.android.support.constraint-constraint-layout-solver-1.0.1.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout;1.0.2">
+    <type-details xsi:type="addon:mavenType">
+      <vendor>
+        <id>android</id>
+        <display>Android</display>
+      </vendor>
+    </type-details>
+    <revision>
+      <major>1</major>
+    </revision>
+    <display-name>ConstraintLayout for Android 1.0.2</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <dependencies>
+      <dependency path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.2"/>
+    </dependencies>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>39625</size>
+          <checksum type="sha1">3d9688a50fe0ed7348275f85d1b02278f616d8a4</checksum>
+          <url>com.android.support.constraint-constraint-layout-1.0.2.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
+  <remotePackage path="extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.2">
+    <type-details xsi:type="addon:mavenType">
+      <vendor>
+        <id>android</id>
+        <display>Android</display>
+      </vendor>
+    </type-details>
+    <revision>
+      <major>1</major>
+    </revision>
+    <display-name>Solver for ConstraintLayout 1.0.2</display-name>
+    <uses-license ref="android-sdk-license"/>
+    <channelRef ref="channel-0"/>
+    <archives>
+      <archive>
+        <complete>
+          <size>91961</size>
+          <checksum type="sha1">96d7ff669f0e808e9833b2c2e320702826ccc8be</checksum>
+          <url>com.android.support.constraint-constraint-layout-solver-1.0.2.zip</url>
+        </complete>
+      </archive>
+    </archives>
+  </remotePackage>
 </addon:sdk-addon>

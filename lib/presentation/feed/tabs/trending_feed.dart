@@ -37,7 +37,6 @@ class _ExploreTrendingState extends State<ExploreTrending> with AutomaticKeepAli
     final PaginationState pState = service.trendingPaginationState;
     return FeedList(
       topPushdownOffset: widget.topOffset,
-
       controller: feedListController
         ..items = (service.trendingPostIds
             .map((postId) {

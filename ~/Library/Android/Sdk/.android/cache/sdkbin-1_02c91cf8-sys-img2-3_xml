@@ -717,246 +717,73 @@ January 16, 2019
   <channel id="channel-1">beta</channel>
   <channel id="channel-2">dev</channel>
   <channel id="channel-3">canary</channel>
-  <remotePackage path="system-images;android-30;google-tv;x86">
+  <remotePackage path="system-images;android-34;aosp_tablet;x86_64">
     <type-details xsi:type="sys-img:sysImgDetailsType">
-      <api-level>30</api-level>
+      <api-level>34</api-level>
+      <extension-level>7</extension-level>
       <base-extension>true</base-extension>
       <tag>
-        <id>google-tv</id>
-        <display>Google TV</display>
+        <id>aosp_tablet</id>
+        <display>AOSP Tablet</display>
       </tag>
-      <abi>x86</abi>
+      <abi>x86_64</abi>
     </type-details>
     <revision>
-      <major>4</major>
+      <major>2</major>
     </revision>
-    <display-name>Google TV Intel x86 Atom System Image</display-name>
+    <display-name>AOSP Tablet Intel x86_64 Atom System Image</display-name>
     <uses-license ref="android-sdk-preview-license"/>
     <dependencies>
       <dependency path="emulator">
         <min-revision>
-          <major>28</major>
+          <major>29</major>
           <minor>1</minor>
-          <micro>6</micro>
+          <micro>11</micro>
         </min-revision>
       </dependency>
     </dependencies>
-    <channelRef ref="channel-0"/>
+    <channelRef ref="channel-3"/>
     <archives>
       <archive>
         <complete>
-          <size>752931854</size>
-          <checksum type="sha1">01fe86407a8d2da53c18c56e062eff9caa11127f</checksum>
-          <url>x86-30_r04.zip</url>
+          <size>694951747</size>
+          <checksum type="sha1">f1df67015afebc72014b2e482f6d12258a300bf7</checksum>
+          <url>x86_64-34_r02.zip</url>
         </complete>
       </archive>
     </archives>
   </remotePackage>
-  <remotePackage path="system-images;android-31;google-tv;x86">
-    <type-details xsi:type="sys-img:sysImgDetailsType">
-      <api-level>31</api-level>
-      <base-extension>true</base-extension>
-      <tag>
-        <id>google-tv</id>
-        <display>Google TV</display>
-      </tag>
-      <abi>x86</abi>
-    </type-details>
-    <revision>
-      <major>4</major>
-    </revision>
-    <display-name>Google TV Intel x86 Atom System Image</display-name>
-    <uses-license ref="android-sdk-license"/>
-    <dependencies>
-      <dependency path="emulator">
-        <min-revision>
-          <major>28</major>
-          <minor>1</minor>
-          <micro>6</micro>
-        </min-revision>
-      </dependency>
-    </dependencies>
-    <channelRef ref="channel-0"/>
-    <archives>
-      <archive>
-        <complete>
-          <size>839302867</size>
-          <checksum type="sha1">892128874dbf38837dfd5f938bf717d54d5a8994</checksum>
-          <url>x86-31_r04.zip</url>
-        </complete>
-      </archive>
-    </archives>
-  </remotePackage>
-  <remotePackage path="system-images;android-31;google-tv;arm64-v8a">
-    <type-details xsi:type="sys-img:sysImgDetailsType">
-      <api-level>31</api-level>
-      <base-extension>true</base-extension>
-      <tag>
-        <id>google-tv</id>
-        <display>Google TV</display>
-      </tag>
-      <abi>arm64-v8a</abi>
-    </type-details>
-    <revision>
-      <major>4</major>
-    </revision>
-    <display-name>Google TV ARM 64 v8a System Image</display-name>
-    <uses-license ref="android-sdk-license"/>
-    <dependencies>
-      <dependency path="emulator">
-        <min-revision>
-          <major>28</major>
-          <minor>1</minor>
-          <micro>6</micro>
-        </min-revision>
-      </dependency>
-    </dependencies>
-    <channelRef ref="channel-0"/>
-    <archives>
-      <archive>
-        <complete>
-          <size>782862628</size>
-          <checksum type="sha1">ca4a27b23f532ac390f5a861362c8338b6061cb7</checksum>
-          <url>arm64-v8a-31_r04.zip</url>
-        </complete>
-      </archive>
-    </archives>
-  </remotePackage>
-  <remotePackage path="system-images;android-33;google-tv;x86">
-    <type-details xsi:type="sys-img:sysImgDetailsType">
-      <api-level>33</api-level>
-      <base-extension>true</base-extension>
-      <tag>
-        <id>google-tv</id>
-        <display>Google TV</display>
-      </tag>
-      <abi>x86</abi>
-    </type-details>
-    <revision>
-      <major>5</major>
-    </revision>
-    <display-name>Google TV Intel x86 Atom System Image</display-name>
-    <uses-license ref="android-sdk-license"/>
-    <dependencies>
-      <dependency path="emulator">
-        <min-revision>
-          <major>28</major>
-          <minor>1</minor>
-          <micro>6</micro>
-        </min-revision>
-      </dependency>
-    </dependencies>
-    <channelRef ref="channel-0"/>
-    <archives>
-      <archive>
-        <complete>
-          <size>882045478</size>
-          <checksum type="sha1">f3daa88193001319f5bf2e20256675b9d6031d96</checksum>
-          <url>x86-33_r05.zip</url>
-        </complete>
-      </archive>
-    </archives>
-  </remotePackage>
-  <remotePackage path="system-images;android-33;google-tv;arm64-v8a">
-    <type-details xsi:type="sys-img:sysImgDetailsType">
-      <api-level>33</api-level>
-      <base-extension>true</base-extension>
-      <tag>
-        <id>google-tv</id>
-        <display>Google TV</display>
-      </tag>
-      <abi>arm64-v8a</abi>
-    </type-details>
-    <revision>
-      <major>5</major>
-    </revision>
-    <display-name>Google TV ARM 64 v8a System Image</display-name>
-    <uses-license ref="android-sdk-license"/>
-    <dependencies>
-      <dependency path="emulator">
-        <min-revision>
-          <major>28</major>
-          <minor>1</minor>
-          <micro>6</micro>
-        </min-revision>
-      </dependency>
-    </dependencies>
-    <channelRef ref="channel-0"/>
-    <archives>
-      <archive>
-        <complete>
-          <size>889454464</size>
-          <checksum type="sha1">4de71a5b7566f1e2cfd07310cbe9df539ee9a0d2</checksum>
-          <url>arm64-v8a-33_r05.zip</url>
-        </complete>
-      </archive>
-    </archives>
-  </remotePackage>
-  <remotePackage path="system-images;android-34;google-tv;x86">
+  <remotePackage path="system-images;android-34;aosp_tablet;arm64-v8a">
     <type-details xsi:type="sys-img:sysImgDetailsType">
       <api-level>34</api-level>
+      <extension-level>7</extension-level>
       <base-extension>true</base-extension>
       <tag>
-        <id>google-tv</id>
-        <display>Google TV</display>
-      </tag>
-      <abi>x86</abi>
-    </type-details>
-    <revision>
-      <major>2</major>
-    </revision>
-    <display-name>Google TV Intel x86 Atom System Image</display-name>
-    <uses-license ref="android-sdk-license"/>
-    <dependencies>
-      <dependency path="emulator">
-        <min-revision>
-          <major>28</major>
-          <minor>1</minor>
-          <micro>6</micro>
-        </min-revision>
-      </dependency>
-    </dependencies>
-    <channelRef ref="channel-0"/>
-    <archives>
-      <archive>
-        <complete>
-          <size>950849792</size>
-          <checksum type="sha1">c6262658067d808b726b38d3d46325ac51546228</checksum>
-          <url>x86-34_r02.zip</url>
-        </complete>
-      </archive>
-    </archives>
-  </remotePackage>
-  <remotePackage path="system-images;android-34;google-tv;arm64-v8a">
-    <type-details xsi:type="sys-img:sysImgDetailsType">
-      <api-level>34</api-level>
-      <base-extension>true</base-extension>
-      <tag>
-        <id>google-tv</id>
-        <display>Google TV</display>
+        <id>aosp_tablet</id>
+        <display>AOSP Tablet</display>
       </tag>
       <abi>arm64-v8a</abi>
     </type-details>
     <revision>
       <major>2</major>
     </revision>
-    <display-name>Google TV ARM 64 v8a System Image</display-name>
-    <uses-license ref="android-sdk-license"/>
+    <display-name>AOSP Tablet ARM 64 v8a System Image</display-name>
+    <uses-license ref="android-sdk-preview-license"/>
     <dependencies>
       <dependency path="emulator">
         <min-revision>
-          <major>28</major>
+          <major>29</major>
           <minor>1</minor>
-          <micro>6</micro>
+          <micro>11</micro>
         </min-revision>
       </dependency>
     </dependencies>
-    <channelRef ref="channel-0"/>
+    <channelRef ref="channel-3"/>
     <archives>
       <archive>
         <complete>
-          <size>944976810</size>
-          <checksum type="sha1">6e13c97b0e0204f5b17d69ed451b9adb7a7ac33c</checksum>
+          <size>679520635</size>
+          <checksum type="sha1">71631bd45b4186d963f91e795457cdf23f41e596</checksum>
           <url>arm64-v8a-34_r02.zip</url>
         </complete>
       </archive>
