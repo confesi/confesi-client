@@ -266,7 +266,7 @@ class _CommentTileState extends State<CommentTile> {
                                 textAlign: TextAlign.left,
                               ),
                               const SizedBox(height: 10),
-                              TextNoVertOverflow(
+                              SafeText(
                                 truncating
                                     ? truncateText(widget.commentType.comment.comment.content.removeExtraNewLines,
                                         commentPreviewLength,

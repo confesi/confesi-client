@@ -67,7 +67,7 @@ class _FeedDrawerState extends State<FeedDrawer> {
                           .setSelectedSchoolInUI(SelectedSchool(watchedHomeSchool.school.id));
                       Provider.of<PostsService>(context, listen: false).clearAllFeeds();
                       // check if the current route can be popped as well
-                      // if (mounted) router.pop();
+                      if (mounted) router.pop();
                     },
                   )),
             IgnorePointer(
@@ -84,8 +84,7 @@ class _FeedDrawerState extends State<FeedDrawer> {
                       .then((value) => ((state.possibleErr is! SchoolsDrawerErr)
                           ? Provider.of<PostsService>(context, listen: false).clearAllFeeds()
                           : null));
-                  // only if drawer is still up, pop context
-                  // if (mounted) router.pop();
+                  if (mounted) router.pop();
                 },
               ),
             ),
@@ -94,6 +93,8 @@ class _FeedDrawerState extends State<FeedDrawer> {
               onTap: () {
                 context.read<SchoolsDrawerCubit>().setSelectedSchoolInUI(SelectedAll());
                 Provider.of<PostsService>(context, listen: false).clearAllFeeds();
+                // if drawer is still open, pop it
+                if (mounted) router.pop();
               },
             ),
             if (!state.isGuest)

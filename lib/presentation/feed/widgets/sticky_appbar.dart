@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+import '../../../constants/shared/constants.dart';
+
 class StickyAppbarController extends ChangeNotifier {
   // Making these variables private
   double offsetBuildback = 0.0;
@@ -169,17 +171,13 @@ class _StickyAppbarState extends State<StickyAppbar> with SingleTickerProviderSt
           },
           child: widget.child,
         ),
-        AnimatedPositioned(
-          duration: Duration(milliseconds: currentlyScrolling ? 0 : 210),
+        Positioned(
           top: min(-widget.controller.stickyOffset, o), // Use stickyOffset for positioning
           left: 0,
           right: 0,
-          child: Opacity(
-            opacity: min((3 * widget.controller.offsetBuildback) / widget.stickyHeader.height, 1),
-            child: SizedBox(
-              height: widget.stickyHeader.height,
-              child: widget.stickyHeader.child,
-            ),
+          child: SizedBox(
+            height: widget.stickyHeader.height,
+            child: widget.stickyHeader.child,
           ),
         ),
       ],

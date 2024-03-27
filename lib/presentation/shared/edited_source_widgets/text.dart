@@ -11,7 +11,7 @@ import 'package:flutter/rendering.dart';
 // late String _name;
 // late BuildContext context;
 
-/// The text style to apply to descendant [TextNoVertOverflow] widgets which don't have an
+/// The text style to apply to descendant [SafeText] widgets which don't have an
 /// explicit style.
 ///
 /// {@tool dartpad}
@@ -140,7 +140,7 @@ class DefaultTextStyle extends InheritedTheme {
   /// edge of the box.
   ///
   /// If this is non-null, it will override even explicit null values of
-  /// [TextNoVertOverflow.maxLines].
+  /// [SafeText.maxLines].
   final int? maxLines;
 
   /// The strategy to use when calculating the width of the Text.
@@ -221,8 +221,8 @@ class _NullWidget extends StatelessWidget {
   }
 }
 
-/// The [TextHeightBehavior] that will apply to descendant [TextNoVertOverflow] and [EditableText]
-/// widgets which have not explicitly set [TextNoVertOverflow.textHeightBehavior].
+/// The [TextHeightBehavior] that will apply to descendant [SafeText] and [EditableText]
+/// widgets which have not explicitly set [SafeText.textHeightBehavior].
 ///
 /// If there is a [DefaultTextStyle] with a non-null [DefaultTextStyle.textHeightBehavior]
 /// below this widget, the [DefaultTextStyle.textHeightBehavior] will be used
@@ -231,7 +231,7 @@ class _NullWidget extends StatelessWidget {
 /// See also:
 ///
 ///  * [DefaultTextStyle], which defines a [TextStyle] to apply to descendant
-///    [TextNoVertOverflow] widgets.
+///    [SafeText] widgets.
 class DefaultTextHeightBehavior extends InheritedTheme {
   /// Creates a default text height behavior for the given subtree.
   ///
@@ -329,7 +329,7 @@ class DefaultTextHeightBehavior extends InheritedTheme {
 
 /// A run of text with a single style.
 ///
-/// The [TextNoVertOverflow] widget displays a string of text with single style. The string
+/// The [SafeText] widget displays a string of text with single style. The string
 /// might break across multiple lines or might all be displayed on the same line
 /// depending on the layout constraints.
 ///
@@ -342,7 +342,7 @@ class DefaultTextHeightBehavior extends InheritedTheme {
 ///
 /// {@tool snippet}
 ///
-/// This example shows how to display text using the [TextNoVertOverflow] widget with the
+/// This example shows how to display text using the [SafeText] widget with the
 /// [overflow] set to [TextOverflow.ellipsis].
 ///
 /// ![If the text is shorter than the available space, it is displayed in full without an ellipsis.](https://flutter.github.io/assets-for-api-docs/assets/widgets/text.png)
@@ -359,7 +359,7 @@ class DefaultTextHeightBehavior extends InheritedTheme {
 /// ```
 /// {@end-tool}
 ///
-/// Using the [Text.rich] constructor, the [TextNoVertOverflow] widget can
+/// Using the [Text.rich] constructor, the [SafeText] widget can
 /// display a paragraph with differently styled [TextSpan]s. The sample
 /// that follows displays "Hello beautiful world" with different styles
 /// for each word.
@@ -383,7 +383,7 @@ class DefaultTextHeightBehavior extends InheritedTheme {
 ///
 /// ## Interactivity
 ///
-/// To make [TextNoVertOverflow] react to touch events, wrap it in a [GestureDetector] widget
+/// To make [SafeText] react to touch events, wrap it in a [GestureDetector] widget
 /// with a [GestureDetector.onTap] handler.
 ///
 /// In a Material Design application, consider using a [TextButton] instead, or
@@ -396,7 +396,7 @@ class DefaultTextHeightBehavior extends InheritedTheme {
 ///
 /// ## Selection
 ///
-/// [TextNoVertOverflow] is not selectable by default. To make a [TextNoVertOverflow] selectable, one can
+/// [SafeText] is not selectable by default. To make a [SafeText] selectable, one can
 /// wrap a subtree with a [SelectionArea] widget. To exclude a part of a subtree
 /// under [SelectionArea] from selection, once can also wrap that part of the
 /// subtree with [SelectionContainer.disabled].
@@ -411,9 +411,9 @@ class DefaultTextHeightBehavior extends InheritedTheme {
 /// See also:
 ///
 ///  * [RichText], which gives you more control over the text styles.
-///  * [DefaultTextStyle], which sets default styles for [TextNoVertOverflow] widgets.
+///  * [DefaultTextStyle], which sets default styles for [SafeText] widgets.
 ///  * [SelectableRegion], which provides an overview of the selection system.
-class TextNoVertOverflow extends StatelessWidget {
+class SafeText extends StatelessWidget {
   /// Creates a text widget.
   ///
   /// If the [style] argument is null, the text will use the style from the
@@ -425,7 +425,7 @@ class TextNoVertOverflow extends StatelessWidget {
   /// If the [softWrap] is true or null, the glyph causing overflow, and those
   /// that follow, will not be rendered. Otherwise, it will be shown with the
   /// given overflow option.
-  const TextNoVertOverflow(
+  const SafeText(
     String this.data, {
     super.key,
     this.style,
@@ -453,7 +453,7 @@ class TextNoVertOverflow extends StatelessWidget {
   /// The [textSpan] parameter must not be null.
   ///
   /// See [RichText] which provides a lower-level way to draw text.
-  const TextNoVertOverflow.rich(
+  const SafeText.rich(
     InlineSpan this.textSpan, {
     super.key,
     this.style,
@@ -577,7 +577,7 @@ class TextNoVertOverflow extends StatelessWidget {
   /// The color to use when painting the selection.
   ///
   /// This is ignored if [SelectionContainer.maybeOf] returns null
-  /// in the [BuildContext] of the [TextNoVertOverflow] widget.
+  /// in the [BuildContext] of the [SafeText] widget.
   ///
   /// If null, the ambient [DefaultSelectionStyle] is used (if any); failing
   /// that, the selection color defaults to [DefaultSelectionStyle.defaultColor]
@@ -603,7 +603,8 @@ class TextNoVertOverflow extends StatelessWidget {
         locale: locale, // RichText uses Localizations.localeOf to obtain a default if this is null
         softWrap: softWrap ?? defaultTextStyle.softWrap,
         overflow: overflow ?? effectiveTextStyle?.overflow ?? defaultTextStyle.overflow,
-        maxLines: maxLines ?? defaultTextStyle.maxLines, textScaler: TextScaler.linear(textScaleFactor ?? MediaQuery.textScaleFactorOf(context)),
+        maxLines: maxLines ?? defaultTextStyle.maxLines,
+        textScaler: TextScaler.linear(textScaleFactor ?? MediaQuery.textScaleFactorOf(context)),
         strutStyle: strutStyle,
         textWidthBasis: textWidthBasis ?? defaultTextStyle.textWidthBasis,
         textHeightBehavior:

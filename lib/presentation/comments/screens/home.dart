@@ -29,10 +29,11 @@ import '../../../core/router/go_router.dart';
 import '../../../core/services/global_content/global_content.dart';
 import '../../../core/types/infinite_scrollable_indexable.dart';
 import '../../../models/post.dart';
+import '../../shared/buttons/circle_action_btn.dart';
 import '../../shared/buttons/circle_icon_btn.dart';
 import '../widgets/comment_sheet.dart';
 
-const double stickyHeaderHeight = 146;
+const double stickyHeaderHeight = 140;
 
 class CommentScreen extends StatefulWidget {
   const CommentScreen({super.key, required this.props});
@@ -323,19 +324,28 @@ class _CommentScreenState extends State<CommentScreen> {
                                       crossAxisAlignment: CrossAxisAlignment.end,
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
-                                        CircleIconBtn(
-                                            color: Theme.of(context).colorScheme.primary,
-                                            bgColor: Theme.of(context).colorScheme.surface,
-                                            icon: CupertinoIcons.arrow_left,
-                                            onTap: () {
-                                              Haptics.f(H.regular);
-                                              router.pop(context);
-                                            }),
+                                        CircleActionButton(
+                                          bgColor: Theme.of(context).colorScheme.surface,
+                                          color: Theme.of(context).colorScheme.primary,
+                                          icon: CupertinoIcons.arrow_left,
+                                          onTap: () {
+                                            Haptics.f(H.regular);
+                                            router.pop(context);
+                                          },
+                                        ),
+                                        // CircleIconBtn(
+                                        //     color: Theme.of(context).colorScheme.primary,
+                                        //     bgColor: Theme.of(context).colorScheme.surface,
+                                        //     icon: CupertinoIcons.arrow_left,
+                                        //     onTap: () {
+                                        //       Haptics.f(H.regular);
+                                        //       router.pop(context);
+                                        //     }),
                                         const Spacer(),
                                         const SizedBox(width: 15),
                                         Opacity(
                                           opacity: state.post.post.chatPost && !state.post.owner ? 1 : 0.25,
-                                          child: CircleIconBtn(
+                                          child: CircleActionButton(
                                             color: Theme.of(context).colorScheme.tertiary,
                                             bgColor: Theme.of(context).colorScheme.surface,
                                             icon: CupertinoIcons.chat_bubble_2,
@@ -359,7 +369,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                           ),
                                         ),
                                         const SizedBox(width: 15),
-                                        CircleIconBtn(
+                                        CircleActionButton(
                                           color: Theme.of(context).colorScheme.primary,
                                           bgColor: Theme.of(context).colorScheme.surface,
                                           icon: CupertinoIcons.arrow_up_to_line_alt,

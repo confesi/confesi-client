@@ -41,7 +41,11 @@ class PostTileState extends State<PostTile> {
     return Material(
       color: Colors.transparent,
       child: Padding(
-        padding: EdgeInsets.only(top: widget.detailView ? 15 : 15),
+        padding: EdgeInsets.only(
+            top: widget.detailView ? 15 : 15,
+            left: widget.detailView ? 0 : 0,
+            right: widget.detailView ? 0 : 0,
+            bottom: widget.detailView ? 0 : 0),
         child: GestureDetector(
           onLongPress: () {
             Haptics.f(H.regular);
@@ -62,7 +66,7 @@ class PostTileState extends State<PostTile> {
             constraints: const BoxConstraints(maxWidth: maxStandardSizeOfContent),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.background,
-              borderRadius: widget.detailView ? null : BorderRadius.circular(10),
+              borderRadius: widget.detailView ? null : null,
               border: Border(
                 top: widget.detailView
                     ? BorderSide.none
@@ -113,12 +117,14 @@ class PostTileState extends State<PostTile> {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  TextNoVertOverflow(
-                                    "${widget.post.post.school.name}${buildFaculty(widget.post)}${buildYear(widget.post)} • ${timeAgo(DateTime.fromMicrosecondsSinceEpoch(widget.post.post.createdAt))} ${widget.post.post.edited ? "• Edited" : ""}",
-                                    style: kDetail.copyWith(
-                                      color: Theme.of(context).colorScheme.secondary,
+                                  Expanded(
+                                    child: SafeText(
+                                      "${widget.post.post.school.name}${buildFaculty(widget.post)}${buildYear(widget.post)} • ${timeAgo(DateTime.fromMicrosecondsSinceEpoch(widget.post.post.createdAt))} ${widget.post.post.edited ? "• Edited" : ""}",
+                                      style: kDetail.copyWith(
+                                        color: Theme.of(context).colorScheme.secondary,
+                                      ),
+                                      textAlign: TextAlign.left,
                                     ),
-                                    textAlign: TextAlign.left,
                                   ),
                                   TouchableOpacity(
                                     onTap: () {
@@ -138,7 +144,7 @@ class PostTileState extends State<PostTile> {
                             ),
                             Padding(
                               padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
-                              child: TextNoVertOverflow(
+                              child: SafeText(
                                 truncateText(
                                     widget.post.post.title.isEmpty
                                         ? "[empty]"
@@ -154,7 +160,7 @@ class PostTileState extends State<PostTile> {
                             ),
                             Padding(
                               padding: const EdgeInsets.only(left: 15, right: 15),
-                              child: TextNoVertOverflow(
+                              child: SafeText(
                                 truncateText(
                                     widget.post.post.content.isEmpty
                                         ? "[empty]"

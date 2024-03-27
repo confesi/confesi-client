@@ -27,7 +27,7 @@ class HeaderGroupText extends StatelessWidget {
   final bool onSecondaryColors;
   final double spaceBetween;
 
-  Widget buildTopText(BuildContext context) => TextNoVertOverflow(
+  Widget buildTopText(BuildContext context) => SafeText(
         truncateText(header, dailyHottestPreviewLength),
         style: kFunkyDisplay.copyWith(color: Theme.of(context).colorScheme.primary),
         textAlign: left ? TextAlign.left : TextAlign.center,
@@ -44,7 +44,7 @@ class HeaderGroupText extends StatelessWidget {
       children: [
         expandsTopText ? Expanded(child: buildTopText(context)) : Flexible(child: buildTopText(context)),
         SizedBox(height: spaceBetween),
-        TextNoVertOverflow(
+        SafeText(
           body,
           style: kTitle.copyWith(
             color:

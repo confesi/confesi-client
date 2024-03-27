@@ -95,9 +95,9 @@ class _HottestTileState extends State<HottestTile> {
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      TextNoVertOverflow(
+                                      SafeText(
                                         widget.post.post.school.name,
-                                        style: kTitle.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                                        style: kTitle.copyWith(color: Theme.of(context).colorScheme.secondary),
                                         textAlign: TextAlign.center,
                                         overflow: TextOverflow.ellipsis,
                                       ),

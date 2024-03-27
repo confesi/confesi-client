@@ -8,17 +8,21 @@ import 'package:confesi/presentation/feed/tabs/sentiment_feed.dart';
 import 'package:confesi/presentation/feed/widgets/sticky_appbar.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_opacity.dart';
 import 'package:confesi/presentation/shared/button_touch_effects/touchable_scale.dart';
+import 'package:confesi/presentation/shared/buttons/circle_action_btn.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/router/go_router.dart';
 import '../../../core/services/user_auth/user_auth_service.dart';
+import '../../shared/buttons/circle_icon_btn.dart';
+import '../../shared/edited_source_widgets/text.dart';
 import '../tabs/recents_feed.dart';
 import '../tabs/trending_feed.dart';
 
-const double appbarHeight = 87;
+const double appbarHeight = 46;
 
 class ExploreHome extends StatefulWidget {
   const ExploreHome({
@@ -104,60 +108,25 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
                   stickyHeader: StickyAppbarProps(
                     height: appbarHeight + MediaQuery.of(context).padding.top,
                     child: Container(
-                      color: Theme.of(context).colorScheme.secondary,
-                      padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top, left: 12, right: 12),
+                      color: Theme.of(context).colorScheme.shadow,
+                      padding:
+                          EdgeInsets.only(top: MediaQuery.of(context).padding.top, left: 12, right: 12, bottom: 10),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              _TabIconBtn(
-                                onTap: () => widget.scaffoldKey.currentState!.openDrawer(),
-                                icon: CupertinoIcons.slider_horizontal_3,
-                              ),
-                              const SizedBox(width: 10),
-                              TouchableOpacity(
-                                onTap: () {
-                                  // Haptics.f(H.regular);
-                                  setState(() {
-                                    emoji = genRandomEmoji(emoji);
-                                  });
-                                },
-                                child: Text(
-                                  "confesi $emoji",
-                                  style: kDisplay3.copyWith(color: Theme.of(context).colorScheme.onSecondary),
-                                  textAlign: TextAlign.center,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                              const SizedBox(width: 10),
-                              _TabIconBtn(
-                                onTap: () => verifiedUserOnly(context, () => router.push("/home/rooms")),
-                                icon: CupertinoIcons.chat_bubble_2,
-                              )
-                            ],
-                          ),
-                          const SizedBox(height: 15),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 3),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                    child: _FeedTab(
+                              _FeedTab(
                                   isSelected: context.watch<PostsService>().currentlySelectedFeed == FeedType.recents,
-                                  title: "Recents",
-                                  textAlign: TextAlign.center,
+                                  title: "New",
                                   onTap: () {
                                     context
                                         .read<PostsService>()
                                         .setCurrentlySelectedFeedAndReloadIfNeeded(context, FeedType.recents);
                                     _pageController.jumpToPage(0);
-                                  },
-                                )),
-                                Expanded(
-                                    child: _FeedTab(
-                                  textAlign: TextAlign.center,
+                                  }),
+                              const SizedBox(width: 10),
+                              _FeedTab(
                                   isSelected: context.watch<PostsService>().currentlySelectedFeed == FeedType.trending,
                                   title: "Trending",
                                   onTap: () {
@@ -165,11 +134,9 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
                                         .read<PostsService>()
                                         .setCurrentlySelectedFeedAndReloadIfNeeded(context, FeedType.trending);
                                     _pageController.jumpToPage(1);
-                                  },
-                                )),
-                                Expanded(
-                                    child: _FeedTab(
-                                  textAlign: TextAlign.center,
+                                  }),
+                              const SizedBox(width: 10),
+                              _FeedTab(
                                   isSelected: context.watch<PostsService>().currentlySelectedFeed == FeedType.sentiment,
                                   title: "Positivity",
                                   onTap: () {
@@ -177,10 +144,22 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
                                         .read<PostsService>()
                                         .setCurrentlySelectedFeedAndReloadIfNeeded(context, FeedType.sentiment);
                                     _pageController.jumpToPage(2);
-                                  },
-                                )),
-                              ],
-                            ),
+                                  }),
+                              const Expanded(child: SizedBox(width: 10)),
+                              CircleActionButton(
+                                onTap: () => widget.scaffoldKey.currentState!.openDrawer(),
+                                color: Theme.of(context).colorScheme.primary,
+                                bgColor: Theme.of(context).colorScheme.surface,
+                                icon: CupertinoIcons.line_horizontal_3_decrease,
+                              ),
+                              const SizedBox(width: 10),
+                              CircleActionButton(
+                                onTap: () => verifiedUserOnly(context, () => router.push("/home/rooms")),
+                                color: Theme.of(context).colorScheme.primary,
+                                bgColor: Theme.of(context).colorScheme.surface,
+                                icon: CupertinoIcons.chat_bubble_2_fill,
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -216,63 +195,28 @@ class _ExploreHomeState extends State<ExploreHome> with AutomaticKeepAliveClient
   }
 }
 
-class _TabIconBtn extends StatelessWidget {
-  const _TabIconBtn({required this.onTap, required this.icon});
-
-  final VoidCallback onTap;
-  final IconData icon;
-
-  @override
-  Widget build(BuildContext context) {
-    return TouchableScale(
-      onTap: () {
-        Haptics.f(H.regular);
-        onTap();
-      },
-      child: Container(
-        padding: const EdgeInsets.all(3),
-        color: Colors.transparent, // hitbox trick
-        child: Icon(icon, size: 28),
-      ),
-    );
-  }
-}
-
 class _FeedTab extends StatelessWidget {
-  const _FeedTab(
-      {required this.isSelected, required this.title, required this.onTap, this.textAlign = TextAlign.center});
+  const _FeedTab({required this.isSelected, required this.title, required this.onTap});
 
   final bool isSelected;
   final String title;
-  final TextAlign textAlign;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    return TouchableOpacity(
+    return GestureDetector(
       onTap: () {
         Haptics.f(H.regular);
         onTap();
       },
-      child: Container(
-        padding: const EdgeInsets.only(bottom: 5),
-        decoration: BoxDecoration(
-          color: Colors.transparent, // hitbox trick
-          // bottom border
-          border: Border(
-            bottom: BorderSide(
-              color: isSelected ? Theme.of(context).colorScheme.onSecondary : Colors.transparent,
-              width: 2,
-            ),
-          ),
-        ),
-        child: Text(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 5),
+        child: SafeText(
           title,
-          textAlign: textAlign,
           style: kBody.copyWith(
-              color: isSelected
-                  ? Theme.of(context).colorScheme.onSecondary
-                  : Theme.of(context).colorScheme.onSurfaceVariant),
+            color: isSelected ? Theme.of(context).colorScheme.secondary : Theme.of(context).colorScheme.surface,
+            fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+          ),
         ),
       ),
     );
